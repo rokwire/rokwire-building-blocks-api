@@ -14,21 +14,23 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
+- url: https://virtserver.swaggerhub.com/uiuc-scci/profiles/1.0.0
+  description: SwaggerHub API Auto Mocking
 - url: https://virtserver.swaggerhub.com/uiuc-scci/profile/1.0.0
   description: SwaggerHub API Auto Mocking
 - url: https://virtserver.swaggerhub.com/uiuc-scci/platform/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
-- name: profile
-  description: Everything about a user
+- name: profiles
+  description: each item describes everything about a user
   externalDocs:
     description: Find out more
     url: http://www.illinois.edu
 paths:
-  /profile:
+  /profiles:
     post:
       tags:
-      - profile
+      - profiles
       summary: Create profile
       description: This can only be done by the authenticated user.
       operationId: createProfile
@@ -52,10 +54,10 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profile/{userName}:
+  /profiles/{userName}:
     get:
       tags:
-      - profile
+      - profiles
       summary: Find profile by userName
       description: Returns a single profile
       operationId: getProfileByUserName
@@ -84,10 +86,10 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /profile/{profileId}:
+  /profiles/{profileId}:
     get:
       tags:
-      - profile
+      - profiles
       summary: Find profile by ID
       description: Returns a single profile
       operationId: getProfileById
@@ -121,7 +123,7 @@ paths:
           description: Internal error
     put:
       tags:
-      - profile
+      - profiles
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
       parameters:
@@ -165,7 +167,7 @@ paths:
         - read:profile
     delete:
       tags:
-      - profile
+      - profiles
       summary: Deletes a profile
       operationId: deleteProfile
       parameters:
@@ -191,10 +193,10 @@ paths:
       - scci_auth:
         - write:profile
         - read:profile
-  /profile/{profileId}/uploadImage:
+  /profiles/{profileId}/uploadImage:
     post:
       tags:
-      - profile
+      - profiles
       summary: uploads an image
       operationId: uploadFile
       parameters:
@@ -224,10 +226,6 @@ paths:
           description: Bad request
         500:
           description: Some has gone wrong, try again later
-      security:
-      - api_auth:
-        - write:profile
-        - read:profile
 components:
   schemas:
     Profile:
