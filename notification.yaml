@@ -14,14 +14,14 @@ servers:
 - url: https://virtserver.swaggerhub.com/uiuc-scci/notification/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
-- name: notification
-  description: notification
+- name: notifications
+  description: all notification
 paths:
-  /notification/notify:
+  /notifications/notify:
     post:
       tags:
-      - notification
-      summary: create a notification
+      - notifications
+      summary: send and create a notification
       description: notify user and create a notification record to the system
       operationId: notify
       requestBody:
@@ -35,10 +35,10 @@ paths:
           description: notification created
         400:
           description: invalid input, object invalid
-  /notification/{notificationId}:
+  /notifications/{notificationId}:
     delete:
       tags:
-      - notification
+      - notifications
       summary: Deletes a notification
       operationId: deleteNotification
       parameters:
@@ -58,10 +58,10 @@ paths:
           description: Invalid ID supplied
         404:
           description: Notification not found
-  /notification/{userName}:
+  /notifications/{userName}:
     get:
       tags:
-      - notification
+      - notifications
       summary: Find notifications by userName
       description: Returns all notifications of the user
       operationId: getNotificationsByUserName
