@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Simple Notification API
+  description: This is a simple API
+  contact:
+    email: xialiao@illinois.edu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/uiuc-scci/notifications/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/uiuc-scci/notification/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: notification
+  description: notification
+paths:
+  /notification/notify:
+    post:
+      tags:
+      - notification
+      summary: create a notification
+      description: notify user and create a notification record to the system
+      operationId: notify
+      requestBody:
+        description: a notification to be added into system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+      responses:
+        201:
+          description: notification created
+        400:
+          description: invalid input, object invalid
+  /notification/{notificationId}:
+    delete:
+      tags:
+      - notification
+      summary: Deletes a notification
+      operationId: deleteNotification
+      parameters:
+      - name: notificationId
+        in: path
+        description: notification id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        202:
+          description: Notification is deleted
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Notification not found
+  /notification/{userName}:
+    get:
+      tags:
+      - notification
+      summary: Find notifications by userName
+      description: Returns all notifications of the user
+      operationId: getNotificationsByUserName
+      parameters:
+      - name: userName
+        in: path
+        description: user name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        401:
+          description: Unauthorized
+components:
+  schemas:
+    Notification:
+      required:
+      - id
+      - notifyDate
+      - userName
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          type: string
+          example: event, class registration etc.
+        content:
+          type: string
+        userName:
+          type: string
+        notifyMethod:
+          type: string
+          description: notification method
+          enum:
+          - email
+          - text
+          - push notification
+        notifyDate:
+          type: string
+          format: date-time
