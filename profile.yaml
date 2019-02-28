@@ -1,0 +1,264 @@
+openapi: 3.0.0
+info:
+  title: Simple REST APIs
+  description: |
+    This is profile API.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: xialiao@illinois.edu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://virtserver.swaggerhub.com/uiuc-scci/profile/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/uiuc-scci/platform/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: profile
+  description: Everything about a user
+  externalDocs:
+    description: Find out more
+    url: http://www.illinois.edu
+paths:
+  /profile:
+    post:
+      tags:
+      - profile
+      summary: Create profile
+      description: This can only be done by the authenticated user.
+      operationId: createProfile
+      requestBody:
+        description: Created profile object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        201:
+          description: Profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
+  /profile/{userName}:
+    get:
+      tags:
+      - profile
+      summary: Find profile by userName
+      description: Returns a single profile
+      operationId: getProfileByUserName
+      parameters:
+      - name: userName
+        in: path
+        description: user name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        401:
+          description: Unauthorized
+        404:
+          description: Profile not found
+        500:
+          description: Internal error
+  /profile/{profileId}:
+    get:
+      tags:
+      - profile
+      summary: Find profile by ID
+      description: Returns a single profile
+      operationId: getProfileById
+      parameters:
+      - name: profileId
+        in: path
+        description: ID of profile to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        400:
+          description: Invalid ID supplied
+        401:
+          description: Unauthorized
+        404:
+          description: Profile not found
+        500:
+          description: Internal error
+    put:
+      tags:
+      - profile
+      summary: Updates a profile with form data
+      operationId: updateProfileWithForm
+      parameters:
+      - name: profileId
+        in: path
+        description: ID of profile that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: update profile object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        400:
+          description: Invalid ID supplied
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
+      security:
+      - scci_auth:
+        - write:profile
+        - read:profile
+    delete:
+      tags:
+      - profile
+      summary: Deletes a profile
+      operationId: deleteProfile
+      parameters:
+      - name: profileId
+        in: path
+        description: Profile id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        202:
+          description: Profile is deleted
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Profile not found
+        500:
+          description: Internal error
+      security:
+      - scci_auth:
+        - write:profile
+        - read:profile
+  /profile/{profileId}/uploadImage:
+    post:
+      tags:
+      - profile
+      summary: uploads an image
+      operationId: uploadFile
+      parameters:
+      - name: profileId
+        in: path
+        description: ID of profile to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        400:
+          description: Bad request
+        500:
+          description: Some has gone wrong, try again later
+      security:
+      - api_auth:
+        - write:profile
+        - read:profile
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        photoUrls:
+          type: array
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+          example: everything is ok
