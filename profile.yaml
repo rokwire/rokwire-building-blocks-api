@@ -1,8 +1,7 @@
 openapi: 3.0.0
 info:
   title: Simple REST APIs
-  description: |
-    This is profile API.
+  description: This is profile API.
   termsOfService: http://swagger.io/terms/
   contact:
     email: xialiao@illinois.edu
@@ -15,10 +14,6 @@ externalDocs:
   url: http://swagger.io
 servers:
 - url: https://virtserver.swaggerhub.com/uiuc-scci/profiles/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/uiuc-scci/profile/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/uiuc-scci/platform/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
 - name: profiles
@@ -161,10 +156,6 @@ paths:
           description: Invalid input
         500:
           description: Internal error
-      security:
-      - scci_auth:
-        - write:profile
-        - read:profile
     delete:
       tags:
       - profiles
@@ -189,10 +180,6 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-      security:
-      - scci_auth:
-        - write:profile
-        - read:profile
   /profiles/{profileId}/uploadImage:
     post:
       tags:
