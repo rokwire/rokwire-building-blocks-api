@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Rockwire Platform APIs
+  title: Rockwire Platform API
   description: This is REST API design and documentation for Rockwire platform
   version: 1.0.0
 servers:
