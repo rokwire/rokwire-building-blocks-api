@@ -8,7 +8,7 @@ servers:
   description: SwaggerHub API Auto Mocking
 tags:
 - name: profiles
-  description: each item describes everything about a user
+  description: API endpoints for managing user profile.
 - name: Notifications
   description: each item describes everything about a notification
 paths:
