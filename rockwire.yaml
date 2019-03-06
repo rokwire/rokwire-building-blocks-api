@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Platform API
   description: REST API design and documentation for Rokwire platform
-  version: 1.0.0
+  version: 0.0.1
 servers:
 - url: https://virtserver.swaggerhub.com/uiuc-scci/rokwire/1.0.0
   description: SwaggerHub API Auto Mocking
@@ -15,7 +15,7 @@ paths:
   /profiles:
     post:
       tags:
-      - profile
+      - Profile
       summary: Create profile
       description: This can only be done by the authenticated user.
       operationId: createProfile
@@ -42,7 +42,7 @@ paths:
   /profiles/{userName}:
     get:
       tags:
-      - profile
+      - Profile
       summary: Find profile by userName
       description: Returns a single profile
       operationId: getProfileByUserName
@@ -74,7 +74,7 @@ paths:
   /profiles/{profileId}:
     get:
       tags:
-      - profile
+      - Profile
       summary: Find profile by ID
       description: Returns a single profile
       operationId: getProfileById
@@ -108,7 +108,7 @@ paths:
           description: Internal error
     put:
       tags:
-      - profile
+      - Profile
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
       parameters:
@@ -148,7 +148,7 @@ paths:
           description: Internal error
     delete:
       tags:
-      - profile
+      - Profile
       summary: Deletes a profile
       operationId: deleteProfile
       parameters:
@@ -173,7 +173,7 @@ paths:
   /profiles/{profileId}/uploadImage:
     post:
       tags:
-      - profile
+      - Profile
       summary: uploads an image
       operationId: uploadFile
       parameters:
@@ -206,7 +206,7 @@ paths:
   /notifications:
     get:
       tags:
-      - notifications
+      - Notifications
       summary: searches notifications
       description: By passing in the appropriate options, you can search for notifications matching your criteria in the system
       operationId: searchNotifications
@@ -253,7 +253,7 @@ paths:
           description: bad input parameter
     post:
       tags:
-      - notifications
+      - Notifications
       summary: create a notification
       description: create a notification record to the system
       requestBody:
@@ -270,7 +270,7 @@ paths:
   /notifications/createWithList:
     post:
       tags:
-      - notifications
+      - Notifications
       summary: Creates list of notifications with given input array
       operationId: createNotificationsWithListInput
       requestBody:
@@ -281,7 +281,7 @@ paths:
   /notifications/{notificationId}:
     delete:
       tags:
-      - notifications
+      - Notifications
       summary: Deletes a notification
       operationId: deleteNotification
       parameters:
@@ -304,7 +304,7 @@ paths:
   /notifications/{userName}:
     get:
       tags:
-      - notifications
+      - Notifications
       summary: Find notifications by userName
       description: Returns all notifications of the user
       operationId: getNotificationsByUserName
