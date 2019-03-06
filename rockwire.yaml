@@ -4,7 +4,7 @@ info:
   description: REST API design and documentation for Rokwire platform
   version: 0.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/uiuc-scci/rokwire/1.0.0
+- url: https://virtserver.swaggerhub.com/uiuc-scci/rokwire/0.0.1
   description: SwaggerHub API Auto Mocking
 tags:
 - name: Profile
