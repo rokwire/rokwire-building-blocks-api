@@ -7,7 +7,7 @@ servers:
 - url: https://virtserver.swaggerhub.com/uiuc-scci/profiles/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
-- name: profiles
+- name: Profile
   description: API endpoints for managing user profile.
 - name: Notifications
   description: API endpoints for managing user notifications.
