@@ -4,13 +4,13 @@ info:
   description: REST API design and documentation for Rockwire platform
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/uiuc-scci/profiles/1.0.0
+- url: https://virtserver.swaggerhub.com/uiuc-scci/rockwire/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
 - name: Profile
   description: API endpoints for managing user profile.
-- name: Notifications
-  description: API endpoints for managing user notifications.
+- name: Notification
+  description: API endpoints for managing user notification.
 paths:
   /profiles:
     post:
