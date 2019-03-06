@@ -10,7 +10,7 @@ tags:
 - name: profiles
   description: API endpoints for managing user profile.
 - name: Notifications
-  description: each item describes everything about a notification
+  description: API endpoints for managing user notifications.
 paths:
   /profiles:
     post:
