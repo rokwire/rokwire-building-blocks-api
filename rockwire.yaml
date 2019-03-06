@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Rockwire Platform API
-  description: This is REST API design and documentation for Rockwire platform
+  description: REST API design and documentation for Rockwire platform
   version: 1.0.0
 servers:
 - url: https://virtserver.swaggerhub.com/uiuc-scci/profiles/1.0.0
