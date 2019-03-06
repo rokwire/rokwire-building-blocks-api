@@ -1,21 +1,21 @@
 openapi: 3.0.0
 info:
-  title: Rockwire Platform API
-  description: REST API design and documentation for Rockwire platform
+  title: Rokwire Platform API
+  description: REST API design and documentation for Rokwire platform
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/uiuc-scci/rockwire/1.0.0
+- url: https://virtserver.swaggerhub.com/uiuc-scci/rokwire/1.0.0
   description: SwaggerHub API Auto Mocking
 tags:
 - name: Profile
   description: API endpoints for managing user profile.
-- name: Notification
-  description: API endpoints for managing user notification.
+- name: Notifications
+  description: API endpoints for managing user notifications.
 paths:
   /profiles:
     post:
       tags:
-      - profiles
+      - profile
       summary: Create profile
       description: This can only be done by the authenticated user.
       operationId: createProfile
@@ -42,7 +42,7 @@ paths:
   /profiles/{userName}:
     get:
       tags:
-      - profiles
+      - profile
       summary: Find profile by userName
       description: Returns a single profile
       operationId: getProfileByUserName
@@ -74,7 +74,7 @@ paths:
   /profiles/{profileId}:
     get:
       tags:
-      - profiles
+      - profile
       summary: Find profile by ID
       description: Returns a single profile
       operationId: getProfileById
@@ -108,7 +108,7 @@ paths:
           description: Internal error
     put:
       tags:
-      - profiles
+      - profile
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
       parameters:
@@ -148,7 +148,7 @@ paths:
           description: Internal error
     delete:
       tags:
-      - profiles
+      - profile
       summary: Deletes a profile
       operationId: deleteProfile
       parameters:
@@ -173,7 +173,7 @@ paths:
   /profiles/{profileId}/uploadImage:
     post:
       tags:
-      - profiles
+      - profile
       summary: uploads an image
       operationId: uploadFile
       parameters:
