@@ -10,4 +10,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file
 
 ### Changed
-- Update README to include how to view API document using rokwire.yaml using Swagger
+- Update README to include how to view Rokwire API document using using Swagger
