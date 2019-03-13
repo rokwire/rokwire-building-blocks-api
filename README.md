@@ -8,4 +8,8 @@ There are several ways to view API design and document using Swagger:
 
 - Sign up a free account at [SwaggerHub](https://swagger.io/tools/swaggerhub/) and create new API by importing your copy of rokwire.yaml file.
 
-- Get swagger docker image, for example ```docker pull swaggerapi/swagger-ui``` Run docker image locally by executing command like ```docker run -p 80:8080 -e SWAGGER_JSON=/foo/rokwire.yaml -v /rokwire_yaml_local_dir/:/foo -e BASE_URL=/docs swaggerapi/swagger-ui``` Then access the API doc at http://localhost/docs.  
+- Get swagger docker image, for example 
+```docker pull swaggerapi/swagger-ui``` 
+Run docker image locally by executing command like 
+```docker run -p 80:8080 -e SWAGGER_JSON=/foo/rokwire.yaml -v /rokwire_yaml_local_dir/:/foo -e BASE_URL=/docs swaggerapi/swagger-ui``` 
+Then access the API doc at http://localhost/docs.  
