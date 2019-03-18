@@ -11,3 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update README to include how to view Rokwire API document using Swagger
+- The code repository name to rokwire-building-blocks-api.
+- Fix README to use updated API definition YAML file URL.
+- Fix API definition YAML file to use rokwire instead of SCCI.

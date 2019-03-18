@@ -1,11 +1,11 @@
-# rokwire-core-services-api
-API definitions of the Rokwire Platform core services
+# Rokwire Building Blocks API
+API definitions of the Rokwire Platform building blocks
 
 ## How to view API design doc 
 
 There are several ways to view API design and document using Swagger:
 
-- Go to [Swagger UI demo page](https://petstore.swagger.io/) and paste [Rokwire API YAML file URL](https://raw.githubusercontent.com/rokwire/scci-core-services-api/develop/rokwire.yaml) there.
+- Go to [Swagger UI demo page](https://petstore.swagger.io/) and paste [Rokwire API YAML file URL](https://raw.githubusercontent.com/rokwire/rokwire-building-blocks-api/develop/rokwire.yaml) there.
 
 - Sign up a free account at [SwaggerHub](https://swagger.io/tools/swaggerhub/) and create new API by importing your copy of rokwire.yaml file.
 
