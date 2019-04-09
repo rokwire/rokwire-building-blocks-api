@@ -1,19 +1,17 @@
 {
-  "profile": {
-    "username": "test_user",
-    "device_id": "apple iphone x",
-    "pii": {
-      "lastname": "doe",
-      "firstname": "john",
-      "phonenumber": "123-456-7890",
-      "email": "jd@testmail.com",
-      "userid": "u_id"
-    },
-    "non-pii": {
-      "hobby": [
-        "music",
-        "movie"
-      ]
-    }
+  "username": "test_user",
+  "device_id": "apple iphone x",
+  "piiidDataset": {
+    "lastname": "doe",
+    "firstname": "john",
+    "phonenumber": "123-456-7890",
+    "email": "jd@testmail.com",
+    "userid": "u_id"
+  },
+  "nonPiiidDataset": {
+    "hobby": [
+      "music",
+      "movie"
+    ]
   }
 }
