@@ -5,25 +5,24 @@ created 2019 Apr 5
 #!flask/bin/python
 import hashlib
 import logging
-import tempfile
 import urllib
 from urllib.request import urlretrieve
 
 import flask
 import os
 import json
-import shutil
 import profileservice.configs as cfg
 
 from mimetypes import MimeTypes
 from bson import ObjectId
-from flask import jsonify, flash, redirect
+from flask import flash, redirect
 from pymongo import MongoClient
 from flask import make_response
 from flask import request
 from bson.json_util import dumps
 from profileservice.dao.profiledataset import ProfileDataset
 from profileservice.dao.filedescriptor import FileDescriptor
+from profileservice.restservice.error_handler import not_found, bad_request, forbidden, unsupported_media_type
 
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -47,7 +46,7 @@ def root_dir():
 
         return out_json
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         in_json = request.get_json()
         profile = ProfileDataset(in_json)
         dataset, id = insert_profile_to_mongodb(profile)
@@ -58,6 +57,10 @@ def root_dir():
         logging.debug(msg)
 
         return out_json
+
+    else:
+        logging.error("list profile dataset failed.")
+        return bad_request()
 
 """
 provide profile information by profile id or remove it
@@ -89,22 +92,29 @@ def deal_profile_id(profileid):
                     msg = "deleted profile information: " + str(profileid)
                     logging.debug(msg)
                 else:
+                    msg = "failed to deleted. not found: " + str(profileid)
+                    logging.error(msg)
                     return not_found()
 
             return out_json
         else:
+            msg = "the dataset does not exist: " + str(profileid)
+            logging.error(msg)
             return not_found()
     else:
-        return not_found()
+        return bad_request()
 
 """
 provide profile information by profile id or remove it
 """
 @app.route('/profiles/<profileid>/uploadImage', methods = ['POST'])
 def upload_profile_image(profileid):
+    #TODO add unsupported media type handler
     if request.method == 'POST':
         dataset = get_dataset_from_objectid(profileid)
         if dataset is None:
+            msg = "the dataset does not exist: " + str(profileid)
+            logging.error(msg)
             return not_found()
         else:
             # create FileDescriptor for uploaded file
@@ -269,31 +279,6 @@ def create_file_descriptor(data_repo_dir, file):
     fd.set_md5sum(hash_md5.hexdigest())
 
     return fd
-
-"""
-error handlers
-"""
-@app.errorhandler(404)
-def not_found(error=None):
-    message = {
-            'status': 404,
-            'message': 'Not Found: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 404
-
-    return resp
-
-@app.errorhandler(400)
-def bad_request(error=None):
-    message = {
-            'status': 400,
-            'message': 'Bad Request: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 400
-
-    return resp
 
 
 if __name__ == '__main__':
