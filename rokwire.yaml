@@ -484,6 +484,7 @@ components:
           - student
           - staff
           - faculty
+          - guest
         icalUrl:
           type: string 
         outlookUrl:
