@@ -3,17 +3,16 @@ author: Yong Wook Kim
 created 2019 Apr 4
 """
 import uuid
-from profileservice.dao.piiiddataset import PiiidDataset
-from profileservice.dao.nonpiiiddataset import NonPiiidDataset
+from profileservice.dao.pii_data import pii_data
+from profileservice.dao.non_pii_data import non_pii_data
 from bson import ObjectId
 
 class ProfileDataset:
     def __init__(self, injson):
-        self.piiidDataset = None
-        self.nonPiiidDataset = None
+        self.pii_data = None
+        self.non_pii_data = None
         self.uuid = None
         self.device_id = None
-        self.username = None
         self.file_descriptors = None
         self.image_uri = None
 
@@ -23,15 +22,11 @@ class ProfileDataset:
             self.set_uuid(str(uuid.uuid4()))
 
         try:
-            self.set_piiid_dataset(injson["piiidDataset"])
+            self.set_pii_data(injson["pii_data"])
         except:
             pass
         try:
-            self.set_non_piiid_dataset(injson["nonPiiidDataset"])
-        except:
-            pass
-        try:
-            self.set_username(injson['username'])
+            self.set_non_pii_data(injson["non_pii_data"])
         except:
             pass
         try:
@@ -46,12 +41,6 @@ class ProfileDataset:
             self.set_image_uri(injson['image_uri'])
         except:
             pass
-
-    def get_username(self):
-        return self.username
-
-    def set_username(self, username):
-        self.username = username
 
     def get_uuid(self):
         return self.uuid
@@ -69,65 +58,67 @@ class ProfileDataset:
         if (device_id != None):
             self.get_device_id().append(device_id)
 
-    def get_piiid_dataset(self):
-        return self.piiidDataset
+    def get_pii_data(self):
+        return self.pii_data
 
-    def set_piiid_dataset(self, pii):
+    def set_pii_data(self, pii):
         if (pii != None):
-            self.piiidDataset = PiiidDataset()
+            self.pii_data = pii_data()
             try:
-                self.piiidDataset.set_id(pii["id"])
+                self.pii_data.set_objectid(pii["id"])
             except:
                 new_id = ObjectId()
                 new_id = str(new_id)
-                self.piiidDataset.set_id(new_id)
+                self.pii_data.set_objectid(new_id)
 
             try:
-                self.piiidDataset.set_pii_uuid(pii["pii_uuid"])
+                self.pii_data.set_pii_uuid(pii["pii_uuid"])
             except:
                 pass
 
             try:
-                self.piiidDataset.set_lastname(pii['lastname'])
+                self.pii_data.set_lastname(pii['lastname'])
             except Exception as e:
                 pass
             try:
-                self.piiidDataset.set_firstname(pii['firstname'])
+                self.pii_data.set_firstname(pii['firstname'])
             except Exception as e:
                 pass
             try:
-                self.piiidDataset.set_phonenumber(pii['phonenumber'])
+                self.pii_data.set_phonenumber(pii['phonenumber'])
             except Exception as e:
                 pass
             try:
-                self.piiidDataset.set_email(pii['email'])
+                self.pii_data.set_email(pii['email'])
             except Exception as e:
                 pass
             try:
-                self.piiidDataset.set_userid(pii['userid'])
+                self.pii_data.set_netid(pii['netid'])
+            except Exception as e:
+                pass
+            try:
+                self.pii_data.set_uin(pii['uin'])
             except Exception as e:
                 pass
 
-    def get_non_piiid_dataset(self):
-        return self.nonPiiidDataset
+    def get_non_pii_data(self):
+        return self.non_pii_data
 
-    def set_non_piiid_dataset(self, non_pii):
+    def set_non_pii_data(self, non_pii):
         if (non_pii != None):
-            self.nonPiiidDataset = NonPiiidDataset()
+            self.non_pii_data = non_pii_data()
             try:
-                self.nonPiiidDataset.set_id(non_pii["id"])
+                self.non_pii_data.set_objectid(non_pii["id"])
             except:
                 new_id = ObjectId()
                 new_id = str(new_id)
-                self.nonPiiidDataset.set_id(new_id)
-
+                self.non_pii_data.set_objectid(new_id)
             try:
-                self.nonPiiidDataset.set_non_pii_uuid(non_pii["non_pii_uuid"])
-            except:
+                self.non_pii_data.set_genetral_interests(non_pii["general_interests"])
+            except Exception as e:
                 pass
-
             try:
-                self.nonPiiidDataset.set_hobby(non_pii["hobby"])
+                self.non_pii_data.set_athletics_interests(non_pii["athletics_interests"])
             except Exception as e:
                 pass
 

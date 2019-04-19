@@ -1,17 +1,21 @@
 {
-  "username": "test_user",
-  "device_id": "apple iphone x",
-  "piiidDataset": {
+  "uuid": "ce4b32f3-4fb2-4ba8-9bf8-457b9e022fc8",
+  "pii_data": {
     "lastname": "doe",
     "firstname": "john",
     "phonenumber": "123-456-7890",
     "email": "jd@testmail.com",
-    "userid": "u_id"
+    "netid": "jd325",
+    "uin": "2340345"
   },
-  "nonPiiidDataset": {
-    "hobby": [
+  "non_pii_data": {
+    "general_interests": [
       "music",
       "movie"
+    ],
+    "athletics_interests": [
+      "basket ball",
+      "foot ball"
     ]
   }
 }

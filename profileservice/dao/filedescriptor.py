@@ -1,3 +1,7 @@
+"""
+author: Yong Wook Kim
+created 2019 Apr 4
+"""
 class FileDescriptor:
     id = None
     deleted = None

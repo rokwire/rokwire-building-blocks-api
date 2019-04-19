@@ -4,14 +4,15 @@ created 2019 Apr 4
 """
 import uuid
 
-class PiiidDataset:
+class pii_data:
     def __init__(self):
-        self.id = None
+        self.objectid = None
         self.lastname = None
         self.firstname = None
         self.phonenumber = None
         self.email = None
-        self.userid = None
+        self.netid = None
+        self.uin = None
         self.pii_uuid = None
         self.set_pii_uuid(str(uuid.uuid4()))
 
@@ -21,15 +22,15 @@ class PiiidDataset:
     def get_pii_uuid(self):
         return self.pii_uuid
 
-    def add_pii_id(self, pii_id):
-        if (pii_id != None):
-            self.get_pii_id().append(pii_id)
+    def add_pii_uuid(self, pii_uuid):
+        if (pii_uuid != None):
+            self.get_pii_uuid().append(pii_uuid)
 
-    def set_id(self, id):
-        self.id = id
+    def set_objectid(self, objectid):
+        self.objectid = objectid
 
-    def get_id(self):
-        return self.id
+    def get_objectid(self):
+        return self.objectid
 
     def set_lastname(self, lastname):
         self.lastname = lastname
@@ -55,8 +56,14 @@ class PiiidDataset:
     def get_email(self):
         return self.email
 
-    def set_userid(self, userid):
-        self.userid = userid
+    def set_netid(self, netid):
+        self.netid = netid
 
-    def get_userid(self):
-        return self.userid
+    def get_netid(self):
+        return self.netid
+
+    def set_uin(self, uin):
+        self.uin = uin
+
+    def get_uin(self):
+        return self.uin
