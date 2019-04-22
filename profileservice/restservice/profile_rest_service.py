@@ -27,9 +27,9 @@ from profileservice.dao.filedescriptor import FileDescriptor
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
-client = MongoClient(cfg.profile_mongo_url, connect=False)
-db = client[cfg.profile_db_name]
-db.collection = db[cfg.profile_db_coll_name]
+client = MongoClient(cfg.PROFILE_MONGO_URL, connect=False)
+db = client[cfg.PROFILE_DB_NAME]
+db.collection = db[cfg.PROFILE_DB_COLL_NAME]
 __logger = logging.getLogger("rokwire-building-blocks-api")
 
 
@@ -45,11 +45,18 @@ def root_dir():
         term_email = request.args.get('email', None)
 
         if term_npid != None:
-            db_data = db.collection.find({"profile_id": {'$regex': term_npid, "$options": "-i"}}, {'_id': False})
-            query_list = list(db_data)
-            data_list = []
-            for data in query_list:
-                data_list.append(data["name"])
+            db_data = get_dataset_from_field('uuid', term_npid)
+            data_list = list(db_data)
+            if len(data_list) > 0:
+                out_json = construct_json_from_query_list(data_list)
+                msg = "request profile information: " + str(term_npid)
+                logging.debug(msg)
+
+                return out_json
+            else:
+                msg = "the dataset does not exist with uuid of : " + str(term_npid)
+                logging.error(msg)
+                return not_found()
         else:
             db_data = db.collection.find({})  # db.collection.find({}, {'_id': False})
             data_list = list(db_data)
