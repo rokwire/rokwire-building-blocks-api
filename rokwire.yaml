@@ -478,7 +478,7 @@ components:
         endDate:
           type: string
           format: date-time
-        role:
+        target-audience:
           type: string   
           enum:
           - student
@@ -503,7 +503,26 @@ components:
             wrapped: true
           items:
             type: string
+        location:
+          type: object
+          xml:
+            name: "locaion"
+            wrapped: true
+            item:
+              $ref: "#/components/schemas/Location"
             
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: string
+        longitude:
+          type: string
+        building:
+          type: string
+        floor:
+          type: string
+
     Contact:
       type: object
       properties:
