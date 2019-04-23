@@ -468,8 +468,19 @@ components:
         id:
           type: integer
           format: int64
+
+          description: the event id
+        eventType:
+          type: string
+          description: Lecture
+        sponsor:
+          type: string
+          description: For example, Center for Advanced Study
         title:
           type: string
+        titleURL:
+          type: string
+          description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
         description:
           type: string  
         startDate:
@@ -489,6 +500,13 @@ components:
           type: string 
         outlookUrl:
           type: string 
+        speaker:
+          type: string
+        registrationURL:
+          type: string
+        cost:
+          type: string
+          description: For example, Free and open to the public.
         contacts:
           type: array
           xml:
@@ -504,24 +522,22 @@ components:
           items:
             type: string
         location:
-          type: object
-          xml:
-            name: "locaion"
-            wrapped: true
-            item:
-              $ref: "#/components/schemas/Location"
+          $ref: "#/components/schemas/Location"
             
     Location:
       type: object
       properties:
         latitude:
-          type: string
+          type: number
+          description: Latitude component of location.
         longitude:
+          type: number
+          description: Longitude component of location.
+        description:
           type: string
-        building:
-          type: string
+          description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
         floor:
-          type: string
+          type: integer
 
     Contact:
       type: object
