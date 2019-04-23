@@ -468,7 +468,6 @@ components:
         id:
           type: integer
           format: int64
-
           description: the event id
         eventType:
           type: string
