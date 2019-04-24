@@ -463,6 +463,12 @@ components:
           items:
             type: string
     Event:
+      required:
+        - title
+        - startDate
+        - endDate
+        - sponsor
+        - eventType
       type: object
       properties:
         id:
@@ -505,7 +511,7 @@ components:
         endDate:
           type: string
           format: date-time
-        target-audience:
+        targetAudience:
           type: string   
           enum:
           - student
