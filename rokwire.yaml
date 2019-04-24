@@ -380,7 +380,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Events'
+                  $ref: '#/components/schemas/Event'
 
         401:
           description: Unauthorized
@@ -390,7 +390,7 @@ paths:
           description: Internal error
     post:
       tags:
-      - Events
+      - Event
       summary: create an event
       description: create an event record into the system
       operationId: createEvent
@@ -399,7 +399,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Events'
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         201:
@@ -407,7 +407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Events'
+                $ref: '#/components/schemas/Event'
         400:
           description: Bad request
         401:
@@ -462,7 +462,7 @@ components:
             wrapped: true
           items:
             type: string
-    Events:
+    Event:
       type: object
       properties:
         id:
@@ -471,7 +471,24 @@ components:
           description: the event id
         eventType:
           type: string
-          description: Lecture
+          enum:
+            - Ceremony/Service 
+            - Community Service 
+            - Conference/Workshop
+            - Exhibition 
+            - Festival/Celebration
+            - Film Screening
+            - Health/Fitness
+            - Informational
+            - Lecture
+            - Meeting
+            - Performance
+            - Professional Development
+            - Reception/Open House
+            - Seminar/Symposium
+            - Social/Informal Event
+            - Sporting Event
+            - Other
         sponsor:
           type: string
           description: For example, Center for Advanced Study
