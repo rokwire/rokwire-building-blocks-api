@@ -1,21 +1,19 @@
 {
-  "uuid": "ce4b32f3-4fb2-4ba8-9bf8-457b9e022fc8",
+  "uuid": "df818653-a890-4457-9ff0-75cd3dbc62ed",
+  "general_interests": [
+    "music",
+    "movie"
+  ],
+  "athletics_interests": [
+    "basket ball",
+    "foot ball"
+  ],
   "pii_data": {
     "lastname": "doe",
     "firstname": "john",
-    "phonenumber": "123-456-7890",
+    "phone": "123-456-7890",
     "email": "jd@testmail.com",
     "netid": "jd325",
     "uin": "2340345"
-  },
-  "non_pii_data": {
-    "general_interests": [
-      "music",
-      "movie"
-    ],
-    "athletics_interests": [
-      "basket ball",
-      "foot ball"
-    ]
   }
 }

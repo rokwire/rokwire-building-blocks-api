@@ -7,4 +7,5 @@ PROFILE_REST_STORAGE = 'C:\\rest'
 
 PROFILE_MONGO_URL = 'localhost:27017'
 PROFILE_DB_NAME = 'profiledb'
-PROFILE_DB_COLL_NAME = 'ProfileDataset'
+PROFILE_DB_PROFILE_COLL_NAME = 'NonPiiDataset'
+PROFILE_DB_PII_COLL_NAME = 'PiiDataset'

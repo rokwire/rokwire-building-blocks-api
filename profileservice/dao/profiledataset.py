@@ -85,7 +85,7 @@ class ProfileDataset:
             except Exception as e:
                 pass
             try:
-                self.pii_data.set_phonenumber(pii['phonenumber'])
+                self.pii_data.set_phone(pii['phone'])
             except Exception as e:
                 pass
             try:
@@ -114,7 +114,7 @@ class ProfileDataset:
                 new_id = str(new_id)
                 self.non_pii_data.set_objectid(new_id)
             try:
-                self.non_pii_data.set_genetral_interests(non_pii["general_interests"])
+                self.non_pii_data.set_general_interests(non_pii["general_interests"])
             except Exception as e:
                 pass
             try:
