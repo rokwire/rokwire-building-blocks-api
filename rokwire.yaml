@@ -390,7 +390,7 @@ paths:
           description: Internal error
     post:
       tags:
-      - Event
+      - Events
       summary: create an event
       description: create an event record into the system
       operationId: createEvent
