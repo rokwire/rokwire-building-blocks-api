@@ -512,12 +512,16 @@ components:
           type: string
           format: date-time
         targetAudience:
-          type: string   
-          enum:
-          - student
-          - staff
-          - faculty
-          - guest
+          type: array
+          items:
+            type: "string"
+            enum:
+            - students
+            - faculty
+            - staff
+            - alumni
+            - parents
+            - public
         icalUrl:
           type: string 
         outlookUrl:
