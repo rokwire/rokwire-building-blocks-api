@@ -1,7 +1,3 @@
-"""
-author: Yong Wook Kim (NCSA ywkim@illinois.edu)
-created 2019 Apr 22
-"""
 import hashlib
 import os
 import urllib

@@ -1,8 +1,3 @@
-"""
-author: Yong Wook Kim (NCSA ywkim@illinois.edu)
-created 2019 Apr 5
-"""
-from profileservice.dao.profiledataset import ProfileDataset
 import json
 import hashlib
 import os

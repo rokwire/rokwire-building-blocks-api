@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [SCSI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
 - created profile restservice boiler plate.
 [SCSI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
+- separated non-pii data and pii data
+[SCSI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
 
 ### Fixed
 

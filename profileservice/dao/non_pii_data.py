@@ -1,10 +1,4 @@
-"""
-author: Yong Wook Kim (NCSA ywkim@illinois.edu)
-created 2019 Apr 4
-"""
 import uuid
-from profileservice.dao.pii_data import pii_data
-from bson import ObjectId
 
 class non_pii_data:
     def __init__(self, injson):
@@ -48,7 +42,7 @@ class non_pii_data:
         return self.general_interests
 
     def add_general_interests(self, general_interests):
-        if (general_interests != None):
+        if (general_interests is not None):
             self.get_general_interests().append(general_interests)
     def set_athletics_interests(self, athletics_interests):
         self.athletics_interests = athletics_interests
@@ -57,11 +51,11 @@ class non_pii_data:
         return self.athletics_interests
 
     def add_athletics_interests(self, athletics_interests):
-        if (athletics_interests != None):
+        if (athletics_interests is not None):
             self.get_athletics_interests().append(athletics_interests)
 
     def add_file_descriptor(self, file_descriptor):
-        if (file_descriptor != None):
+        if (file_descriptor is not None):
             self.get_file_descriptors().append(file_descriptor)
 
     def set_file_descriptors(self, file_descriptors):

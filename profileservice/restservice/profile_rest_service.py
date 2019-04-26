@@ -1,8 +1,3 @@
-"""
-author: Yong Wook Kim (NCSA ywkim@illinois.edu)
-created 2019 Apr 5
-"""
-# !flask/bin/python
 import logging
 import flask
 import json
@@ -21,7 +16,7 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
-__logger = logging.getLogger("rokwire-building-blocks-api")
+__logger = logging.getLogger("profileservice")
 
 """
 rest service for root directory
@@ -76,7 +71,7 @@ def root_dir():
 
                     if result is None:
                         msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
-                        logging.debug(msg)
+                        logging.error(msg)
 
                         return not_implemented()
                 else:
@@ -91,7 +86,7 @@ def root_dir():
 
                     if result is None:
                         msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
-                        logging.debug(msg)
+                        logging.error(msg)
 
                         return not_implemented()
 

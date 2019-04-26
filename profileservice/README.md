@@ -22,7 +22,11 @@ MongoDB should be installed
 **Python**
 Use requirements information
 
-pip install requirements.txt
+pip install -r requirements.txt
 
 ### Configuration
 the necessary configuration should be configured in configure file (will be implemented later)
+
+### Run application
+run /restservice/profile_rest_service.py and check http://localhost
+the detailed api information is in the rokwire.yaml with swagger format
