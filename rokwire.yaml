@@ -380,7 +380,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Events'
+                  $ref: '#/components/schemas/Event'
 
         401:
           description: Unauthorized
@@ -399,7 +399,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Events'
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         201:
@@ -407,7 +407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Events'
+                $ref: '#/components/schemas/Event'
         400:
           description: Bad request
         401:
@@ -462,14 +462,47 @@ components:
             wrapped: true
           items:
             type: string
-    Events:
+    Event:
+      required:
+        - title
+        - startDate
+        - endDate
+        - sponsor
+        - eventType
       type: object
       properties:
         id:
           type: integer
           format: int64
+          description: the event id
+        eventType:
+          type: string
+          enum:
+            - Ceremony/Service 
+            - Community Service 
+            - Conference/Workshop
+            - Exhibition 
+            - Festival/Celebration
+            - Film Screening
+            - Health/Fitness
+            - Informational
+            - Lecture
+            - Meeting
+            - Performance
+            - Professional Development
+            - Reception/Open House
+            - Seminar/Symposium
+            - Social/Informal Event
+            - Sporting Event
+            - Other
+        sponsor:
+          type: string
+          description: For example, Center for Advanced Study
         title:
           type: string
+        titleURL:
+          type: string
+          description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
         description:
           type: string  
         startDate:
@@ -478,17 +511,28 @@ components:
         endDate:
           type: string
           format: date-time
-        role:
-          type: string   
-          enum:
-          - student
-          - staff
-          - faculty
-          - guest
+        targetAudience:
+          type: array
+          items:
+            type: "string"
+            enum:
+            - students
+            - faculty
+            - staff
+            - alumni
+            - parents
+            - public
         icalUrl:
           type: string 
         outlookUrl:
           type: string 
+        speaker:
+          type: string
+        registrationURL:
+          type: string
+        cost:
+          type: string
+          description: For example, Free and open to the public.
         contacts:
           type: array
           xml:
@@ -503,7 +547,24 @@ components:
             wrapped: true
           items:
             type: string
+        location:
+          $ref: "#/components/schemas/Location"
             
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          description: Latitude component of location.
+        longitude:
+          type: number
+          description: Longitude component of location.
+        description:
+          type: string
+          description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
+        floor:
+          type: integer
+
     Contact:
       type: object
       properties:
