@@ -22,8 +22,8 @@ db.pii_collection = db[cfg.PROFILE_DB_PII_COLL_NAME]
 """
 get query output json from field name and query string
 """
-def get_http_output_query_result_using_field_string(fld, query_str):
-    outjson = get_query_json_from_field(fld, query_str)
+def get_pii_http_output_query_result_using_field_string(fld, query_str):
+    outjson = get_pii_query_json_from_field(fld, query_str)
     if (outjson is not None) and (len(outjson)) > 0:
         data_dump = dumps(outjson)
         out_json = make_response(data_dump)
@@ -114,10 +114,26 @@ def get_pii_dataset_from_field(fld, query_str):
         return None
 
 """
-convert mongodb query result to json
+convert non-pii mongodb query using field result to json
 """
-def get_query_json_from_field(fld, query_str):
+def get_non_pii_query_json_from_field(fld, query_str):
     db_data = query_non_pii_dataset(fld, query_str)
+    data_list = list(db_data)
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+"""
+convert pii mongodb query using field result to json
+"""
+def get_pii_query_json_from_field(fld, query_str):
+    db_data = query_pii_dataset(fld, query_str)
     data_list = list(db_data)
     if len(data_list) > 0:
         data_dump = dumps(data_list)
@@ -249,6 +265,6 @@ def index_pii_data():
                              ('firstname', 'text'),
                              ('lastname', 'text'),
                              ('email', 'text'),
-                             ('netid', 'text'),
+                             ('username', 'text'),
                              ('uin', 'text'),
                              ('phone', 'text')])

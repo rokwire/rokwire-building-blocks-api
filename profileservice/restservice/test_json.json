@@ -1,5 +1,5 @@
 {
-  "uuid": "df818653-a890-4457-9ff0-75cd3dbc62ed",
+  "uuid": "1ad6e7de-f972-4a4b-91c4-192f4d1a66f2",
   "general_interests": [
     "music",
     "movie"
@@ -13,7 +13,7 @@
     "firstname": "john",
     "phone": "123-456-7890",
     "email": "jd@testmail.com",
-    "netid": "jd325",
+    "username": "jd325",
     "uin": "2340345"
   }
 }

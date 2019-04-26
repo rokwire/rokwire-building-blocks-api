@@ -10,7 +10,7 @@ class pii_data:
         self.firstname = None
         self.phone = None
         self.email = None
-        self.netid = None
+        self.username = None
         self.uin = None
         self.pii_uuid = None
         self.non_pii_uuid = None
@@ -38,7 +38,7 @@ class pii_data:
         except Exception as e:
             pass
         try:
-            self.set_netid(injson['netid'])
+            self.set_username(injson['username'])
         except Exception as e:
             pass
         try:
@@ -81,11 +81,11 @@ class pii_data:
     def get_email(self):
         return self.email
 
-    def set_netid(self, netid):
-        self.netid = netid
+    def set_username(self, username):
+        self.username = username
 
-    def get_netid(self):
-        return self.netid
+    def get_username(self):
+        return self.username
 
     def set_uin(self, uin):
         self.uin = uin

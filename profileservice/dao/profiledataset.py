@@ -93,7 +93,7 @@ class ProfileDataset:
             except Exception as e:
                 pass
             try:
-                self.pii_data.set_netid(pii['netid'])
+                self.pii_data.set_username(pii['username'])
             except Exception as e:
                 pass
             try:

@@ -29,40 +29,8 @@ rest service for root directory
 @app.route('/profiles', methods=['GET', 'POST'])
 def root_dir():
     if request.method == 'GET':
-        term_npid = request.args.get('uuid', None)
-        term_netid = request.args.get('netid', None)
-        term_phone = request.args.get('phone', None)
-        term_email = request.args.get('email', None)
-
-        # TODO this if else method should smarter like case or something else
-        if term_npid != None:
-            out_json = mongoutils.get_http_output_query_result_using_field_string('uuid', term_npid)
-            if out_json == None:
-                return not_found()
-            else:
-                return out_json
-        if term_netid != None:
-            out_json = mongoutils.get_http_output_query_result_using_field_string('pii_data.netid', term_netid)
-            if out_json == None:
-                return not_found()
-            else:
-                return out_json
-        if term_phone != None:
-            out_json = mongoutils.get_http_output_query_result_using_field_string('pii_data.phone', term_phone)
-            if out_json == None:
-                return not_found()
-            else:
-                return out_json
-        if term_email != None:
-            out_json = mongoutils.get_http_output_query_result_using_field_string('pii_data.email', term_email)
-            if out_json == None:
-                return not_found()
-            else:
-                return out_json
-
-        else:
-            db_data = mongoutils.db.non_pii_collection.find({})  # db.collection.find({}, {'_id': False})
-            data_list = list(db_data)
+        db_data = mongoutils.db.non_pii_collection.find({}, {'_id': False})
+        data_list = list(db_data)
 
         out_json = mongoutils.construct_json_from_query_list(data_list)
         logging.debug("list all profiles")
@@ -202,13 +170,20 @@ def deal_profile_id(uuid):
             # delete profile by using profile id
             if request.method == 'DELETE':
                 if (is_objectid):
-                    mongoutils.db.collection.delete_one({'_id': id})
+                    mongoutils.db.non_pii_collection.delete_one({'_id': id})
                     msg = "deleted profile information: " + str(uuid)
                     logging.debug(msg)
+                    return entry_deleted()
                 else:
-                    msg = "failed to deleted. not found: " + str(uuid)
-                    logging.error(msg)
-                    return not_found()
+                    try:
+                        mongoutils.db.non_pii_collection.delete_one({'uuid': uuid})
+                        msg = "deleted profile information: " + str(uuid)
+                        logging.debug(msg)
+                        return entry_deleted()
+                    except:
+                        msg = "failed to deleted. not found: " + str(uuid)
+                        logging.error(msg)
+                        return not_found()
 
             return out_json
         else:
@@ -263,6 +238,116 @@ def upload_profile_image(uuid):
                 return bad_request()
     else:
         return bad_request()
+
+@app.route('/profiles/pii', methods=['GET'])
+def pii_root_dir():
+    if request.method == 'GET':
+        term_uuid = request.args.get('uuid', None)
+        term_username = request.args.get('username', None)
+        term_phone = request.args.get('phone', None)
+        term_email = request.args.get('email', None)
+
+        # TODO this if else method should smarter like case or something else
+        if term_uuid != None:
+            out_json = mongoutils.get_pii_http_output_query_result_using_field_string('pii_uuid', term_uuid)
+            if out_json == None:
+                return not_found()
+            else:
+                return out_json
+        if term_username != None:
+            out_json = mongoutils.get_pii_http_output_query_result_using_field_string('username', term_username)
+            if out_json == None:
+                return not_found()
+            else:
+                return out_json
+        if term_phone != None:
+            out_json = mongoutils.get_pii_http_output_query_result_using_field_string('phone', term_phone)
+            if out_json == None:
+                return not_found()
+            else:
+                return out_json
+        if term_email != None:
+            out_json = mongoutils.get_pii_http_output_query_result_using_field_string('email', term_email)
+            if out_json == None:
+                return not_found()
+            else:
+                return out_json
+
+        else:
+            db_data = mongoutils.db.pii_collection.find({}, {'_id': False})
+            data_list = list(db_data)
+
+        out_json = mongoutils.construct_json_from_query_list(data_list)
+        logging.debug("list all pii data")
+
+        return out_json
+    else:
+        logging.error("list pii dataset failed.")
+        return bad_request()
+
+"""
+provide profile information by profile id or remove it
+"""
+@app.route('/profiles/pii/<uuid>', methods=['GET', 'DELETE'])
+def deal_pii_id(uuid):
+    if uuid != None:
+        is_objectid = mongoutils.check_if_objectid(uuid)
+
+        # query using either non-pii ObjectId or uuid
+        if (is_objectid):
+            id = ObjectId(uuid)
+            db_data = mongoutils.query_pii_dataset_by_objectid(id)
+        else:
+            db_data = mongoutils.query_pii_dataset('pii_uuid', uuid)
+
+        data_list = list(db_data)
+        if len(data_list) > 0:
+            out_json = mongoutils.construct_json_from_query_list(data_list)
+
+            if request.method == 'GET':
+                msg = "request profile information: " + str(uuid)
+                logging.debug(msg)
+
+            # delete profile by using profile id
+            if request.method == 'DELETE':
+                if (is_objectid):
+                    mongoutils.db.pii_collection.delete_one({'_id': id})
+                    msg = "deleted pii information: " + str(uuid)
+                    logging.debug(msg)
+
+                    return entry_deleted()
+                else:
+                    try:
+                        mongoutils.db.pii_collection.delete_one({'pii_uuid': uuid})
+                        msg = "deleted pii information: " + str(uuid)
+                        logging.debug(msg)
+
+                        return entry_deleted()
+                    except:
+                        msg = "failed to deleted pii. not found: " + str(uuid)
+                        logging.error(msg)
+                    return not_found()
+
+            return out_json
+        else:
+            msg = "the pii dataset does not exist: " + str(uuid)
+            logging.error(msg)
+            return not_found()
+    else:
+        return bad_request()
+
+"""
+make reponse for handling 202 entry deleted
+"""
+def entry_deleted(id):
+    message = {
+        'status': 202,
+        'message': 'Object is deleted with id of : ' + id,
+    }
+    resp = jsonify(message)
+    resp.status_code = 202
+
+    return make_response(resp)
 
 
 @app.errorhandler(400)
