@@ -1,14 +1,13 @@
 import logging
 import flask
-import json
 import uuid
 
 import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.configs as cfg
+import profileservice.restservice.utils.jsonutils as jsonutils
 
 from bson import ObjectId
 from flask import flash, redirect, jsonify, make_response, request
-from bson.json_util import dumps
 from profileservice.dao.pii_data import pii_data
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.restservice.utils.otherutils import create_file_descriptor
@@ -33,9 +32,14 @@ def non_pii_root_dir():
         return out_json
 
     elif request.method == 'POST':
-        in_json = request.get_json()
-        # check if uuid is in there otherwise it is either a first installation
         is_new_install = False
+
+        try:
+            in_json = request.get_json()
+        except:
+            is_new_install = True
+
+        # check if uuid is in there otherwise it is either a first installation
         try:
             non_pii_uuid = in_json["uuid"]
             # even if there is non_pii_uuid is in the input json, it could be a new one
@@ -51,6 +55,7 @@ def non_pii_root_dir():
             non_pii_dataset = non_pii_data('')
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
+            dataset = jsonutils.remove_objectid_from_dataset(dataset)
             out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             logging.debug(msg)
@@ -251,7 +256,14 @@ def pii_root_dir():
 
         return out_json
     elif request.method == 'POST':
-        in_json = request.get_json()
+        is_new_entry = False
+        try:
+            in_json = request.get_json()
+        except:
+            #TODO if there is no input json, this should throw an error
+            #is_new_entry = True
+            bad_request()
+
 
         # get uuid, if failed it is a bad request
         try:
@@ -260,7 +272,6 @@ def pii_root_dir():
             bad_request()
 
         # check if it is a new record or existing record
-        is_new_entry = False
         try:
             pii_uuid = in_json["pii_uuid"]
         except:
@@ -274,15 +285,16 @@ def pii_root_dir():
             non_pii_uuid_from_dataset = []
             non_pii_uuid_from_dataset.append(non_pii_uuid)
             pii_dataset.set_non_pii_uuid(non_pii_uuid_from_dataset)
-            result = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
+            pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
-            if result is None:
+            if pii_dataset is None:
                 msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
                 logging.error(msg)
 
                 return not_implemented()
             else:
-                out_json = mongoutils.construct_json_from_query_list(result)
+                pii_dataset = jsonutils.remove_objectid_from_dataset(pii_dataset)
+                out_json = mongoutils.construct_json_from_query_list(pii_dataset)
                 msg = "Pii data has been posted with : " + str(pii_uuid)
                 logging.debug(msg)
 
