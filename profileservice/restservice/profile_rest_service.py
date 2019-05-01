@@ -22,7 +22,7 @@ __logger = logging.getLogger("profileservice")
 rest service for root directory
 """
 @app.route('/profiles', methods=['GET', 'POST'])
-def root_dir():
+def non_pii_root_dir():
     if request.method == 'GET':
         db_data = mongoutils.db.non_pii_collection.find({}, {'_id': False})
         data_list = list(db_data)
@@ -34,109 +34,81 @@ def root_dir():
 
     elif request.method == 'POST':
         in_json = request.get_json()
-        # check if uuid is in there otherwise it is a bad request
-        non_pii_uuid = in_json["uuid"]
-        if len(non_pii_uuid) > 0:
-            # get dataset using uuid
+        # check if uuid is in there otherwise it is either a first installation
+        is_new_install = False
+        try:
+            non_pii_uuid = in_json["uuid"]
+            # even if there is non_pii_uuid is in the input json, it could be a new one
+            # check if the dataset is existing with given uuid
             dataset = mongoutils.get_non_pii_dataset_from_field('uuid', non_pii_uuid)
             if dataset is None:
-                msg = "the dataset does not exist with uuid of : " + str(non_pii_uuid)
+                is_new_install = True
+        except:
+            is_new_install = True
+
+        if is_new_install:
+            # new installation of the app
+            non_pii_dataset = non_pii_data('')
+            dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
+            profile_uuid = dataset["uuid"]
+            out_json = mongoutils.construct_json_from_query_list(dataset)
+            msg = "new profile with new uuid has been created: " + str(profile_uuid)
+            logging.debug(msg)
+
+            return out_json
+        else:
+            # updated non-pii profile data with given uuid
+            if len(non_pii_uuid) > 0:
+                # get dataset using uuid
+                dataset = mongoutils.get_non_pii_dataset_from_field('uuid', non_pii_uuid)
+                if dataset is None:
+                    msg = "the dataset does not exist with uuid of : " + str(non_pii_uuid)
+                    logging.error(msg)
+                    return not_found()
+                else:
+                    # TODO check the app that the app should post cached data fully to the endpoint
+                    non_pii_dataset = non_pii_data(in_json)
+
+                    # update non_pii object
+                    result, dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field('uuid', non_pii_uuid, non_pii_dataset)
+
+                    if (result):
+                        out_json = mongoutils.construct_json_from_query_list(dataset)
+                        msg = "New profile has been posted with : " + str(non_pii_uuid)
+                        logging.debug(msg)
+
+                        return out_json
+                    else:
+                        return bad_request()
+            else:
+                msg = "uuid " + str(non_pii_uuid) + " not found"
                 logging.error(msg)
                 return not_found()
-            else:
-                # the process in here is that, uuid(non-pii-id) will be recorded in pii entry
-                # to do this, it must check if there is a pii entry with given information
-                # in here, the email is used but this should be updated to smarter way
-                # TODO update pii etnry checking process smarter, not just using email
 
-                # check if pii dataset for the given information exists
-                pii_json = in_json["pii_data"]
-                email = pii_json["email"]
-                pii_dataset = mongoutils.get_pii_dataset_from_field('email', email)
-                if pii_dataset is not None:
-                    pii_uuid = pii_dataset.get_pii_uuid()
-                    msg = "Requested uuid already has pii data of " + str(pii_uuid)
-                    logging.debug(msg)
-
-                    # update pii_dataset's non_pii_uuid
-                    non_pii_uuid_in_pii = pii_dataset.get_non_pii_uuid()
-                    if non_pii_uuid_in_pii is None:
-                        non_pii_uuid_in_pii = []
-                    non_pii_uuid_in_pii.append(non_pii_uuid)
-
-                    pii_dataset.set_non_pii_uuid(non_pii_uuid_in_pii)
-
-                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field('pii_uuid', pii_uuid,
-                                                                                              pii_dataset)
-
-                    if result is None:
-                        msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
-                        logging.error(msg)
-
-                        return not_implemented()
-                else:
-                    # insert new pii_dataset
-                    pii_dataset = pii_data(pii_json)
-                    pii_uuid = str(uuid.uuid4())
-                    pii_dataset.set_pii_uuid(pii_uuid)
-                    non_pii_uuid_in_pii =[]
-                    non_pii_uuid_in_pii.append(non_pii_uuid)
-                    pii_dataset.set_non_pii_uuid(non_pii_uuid_in_pii)
-                    result = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
-
-                    if result is None:
-                        msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
-                        logging.error(msg)
-
-                        return not_implemented()
-
-                # create pii data first and save it in the pii collection then get the unique id of pii data
-                non_pii_dataset = non_pii_data(in_json)
-
-                # update non_pii object
-                result, dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field('uuid', non_pii_uuid, non_pii_dataset)
-
-                if (result):
-                    out_json = mongoutils.construct_json_from_query_list(dataset)
-                    msg = "New profile has been posted with : " + str(non_pii_uuid)
-                    logging.debug(msg)
-
-                    return out_json
-                else:
-                    return bad_request()
-        else:
-            msg = "uuid " + str(non_pii_uuid) + " not found"
-            logging.error(msg)
-            return not_found()
-    else:
-        logging.error("list profile dataset failed.")
-        return bad_request()
-
-
-"""
-post a new record to get non-pii (when new app get installed
-"""
-@app.route('/profiles/non-pii', methods=['POST'])
-def new_app_installation():
-    if request.method == 'POST':
-        non_pii_dataset = non_pii_data('')
-        dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
-        uuid = dataset["uuid"]
-        outstr = "{\"uuid\": \"%s\"}" % (uuid)
-        outjson = json.loads(outstr)
-        data_dump = dumps(outjson)
-        out_json = make_response(data_dump)
-        out_json.mimetype = 'application/json'
-
-        msg = "new profile with new uuid has been created: " + str(uuid)
-        logging.debug(msg)
-
-        return out_json
-
-    else:
-        bad_request()
-
-        return None
+# """
+# post a new record to get non-pii (when new app get installed
+# """
+# @app.route('/profiles/non-pii', methods=['POST'])
+# def new_app_installation():
+#     if request.method == 'POST':
+#         non_pii_dataset = non_pii_data('')
+#         dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
+#         uuid = dataset["uuid"]
+#         outstr = "{\"uuid\": \"%s\"}" % (uuid)
+#         outjson = json.loads(outstr)
+#         data_dump = dumps(outjson)
+#         out_json = make_response(data_dump)
+#         out_json.mimetype = 'application/json'
+#
+#         msg = "new profile with new uuid has been created: " + str(uuid)
+#         logging.debug(msg)
+#
+#         return out_json
+#
+#     else:
+#         bad_request()
+#
+#         return None
 
 
 """
@@ -188,9 +160,8 @@ def deal_profile_id(uuid):
     else:
         return bad_request()
 
-
 """
-provide profile information by profile id or remove it
+upload image for the profile
 """
 @app.route('/profiles/<uuid>/uploadImage', methods=['POST'])
 def upload_profile_image(uuid):
@@ -234,7 +205,10 @@ def upload_profile_image(uuid):
     else:
         return bad_request()
 
-@app.route('/profiles/pii', methods=['GET'])
+""""
+get or post pii dataset
+"""
+@app.route('/profiles/pii', methods=['GET', 'POST'])
 def pii_root_dir():
     if request.method == 'GET':
         term_uuid = request.args.get('uuid', None)
@@ -276,6 +250,88 @@ def pii_root_dir():
         logging.debug("list all pii data")
 
         return out_json
+    elif request.method == 'POST':
+        in_json = request.get_json()
+
+        # get uuid, if failed it is a bad request
+        try:
+            non_pii_uuid = in_json["uuid"]
+        except:
+            bad_request()
+
+        # check if it is a new record or existing record
+        is_new_entry = False
+        try:
+            pii_uuid = in_json["pii_uuid"]
+        except:
+            is_new_entry = True
+
+        pii_dataset = pii_data(in_json)
+        if is_new_entry:
+            # insert new pii_dataset
+            pii_uuid = str(uuid.uuid4())
+            pii_dataset.set_pii_uuid(pii_uuid)
+            non_pii_uuid_from_dataset = []
+            non_pii_uuid_from_dataset.append(non_pii_uuid)
+            pii_dataset.set_non_pii_uuid(non_pii_uuid_from_dataset)
+            result = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
+
+            if result is None:
+                msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
+                logging.error(msg)
+
+                return not_implemented()
+            else:
+                out_json = mongoutils.construct_json_from_query_list(result)
+                msg = "Pii data has been posted with : " + str(pii_uuid)
+                logging.debug(msg)
+
+                return out_json
+        else:
+            # TODO check the app that the app should post cached data fully to the endpoint
+            # if pii_uuid is none or the lenght is zero, then it is not right
+            if pii_uuid is None or len(pii_uuid) == 0:
+                return not_found()
+            # check if the pii_uuid is really existing in the database
+            pii_dataset = mongoutils.get_pii_dataset_from_field('pii_uuid', pii_uuid)
+
+            if pii_dataset == None:
+                return not_found()
+            else:
+                msg = "Pii data will be updated with the id of " + str(pii_uuid)
+                logging.debug(msg)
+
+                # update pii_dataset's non_pii_uuid
+                non_pii_uuid_from_dataset = pii_dataset.get_non_pii_uuid()
+                is_non_pii_uuid_in_json_new = True
+                if non_pii_uuid_from_dataset is None:
+                    non_pii_uuid_from_dataset = []
+                else:   # check if non-pii-uuid is already in there
+                    for i in range(len(non_pii_uuid_from_dataset)):
+                        if non_pii_uuid == non_pii_uuid_from_dataset[i]:
+                            is_non_pii_uuid_in_json_new = False
+
+                # adde non-pii uuid in json only if it is now uuid
+                if is_non_pii_uuid_in_json_new:
+                    non_pii_uuid_from_dataset.append(non_pii_uuid)
+
+                pii_dataset.set_non_pii_uuid(non_pii_uuid)
+
+                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field('pii_uuid', pii_uuid,
+                                                                                      pii_dataset)
+
+                if result is None:
+                    msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
+                    logging.error(msg)
+
+                    return not_implemented()
+                else:
+                    out_json = mongoutils.construct_json_from_query_list(pii_dataset)
+                    msg = "Pii data has been posted with : " + str(pii_uuid)
+                    logging.debug(msg)
+
+                    return out_json
+
     else:
         logging.error("list pii dataset failed.")
         return bad_request()
