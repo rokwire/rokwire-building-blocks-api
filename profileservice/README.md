@@ -1,7 +1,8 @@
-# Building Block Profile Rest Service
+# Profile Building Block
 
 **profile rest service** is a Python project to provide rest service for rokwire building block profile
 results.
+This building block will
                       
 
 ### Prerequisites
@@ -25,8 +26,8 @@ Use requirements information
 pip install -r requirements.txt
 
 ### Configuration
-the necessary configuration should be configured in configure file (will be implemented later)
+The necessary configuration should be configured in configure file (will be implemented later)
 
 ### Run application
-run /restservice/profile_rest_service.py and check http://localhost
-the detailed api information is in the rokwire.yaml with swagger format
+Run ```python restservice/profile_rest_service.py``` and the profile building block should be running at http://localhost:5000
+The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
