@@ -1,0 +1,2 @@
+EVENT_MONGO_URL="mongodb://localhost:27017"
+EVENT_DB_NAME="eventdb"
