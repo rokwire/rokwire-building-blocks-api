@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - This CHANGELOG file
+- add event building block.
 
 ### Changed
 - Update events schema according to discussion and feedback.
