@@ -2,6 +2,7 @@ import json
 import logging
 import profileservice.configs as cfg
 
+
 from bson import ObjectId
 from bson.json_util import dumps
 from flask import make_response
@@ -13,7 +14,8 @@ from profileservice.dao.pii_data import pii_data
 client = MongoClient(cfg.PROFILE_MONGO_URL, connect=False)
 db = client[cfg.PROFILE_DB_NAME]
 db.non_pii_collection = db[cfg.PROFILE_DB_PROFILE_COLL_NAME]
-db.pii_collection = db[cfg.PROFILE_DB_PII_COLL_NAME]
+db_pii = client[cfg.PROFILE_PII_DB_NAME]
+db_pii.pii_collection = db_pii[cfg.PROFILE_DB_PII_COLL_NAME]
 
 """
 get query output json from field name and query string
@@ -96,6 +98,15 @@ def get_pii_dataset_from_field(fld, query_str):
         json_load = json.loads(data_dump)
         dataset = pii_data(json_load)
 
+        try:
+            dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
+        except:
+            pass
+        try:
+            dataset.set_pii_uuid(json_load[cfg.FIELD_PII_UUID])
+        except:
+            pass
+
         return dataset
 
     elif len(data_list) > 1:
@@ -169,7 +180,7 @@ def query_non_pii_dataset(fld, query_str):
 qyery pii dataset using field
 """
 def query_pii_dataset(fld, query_str):
-    return db.pii_collection.find({fld: query_str}, {'_id': False})
+    return db_pii.pii_collection.find({fld: query_str}, {'_id': False})
 
 """
 construct json from mongo query
@@ -199,7 +210,7 @@ def insert_pii_dataset_to_mongodb(indataset):
     dataset = json.dumps(indataset, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
 
-    id = db.pii_collection.insert(dataset)
+    id = db_pii.pii_collection.insert(dataset)
 
     return dataset
 
@@ -231,7 +242,7 @@ def update_pii_dataset_in_mongo_by_objectid(objectid, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
     id = ObjectId(objectid)
-    result = db.pii_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
+    result = db_pii.pii_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 
@@ -241,7 +252,7 @@ update pii dataset in mongodb by field
 def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
-    result = db.pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
+    result = db_pii.pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 

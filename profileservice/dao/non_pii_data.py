@@ -1,4 +1,5 @@
-import uuid
+import uuid as uuidlib
+import profileservice.restservice.utils.datasetutils as datasetutils
 
 class non_pii_data:
     def __init__(self, injson):
@@ -8,10 +9,12 @@ class non_pii_data:
         self.file_descriptors = None
         self.image_uri = None
 
+        # self = datasetutils.update_pii_dataset_from_json(injson)
+
         try:
             self.set_uuid(injson["uuid"])
         except:
-            self.set_uuid(str(uuid.uuid4()))
+            self.set_uuid(str(uuidlib.uuid4()))
         try:
             self.set_file_descriptors(injson['file_descriptors'])
         except:
