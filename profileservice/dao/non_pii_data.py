@@ -9,28 +9,7 @@ class non_pii_data:
         self.file_descriptors = None
         self.image_uri = None
 
-        # self = datasetutils.update_pii_dataset_from_json(injson)
-
-        try:
-            self.set_uuid(injson["uuid"])
-        except:
-            self.set_uuid(str(uuidlib.uuid4()))
-        try:
-            self.set_file_descriptors(injson['file_descriptors'])
-        except:
-            pass
-        try:
-            self.set_image_uri(injson['image_uri'])
-        except:
-            pass
-        try:
-            self.set_general_interests(injson["general_interests"])
-        except Exception as e:
-            pass
-        try:
-            self.set_athletics_interests(injson["athletics_interests"])
-        except Exception as e:
-            pass
+        self = datasetutils.update_non_pii_dataset_from_json(self, injson)
 
     def get_uuid(self):
         return self.uuid

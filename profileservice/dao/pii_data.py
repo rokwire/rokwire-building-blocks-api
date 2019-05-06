@@ -13,41 +13,6 @@ class pii_data:
 
         self = datasetutils.update_pii_dataset_from_json(self, injson)
 
-        # try:
-        #     self.set_pii_uuid(injson["pii_uuid"])
-        # except:
-        #     pass
-        #
-        # try:
-        #     self.set_lastname(injson['lastname'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_firstname(injson['firstname'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_phone(injson['phone'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_email(injson['email'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_username(injson['username'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_uin(injson['uin'])
-        # except Exception as e:
-        #     pass
-        # try:
-        #     self.set_non_pii_uuid(injson['non_pii_uuid'])
-        # except Exception as e:
-        #     pass
-
-
     def set_pii_uuid(self, pii_uuid):
         self.pii_uuid = pii_uuid
 

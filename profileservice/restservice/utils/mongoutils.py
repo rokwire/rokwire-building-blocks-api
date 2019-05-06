@@ -72,6 +72,11 @@ def get_non_pii_dataset_from_field(fld, query_str):
         json_load = json.loads(data_dump)
         dataset = non_pii_data(json_load)
 
+        try:
+            dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
+        except:
+            pass
+
         return dataset
 
     elif len(data_list) > 1:
