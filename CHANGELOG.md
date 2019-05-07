@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - This CHANGELOG file
 - Issue template.
+- add the event update endpoint in yml file.
 
 ### Changed
 - Update events schema according to discussion and feedback.
