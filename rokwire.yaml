@@ -520,7 +520,7 @@ paths:
     put:
       tags:
       - Events
-      summary: Updates one event  with form data
+      summary: Updates one event with form data
       operationId: updateEventWithForm
       parameters:
       - name: eventId
@@ -712,7 +712,17 @@ components:
             type: string
         location:
           $ref: "#/components/schemas/Location"
-            
+        dateModified:
+          type: string
+          description: store a timestamp when this event was modified.
+          format: date-time
+        submissionStatus:
+          type: string
+          description: store the status of this event submission
+          enum:
+          - submitted
+          - published
+
     Location:
       type: object
       properties:
