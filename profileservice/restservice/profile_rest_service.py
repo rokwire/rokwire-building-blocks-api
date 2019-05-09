@@ -56,11 +56,12 @@ def non_pii_root_dir():
         if is_new_install:
             # new installation of the app
             currenttime = datetime.datetime.now()
+            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
             non_pii_dataset = non_pii_data('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
-            non_pii_dataset.set_first_modified_date()
-            non_pii_dataset.set_last_modified_date()
+            non_pii_dataset.set_first_modified(currenttime)
+            non_pii_dataset.set_last_modified(currenttime)
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
             dataset = jsonutils.remove_objectid_from_dataset(dataset)
@@ -111,6 +112,9 @@ def deal_profile_id(uuid):
                     logging.debug(msg)
 
                     non_pii_dataset = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
+                    currenttime = datetime.datetime.now()
+                    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+                    non_pii_dataset.set_last_modified(currenttime)
 
                     result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid,
                                                                                               non_pii_dataset)
@@ -184,6 +188,9 @@ def upload_profile_image(uuid):
             file_descriptors.append(fd)
             non_pii_dataset.set_file_descriptors(file_descriptors)
             non_pii_dataset.set_image_uri(fd.dataURL)
+            currenttime = datetime.datetime.now()
+            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+            non_pii_dataset.set_last_modified(currenttime)
 
             result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset)
 
@@ -274,11 +281,15 @@ def pii_root_dir():
 
         if is_new_entry:
             # insert new pii_dataset
+            currenttime = datetime.datetime.now()
+            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
             pii_uuid = str(uuidlib.uuid4())
             pii_dataset.set_pii_uuid(pii_uuid)
             non_pii_uuid_from_dataset = []
             non_pii_uuid_from_dataset.append(non_pii_uuid)
             pii_dataset.set_uuid(non_pii_uuid_from_dataset)
+            pii_dataset.set_first_modified(currenttime)
+            pii_dataset.set_last_modified(currenttime)
             pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
             if pii_dataset is None:
@@ -345,6 +356,9 @@ def deal_pii_id(pii_uuid):
                     logging.debug(msg)
 
                     pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
+                    currenttime = datetime.datetime.now()
+                    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+                    pii_dataset.set_last_modified(currenttime)
 
                     # update pii_dataset's non_pii_uuid
                     non_pii_uuid_from_dataset = pii_dataset.get_uuid()

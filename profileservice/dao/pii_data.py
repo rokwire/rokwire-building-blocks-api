@@ -10,8 +10,8 @@ class pii_data:
         self.uin = None
         self.pii_uuid = None
         self.uuid = None
-        self.first_modified_date = None
-        self.last_modified_date = None
+        self.first_modified = None
+        self.last_modified = None
 
         self = datasetutils.update_pii_dataset_from_json(self, injson)
 
@@ -67,14 +67,14 @@ class pii_data:
     def get_uuid(self):
         return self.uuid
 
-    def set_first_modified_date(self, first_modified_date):
-        self.first_modified_date = first_modified_date
+    def set_first_modified(self, first_modified):
+        self.first_modified = first_modified
 
-    def get_first_modified_date(self):
-        return self.first_modified_date
+    def get_first_modified(self):
+        return self.first_modified
 
-    def set_last_modified_date(self, last_modified_date):
-        self.last_modified_date = last_modified_date
+    def set_last_modified(self, last_modified):
+        self.last_modified = last_modified
 
-    def get_last_modified_date(self):
-        return self.last_modified_date
+    def get_last_modified(self):
+        return self.last_modified

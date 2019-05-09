@@ -23,6 +23,14 @@ def update_non_pii_dataset_from_json(dataset, injson):
         dataset.set_athletics_interests(injson["athletics_interests"])
     except Exception as e:
         pass
+    try:
+        dataset.set_first_modified(injson["first_modified"])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_last_modified(injson["last_modified"])
+    except Exception as e:
+        pass
 
     return dataset
 
@@ -52,6 +60,14 @@ def update_pii_dataset_from_json(dataset, injson):
         pass
     try:
         dataset.set_uin(injson['uin'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_first_modified(injson["first_modified"])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_last_modified(injson["last_modified"])
     except Exception as e:
         pass
 
