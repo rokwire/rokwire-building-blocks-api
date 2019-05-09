@@ -2,7 +2,6 @@
 
 **profile rest service** is a Python project to provide rest service for rokwire building block profile
 results.
-This building block will
                       
 
 ### Prerequisites

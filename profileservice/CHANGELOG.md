@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [SCSI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
 - separated non-pii data and pii data
 [SCSI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
+- separated non-pii and pii database
+[SCSI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
+- added time stamp
+[SCSI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
+- added age over 13
+[SCSI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
 
 ### Fixed
 
