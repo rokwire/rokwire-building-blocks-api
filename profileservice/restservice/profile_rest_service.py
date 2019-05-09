@@ -1,3 +1,4 @@
+import datetime
 import logging
 import flask
 import uuid as uuidlib
@@ -54,9 +55,12 @@ def non_pii_root_dir():
 
         if is_new_install:
             # new installation of the app
+            currenttime = datetime.datetime.now()
             non_pii_dataset = non_pii_data('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
+            non_pii_dataset.set_first_modified_date()
+            non_pii_dataset.set_last_modified_date()
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
             dataset = jsonutils.remove_objectid_from_dataset(dataset)

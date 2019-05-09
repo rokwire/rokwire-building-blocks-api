@@ -9,6 +9,8 @@ class non_pii_data:
         self.file_descriptors = None
         self.image_uri = None
         self.over13 = None
+        self.first_modified_date = None
+        self.last_modified_date = None
 
         self = datasetutils.update_non_pii_dataset_from_json(self, injson)
 
@@ -58,4 +60,16 @@ class non_pii_data:
 
     def get_image_uri(self):
         return self.image_uri
+
+    def set_first_modified_date(self, first_modified_date):
+        self.first_modified_date = first_modified_date
+
+    def get_first_modified_date(self):
+        return self.first_modified_date
+
+    def set_last_modified_date(self, last_modified_date):
+        self.last_modified_date = last_modified_date
+
+    def get_last_modified_date(self):
+        return self.last_modified_date
 
