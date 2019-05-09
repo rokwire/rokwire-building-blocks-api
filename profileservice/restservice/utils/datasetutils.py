@@ -8,6 +8,10 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_over13(injson['over13'])
+    except:
+        pass
+    try:
         dataset.set_image_uri(injson['image_uri'])
     except:
         pass
