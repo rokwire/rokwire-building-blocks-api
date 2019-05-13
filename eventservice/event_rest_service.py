@@ -40,18 +40,19 @@ def get_events():
         query['coordinates'] = {'$geoWithin': {'$center': [coordinates, radius_meters]}}
 
     count = 0
-    try:
-        with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-            db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-            for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
-                count += 1
-                results["event"+str(count)] = data_tuple
-    except Exception as ex:
-        __logger.exception(ex)
-        abort(500)
+    if query:
+        try:
+            with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
+                db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
+                for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
+                    count += 1
+                    results["event"+str(count)] = data_tuple
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
 
-    if count == 0:
-        abort(404)
+        if count == 0:
+            abort(404)
     msg = "[GET]: %s nRecords = %d " % (request.url, count)
     __logger.info(msg)
     return flask.jsonify(results)
@@ -241,4 +242,4 @@ def server_500_error(error=None):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=True)
