@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../../')
+
 import datetime
 import logging
 import flask
@@ -23,18 +26,18 @@ __logger = logging.getLogger("profileservice")
 """
 rest service for root directory
 """
-@app.route('/profiles', methods=['GET', 'POST'])
+@app.route('/profiles', methods=['POST'])
 def non_pii_root_dir():
-    if request.method == 'GET':
-        db_data = mongoutils.db.non_pii_collection.find({}, {cfg.FIELD_OBJECTID: False})
-        data_list = list(db_data)
+    # if request.method == 'GET':
+    #     db_data = mongoutils.db.non_pii_collection.find({}, {cfg.FIELD_OBJECTID: False})
+    #     data_list = list(db_data)
+    #
+    #     out_json = mongoutils.construct_json_from_query_list(data_list)
+    #     logging.debug("list all profiles")
+    #
+    #     return out_json
 
-        out_json = mongoutils.construct_json_from_query_list(data_list)
-        logging.debug("list all profiles")
-
-        return out_json
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
         is_new_install = True
 
         # check if uuid is in there otherwise it is either a first installation
@@ -46,10 +49,9 @@ def non_pii_root_dir():
             dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, non_pii_uuid)
             if dataset is not None:
                 is_new_install = False
-
-            msg = "UUID in input json already exists in the database " + str(non_pii_uuid)
-            logging.error(msg)
-            return bad_request()
+                msg = "UUID in input json already exists in the database " + str(non_pii_uuid)
+                logging.error(msg)
+                return bad_request()
         except:
             pass
 
@@ -69,7 +71,7 @@ def non_pii_root_dir():
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             logging.debug(msg)
 
-            return out_json
+            return return_id('uuid', profile_uuid)
 
 """
 provide profile information by profile id or remove it
@@ -135,15 +137,15 @@ def deal_profile_id(uuid):
             if request.method == 'DELETE':
                 if (is_objectid):
                     mongoutils.db.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-                    msg = "deleted profile information: " + str(uuid)
+                    msg = "deleted profile information: " + str(id)
                     logging.debug(msg)
-                    return entry_deleted()
+                    return entry_deleted(id)
                 else:
                     try:
                         mongoutils.db.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
                         msg = "deleted profile information: " + str(uuid)
                         logging.debug(msg)
-                        return entry_deleted()
+                        return entry_deleted(uuid)
                     except:
                         msg = "failed to deleted. not found: " + str(uuid)
                         logging.error(msg)
@@ -218,7 +220,7 @@ def pii_root_dir():
 
         # TODO this if else method should smarter like case or something else
         if term_uuid != None:
-            out_json = mongoutils.get_pii_http_output_query_result_using_field_string(cfg.FIELD_PII_UUID, term_uuid)
+            out_json = mongoutils.get_pii_http_output_query_result_using_field_string(cfg.FIELD_PID, term_uuid)
             if out_json == None:
                 return not_found()
             else:
@@ -242,14 +244,13 @@ def pii_root_dir():
             else:
                 return out_json
 
-        else:
-            db_data = mongoutils.db_pii.pii_collection.find({}, {cfg.FIELD_OBJECTID: False})
-            data_list = list(db_data)
+        return bad_request()
 
         out_json = mongoutils.construct_json_from_query_list(data_list)
         logging.debug("list all pii data")
 
         return out_json
+
     elif request.method == 'POST':
         is_new_entry = False
         try:
@@ -265,13 +266,13 @@ def pii_root_dir():
 
         # check if it is a new record or existing record
         try:
-            pii_uuid = in_json[cfg.FIELD_PII_UUID]
-            dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, pii_uuid)
+            pid = in_json[cfg.FIELD_PID]
+            dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, pid)
         except:
             dataset = None
             is_new_entry = True
 
-        # check if pii_uuid already exists
+        # check if pid already exists
 
 
         if dataset is not None:
@@ -283,8 +284,8 @@ def pii_root_dir():
             # insert new pii_dataset
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            pii_uuid = str(uuidlib.uuid4())
-            pii_dataset.set_pii_uuid(pii_uuid)
+            pid = str(uuidlib.uuid4())
+            pii_dataset.set_pid(pid)
             non_pii_uuid_from_dataset = []
             non_pii_uuid_from_dataset.append(non_pii_uuid)
             pii_dataset.set_uuid(non_pii_uuid_from_dataset)
@@ -293,17 +294,17 @@ def pii_root_dir():
             pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
             if pii_dataset is None:
-                msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
+                msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
                 logging.error(msg)
 
                 return not_implemented()
             else:
                 pii_dataset = jsonutils.remove_objectid_from_dataset(pii_dataset)
                 out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-                msg = "Pii data has been posted with : " + str(pii_uuid)
+                msg = "Pii data has been posted with : " + str(pid)
                 logging.debug(msg)
 
-                return out_json
+                return return_id('pid', pid)
         else:
             msg = 'The request is wrong or the entry already exists'
             logging.error(msg)
@@ -317,24 +318,24 @@ def pii_root_dir():
 """
 provide profile information by profile id or remove it
 """
-@app.route('/profiles/pii/<pii_uuid>', methods=['GET', 'DELETE', 'PUT'])
-def deal_pii_id(pii_uuid):
-    if pii_uuid != None:
-        is_objectid = mongoutils.check_if_objectid(pii_uuid)
+@app.route('/profiles/pii/<pid>', methods=['GET', 'DELETE', 'PUT'])
+def deal_pid(pid):
+    if pid != None:
+        is_objectid = mongoutils.check_if_objectid(pid)
 
         # query using either non-pii ObjectId or uuid
         if (is_objectid):
-            id = ObjectId(pii_uuid)
+            id = ObjectId(pid)
             db_data = mongoutils.query_pii_dataset_by_objectid(id)
         else:
-            db_data = mongoutils.query_pii_dataset(cfg.FIELD_PII_UUID, pii_uuid)
+            db_data = mongoutils.query_pii_dataset(cfg.FIELD_PID, pid)
 
         data_list = list(db_data)
         if len(data_list) > 0:
             out_json = mongoutils.construct_json_from_query_list(data_list)
 
             if request.method == 'GET':
-                msg = "request profile information: " + str(pii_uuid)
+                msg = "request profile information: " + str(pid)
                 logging.debug(msg)
 
             # update the pii information
@@ -344,15 +345,15 @@ def deal_pii_id(pii_uuid):
                 except:
                     bad_request()
 
-                # check if the pii_uuid is really existing in the database
-                pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PII_UUID, pii_uuid)
+                # check if the pid is really existing in the database
+                pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
 
                 if pii_dataset == None:
-                    msg = "There is no dataset with given pii uuid " + str(pii_uuid)
+                    msg = "There is no dataset with given pii uuid " + str(pid)
                     logging.error(msg)
                     return not_found()
                 else:
-                    msg = "Pii data will be updated with the id of " + str(pii_uuid)
+                    msg = "Pii data will be updated with the id of " + str(pid)
                     logging.debug(msg)
 
                     pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
@@ -377,17 +378,17 @@ def deal_pii_id(pii_uuid):
                     except:
                         pass
 
-                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PII_UUID, pii_uuid,
+                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid,
                                                                                           pii_dataset)
 
                     if result is None:
-                        msg = "Failed to update non pii uuid into pii dataset: " + str(pii_uuid)
+                        msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
                         logging.error(msg)
 
                         return not_implemented()
                     else:
                         out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-                        msg = "Pii data has been posted with : " + str(pii_uuid)
+                        msg = "Pii data has been posted with : " + str(pid)
                         logging.debug(msg)
 
                         return out_json
@@ -396,25 +397,25 @@ def deal_pii_id(pii_uuid):
             if request.method == 'DELETE':
                 if (is_objectid):
                     mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-                    msg = "deleted pii information: " + str(pii_uuid)
+                    msg = "deleted pii information: " + str(pid)
                     logging.debug(msg)
 
-                    return entry_deleted()
+                    return entry_deleted(id)
                 else:
                     try:
-                        mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_PII_UUID: pii_uuid})
-                        msg = "deleted pii information: " + str(pii_uuid)
+                        mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_PID: pid})
+                        msg = "deleted pii information: " + str(pid)
                         logging.debug(msg)
 
-                        return entry_deleted()
+                        return entry_deleted(pid)
                     except:
-                        msg = "failed to deleted pii. not found: " + str(pii_uuid)
+                        msg = "failed to deleted pii. not found: " + str(pid)
                         logging.error(msg)
                     return not_found()
 
             return out_json
         else:
-            msg = "the pii dataset does not exist: " + str(pii_uuid)
+            msg = "the pii dataset does not exist: " + str(pid)
             logging.error(msg)
             return not_found()
     else:
@@ -423,6 +424,16 @@ def deal_pii_id(pii_uuid):
 """
 make reponse for handling 202 entry deleted
 """
+def return_id(msg, id):
+    message = {
+        'status': 200,
+        'message': msg + ': ' + id,
+    }
+    resp = jsonify(message)
+    resp.status_code = 200
+
+    return make_response(resp)
+
 def entry_deleted(id):
     message = {
         'status': 202,

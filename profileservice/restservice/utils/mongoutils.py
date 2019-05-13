@@ -108,7 +108,7 @@ def get_pii_dataset_from_field(fld, query_str):
         except:
             pass
         try:
-            dataset.set_pii_uuid(json_load[cfg.FIELD_PII_UUID])
+            dataset.set_pid(json_load[cfg.FIELD_PID])
         except:
             pass
 
@@ -273,7 +273,7 @@ def index_non_pii_data():
 index non pii collection
 """
 def index_pii_data():
-    db.pii_collection.create_index([('pii_uuid', 'text'),
+    db.pii_collection.create_index([('pid', 'text'),
                              ('firstname', 'text'),
                              ('lastname', 'text'),
                              ('email', 'text'),

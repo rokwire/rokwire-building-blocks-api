@@ -8,18 +8,18 @@ class pii_data:
         self.email = None
         self.username = None
         self.uin = None
-        self.pii_uuid = None
+        self.pid = None
         self.uuid = None
         self.first_modified = None
         self.last_modified = None
 
         self = datasetutils.update_pii_dataset_from_json(self, injson)
 
-    def set_pii_uuid(self, pii_uuid):
-        self.pii_uuid = pii_uuid
+    def set_pid(self, pid):
+        self.pid = pid
 
-    def get_pii_uuid(self):
-        return self.pii_uuid
+    def get_pid(self):
+        return self.pid
 
     def set_lastname(self, lastname):
         self.lastname = lastname
