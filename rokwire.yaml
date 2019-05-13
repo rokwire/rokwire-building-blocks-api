@@ -458,7 +458,7 @@ components:
             wrapped: true
           items:
             type: string
-        imageUri:
+        image_uri:
           type: string
         first_modified:
           type: string

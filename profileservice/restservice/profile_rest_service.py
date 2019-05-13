@@ -272,8 +272,25 @@ def pii_root_dir():
             dataset = None
             is_new_entry = True
 
-        # check if pid already exists
+        # check if the email already exists
+        try:
+            email = in_json['email']
+            dataset = mongoutils.get_pii_dataset_from_field('email', email)
+            if dataset is not None:
+                pid = dataset.get_pid()
+                return return_id('pid', pid)
+        except:
+            pass
 
+        # check if the phonenumber already exists
+        try:
+            phone = in_json['phone']
+            dataset = mongoutils.get_pii_dataset_from_field('phone', phone)
+            if dataset is not None:
+                pid = dataset.get_pid()
+                return return_id('pid', pid)
+        except:
+            pass
 
         if dataset is not None:
             is_new_entry = False

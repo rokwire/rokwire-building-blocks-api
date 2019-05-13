@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [SCSI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
 - added age over 13
 [SCSI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
+- checking method for email and phone number to prevent duplicate entry
+[#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
 
 ### Fixed
 
