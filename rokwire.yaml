@@ -15,25 +15,6 @@ tags:
   description: API endpoints for managing user notifications.
 paths:
   /profiles:
-    get:
-      tags:
-      - Profile
-      summary: Returns a list of profiles
-      description: This returns a list of profiles.
-      operationId: getProfileList
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Non-pii'
-        400:
-          description: Bad request
-        500:
-          description: Internal error
     post:
       tags:
       - Profile
@@ -192,12 +173,12 @@ paths:
         500:
           description: Some has gone wrong, try again later
   /profiles/pii:
-    get:
+    post:
       tags:
       - PII
-      summary: Returns list of pii
-      description: This returns the list of pii.
-      operationId: getPiiList
+      summary: Create pii entry
+      description: This creates a new pii entry.
+      operationId: createPii
       responses:
         200:
           description: Ok
