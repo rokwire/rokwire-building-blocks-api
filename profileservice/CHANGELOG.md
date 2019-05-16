@@ -7,17 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1 - 2019-04-19
 ### Added
 - creaste profile data model boiler plate.
-[SCSI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
+[SCCI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
 - created profile restservice boiler plate.
-[SCSI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
+[SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
 - separated non-pii data and pii data
-[SCSI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
+[SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
 - separated non-pii and pii database
-[SCSI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
+[SCCI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
 - added time stamp
-[SCSI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
+[SCCI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
 - added age over 13
-[SCSI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
+[SCCI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
 - checking method for email and phone number to prevent duplicate entry
 [#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
 
