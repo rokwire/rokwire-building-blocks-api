@@ -37,7 +37,7 @@ def get_events():
     if args.get('latitude') and args.get('longitude') and args.get('radius'):
         coordinates = [float(args.get('longitude')), float(args.get('latitude'))]
         radius_meters = int(args.get('radius'))
-        query['coordinates'] = {'$geoWithin': {'$center': [coordinates, radius_meters]}}
+        query['coordinates'] = {'$geoWithin': {'$centerSphere': [coordinates, radius_meters*0.000621371/3963.2]}}
 
     count = 0
     if query:

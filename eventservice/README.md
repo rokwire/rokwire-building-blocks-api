@@ -107,7 +107,7 @@ It will return back the `put` status in json, where the `nUpdate` denotes how ma
 
 Patch endpoint allows to update an existing event record. For example, we can use `Curl` command to update the `title` field of the current event: 
 ```
-curl -d '{"title": "NCSA Celebrates Mathematic Pi Day"}' -X PATCH http://localhost:5000/events/5cd1f7294207d970db70ea92
+curl -d '{"title": "NCSA Celebrates Mathematics Pi Day"}' -X PATCH http://localhost:5000/events/5cd1f7294207d970db70ea92
 ```
 You can also update geolocation coordinates. For example, we can update the latitude of location to this new value:
 ```
