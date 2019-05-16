@@ -426,35 +426,35 @@ paths:
       description: By passing in the appropriate options, you can search for events matching your criteria in the system
       operationId: searchEvents
       parameters:
-        - name: searchString
-          in: query
-          description: pass an optional search string for looking up events
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: skip
-          in: query
-          description: number of records to skip for pagination
-          required: false
-          style: form
-          explode: true
-          schema:
-            minimum: 0
-            type: integer
-            format: int32
-        - name: limit
-          in: query
-          description: maximum number of records to return
-          required: false
-          style: form
-          explode: true
-          schema:
-            maximum: 50
-            minimum: 0
-            type: integer
-            format: int32
+      - name: searchString
+        in: query
+        description: pass an optional search string for looking up events
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: skip
+        in: query
+        description: number of records to skip for pagination
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: maximum number of records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
       responses:
         200:
           description: search results matching criteria
@@ -500,19 +500,19 @@ paths:
   /events/{eventId}:
     delete:
       tags:
-        - Events
+      - Events
       summary: Deletes an event by the given event id
       operationId: deleteEvent
       parameters:
-        - name: eventId
-          in: path
-          description: event id to delete
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: eventId
+        in: path
+        description: event id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         202:
           description: Event is deleted
@@ -630,12 +630,12 @@ components:
           items:
             type: "string"
             enum:
-              - students
-              - faculty
-              - staff
-              - alumni
-              - parents
-              - public
+            - students
+            - faculty
+            - staff
+            - alumni
+            - parents
+            - public
         icalUrl:
           type: string
         outlookUrl:
