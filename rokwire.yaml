@@ -14,28 +14,9 @@ tags:
 - name: Notifications
   description: API endpoints for managing user notifications.
 - name: Events
-  description: API endpoints for managing events.  
+  description: API endpoints for managing events.
 paths:
   /profiles:
-    get:
-      tags:
-      - Profile
-      summary: Returns a list of profiles
-      description: This returns a list of profiles.
-      operationId: getProfileList
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Non-pii'
-        400:
-          description: Bad request
-        500:
-          description: Internal error
     post:
       tags:
       - Profile
@@ -194,12 +175,12 @@ paths:
         500:
           description: Some has gone wrong, try again later
   /profiles/pii:
-    get:
+    post:
       tags:
       - PII
-      summary: Returns list of pii
-      description: This returns the list of pii.
-      operationId: getPiiList
+      summary: Create pii entry
+      description: This creates a new pii entry.
+      operationId: createPii
       responses:
         200:
           description: Ok
@@ -492,7 +473,7 @@ paths:
           description: Internal error
     post:
       tags:
-      - Events
+        - Events
       summary: create an event
       description: create an event record into the system
       operationId: createEvent
@@ -538,7 +519,7 @@ paths:
         400:
           description: Invalid ID supplied
         404:
-          description: Event not found        
+          description: Event not found
 components:
   schemas:
     Non-pii:
@@ -546,6 +527,8 @@ components:
       properties:
         uuid:
           type: string
+        over13:
+          type: boolean
         athletics_interests:
           type: array
           xml:
@@ -560,7 +543,11 @@ components:
             wrapped: true
           items:
             type: string
-        imageUri:
+        image_uri:
+          type: string
+        first_modified:
+          type: string
+        last_modified:
           type: string
         file_descriptor:
           type: array
@@ -584,7 +571,11 @@ components:
         phone:
           type: string
         imageUri:
-            type: string
+          type: string
+        first_modified:
+          type: string
+        last_modified:
+          type: string
     Event:
       required:
         - title
@@ -601,10 +592,10 @@ components:
         eventType:
           type: string
           enum:
-            - Ceremony/Service 
-            - Community Service 
+            - Ceremony/Service
+            - Community Service
             - Conference/Workshop
-            - Exhibition 
+            - Exhibition
             - Festival/Celebration
             - Film Screening
             - Health/Fitness
@@ -627,10 +618,10 @@ components:
           type: string
           description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
         description:
-          type: string  
+          type: string
         startDate:
           type: string
-          format: date-time  
+          format: date-time
         endDate:
           type: string
           format: date-time
@@ -646,9 +637,9 @@ components:
             - parents
             - public
         icalUrl:
-          type: string 
+          type: string
         outlookUrl:
-          type: string 
+          type: string
         speaker:
           type: string
         registrationURL:
@@ -672,7 +663,7 @@ components:
             type: string
         location:
           $ref: "#/components/schemas/Location"
-            
+
     Location:
       type: object
       properties:
@@ -699,11 +690,11 @@ components:
           type: string
         phone:
           type: string
-        organization: 
+        organization:
           type: string
       xml:
         name: "Contact"
-        
+
     Notification:
       required:
       - id

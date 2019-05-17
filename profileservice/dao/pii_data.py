@@ -1,4 +1,4 @@
-import uuid
+import profileservice.restservice.utils.datasetutils as datasetutils
 
 class pii_data:
     def __init__(self, injson):
@@ -8,50 +8,18 @@ class pii_data:
         self.email = None
         self.username = None
         self.uin = None
-        self.pii_uuid = None
-        self.non_pii_uuid = None
-        self.set_pii_uuid(str(uuid.uuid4()))
+        self.pid = None
+        self.uuid = None
+        self.first_modified = None
+        self.last_modified = None
 
-        try:
-            self.set_pii_uuid(injson["pii_uuid"])
-        except:
-            pass
+        self = datasetutils.update_pii_dataset_from_json(self, injson)
 
-        try:
-            self.set_lastname(injson['lastname'])
-        except Exception as e:
-            pass
-        try:
-            self.set_firstname(injson['firstname'])
-        except Exception as e:
-            pass
-        try:
-            self.set_phone(injson['phone'])
-        except Exception as e:
-            pass
-        try:
-            self.set_email(injson['email'])
-        except Exception as e:
-            pass
-        try:
-            self.set_username(injson['username'])
-        except Exception as e:
-            pass
-        try:
-            self.set_uin(injson['uin'])
-        except Exception as e:
-            pass
-        try:
-            self.set_non_pii_uuid(injson['non_pii_uuid'])
-        except Exception as e:
-            pass
+    def set_pid(self, pid):
+        self.pid = pid
 
-
-    def set_pii_uuid(self, pii_uuid):
-        self.pii_uuid = pii_uuid
-
-    def get_pii_uuid(self):
-        return self.pii_uuid
+    def get_pid(self):
+        return self.pid
 
     def set_lastname(self, lastname):
         self.lastname = lastname
@@ -89,12 +57,24 @@ class pii_data:
     def get_uin(self):
         return self.uin
 
-    def add_non_pii_uuid(self, non_pii_uuid):
-        if (non_pii_uuid != None):
-            self.get_non_pii_uuid().append(non_pii_uuid)
+    def add_uuid(self, uuid):
+        if (uuid != None):
+            self.get_uuid().append(uuid)
 
-    def set_non_pii_uuid(self, non_pii_uuid):
-        self.non_pii_uuid = non_pii_uuid
+    def set_uuid(self, uuid):
+        self.uuid = uuid
 
-    def get_non_pii_uuid(self):
-        return self.non_pii_uuid
+    def get_uuid(self):
+        return self.uuid
+
+    def set_first_modified(self, first_modified):
+        self.first_modified = first_modified
+
+    def get_first_modified(self):
+        return self.first_modified
+
+    def set_last_modified(self, last_modified):
+        self.last_modified = last_modified
+
+    def get_last_modified(self):
+        return self.last_modified
