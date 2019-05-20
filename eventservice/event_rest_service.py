@@ -16,7 +16,7 @@ __logger = logging.getLogger("eventservice")
 
 @app.route('/events', methods=['GET'])
 def get_events():
-    results = dict()
+    results = list()
     args = request.args
     query = dict()
     # title text query
@@ -39,21 +39,17 @@ def get_events():
         radius_meters = int(args.get('radius'))
         query['coordinates'] = {'$geoWithin': {'$centerSphere': [coordinates, radius_meters*0.000621371/3963.2]}}
 
-    count = 0
     if query:
         try:
             with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
                 db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
                 for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
-                    count += 1
-                    results["event"+str(count)] = data_tuple
+                    results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
 
-        if count == 0:
-            abort(404)
-    msg = "[GET]: %s nRecords = %d " % (request.url, count)
+    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
     __logger.info(msg)
     return flask.jsonify(results)
 
