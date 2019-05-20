@@ -26,3 +26,6 @@ hs_err_pid*
 profileservice/__pycache__
 profileservice/dao/__pycache__
 profileservice/restservice/__pycache__
+
+# virtualenv
+venv
