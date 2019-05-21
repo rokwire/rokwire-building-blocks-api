@@ -722,6 +722,9 @@ components:
           enum:
           - submitted
           - published
+          - rejected
+          - incomplete
+          - archived
 
     Location:
       type: object
