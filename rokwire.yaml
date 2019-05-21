@@ -629,6 +629,9 @@ components:
           type: integer
           format: int64
           description: the event id
+        dbInternalID:
+          type: string
+          description: the internal database id
         eventType:
           type: string
           enum:
