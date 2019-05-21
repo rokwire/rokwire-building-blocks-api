@@ -1,7 +1,7 @@
 ---
 name: Rokwire Issue Template
 about: This is a generic issue template for Rokwire.
-title: "[FEATURE] | [BUG] | [HOTFIX] | [EPIC]"
+title: "[TASK] | [FEATURE] | [BUG] | [HOTFIX] | [EPIC]"
 labels: ''
 assignees: ''
 

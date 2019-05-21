@@ -1,4 +1,5 @@
-import uuid
+import uuid as uuidlib
+import profileservice.restservice.utils.datasetutils as datasetutils
 
 class non_pii_data:
     def __init__(self, injson):
@@ -7,33 +8,23 @@ class non_pii_data:
         self.athletics_interests = None
         self.file_descriptors = None
         self.image_uri = None
+        self.over13 = None
+        self.first_modified = None
+        self.last_modified = None
 
-        try:
-            self.set_uuid(injson["uuid"])
-        except:
-            self.set_uuid(str(uuid.uuid4()))
-        try:
-            self.set_file_descriptors(injson['file_descriptors'])
-        except:
-            pass
-        try:
-            self.set_image_uri(injson['image_uri'])
-        except:
-            pass
-        try:
-            self.set_general_interests(injson["general_interests"])
-        except Exception as e:
-            pass
-        try:
-            self.set_athletics_interests(injson["athletics_interests"])
-        except Exception as e:
-            pass
+        self = datasetutils.update_non_pii_dataset_from_json(self, injson)
+
+    def set_uuid(self, uuid):
+        self.uuid = uuid
 
     def get_uuid(self):
         return self.uuid
 
-    def set_uuid(self, uuid):
-        self.uuid = uuid
+    def set_over13(self, over13):
+        self.over13 = over13
+
+    def get_over13(self):
+        return self.over13
 
     def set_general_interests(self, general_interests):
         self.general_interests = general_interests
@@ -69,4 +60,16 @@ class non_pii_data:
 
     def get_image_uri(self):
         return self.image_uri
+
+    def set_first_modified(self, first_modified):
+        self.first_modified = first_modified
+
+    def get_first_modified(self):
+        return self.first_modified
+
+    def set_last_modified(self, last_modified):
+        self.last_modified = last_modified
+
+    def get_last_modified(self):
+        return self.last_modified
 
