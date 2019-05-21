@@ -34,4 +34,10 @@ def authenticate():
     if not id_info:
         logger.warn("token not verified")
         abort(401)
+    if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+        logger.warn("invalid iss of %s" % id_info['iss'])
+        abort(401)
+    if id_info['hd'] != 'illinois.edu':
+        logger.warn("unrecognized host domain of %s" % id_info['hd'])
+        abort(401)
     request.user_token_data = id_info
