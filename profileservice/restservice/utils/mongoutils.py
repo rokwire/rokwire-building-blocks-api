@@ -266,8 +266,8 @@ index non pii collection
 """
 def index_non_pii_data():
     db.non_pii_collection.create_index([('uuid', 'text'),
-                             ('general_interests', 'text'),
-                             ('athletics_interests', 'text')])
+                             ('generalInterests', 'text'),
+                             ('athleticsInterests', 'text')])
 
 """
 index non pii collection
@@ -278,5 +278,5 @@ def index_pii_data():
                              ('lastname', 'text'),
                              ('email', 'text'),
                              ('username', 'text'),
-                             ('uin', 'text'),
+                             ('uin', 'text'), ('netid', 'text'),
                              ('phone', 'text')])

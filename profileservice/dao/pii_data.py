@@ -8,10 +8,11 @@ class pii_data:
         self.email = None
         self.username = None
         self.uin = None
+        self.netid = None
         self.pid = None
         self.uuid = None
-        self.first_modified = None
-        self.last_modified = None
+        self.creationDate = None
+        self.lastModifiedDate = None
 
         self = datasetutils.update_pii_dataset_from_json(self, injson)
 
@@ -57,6 +58,12 @@ class pii_data:
     def get_uin(self):
         return self.uin
 
+    def set_netid(self, netid):
+        self.netid = netid
+
+    def get_netid(self):
+        return self.netid
+
     def add_uuid(self, uuid):
         if (uuid != None):
             self.get_uuid().append(uuid)
@@ -67,14 +74,14 @@ class pii_data:
     def get_uuid(self):
         return self.uuid
 
-    def set_first_modified(self, first_modified):
-        self.first_modified = first_modified
+    def set_creation_date(self, creationDate):
+        self.creationDate = creationDate
 
-    def get_first_modified(self):
-        return self.first_modified
+    def get_creation_date(self):
+        return self.creationDate
 
-    def set_last_modified(self, last_modified):
-        self.last_modified = last_modified
+    def set_last_modified_date(self, lastModifiedDate):
+        self.lastModifiedDate = lastModifiedDate
 
-    def get_last_modified(self):
-        return self.last_modified
+    def get_last_modified_date(self):
+        return self.lastModifiedDate
