@@ -872,7 +872,10 @@ components:
           type: string
     UserRoleType:
       type: string
-      enum: [student, staff, other]
+      enum: 
+        - student
+        - staff
+        - other
     AppWidget:
       type: object
       properties:
@@ -882,7 +885,8 @@ components:
           $ref: '#/components/schemas/WidgetImage'
         roles:
           type: array
-          items: '#/components/schemas/UserRoleType'      
+          items: 
+            $ref: '#/components/schemas/UserRoleType'      
     AppPanel:
       type: object
       properties:
