@@ -598,7 +598,7 @@ paths:
       operationId: deleteAppConfig
       responses:
         202:
-          description: AppConfig is deleted
+          description: AppConfig deleted
         401:
           description: Unauthorized
         404:
