@@ -853,34 +853,7 @@ components:
           type: string
         md5sum:
           type: string
-    AppConfig:
-      type: object
-      properties:
-        panels:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppPanel'
-    AppPanel:
-      type: object
-      properties:
-        name:
-          type: string
-        style:
-          type: object
-        widgets:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppWidget'
-    AppWidget:
-      type: object
-      properties:
-        destination:
-          $ref: '#/components/schemas/WidgetDestination'
-        image:
-          $ref: '#/components/schemas/WidgetImage'
-        roles:
-          type: array
-          items: '#/components/schemas/UserRoleType'
+    #Begin app configuration
     WidgetDestination:
       type: object
       properties:
@@ -900,6 +873,35 @@ components:
     UserRoleType:
       type: string
       enum: [student, staff, other]
+    AppWidget:
+      type: object
+      properties:
+        destination:
+          $ref: '#/components/schemas/WidgetDestination'
+        image:
+          $ref: '#/components/schemas/WidgetImage'
+        roles:
+          type: array
+          items: '#/components/schemas/UserRoleType'      
+    AppPanel:
+      type: object
+      properties:
+        name:
+          type: string
+        style:
+          type: object
+        widgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppWidget'
+    AppConfig:
+      type: object
+      properties:
+        panels:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppPanel'
+    #End app configuration
   requestBodies:
     NotificationArray:
       description: List of Notification object
