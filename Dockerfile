@@ -10,4 +10,6 @@ RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-CMD ["python", "profileservice/restservice/profile_rest_service.py"]
+WORKDIR /usr/src/app/profilesrvice/restservice
+
+CMD ["python", "profile_rest_service.py"]
