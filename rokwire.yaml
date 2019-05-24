@@ -506,7 +506,7 @@ paths:
       parameters:
       - name: eventId
         in: path
-        description: ID of one event that needs to be updated
+        description: ID of the event that needs to be updated
         required: true
         style: simple
         explode: false
