@@ -60,6 +60,7 @@ def non_pii_root_dir():
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
             dataset = jsonutils.remove_objectid_from_dataset(dataset)
+            dataset = jsonutils.remove_file_descriptor_from_dataset(dataset)
             out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             logging.debug(msg)
@@ -82,12 +83,20 @@ def deal_profile_id(uuid):
             db_data = mongoutils.query_non_pii_dataset(cfg.FIELD_PROFILE_UUID, uuid)
 
         data_list = list(db_data)
-        if len(data_list) > 0:
-            out_json = mongoutils.construct_json_from_query_list(data_list)
 
+        if len(data_list) > 1:
+            return bad_request('There are more than 1 record')
+
+        if len(data_list) > 0:
             if request.method == 'GET':
                 msg = "request profile information: " + str(uuid)
                 logging.debug(msg)
+
+                # remove fileDescriptors from db_data
+                data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+                out_json = mongoutils.construct_json_from_query_list(data_list[0])
+
+                return out_json
 
             if request.method == 'PUT':
                 try:
@@ -120,6 +129,7 @@ def deal_profile_id(uuid):
 
                         return not_implemented()
                     else:
+                        non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
                         out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
                         msg = "Profile data has been posted with : " + str(uuid)
                         logging.debug(msg)
@@ -143,8 +153,6 @@ def deal_profile_id(uuid):
                         msg = "failed to deleted. not found: " + str(uuid)
                         logging.error(msg)
                         return not_found()
-
-            return out_json
         else:
             msg = "the dataset does not exist: " + str(uuid)
             logging.error(msg)
@@ -190,6 +198,7 @@ def upload_profile_image(uuid):
             result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset)
 
             if (result):
+                non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
                 out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
                 msg = "image has been posted to: " + str(uuid)
                 logging.debug(msg)
