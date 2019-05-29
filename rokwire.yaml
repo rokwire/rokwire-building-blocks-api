@@ -625,8 +625,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
           description: the event id
         dbInternalID:
           type: string
