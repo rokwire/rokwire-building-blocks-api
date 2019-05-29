@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - This CHANGELOG file
 - Issue template.
+- Definitions for PUT method for events in YAML file.
+- Fields to event schema for storing submission status and date modified.
 
 ### Changed
 - Update events schema according to discussion and feedback.
