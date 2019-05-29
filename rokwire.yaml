@@ -15,7 +15,7 @@ tags:
   description: API endpoints for managing user notifications.
 - name: Events
   description: API endpoints for managing events.
-- name: AppConfig
+- name: AppConfigs
   description: API endpoints for managing app configuration
 paths:
   /profiles:
@@ -522,10 +522,10 @@ paths:
           description: Invalid ID supplied
         404:
           description: Event not found
-  /appconfig:
+  /app/configs:
     post:
       tags:
-      - AppConfig
+      - AppConfigs
       summary: Creates mobile app configuration
       operationId: createAppConfig
       requestBody:
@@ -550,7 +550,7 @@ paths:
           description: Internal error
     get:
       tags:
-      - AppConfig
+      - AppConfigs
       summary: Reads mobile app configuration
       operationId: getAppConfig
       responses:
@@ -558,7 +558,8 @@ paths:
           description: successfully read mobile app configuration
           content:
             application/json:
-              schema:
+              schema: array
+              items:
                 $ref: '#/components/schemas/AppConfig'
         401:
           description: Unauthorized
@@ -566,6 +567,7 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
+  /app/configs/{id}:
     put:
       tags:
       - AppConfig
@@ -748,7 +750,6 @@ components:
             type: string
         location:
           $ref: "#/components/schemas/Location"
-
     Location:
       type: object
       properties:
@@ -763,7 +764,6 @@ components:
           description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
         floor:
           type: integer
-
     Contact:
       type: object
       properties:
@@ -779,7 +779,6 @@ components:
           type: string
       xml:
         name: "Contact"
-
     Notification:
       required:
       - id
@@ -826,15 +825,6 @@ components:
           example: event, class registration etc.
         description:
           type: string
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-          example: everything is ok
     FileDescriptor:
       type: object
       properties:
@@ -853,59 +843,22 @@ components:
           type: string
         md5sum:
           type: string
-    #Begin app configuration
-    WidgetDestination:
-      type: object
-      properties:
-        destType:
-          type: string
-        value:
-          type: string
-        title:
-          type: string
-    WidgetImage:
-      type: object
-      properties:
-        imageType:
-          type: string
-        path:
-          type: string
-    UserRoleType:
-      type: string
-      enum: 
-        - student
-        - staff
-        - other
-    AppWidget:
-      type: object
-      properties:
-        destination:
-          $ref: '#/components/schemas/WidgetDestination'
-        image:
-          $ref: '#/components/schemas/WidgetImage'
-        roles:
-          type: array
-          items: 
-            $ref: '#/components/schemas/UserRoleType'      
-    AppPanel:
-      type: object
-      properties:
-        name:
-          type: string
-        style:
-          type: object
-        widgets:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppWidget'
     AppConfig:
       type: object
       properties:
-        panels:
+        id:
+          type: string
+        mobileAppVersion:
+          type: string
+        rokwireBackendServices: 
           type: array
-          items:
-            $ref: '#/components/schemas/AppPanel'
-    #End app configuration
+          items: object
+        thirdPartyServices:
+          type: array
+          items: object
+        otherUniversityServices:
+          type: array
+          items: object
   requestBodies:
     NotificationArray:
       description: List of Notification object
