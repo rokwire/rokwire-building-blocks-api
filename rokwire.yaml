@@ -558,9 +558,10 @@ paths:
           description: successfully read mobile app configuration
           content:
             application/json:
-              schema: array
-              items:
-                $ref: '#/components/schemas/AppConfig'
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppConfig'
         401:
           description: Unauthorized
         404:
@@ -570,9 +571,18 @@ paths:
   /app/configs/{id}:
     put:
       tags:
-      - AppConfig
+      - AppConfigs
       summary: Updates mobile app configuration
       operationId: updateAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: update AppConfig object
         content:
@@ -595,9 +605,18 @@ paths:
           description: Internal error
     delete:
       tags:
-      - AppConfig
+      - AppConfigs
       summary: Deletes mobile app configuration
       operationId: deleteAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         202:
           description: AppConfig deleted
@@ -851,14 +870,11 @@ components:
         mobileAppVersion:
           type: string
         rokwireBackendServices: 
-          type: array
-          items: object
+          type: object
         thirdPartyServices:
-          type: array
-          items: object
+          type: object
         otherUniversityServices:
-          type: array
-          items: object
+          type: object
   requestBodies:
     NotificationArray:
       description: List of Notification object
