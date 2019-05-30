@@ -10,12 +10,14 @@ from pymongo import MongoClient
 
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.dao.pii_data import pii_data
+import profileservice.restservice.utils.jsonutils as jsonutils
 
-client = MongoClient(cfg.PROFILE_MONGO_URL, connect=False)
-db = client[cfg.PROFILE_DB_NAME]
-db.non_pii_collection = db[cfg.PROFILE_DB_PROFILE_COLL_NAME]
-db_pii = client[cfg.PROFILE_PII_DB_NAME]
-db_pii.pii_collection = db_pii[cfg.PROFILE_DB_PII_COLL_NAME]
+client_profile = MongoClient(cfg.MONGO_PROFILE_URL, connect=False)
+db_profile = client_profile[cfg.PROFILE_DB_NAME]
+db_profile.non_pii_collection = db_profile[cfg.PROFILE_DB_PROFILE_COLL_NAME]
+client_pii = MongoClient(cfg.MONGO_PII_URL, connect=False)
+db_pii = client_pii[cfg.PII_DB_NAME]
+db_pii.pii_collection = db_pii[cfg.PII_DB_PII_COLL_NAME]
 
 """
 get query output json from field name and query string
@@ -147,6 +149,10 @@ convert pii mongodb query using field result to json
 def get_pii_query_json_from_field(fld, query_str):
     db_data = query_pii_dataset(fld, query_str)
     data_list = list(db_data)
+
+    # remove fileDescriptors from db_data
+    data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+
     if len(data_list) > 0:
         data_dump = dumps(data_list)
         data_dump = data_dump[:-1]
@@ -173,13 +179,13 @@ def check_if_objectid(query_str):
 query non pii dataset using object id
 """
 def query_non_pii_dataset_by_objectid(objectid):
-    return db.non_pii_collection.find({'_id': objectid})
+    return db_profile.non_pii_collection.find({'_id': objectid})
 
 """
 qyery non pii dataset using field
 """
 def query_non_pii_dataset(fld, query_str):
-    return db.non_pii_collection.find({fld: query_str}, {'_id': False})
+    return db_profile.non_pii_collection.find({fld: query_str}, {'_id': False})
 
 """
 qyery pii dataset using field
@@ -204,7 +210,7 @@ def insert_non_pii_dataset_to_mongodb(indataset):
     dataset = json.dumps(indataset, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
 
-    id = db.non_pii_collection.insert(dataset)
+    id = db_profile.non_pii_collection.insert(dataset)
 
     return dataset, id
 
@@ -226,7 +232,7 @@ def update_non_pii_dataset_in_mongo_by_objectid(objectid, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
     id = ObjectId(objectid)
-    result = db.non_pii_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
+    result = db_profile.non_pii_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 
@@ -236,7 +242,7 @@ update non pii dataset in mongodb by field
 def update_non_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
-    result = db.non_pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
+    result = db_profile.non_pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 
@@ -265,15 +271,15 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db.non_pii_collection.create_index([('uuid', 'text'),
-                             ('generalInterests', 'text'),
-                             ('athleticsInterests', 'text')])
+    db_profile.non_pii_collection.create_index([('uuid', 'text'),
+                                                ('generalInterests', 'text'),
+                                                ('athleticsInterests', 'text')])
 
 """
 index non pii collection
 """
 def index_pii_data():
-    db.pii_collection.create_index([('pid', 'text'),
+    db_pii.pii_collection.create_index([('pid', 'text'),
                              ('firstname', 'text'),
                              ('lastname', 'text'),
                              ('email', 'text'),

@@ -23,7 +23,7 @@ There are several ways to view API design and document using Swagger:
       docker build -t rokwire/profiles .
 
 ## Test the docker container image:
-      docker run --name profiles-rest-service -d --restart=always -e MONGO_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 -v /home/ywkim/rest:/usr/src/app/rest -d rokwire/profiles
+      docker run --name profiles-rest-service -d --restart=always -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 -v /home/ywkim/rest:/usr/src/app/rest -d rokwire/profiles
       
 ## To run without docker
 

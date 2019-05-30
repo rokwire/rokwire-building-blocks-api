@@ -14,7 +14,6 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 from bson import ObjectId
 from flask import flash, redirect, jsonify, make_response, request
 
-from profileservice import middleware
 from profileservice.dao.pii_data import pii_data
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.restservice.utils.otherutils import create_file_descriptor
@@ -60,7 +59,7 @@ def non_pii_root_dir():
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
             dataset = jsonutils.remove_objectid_from_dataset(dataset)
-            dataset = jsonutils.remove_file_descriptor_from_dataset(dataset)
+
             out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             logging.debug(msg)
@@ -92,8 +91,6 @@ def deal_profile_id(uuid):
                 msg = "request profile information: " + str(uuid)
                 logging.debug(msg)
 
-                # remove fileDescriptors from db_data
-                data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
                 out_json = mongoutils.construct_json_from_query_list(data_list[0])
 
                 return out_json
@@ -139,13 +136,13 @@ def deal_profile_id(uuid):
             # delete profile by using profile id
             if request.method == 'DELETE':
                 if (is_objectid):
-                    mongoutils.db.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
+                    mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
                     msg = "deleted profile information: " + str(id)
                     logging.debug(msg)
                     return entry_deleted(id)
                 else:
                     try:
-                        mongoutils.db.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
+                        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
                         msg = "deleted profile information: " + str(uuid)
                         logging.debug(msg)
                         return entry_deleted(uuid)
@@ -159,55 +156,6 @@ def deal_profile_id(uuid):
             return not_found()
     else:
         return bad_request('uuid should be provided')
-
-"""
-upload image for the profile
-"""
-@app.route('/profiles/<uuid>/uploadImage', methods=['POST'])
-def upload_profile_image(uuid):
-    # TODO add unsupported media type handler
-    if request.method == 'POST':
-        non_pii_dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, uuid)
-        if non_pii_dataset is None:
-            msg = "the dataset does not exist: " + str(uuid)
-            logging.error(msg)
-            return not_found()
-        else:
-            # create FileDescriptor for uploaded file
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-
-            file = request.files['file']
-
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-
-            fd = create_file_descriptor(cfg.PROFILE_REST_STORAGE, file)
-            file_descriptors = non_pii_dataset.get_file_descriptors()
-            if file_descriptors is None:
-                file_descriptors = []
-            file_descriptors.append(fd)
-            non_pii_dataset.set_file_descriptors(file_descriptors)
-            non_pii_dataset.set_image_uri(fd.dataURL)
-            currenttime = datetime.datetime.now()
-            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            non_pii_dataset.set_last_modified_date(currenttime)
-
-            result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset)
-
-            if (result):
-                non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
-                out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
-                msg = "image has been posted to: " + str(uuid)
-                logging.debug(msg)
-
-                return out_json
-            else:
-                return bad_request('dataset update to db failed')
-    else:
-        return bad_request('request method not provided')
 
 """"
 get or post pii dataset
@@ -245,14 +193,6 @@ def pii_root_dir():
                 return not_found()
             else:
                 return out_json
-
-        return bad_request('given term is not defined')
-
-        out_json = mongoutils.construct_json_from_query_list(data_list)
-        logging.debug("list all pii data")
-
-        return out_json
-
     elif request.method == 'POST':
         is_new_entry = False
         try:
@@ -318,8 +258,8 @@ def pii_root_dir():
 
                 return not_implemented()
             else:
-                pii_dataset = jsonutils.remove_objectid_from_dataset(pii_dataset)
-                out_json = mongoutils.construct_json_from_query_list(pii_dataset)
+                # pii_dataset = jsonutils.remove_objectid_from_dataset(pii_dataset)
+                # out_json = mongoutils.construct_json_from_query_list(pii_dataset)
                 msg = "Pii data has been posted with : " + str(pid)
                 logging.debug(msg)
 
@@ -350,12 +290,19 @@ def deal_pid(pid):
             db_data = mongoutils.query_pii_dataset(cfg.FIELD_PID, pid)
 
         data_list = list(db_data)
-        if len(data_list) > 0:
-            out_json = mongoutils.construct_json_from_query_list(data_list)
+        if len(data_list) > 1:
+            return bad_request('There are more than 1 record')
 
+        if len(data_list) > 0:
             if request.method == 'GET':
                 msg = "request profile information: " + str(pid)
                 logging.debug(msg)
+
+                # remove fileDescriptors from db_data
+                data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+                out_json = mongoutils.construct_json_from_query_list(data_list[0])
+
+                return out_json
 
             # update the pii information
             if request.method == 'PUT':
@@ -406,6 +353,7 @@ def deal_pid(pid):
 
                         return not_implemented()
                     else:
+                        pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
                         out_json = mongoutils.construct_json_from_query_list(pii_dataset)
                         msg = "Pii data has been posted with : " + str(pid)
                         logging.debug(msg)
@@ -431,14 +379,63 @@ def deal_pid(pid):
                         msg = "failed to deleted pii. not found: " + str(pid)
                         logging.error(msg)
                     return not_found()
-
-            return out_json
         else:
             msg = "the pii dataset does not exist: " + str(pid)
             logging.error(msg)
             return not_found()
     else:
         return bad_request('pid should be provided')
+
+# TODO revive this when it needed
+# the following method is commented out for now but should be here for future use
+# """
+# upload image for the profile
+# """
+# @app.route('/profiles/pii/<pid>/uploadImage', methods=['POST'])
+# def upload_profile_image(pid):
+#     # TODO add unsupported media type handler
+#     if request.method == 'POST':
+#         pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
+#         if pii_dataset is None:
+#             msg = "the dataset does not exist: " + str(pid)
+#             logging.error(msg)
+#             return not_found()
+#         else:
+#             # create FileDescriptor for uploaded file
+#             if 'file' not in request.files:
+#                 flash('No file part')
+#                 return redirect(request.url)
+#
+#             file = request.files['file']
+#
+#             if file.filename == '':
+#                 flash('No selected file')
+#                 return redirect(request.url)
+#
+#             fd = create_file_descriptor(cfg.PROFILE_REST_STORAGE, file)
+#             file_descriptors = pii_dataset.get_file_descriptors()
+#             if file_descriptors is None:
+#                 file_descriptors = []
+#             file_descriptors.append(fd)
+#             pii_dataset.set_file_descriptors(file_descriptors)
+#             pii_dataset.set_image_url(fd.dataURL)
+#             currenttime = datetime.datetime.now()
+#             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+#             pii_dataset.set_last_modified_date(currenttime)
+#
+#             result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, pii_dataset)
+#
+#             if (result):
+#                 pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
+#                 out_json = mongoutils.construct_json_from_query_list(pii_dataset)
+#                 msg = "image has been posted to: " + str(pid)
+#                 logging.debug(msg)
+#
+#                 return out_json
+#             else:
+#                 return bad_request('dataset update to db failed')
+#     else:
+#         return bad_request('request method not provided')
 
 """
 make reponse for handling 202 entry deleted
