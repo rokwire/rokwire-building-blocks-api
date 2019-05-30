@@ -56,8 +56,8 @@ class non_pii_data:
     def get_file_descriptors(self):
         return self.fileDescriptors
 
-    def set_image_uri(self, image_uri):
-        self.imageUrl = image_uri
+    def set_image_uri(self, imageUrl):
+        self.imageUrl = imageUrl
 
     def get_image_uri(self):
         return self.imageUrl
