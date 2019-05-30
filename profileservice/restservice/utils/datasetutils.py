@@ -4,7 +4,7 @@ set non pii dataset
 """
 def update_non_pii_dataset_from_json(dataset, injson):
     try:
-        dataset.set_file_descriptors(injson['file_descriptors'])
+        dataset.set_file_descriptors(injson['fileDescriptors'])
     except:
         pass
     try:
@@ -12,23 +12,23 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_image_uri(injson['image_uri'])
+        dataset.set_image_uri(injson['imageUrl'])
     except:
         pass
     try:
-        dataset.set_general_interests(injson["general_interests"])
+        dataset.set_general_interests(injson["generalInterests"])
     except Exception as e:
         pass
     try:
-        dataset.set_athletics_interests(injson["athletics_interests"])
+        dataset.set_athletics_interests(injson["athleticsInterests"])
     except Exception as e:
         pass
     try:
-        dataset.set_first_modified(injson["first_modified"])
+        dataset.set_creation_date(injson["creationDate"])
     except Exception as e:
         pass
     try:
-        dataset.set_last_modified(injson["last_modified"])
+        dataset.set_last_modified_date(injson["lastModifiedDate"])
     except Exception as e:
         pass
 
@@ -63,11 +63,15 @@ def update_pii_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
-        dataset.set_first_modified(injson["first_modified"])
+        dataset.set_netid(injson['netid'])
     except Exception as e:
         pass
     try:
-        dataset.set_last_modified(injson["last_modified"])
+        dataset.set_creation_date(injson["creationDate"])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_last_modified_date(injson["lastModifiedDate"])
     except Exception as e:
         pass
 

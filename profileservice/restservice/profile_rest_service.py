@@ -14,12 +14,14 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 from bson import ObjectId
 from flask import flash, redirect, jsonify, make_response, request
 
+from profileservice import middleware
 from profileservice.dao.pii_data import pii_data
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+# app.before_request(middleware.authenticate)
 
 __logger = logging.getLogger("profileservice")
 
@@ -28,15 +30,6 @@ rest service for root directory
 """
 @app.route('/profiles', methods=['POST'])
 def non_pii_root_dir():
-    # if request.method == 'GET':
-    #     db_data = mongoutils.db.non_pii_collection.find({}, {cfg.FIELD_OBJECTID: False})
-    #     data_list = list(db_data)
-    #
-    #     out_json = mongoutils.construct_json_from_query_list(data_list)
-    #     logging.debug("list all profiles")
-    #
-    #     return out_json
-
     if request.method == 'POST':
         is_new_install = True
 
@@ -51,7 +44,7 @@ def non_pii_root_dir():
                 is_new_install = False
                 msg = "UUID in input json already exists in the database " + str(non_pii_uuid)
                 logging.error(msg)
-                return bad_request()
+                return bad_request(msg)
         except:
             pass
 
@@ -62,16 +55,17 @@ def non_pii_root_dir():
             non_pii_dataset = non_pii_data('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
-            non_pii_dataset.set_first_modified(currenttime)
-            non_pii_dataset.set_last_modified(currenttime)
+            non_pii_dataset.set_creation_date(currenttime)
+            non_pii_dataset.set_last_modified_date(currenttime)
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
             dataset = jsonutils.remove_objectid_from_dataset(dataset)
+            dataset = jsonutils.remove_file_descriptor_from_dataset(dataset)
             out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             logging.debug(msg)
 
-            return return_id('uuid', profile_uuid)
+            return return_id(msg, 'uuid', profile_uuid)
 
 """
 provide profile information by profile id or remove it
@@ -89,18 +83,26 @@ def deal_profile_id(uuid):
             db_data = mongoutils.query_non_pii_dataset(cfg.FIELD_PROFILE_UUID, uuid)
 
         data_list = list(db_data)
-        if len(data_list) > 0:
-            out_json = mongoutils.construct_json_from_query_list(data_list)
 
+        if len(data_list) > 1:
+            return bad_request('There are more than 1 record')
+
+        if len(data_list) > 0:
             if request.method == 'GET':
                 msg = "request profile information: " + str(uuid)
                 logging.debug(msg)
+
+                # remove fileDescriptors from db_data
+                data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+                out_json = mongoutils.construct_json_from_query_list(data_list[0])
+
+                return out_json
 
             if request.method == 'PUT':
                 try:
                     in_json = request.get_json()
                 except:
-                    return bad_request()
+                    return bad_request('json format error')
 
                 # check if the uuid is really existing in the database
                 non_pii_dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, uuid)
@@ -116,7 +118,7 @@ def deal_profile_id(uuid):
                     non_pii_dataset = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
                     currenttime = datetime.datetime.now()
                     currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-                    non_pii_dataset.set_last_modified(currenttime)
+                    non_pii_dataset.set_last_modified_date(currenttime)
 
                     result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid,
                                                                                               non_pii_dataset)
@@ -127,6 +129,7 @@ def deal_profile_id(uuid):
 
                         return not_implemented()
                     else:
+                        non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
                         out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
                         msg = "Profile data has been posted with : " + str(uuid)
                         logging.debug(msg)
@@ -150,14 +153,12 @@ def deal_profile_id(uuid):
                         msg = "failed to deleted. not found: " + str(uuid)
                         logging.error(msg)
                         return not_found()
-
-            return out_json
         else:
             msg = "the dataset does not exist: " + str(uuid)
             logging.error(msg)
             return not_found()
     else:
-        return bad_request()
+        return bad_request('uuid should be provided')
 
 """
 upload image for the profile
@@ -192,20 +193,21 @@ def upload_profile_image(uuid):
             non_pii_dataset.set_image_uri(fd.dataURL)
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            non_pii_dataset.set_last_modified(currenttime)
+            non_pii_dataset.set_last_modified_date(currenttime)
 
             result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset)
 
             if (result):
+                non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
                 out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
                 msg = "image has been posted to: " + str(uuid)
                 logging.debug(msg)
 
                 return out_json
             else:
-                return bad_request()
+                return bad_request('dataset update to db failed')
     else:
-        return bad_request()
+        return bad_request('request method not provided')
 
 """"
 get or post pii dataset
@@ -244,7 +246,7 @@ def pii_root_dir():
             else:
                 return out_json
 
-        return bad_request()
+        return bad_request('given term is not defined')
 
         out_json = mongoutils.construct_json_from_query_list(data_list)
         logging.debug("list all pii data")
@@ -256,13 +258,13 @@ def pii_root_dir():
         try:
             in_json = request.get_json()
         except:
-            bad_request()
+            return bad_request('json format error')
 
         # get uuid, if failed it is a bad request
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         except:
-            bad_request()
+            return bad_request('uuid error')
 
         # check if it is a new record or existing record
         try:
@@ -278,7 +280,7 @@ def pii_root_dir():
             dataset = mongoutils.get_pii_dataset_from_field('email', email)
             if dataset is not None:
                 pid = dataset.get_pid()
-                return return_id('pid', pid)
+                return return_id('The email already exists.', 'pid', pid)
         except:
             pass
 
@@ -288,7 +290,7 @@ def pii_root_dir():
             dataset = mongoutils.get_pii_dataset_from_field('phone', phone)
             if dataset is not None:
                 pid = dataset.get_pid()
-                return return_id('pid', pid)
+                return return_id('Phone number already exists.', 'pid', pid)
         except:
             pass
 
@@ -306,8 +308,8 @@ def pii_root_dir():
             non_pii_uuid_from_dataset = []
             non_pii_uuid_from_dataset.append(non_pii_uuid)
             pii_dataset.set_uuid(non_pii_uuid_from_dataset)
-            pii_dataset.set_first_modified(currenttime)
-            pii_dataset.set_last_modified(currenttime)
+            pii_dataset.set_creation_date(currenttime)
+            pii_dataset.set_last_modified_date(currenttime)
             pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
             if pii_dataset is None:
@@ -321,16 +323,16 @@ def pii_root_dir():
                 msg = "Pii data has been posted with : " + str(pid)
                 logging.debug(msg)
 
-                return return_id('pid', pid)
+                return return_id(msg, 'pid', pid)
         else:
             msg = 'The request is wrong or the entry already exists'
             logging.error(msg)
 
-            return bad_request()
+            return bad_request(msg)
 
     else:
         logging.error("list pii dataset failed.")
-        return bad_request()
+        return bad_request("list pii dataset failed.")
 
 """
 provide profile information by profile id or remove it
@@ -360,7 +362,7 @@ def deal_pid(pid):
                 try:
                     in_json = request.get_json()
                 except:
-                    bad_request()
+                    return bad_request('json format error')
 
                 # check if the pid is really existing in the database
                 pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
@@ -376,7 +378,7 @@ def deal_pid(pid):
                     pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
                     currenttime = datetime.datetime.now()
                     currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-                    pii_dataset.set_last_modified(currenttime)
+                    pii_dataset.set_last_modified_date(currenttime)
 
                     # update pii_dataset's non_pii_uuid
                     non_pii_uuid_from_dataset = pii_dataset.get_uuid()
@@ -436,15 +438,15 @@ def deal_pid(pid):
             logging.error(msg)
             return not_found()
     else:
-        return bad_request()
+        return bad_request('pid should be provided')
 
 """
 make reponse for handling 202 entry deleted
 """
-def return_id(msg, id):
+def return_id(msg, idfield, id):
     message = {
-        'status': 200,
-        'message': msg + ': ' + id,
+        idfield: id,
+        'message': msg,
     }
     resp = jsonify(message)
     resp.status_code = 200
@@ -453,8 +455,7 @@ def return_id(msg, id):
 
 def entry_deleted(id):
     message = {
-        'status': 202,
-        'message': 'Object is deleted with id of : ' + id,
+        'message': 'Object is deleted with id of : ' + id
     }
     resp = jsonify(message)
     resp.status_code = 202
@@ -465,8 +466,8 @@ def entry_deleted(id):
 @app.errorhandler(400)
 def bad_request(error=None):
     message = {
-        'status': 400,
         'message': 'Bad Request: ' + request.url,
+        'reason': error
     }
     resp = jsonify(message)
     resp.status_code = 400
@@ -477,7 +478,6 @@ def bad_request(error=None):
 @app.errorhandler(403)
 def forbidden(error=None):
     message = {
-        'status': 403,
         'message': 'Forbidden: ' + request.url,
     }
     resp = jsonify(message)
@@ -489,7 +489,6 @@ def forbidden(error=None):
 @app.errorhandler(404)
 def not_found(error=None):
     message = {
-        'status': 404,
         'message': 'Not Found: ' + request.url,
     }
     resp = jsonify(message)
@@ -501,7 +500,6 @@ def not_found(error=None):
 @app.errorhandler(415)
 def unsupported_media_type(error=None):
     message = {
-        'status': 415,
         'message': 'Unsupported media type: ' + request.url,
     }
     resp = jsonify(message)
@@ -512,7 +510,6 @@ def unsupported_media_type(error=None):
 @app.errorhandler(500)
 def internal_server_error(error=None):
     message = {
-        'status': 500,
         'message': 'Internal Server Error: ' + request.url,
     }
     resp = jsonify(message)
@@ -523,7 +520,6 @@ def internal_server_error(error=None):
 @app.errorhandler(501)
 def not_implemented(error=None):
     message = {
-        'status': 501,
         'message': 'Not Implemented: ' + request.url,
     }
     resp = jsonify(message)

@@ -568,52 +568,48 @@ components:
           type: string
         over13:
           type: boolean
-        athletics_interests:
+        athleticsInterests:
           type: array
           xml:
-            name: athletics_interests
+            name: athleticsInterests
             wrapped: true
           items:
             type: string
-        general_interests:
+        generalInterests:
           type: array
           xml:
-            name: general_interests
+            name: generalInterests
             wrapped: true
           items:
             type: string
-        image_uri:
+        imageUri:
           type: string
-        first_modified:
+        creationDate:
           type: string
-        last_modified:
+        lastModifiedDate:
           type: string
-        file_descriptor:
-          type: array
-          items:
-            $ref: '#/components/schemas/FileDescriptor'
     Pii:
       type: object
       properties:
         uuid:
           type: string
-        pii-uuid:
+        pid:
           type: string
         userName:
           type: string
-        firstName:
+        firstname:
           type: string
-        lastName:
+        lastname:
           type: string
         email:
           type: string
         phone:
           type: string
-        imageUri:
+        imageUrl:
           type: string
-        first_modified:
+        creationDate:
           type: string
-        last_modified:
+        lastModifiedDate:
           type: string
     Event:
       required:
