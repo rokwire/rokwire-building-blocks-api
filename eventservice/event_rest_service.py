@@ -2,19 +2,18 @@ import logging
 import flask
 import datetime
 
-from pymongo.mongo_client import MongoClient
 from bson import ObjectId
+from .db import get_db
+from flask import Blueprint, request, make_response, abort
 
-from flask import request, current_app, make_response, abort
-
-app = flask.Flask(__name__)
-app.config.from_pyfile('config.py', silent=True)
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
 __logger = logging.getLogger("eventservice")
 
+bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
 
-@app.route('/events', methods=['GET'])
+
+@bp.route('/', methods=['GET'])
 def get_events():
     results = list()
     args = request.args
@@ -41,10 +40,9 @@ def get_events():
 
     if query:
         try:
-            with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-                db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-                for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
-                    results.append(data_tuple)
+            db = get_db()
+            for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
+                results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
@@ -54,7 +52,7 @@ def get_events():
     return flask.jsonify(results)
 
 
-@app.route('/events', methods=['POST'])
+@bp.route('/', methods=['POST'])
 def post_events():
     req_data = request.get_json(force=True)
     try:
@@ -75,34 +73,32 @@ def post_events():
         if location.get('longitude') and location.get('latitude'):
             req_data['coordinates'] = [location.get('longitude'), location.get('latitude')]
     try:
-        with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-            db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-            event_id = db['events'].insert(req_data)
-            msg = "[POST]: event record created: id = %s" % str(event_id)
-            __logger.info(msg)
+        db = get_db()
+        event_id = db['events'].insert(req_data)
+        msg = "[POST]: event record created: id = %s" % str(event_id)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(201, msg, str(event_id))
 
 
-@app.route('/events/<event_id>', methods=['PUT'])
+@bp.route('/<event_id>', methods=['PUT'])
 def update_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
     try:
-        with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-            db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-            status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
-            msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+        db = get_db()
+        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(event_id))
 
 
-@app.route('/events/<event_id>', methods=['PATCH'])
+@bp.route('/<event_id>', methods=['PATCH'])
 def partial_update_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -119,13 +115,12 @@ def partial_update_event(event_id):
         coordinates = []
         try:
             if req_data.get('location.latitude') or req_data.get('location.latitude'):
-                with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-                    db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-                    for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 1}):
-                        coordinates = data_tuple.get('coordinates')
-                        if not coordinates:
-                            abort(500)
-                        break
+                db = get_db()
+                for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 1}):
+                    coordinates = data_tuple.get('coordinates')
+                    if not coordinates:
+                        abort(500)
+                    break
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
@@ -142,27 +137,25 @@ def partial_update_event(event_id):
         abort(405)
 
     try:
-        with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-            db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-            status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
-            msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
-            __logger.info(msg)
+        db = get_db()
+        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(event_id))
 
 
-@app.route('/events/<event_id>', methods=['DELETE'])
+@bp.route('/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
     try:
-        with MongoClient(current_app.config['EVENT_MONGO_URL'], connect=False) as mongo:
-            db = mongo.get_database(current_app.config['EVENT_DB_NAME'])
-            status = db['events'].delete_one({'_id': ObjectId(event_id)})
-            msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
-            __logger.info(msg)
+        db = get_db()
+        status = db['events'].delete_one({'_id': ObjectId(event_id)})
+        msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -182,7 +175,7 @@ def success_response(status_code, msg, event_id):
     return make_response(resp)
 
 
-@app.errorhandler(400)
+@bp.errorhandler(400)
 def server_400_error(error=None):
     message = {
         'status': 400,
@@ -193,7 +186,7 @@ def server_400_error(error=None):
     return resp
 
 
-@app.errorhandler(401)
+@bp.errorhandler(401)
 def server_401_error(error=None):
     message = {
         'status': 401,
@@ -204,7 +197,7 @@ def server_401_error(error=None):
     return resp
 
 
-@app.errorhandler(404)
+@bp.errorhandler(404)
 def server_404_error(error=None):
     message = {
         'status': 404,
@@ -215,7 +208,7 @@ def server_404_error(error=None):
     return resp
 
 
-@app.errorhandler(405)
+@bp.errorhandler(405)
 def server_405_error(error=None):
     message = {
         'status': 405,
@@ -226,7 +219,7 @@ def server_405_error(error=None):
     return resp
 
 
-@app.errorhandler(500)
+@bp.errorhandler(500)
 def server_500_error(error=None):
     message = {
         'status': 500,
@@ -235,7 +228,3 @@ def server_500_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
