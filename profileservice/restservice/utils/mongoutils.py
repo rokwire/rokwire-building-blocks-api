@@ -272,8 +272,8 @@ index non pii collection
 """
 def index_non_pii_data():
     db_profile.non_pii_collection.create_index([('uuid', 'text'),
-                                                ('generalInterests', 'text'),
-                                                ('athleticsInterests', 'text')])
+                            ('generalInterests', 'text'),
+                            ('athleticsInterests', 'text')])
 
 """
 index non pii collection
