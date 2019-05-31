@@ -923,7 +923,7 @@ components:
           type: string
         mobileAppVersion:
           type: string
-        rokwireBackendServices: 
+        platformBuildingBlocks: 
           type: object
         thirdPartyServices:
           type: object
