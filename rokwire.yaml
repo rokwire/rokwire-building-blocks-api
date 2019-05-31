@@ -504,14 +504,14 @@ paths:
       summary: Updates one event with form data
       operationId: updateEventWithForm
       parameters:
-        - name: eventId
-          in: path
-          description: ID of the event that needs to be updated
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
+      - name: eventId
+        in: path
+        description: ID of the event that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: update one event object
         content:
@@ -704,15 +704,15 @@ components:
           type: string
           description: store a timestamp when this event was modified.
           format: date-time
-          submissionStatus:
-            type: string
-            description: store the status of this event submission
-            enum:
-              - submitted
-              - published
-              - rejected
-              - incomplete
-              - archived
+        submissionStatus:
+          type: string
+          description: store the status of this event submission
+          enum:
+            - submitted
+            - published
+            - rejected
+            - incomplete
+            - archived
 
     Location:
       type: object
