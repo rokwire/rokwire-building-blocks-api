@@ -500,7 +500,7 @@ paths:
   /events/{eventId}:
     put:
       tags:
-        - Events
+      - Events
       summary: Updates one event with form data
       operationId: updateEventWithForm
       parameters:
@@ -708,11 +708,11 @@ components:
           type: string
           description: store the status of this event submission
           enum:
-            - submitted
-            - published
-            - rejected
-            - incomplete
-            - archived
+          - submitted
+          - published
+          - rejected
+          - incomplete
+          - archived
 
     Location:
       type: object
