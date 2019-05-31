@@ -15,7 +15,7 @@ tags:
   description: API endpoints for managing user notifications.
 - name: Events
   description: API endpoints for managing events.
-- name: AppConfigs
+- name: App Configuration
   description: API endpoints for managing app configuration
 paths:
   /profiles:
