@@ -14,6 +14,7 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 from bson import ObjectId
 from flask import flash, redirect, jsonify, make_response, request
 
+from profileservice import middleware
 from profileservice.dao.pii_data import pii_data
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.restservice.utils.otherutils import create_file_descriptor
