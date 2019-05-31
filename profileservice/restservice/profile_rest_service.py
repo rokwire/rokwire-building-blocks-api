@@ -110,7 +110,7 @@ def deal_profile_id(uuid):
                 if non_pii_dataset is None:
                     msg = "There is no profile dataset with given uuid " + str(uuid)
                     logging.error(msg)
-                    return not_found()
+                    return not_found("Profile not found")
                 else:
                     msg = "Profile data will be updated with the id of " + str(uuid)
                     logging.debug(msg)
@@ -127,7 +127,7 @@ def deal_profile_id(uuid):
                         msg = "Failed to update non Profile dataset: " + str(uuid)
                         logging.error(msg)
 
-                        return not_implemented()
+                        return not_implemented("Invalid ID supplied")
                     else:
                         non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
                         out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
@@ -152,11 +152,11 @@ def deal_profile_id(uuid):
                     except:
                         msg = "failed to deleted. not found: " + str(uuid)
                         logging.error(msg)
-                        return not_found()
+                        return not_found("Profile not found")
         else:
             msg = "the dataset does not exist: " + str(uuid)
             logging.error(msg)
-            return not_found()
+            return not_found("Profile not found")
     else:
         return bad_request('uuid should be provided')
 
@@ -207,7 +207,7 @@ def pii_root_dir():
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         except:
-            return bad_request('uuid error')
+            return bad_request('Invalid ID supplied')
 
         # check if it is a new record or existing record
         try:
@@ -259,7 +259,7 @@ def pii_root_dir():
                 msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
                 logging.error(msg)
 
-                return not_implemented()
+                return not_implemented("Invalid ID supplied")
             else:
                 msg = "Pii data has been posted with : " + str(pid)
                 logging.debug(msg)
@@ -269,7 +269,7 @@ def pii_root_dir():
             msg = 'The request is wrong or the entry already exists'
             logging.error(msg)
 
-            return bad_request(msg)
+            return bad_request("Invalid ID supplied")
 
     else:
         logging.error("list pii dataset failed.")
@@ -318,7 +318,7 @@ def deal_pid(pid):
                 if pii_dataset == None:
                     msg = "There is no dataset with given pii uuid " + str(pid)
                     logging.error(msg)
-                    return not_found()
+                    return not_found("Profile not found")
                 else:
                     msg = "Pii data will be updated with the id of " + str(pid)
                     logging.debug(msg)
@@ -352,7 +352,7 @@ def deal_pid(pid):
                         msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
                         logging.error(msg)
 
-                        return not_implemented()
+                        return not_implemented("Invalid ID supplied")
                     else:
                         pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
                         out_json = mongoutils.construct_json_from_query_list(pii_dataset)
@@ -379,13 +379,13 @@ def deal_pid(pid):
                     except:
                         msg = "failed to deleted pii. not found: " + str(pid)
                         logging.error(msg)
-                    return not_found()
+                    return not_found("Profile not found")
         else:
             msg = "the pii dataset does not exist: " + str(pid)
             logging.error(msg)
-            return not_found()
+            return not_found("Profile not found")
     else:
-        return bad_request('pid should be provided')
+        return bad_request('Invalid ID supplied')
 
 # TODO revive this when it needed
 # the following method is commented out for now but should be here for future use
