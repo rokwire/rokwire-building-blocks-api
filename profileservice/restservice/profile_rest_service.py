@@ -24,6 +24,9 @@ app.config['JSON_SORT_KEYS'] = False
 
 __logger = logging.getLogger("profileservice")
 
+mongoutils.index_non_pii_data()
+mongoutils.index_pii_data()
+
 """
 rest service for root directory
 """
