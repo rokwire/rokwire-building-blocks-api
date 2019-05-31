@@ -261,8 +261,6 @@ def pii_root_dir():
 
                 return not_implemented()
             else:
-                # pii_dataset = jsonutils.remove_objectid_from_dataset(pii_dataset)
-                # out_json = mongoutils.construct_json_from_query_list(pii_dataset)
                 msg = "Pii data has been posted with : " + str(pid)
                 logging.debug(msg)
 
