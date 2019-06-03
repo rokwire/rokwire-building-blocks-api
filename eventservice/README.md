@@ -14,6 +14,7 @@ pip install -r requirements.txt
 ## Run in Development Mode
 
 ```
+cd rokwire-building-blocks-api
 export FLASK_APP=eventservice
 export FLASK_ENV=development
 flask run
