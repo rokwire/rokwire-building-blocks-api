@@ -78,7 +78,7 @@ It will return back the `post` status in json which includes the internal id as 
 
 ## One Example of Using Put Endpoint:
 
-Put endpoint allows to update an existing event record. For example, we can use `Curl` command to replace one existing event: 
+Put endpoint allows to replace an existing event with a new one. For example, we can use ```curl``` command to replace one existing event: 
 ```
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
