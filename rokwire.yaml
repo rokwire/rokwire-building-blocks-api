@@ -613,6 +613,15 @@ paths:
       - App Configuration
       summary: Reads mobile app configuration by given id
       operationId: getAppConfigById
+      parameters:
+      - name: id
+        in: path
+        description: app config id to read
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         200:
           description: successfully read mobile app configuration
@@ -636,7 +645,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: app config id to delete
+        description: app config id to update
         required: true
         style: simple
         explode: false
