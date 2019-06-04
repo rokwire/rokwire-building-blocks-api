@@ -428,14 +428,70 @@ paths:
       description: By passing in the appropriate options, you can search for events matching your criteria in the system
       operationId: searchEvents
       parameters:
-      - name: searchString
+      - name: title
         in: query
-        description: pass an optional search string for looking up events
-        required: true
+        description: search keyword inside the event title
+        required: false
         style: form
         explode: true
         schema:
           type: string
+      - name: tags
+        in: query
+        description: search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: targetAudience
+        in: query
+        description: search events with the given targetAudience, e.g., /events?targetAudience=student&targetAudience=staff. This query will return all events whose target audience is either student or staff.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: search events with the given startDate, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or after the give startDate.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: search events with the given endDate, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or before the give startDate.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: latitude
+        in: query
+        description: the latitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: longitude
+        in: query
+        description: the longitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: radius
+        in: query
+        description: search events within the given radius in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
       - name: skip
         in: query
         description: number of records to skip for pagination
