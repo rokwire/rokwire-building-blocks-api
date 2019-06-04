@@ -19,7 +19,7 @@ export FLASK_APP=eventservice
 export FLASK_ENV=development
 flask run
 ```
-and the event building block should be running at `http://localhost:5000`.
+and the event building block should be running at local host at port 5000.
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 
