@@ -758,38 +758,34 @@ components:
         id:
           type: string
           description: the event id
-        dbInternalID:
+        sourceEventId:
           type: string
-          description: the internal database id
-        eventType:
+          description: the id of one event from different sources, e.g., WebTools, EMS, etc.
+        category:
           type: string
           enum:
-            - Ceremony/Service
-            - Community Service
-            - Conference/Workshop
-            - Exhibition
-            - Festival/Celebration
-            - Film Screening
-            - Health/Fitness
-            - Informational
-            - Lecture
-            - Meeting
-            - Performance
-            - Professional Development
-            - Reception/Open House
-            - Seminar/Symposium
-            - Social/Informal Event
-            - Sporting Event
+            - Entertainment
+            - Academic
+            - Community
+            - Career Development
+            - Recreation
+            - Athletics
             - Other
+        subCategory:
+          type: string
         sponsor:
           type: string
           description: For example, Center for Advanced Study
         title:
           type: string
+        subTitle:
+          type: string
         titleURL:
           type: string
           description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
-        description:
+        longDescription:
+          type: string
+        shortDescription:
           type: string
         startDate:
           type: string
@@ -808,6 +804,8 @@ components:
             - alumni
             - parents
             - public
+        imageUrl:
+          type: string
         icalUrl:
           type: string
         outlookUrl:
@@ -833,6 +831,8 @@ components:
             wrapped: true
           items:
             type: string
+        placeID:
+          type: string
         location:
           $ref: "#/components/schemas/Location"
         dateModified:
@@ -851,6 +851,14 @@ components:
     Location:
       type: object
       properties:
+        locationId:
+          type: string
+        room:
+          type: string
+        building:
+          type: string
+        address:
+          type: string
         latitude:
           type: number
           description: Latitude component of location.
@@ -859,7 +867,7 @@ components:
           description: Longitude component of location.
         description:
           type: string
-          description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
+          description: Description of the building from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
         floor:
           type: integer
     Contact:
