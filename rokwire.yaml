@@ -14,28 +14,11 @@ tags:
 - name: Notifications
   description: API endpoints for managing user notifications.
 - name: Events
-  description: API endpoints for managing events.  
+  description: API endpoints for managing events.
+- name: App Configuration
+  description: API endpoints for managing app configuration
 paths:
   /profiles:
-    get:
-      tags:
-      - Profile
-      summary: Returns a list of profiles
-      description: This returns a list of profiles.
-      operationId: getProfileList
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Non-pii'
-        400:
-          description: Bad request
-        500:
-          description: Internal error
     post:
       tags:
       - Profile
@@ -194,12 +177,12 @@ paths:
         500:
           description: Some has gone wrong, try again later
   /profiles/pii:
-    get:
+    post:
       tags:
       - PII
-      summary: Returns list of pii
-      description: This returns the list of pii.
-      operationId: getPiiList
+      summary: Create pii entry
+      description: This creates a new pii entry.
+      operationId: createPii
       responses:
         200:
           description: Ok
@@ -492,7 +475,7 @@ paths:
           description: Internal error
     post:
       tags:
-      - Events
+        - Events
       summary: create an event
       description: create an event record into the system
       operationId: createEvent
@@ -517,6 +500,45 @@ paths:
         500:
           description: Internal error
   /events/{eventId}:
+    put:
+      tags:
+      - Events
+      summary: Updates one event with form data
+      operationId: updateEventWithForm
+      parameters:
+      - name: eventId
+        in: path
+        description: ID of the event that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: update one event object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          description: Invalid ID supplied
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
     delete:
       tags:
       - Events
@@ -538,7 +560,140 @@ paths:
         400:
           description: Invalid ID supplied
         404:
-          description: Event not found        
+          description: Event not found
+  /app/configs:
+    post:
+      tags:
+      - App Configuration
+      summary: Creates mobile app configuration
+      operationId: createAppConfig
+      requestBody:
+        description: Creates AppConfig object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+        required: true
+      responses:
+        201:
+          description: AppConfig created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
+    get:
+      tags:
+      - App Configuration
+      summary: Reads mobile app configuration
+      operationId: getAppConfig
+      responses:
+        200:
+          description: successfully read mobile app configuration
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
+  /app/configs/{id}:
+    get:
+      tags:
+      - App Configuration
+      summary: Reads mobile app configuration by given id
+      operationId: getAppConfigById
+      parameters:
+      - name: id
+        in: path
+        description: app config id to read
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successfully read mobile app configuration
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
+    put:
+      tags:
+      - App Configuration
+      summary: Updates mobile app configuration
+      operationId: updateAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: update AppConfig object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+        required: true
+      responses:
+        200:
+          description: successfully updated mobile app configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
+    delete:
+      tags:
+      - App Configuration
+      summary: Deletes mobile app configuration
+      operationId: deleteAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        202:
+          description: AppConfig deleted
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
 components:
   schemas:
     Non-pii:
@@ -546,45 +701,51 @@ components:
       properties:
         uuid:
           type: string
-        athletics_interests:
+        over13:
+          type: boolean
+        athleticsInterests:
           type: array
           xml:
-            name: athletics_interests
+            name: athleticsInterests
             wrapped: true
           items:
             type: string
-        general_interests:
+        generalInterests:
           type: array
           xml:
-            name: general_interests
+            name: generalInterests
             wrapped: true
           items:
             type: string
         imageUri:
           type: string
-        file_descriptor:
-          type: array
-          items:
-            $ref: '#/components/schemas/FileDescriptor'
+        creationDate:
+          type: string
+        lastModifiedDate:
+          type: string
     Pii:
       type: object
       properties:
         uuid:
           type: string
-        pii-uuid:
+        pid:
           type: string
         userName:
           type: string
-        firstName:
+        firstname:
           type: string
-        lastName:
+        lastname:
           type: string
         email:
           type: string
         phone:
           type: string
-        imageUri:
-            type: string
+        imageUrl:
+          type: string
+        creationDate:
+          type: string
+        lastModifiedDate:
+          type: string
     Event:
       required:
         - title
@@ -595,16 +756,18 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
           description: the event id
+        dbInternalID:
+          type: string
+          description: the internal database id
         eventType:
           type: string
           enum:
-            - Ceremony/Service 
-            - Community Service 
+            - Ceremony/Service
+            - Community Service
             - Conference/Workshop
-            - Exhibition 
+            - Exhibition
             - Festival/Celebration
             - Film Screening
             - Health/Fitness
@@ -627,10 +790,10 @@ components:
           type: string
           description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
         description:
-          type: string  
+          type: string
         startDate:
           type: string
-          format: date-time  
+          format: date-time
         endDate:
           type: string
           format: date-time
@@ -646,9 +809,9 @@ components:
             - parents
             - public
         icalUrl:
-          type: string 
+          type: string
         outlookUrl:
-          type: string 
+          type: string
         speaker:
           type: string
         registrationURL:
@@ -672,7 +835,19 @@ components:
             type: string
         location:
           $ref: "#/components/schemas/Location"
-            
+        dateModified:
+          type: string
+          description: store a timestamp when this event was modified.
+          format: date-time
+        submissionStatus:
+          type: string
+          description: store the status of this event submission
+          enum:
+          - submitted
+          - published
+          - rejected
+          - incomplete
+          - archived
     Location:
       type: object
       properties:
@@ -687,7 +862,6 @@ components:
           description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
         floor:
           type: integer
-
     Contact:
       type: object
       properties:
@@ -699,11 +873,10 @@ components:
           type: string
         phone:
           type: string
-        organization: 
+        organization:
           type: string
       xml:
         name: "Contact"
-        
     Notification:
       required:
       - id
@@ -750,15 +923,6 @@ components:
           example: event, class registration etc.
         description:
           type: string
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-          example: everything is ok
     FileDescriptor:
       type: object
       properties:
@@ -777,6 +941,19 @@ components:
           type: string
         md5sum:
           type: string
+    AppConfig:
+      type: object
+      properties:
+        id:
+          type: string
+        mobileAppVersion:
+          type: string
+        platformBuildingBlocks: 
+          type: object
+        thirdPartyServices:
+          type: object
+        otherUniversityServices:
+          type: object
   requestBodies:
     NotificationArray:
       description: List of Notification object

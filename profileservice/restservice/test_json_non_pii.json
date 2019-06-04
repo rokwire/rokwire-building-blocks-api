@@ -1,10 +1,10 @@
 {
-  "uuid": "1ad6e7de-f972-4a4b-91c4-192f4d1a66f2",
-  "general_interests": [
+  "over13": true,
+  "generalInterests": [
     "music",
     "movie"
   ],
-  "athletics_interests": [
+  "athleticsInterests": [
     "basket ball",
     "foot ball"
   ]
