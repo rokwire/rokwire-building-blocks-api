@@ -163,7 +163,7 @@ This query will return all events whose tags contain ``coffee`` and ``music``.
 This query will return all events whose target audience is either ``student`` or ``staff``.
 
 ```
-/events?targetAudience=student&targetAudience=staff
+/events?targetAudience=students&targetAudience=staff
 ```
 
 ### DateTime Range Search:
