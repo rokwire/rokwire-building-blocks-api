@@ -1,4 +1,4 @@
-# Event Building Block
+# Events Building Block
 
 The goal of the events building block is to provide a set of RESTFul web services to manage events in the Rokwire platform. This includes adding a new event, retrieving relevant events based on search query, etc.
                       
