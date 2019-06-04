@@ -25,7 +25,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 ## Sample Events for Post Endpoint:
 
-Let us use `Curl` command to post two sample events to the event building block running at `http://localhost:5000`.
+Let us use ```curl``` command to post two sample events to the Events Building Block running at `http://localhost:5000/events`.
 
 
 ```
