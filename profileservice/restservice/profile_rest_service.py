@@ -21,7 +21,7 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
-# app.before_request(middleware.authenticate)
+# app.before_request(middleware.authenticate_shibboleth)
 
 __logger = logging.getLogger("profileservice")
 

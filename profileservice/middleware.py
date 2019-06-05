@@ -1,12 +1,52 @@
 import logging
 
 from flask import request, abort
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_auth_requests
 
 logger = logging.getLogger(__name__)
 
-def authenticate():
+
+def authenticate_shibboleth():
+    import jwt
+    import json
+    import requests
+
+    SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
+
+    _id_token = request.headers.get('Id-Token')
+    if not _id_token:
+        logger.warn("Request missing Id-Token header")
+        abort(401)
+    kid = jwt.get_unverified_header(_id_token)['kid']
+    keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+    if keyset_resp.status_code != 200:
+        logger.warn("bad status getting keyset. status code = %s" % keyset_resp.status_code)
+        abort(401)
+    keyset = keyset_resp.json()
+    matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
+    if len(matching_jwks) != 1:
+        logger.warn("should have exactly one match for kid = %s" % kid)
+        abort(401)
+    jwk = matching_jwks[0]
+    pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    try:
+        id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
+    except jwt.exceptions.DecodeError as de:
+        logger.warn("decode error. message = %s" % de)
+        abort(401)
+    if not id_info:
+        logger.warn("id_info was not returned from decode")
+        abort(401)
+    if id_info['iss'] not in [SHIB_HOST, 'https://' + SHIB_HOST,]:
+        logger.warn("invalid iss of %s" % id_info['iss'])
+        abort(401)
+    request.user_token_data = id_info
+    return
+
+
+def authenticate_google():
+    from google.oauth2 import id_token
+    from google.auth.transport import requests as google_auth_requests
+
     _id_token = request.headers.get('Id-Token')
     if not _id_token:
         logger.warn("Request missing Id-Token header")
@@ -41,3 +81,4 @@ def authenticate():
         logger.warn("unrecognized host domain of %s" % id_info['hd'])
         abort(401)
     request.user_token_data = id_info
+    return
