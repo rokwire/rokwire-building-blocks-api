@@ -112,30 +112,30 @@ def deal_profile_id(uuid):
                     msg = "There is no profile dataset with given uuid " + str(uuid)
                     logging.error(msg)
                     return not_found("Profile not found")
-                else:
-                    msg = "Profile data will be updated with the id of " + str(uuid)
-                    logging.debug(msg)
 
-                    non_pii_dataset = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
-                    currenttime = datetime.datetime.now()
-                    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-                    non_pii_dataset.set_last_modified_date(currenttime)
+                msg = "Profile data will be updated with the id of " + str(uuid)
+                logging.debug(msg)
 
-                    result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid,
-                                                                                              non_pii_dataset)
+                non_pii_dataset = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
+                currenttime = datetime.datetime.now()
+                currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+                non_pii_dataset.set_last_modified_date(currenttime)
 
-                    if result is None:
-                        msg = "Failed to update non Profile dataset: " + str(uuid)
-                        logging.error(msg)
+                result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(cfg.FIELD_PROFILE_UUID, uuid,
+                                                                                          non_pii_dataset)
 
-                        return not_implemented("Invalid ID supplied")
-                    else:
-                        non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
-                        out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
-                        msg = "Profile data has been posted with : " + str(uuid)
-                        logging.debug(msg)
+                if result is None:
+                    msg = "Failed to update non Profile dataset: " + str(uuid)
+                    logging.error(msg)
 
-                        return out_json
+                    return not_implemented("Invalid ID supplied")
+
+                non_pii_dataset = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
+                out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
+                msg = "Profile data has been posted with : " + str(uuid)
+                logging.debug(msg)
+
+                return out_json
 
             # delete profile by using profile id
             if request.method == 'DELETE':
@@ -144,16 +144,16 @@ def deal_profile_id(uuid):
                     msg = "deleted profile information: " + str(id)
                     logging.debug(msg)
                     return entry_deleted(id)
-                else:
-                    try:
-                        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-                        msg = "deleted profile information: " + str(uuid)
-                        logging.debug(msg)
-                        return entry_deleted(uuid)
-                    except:
-                        msg = "failed to deleted. not found: " + str(uuid)
-                        logging.error(msg)
-                        return not_found("Profile not found")
+
+                try:
+                    mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
+                    msg = "deleted profile information: " + str(uuid)
+                    logging.debug(msg)
+                    return entry_deleted(uuid)
+                except:
+                    msg = "failed to deleted. not found: " + str(uuid)
+                    logging.error(msg)
+                    return not_found("Profile not found")
         else:
             msg = "the dataset does not exist: " + str(uuid)
             logging.error(msg)
@@ -177,26 +177,23 @@ def pii_root_dir():
             out_json = mongoutils.get_pii_http_output_query_result_using_field_string(cfg.FIELD_PID, term_uuid)
             if out_json == None:
                 return not_found()
-            else:
-                return out_json
+            return out_json
         if term_username != None:
             out_json = mongoutils.get_pii_http_output_query_result_using_field_string('username', term_username)
             if out_json == None:
                 return not_found()
-            else:
-                return out_json
+            return out_json
         if term_phone != None:
             out_json = mongoutils.get_pii_http_output_query_result_using_field_string('phone', term_phone)
             if out_json == None:
                 return not_found()
-            else:
-                return out_json
+            return out_json
         if term_email != None:
             out_json = mongoutils.get_pii_http_output_query_result_using_field_string('email', term_email)
             if out_json == None:
                 return not_found()
-            else:
-                return out_json
+            return out_json
+
     elif request.method == 'POST':
         is_new_entry = False
         try:
@@ -261,11 +258,11 @@ def pii_root_dir():
                 logging.error(msg)
 
                 return not_implemented("Invalid ID supplied")
-            else:
-                msg = "Pii data has been posted with : " + str(pid)
-                logging.debug(msg)
 
-                return return_id(msg, 'pid', pid)
+            msg = "Pii data has been posted with : " + str(pid)
+            logging.debug(msg)
+
+            return return_id(msg, 'pid', pid)
         else:
             msg = 'The request is wrong or the entry already exists'
             logging.error(msg)
@@ -320,47 +317,47 @@ def deal_pid(pid):
                     msg = "There is no dataset with given pii uuid " + str(pid)
                     logging.error(msg)
                     return not_found("Profile not found")
-                else:
-                    msg = "Pii data will be updated with the id of " + str(pid)
-                    logging.debug(msg)
 
-                    pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
-                    currenttime = datetime.datetime.now()
-                    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-                    pii_dataset.set_last_modified_date(currenttime)
+                msg = "Pii data will be updated with the id of " + str(pid)
+                logging.debug(msg)
 
-                    # update pii_dataset's non_pii_uuid
-                    non_pii_uuid_from_dataset = pii_dataset.get_uuid()
-                    try:
-                        non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-                        is_non_pii_uuid_in_json_new = True
-                        # check if non-pii-uuid is already in there
-                        for i in range(len(non_pii_uuid_from_dataset)):
-                            if non_pii_uuid == non_pii_uuid_from_dataset[i]:
-                                is_non_pii_uuid_in_json_new = False
+                pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
+                currenttime = datetime.datetime.now()
+                currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+                pii_dataset.set_last_modified_date(currenttime)
 
-                        # adde non-pii uuid in json only if it is now uuid
-                        if is_non_pii_uuid_in_json_new:
-                            non_pii_uuid_from_dataset.append(non_pii_uuid)
-                            pii_dataset.set_non_pii_uuid(non_pii_uuid)
-                    except:
-                        pass
+                # update pii_dataset's non_pii_uuid
+                non_pii_uuid_from_dataset = pii_dataset.get_uuid()
+                try:
+                    non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
+                    is_non_pii_uuid_in_json_new = True
+                    # check if non-pii-uuid is already in there
+                    for i in range(len(non_pii_uuid_from_dataset)):
+                        if non_pii_uuid == non_pii_uuid_from_dataset[i]:
+                            is_non_pii_uuid_in_json_new = False
 
-                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid,
-                                                                                          pii_dataset)
+                    # adde non-pii uuid in json only if it is now uuid
+                    if is_non_pii_uuid_in_json_new:
+                        non_pii_uuid_from_dataset.append(non_pii_uuid)
+                        pii_dataset.set_non_pii_uuid(non_pii_uuid)
+                except:
+                    pass
 
-                    if result is None:
-                        msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
-                        logging.error(msg)
+                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid,
+                                                                                      pii_dataset)
 
-                        return not_implemented("Invalid ID supplied")
-                    else:
-                        pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
-                        out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-                        msg = "Pii data has been posted with : " + str(pid)
-                        logging.debug(msg)
+                if result is None:
+                    msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
+                    logging.error(msg)
 
-                        return out_json
+                    return not_implemented("Invalid ID supplied")
+
+                pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
+                out_json = mongoutils.construct_json_from_query_list(pii_dataset)
+                msg = "Pii data has been posted with : " + str(pid)
+                logging.debug(msg)
+
+                return out_json
 
             # delete profile by using profile id
             if request.method == 'DELETE':
