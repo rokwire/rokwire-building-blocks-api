@@ -478,7 +478,7 @@ paths:
           type: number
       - name: longitude
         in: query
-        description: the longitude of the center point for geolocation radius search.
+        description: The longitude of the center point for geolocation radius search.
         required: false
         style: form
         explode: true
