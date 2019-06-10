@@ -438,7 +438,7 @@ paths:
           type: string
       - name: tags
         in: query
-        description: search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
+        description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
         required: false
         style: form
         explode: true
