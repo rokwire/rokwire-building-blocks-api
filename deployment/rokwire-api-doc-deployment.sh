@@ -13,17 +13,23 @@ fi
 name="rokwire-api-doc"
 
 matchingStarted=$(sudo docker ps --filter="name=$name" -q | xargs)
-if [[ -n $matchingStarted ]]; then 
+if [ ! -z $matchingStarted ]; then 
+    echo "stop docker"
     sudo docker stop $matchingStarted
 fi
 
 matching=$(sudo docker ps -a --filter="name=$name" -q | xargs)
-if [[ -n $matching ]]; then
+if [ ! -z $matching ]; then
+    echo "rm docker"
     sudo docker rm $matching
 fi
 
-if [[ "$(sudo docker images -q swaggerapi/swagger-ui:latest 2> /dev/null)" == "" ]]; then
+swaggerImage="swaggerapi/swagger-ui:latest"
+
+matchingImage=$(sudo docker images -q $swaggerImage -q | xargs)
+if [ -z $matchingImage ]; then
+  echo "pull swagger docker image"
   sudo docker pull swaggerapi/swagger-ui
 fi
 
-sudo docker run --name=$name -p 80:8080 -p 8080:8080 -BASE_URL=/docs -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&
+sudo docker run --name=$name -p 80:8080 -p 8080:8080 -e BASE_URL=/docs -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&
