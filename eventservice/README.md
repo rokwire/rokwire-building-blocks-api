@@ -26,7 +26,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd eventservice
 ./docker.sh
-docker run --rm --name events -v $PWD/config.py:/app/eventservice/config.py -p 8000:8000 rokwire/eventsservice
+docker run --rm --name events -v $PWD/config.py:/app/eventservice/config.py -p 5000:5000 rokwire/eventsservice
 ```
 You need to edit config.py where you have to specify mongo url.
 ```
