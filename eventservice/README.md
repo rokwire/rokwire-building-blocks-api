@@ -30,7 +30,7 @@ docker run --rm --name events -v $PWD/config.py:/app/eventservice/config.py -p 5
 ```
 You need to edit config.py where you have to specify mongo url.
 ```
-EVENT_MONGO_URL="mongodb://youmachinepublicip:27017"
+EVENT_MONGO_URL="mongodb://MongoDBMachinePublicIP:27017"
 EVENT_DB_NAME="eventdb"
 ```
 
