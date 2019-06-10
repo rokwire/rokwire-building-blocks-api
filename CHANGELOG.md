@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - This CHANGELOG file
+- Events Building Block.
 - Issue template.
 - Definitions for PUT method for events in YAML file.
 - Fields to event schema for storing submission status and date modified.
@@ -19,3 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The code repository name to rokwire-building-blocks-api.
 - Fix README to use updated API definition YAML file URL.
 - Fix API definition YAML file to use rokwire instead of SCCI.
+- Add App Config API definition to Swagger YAML file
+- Events building block API definition and schema to include event categories and sub categories
+
+### Fixed
+- Events building block API definition to improve text.

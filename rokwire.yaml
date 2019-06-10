@@ -15,6 +15,8 @@ tags:
   description: API endpoints for managing user notifications.
 - name: Events
   description: API endpoints for managing events.
+- name: App Configuration
+  description: API endpoints for managing app configuration
 paths:
   /profiles:
     post:
@@ -426,14 +428,70 @@ paths:
       description: By passing in the appropriate options, you can search for events matching your criteria in the system
       operationId: searchEvents
       parameters:
-      - name: searchString
+      - name: title
         in: query
-        description: pass an optional search string for looking up events
-        required: true
+        description: The parameter for searching events based on keywords in the title.
+        required: false
         style: form
         explode: true
         schema:
           type: string
+      - name: tags
+        in: query
+        description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: targetAudience
+        in: query
+        description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: latitude
+        in: query
+        description: The latitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: longitude
+        in: query
+        description: The longitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: radius
+        in: query
+        description: The parameter to search events within a given radius of the provided location in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
       - name: skip
         in: query
         description: number of records to skip for pagination
@@ -468,7 +526,7 @@ paths:
         401:
           description: Unauthorized
         404:
-          description: Profile not found
+          description: Event not found
         500:
           description: Internal error
     post:
@@ -559,6 +617,139 @@ paths:
           description: Invalid ID supplied
         404:
           description: Event not found
+  /app/configs:
+    post:
+      tags:
+      - App Configuration
+      summary: Creates mobile app configuration
+      operationId: createAppConfig
+      requestBody:
+        description: Creates AppConfig object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+        required: true
+      responses:
+        201:
+          description: AppConfig created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
+    get:
+      tags:
+      - App Configuration
+      summary: Reads mobile app configuration
+      operationId: getAppConfig
+      responses:
+        200:
+          description: successfully read mobile app configuration
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
+  /app/configs/{id}:
+    get:
+      tags:
+      - App Configuration
+      summary: Reads mobile app configuration by given id
+      operationId: getAppConfigById
+      parameters:
+      - name: id
+        in: path
+        description: app config id to read
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successfully read mobile app configuration
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
+    put:
+      tags:
+      - App Configuration
+      summary: Updates mobile app configuration
+      operationId: updateAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: update AppConfig object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+        required: true
+      responses:
+        200:
+          description: successfully updated mobile app configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
+    delete:
+      tags:
+      - App Configuration
+      summary: Deletes mobile app configuration
+      operationId: deleteAppConfig
+      parameters:
+      - name: id
+        in: path
+        description: app config id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        202:
+          description: AppConfig deleted
+        401:
+          description: Unauthorized
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
 components:
   schemas:
     Non-pii:
@@ -621,38 +812,34 @@ components:
         id:
           type: string
           description: the event id
-        dbInternalID:
+        sourceEventId:
           type: string
-          description: the internal database id
-        eventType:
+          description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
+        category:
           type: string
           enum:
-            - Ceremony/Service
-            - Community Service
-            - Conference/Workshop
-            - Exhibition
-            - Festival/Celebration
-            - Film Screening
-            - Health/Fitness
-            - Informational
-            - Lecture
-            - Meeting
-            - Performance
-            - Professional Development
-            - Reception/Open House
-            - Seminar/Symposium
-            - Social/Informal Event
-            - Sporting Event
+            - Entertainment
+            - Academic
+            - Community
+            - Career Development
+            - Recreation
+            - Athletics
             - Other
+        subCategory:
+          type: string
         sponsor:
           type: string
           description: For example, Center for Advanced Study
         title:
           type: string
+        subTitle:
+          type: string
         titleURL:
           type: string
           description: Title URL representing the event title. For example, https://cas.illinois.edu/node/190
-        description:
+        longDescription:
+          type: string
+        shortDescription:
           type: string
         startDate:
           type: string
@@ -671,6 +858,8 @@ components:
             - alumni
             - parents
             - public
+        imageUrl:
+          type: string
         icalUrl:
           type: string
         outlookUrl:
@@ -696,6 +885,8 @@ components:
             wrapped: true
           items:
             type: string
+        placeId:
+          type: string
         location:
           $ref: "#/components/schemas/Location"
         dateModified:
@@ -711,10 +902,17 @@ components:
           - rejected
           - incomplete
           - archived
-
     Location:
       type: object
       properties:
+        locationId:
+          type: string
+        room:
+          type: string
+        building:
+          type: string
+        address:
+          type: string
         latitude:
           type: number
           description: Latitude component of location.
@@ -723,10 +921,9 @@ components:
           description: Longitude component of location.
         description:
           type: string
-          description: building name and room number, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
+          description: Description of the building from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
         floor:
           type: integer
-
     Contact:
       type: object
       properties:
@@ -742,7 +939,6 @@ components:
           type: string
       xml:
         name: "Contact"
-
     Notification:
       required:
       - id
@@ -798,6 +994,19 @@ components:
         message:
           type: string
           example: everything is ok
+    AppConfig:
+      type: object
+      properties:
+        id:
+          type: string
+        mobileAppVersion:
+          type: string
+        platformBuildingBlocks: 
+          type: object
+        thirdPartyServices:
+          type: object
+        otherUniversityServices:
+          type: object
   requestBodies:
     NotificationArray:
       description: List of Notification object
