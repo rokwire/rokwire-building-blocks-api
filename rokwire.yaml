@@ -45,7 +45,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/{profileId}:
+  /profiles/{uuid}:
     get:
       tags:
       - Profile
@@ -53,7 +53,7 @@ paths:
       description: Returns a single profile
       operationId: getProfileById
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: ID of profile to return
         required: true
@@ -85,7 +85,7 @@ paths:
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: ID of profile that needs to be updated
         required: true
@@ -125,7 +125,7 @@ paths:
       summary: Deletes a profile
       operationId: deleteProfile
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: Profile id to delete
         required: true
@@ -143,39 +143,6 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /profiles/{profileId}/uploadImage:
-    post:
-      tags:
-      - Profile
-      summary: uploads an image
-      operationId: uploadFile
-      parameters:
-      - name: profileId
-        in: path
-        description: ID of profile to update
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      requestBody:
-        description: 'Form inputs representing the image'
-        content:
-          FormDataMultiPart:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Non-pii'
-        400:
-          description: Bad request
-        500:
-          description: Some has gone wrong, try again later
   /profiles/pii:
     post:
       tags:
@@ -194,7 +161,7 @@ paths:
           description: Bad request
         500:
           description: Internal error
-  /profiles/pii/{piiId}:
+  /profiles/pii/{pid}:
     get:
       tags:
       - PII
@@ -202,7 +169,7 @@ paths:
       description: Returns a single pii
       operationId: getPiiById
       parameters:
-      - name: piiId
+      - name: pid
         in: path
         description: ID of pii to return
         required: true
@@ -234,7 +201,7 @@ paths:
       summary: Updates a pii with form data
       operationId: updatePiiWithForm
       parameters:
-      - name: piiId
+      - name: pid
         in: path
         description: ID of pii that needs to be updated
         required: true
@@ -273,7 +240,7 @@ paths:
       summary: Deletes a pii
       operationId: deletePii
       parameters:
-      - name: piiId
+      - name: pid
         in: path
         description: Pii id to delete
         required: true
@@ -290,6 +257,39 @@ paths:
           description: Profile not found
         500:
           description: Internal error
+  /profiles/pii/{pid}/uploadImage:
+    post:
+      tags:
+      - PII
+      summary: uploads an image
+      operationId: uploadFile
+      parameters:
+      - name: pid
+        in: path
+        description: ID of profile to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: 'Form inputs representing the image'
+        content:
+          FormDataMultiPart:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pii'
+        400:
+          description: Bad request
+        500:
+          description: Something has gone wrong, try again later
   /notifications:
     get:
       tags:
@@ -773,8 +773,6 @@ components:
             wrapped: true
           items:
             type: string
-        imageUri:
-          type: string
         creationDate:
           type: string
         lastModifiedDate:
@@ -987,24 +985,15 @@ components:
           example: event, class registration etc.
         description:
           type: string
-    FileDescriptor:
+    ApiResponse:
       type: object
       properties:
-        id:
-          type: string
-        deleted:
-          type: boolean
-        filename:
-          type: string
-        mimeType:
-          type: string
-        size:
+        code:
           type: integer
-          format: int64
-        dataURL:
+          format: int32
+        message:
           type: string
-        md5sum:
-          type: string
+          example: everything is ok
     AppConfig:
       type: object
       properties:

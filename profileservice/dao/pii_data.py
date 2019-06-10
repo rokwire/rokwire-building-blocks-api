@@ -11,6 +11,8 @@ class pii_data:
         self.netid = None
         self.pid = None
         self.uuid = None
+        self.imageUrl = None
+        self.fileDescriptors = None
         self.creationDate = None
         self.lastModifiedDate = None
 
@@ -73,6 +75,22 @@ class pii_data:
 
     def get_uuid(self):
         return self.uuid
+
+    def add_file_descriptor(self, fileDescriptor):
+        if (fileDescriptor is not None):
+            self.get_file_descriptors().append(fileDescriptor)
+
+    def set_file_descriptors(self, fileDescriptors):
+        self.fileDescriptors = fileDescriptors
+
+    def get_file_descriptors(self):
+        return self.fileDescriptors
+
+    def set_image_url(self, imageUrl):
+        self.imageUrl = imageUrl
+
+    def get_image_url(self):
+        return self.imageUrl
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate

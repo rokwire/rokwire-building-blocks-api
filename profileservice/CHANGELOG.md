@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [SCCI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
 - checking method for email and phone number to prevent duplicate entry
 [#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
-
+- profile rest service dockerized
+[#62](https://github.com/rokwire/rokwire-building-blocks-api/issues/62)
+- image update and fileDescriptor moved to pii from non-pii
+[#72](https://github.com/rokwire/rokwire-building-blocks-api/issues/72)
+- separated non-pii and pii database url
+[#73](https://github.com/rokwire/rokwire-building-blocks-api/issues/73)
 ### Fixed
 
