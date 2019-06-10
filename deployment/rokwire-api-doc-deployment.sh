@@ -13,10 +13,14 @@ fi
 name="rokwire-api-doc"
 
 matchingStarted=$(sudo docker ps --filter="name=$name" -q | xargs)
-[[ -n $matchingStarted ]] && sudo docker stop $matchingStarted
+if [[ -n $matchingStarted ]]; then 
+    sudo docker stop $matchingStarted
+fi
 
 matching=$(sudo docker ps -a --filter="name=$name" -q | xargs)
-[[ -n $matching ]] && sudo docker rm $matching
+if [[ -n $matching ]]; then
+    sudo docker rm $matching
+fi
 
 if [[ "$(sudo docker images -q swaggerapi/swagger-ui:latest 2> /dev/null)" == "" ]]; then
   sudo docker pull swaggerapi/swagger-ui
