@@ -816,7 +816,7 @@ components:
           description: the event id
         sourceEventId:
           type: string
-          description: the id of one event from different sources, e.g., WebTools, EMS, etc.
+          description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
         category:
           type: string
           enum:
