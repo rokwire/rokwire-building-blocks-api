@@ -486,7 +486,7 @@ paths:
           type: number
       - name: radius
         in: query
-        description: search events within the given radius in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
+        description: The parameter to search events within a given radius of the provided location in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
         required: false
         style: form
         explode: true
