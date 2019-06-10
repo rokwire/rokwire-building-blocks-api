@@ -454,7 +454,7 @@ paths:
           type: string
       - name: startDate
         in: query
-        description: search events with the given startDate, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or after the give startDate.
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
         required: false
         style: form
         explode: true
