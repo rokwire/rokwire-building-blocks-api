@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t rokwire/eventsservice .
+docker build -t rokwire/events-building-block .
