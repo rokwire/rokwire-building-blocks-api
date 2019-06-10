@@ -887,7 +887,7 @@ components:
             wrapped: true
           items:
             type: string
-        placeID:
+        placeId:
           type: string
         location:
           $ref: "#/components/schemas/Location"
