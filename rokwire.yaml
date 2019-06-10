@@ -798,24 +798,6 @@ components:
         message:
           type: string
           example: everything is ok
-    FileDescriptor:
-      type: object
-      properties:
-        id:
-          type: string
-        deleted:
-          type: boolean
-        filename:
-          type: string
-        mimeType:
-          type: string
-        size:
-          type: integer
-          format: int64
-        dataURL:
-          type: string
-        md5sum:
-          type: string
   requestBodies:
     NotificationArray:
       description: List of Notification object
