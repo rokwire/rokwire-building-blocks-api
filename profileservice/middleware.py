@@ -14,30 +14,30 @@ def authenticate_shibboleth():
 
     _id_token = request.headers.get('Id-Token')
     if not _id_token:
-        logger.warn("Request missing Id-Token header")
+        logger.warning("Request missing Id-Token header")
         abort(401)
     kid = jwt.get_unverified_header(_id_token)['kid']
     keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
     if keyset_resp.status_code != 200:
-        logger.warn("bad status getting keyset. status code = %s" % keyset_resp.status_code)
+        logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
         abort(401)
     keyset = keyset_resp.json()
     matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
     if len(matching_jwks) != 1:
-        logger.warn("should have exactly one match for kid = %s" % kid)
+        logger.warning("should have exactly one match for kid = %s" % kid)
         abort(401)
     jwk = matching_jwks[0]
     pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
     try:
         id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
     except jwt.exceptions.DecodeError as de:
-        logger.warn("decode error. message = %s" % de)
+        logger.warning("decode error. message = %s" % de)
         abort(401)
     if not id_info:
-        logger.warn("id_info was not returned from decode")
+        logger.warning("id_info was not returned from decode")
         abort(401)
     if id_info['iss'] not in [SHIB_HOST, 'https://' + SHIB_HOST,]:
-        logger.warn("invalid iss of %s" % id_info['iss'])
+        logger.warning("invalid iss of %s" % id_info['iss'])
         abort(401)
     request.user_token_data = id_info
     return
@@ -49,18 +49,18 @@ def authenticate_google():
 
     _id_token = request.headers.get('Id-Token')
     if not _id_token:
-        logger.warn("Request missing Id-Token header")
+        logger.warning("Request missing Id-Token header")
         abort(401)
     client_platform = request.headers.get('Client-Platform')
     if not client_platform:
-        logger.warn("Request missing Client-Platform header")
+        logger.warning("Request missing Client-Platform header")
         abort(401)
     if client_platform == 'android':
         client_id = '995345377706-jo1h6i34bm6k2gce2018an17iohe2ouf.apps.googleusercontent.com'
     elif client_platform == 'ios':
         client_id = '995345377706-8rti0kckia00gnv0kn56btrcbgour92a.apps.googleusercontent.com'
     else:
-        logger.warn("unrecognized client platform of %s" % client_platform)
+        logger.warning("unrecognized client platform of %s" % client_platform)
         abort(401)
     try:
         id_info = id_token.verify_oauth2_token(
@@ -69,16 +69,16 @@ def authenticate_google():
             client_id,
         )
     except ValueError as ve:
-        logger.warn("ValueError on token verify. Message = %s" % ve)
+        logger.warning("ValueError on token verify. Message = %s" % ve)
         abort(401)
     if not id_info:
-        logger.warn("token not verified")
+        logger.warning("token not verified")
         abort(401)
     if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-        logger.warn("invalid iss of %s" % id_info['iss'])
+        logger.warning("invalid iss of %s" % id_info['iss'])
         abort(401)
     if id_info['hd'] != 'illinois.edu':
-        logger.warn("unrecognized host domain of %s" % id_info['hd'])
+        logger.warning("unrecognized host domain of %s" % id_info['hd'])
         abort(401)
     request.user_token_data = id_info
     return
