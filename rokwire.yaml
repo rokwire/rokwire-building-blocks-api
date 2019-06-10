@@ -430,7 +430,7 @@ paths:
       parameters:
       - name: title
         in: query
-        description: search keyword inside the event title
+        description: The parameter for searching events based on keywords in the title.
         required: false
         style: form
         explode: true
