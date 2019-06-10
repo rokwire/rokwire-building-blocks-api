@@ -21,11 +21,17 @@ There are several ways to view API design and document using Swagger:
 
 - deploy api doc to AWS instance (created with Ubuntu Server 18.04 LTS image)
     
-    ```sudo docker pull swaggerapi/swagger-ui``` 
+    ```
+        sudo docker pull swaggerapi/swagger-ui
+    ``` 
    
   Run docker image on AWS instance
+ 
+    Make sure one of the security groups that the instance associated with, includes inbound rule accepting http requests from port 80 and 8080.
 
-    ```sudo docker run --name=rokwire-api-doc -p 80:8080 -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&```
+    ```
+        sudo docker run --name=rokwire-api-doc -p 80:8080 -p 8080:8080 -BASE_URL=/docs -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&
+    ```
     
  
 ## Build a docker image
