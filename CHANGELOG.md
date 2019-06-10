@@ -21,3 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix README to use updated API definition YAML file URL.
 - Fix API definition YAML file to use rokwire instead of SCCI.
 - Add App Config API definition to Swagger YAML file
+- Events building block API definition and schema to include event categories and sub categories
+
+### Fixed
+- Events building block API definition to improve text.
