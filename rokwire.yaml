@@ -462,7 +462,7 @@ paths:
           type: string
       - name: endDate
         in: query
-        description: search events with the given endDate, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or before the give startDate.
+        description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
         required: false
         style: form
         explode: true
