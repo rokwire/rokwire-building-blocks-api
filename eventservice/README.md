@@ -152,6 +152,59 @@ It will return back the `deletion` status in json, where the `nDelete` denotes h
 }
 ```
 
+## One Example of Getting Categories Endpoint:
+```
+curl -X GET http://localhost:5000/events/categories
+```
+
+It will return back a list of main categories and sub categories:
+```
+[
+  {
+    "category": "Entertainment"
+  }, 
+  {
+    "category": "Academic"
+  }, 
+  {
+    "category": "Community"
+  }, 
+  {
+    "category": "Career Development"
+  }, 
+  {
+    "category": "Recreation"
+  }, 
+  {
+    "category": "Athletics", 
+    "subcategories": [
+      "Baseball", 
+      "Men's Basketball", 
+      "Men's Cross Country", 
+      "Football", 
+      "Men's Golf", 
+      "Men's Gymnastics", 
+      "Men's Tennis", 
+      "Men's Track & Field", 
+      "Wrestling", 
+      "Women's Basketball", 
+      "Women's Cross Country", 
+      "Women's Golf", 
+      "Women's Gymnastics", 
+      "Women's Soccer", 
+      "Softball", 
+      "Swim & Dive", 
+      "Women's Tennis", 
+      "Women's Track & Field", 
+      "Volleyball"
+    ]
+  }, 
+  {
+    "category": "Other"
+  }
+]
+```
+
 
 ## Query Search Examples:
 
@@ -192,6 +245,11 @@ This query will return back all events whose geolocation is within ``800`` meter
 /events?latitude=40.1078955&longitude=-88.224036&radius=800
 ```
 
+### Category Search
+This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category (e.g., searching main category is `Athletics` and its sub category is `Football`). It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be Football. The result also contains all the events whose main category is `Community`.
+```
+/events?category=Athletics.Football&category=Community
+```
 
 ## MongoDB
 
