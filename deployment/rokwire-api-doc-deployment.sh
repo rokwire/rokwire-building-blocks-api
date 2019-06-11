@@ -32,4 +32,4 @@ if [ -z $matchingImage ]; then
   sudo docker pull swaggerapi/swagger-ui
 fi
 
-sudo docker run --name=$name -p 80:8080 -p 8080:8080 -e BASE_URL=/docs -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&
+sudo docker run --name=$name -p 80:8080 -p 8080:8080 -e BASE_URL=/api/docs -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc swaggerapi/swagger-ui&
