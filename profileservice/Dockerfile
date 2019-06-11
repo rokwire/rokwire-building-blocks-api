@@ -4,11 +4,11 @@ EXPOSE 5000
 
 WORKDIR /usr/src/app
 
-COPY profileservice/requirements.txt .
+COPY requirements.txt .
 
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
-COPY . .
+COPY ../profileservice .
 
 WORKDIR /usr/src/app/profileservice/restservice
 
