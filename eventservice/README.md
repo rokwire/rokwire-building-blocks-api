@@ -246,7 +246,7 @@ This query will return back all events whose geolocation is within ``800`` meter
 ```
 
 ### Category Search
-This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category (e.g., searching main category is `Athletics` and its sub category is `Football`). It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be Football. The result also contains all the events whose main category is `Community`.
+This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category. It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be `Football`. The result also contains all the events whose main category is `Community`.
 ```
 /events?category=Athletics.Football&category=Community
 ```
