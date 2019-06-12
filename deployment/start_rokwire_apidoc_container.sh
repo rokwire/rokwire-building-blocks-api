@@ -32,6 +32,6 @@ if [ -z $matchingStarted ]; then
         -p 80:8080 -p 8080:8080 \
         -e BASE_URL=/api/docs \
         -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml \
-        -v /home/ubuntu/ws/rokwire-building-blocks-api:/rokwire-api-doc \
+        -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc \
         swaggerapi/swagger-ui&
 fi
