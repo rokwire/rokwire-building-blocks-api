@@ -12,7 +12,7 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_image_uri(injson['imageUrl'])
+        dataset.set_image_url(injson['imageUrl'])
     except:
         pass
     try:

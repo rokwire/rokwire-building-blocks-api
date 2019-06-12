@@ -22,6 +22,18 @@ flask run
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
+## Run as Docker Container in Local
+```
+cd eventservice
+./docker.sh
+docker run --rm --name events -v $PWD/config.py:/app/eventservice/config.py -p 5000:5000 rokwire/events-building-block
+```
+You need to edit config.py where you have to specify mongo url.
+```
+EVENT_MONGO_URL="mongodb://MongoDBMachinePublicIP:27017"
+EVENT_DB_NAME="eventdb"
+```
+
 
 ## Sample Events for Post Endpoint:
 

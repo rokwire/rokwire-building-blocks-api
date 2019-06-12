@@ -6,8 +6,6 @@ class non_pii_data:
         self.uuid = None
         self.generalInterests = None
         self.athleticsInterests = None
-        self.fileDescriptors = None
-        self.imageUrl = None
         self.over13 = None
         self.creationDate = None
         self.lastModifiedDate = None
@@ -45,22 +43,6 @@ class non_pii_data:
     def add_athletics_interest(self, athleticsInterest):
         if (athleticsInterest is not None):
             self.get_athletics_interests().append(athleticsInterest)
-
-    def add_file_descriptor(self, fileDescriptor):
-        if (fileDescriptor is not None):
-            self.get_file_descriptors().append(fileDescriptor)
-
-    def set_file_descriptors(self, fileDescriptors):
-        self.fileDescriptors = fileDescriptors
-
-    def get_file_descriptors(self):
-        return self.fileDescriptors
-
-    def set_image_uri(self, imageUrl):
-        self.imageUrl = imageUrl
-
-    def get_image_uri(self):
-        return self.imageUrl
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate

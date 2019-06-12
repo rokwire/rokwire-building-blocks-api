@@ -13,6 +13,7 @@ COPY . .
 WORKDIR /usr/src/app/profileservice/restservice
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
-    PROFILE_MONGO_URL=""
+    MONGO_PROFILE_URL="" \
+    MONGO_PII_URL=""
 
 CMD ["python", "profile_rest_service.py"]
