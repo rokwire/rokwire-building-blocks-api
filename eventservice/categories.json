@@ -1,7 +1,7 @@
-{"_id":{"$oid":"5cffb1d4ae60a578e60619d1"},"category":"Entertainment"}
-{"_id":{"$oid":"5cffb1eeae60a578e60619e4"},"category":"Academic"}
-{"_id":{"$oid":"5cffb207ae60a578e60619f1"},"category":"Community"}
-{"_id":{"$oid":"5cffb215ae60a578e60619f4"},"category":"Career Development"}
-{"_id":{"$oid":"5cffb227ae60a578e60619f9"},"category":"Recreation"}
-{"_id":{"$oid":"5cffb233ae60a578e60619fe"},"category":"Athletics","subcategories":["Baseball","Men's Basketball","Men's Cross Country","Football","Men's Golf","Men's Gymnastics","Men's Tennis","Men's Track \u0026 Field","Wrestling","Women's Basketball","Women's Cross Country","Women's Golf","Women's Gymnastics","Women's Soccer","Softball","Swim \u0026 Dive","Women's Tennis","Women's Track \u0026 Field","Volleyball"]}
-{"_id":{"$oid":"5cffb240ae60a578e6061a01"},"category":"Other"}
+{"category":"Entertainment"}
+{"category":"Academic"}
+{"category":"Community"}
+{"category":"Career Development"}
+{"category":"Recreation"}
+{"category":"Athletics","subcategories":["Baseball","Men's Basketball","Men's Cross Country","Football","Men's Golf","Men's Gymnastics","Men's Tennis","Men's Track Field","Wrestling","Women's Basketball","Women's Cross Country","Women's Golf","Women's Gymnastics","Women's Soccer","Softball","Swim Dive","Women's Tennis","Women's Track Field","Volleyball"]}
+{"category":"Other"}

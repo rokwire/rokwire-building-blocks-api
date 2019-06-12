@@ -110,7 +110,7 @@ def partial_update_event(event_id):
     req_data = request.get_json(force=True)
     try:
         req_data = query_params.formate_datetime(req_data)
-        if req_data.get('category') or req_data.get('subCategory'):
+        if req_data.get('category') or req_data.get('subcategory'):
             db = get_db()
             for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'categorymainsub': 1}):
                 req_data = query_params.update_category(req_data, data_tuple)

@@ -44,7 +44,7 @@ Let us use ```curl``` command to post two sample events to the Events Building B
 curl -d '{
         "tags": ["social", "reading", "coffee"],
         "title": "Reading Day at KCPA",
-        "eventType": "Social/Informal Event",
+        "category": "Community",
         "targetAudience": ["students", "alumni", "faculty", "public"],
         "sponsor": "Krannert Center for the Performing Arts",
         "startDate": "2019/05/02T11:00:00",
@@ -63,7 +63,7 @@ curl -d '{
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
         "title": "Celebrate Mathematic Pi Day",
-        "eventType": "Festival/Celebration",
+        "category": "Community",
         "targetAudience": ["staff"],
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
@@ -95,7 +95,7 @@ Put endpoint allows to replace an existing event with a new one. For example, we
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
         "title": "We Celebrate Mathematic Pi Day",
-        "eventType": "Festival/Celebration",
+        "category": "Community",
         "targetAudience": ["staff", "guest"],
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
@@ -253,6 +253,9 @@ This query supports main categories search and main/sub categories search. The r
 
 ## MongoDB
 
+You can import predefined categories into the local mongodb.
+mongoimport --db eventdb --collection categories --file categories.json
+
 Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
 text index and geospatial index.
 
@@ -261,4 +264,13 @@ Please refer to:
 https://docs.mongodb.com/manual/text-search/
 
 https://docs.mongodb.com/manual/geospatial-queries/
+
+```
+db.events.createIndex({'title': "text"})
+db.events.createIndex({'startDate': -1})
+db.events.createIndex({'endDate': -1})
+db.events.createIndex({'sponsor': 1})
+db.events.createIndex({'categorymainsub': 1})
+db.events.createIndex({'coordinates': "2dsphere"})
+```
 

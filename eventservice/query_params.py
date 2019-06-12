@@ -36,7 +36,7 @@ def format_query(args, query):
 
 
 def required_check(req_data):
-    if req_data['startDate'] is None or req_data['endDate'] is None or req_data['eventType'] is None or \
+    if req_data['startDate'] is None or req_data['endDate'] is None or \
             req_data['sponsor'] is None or req_data['title'] is None or req_data['category'] is None:
         return False
     return True
@@ -61,15 +61,15 @@ def formate_location(req_data):
 
 
 def formate_category(req_data):
-    if req_data.get('category') and req_data.get('subCategory'):
-        req_data['categorymainsub'] = req_data.get('category') + '.' + req_data.get('subCategory')
+    if req_data.get('category') and req_data.get('subcategory'):
+        req_data['categorymainsub'] = req_data.get('category') + '.' + req_data.get('subcategory')
     elif req_data.get('category'):
         req_data['categorymainsub'] = req_data.get('category')
     return req_data
 
 
 def update_category(req_data, data_tuple):
-    if req_data.get('category') or req_data.get('subCategory'):
+    if req_data.get('category') or req_data.get('subcategory'):
         category_main = ''
         category_sub = ''
         if data_tuple.get('categorymainsub'):
@@ -78,8 +78,8 @@ def update_category(req_data, data_tuple):
                 category_sub = data_tuple.get('categorymainsub').split('.')[1]
         if req_data.get('category'):
             category_main = req_data.get('category')
-        if req_data.get('subCategory'):
-            category_sub = req_data.get('subCategory')
+        if req_data.get('subcategory'):
+            category_sub = req_data.get('subcategory')
         req_data['categorymainsub'] = category_main + "." + category_sub
     return req_data
 
