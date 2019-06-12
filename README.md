@@ -32,15 +32,15 @@ There are several ways to view API design and document using Swagger:
     Make sure one of the security groups that the instance associated with, includes inbound rule accepting http requests from port 80 and 8080.
 
     ```
-    cd /home/ubuntu/rokwire-building-blocks
+    cd /home/ubuntu/rokwire-building-blocks/deployment
     sh start_rokwire_apidoc_container.sh
     
     ```
   Stop and remove docker container on AWS instance
   
     ```
-    cd /home/ubuntu/rokwire-building-blocks
-    sh start_rokwire_apidoc_container.sh
+    cd /home/ubuntu/rokwire-building-blocks/deployment
+    sh stop_rokwire_apidoc_container.sh
     
     ```
     
