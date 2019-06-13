@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Definitions for PUT method for events in YAML file.
 - Fields to event schema for storing submission status and date modified.
 - Scripts for deploying Swagger docker to host Rokwire API document on AWS
+- Profile Building Block
+
+- Added time stamp
+- Checking method for email and phone number to prevent duplicate entry
+- Profile rest service dockerized
+- Image update and fileDescriptor moved to pii from non-pii
+- Test profiles building block rest service deployed in AWS server
 
 ### Changed
 - Update events schema according to discussion and feedback.
@@ -23,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix API definition YAML file to use rokwire instead of SCCI.
 - Add App Config API definition to Swagger YAML file
 - Events building block API definition and schema to include event categories and sub categories
+- Separated non-pii data and pii data and database in profile building block
 
 ### Fixed
 - Events building block API definition to improve text.

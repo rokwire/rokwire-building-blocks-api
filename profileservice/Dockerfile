@@ -4,13 +4,13 @@ EXPOSE 5000
 
 WORKDIR /usr/src/app
 
-COPY profileservice/requirements.txt .
+COPY requirements.txt .
 
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-WORKDIR /usr/src/app/profileservice/restservice
+WORKDIR /usr/src/app/restservice
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
