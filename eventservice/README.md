@@ -44,7 +44,7 @@ Let us use ```curl``` command to post two sample events to the Events Building B
 curl -d '{
         "tags": ["social", "reading", "coffee"],
         "title": "Reading Day at KCPA",
-        "eventType": "Social/Informal Event",
+        "category": "Community",
         "targetAudience": ["students", "alumni", "faculty", "public"],
         "sponsor": "Krannert Center for the Performing Arts",
         "startDate": "2019/05/02T11:00:00",
@@ -63,7 +63,7 @@ curl -d '{
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
         "title": "Celebrate Mathematic Pi Day",
-        "eventType": "Festival/Celebration",
+        "category": "Community",
         "targetAudience": ["staff"],
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
@@ -95,7 +95,7 @@ Put endpoint allows to replace an existing event with a new one. For example, we
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
         "title": "We Celebrate Mathematic Pi Day",
-        "eventType": "Festival/Celebration",
+        "category": "Community",
         "targetAudience": ["staff", "guest"],
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
@@ -152,6 +152,59 @@ It will return back the `deletion` status in json, where the `nDelete` denotes h
 }
 ```
 
+## One Example of Getting Categories Endpoint:
+```
+curl -X GET http://localhost:5000/events/categories
+```
+
+It will return back a list of main categories and sub categories:
+```
+[
+  {
+    "category": "Entertainment"
+  }, 
+  {
+    "category": "Academic"
+  }, 
+  {
+    "category": "Community"
+  }, 
+  {
+    "category": "Career Development"
+  }, 
+  {
+    "category": "Recreation"
+  }, 
+  {
+    "category": "Athletics", 
+    "subcategories": [
+      "Baseball", 
+      "Men's Basketball", 
+      "Men's Cross Country", 
+      "Football", 
+      "Men's Golf", 
+      "Men's Gymnastics", 
+      "Men's Tennis", 
+      "Men's Track & Field", 
+      "Wrestling", 
+      "Women's Basketball", 
+      "Women's Cross Country", 
+      "Women's Golf", 
+      "Women's Gymnastics", 
+      "Women's Soccer", 
+      "Softball", 
+      "Swim & Dive", 
+      "Women's Tennis", 
+      "Women's Track & Field", 
+      "Volleyball"
+    ]
+  }, 
+  {
+    "category": "Other"
+  }
+]
+```
+
 
 ## Query Search Examples:
 
@@ -192,8 +245,16 @@ This query will return back all events whose geolocation is within ``800`` meter
 /events?latitude=40.1078955&longitude=-88.224036&radius=800
 ```
 
+### Category Search
+This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category. It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be `Football`. The result also contains all the events whose main category is `Community`.
+```
+/events?category=Athletics.Football&category=Community
+```
 
 ## MongoDB
+
+You can import predefined categories into the local mongodb.
+mongoimport --db eventdb --collection categories --file categories.json
 
 Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
 text index and geospatial index.
@@ -203,4 +264,13 @@ Please refer to:
 https://docs.mongodb.com/manual/text-search/
 
 https://docs.mongodb.com/manual/geospatial-queries/
+
+```
+db.events.createIndex({'title': "text"})
+db.events.createIndex({'startDate': -1})
+db.events.createIndex({'endDate': -1})
+db.events.createIndex({'sponsor': 1})
+db.events.createIndex({'categorymainsub': 1})
+db.events.createIndex({'coordinates': "2dsphere"})
+```
 

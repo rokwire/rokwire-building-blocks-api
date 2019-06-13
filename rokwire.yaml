@@ -617,6 +617,26 @@ paths:
           description: Invalid ID supplied
         404:
           description: Event not found
+  /events/categories:
+    get:
+      summary: get events categories
+      description: return back a list of categories and subcategories
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categories'
+
+        401:
+          description: Unauthorized
+        404:
+          description: Event not found
+        500:
+          description: Internal error
   /app/configs:
     post:
       tags:
@@ -902,6 +922,17 @@ components:
           - rejected
           - incomplete
           - archived
+    Categories:
+      type: object
+      properties:
+        category:
+          type: string
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubCategory'
+    SubCategory:
+      type: string
     Location:
       type: object
       properties:
