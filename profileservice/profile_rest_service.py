@@ -1,25 +1,28 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
-from bson import ObjectId
-from flask import flash, redirect, jsonify, make_response, request
-
+import sys
+sys.path.append('../')
 import datetime
 import logging
 import uuid as uuidlib
+
+from flask import Flask, flash, redirect, request
+from flask_restful import Resource, Api
+from bson import ObjectId
 
 import profileservice.configs as cfg
 import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.restservice.utils.jsonutils as jsonutils
 import profileservice.restservice.utils.datasetutils as datasetutils
-import profileservice.restservice.profile_rest_service as prs
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 
+from profileservice import middleware
 from profileservice.dao.pii_data import pii_data
 from profileservice.dao.non_pii_data import non_pii_data
 from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = Flask(__name__)
 api = Api(app)
+app.config['JSON_SORT_KEYS'] = False
+# app.before_request(middleware.authenticate)
 
 __logger = logging.getLogger("profileservice")
 
@@ -389,61 +392,62 @@ class DealPii(Resource):
             logging.error(msg)
             return rs_handlers.not_found("Profile not found")
 
-# TODO revive this when it needed the following method is commented out for now but should be here for future use
+# TODO revive this when it needed
+#  the following method is commented out for now but should be here for future use
 """
 upload image for the profile
 """
-@app.route('/profiles/pii/<pid>/uploadImage', methods=['POST'])
-def upload_profile_image(pid):
+class UploadProfileImage(Resource):
     # TODO add unsupported media type handler
-    if request.method == 'POST':
+    def post(self, pid):
         pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
         if pii_dataset is None:
             msg = "the dataset does not exist: " + str(pid)
             logging.error(msg)
-            return not_found()
+            return rs_handlers.not_found()
+
+        # create FileDescriptor for uploaded file
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        file = request.files['file']
+
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        fd = create_file_descriptor(cfg.PROFILE_REST_STORAGE, file)
+        file_descriptors = pii_dataset.get_file_descriptors()
+        if file_descriptors is None:
+            file_descriptors = []
+
+        file_descriptors.append(fd)
+        pii_dataset.set_file_descriptors(file_descriptors)
+        pii_dataset.set_image_url(fd.dataURL)
+        currenttime = datetime.datetime.now()
+        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        pii_dataset.set_last_modified_date(currenttime)
+
+        result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, pii_dataset)
+
+        if (result):
+            pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
+            out_json = mongoutils.construct_json_from_query_list(pii_dataset)
+            msg = "image has been posted to: " + str(pid)
+            logging.debug(msg)
+
+            return out_json
         else:
-            # create FileDescriptor for uploaded file
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-
-            file = request.files['file']
-
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-
-            fd = create_file_descriptor(cfg.PROFILE_REST_STORAGE, file)
-            file_descriptors = pii_dataset.get_file_descriptors()
-            if file_descriptors is None:
-                file_descriptors = []
-            file_descriptors.append(fd)
-            pii_dataset.set_file_descriptors(file_descriptors)
-            pii_dataset.set_image_url(fd.dataURL)
-            currenttime = datetime.datetime.now()
-            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            pii_dataset.set_last_modified_date(currenttime)
-
-            result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, pii_dataset)
-
-            if (result):
-                pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
-                out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-                msg = "image has been posted to: " + str(pid)
-                logging.debug(msg)
-
-                return out_json
-            else:
-                return bad_request('dataset update to db failed')
-    else:
-        return bad_request('request method not provided')
-
+            return rs_handlers.bad_request('dataset update to db failed')
 
 api.add_resource(NonPiiRootDir, '/profiles', endpoint='non_pii_root')
 api.add_resource(DealNonPii, '/profiles/<uuid>', endpoint='deal_non_pii')
 api.add_resource(PiiRootDir, '/profiles/pii', endpoint='pii_root')
 api.add_resource(DealPii, '/profiles/pii/<pid>', endpoint='deal_pii')
+
+#TODO this should be uncommneted when this needed
+api.add_resource(UploadProfileImage, '/profiles/pii/<pid>/uploadImage', endpoint='upload_profile_image')
 
 if __name__ == '__main__':
     app.run(debug=True)
