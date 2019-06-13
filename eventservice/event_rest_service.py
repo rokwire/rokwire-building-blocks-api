@@ -1,9 +1,9 @@
 import logging
 import flask
-import datetime
 
 from bson import ObjectId
 from .db import get_db
+from . import query_params
 from flask import Blueprint, request, make_response, abort
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
@@ -13,35 +13,35 @@ __logger = logging.getLogger("eventservice")
 bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
 
 
+@bp.route('/categories', methods=['GET'])
+def get_categories():
+    results = list()
+    try:
+        db = get_db()
+        for data_tuple in db['categories'].find({}, {'_id': 0}):
+            results.append(data_tuple)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
+    __logger.info(msg)
+    return flask.jsonify(results)
+
+
 @bp.route('/', methods=['GET'])
 def get_events():
     results = list()
     args = request.args
     query = dict()
-    # title text query
-    if args.get('title'):
-        query['$text'] = {'$search': args.get('title')}
-    # tags query
-    if args.getlist('tags'):
-        query['tags'] = {'$all': args.getlist('tags')}
-    # target audience query
-    if args.get('targetAudience'):
-        query['targetAudience'] = {'$in': args.getlist('targetAudience')}
-    # datetime range query
-    if args.get('startDate'):
-        query['startDate'] = {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}
-    if args.get('endDate'):
-        query['endDate'] = {'$lte': datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")}
-    # geolocation query
-    if args.get('latitude') and args.get('longitude') and args.get('radius'):
-        coordinates = [float(args.get('longitude')), float(args.get('latitude'))]
-        radius_meters = int(args.get('radius'))
-        query['coordinates'] = {'$geoWithin': {'$centerSphere': [coordinates, radius_meters*0.000621371/3963.2]}}
-
+    try:
+        query = query_params.format_query(args, query)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
     if query:
         try:
             db = get_db()
-            for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0}):
+            for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}):
                 results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
@@ -55,23 +55,17 @@ def get_events():
 @bp.route('/', methods=['POST'])
 def post_events():
     req_data = request.get_json(force=True)
+
+    if not query_params.required_check(req_data):
+        abort(400)
     try:
-        start_date = req_data.get('startDate')
-        req_data['startDate'] = datetime.datetime.strptime(start_date, "%Y/%m/%dT%H:%M:%S")
-        end_date = req_data.get('endDate')
-        req_data['endDate'] = datetime.datetime.strptime(end_date, "%Y/%m/%dT%H:%M:%S")
+        req_data = query_params.formate_datetime(req_data)
+        req_data = query_params.formate_location(req_data)
+        req_data = query_params.formate_category(req_data)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
 
-    if req_data['startDate'] is None or req_data['endDate'] is None or req_data['eventType'] is None or \
-            req_data['sponsor'] is None or req_data['title'] is None:
-        abort(400)
-
-    if req_data.get('location'):
-        location = req_data.get('location')
-        if location.get('longitude') and location.get('latitude'):
-            req_data['coordinates'] = [location.get('longitude'), location.get('latitude')]
     try:
         db = get_db()
         event_id = db['events'].insert(req_data)
@@ -88,6 +82,17 @@ def update_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
+
+    if not query_params.required_check(req_data):
+        abort(400)
+    try:
+        req_data = query_params.formate_datetime(req_data)
+        req_data = query_params.formate_location(req_data)
+        req_data = query_params.formate_category(req_data)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(400)
+
     try:
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
@@ -104,13 +109,12 @@ def partial_update_event(event_id):
         abort(400)
     req_data = request.get_json(force=True)
     try:
-        if req_data.get('startDate'):
-            start_date = req_data.get('startDate')
-            req_data['startDate'] = datetime.datetime.strptime(start_date, "%Y/%m/%dT%H:%M:%S")
-
-        if req_data.get('endDate'):
-            end_date = req_data.get('endDate')
-            req_data['endDate'] = datetime.datetime.strptime(end_date, "%Y/%m/%dT%H:%M:%S")
+        req_data = query_params.formate_datetime(req_data)
+        if req_data.get('category') or req_data.get('subcategory'):
+            db = get_db()
+            for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'categorymainsub': 1}):
+                req_data = query_params.update_category(req_data, data_tuple)
+                break
 
         coordinates = []
         try:
@@ -121,17 +125,11 @@ def partial_update_event(event_id):
                     if not coordinates:
                         abort(500)
                     break
+                req_data = query_params.update_coordinates(req_data, coordinates)
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
 
-        if req_data.get('location.latitude'):
-            coordinates[1] = req_data.get('location.latitude')
-            req_data['coordinates'] = coordinates
-
-        if req_data.get('location.longitude'):
-            coordinates[0] = req_data.get('location.longitude')
-            req_data['coordinates'] = coordinates
     except Exception as ex:
         __logger.exception(ex)
         abort(405)

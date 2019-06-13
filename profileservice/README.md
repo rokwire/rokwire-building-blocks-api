@@ -33,10 +33,10 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 ## Use Dokcer
 ### Build a docker image
-      docker build -t rokwire/profiles .
+      docker build -t rokwire/profile-building-block .
 
 ### Test the docker container image:
-      docker run --name profiles-rest-service -d --restart=always -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 -v /home/ywkim/rest:/usr/src/app/rest -d rokwire/profiles
+      docker run --name profile-building-block -d --restart=always -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 -v /home/ywkim/rest:/usr/src/app/rest -d rokwire/profile-building-block
       
 ### To run without docker
 

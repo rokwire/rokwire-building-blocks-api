@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Issue template.
 - Definitions for PUT method for events in YAML file.
 - Fields to event schema for storing submission status and date modified.
+- Scripts for deploying Swagger docker to host Rokwire API document on AWS
 
 ### Changed
 - Update events schema according to discussion and feedback.
