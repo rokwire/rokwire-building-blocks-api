@@ -16,7 +16,15 @@ def authenticate_shibboleth():
     if not _id_token:
         logger.warning("Request missing Id-Token header")
         abort(401)
-    kid = jwt.get_unverified_header(_id_token)['kid']
+    try:
+        unverified_header = jwt.get_unverified_header(_id_token)
+    except jwt.exceptions.PyJWTError as jwte:
+        logger.warning("jwt error on get unverified header. message = %s" % jwte)
+        abort(401)
+    kid = unverified_header.get('kid')
+    if not kid:
+        logger.warning("kid not found in unverified header")
+        abort(401)
     keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
     if keyset_resp.status_code != 200:
         logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
@@ -30,8 +38,8 @@ def authenticate_shibboleth():
     pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
     try:
         id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
-    except jwt.exceptions.DecodeError as de:
-        logger.warning("decode error. message = %s" % de)
+    except jwt.exceptions.PyJWTError as jwte:
+        logger.warning("jwt error on decode. message = %s" % jwte)
         abort(401)
     if not id_info:
         logger.warning("id_info was not returned from decode")
