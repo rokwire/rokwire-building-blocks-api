@@ -6,7 +6,7 @@ from flask import request, abort
 logger = logging.getLogger(__name__)
 
 
-def authenticate_shibboleth():
+def authenticate():
     import jwt
     import json
     import requests
