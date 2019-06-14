@@ -18,8 +18,6 @@ def authenticate():
         should_use_security_token_auth = getattr(view_func, '_use_security_token_auth', False)
     # print("should use security token auth = %s" % should_use_security_token_auth)
 
-    SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
-
     _id_token = request.headers.get('Id-Token')
     if not _id_token:
         logger.warning("Request missing Id-Token header")
@@ -29,32 +27,43 @@ def authenticate():
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on get unverified header. message = %s" % jwte)
         abort(401)
-    kid = unverified_header.get('kid')
-    if not kid:
-        logger.warning("kid not found in unverified header")
-        abort(401)
-    keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
-    if keyset_resp.status_code != 200:
-        logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
-        abort(401)
-    keyset = keyset_resp.json()
-    matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
-    if len(matching_jwks) != 1:
-        logger.warning("should have exactly one match for kid = %s" % kid)
-        abort(401)
-    jwk = matching_jwks[0]
-    pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
-    try:
-        id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
-    except jwt.exceptions.PyJWTError as jwte:
-        logger.warning("jwt error on decode. message = %s" % jwte)
-        abort(401)
-    if not id_info:
-        logger.warning("id_info was not returned from decode")
-        abort(401)
-    if id_info['iss'] not in [SHIB_HOST, 'https://' + SHIB_HOST,]:
-        logger.warning("invalid iss of %s" % id_info['iss'])
-        abort(401)
+    if unverified_header.get('phone', False):
+        # phone number verify
+        id_info = jwt.decode(
+            _id_token,
+            'secret-key-goes-here',
+            audience='rokwire',
+        )
+        # import pprint; pprint.pprint(id_info)
+    else:
+        # shibboleth
+        SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
+        kid = unverified_header.get('kid')
+        if not kid:
+            logger.warning("kid not found in unverified header")
+            abort(401)
+        keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+        if keyset_resp.status_code != 200:
+            logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
+            abort(401)
+        keyset = keyset_resp.json()
+        matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
+        if len(matching_jwks) != 1:
+            logger.warning("should have exactly one match for kid = %s" % kid)
+            abort(401)
+        jwk = matching_jwks[0]
+        pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+        try:
+            id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
+        except jwt.exceptions.PyJWTError as jwte:
+            logger.warning("jwt error on decode. message = %s" % jwte)
+            abort(401)
+        if not id_info:
+            logger.warning("id_info was not returned from decode")
+            abort(401)
+        if id_info['iss'] not in [SHIB_HOST, 'https://' + SHIB_HOST,]:
+            logger.warning("invalid iss of %s" % id_info['iss'])
+            abort(401)    kid = unverified_header.get('kid')
     request.user_token_data = id_info
     return
 
