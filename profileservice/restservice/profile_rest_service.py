@@ -32,6 +32,7 @@ mongoutils.index_pii_data()
 rest service for root directory
 """
 @app.route('/profiles', methods=['POST'])
+# @middleware.use_security_token_auth
 def non_pii_root_dir():
     if request.method == 'POST':
         is_new_install = True

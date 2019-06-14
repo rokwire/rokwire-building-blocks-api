@@ -1,4 +1,5 @@
 import logging
+import flask
 
 from flask import request, abort
 
@@ -9,6 +10,13 @@ def authenticate_shibboleth():
     import jwt
     import json
     import requests
+
+    should_use_security_token_auth = False
+    app = flask.current_app
+    if request.endpoint in app.view_functions:
+        view_func = app.view_functions[request.endpoint]
+        should_use_security_token_auth = getattr(view_func, '_use_security_token_auth', False)
+    # print("should use security token auth = %s" % should_use_security_token_auth)
 
     SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
 
@@ -49,6 +57,11 @@ def authenticate_shibboleth():
         abort(401)
     request.user_token_data = id_info
     return
+
+
+def use_security_token_auth(func):
+    func._use_security_token_auth = True
+    return func
 
 
 def authenticate_google():
