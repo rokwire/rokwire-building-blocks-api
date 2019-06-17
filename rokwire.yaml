@@ -697,8 +697,7 @@ components:
         - title
         - startDate
         - endDate
-        - sponsor
-        - eventType
+        - category
       type: object
       properties:
         id:
@@ -717,7 +716,7 @@ components:
             - Recreation
             - Athletics
             - Other
-        subCategory:
+        subcategory:
           type: string
         sponsor:
           type: string
