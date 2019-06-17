@@ -16,11 +16,19 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_general_interests(injson["generalInterests"])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_athletics_interests(injson["athleticsInterests"])
+        # check if it is a first interests
+        interests_num = len(dataset.get_interests)
+        if interests_num > 1:
+            dataset.interest.set_category(injson["interests"]["category"])
+            subcat_num = len(injson["interests"]["subcategory"])
+            dataset.interest.add_subcategories(injson["interests"]["subcategory"])
+            dataset.add_interests(dataset.interest)
+        else:
+            dataset.set_interests = []
+            dataset.interest.set_category(injson["interests"]["category"])
+            subcat_num = len(injson["interests"]["subcategory"])
+            dataset.interest.add_subcategories(injson["interests"]["subcategory"])
+            dataset.add_interests(dataset.interest)
     except Exception as e:
         pass
     try:

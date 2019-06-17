@@ -4,8 +4,8 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 class non_pii_data:
     def __init__(self, injson):
         self.uuid = None
-        self.generalInterests = None
-        self.athleticsInterests = None
+        self.interests = None
+        self.interest = Interest()
         self.over13 = None
         self.creationDate = None
         self.lastModifiedDate = None
@@ -24,25 +24,15 @@ class non_pii_data:
     def get_over13(self):
         return self.over13
 
-    def set_general_interests(self, generalInterests):
-        self.generalInterests = generalInterests
+    def add_interests(self, interest):
+        if (interest is not None):
+            self.get_interests().append(interest)
 
-    def get_general_interests(self):
-        return self.generalInterests
+    def set_interests(self, interests):
+        self.interests = interests
 
-    def add_general_interest(self, generalInterest):
-        if (generalInterest is not None):
-            self.get_general_interests().append(generalInterest)
-
-    def set_athletics_interests(self, athleticsInterests):
-        self.athleticsInterests = athleticsInterests
-
-    def get_athletics_interests(self):
-        return self.athleticsInterests
-
-    def add_athletics_interest(self, athleticsInterest):
-        if (athleticsInterest is not None):
-            self.get_athletics_interests().append(athleticsInterest)
+    def get_interests(self):
+        return self.interests
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
@@ -56,3 +46,23 @@ class non_pii_data:
     def get_last_modified_date(self):
         return self.lastModifiedDate
 
+class Interest():
+    def __init__(self):
+        self.category = None
+        self.subcategories = None
+
+    def set_category(self, category):
+        self.category = category
+
+    def get_category(self):
+        return self.category
+
+    def add_subcategories(self, subcategories):
+        if (subcategories is not None):
+            self.get_subcategories().append(subcategories)
+
+    def set_subcategories(self, subcategories):
+        self.subcategories = subcategories
+
+    def get_subcategories(self):
+        return self.subcategories
