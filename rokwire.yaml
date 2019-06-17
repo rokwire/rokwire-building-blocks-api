@@ -4,8 +4,10 @@ info:
   description: REST API design and documentation for Rokwire platform
   version: 0.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/uiuc-rokwire/rokwire/0.0.1
-  description: SwaggerHub API Auto Mocking
+- url: https://api.rokwire.illinois.edu/v1
+  description: Production instance (uses live data)
+- url: https://api-dev.rokwire.illinois.edu/v1
+  description: Development instance (uses test data)
 tags:
 - name: Profile
   description: API endpoints for managing user profile.
