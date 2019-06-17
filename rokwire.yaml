@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Rokwire Platform API
-  description: REST API design and documentation for Rokwire platform
+  description: Rokwire Platform API Documentation
   version: 0.0.1
 servers:
 - url: https://api.rokwire.illinois.edu/v1
@@ -10,20 +10,20 @@ servers:
   description: Development instance (uses test data)
 tags:
 - name: Profile
-  description: API endpoints for managing user profile.
+  description: API endpoints for managing non-PII user profile.
 - name: PII
-  description: API endpoints for managing user pii profile.
+  description: API endpoints for managing PII user profile.
 - name: Events
   description: API endpoints for managing events.
 - name: App Configuration
-  description: API endpoints for managing app configuration
+  description: API endpoints for managing mobile app configuration
 paths:
   /profiles:
     post:
       tags:
       - Profile
       summary: Create profile
-      description: Create non-pii profile with profile id.
+      description: Create non-PII profile with profile id.
       operationId: createProfile
       requestBody:
         description: Created profile object
@@ -147,8 +147,8 @@ paths:
     post:
       tags:
       - PII
-      summary: Create pii entry
-      description: This creates a new pii entry.
+      summary: Create PII entry
+      description: This creates a new PII entry.
       operationId: createPii
       responses:
         200:
@@ -165,13 +165,13 @@ paths:
     get:
       tags:
       - PII
-      summary: Find pii by ID
-      description: Returns a single pii
+      summary: Get PII by PID
+      description: Returns a single PII
       operationId: getPiiById
       parameters:
       - name: pid
         in: path
-        description: ID of pii to return
+        description: ID of PII to return
         required: true
         style: simple
         explode: false
@@ -198,12 +198,12 @@ paths:
     put:
       tags:
       - PII
-      summary: Updates a pii with form data
+      summary: Updates a PII with form data
       operationId: updatePiiWithForm
       parameters:
       - name: pid
         in: path
-        description: ID of pii that needs to be updated
+        description: ID of PII that needs to be updated
         required: true
         style: simple
         explode: false
@@ -237,7 +237,7 @@ paths:
     delete:
       tags:
       - PII
-      summary: Deletes a pii
+      summary: Deletes a PII
       operationId: deletePii
       parameters:
       - name: pid
