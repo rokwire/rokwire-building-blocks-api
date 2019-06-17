@@ -33,6 +33,7 @@ mongoutils.index_pii_data()
 profile rest service root directory
 """
 class NonPiiRootDir(Resource):
+    #@middleware.use_security_token_auth
     def post(self):
         is_new_install = True
 
