@@ -5,9 +5,9 @@ info:
   version: 0.0.1
 servers:
 - url: https://api.rokwire.illinois.edu/v1
-  description: Production instance (uses live data)
+  description: Production instance (tentative URL - might get changed based on discussions)
 - url: https://api-dev.rokwire.illinois.edu/v1
-  description: Development instance (uses test data)
+  description: Development instance (tentative URL - might get changed based on discussions)
 tags:
 - name: Profile
   description: API endpoints for managing non-PII user profile.
