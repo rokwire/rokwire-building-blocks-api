@@ -487,6 +487,8 @@ paths:
           description: Event not found
   /events/categories:
     get:
+      tags:
+      - Events
       summary: get events categories
       description: return back a list of categories and subcategories
       responses:
