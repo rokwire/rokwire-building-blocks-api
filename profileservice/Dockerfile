@@ -2,7 +2,7 @@ FROM python:3-alpine
 
 EXPOSE 5000
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/profileservice
 
 COPY requirements.txt .
 
@@ -14,7 +14,7 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
 
 COPY . .
 
-WORKDIR /usr/src/app/restservice
+WORKDIR /usr/src/app/profileservice/restservice
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
