@@ -9,10 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - creaste profile data model boiler plate.
 [SCCI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
 - created profile restservice boiler plate.
-[SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
-- separated non-pii data and pii data
-[SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
-- separated non-pii and pii database
 [SCCI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
 - added time stamp
 [SCCI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
@@ -22,9 +18,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
 - profile rest service dockerized
 [#62](https://github.com/rokwire/rokwire-building-blocks-api/issues/62)
+
+
+### Changed
+[SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
+- separated non-pii data and pii data
+[SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
+- separated non-pii and pii database
 - image update and fileDescriptor moved to pii from non-pii
 [#72](https://github.com/rokwire/rokwire-building-blocks-api/issues/72)
 - separated non-pii and pii database url
 [#73](https://github.com/rokwire/rokwire-building-blocks-api/issues/73)
+- profile building block rest api changed to Flask RESTFul api service
+[#31](https://github.com/rokwire/rokwire-building-blocks-api/issues/31)
+
 ### Fixed
 
