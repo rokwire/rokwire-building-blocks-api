@@ -1,11 +1,10 @@
 import uuid as uuidlib
 import profileservice.restservice.utils.datasetutils as datasetutils
 
-class non_pii_data:
+class NonPiiData():
     def __init__(self, injson):
         self.uuid = None
         self.interests = None
-        self.interest = Interest()
         self.over13 = None
         self.creationDate = None
         self.lastModifiedDate = None
@@ -45,24 +44,3 @@ class non_pii_data:
 
     def get_last_modified_date(self):
         return self.lastModifiedDate
-
-class Interest():
-    def __init__(self):
-        self.category = None
-        self.subcategories = None
-
-    def set_category(self, category):
-        self.category = category
-
-    def get_category(self):
-        return self.category
-
-    def add_subcategories(self, subcategories):
-        if (subcategories is not None):
-            self.get_subcategories().append(subcategories)
-
-    def set_subcategories(self, subcategories):
-        self.subcategories = subcategories
-
-    def get_subcategories(self):
-        return self.subcategories

@@ -1,6 +1,6 @@
 import profileservice.restservice.utils.datasetutils as datasetutils
 
-class pii_data:
+class PiiData():
     def __init__(self, injson):
         self.lastname = None
         self.firstname = None
