@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fields to event schema for storing submission status and date modified.
 - Scripts for deploying Swagger docker to host Rokwire API document on AWS
 - Profile Building Block
-
 - Added time stamp
 - Checking method for email and phone number to prevent duplicate entry
 - Profile rest service dockerized
@@ -31,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add App Config API definition to Swagger YAML file
 - Events building block API definition and schema to include event categories and sub categories
 - Separated non-pii data and pii data and database in profile building block
+- Profile building block rest api changed to Flask RESTFul api service
 
 ### Fixed
 - Events building block API definition to improve text.
+- API documentation in YAML file to reflect the latest code and made text improvements.
