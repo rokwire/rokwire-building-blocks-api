@@ -1,11 +1,19 @@
 {
   "over13": true,
-  "generalInterests": [
-    "music",
-    "movie"
-  ],
-  "athleticsInterests": [
-    "basket ball",
-    "foot ball"
-  ]
+  "interests": [
+        {
+            "category": "Athletics",
+            "subcategories": [
+                "Football",
+                "Basketball"
+            ]
+        },
+        {
+            "category": "Entertainment",
+            "subcategories": [
+                "Music",
+                "Movies"
+            ]
+        }
+    ]
 }

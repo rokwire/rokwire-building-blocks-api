@@ -1,4 +1,4 @@
-
+from profileservice.dao.interest import Interest
 """
 set non pii dataset
 """
@@ -12,15 +12,20 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_image_url(injson['imageUrl'])
-    except:
-        pass
-    try:
-        dataset.set_general_interests(injson["generalInterests"])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_athletics_interests(injson["athleticsInterests"])
+        # check if it is a first interests
+        if dataset.get_interests() is not None:
+            for i in range(len(injson["interests"])):
+                interest = Interest()
+                category = injson["interests"][i]["category"]
+                interest.set_category(category)
+                interest.subcategories = []
+                subcategory_list = injson["interests"][i]["subcategories"]
+                for j in range(len(subcategory_list)):
+                    subcategory = injson["interests"][i]["subcategories"][j]
+                    interest.add_subcategories(subcategory)
+                dataset.add_interests(interest)
+        else:
+            dataset.interests = []
     except Exception as e:
         pass
     try:

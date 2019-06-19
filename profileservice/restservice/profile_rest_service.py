@@ -15,8 +15,8 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 
 from profileservice import middleware
-from profileservice.dao.pii_data import pii_data
-from profileservice.dao.non_pii_data import non_pii_data
+from profileservice.dao.pii_data import PiiData
+from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = Flask(__name__)
@@ -56,7 +56,7 @@ class NonPiiRootDir(Resource):
             # new installation of the app
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            non_pii_dataset = non_pii_data('')
+            non_pii_dataset = NonPiiData('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
             non_pii_dataset.set_creation_date(currenttime)
@@ -245,7 +245,7 @@ class PiiRootDir(Resource):
         if dataset is not None:
             is_new_entry = False
 
-        pii_dataset = pii_data(in_json)
+        pii_dataset = PiiData(in_json)
 
         if is_new_entry:
             # insert new pii_dataset
