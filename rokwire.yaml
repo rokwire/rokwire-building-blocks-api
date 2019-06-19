@@ -257,39 +257,6 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /profiles/pii/{pid}/uploadImage:
-    post:
-      tags:
-      - PII
-      summary: uploads an image
-      operationId: uploadFile
-      parameters:
-      - name: pid
-        in: path
-        description: ID of profile to update
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      requestBody:
-        description: 'Form inputs representing the image'
-        content:
-          FormDataMultiPart:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pii'
-        400:
-          description: Bad request
-        500:
-          description: Something has gone wrong, try again later
   /events:
     get:
       tags:
@@ -545,7 +512,7 @@ paths:
           description: successfully read mobile app configuration
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
@@ -575,7 +542,7 @@ paths:
           description: successfully read mobile app configuration
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
@@ -651,20 +618,16 @@ components:
           type: string
         over13:
           type: boolean
-        athleticsInterests:
+        interests:
           type: array
-          xml:
-            name: athleticsInterests
-            wrapped: true
           items:
-            type: string
-        generalInterests:
-          type: array
-          xml:
-            name: generalInterests
-            wrapped: true
-          items:
-            type: string
+            properties:
+              category:
+                type: string
+              subcategories:
+                type: array
+                items:
+                 type: string
         creationDate:
           type: string
         lastModifiedDate:
@@ -672,10 +635,12 @@ components:
     Pii:
       type: object
       properties:
-        uuid:
-          type: string
         pid:
           type: string
+        uuid:
+          type: array
+          items:
+            type: string
         userName:
           type: string
         firstname:
