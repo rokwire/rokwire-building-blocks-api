@@ -696,7 +696,6 @@ components:
       required:
         - title
         - startDate
-        - endDate
         - category
       type: object
       properties:
@@ -717,6 +716,11 @@ components:
             - Athletics
             - Other
         subcategory:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        createdBy:
           type: string
         sponsor:
           type: string
