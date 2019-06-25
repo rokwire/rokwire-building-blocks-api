@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add skip and limit on events query.
 - This CHANGELOG file
 - Events Building Block.
 - Issue template.
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test profiles building block rest service deployed in AWS server
 
 ### Changed
+- Update events schema to remove endDate as required field and add createdBy and createDate.
 - Update events schema according to discussion and feedback.
 - Update rokwire.yaml for events build block.
 - Update README to include how to view Rokwire API document using Swagger
