@@ -1,29 +1,29 @@
 openapi: 3.0.0
 info:
   title: Rokwire Platform API
-  description: REST API design and documentation for Rokwire platform
+  description: Rokwire Platform API Documentation
   version: 0.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/uiuc-rokwire/rokwire/0.0.1
-  description: SwaggerHub API Auto Mocking
+- url: https://api.rokwire.illinois.edu/v1
+  description: Production instance (tentative URL - might get changed based on discussions)
+- url: https://api-dev.rokwire.illinois.edu/v1
+  description: Development instance (tentative URL - might get changed based on discussions)
 tags:
 - name: Profile
-  description: API endpoints for managing user profile.
+  description: API endpoints for managing non-PII user profile.
 - name: PII
-  description: API endpoints for managing user pii profile.
-- name: Notifications
-  description: API endpoints for managing user notifications.
+  description: API endpoints for managing PII user profile.
 - name: Events
   description: API endpoints for managing events.
 - name: App Configuration
-  description: API endpoints for managing app configuration
+  description: API endpoints for managing mobile app configuration
 paths:
   /profiles:
     post:
       tags:
       - Profile
       summary: Create profile
-      description: Create non-pii profile with profile id.
+      description: Create non-PII profile with profile id.
       operationId: createProfile
       requestBody:
         description: Created profile object
@@ -45,7 +45,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/{profileId}:
+  /profiles/{uuid}:
     get:
       tags:
       - Profile
@@ -53,7 +53,7 @@ paths:
       description: Returns a single profile
       operationId: getProfileById
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: ID of profile to return
         required: true
@@ -85,7 +85,7 @@ paths:
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: ID of profile that needs to be updated
         required: true
@@ -125,7 +125,7 @@ paths:
       summary: Deletes a profile
       operationId: deleteProfile
       parameters:
-      - name: profileId
+      - name: uuid
         in: path
         description: Profile id to delete
         required: true
@@ -143,45 +143,12 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /profiles/{profileId}/uploadImage:
-    post:
-      tags:
-      - Profile
-      summary: uploads an image
-      operationId: uploadFile
-      parameters:
-      - name: profileId
-        in: path
-        description: ID of profile to update
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      requestBody:
-        description: 'Form inputs representing the image'
-        content:
-          FormDataMultiPart:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Non-pii'
-        400:
-          description: Bad request
-        500:
-          description: Some has gone wrong, try again later
   /profiles/pii:
     post:
       tags:
       - PII
-      summary: Create pii entry
-      description: This creates a new pii entry.
+      summary: Create PII entry
+      description: This creates a new PII entry.
       operationId: createPii
       responses:
         200:
@@ -194,17 +161,17 @@ paths:
           description: Bad request
         500:
           description: Internal error
-  /profiles/pii/{piiId}:
+  /profiles/pii/{pid}:
     get:
       tags:
       - PII
-      summary: Find pii by ID
-      description: Returns a single pii
+      summary: Get PII by PID
+      description: Returns a single PII
       operationId: getPiiById
       parameters:
-      - name: piiId
+      - name: pid
         in: path
-        description: ID of pii to return
+        description: ID of PII to return
         required: true
         style: simple
         explode: false
@@ -231,12 +198,12 @@ paths:
     put:
       tags:
       - PII
-      summary: Updates a pii with form data
+      summary: Updates a PII with form data
       operationId: updatePiiWithForm
       parameters:
-      - name: piiId
+      - name: pid
         in: path
-        description: ID of pii that needs to be updated
+        description: ID of PII that needs to be updated
         required: true
         style: simple
         explode: false
@@ -270,10 +237,10 @@ paths:
     delete:
       tags:
       - PII
-      summary: Deletes a pii
+      summary: Deletes a PII
       operationId: deletePii
       parameters:
-      - name: piiId
+      - name: pid
         in: path
         description: Pii id to delete
         required: true
@@ -290,136 +257,39 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /notifications:
-    get:
-      tags:
-      - Notifications
-      summary: searches notifications
-      description: By passing in the appropriate options, you can search for notifications matching your criteria in the system
-      operationId: searchNotifications
-      parameters:
-      - name: searchString
-        in: query
-        description: pass an optional search string for looking up notification
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: skip
-        in: query
-        description: number of records to skip for pagination
-        required: false
-        style: form
-        explode: true
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
-      - name: limit
-        in: query
-        description: maximum number of records to return
-        required: false
-        style: form
-        explode: true
-        schema:
-          maximum: 50
-          minimum: 0
-          type: integer
-          format: int32
-      responses:
-        200:
-          description: search results matching criteria
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notification'
-        400:
-          description: bad input parameter
+  /profiles/pii/{pid}/uploadImage:
     post:
       tags:
-      - Notifications
-      summary: create a notification
-      description: create a notification record to the system
+      - PII
+      summary: uploads an image
+      operationId: uploadFile
+      parameters:
+      - name: pid
+        in: path
+        description: ID of profile to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
-        description: a notification to be added into system
+        description: 'Form inputs representing the image'
         content:
-          application/json:
+          FormDataMultiPart:
             schema:
-              $ref: '#/components/schemas/Notification'
-      responses:
-        201:
-          description: notification created
-        400:
-          description: invalid input, object invalid
-  /notifications/createWithList:
-    post:
-      tags:
-      - Notifications
-      summary: Creates list of notifications with given input array
-      operationId: createNotificationsWithListInput
-      requestBody:
-        $ref: '#/components/requestBodies/NotificationArray'
-      responses:
-        default:
-          description: successful operation
-  /notifications/{notificationId}:
-    delete:
-      tags:
-      - Notifications
-      summary: Deletes a notification
-      operationId: deleteNotification
-      parameters:
-      - name: notificationId
-        in: path
-        description: notification id to delete
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        202:
-          description: Notification is deleted
-        400:
-          description: Invalid ID supplied
-        404:
-          description: Notification not found
-  /notifications/{userName}:
-    get:
-      tags:
-      - Notifications
-      summary: Find notifications by userName
-      description: Returns all notifications of the user
-      operationId: getNotificationsByUserName
-      parameters:
-      - name: userName
-        in: path
-        description: user name
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+              type: string
+              format: binary
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notification'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notification'
-        401:
-          description: Unauthorized
+                $ref: '#/components/schemas/Pii'
+        400:
+          description: Bad request
+        500:
+          description: Something has gone wrong, try again later
   /events:
     get:
       tags:
@@ -430,7 +300,7 @@ paths:
       parameters:
       - name: title
         in: query
-        description: search keyword inside the event title
+        description: The parameter for searching events based on keywords in the title.
         required: false
         style: form
         explode: true
@@ -438,7 +308,7 @@ paths:
           type: string
       - name: tags
         in: query
-        description: search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
+        description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
         required: false
         style: form
         explode: true
@@ -446,7 +316,7 @@ paths:
           type: string
       - name: targetAudience
         in: query
-        description: search events with the given targetAudience, e.g., /events?targetAudience=student&targetAudience=staff. This query will return all events whose target audience is either student or staff.
+        description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff.
         required: false
         style: form
         explode: true
@@ -454,7 +324,7 @@ paths:
           type: string
       - name: startDate
         in: query
-        description: search events with the given startDate, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or after the give startDate.
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
         required: false
         style: form
         explode: true
@@ -462,7 +332,7 @@ paths:
           type: string
       - name: endDate
         in: query
-        description: search events with the given endDate, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose startDate is equal or before the give startDate.
+        description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
         required: false
         style: form
         explode: true
@@ -470,7 +340,7 @@ paths:
           type: string
       - name: latitude
         in: query
-        description: the latitude of the center point for geolocation radius search.
+        description: The latitude of the center point for geolocation radius search.
         required: false
         style: form
         explode: true
@@ -478,7 +348,7 @@ paths:
           type: number
       - name: longitude
         in: query
-        description: the longitude of the center point for geolocation radius search.
+        description: The longitude of the center point for geolocation radius search.
         required: false
         style: form
         explode: true
@@ -486,7 +356,7 @@ paths:
           type: number
       - name: radius
         in: query
-        description: search events within the given radius in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
+        description: The parameter to search events within a given radius of the provided location in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
         required: false
         style: form
         explode: true
@@ -526,7 +396,7 @@ paths:
         401:
           description: Unauthorized
         404:
-          description: Profile not found
+          description: Event not found
         500:
           description: Internal error
     post:
@@ -617,6 +487,28 @@ paths:
           description: Invalid ID supplied
         404:
           description: Event not found
+  /events/categories:
+    get:
+      tags:
+      - Events
+      summary: get events categories
+      description: return back a list of categories and subcategories
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categories'
+
+        401:
+          description: Unauthorized
+        404:
+          description: Event not found
+        500:
+          description: Internal error
   /app/configs:
     post:
       tags:
@@ -773,8 +665,6 @@ components:
             wrapped: true
           items:
             type: string
-        imageUri:
-          type: string
         creationDate:
           type: string
         lastModifiedDate:
@@ -806,9 +696,7 @@ components:
       required:
         - title
         - startDate
-        - endDate
-        - sponsor
-        - eventType
+        - category
       type: object
       properties:
         id:
@@ -816,7 +704,7 @@ components:
           description: the event id
         sourceEventId:
           type: string
-          description: the id of one event from different sources, e.g., WebTools, EMS, etc.
+          description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
         category:
           type: string
           enum:
@@ -827,7 +715,12 @@ components:
             - Recreation
             - Athletics
             - Other
-        subCategory:
+        subcategory:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        createdBy:
           type: string
         sponsor:
           type: string
@@ -887,7 +780,7 @@ components:
             wrapped: true
           items:
             type: string
-        placeID:
+        placeId:
           type: string
         location:
           $ref: "#/components/schemas/Location"
@@ -904,6 +797,17 @@ components:
           - rejected
           - incomplete
           - archived
+    Categories:
+      type: object
+      properties:
+        category:
+          type: string
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubCategory'
+    SubCategory:
+      type: string
     Location:
       type: object
       properties:
@@ -941,70 +845,6 @@ components:
           type: string
       xml:
         name: "Contact"
-    Notification:
-      required:
-      - id
-      - notifyDate
-      - userName
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        category:
-          $ref: '#/components/schemas/NotificationCategory'
-        content:
-          type: string
-        userName:
-          type: string
-        deliveryOption:
-          type: string
-          description: notification method
-          enum:
-          - email
-          - text
-          - mobile notification
-        notifyDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: whether a notification has been read
-          enum:
-          - new
-          - read
-    NotificationCategory:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: event, class registration etc.
-        description:
-          type: string
-    FileDescriptor:
-      type: object
-      properties:
-        id:
-          type: string
-        deleted:
-          type: boolean
-        filename:
-          type: string
-        mimeType:
-          type: string
-        size:
-          type: integer
-          format: int64
-        dataURL:
-          type: string
-        md5sum:
-          type: string
     AppConfig:
       type: object
       properties:
@@ -1018,13 +858,3 @@ components:
           type: object
         otherUniversityServices:
           type: object
-  requestBodies:
-    NotificationArray:
-      description: List of Notification object
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Notification'
-      required: true
