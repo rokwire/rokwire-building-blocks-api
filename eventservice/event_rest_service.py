@@ -1,10 +1,12 @@
+import os
+import io
 import logging
 import flask
 
 from bson import ObjectId
 from .db import get_db
 from . import query_params
-from flask import Blueprint, request, make_response, abort
+from flask import Blueprint, request, make_response, abort, send_file, current_app
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -166,6 +168,51 @@ def delete_event(event_id):
         abort(500)
 
     return success_response(202, msg, str(event_id))
+
+
+@bp.route('/image/<event_id>', methods=['GET', 'POST', 'PUT'])
+def image(event_id):
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+
+    relative_image_path = "{}/{}.png".format(current_app.config['IMAGE_MOUNT_LOCATION'], event_id)
+    absolute_image_path = os.path.join(os.getcwd(), relative_image_path)
+    # while trying to get images from image folder
+    if request.method == 'GET':
+        # if the image exists
+        if os.path.exists(relative_image_path):      
+            mimetype = "image/png"
+            try:
+                msg = "[IMAGE] [GET]: event id %s" % (str(event_id))
+                return send_file(absolute_image_path, mimetype = mimetype)
+            except Exception as ex:
+                abort(500)
+        else:
+            abort(404)
+
+    # while trying to post images to folder
+    elif request.method == 'POST':
+        try:
+            with open(relative_image_path, "wb") as image_fp:
+                image_fp.write(request.data)
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
+        msg = "[IMAGE] [POST]: event id %s" % (str(event_id))
+        __logger.info(msg)
+        return success_response(201, msg, str(event_id))
+
+    # while trying to put images to folder
+    elif request.method == 'PUT':    
+        try:
+            with open(relative_image_path, "wb") as image_fp:
+                image_fp.write(request.data)
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
+        msg = "[IMAGE] [PUT]: event id %s" % (str(event_id))
+        __logger.info(msg)
+        return success_response(200, msg, str(event_id))
 
 
 def success_response(status_code, msg, event_id):
