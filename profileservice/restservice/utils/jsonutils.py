@@ -26,4 +26,4 @@ def remove_null_subcategory(injson):
         if subcategories is None:
             del interest['subcategories']
 
-    return interests
+    return injson
