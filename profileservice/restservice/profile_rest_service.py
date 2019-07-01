@@ -106,8 +106,8 @@ class DealNonPii(Resource):
         logging.debug(msg)
 
         data_list, is_objectid = self.get_data_list(uuid)
-
-        out_json = mongoutils.construct_json_from_query_list(data_list[0])
+        out_json = jsonutils.remove_null_subcategory(data_list[0])
+        out_json = mongoutils.construct_json_from_query_list(out_json)
 
         return out_json
 
@@ -144,7 +144,8 @@ class DealNonPii(Resource):
             return rs_handlers.not_implemented("Invalid ID supplied")
 
         non_pii_dataset = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
-        out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
+        out_json = jsonutils.remove_null_subcategory(non_pii_dataset)
+        out_json = mongoutils.construct_json_from_query_list(out_json)
         msg = "Profile data has been posted with : " + str(uuid)
         logging.debug(msg)
 
