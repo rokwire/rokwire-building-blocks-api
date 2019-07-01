@@ -509,6 +509,122 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/{eventId}/images:
+    get:
+      tags:
+      - Events
+      summary: request images for target event
+      operationId: requestImages
+      parameters:
+        - name: eventId
+          in: path
+          description: eventId of images related to
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200: 
+          description: request images in success
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Images not found
+        500:
+          description: Internal error
+    post: 
+      tags:
+        - Events
+      summary: uploads images for target event
+      operationId: uploadImages
+      requestBody:
+        description: Images to add to the event
+        content: 
+          FormDataMultiPart:
+            schema: 
+              type: string
+              format: binary
+      parameters: 
+      - name: eventId
+        in: path
+        description: eventId of images related to
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        201: 
+          description: Images uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: the status code of the operation
+                  id: 
+                    type: integer
+                    format: int64
+                    description: the event Id
+                  message:
+                    type: string
+                    description: the description of the operation
+        400:
+          description: Invalid ID supplied
+        500:
+          description: Internal error
+    put:
+      tags:
+      - Events
+      summary: updates images for target event
+      operationId: updateImages
+      requestBody:
+        description: Images to add to the event
+        content: 
+          FormDataMultiPart:
+            schema: 
+              type: string
+              format: binary
+      parameters: 
+      - name: eventId
+        in: path
+        description: eventId of images related to
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        200: 
+          description: Images updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: the status code of the operation
+                  id: 
+                    type: integer
+                    format: int64
+                    description: the event Id
+                  message:
+                    type: string
+                    description: the description of the operation
+        400:
+          description: Invalid ID supplied
+        500:
+          description: Internal error
   /app/configs:
     post:
       tags:
