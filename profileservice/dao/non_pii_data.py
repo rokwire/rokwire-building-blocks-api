@@ -1,11 +1,10 @@
 import uuid as uuidlib
 import profileservice.restservice.utils.datasetutils as datasetutils
 
-class non_pii_data:
+class NonPiiData():
     def __init__(self, injson):
         self.uuid = None
-        self.generalInterests = None
-        self.athleticsInterests = None
+        self.interests = None
         self.over13 = None
         self.creationDate = None
         self.lastModifiedDate = None
@@ -24,25 +23,15 @@ class non_pii_data:
     def get_over13(self):
         return self.over13
 
-    def set_general_interests(self, generalInterests):
-        self.generalInterests = generalInterests
+    def add_interests(self, interest):
+        if (interest is not None):
+            self.get_interests().append(interest)
 
-    def get_general_interests(self):
-        return self.generalInterests
+    def set_interests(self, interests):
+        self.interests = interests
 
-    def add_general_interest(self, generalInterest):
-        if (generalInterest is not None):
-            self.get_general_interests().append(generalInterest)
-
-    def set_athletics_interests(self, athleticsInterests):
-        self.athleticsInterests = athleticsInterests
-
-    def get_athletics_interests(self):
-        return self.athleticsInterests
-
-    def add_athletics_interest(self, athleticsInterest):
-        if (athleticsInterest is not None):
-            self.get_athletics_interests().append(athleticsInterest)
+    def get_interests(self):
+        return self.interests
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
@@ -55,4 +44,3 @@ class non_pii_data:
 
     def get_last_modified_date(self):
         return self.lastModifiedDate
-

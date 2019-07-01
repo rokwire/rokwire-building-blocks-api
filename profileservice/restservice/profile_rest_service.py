@@ -15,8 +15,8 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 
 from profileservice import middleware
-from profileservice.dao.pii_data import pii_data
-from profileservice.dao.non_pii_data import non_pii_data
+from profileservice.dao.pii_data import PiiData
+from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = Flask(__name__)
@@ -56,7 +56,7 @@ class NonPiiRootDir(Resource):
             # new installation of the app
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            non_pii_dataset = non_pii_data('')
+            non_pii_dataset = NonPiiData('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
             non_pii_dataset.set_creation_date(currenttime)
@@ -106,8 +106,8 @@ class DealNonPii(Resource):
         logging.debug(msg)
 
         data_list, is_objectid = self.get_data_list(uuid)
-
-        out_json = mongoutils.construct_json_from_query_list(data_list[0])
+        out_json = jsonutils.remove_null_subcategory(data_list[0])
+        out_json = mongoutils.construct_json_from_query_list(out_json)
 
         return out_json
 
@@ -144,7 +144,8 @@ class DealNonPii(Resource):
             return rs_handlers.not_implemented("Invalid ID supplied")
 
         non_pii_dataset = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
-        out_json = mongoutils.construct_json_from_query_list(non_pii_dataset)
+        out_json = jsonutils.remove_null_subcategory(non_pii_dataset)
+        out_json = mongoutils.construct_json_from_query_list(out_json)
         msg = "Profile data has been posted with : " + str(uuid)
         logging.debug(msg)
 
@@ -245,7 +246,7 @@ class PiiRootDir(Resource):
         if dataset is not None:
             is_new_entry = False
 
-        pii_dataset = pii_data(in_json)
+        pii_dataset = PiiData(in_json)
 
         if is_new_entry:
             # insert new pii_dataset
