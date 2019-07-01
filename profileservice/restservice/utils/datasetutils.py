@@ -18,11 +18,15 @@ def update_non_pii_dataset_from_json(dataset, injson):
                 interest = Interest()
                 category = injson["interests"][i]["category"]
                 interest.set_category(category)
-                interest.subcategories = []
-                subcategory_list = injson["interests"][i]["subcategories"]
-                for j in range(len(subcategory_list)):
-                    subcategory = injson["interests"][i]["subcategories"][j]
-                    interest.add_subcategories(subcategory)
+
+                try:
+                    subcategory_list = injson["interests"][i]["subcategories"]
+                    interest.subcategories = []
+                    for j in range(len(subcategory_list)):
+                        subcategory = injson["interests"][i]["subcategories"][j]
+                        interest.add_subcategories(subcategory)
+                except:
+                    pass
                 dataset.add_interests(interest)
         else:
             dataset.interests = []
