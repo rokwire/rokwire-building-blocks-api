@@ -247,6 +247,20 @@ def update_non_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     return result.acknowledged, dataset
 
 """
+update json that doesn't belong to data schema
+"""
+def update_json_with_no_schema(fld, query_str, datasetobj, restjson):
+    dataset = db_profile.non_pii_collection.find({fld: query_str}, {'_id': False})
+    dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
+    dataset = json.loads(dataset)
+    for dictkey, dictelement in restjson.items():
+        tmpDict = {dictkey: dictelement}
+        dataset.update(tmpDict)
+        result = db_profile.non_pii_collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
+
+    return result.acknowledged, dataset
+
+"""
 update pii dataset in mongodb by objectid
 """
 def update_pii_dataset_in_mongo_by_objectid(objectid, datasetobj):

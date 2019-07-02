@@ -1,3 +1,5 @@
+import copy
+
 from profileservice.dao.interest import Interest
 from profileservice.dao.favorites import Favorites
 
@@ -5,12 +7,15 @@ from profileservice.dao.favorites import Favorites
 set non pii dataset
 """
 def update_non_pii_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
     try:
         dataset.set_file_descriptors(injson['fileDescriptors'])
+        del outjson['fileDescriptors']
     except:
         pass
     try:
         dataset.set_over13(injson['over13'])
+        del outjson['over13']
     except:
         pass
     try:
@@ -32,6 +37,7 @@ def update_non_pii_dataset_from_json(dataset, injson):
                 dataset.add_interests(interest)
         else:
             dataset.interests = []
+        del outjson["interests"]
     except Exception as e:
         pass
     try:
@@ -42,10 +48,12 @@ def update_non_pii_dataset_from_json(dataset, injson):
         favorites.set_laundryPlaceIds(injson["favorites"]["laundryPlaceIds"])
         favorites.set_athleticEventIds(injson["favorites"]["athleticEventIds"])
         dataset.set_favorites(favorites)
+        del outjson["favorites"]
     except Exception as e:
         pass
     try:
         dataset.set_interestTags(injson["interestTags"])
+        del outjson["interestTags"]
     except:
         pass
     try:
@@ -56,8 +64,14 @@ def update_non_pii_dataset_from_json(dataset, injson):
         dataset.set_last_modified_date(injson["lastModifiedDate"])
     except Exception as e:
         pass
+    try:
+        del outjson["creationDate"]
+        del outjson["lastModifiedDate"]
+        del outjson["uuid"]
+    except:
+        pass
 
-    return dataset
+    return dataset, outjson
 
 """
 set pii dataset

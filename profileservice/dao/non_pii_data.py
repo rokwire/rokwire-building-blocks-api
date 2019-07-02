@@ -10,7 +10,7 @@ class NonPiiData():
         self.creationDate = None
         self.lastModifiedDate = None
 
-        self = datasetutils.update_non_pii_dataset_from_json(self, injson)
+        self, restjson = datasetutils.update_non_pii_dataset_from_json(self, injson)
 
     def set_uuid(self, uuid):
         self.uuid = uuid

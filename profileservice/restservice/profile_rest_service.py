@@ -128,7 +128,7 @@ class DealNonPii(Resource):
         msg = "Profile data will be updated with the id of " + str(uuid)
         logging.debug(msg)
 
-        non_pii_dataset = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
+        non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
         currenttime = datetime.datetime.now()
         currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
         non_pii_dataset.set_last_modified_date(currenttime)
@@ -136,6 +136,9 @@ class DealNonPii(Resource):
         result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(
             cfg.FIELD_PROFILE_UUID, uuid,
             non_pii_dataset)
+
+        # update the json information that doesn't belong to data schema
+        result, non_pii_dataset = mongoutils.update_json_with_no_schema(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset, restjson)
 
         if result is None:
             msg = "Failed to update non Profile dataset: " + str(uuid)
