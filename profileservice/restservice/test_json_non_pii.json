@@ -15,5 +15,16 @@
                 "Movies"
             ]
         }
-    ]
+    ],
+  "interestTags": [
+        "jazz",
+        "rock"
+    ],
+  "favorites": {
+      "eventIds": [],
+      "placeIds": [],
+      "diningPlaceIds": [],
+      "laundryPlaceIds": [],
+      "athleticEventIds": []
+  }
 }

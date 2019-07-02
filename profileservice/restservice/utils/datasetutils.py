@@ -1,4 +1,6 @@
 from profileservice.dao.interest import Interest
+from profileservice.dao.favorites import Favorites
+
 """
 set non pii dataset
 """
@@ -31,6 +33,20 @@ def update_non_pii_dataset_from_json(dataset, injson):
         else:
             dataset.interests = []
     except Exception as e:
+        pass
+    try:
+        favorites = Favorites()
+        favorites.set_eventIds(injson["favorites"]["eventIds"])
+        favorites.set_placeIds(injson["favorites"]["placeIds"])
+        favorites.set_diningPlaceIds(injson["favorites"]["diningPlaceIds"])
+        favorites.set_laundryPlaceIds(injson["favorites"]["laundryPlaceIds"])
+        favorites.set_athleticEventIds(injson["favorites"]["athleticEventIds"])
+        dataset.set_favorites(favorites)
+    except Exception as e:
+        pass
+    try:
+        dataset.set_interestTags(injson["interestTags"])
+    except:
         pass
     try:
         dataset.set_creation_date(injson["creationDate"])

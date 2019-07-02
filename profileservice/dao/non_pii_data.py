@@ -1,11 +1,12 @@
-import uuid as uuidlib
 import profileservice.restservice.utils.datasetutils as datasetutils
 
 class NonPiiData():
     def __init__(self, injson):
         self.uuid = None
         self.interests = None
+        self.favorites = None
         self.over13 = None
+        self.interestTags = None
         self.creationDate = None
         self.lastModifiedDate = None
 
@@ -32,6 +33,22 @@ class NonPiiData():
 
     def get_interests(self):
         return self.interests
+
+    def set_favorites(self, favorites):
+        self.favorites = favorites
+
+    def get_favorites(self):
+        return self.favorites
+
+    def add_interestTags(self, interestTags):
+        if (interestTags is not None):
+            self.get_interestTags().append(interestTags)
+
+    def set_interestTags(self, interestTags):
+        self.interestTags = interestTags
+
+    def get_interestTags(self):
+        return self.interestTags
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
