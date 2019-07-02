@@ -9,22 +9,11 @@
             ]
         },
         {
-            "category": "Entertainment",
-            "subcategories": [
-                "Music",
-                "Movies"
-            ]
+            "category": "Entertainment"
         }
     ],
   "interestTags": [
         "jazz",
         "rock"
-    ],
-  "favorites": {
-      "eventIds": [],
-      "placeIds": [],
-      "diningPlaceIds": [],
-      "laundryPlaceIds": [],
-      "athleticEventIds": []
-  }
+    ]
 }
