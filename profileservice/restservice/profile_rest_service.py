@@ -138,7 +138,8 @@ class DealNonPii(Resource):
             non_pii_dataset)
 
         # update the json information that doesn't belong to data schema
-        result, non_pii_dataset = mongoutils.update_json_with_no_schema(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset, restjson)
+        if len(restjson) > 0:
+            result, non_pii_dataset = mongoutils.update_json_with_no_schema(cfg.FIELD_PROFILE_UUID, uuid, non_pii_dataset, restjson)
 
         if result is None:
             msg = "Failed to update non Profile dataset: " + str(uuid)

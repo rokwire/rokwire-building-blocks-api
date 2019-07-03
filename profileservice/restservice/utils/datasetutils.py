@@ -52,8 +52,13 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
-        dataset.set_interestTags(injson["interestTags"])
-        del outjson["interestTags"]
+        dataset.set_positiveInterestTags(injson["positiveInterestTags"])
+        del outjson["positiveInterestTags"]
+    except:
+        pass
+    try:
+        dataset.set_negativeInterestTags(injson["negativeInterestTags"])
+        del outjson["negativeInterestTags"]
     except:
         pass
     try:

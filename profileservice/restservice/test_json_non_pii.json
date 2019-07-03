@@ -12,9 +12,13 @@
             "category": "Entertainment"
         }
     ],
-  "interestTags": [
+  "positiveInterestTags": [
         "jazz",
         "rock"
+    ],
+  "negativeInterestTags": [
+        "Rock",
+        "Hip Hop"
     ],
   "favorites": {
       "eventIds": [],

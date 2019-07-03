@@ -6,7 +6,8 @@ class NonPiiData():
         self.interests = None
         self.favorites = None
         self.over13 = None
-        self.interestTags = None
+        self.positiveInterestTags = None
+        self.negativeInterestTags = None
         self.creationDate = None
         self.lastModifiedDate = None
 
@@ -40,15 +41,25 @@ class NonPiiData():
     def get_favorites(self):
         return self.favorites
 
-    def add_interestTags(self, interestTags):
-        if (interestTags is not None):
-            self.get_interestTags().append(interestTags)
+    def add_positiveInterestTags(self, positiveInterestTag):
+        if (positiveInterestTag is not None):
+            self.get_positiveInterestTags().append(positiveInterestTag)
 
-    def set_interestTags(self, interestTags):
-        self.interestTags = interestTags
+    def set_positiveInterestTags(self, positiveInterestTags):
+        self.positiveInterestTags = positiveInterestTags
 
-    def get_interestTags(self):
-        return self.interestTags
+    def get_positiveInterestTags(self):
+        return self.positiveInterestTags
+
+    def add_negativeInterestTags(self, negativeInterestTag):
+        if (negativeInterestTag is not None):
+            self.get_negativeInterestTags().append(negativeInterestTag)
+
+    def set_negativeInterestTags(self, negativeInterestTags):
+        self.negativeInterestTags = negativeInterestTags
+
+    def get_negativeInterestTagss(self):
+        return self.negativeInterestTags
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
