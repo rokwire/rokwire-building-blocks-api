@@ -628,6 +628,38 @@ components:
                 type: array
                 items:
                  type: string
+        positiveInterestTags:
+          type: array
+          items:
+            type: string
+        negativeInterestTags:
+          type: array
+          items:
+            type: string
+        favorites:
+          type: array
+          items:
+            properties:
+              eventIds:
+                type: array
+                items:
+                  type: string
+              placeIds:
+                type: array
+                items:
+                  type: string
+              diningPlaceIds:
+                type: array
+                items:
+                  type: string
+              laundryPlaceIds:
+                type: array
+                items:
+                  type: string
+              athleticEventIds:
+                type: array
+                items:
+                  type: string
         creationDate:
           type: string
         lastModifiedDate:
