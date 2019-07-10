@@ -9,11 +9,29 @@
             ]
         },
         {
-            "category": "Entertainment",
-            "subcategories": [
-                "Music",
-                "Movies"
-            ]
+            "category": "Entertainment"
         }
-    ]
+    ],
+  "positiveInterestTags": [
+        "jazz",
+        "rock"
+    ],
+  "negativeInterestTags": [
+        "Rock",
+        "Hip Hop"
+    ],
+  "favorites": {
+      "eventIds": [],
+      "placeIds": [],
+      "diningPlaceIds": [],
+      "laundryPlaceIds": [],
+      "athleticEventIds": []
+  },
+  "test1": "whatever",
+  "test2":
+    ["whatever1", "whatever2"],
+  "test3": [
+    {"subtest1": "subwhatever1"},
+    {"subtest2": "subwhatever2"}
+  ]
 }
