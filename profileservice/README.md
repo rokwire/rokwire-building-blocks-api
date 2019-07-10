@@ -27,7 +27,7 @@ The necessary configuration should be configured in configure file (configs.py) 
 Run ```python restservice/profile_rest_service.py``` and the profile building block should be running at http://localhost:5000
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
-### Use Dokcer
+### Use Docker
 **Build a docker image**
 ```
 cd profileservice
@@ -40,7 +40,7 @@ docker run --name profile-building-block -d --restart=always -e MONGO_PROFILE_UR
 
 ### Local run without docker
 
-This service uses the python Flask and pymongo libary.
+This service uses the python Flask and PyMongo library.
 
 The configuration file configs.py should have the appropriate information
 
