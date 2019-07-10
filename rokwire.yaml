@@ -513,7 +513,7 @@ paths:
     get:
       tags:
       - Events
-      summary: request images for target event
+      summary: request all of the images for target event
       operationId: requestImages
       parameters:
         - name: eventId
@@ -527,14 +527,12 @@ paths:
         200: 
           description: request images in success
           content:
-            image/png:
+            multipart/form-data:
               schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
+                type: array
+                items:
+                  type: string
+                  format: binary
         400:
           description: Invalid ID supplied
         404:
@@ -544,19 +542,21 @@ paths:
     post: 
       tags:
         - Events
-      summary: uploads images for target event
+      summary: uploads an image for target event
       operationId: uploadImages
       requestBody:
-        description: Images to add to the event
+        description: Image to add to the event
         content: 
-          FormDataMultiPart:
+          image/*:
             schema: 
               type: string
               format: binary
+              minLength: 1
+              maxLength: 5000000
       parameters: 
       - name: eventId
         in: path
-        description: eventId of images related to
+        description: eventId of image related to
         required: true
         schema: 
           type: integer
@@ -583,18 +583,57 @@ paths:
           description: Invalid ID supplied
         500:
           description: Internal error
+  
+  /events/{eventId}/images/{imageId}:
+    get:
+      tags:
+      - Events
+      summary: get an image for target event
+      operationId: requestImage
+      parameters:
+      - name: eventId
+        in: path 
+        description: eventId of image related to
+        required: true 
+        schema:
+          type: integer 
+          format: int64
+      - name: imageId
+        in: path
+        description: imageId of image related to 
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200:
+          description: requested image in success
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        400: 
+          description: Invalid ID supplied
+        404: 
+          description: Image not found
+        500:
+          description: Internal Error
+      
     put:
       tags:
       - Events
-      summary: updates images for target event
-      operationId: updateImages
+      summary: updates an image for target event
+      operationId: updateImage
       requestBody:
-        description: Images to add to the event
+        description: Image to add to the event
         content: 
-          FormDataMultiPart:
+          image/*:
             schema: 
               type: string
               format: binary
+              minLength: 1
+              maxLength: 5000000
       parameters: 
       - name: eventId
         in: path
@@ -603,9 +642,16 @@ paths:
         schema: 
           type: integer
           format: int64
+      - name: imageId
+        in: path
+        description: imageId of image related to 
+        required: true
+        schema:
+          type: integer 
+          format: int64
       responses:
         200: 
-          description: Images updated
+          description: Image updated
           content:
             application/json:
               schema:
@@ -623,8 +669,56 @@ paths:
                     description: the description of the operation
         400:
           description: Invalid ID supplied
+        404:
+          description: Image not found
         500:
           description: Internal error
+  
+    delete:
+      tags:
+      - Events
+      summary: delete an image for target event
+      operationId: deleteImage
+      parameters:
+      - name: eventId
+        in: path
+        description: eventId of images related to
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: imageId of image related to 
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        202:
+          description: Image is deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: the status code of the operation
+                  id: 
+                    type: integer
+                    format: int64
+                    description: the event Id
+                  message:
+                    type: string
+                    description: the description of the operation
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Image not found
+        500:
+          description: Internal error
+    
   /app/configs:
     post:
       tags:
