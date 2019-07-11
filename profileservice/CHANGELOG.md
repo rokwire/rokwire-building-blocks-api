@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
 - profile rest service dockerized
 [#62](https://github.com/rokwire/rokwire-building-blocks-api/issues/62)
+- added favorites
+[#115](https://github.com/rokwire/rokwire-building-blocks-api/issues/115)
+- added positive and negative interest tags
+[#116](https://github.com/rokwire/rokwire-building-blocks-api/issues/116)
+- added an ability to store and retrieve schema free information
+[#117](https://github.com/rokwire/rokwire-building-blocks-api/issues/117)
 
 
 ### Changed
@@ -31,6 +37,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#73](https://github.com/rokwire/rokwire-building-blocks-api/issues/73)
 - profile building block rest api changed to Flask RESTFul api service
 [#31](https://github.com/rokwire/rokwire-building-blocks-api/issues/31)
+- non-pii interests has been modified with category and subcategory
+[#86](https://github.com/rokwire/rokwire-building-blocks-api/issues/86)
+- README file has examples for the endpoints
+[#119](https://github.com/rokwire/rokwire-building-blocks-api/issues/119)
 
 ### Fixed
 

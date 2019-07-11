@@ -8,8 +8,8 @@ from bson.json_util import dumps
 from flask import make_response
 from pymongo import MongoClient
 
-from profileservice.dao.non_pii_data import non_pii_data
-from profileservice.dao.pii_data import pii_data
+from profileservice.dao.non_pii_data import NonPiiData
+from profileservice.dao.pii_data import PiiData
 import profileservice.restservice.utils.jsonutils as jsonutils
 
 client_profile = MongoClient(cfg.MONGO_PROFILE_URL, connect=False)
@@ -53,7 +53,7 @@ def get_non_pii_dataset_from_objectid(objectid):
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
             json_load = json.loads(data_dump)
-            dataset = non_pii_data(json_load)
+            dataset = NonPiiData(json_load)
 
             return dataset
         else:
@@ -72,7 +72,7 @@ def get_non_pii_dataset_from_field(fld, query_str):
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
-        dataset = non_pii_data(json_load)
+        dataset = NonPiiData(json_load)
 
         try:
             dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
@@ -103,7 +103,7 @@ def get_pii_dataset_from_field(fld, query_str):
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
-        dataset = pii_data(json_load)
+        dataset = PiiData(json_load)
 
         try:
             dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
@@ -243,6 +243,20 @@ def update_non_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
     result = db_profile.non_pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
+
+    return result.acknowledged, dataset
+
+"""
+update json that doesn't belong to data schema
+"""
+def update_json_with_no_schema(fld, query_str, datasetobj, restjson):
+    dataset = db_profile.non_pii_collection.find({fld: query_str}, {'_id': False})
+    dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
+    dataset = json.loads(dataset)
+    for dictkey, dictelement in restjson.items():
+        tmpDict = {dictkey: dictelement}
+        dataset.update(tmpDict)
+        result = db_profile.non_pii_collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
 
     return result.acknowledged, dataset
 
