@@ -7,6 +7,7 @@ from bson import ObjectId
 from bson.json_util import dumps
 from flask import make_response
 from pymongo import MongoClient
+import pymongo
 
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.dao.pii_data import PiiData
@@ -285,18 +286,29 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', 'text'),
-                            ('generalInterests', 'text'),
-                            ('athleticsInterests', 'text')])
+    # db_profile.non_pii_collection.create_index([('uuid', 'text'),
+    #                         ('generalInterests', 'text'),
+    #                         ('athleticsInterests', 'text')])
+    db_profile.non_pii_collection.create_index([('uuid', pymongo.ASCENDING)])
+    print("Test")
+    # db_profile.non_pii_collection.ensure_index({"interests.category": 1})
+    # db_profile.non_pii_collection.ensure_index({"interests.subcategories": 1})
 
 """
 index non pii collection
 """
 def index_pii_data():
-    db_pii.pii_collection.create_index([('pid', 'text'),
-                             ('firstname', 'text'),
-                             ('lastname', 'text'),
-                             ('email', 'text'),
-                             ('username', 'text'),
-                             ('uin', 'text'), ('netid', 'text'),
-                             ('phone', 'text')])
+    print("test1")
+    # db_pii.pii_collection.create_index([('pid', 'text'),
+    #                          ('firstname', 'text'),
+    #                          ('lastname', 'text'),
+    #                          ('email', 'text'),
+    #                          ('username', 'text'),
+    #                          ('uin', 'text'), ('netid', 'text'),
+    #                          ('phone', 'text')])
+    # db_pii.pii_collection.ensure_index({"pid": 1})
+    # db_pii.pii_collection.ensure_index({"firstname": 1})
+    # db_pii.pii_collection.ensure_index({"lastname": 1})
+    # db_pii.pii_collection.ensure_index({"email": 1})
+    # db_pii.pii_collection.ensure_index({"uin": 1})
+    # db_pii.pii_collection.ensure_index({"phone": 1})
