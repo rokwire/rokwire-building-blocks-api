@@ -1,0 +1,1 @@
+docker build --file=Dockerfile-app_config --tag=app_config:latest .
