@@ -2,13 +2,15 @@ import pytest
 import json
 from flask import current_app
 
-import appconfig.app as appconfigapp
+#import appconfig.app as appconfigapp
+from appconfig import create_app
 import appconfig.db as conn
 
 @pytest.fixture
 def app():
     """Create and configure a new app instance for each test."""
-    app = appconfigapp.create_app({
+#    app = appconfigapp.create_app({
+    app = create_app({
         "APP_CONFIG_MONGO_URL": "mongodb://localhost:27017",
         "APP_CONFIG_DB_NAME": "app_config_db",
         "APP_CONFIG_MAX_POOLSIZE":  100,
