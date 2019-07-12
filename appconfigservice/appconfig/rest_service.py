@@ -98,10 +98,10 @@ def delete_app_config(id):
     return success_response(202, msg, str(id))
 
 
-def success_response(status_code, msg, event_id):
+def success_response(status_code, msg, app_config_id):
     message = {
         'status': status_code,
-        'id': event_id,
+        'id': app_config_id,
         'message': msg
     }
     resp = flask.jsonify(message)
