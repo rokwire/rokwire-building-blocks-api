@@ -1,10 +1,13 @@
+import io
 import logging
 import flask
 
 from bson import ObjectId
 from .db import get_db
 from . import query_params
-from flask import Blueprint, request, make_response, abort
+from .images.s3 import S3EventsImages
+from .images import localfile
+from flask import Blueprint, request, make_response, send_file, abort
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -165,6 +168,63 @@ def delete_event(event_id):
         __logger.exception(ex)
         abort(500)
 
+    return success_response(202, msg, str(event_id))
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['GET'])
+def download_imagefile(event_id, image_id):
+    msg = "[download image]: event id %s, status: 200" % (str(event_id))
+    try:
+        tmp_file = S3EventsImages().download(event_id, image_id)
+
+        with open(tmp_file, 'rb') as f:
+            return send_file(
+                io.BytesIO(f.read()),
+                attachment_filename=event_id + "." + image_id+'.jpg',
+                mimetype='image/jpg'
+            )
+
+    except Exception as ex:
+        __logger.exception(ex)
+        msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
+        abort(500)
+    finally:
+        __logger.info(msg)
+        localfile.deletefile(tmp_file)
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
+def put_imagefile(event_id, image_id):
+    #TODO:
+    pass
+
+
+@bp.route('/<event_id>/images', methods=['POST'])
+def post_imagefile(event_id):
+    try:
+        for key, file in request.files.items():
+            print(file)
+            tmpfile = localfile.savefile(file, file.filename)
+            #TODO: get image id
+            image_id = 12345
+            S3EventsImages().upload(tmpfile, event_id, image_id)
+            msg = "[post image]: image id %s" % (str(event_id))
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    finally:
+        localfile.deletefile(tmpfile)
+    return success_response(201, msg, str(image_id))
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['DELETE'])
+def delete_imagefile(event_id, image_id):
+    msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
+    try:
+        S3EventsImages().delete(event_id, image_id)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
     return success_response(202, msg, str(event_id))
 
 
