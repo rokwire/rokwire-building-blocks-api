@@ -9,8 +9,8 @@ from bson import ObjectId
 from mimetypes import MimeTypes
 from pymongo import MongoClient
 from urllib.request import urlretrieve
-from profileservice.dao.non_pii_data import non_pii_data
-from profileservice.dao.pii_data import pii_data
+from profileservice.dao.non_pii_data import NonPiiData
+from profileservice.dao.pii_data import PiiData
 
 def main():
     filename = 'test_json.json'
@@ -18,7 +18,7 @@ def main():
     with open(filename, "r") as profile_txt:
         profile_json = json.load(profile_txt)
 
-    profile = non_pii_data(profile_json)
+    profile = NonPiiData(profile_json)
     id = insert_profile_to_mongodb(mongo_url, profile)
     print(id)
 

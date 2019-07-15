@@ -1,16 +1,17 @@
-import uuid as uuidlib
 import profileservice.restservice.utils.datasetutils as datasetutils
 
-class non_pii_data:
+class NonPiiData():
     def __init__(self, injson):
         self.uuid = None
-        self.generalInterests = None
-        self.athleticsInterests = None
+        self.interests = None
+        self.favorites = None
         self.over13 = None
+        self.positiveInterestTags = None
+        self.negativeInterestTags = None
         self.creationDate = None
         self.lastModifiedDate = None
 
-        self = datasetutils.update_non_pii_dataset_from_json(self, injson)
+        self, restjson = datasetutils.update_non_pii_dataset_from_json(self, injson)
 
     def set_uuid(self, uuid):
         self.uuid = uuid
@@ -24,25 +25,41 @@ class non_pii_data:
     def get_over13(self):
         return self.over13
 
-    def set_general_interests(self, generalInterests):
-        self.generalInterests = generalInterests
+    def add_interests(self, interest):
+        if (interest is not None):
+            self.get_interests().append(interest)
 
-    def get_general_interests(self):
-        return self.generalInterests
+    def set_interests(self, interests):
+        self.interests = interests
 
-    def add_general_interest(self, generalInterest):
-        if (generalInterest is not None):
-            self.get_general_interests().append(generalInterest)
+    def get_interests(self):
+        return self.interests
 
-    def set_athletics_interests(self, athleticsInterests):
-        self.athleticsInterests = athleticsInterests
+    def set_favorites(self, favorites):
+        self.favorites = favorites
 
-    def get_athletics_interests(self):
-        return self.athleticsInterests
+    def get_favorites(self):
+        return self.favorites
 
-    def add_athletics_interest(self, athleticsInterest):
-        if (athleticsInterest is not None):
-            self.get_athletics_interests().append(athleticsInterest)
+    def add_positiveInterestTags(self, positiveInterestTag):
+        if (positiveInterestTag is not None):
+            self.get_positiveInterestTags().append(positiveInterestTag)
+
+    def set_positiveInterestTags(self, positiveInterestTags):
+        self.positiveInterestTags = positiveInterestTags
+
+    def get_positiveInterestTags(self):
+        return self.positiveInterestTags
+
+    def add_negativeInterestTags(self, negativeInterestTag):
+        if (negativeInterestTag is not None):
+            self.get_negativeInterestTags().append(negativeInterestTag)
+
+    def set_negativeInterestTags(self, negativeInterestTags):
+        self.negativeInterestTags = negativeInterestTags
+
+    def get_negativeInterestTagss(self):
+        return self.negativeInterestTags
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
@@ -55,4 +72,3 @@ class non_pii_data:
 
     def get_last_modified_date(self):
         return self.lastModifiedDate
-

@@ -41,7 +41,14 @@ def get_events():
     if query:
         try:
             db = get_db()
-            for data_tuple in db['events'].find(query, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}):
+            events = db['events'].find(query, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
+            if args.get('limit') and args.get('skip'):
+                events = events.limit(int(args.get('limit'))).skip(int(args.get('skip')))
+            elif args.get('limit'):
+                events = events.limit(int(args.get('limit')))
+            elif args.get('skip'):
+                events = events.limit(int(args.get('skip')))
+            for data_tuple in events:
                 results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
