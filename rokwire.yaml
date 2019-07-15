@@ -609,6 +609,55 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
+  /authservice/verifications:
+    post:
+      summary: initiate a verification
+      operationId: auth_rest_service.initiate_verification
+      responses:
+        201:
+          description: initiated
+        400:
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationInitBody'
+  /authservice/verification-check:
+    post:
+      summary: verification check
+      operationId: auth_rest_service.verification_check
+      responses:
+        200:
+          description: verification result
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      id_token:
+                        type: string
+                    required:
+                      - success
+                      - id_token
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                    required:
+                      - success
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationCheckBody'
 components:
   schemas:
     Non-pii:
@@ -855,3 +904,39 @@ components:
           type: object
         otherUniversityServices:
           type: object
+    PhoneNumber:
+      type: string
+      minLength: 10
+      maxLength: 10
+      # pattern: '^\d{10}$'
+    VerificationInitBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        channel:
+          type: string
+          enum:
+            - sms
+            - call
+      required:
+        - phoneNumber
+        - channel
+      example:
+        phoneNumber: "1234567890"
+        channel: "sms"
+    VerificationCheckBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+      required:
+        - phoneNumber
+        - code
+      example:
+        phoneNumber: "1234567890"
+        code: "123456"
