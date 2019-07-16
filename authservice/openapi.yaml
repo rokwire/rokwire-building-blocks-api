@@ -22,15 +22,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VerificationInitBody'
+              $ref: '#/components/schemas/AuthPhoneVerifyInitBody'
             examples:
               sms:
                 value:
-                  phoneNumber: "1234567890"
+                  phoneNumber: "+12175557890"
                   channel: "sms"
               call:
                 value:
-                  phoneNumber: "1234567890"
+                  phoneNumber: "+12175557890"
                   channel: "call"
   /authentication/phone-verify:
     post:
@@ -75,7 +75,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VerificationCheckBody'
+              $ref: '#/components/schemas/AuthPhoneVerifyCheckBody'
   /authentication/ping:
     get:
       summary: ping
@@ -87,10 +87,10 @@ components:
   schemas:
     PhoneNumber:
       type: string
-      minLength: 10
-      maxLength: 10
-      # pattern: '^\d{10}$'
-    VerificationInitBody:
+      minLength: 4
+      maxLength: 20
+      example: "+12175557890"
+    AuthPhoneVerifyInitBody:
       type: object
       properties:
         phoneNumber:
@@ -104,9 +104,9 @@ components:
         - phoneNumber
         - channel
       example:
-        phoneNumber: "1234567890"
+        phoneNumber: "+12175557890"
         channel: "sms"
-    VerificationCheckBody:
+    AuthPhoneVerifyCheckBody:
       type: object
       properties:
         phoneNumber:
@@ -119,5 +119,5 @@ components:
         - phoneNumber
         - code
       example:
-        phoneNumber: "1234567890"
+        phoneNumber: "+12175557890"
         code: "123456"
