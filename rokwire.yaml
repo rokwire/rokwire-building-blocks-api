@@ -846,6 +846,8 @@ paths:
   /authservice/verifications:
     post:
       summary: initiate a verification
+      tags:
+        - Authentication
       operationId: auth_rest_service.initiate_verification
       responses:
         201:
@@ -860,6 +862,8 @@ paths:
   /authservice/verification-check:
     post:
       summary: verification check
+      tags:
+        - Authentication
       operationId: auth_rest_service.verification_check
       responses:
         200:
