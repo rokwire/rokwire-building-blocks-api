@@ -37,7 +37,7 @@ def authenticate():
         # import pprint; pprint.pprint(id_info)
     else:
         # shibboleth
-        SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
         kid = unverified_header.get('kid')
         if not kid:
             logger.warning("kid not found in unverified header")
