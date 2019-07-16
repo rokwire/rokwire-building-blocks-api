@@ -609,7 +609,7 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
-  /authservice/verifications:
+  /authentication/verifications:
     post:
       summary: initiate a verification
       tags:
@@ -625,7 +625,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/VerificationInitBody'
-  /authservice/verification-check:
+  /authentication/verification-check:
     post:
       summary: verification check
       tags:
