@@ -6,13 +6,16 @@ info:
 paths:
   /authentication/phone-initiate:
     post:
-      summary: initiate a verification
+      summary: |
+        Step 1 of 2 for phone number verification. Initiates the verification with a text or
+        call that contains a code. That code should then be provided to the
+        /authentication/phone-verify endpoint.
       tags:
         - Authentication
       operationId: auth_rest_service.initiate_verification
       responses:
         201:
-          description: initiated
+          description: initiation successful
         400:
           description: bad request
       requestBody:
@@ -22,13 +25,16 @@ paths:
               $ref: '#/components/schemas/VerificationInitBody'
   /authentication/phone-verify:
     post:
-      summary: verification check
+      summary: |
+        Step 2 of 2 for phone number verification. The request body should the code
+        that was sent via the /authentication/phone-initiate endpoint. phone-verify will
+        check if the code matches what was originally sent to the user.
       tags:
         - Authentication
       operationId: auth_rest_service.verification_check
       responses:
         200:
-          description: verification result
+          description: the result of the verification
           content:
             application/json:
               schema:
@@ -52,6 +58,8 @@ paths:
                           - false
                     required:
                       - success
+        400:
+          description: bad request
       requestBody:
         content:
           application/json:
