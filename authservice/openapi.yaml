@@ -4,7 +4,7 @@ info:
   description: rokwire auth
   version: "0.1.0alpha"
 paths:
-  /authentication/verifications:
+  /authentication/phone-initiate:
     post:
       summary: initiate a verification
       tags:
@@ -20,7 +20,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/VerificationInitBody'
-  /authentication/verification-check:
+  /authentication/phone-verify:
     post:
       summary: verification check
       tags:
