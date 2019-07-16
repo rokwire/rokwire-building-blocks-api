@@ -23,6 +23,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/VerificationInitBody'
+            examples:
+              sms:
+                value:
+                  phoneNumber: "1234567890"
+                  channel: "sms"
+              call:
+                value:
+                  phoneNumber: "1234567890"
+                  channel: "call"
   /authentication/phone-verify:
     post:
       summary: |
@@ -58,6 +67,9 @@ paths:
                           - false
                     required:
                       - success
+              example:
+                success: true
+                id_token: deadbeef1234
         400:
           description: bad request
       requestBody:
