@@ -20,8 +20,9 @@ def format_query(args, query):
     if args.getlist('tags'):
         query['tags'] = {'$all': args.getlist('tags')}
     # target audience query
-    if args.get('targetAudience'):
-        query['targetAudience'] = {'$in': args.getlist('targetAudience')}
+    # TODO: temporarily turn off targetAudience search
+    # if args.get('targetAudience'):
+    #    query['targetAudience'] = {'$in': args.getlist('targetAudience')}
     # datetime range query
     if args.get('startDate'):
         query['startDate'] = {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}

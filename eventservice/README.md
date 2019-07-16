@@ -225,6 +225,7 @@ This query will return all events whose tags contain ``coffee`` and ``music``.
 
 ### Target Audience Search:
 
+Note, this feature search has been temporarily turned off.
 This query will return all events whose target audience is either ``student`` or ``staff``.
 
 ```
