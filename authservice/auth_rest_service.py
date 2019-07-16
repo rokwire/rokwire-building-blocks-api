@@ -24,15 +24,15 @@ ISDIGITS_SCHEMA = schema.Schema(
 
 
 def initiate_verification():
-    addl_schema = schema.Schema(
-        {'phoneNumber': ISDIGITS_SCHEMA},
-        ignore_extra_keys=True,
-    )
+    # addl_schema = schema.Schema(
+    #     {'phoneNumber': ISDIGITS_SCHEMA},
+    #     ignore_extra_keys=True,
+    # )
     body_dict = request.get_json(force=True)
-    try:
-        addl_schema.validate(body_dict)
-    except schema.SchemaError as se:
-        abort(400, str(se))
+    # try:
+    #     addl_schema.validate(body_dict)
+    # except schema.SchemaError as se:
+    #     abort(400, str(se))
 
     twilio_resp = requests.post(
         'https://verify.twilio.com/v2/Services/%s/Verifications' % (
@@ -43,7 +43,7 @@ def initiate_verification():
             os.getenv('TWILIO_AUTH_TOKEN'),
         ),
         data={
-            'To': '+1' + body_dict['phoneNumber'],
+            'To': body_dict['phoneNumber'],
             'Channel': body_dict['channel'],
         },
     )
@@ -56,7 +56,7 @@ def initiate_verification():
 
 def verification_check():
     addl_schema = schema.Schema({
-        'phoneNumber': ISDIGITS_SCHEMA,
+        # 'phoneNumber': str,
         'code': ISDIGITS_SCHEMA,
     })
     body_dict = request.get_json(force=True)
@@ -73,7 +73,7 @@ def verification_check():
             os.getenv('TWILIO_AUTH_TOKEN'),
         ),
         data={
-            'To': '+1' + body_dict['phoneNumber'],
+            'To': body_dict['phoneNumber'],
             'Code': body_dict['code'],
         },
     )
