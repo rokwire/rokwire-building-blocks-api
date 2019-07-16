@@ -2,6 +2,7 @@ import copy
 
 from profileservice.dao.interest import Interest
 from profileservice.dao.favorites import Favorites
+from profileservice.dao.privacysettings import PrivacySettings
 
 """
 set non pii dataset
@@ -116,6 +117,16 @@ def update_pii_dataset_from_json(dataset, injson):
         pass
     try:
         dataset.set_last_modified_date(injson["lastModifiedDate"])
+    except Exception as e:
+        pass
+    try:
+        privacySettings = PrivacySettings()
+        level = injson["privacySettings"]["level"]
+        data_modified = injson["privacySettings"]["dateModified"]
+        privacySettings.set_level(level)
+        privacySettings.set_date_modified(data_modified)
+
+        dataset.set_privacy_settings(privacySettings)
     except Exception as e:
         pass
 

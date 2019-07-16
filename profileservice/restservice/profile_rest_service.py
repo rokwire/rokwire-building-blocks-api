@@ -14,6 +14,7 @@ import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.restservice.utils.jsonutils as jsonutils
 import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
+import profileservice.restservice.utils.otherutils as otherutils
 
 from profileservice import middleware
 from profileservice.dao.pii_data import PiiData
@@ -367,6 +368,13 @@ class DealPii(Resource):
 
         msg = "Pii data will be updated with the id of " + str(pid)
         self.logger.info(msg)
+
+        # the level check in in_json should be performed
+        level_ok, level = otherutils.check_privacy_level(in_json)
+        if level_ok == False:
+            msg = "The given privacy level is not correct: " + level
+            self.logger.error(msg)
+            return rs_handlers.bad_request(msg)
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
         currenttime = datetime.datetime.now()
