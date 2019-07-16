@@ -640,9 +640,8 @@ paths:
   /authentication/phone-verify:
     post:
       summary: |
-        Step 2 of 2 for phone number verification. The request body should the code
-        that was sent via the /authentication/phone-initiate endpoint. phone-verify will
-        check if the code matches what was originally sent to the user.
+        Step 2 of 2 for phone number verification. The request body should contain the code that was sent to the end user as a result of the /authentication/phone-initiate endpoint.
+        phone-verify will check if the code matches what was originally sent to the user.
       tags:
         - Authentication
       operationId: auth_rest_service.verification_check
