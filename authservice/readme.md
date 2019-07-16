@@ -1,4 +1,4 @@
-# Authservice
+# Authentication Building Block
 
 ## dev notes
 
