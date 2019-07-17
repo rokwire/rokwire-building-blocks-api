@@ -685,6 +685,19 @@ components:
           type: string
         imageUrl:
           type: string
+        privacySettings:
+          type: object
+          properties:
+            level:
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+            dataModified:
+              type: string
         creationDate:
           type: string
         lastModifiedDate:
