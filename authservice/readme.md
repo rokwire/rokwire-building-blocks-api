@@ -1,5 +1,29 @@
 # Authentication Building Block
 
+## usage
+
+### Step 1 - phone-initiate
+
+Step 1 of 2 for phone number verification. Initiates the verification with a text or call that contains a code. That code should then be provided to the /authentication/phone-verify endpoint. Note: The phoneNumber property must include a prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
+
+#### example
+
+    curl -d '{
+               "phoneNumber": "+12175557890",
+               "channel": "sms"
+    }' -H "Content-Type: application/json" -X POST https://api-dev.rokwire.illinois.edu/authentication/phone-initiate
+
+### Step 2 - phone-verify
+
+Step 2 of 2 for phone number verification. The request body should contain the code that was sent to the end user as a result of the /authentication/phone-initiate endpoint. phone-verify will check if the code matches what was originally sent to the user. Note: The phoneNumber property must include a prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
+
+#### example
+
+    curl -d '{
+               "phoneNumber": "+12175557890",
+               "code": "974010"
+    }' -H "Content-Type: application/json" -X POST https://api-dev.rokwire.illinois.edu/authentication/phone-verify
+
 ## dev notes
 
 ### to run locally

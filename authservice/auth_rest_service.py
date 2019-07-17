@@ -55,10 +55,10 @@ def initiate_verification():
 
 
 def verification_check():
-    addl_schema = schema.Schema({
-        # 'phoneNumber': str,
-        'code': ISDIGITS_SCHEMA,
-    })
+    addl_schema = schema.Schema(
+        {'code': ISDIGITS_SCHEMA},
+        ignore_extra_keys=True,
+    )
     body_dict = request.get_json(force=True)
     try:
         addl_schema.validate(body_dict)
