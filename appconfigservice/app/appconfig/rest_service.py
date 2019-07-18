@@ -23,6 +23,7 @@ def get_app_configs():
         abort(500)
     try:
         db = conn.get_db()
+        print(current_app.config['APP_CONFIGS_COLLECTION'])
         for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query):
             config = decode(document)
             results.append(config)

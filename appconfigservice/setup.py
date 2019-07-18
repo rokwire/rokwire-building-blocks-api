@@ -1,6 +1,6 @@
 import io
 
-from setuptools import find_packages, setup
+from setuptools import find_namespace_packages, setup
 
 setup(
     name='appconfig',
@@ -8,7 +8,8 @@ setup(
     maintainer='Xiaoxia Liao',
     maintainer_email='xialiao@illinois.edu',
     description='The app config building block',
-    packages=find_packages(),
+    package_dir={'': 'app'},
+    packages=find_namespace_packages(where='app'),
     include_package_data=True,
     zip_safe=False,
     install_requires=[

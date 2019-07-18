@@ -3,7 +3,7 @@ import json
 from flask import current_app
 
 from appconfig import create_app
-import appconfig.db as conn
+from appconfig import db as conn
 
 @pytest.fixture
 def app():

@@ -14,9 +14,8 @@ def create_app(test_config=None):
         app.config.update(test_config)
         
     app.register_blueprint(rest_service.bp)
-  
+   
     # Connect to database
     db.init_app(app)
 
     return app
-    
