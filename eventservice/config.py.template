@@ -1,10 +1,12 @@
 EVENT_MONGO_URL="mongodb://localhost:27017"
 EVENT_DB_NAME="eventdb"
 
-IMAGE_MONGO_URL="mongodb://localhost:27017"
 IMAGE_DB_NAME="events-test"
 IMAGE_COLLECTION='images'
 IMAGE_FILE_MOUNTPOINT="~/images/"
+# set up maximum upload size
+MAX_CONTENT_LENGTH=4*1024*1024
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 AWS_ACCESS_KEY_ID=""
 AWS_SECRET_ACCESS_KEY=""

@@ -8,6 +8,7 @@ from . import query_params
 from .images.s3 import S3EventsImages
 from .images import localfile
 from flask import Blueprint, request, make_response, send_file, abort, current_app
+from werkzeug.utils import secure_filename
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -200,9 +201,15 @@ def put_imagefile(event_id, image_id):
         # check if image exists
         if imagedb[current_app.config['IMAGE_COLLECTION']].find({'_id': ObjectId(image_id)}):
             for key, file in request.files.items():
-                tmpfile = localfile.savefile(file, file.filename)
-                S3EventsImages().upload(tmpfile, event_id, image_id)
-                msg = "[put image]: image id %s" % (str(image_id))
+                if file.filename == '':
+                    raise
+                if file and localfile.allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    tmpfile = localfile.savefile(file, filename)
+                    S3EventsImages().upload(tmpfile, event_id, image_id)
+                    msg = "[put image]: image id %s" % (str(image_id))
+                else:
+                    raise
         else:
             raise
     except Exception as ex:
@@ -240,15 +247,20 @@ def post_imagefile(event_id):
     try:
         for key, file in request.files.items():
             print(file)
-            tmpfile = localfile.savefile(file, file.filename)
-
-            imagedb = get_imagedb()
-            result = imagedb[current_app.config['IMAGE_COLLECTION']].insert_one({
-                'eventId': event_id
-            })
-            image_id = str(result.inserted_id)
-            S3EventsImages().upload(tmpfile, event_id, image_id)
-            msg = "[post image]: image id %s" % (str(image_id))
+            if file.filename == '':
+                raise
+            if file and localfile.allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                tmpfile = localfile.savefile(file, file.filename)
+                imagedb = get_imagedb()
+                result = imagedb[current_app.config['IMAGE_COLLECTION']].insert_one({
+                    'eventId': event_id
+                })
+                image_id = str(result.inserted_id)
+                S3EventsImages().upload(tmpfile, event_id, image_id)
+                msg = "[post image]: image id %s" % (str(image_id))
+            else:
+                raise
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
