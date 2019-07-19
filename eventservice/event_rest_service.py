@@ -202,7 +202,7 @@ def put_imagefile(event_id, image_id):
             for key, file in request.files.items():
                 tmpfile = localfile.savefile(file, file.filename)
                 S3EventsImages().upload(tmpfile, event_id, image_id)
-                msg = "[put image]: image id %s" % (str(event_id))
+                msg = "[put image]: image id %s" % (str(image_id))
         else:
             raise
     except Exception as ex:
