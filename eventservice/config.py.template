@@ -1,6 +1,9 @@
 EVENT_MONGO_URL="mongodb://localhost:27017"
 EVENT_DB_NAME="eventdb"
 
+IMAGE_MONGO_URL="mongodb://localhost:27017"
+IMAGE_DB_NAME="events-test"
+IMAGE_COLLECTION='images'
 IMAGE_FILE_MOUNTPOINT="~/images/"
 
 AWS_ACCESS_KEY_ID=""
