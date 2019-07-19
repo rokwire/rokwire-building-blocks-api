@@ -283,7 +283,7 @@ paths:
           type: string
       - name: targetAudience
         in: query
-        description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff.
+        description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff. This parameter is CURRENTLY IGNORED.
         required: false
         style: form
         explode: true
