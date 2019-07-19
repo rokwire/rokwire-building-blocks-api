@@ -50,12 +50,19 @@ curl -X GET http://localhost:5000/app/configs/5d278c719725c37c8c811e2a
 
 ## Run docker in production
 
-OS: Ubuntu 18.0.4
+1. Create EC2 instance with Ubuntu 18.0.4 AMI
+2. Install mongodb if needed
+3. Install pip3
+4. More instructions:
+
 ```
-vi .bashrc
+vi .bash_aliases
 alias python=python3
 alias pip=pip3
-cd appconfigservice/deployment
+sudo apt-get install docker.io
+cd appconfigservice
+./build_app_config.sh
+cd ../deployment
 ./start_app_config_container.sh
 ./stop_app_config_container.sh
 

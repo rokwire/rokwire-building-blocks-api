@@ -1,0 +1,29 @@
+{
+	"mobileAppVersion": "0.0.1",
+	"platformBuildingBlocks": {
+		"user_profile_url": "https://api-dev.rokwire.illinois.edu/profiles",
+		"events_url": "https://api-dev.rokwire.illinois.edu/events",
+		"appconfigs_url": "https://api-dev.rokwire.illiois.edu/app/configs"
+	},
+	"thirdPartyServices": {
+		"instagram_url": "https://instagram.com",
+    		"sports_home_events_url": "https://sport.inabyte.com/api/schedule",
+    		"tickets_url": "https://ev11.evenue.net/cgi-bin/ncommerce3/SEGetGroupList?groupCode=EOS&linkID=illinois&shopperContext=&caller=&appCode=&utm_source=FI.com&utm_medium=TicketsPage&utm_content=MainImage&utm_campaign=AllTickets",
+    		"twitter_url": "https://twitter.com",
+    		"youtube_url": "https://www.youtube.com/c/fightingilliniathletics"
+	},
+	"otherUniversityServices": {
+    		"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api",
+    		"news_url": "http://fightingillini.com/services/stories_xml.aspx",
+    		"privacy_policy_url": "https://www.vpaa.uillinois.edu/resources/web_privacy",
+    		"redirect_auth_url": "edu.illinois.ncsa.rokwireauthpoc:rokwireauthpoc.ncsa.illinois.edu/oauth2-cb",
+    		"shibboleth_auth_token_url": "https://{shibboleth_client_id}:{shibboleth_client_secret}@shibboleth-test.techservices.illinois.edu/idp/profile/oidc/token",
+    		"shibboleth_oauth_host_url": "shibboleth-test.techservices.illinois.edu",
+    		"shibboleth_oauth_path_url": "/idp/profile/oidc/authorize",
+    		"sport_coaches_url": "http://fightingillini.com/services/coaches_xml.aspx",
+    		"sport_roster_url": "http://fightingillini.com/services/roster_xml.aspx",
+    		"sport_schedule_url": "http://fightingillini.com/services/schedule_xml_2.aspx",
+    		"sport_social_media_url": "http://fightingillini.com/api/assets?operation=sports",
+    		"user_auth_url": "https://shibboleth-test.techservices.illinois.edu/idp/profile/oidc/userinfo"
+	}
+}
