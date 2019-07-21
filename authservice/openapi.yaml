@@ -6,7 +6,8 @@ info:
 paths:
   /authentication/phone-initiate:
     post:
-      summary: |
+      summary: Initiate phone number verification
+      description: |
         Step 1 of 2 for phone number verification. Initiates the verification with a text or
         call that contains a code. That code should then be provided to the
         /authentication/phone-verify endpoint. Note: The phoneNumber property must include a
@@ -35,7 +36,8 @@ paths:
                   channel: "call"
   /authentication/phone-verify:
     post:
-      summary: |
+      summary: Complete phone number verification
+      description: |
         Step 2 of 2 for phone number verification. The request body should contain the code
         that was sent to the end user as a result of the /authentication/phone-initiate
         endpoint. phone-verify will check if the code matches what was originally sent to
