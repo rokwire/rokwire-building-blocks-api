@@ -12,7 +12,6 @@ class PiiData:
         self.pid = None
         self.uuid = None
         self.imageUrl = None
-        self.privacySettings = None
         self.fileDescriptors = None
         self.creationDate = None
         self.lastModifiedDate = None
@@ -76,12 +75,6 @@ class PiiData:
 
     def get_uuid(self):
         return self.uuid
-
-    def set_privacy_settings(self, privacySettings):
-        self.privacySettings = privacySettings
-
-    def get_privacy_settings(self):
-        return self.privacySettings
 
     def add_file_descriptor(self, fileDescriptor):
         if (fileDescriptor is not None):

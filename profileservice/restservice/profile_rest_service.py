@@ -141,6 +141,13 @@ class DealNonPii(Resource):
         msg = "Profile data will be updated with the id of " + str(uuid)
         self.logger.debug(msg)
 
+        # the level check in in_json should be performed
+        level_ok, level = otherutils.check_privacy_level(in_json)
+        if level_ok == False:
+            msg = "The given privacy level is not correct: " + level
+            self.logger.error(msg)
+            return rs_handlers.bad_request(msg)
+
         non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
         currenttime = datetime.datetime.now()
         currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
@@ -368,13 +375,6 @@ class DealPii(Resource):
 
         msg = "Pii data will be updated with the id of " + str(pid)
         self.logger.info(msg)
-
-        # the level check in in_json should be performed
-        level_ok, level = otherutils.check_privacy_level(in_json)
-        if level_ok == False:
-            msg = "The given privacy level is not correct: " + level
-            self.logger.error(msg)
-            return rs_handlers.bad_request(msg)
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
         currenttime = datetime.datetime.now()

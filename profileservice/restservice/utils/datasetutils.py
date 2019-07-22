@@ -63,6 +63,16 @@ def update_non_pii_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        privacySettings = PrivacySettings()
+        level = injson["privacySettings"]["level"]
+        data_modified = injson["privacySettings"]["dateModified"]
+        privacySettings.set_level(level)
+        privacySettings.set_date_modified(data_modified)
+
+        dataset.set_privacy_settings(privacySettings)
+    except Exception as e:
+        pass
+    try:
         dataset.set_creation_date(injson["creationDate"])
     except Exception as e:
         pass
@@ -117,16 +127,6 @@ def update_pii_dataset_from_json(dataset, injson):
         pass
     try:
         dataset.set_last_modified_date(injson["lastModifiedDate"])
-    except Exception as e:
-        pass
-    try:
-        privacySettings = PrivacySettings()
-        level = injson["privacySettings"]["level"]
-        data_modified = injson["privacySettings"]["dateModified"]
-        privacySettings.set_level(level)
-        privacySettings.set_date_modified(data_modified)
-
-        dataset.set_privacy_settings(privacySettings)
     except Exception as e:
         pass
 
