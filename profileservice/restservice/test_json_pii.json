@@ -6,9 +6,5 @@
   "email": "jd@testmail.com",
   "username": "jd325",
   "uin": "2340345",
-  "netid": "jd123",
-  "privacySettings": {
-    "level": 1,
-    "dateModified": "2019-06-01T10:15:23Z"
-  }
+  "netid": "jd123"
 }

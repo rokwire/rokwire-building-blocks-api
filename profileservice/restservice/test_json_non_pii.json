@@ -27,6 +27,10 @@
       "laundryPlaceIds": [],
       "athleticEventIds": []
   },
+  "privacySettings": {
+    "level": 1,
+    "dateModified": "2019-06-01T10:15:23Z"
+  },
   "test1": "whatever",
   "test2":
     ["whatever1", "whatever2"],
