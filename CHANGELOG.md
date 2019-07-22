@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update events schema to remove endDate as required field and add createdBy and createDate.
 - Update events schema according to discussion and feedback.
 - Update rokwire.yaml for events build block.
+- Update rokwire.yaml for API endpoint authentication.
 - Update README to include how to view Rokwire API document using Swagger
 - The code repository name to rokwire-building-blocks-api.
 - Fix README to use updated API definition YAML file URL.
