@@ -29,8 +29,8 @@ if [ -z $matchingStarted ]; then
     echo "Start Swagger docker container"
     sudo docker run \
         --name=$name \
-        -p 80:8080 -p 8080:8080 \
-        -e BASE_URL=/api/docs \
+        -p 80:8080 \
+        -e BASE_URL=/docs/ \
         -e SWAGGER_JSON=/rokwire-api-doc/rokwire.yaml \
         -v /home/ubuntu/rokwire-building-blocks-api:/rokwire-api-doc \
         swaggerapi/swagger-ui&
