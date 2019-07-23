@@ -594,7 +594,7 @@ paths:
       parameters: 
       - name: eventId
         in: path
-        description: eventId of images related to
+        description: Event ID
         required: true
         schema: 
           type: integer
