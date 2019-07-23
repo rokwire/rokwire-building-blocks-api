@@ -541,7 +541,7 @@ paths:
                     description: Image ID
                   message:
                     type: string
-                    description: the description of the operation
+                    description: The description of the operation
         500:
           description: Internal error
   
