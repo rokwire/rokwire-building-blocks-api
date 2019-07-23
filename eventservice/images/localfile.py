@@ -23,7 +23,7 @@ def savefile(file, filename):
 
 def deletefile(tmpfile):
     try:
-        if tmpfile and os.path.exists(tmpfile):
+        if os.path.exists(tmpfile):
             tmpfolder, _ = os.path.split(tmpfile)
             shutil.rmtree(tmpfolder)
     except Exception as ex:
