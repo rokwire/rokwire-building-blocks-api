@@ -568,7 +568,7 @@ paths:
           format: int64
       responses:
         200:
-          description: requested image in success
+          description: Successful image download
           content:
             image/jpeg:
               schema:
