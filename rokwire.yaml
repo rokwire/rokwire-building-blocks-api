@@ -561,7 +561,7 @@ paths:
           format: int64
       - name: imageId
         in: path
-        description: imageId of image related to 
+        description: Requested image ID
         required: true
         schema:
           type: integer 
