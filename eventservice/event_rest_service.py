@@ -3,7 +3,7 @@ import logging
 import flask
 
 from bson import ObjectId
-from .db import get_db, get_imagedb
+from .db import get_db
 from . import query_params
 from .images.s3 import S3EventsImages
 from .images import localfile
@@ -175,16 +175,19 @@ def delete_event(event_id):
 @bp.route('/<event_id>/images/<image_id>', methods=['GET'])
 def download_imagefile(event_id, image_id):
     msg = "[download image]: event id %s, status: 200" % (str(event_id))
+    tmp_file = None
     try:
-        tmp_file = S3EventsImages().download(event_id, image_id)
-
-        with open(tmp_file, 'rb') as f:
-            return send_file(
-                io.BytesIO(f.read()),
-                attachment_filename=event_id + "." + image_id+'.jpg',
-                mimetype='image/jpg'
-            )
-
+        db = get_db()
+        if db[current_app.config['IMAGE_COLLECTION']].find_one({"_id": ObjectId(image_id)}):
+            tmp_file = S3EventsImages().download(event_id, image_id)
+            with open(tmp_file, 'rb') as f:
+                return send_file(
+                    io.BytesIO(f.read()),
+                    attachment_filename=event_id + "." + image_id+'.jpg',
+                    mimetype='image/jpg'
+                )
+        else:
+            raise
     except Exception as ex:
         __logger.exception(ex)
         msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
@@ -196,20 +199,24 @@ def download_imagefile(event_id, image_id):
 
 @bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
 def put_imagefile(event_id, image_id):
+    tmpfile = None
     try:
-        imagedb = get_imagedb()
+        db = get_db()
         # check if image exists
-        if imagedb[current_app.config['IMAGE_COLLECTION']].find({'_id': ObjectId(image_id)}):
-            for key, file in request.files.items():
+        if db[current_app.config['IMAGE_COLLECTION']].find_one({'_id': ObjectId(image_id)}):
+            file = request.files.get('file')
+            if file:
                 if file.filename == '':
                     raise
-                if file and localfile.allowed_file(file.filename):
+                if localfile.allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     tmpfile = localfile.savefile(file, filename)
                     S3EventsImages().upload(tmpfile, event_id, image_id)
                     msg = "[put image]: image id %s" % (str(image_id))
                 else:
                     raise
+            else:
+                raise
         else:
             raise
     except Exception as ex:
@@ -223,8 +230,8 @@ def put_imagefile(event_id, image_id):
 @bp.route('/<event_id>/images', methods=['GET'])
 def get_imagefiles(event_id):
     try:
-        imagedb = get_imagedb()
-        result = imagedb[current_app.config['IMAGE_COLLECTION']].find(
+        db = get_db()
+        result = db[current_app.config['IMAGE_COLLECTION']].find(
             filter={
                 'eventId': event_id
             }, 
@@ -244,16 +251,17 @@ def get_imagefiles(event_id):
 
 @bp.route('/<event_id>/images', methods=['POST'])
 def post_imagefile(event_id):
+    tmpfile = None
     try:
-        for key, file in request.files.items():
-            print(file)
+        file = request.files.get('file')
+        if file:
             if file.filename == '':
                 raise
-            if file and localfile.allowed_file(file.filename):
+            if localfile.allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                tmpfile = localfile.savefile(file, file.filename)
-                imagedb = get_imagedb()
-                result = imagedb[current_app.config['IMAGE_COLLECTION']].insert_one({
+                tmpfile = localfile.savefile(file, filename)
+                db = get_db()
+                result = db[current_app.config['IMAGE_COLLECTION']].insert_one({
                     'eventId': event_id
                 })
                 image_id = str(result.inserted_id)
@@ -261,6 +269,8 @@ def post_imagefile(event_id):
                 msg = "[post image]: image id %s" % (str(image_id))
             else:
                 raise
+        else:
+            raise
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -274,8 +284,8 @@ def delete_imagefile(event_id, image_id):
     msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:
         S3EventsImages().delete(event_id, image_id)
-        imagedb = get_imagedb()
-        imagedb[current_app.config['IMAGE_COLLECTION']].delete_one({
+        db = get_db()
+        db[current_app.config['IMAGE_COLLECTION']].delete_one({
             '_id': ObjectId(image_id)
         })
     except Exception as ex:

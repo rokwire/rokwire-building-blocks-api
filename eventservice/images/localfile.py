@@ -23,6 +23,8 @@ def savefile(file, filename):
 
 def deletefile(tmpfile):
     try:
+        if not tmpfile:
+            return
         tmpfolder, _ = os.path.split(tmpfile)
         shutil.rmtree(tmpfolder)
     except Exception as ex:
