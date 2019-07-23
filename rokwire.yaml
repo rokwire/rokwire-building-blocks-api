@@ -580,7 +580,7 @@ paths:
     put:
       tags:
       - Events
-      summary: updates an image for target event
+      summary: Update an image associated with the specified event
       operationId: updateImage
       requestBody:
         description: Image to add to the event
