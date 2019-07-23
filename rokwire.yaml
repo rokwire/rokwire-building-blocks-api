@@ -583,7 +583,7 @@ paths:
       summary: Update an image associated with the specified event
       operationId: updateImage
       requestBody:
-        description: Image to add to the event
+        description: Image file to add to the event
         content: 
           image/*:
             schema: 
