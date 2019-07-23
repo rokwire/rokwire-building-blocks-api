@@ -492,7 +492,7 @@ paths:
             format: int64
       responses:
         200: 
-          description: request images in success
+          description: Getting image IDs successful.
           content:
             multipart/form-data:
               schema:
