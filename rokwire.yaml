@@ -549,7 +549,7 @@ paths:
     get:
       tags:
       - Events
-      summary: get an image for target event
+      summary: Download an event image by providing the IDs of the event and the image.
       operationId: requestImage
       parameters:
       - name: eventId
