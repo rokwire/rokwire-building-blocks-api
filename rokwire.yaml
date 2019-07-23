@@ -508,7 +508,7 @@ paths:
       summary: Upload an image to the specified event
       operationId: uploadImages
       requestBody:
-        description: Image to add to the event
+        description: Image file to upload and associate with the requested event
         content: 
           image/*:
             schema: 
