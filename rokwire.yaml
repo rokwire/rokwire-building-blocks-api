@@ -620,7 +620,7 @@ paths:
                   id: 
                     type: integer
                     format: int64
-                    description: the event Id
+                    description: Event ID
                   message:
                     type: string
                     description: the description of the operation
