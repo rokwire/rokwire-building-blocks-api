@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Separated non-pii data and pii data and database in profile building block
 - Profile building block rest api changed to Flask RESTFul api service
 - Profile building block non-pii interests has been changed by using category and subcategory
+- Update rokwire.yaml for images entry points of events building block
 
 ### Fixed
 - Events building block API definition to improve text.
