@@ -616,7 +616,7 @@ paths:
                 properties:
                   status: 
                     type: integer
-                    description: the status code of the operation
+                    description: Operation status code
                   id: 
                     type: integer
                     format: int64
