@@ -508,6 +508,198 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/{eventId}/images:
+    get:
+      tags:
+      - Events
+      summary: Get IDs of all images associated with the requested event.
+      operationId: requestImages
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200: 
+          description: Getting image IDs successful.
+          content:
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: binary
+        500:
+          description: Internal error
+    post: 
+      tags:
+        - Events
+      summary: Upload an image to the specified event
+      operationId: uploadImages
+      requestBody:
+        description: Image file to upload and associate with the requested event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        201: 
+          description: Images uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Image ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+  /events/{eventId}/images/{imageId}:
+    get:
+      tags:
+      - Events
+      summary: Download an event image by providing the IDs of the event and the image.
+      operationId: requestImage
+      parameters:
+      - name: eventId
+        in: path 
+        description: Event ID
+        required: true 
+        schema:
+          type: integer 
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200:
+          description: Successful image download
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        500:
+          description: Internal Error
+      
+    put:
+      tags:
+      - Events
+      summary: Update an image associated with the specified event
+      operationId: updateImage
+      requestBody:
+        description: Image file to add to the event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200: 
+          description: Image updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+    delete:
+      tags:
+      - Events
+      summary: Delete an image associated with the specified event
+      operationId: deleteImage
+      parameters:
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: ID of the image that needs to be deleted
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        202:
+          description: Image is deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
   /app/configs:
     post:
       tags:
