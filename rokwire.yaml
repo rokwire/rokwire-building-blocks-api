@@ -505,7 +505,7 @@ paths:
     post: 
       tags:
         - Events
-      summary: uploads an image for target event
+      summary: Upload an image to the specified event
       operationId: uploadImages
       requestBody:
         description: Image to add to the event
