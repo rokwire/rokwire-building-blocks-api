@@ -630,7 +630,7 @@ paths:
     delete:
       tags:
       - Events
-      summary: delete an image for target event
+      summary: Delete an image associated with the specified event
       operationId: deleteImage
       parameters:
       - name: eventId
