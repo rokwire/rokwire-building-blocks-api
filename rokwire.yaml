@@ -538,7 +538,7 @@ paths:
                   id: 
                     type: integer
                     format: int64
-                    description: the image Id
+                    description: Image ID
                   message:
                     type: string
                     description: the description of the operation
