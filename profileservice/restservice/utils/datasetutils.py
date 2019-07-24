@@ -65,9 +65,9 @@ def update_non_pii_dataset_from_json(dataset, injson):
     try:
         privacySettings = PrivacySettings()
         level = injson["privacySettings"]["level"]
-        data_modified = injson["privacySettings"]["dateModified"]
+        date_modified = injson["privacySettings"]["dateModified"]
         privacySettings.set_level(level)
-        privacySettings.set_date_modified(data_modified)
+        privacySettings.set_date_modified(date_modified)
 
         dataset.set_privacy_settings(privacySettings)
     except Exception as e:
