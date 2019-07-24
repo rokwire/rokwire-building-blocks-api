@@ -50,29 +50,23 @@ curl -X GET http://localhost:5000/app/configs/5d278c719725c37c8c811e2a
 
 ```
 
-Using cURL and a JSON data file to create app configuration on API running on dev server:
+Using cURL and a JSON data file to create/update app configuration on API running on dev server:
 
 ```
 
-curl -d "@appconfig-v094.json" -X POST https://api-dev.rokwire.illinois.edu/app/configs
+curl -d "@appconfig-v094.json" -X POST http://localhost:5000/app/configs
+curl -d "@appconfig-v100.json" -X PUT http://localhost:5000/app/configs/5d38b9a566933ef80c76203b
 
 ```
 
 ## Run docker in production
 
-1. Create EC2 instance with Ubuntu 18.0.4 AMI
-2. Install mongodb if needed
-3. Install pip3
-4. More instructions:
-
+OS: Ubuntu 18.0.4
 ```
-vi .bash_aliases
+vi .bashrc
 alias python=python3
 alias pip=pip3
-sudo apt-get install docker.io
-cd appconfigservice
-./build_app_config.sh
-cd ../deployment
+cd appconfigservice/deployment
 ./start_app_config_container.sh
 ./stop_app_config_container.sh
 
