@@ -8,6 +8,7 @@ class NonPiiData():
         self.over13 = None
         self.positiveInterestTags = None
         self.negativeInterestTags = None
+        self.privacySettings = None
         self.creationDate = None
         self.lastModifiedDate = None
 
@@ -60,6 +61,12 @@ class NonPiiData():
 
     def get_negativeInterestTagss(self):
         return self.negativeInterestTags
+
+    def set_privacy_settings(self, privacySettings):
+        self.privacySettings = privacySettings
+
+    def get_privacy_settings(self):
+        return self.privacySettings
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate

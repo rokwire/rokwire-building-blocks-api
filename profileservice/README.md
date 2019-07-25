@@ -100,7 +100,11 @@ curl -X PUT -d `{
                   "diningPlaceIds": [],
                   "laundryPlaceIds": [],
                   "athleticEventIds": []
-              }
+              },
+              "privacySettings": {
+                 "level": 1,
+                 "dateModified": "2019-06-01T10:15:23Z"
+              },
             }' -H "Content-Type: application/json" -X PUT http://localhost:5000/profiles/a6856b73-d453-4515-8002-56e8d0522136
 ```
 API will return update non-pii dataset

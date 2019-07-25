@@ -25,6 +25,8 @@ paths:
       summary: Create profile
       description: Create non-PII profile with profile id.
       operationId: createProfile
+      security:
+        - ApiKeyAuth: []
       requestBody:
         description: Created profile object
         content:
@@ -52,6 +54,8 @@ paths:
       summary: Find profile by ID
       description: Returns a single profile
       operationId: getProfileById
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -84,6 +88,8 @@ paths:
       - Profile
       summary: Updates a profile with form data
       operationId: updateProfileWithForm
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -124,6 +130,8 @@ paths:
       - Profile
       summary: Deletes a profile
       operationId: deleteProfile
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -139,6 +147,8 @@ paths:
           description: Profile is deleted
         400:
           description: Invalid ID supplied
+        401:
+          description: Unauthorized
         404:
           description: Profile not found
         500:
@@ -150,6 +160,8 @@ paths:
       summary: Create PII entry
       description: This creates a new PII entry.
       operationId: createPii
+      security:
+        - UserAuth: []
       responses:
         200:
           description: Ok
@@ -159,6 +171,8 @@ paths:
                 $ref: '#/components/schemas/Pii'
         400:
           description: Bad request
+        401:
+          description: Unauthorized
         500:
           description: Internal error
   /profiles/pii/{pid}:
@@ -168,6 +182,8 @@ paths:
       summary: Get PII by PID
       description: Returns a single PII
       operationId: getPiiById
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
@@ -200,6 +216,8 @@ paths:
       - PII
       summary: Updates a PII with form data
       operationId: updatePiiWithForm
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
@@ -239,6 +257,8 @@ paths:
       - PII
       summary: Deletes a PII
       operationId: deletePii
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
@@ -253,6 +273,8 @@ paths:
           description: Profile is deleted
         400:
           description: Invalid ID supplied
+        401:
+          description: Unauthorized
         404:
           description: Profile not found
         500:
@@ -264,6 +286,8 @@ paths:
       summary: searches events
       description: By passing in the appropriate options, you can search for events matching your criteria in the system
       operationId: searchEvents
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: title
         in: query
@@ -372,6 +396,8 @@ paths:
       summary: create an event
       description: create an event record into the system
       operationId: createEvent
+      security:
+        - UserAuth: []
       requestBody:
         description: Created event object
         content:
@@ -398,6 +424,8 @@ paths:
       - Events
       summary: Updates one event with form data
       operationId: updateEventWithForm
+      security:
+        - UserAuth: []
       parameters:
       - name: eventId
         in: path
@@ -437,6 +465,8 @@ paths:
       - Events
       summary: Deletes an event by the given event id
       operationId: deleteEvent
+      security:
+        - UserAuth: []
       parameters:
       - name: eventId
         in: path
@@ -452,6 +482,8 @@ paths:
           description: Event is deleted
         400:
           description: Invalid ID supplied
+        401:
+          description: Unauthorized
         404:
           description: Event not found
   /events/categories:
@@ -476,12 +508,206 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/{eventId}/images:
+    get:
+      tags:
+      - Events
+      summary: Get IDs of all images associated with the requested event.
+      operationId: requestImages
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200: 
+          description: Getting image IDs successful.
+          content:
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: binary
+        500:
+          description: Internal error
+    post: 
+      tags:
+        - Events
+      summary: Upload an image to the specified event
+      operationId: uploadImages
+      requestBody:
+        description: Image file to upload and associate with the requested event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        201: 
+          description: Images uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Image ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+  /events/{eventId}/images/{imageId}:
+    get:
+      tags:
+      - Events
+      summary: Download an event image by providing the IDs of the event and the image.
+      operationId: requestImage
+      parameters:
+      - name: eventId
+        in: path 
+        description: Event ID
+        required: true 
+        schema:
+          type: integer 
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200:
+          description: Successful image download
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        500:
+          description: Internal Error
+      
+    put:
+      tags:
+      - Events
+      summary: Update an image associated with the specified event
+      operationId: updateImage
+      requestBody:
+        description: Image file to add to the event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200: 
+          description: Image updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+    delete:
+      tags:
+      - Events
+      summary: Delete an image associated with the specified event
+      operationId: deleteImage
+      parameters:
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: ID of the image that needs to be deleted
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        202:
+          description: Image is deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
   /app/configs:
     post:
       tags:
       - App Configuration
       summary: Creates mobile app configuration
       operationId: createAppConfig
+      security:
+        - UserAuth: []
       requestBody:
         description: Creates AppConfig object
         content:
@@ -507,6 +733,8 @@ paths:
       - App Configuration
       summary: Reads mobile app configuration
       operationId: getAppConfig
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: successfully read mobile app configuration
@@ -528,6 +756,8 @@ paths:
       - App Configuration
       summary: Reads mobile app configuration by given id
       operationId: getAppConfigById
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: id
         in: path
@@ -557,6 +787,8 @@ paths:
       - App Configuration
       summary: Updates mobile app configuration
       operationId: updateAppConfig
+      security:
+        - UserAuth: []
       parameters:
       - name: id
         in: path
@@ -591,6 +823,8 @@ paths:
       - App Configuration
       summary: Deletes mobile app configuration
       operationId: deleteAppConfig
+      security:
+        - UserAuth: []
       parameters:
       - name: id
         in: path
@@ -660,6 +894,19 @@ components:
                 type: array
                 items:
                   type: string
+        privacySettings:
+          type: object
+          properties:
+            level:
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+            dataModified:
+              type: string
         creationDate:
           type: string
         lastModifiedDate:
@@ -855,3 +1102,14 @@ components:
           type: object
         otherUniversityServices:
           type: object
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the X-API-Key header must contain an API key corresponding to a supported client.
+    UserAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
