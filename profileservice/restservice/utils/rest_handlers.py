@@ -51,9 +51,10 @@ def forbidden(error=None):
 
 @app.errorhandler(404)
 def not_found(error=None):
-    message = {
-        'message': 'Not Found: ' + request.url,
-    }
+    if error is not None:
+        message = {'message': error + ": " + request.url}
+    else:
+        message = {'message': 'Not Found: ' + request.url}
     resp = jsonify(message)
     resp.status_code = 404
 
