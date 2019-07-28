@@ -4,8 +4,18 @@ import re
 
 def format_query(args, query):
     # title text query
+
+    if args.getlist('title'):
+        titles = ''
+        for title in args.getlist('title'):
+            titles += "\"%s\" " % title
+        query['$text'] = {'$search': titles}
+
+        # query['$text'] = {'$search': '\"apple\" \"banana\"'}
+    """
     if args.get('title'):
         query['$text'] = {'$search': args.get('title')}
+    """
     # category query
     if args.getlist('category'):
         category_query = list()
