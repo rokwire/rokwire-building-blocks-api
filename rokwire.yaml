@@ -23,7 +23,10 @@ paths:
       tags:
       - Profile
       summary: Create profile
-      description: Create non-PII profile with profile id.
+      description: |
+        Create non-PII profile with profile id.
+        
+        Auth: Requires a valid API Key for access.
       operationId: createProfile
       security:
         - ApiKeyAuth: []
@@ -52,7 +55,10 @@ paths:
       tags:
       - Profile
       summary: Find profile by ID
-      description: Returns a single profile
+      description: |
+        Returns a single profile
+        
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: getProfileById
       security:
         - ApiKeyAuth: []
@@ -87,6 +93,8 @@ paths:
       tags:
       - Profile
       summary: Updates a profile with form data
+      description: |
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: updateProfileWithForm
       security:
         - ApiKeyAuth: []
@@ -129,6 +137,8 @@ paths:
       tags:
       - Profile
       summary: Deletes a profile
+      description: |
+        Auth: Requires a valid API Key and uuid for access.
       operationId: deleteProfile
       security:
         - ApiKeyAuth: []
