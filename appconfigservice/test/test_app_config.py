@@ -39,6 +39,7 @@ def test_post_app_config(client, app):
         db = conn.get_db()
         config = db[current_app.config['APP_CONFIGS_COLLECTION']].find_one({'mobileAppVersion': '0.1.0'})
         assert config['mobileAppVersion'] == '0.1.0'
+        assert config['version_numbers'] == {'major': 0, 'minor': 1, 'patch': 0}
 
 def test_update_app_config(client, app):
     """Test PUT API"""
@@ -92,4 +93,28 @@ def test_delete_app_config(client, app):
     if id is not None:
         resp = client.delete('/app/configs/' + str(id))
         assert(resp.status_code == 202)
-
+    
+    
+def test_get_by_version(client, app):
+    """Test POST API"""
+    req_data_1 = {
+        "mobileAppVersion": "0.1.0",
+        "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
+        "thirdPartyServices": {},
+        "otherUniversityServices": {}
+    }
+    assert client.post('/app/configs', data=json.dumps(req_data_1), content_type='application/json').status_code == 201
+    req_data_2 = {
+        "mobileAppVersion": "0.2.0",
+        "platformBuildingBlocks": {"events": "http://api.rokwire.illinois.edu/events"},
+        "thirdPartyServices": {},
+        "otherUniversityServices": {}
+    }
+    assert client.post('/app/configs', data=json.dumps(req_data_2), content_type='application/json').status_code == 201
+    assert client.get('/app/configs?mobileAppVersion=0.2.0').status_code == 200
+    response = client.get('/app/configs')
+    assert b'0.1.0' in response.data
+    assert b'0.2.0' in response.data
+    with app.app_context():
+        db = conn.get_db()
+        ack = db[current_app.config['APP_CONFIGS_COLLECTION']].delete_many({'mobileAppVersion': {'$in': ['0.1.0', '0.2.0']}})

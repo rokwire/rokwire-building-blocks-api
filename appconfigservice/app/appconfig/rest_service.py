@@ -1,8 +1,10 @@
 import logging
 import flask
+import re
 
 from bson import ObjectId
 from appconfig import db as conn
+from appconfig import dbutils 
 from flask import Blueprint, request, make_response, abort, current_app
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
@@ -23,8 +25,7 @@ def get_app_configs():
         abort(500)
     try:
         db = conn.get_db()
-        print(current_app.config['APP_CONFIGS_COLLECTION'])
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}):
             config = decode(document)
             results.append(config)
     except Exception as ex:
@@ -41,7 +42,7 @@ def get_app_config_by_id(id):
         abort(400)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}, {"version_numbers": 0}):
             config = decode(document)
             results.append(config)
     except Exception as ex:
@@ -58,6 +59,7 @@ def post_app_config():
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: app config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
@@ -76,6 +78,7 @@ def update_app_config(id):
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
     except Exception as ex:
@@ -165,13 +168,25 @@ def server_500_error(error=None):
     return resp
 
 def format_query(args, query):
-    if args.get('mobileAppVersion'):
-        query['mobileAppVersion'] = args.get('mobileAppVersion')
+    version = args.get('mobileAppVersion')
+    if version is not None:
+        m = re.match(dbutils.VERSION_NUMBER_REGX, version)
+        query = {'$or': [
+            {'version_numbers.major': {'$lt' : int(m.group(1))}},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
+        ]}
     return query
+
+def add_version_numbers(req_data):
+    version = req_data['mobileAppVersion']
+    version_numbers = dbutils.create_version_numbers(version)
+    req_data['version_numbers'] = version_numbers
     
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
-            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None:
+            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
+            dbutils.check_appversion_format(req_data['mobileAppVersion']) is False:
         return False
     return True
     
