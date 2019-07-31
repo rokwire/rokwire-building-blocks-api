@@ -32,7 +32,8 @@ def test_post_app_config(client, app):
         "mobileAppVersion": "0.1.0",
         "platformBuildingBlocks": {},
         "thirdPartyServices": {},
-        "otherUniversityServices": {}
+        "otherUniversityServices": {},
+        "secretKeys": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data), content_type='application/json').status_code == 201
     with app.app_context():
@@ -56,7 +57,8 @@ def test_update_app_config(client, app):
             "appconfigs": "https://api-dev.rokwire.illinois.edu/app/configs"
         },
         "thirdPartyServices": {},
-        "otherUniversityServices": {}
+        "otherUniversityServices": {},
+        "secretKeys": {"xx-key": "blahblah...blah"}
     }
     if id is not None:
         assert client.put('/app/configs/' + str(id), data=json.dumps(new_data), content_type='application/json').status_code == 200
@@ -82,17 +84,23 @@ def test_get_app_config_by_id(client, app):
         resp = client.get('/app/configs/' + str(id))
         assert resp.status_code == 200
         assert b'0.1.0' in resp.data
+
+def test_secret_key(client, app):
+    """Test GET API given mobile app version"""
+    response = client.get('/app/configs?mobileAppVersion=0.1.0')
+    print(response.data)
+    assert b'blahblah' in response.data
     
 def test_delete_app_config(client, app):
     """Test DELETE API"""
     id = None
     with app.app_context():
         db = conn.get_db()
-        config = db[current_app.config['APP_CONFIGS_COLLECTION']].find_one({'mobileAppVersion': '0.1.0'})
-        id = config['_id']
-    if id is not None:
-        resp = client.delete('/app/configs/' + str(id))
-        assert(resp.status_code == 202)
+        for doc in db[current_app.config['APP_CONFIGS_COLLECTION']].find({'mobileAppVersion': '0.1.0'}):
+            id = doc['_id']
+            if id is not None:
+                resp = client.delete('/app/configs/' + str(id))
+                assert(resp.status_code == 202)
     
     
 def test_get_by_version(client, app):
@@ -101,14 +109,16 @@ def test_get_by_version(client, app):
         "mobileAppVersion": "0.1.0",
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
-        "otherUniversityServices": {}
+        "otherUniversityServices": {},
+        "secretKeys": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_1), content_type='application/json').status_code == 201
     req_data_2 = {
         "mobileAppVersion": "0.2.0",
         "platformBuildingBlocks": {"events": "http://api.rokwire.illinois.edu/events"},
         "thirdPartyServices": {},
-        "otherUniversityServices": {}
+        "otherUniversityServices": {},
+        "secretKeys": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_2), content_type='application/json').status_code == 201
     assert client.get('/app/configs?mobileAppVersion=0.2.0').status_code == 200
@@ -118,3 +128,4 @@ def test_get_by_version(client, app):
     with app.app_context():
         db = conn.get_db()
         ack = db[current_app.config['APP_CONFIGS_COLLECTION']].delete_many({'mobileAppVersion': {'$in': ['0.1.0', '0.2.0']}})
+        

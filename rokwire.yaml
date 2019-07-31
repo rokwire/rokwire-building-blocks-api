@@ -735,6 +735,15 @@ paths:
       operationId: getAppConfig
       security:
         - ApiKeyAuth: []
+      parameters:
+        - name: mobileAppVersion
+          in: path
+          description: query by mobile app version, results contain all app configurations equal or prior to the given app version 
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: successfully read mobile app configuration
@@ -1101,6 +1110,8 @@ components:
         thirdPartyServices:
           type: object
         otherUniversityServices:
+          type: object
+        secretKeys:
           type: object
   securitySchemes:
     ApiKeyAuth:

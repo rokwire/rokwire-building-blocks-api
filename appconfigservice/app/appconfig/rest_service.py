@@ -169,7 +169,7 @@ def server_500_error(error=None):
 
 def format_query(args, query):
     version = args.get('mobileAppVersion')
-    if version is not None:
+    if version is not None and dbutils.check_appversion_format(version):
         m = re.match(dbutils.VERSION_NUMBER_REGX, version)
         query = {'$or': [
             {'version_numbers.major': {'$lt' : int(m.group(1))}},
@@ -186,7 +186,7 @@ def add_version_numbers(req_data):
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
             req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
-            dbutils.check_appversion_format(req_data['mobileAppVersion']) is False:
+            req_data['secretKeys'] is None or dbutils.check_appversion_format(req_data['mobileAppVersion']) is False:
         return False
     return True
     
@@ -200,5 +200,7 @@ def decode(document):
     dto['platformBuildingBlocks'] = document['platformBuildingBlocks']
     dto['thirdPartyServices'] = document['thirdPartyServices']
     dto['otherUniversityServices'] = document['otherUniversityServices']
+    if 'secretKeys' in document.keys():
+        dto['secretKeys'] = document['secretKeys']
     return dto
     
