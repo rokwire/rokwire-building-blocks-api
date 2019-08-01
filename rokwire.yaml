@@ -492,7 +492,7 @@ paths:
     get:
       tags:
       - Events
-      summary: get events categories
+      summary: Get events categories
       description: return back a list of categories and subcategories
       responses:
         200:
@@ -510,6 +510,24 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/tags:
+    get:
+      tags:
+      - Events
+      summary: Get a list of Rokwire event tags
+      operationId: getTags
+      responses:
+        200:
+          description: Getting event tags successful
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+        500: 
+          description: Internal error
+
   /events/{eventId}/images:
     get:
       tags:
