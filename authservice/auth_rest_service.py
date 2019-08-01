@@ -9,6 +9,7 @@ import connexion
 
 from datetime import datetime
 from flask import request, abort
+from dateutil.relativedelta import relativedelta
 
 logger = logging.getLogger(__name__)
 
@@ -84,13 +85,15 @@ def verification_check():
     twilio_resp.raise_for_status()
     if not twil_dict['valid'] or twil_dict['status'] != 'approved':
         return {'success': False}
+    now = datetime.utcnow()
     id_token = jwt.encode(
         {
             'phoneNumber': body_dict['phoneNumber'],
-            'iat': datetime.utcnow(),  # issued at
-            'aud': os.getenv('PHONE_VERIFY_AUDIENCE'),
-            'iss': 'https://' + socket.gethostname(),
-            'sub': body_dict['phoneNumber'],
+            'iat': now.timestamp(),  # issued at
+            'exp': (now + relativedelta(months=1)).timestamp(),  # expiration
+            'aud': os.getenv('PHONE_VERIFY_AUDIENCE'),  # audience
+            'iss': 'https://' + socket.gethostname(),  # issuer
+            'sub': body_dict['phoneNumber'],  # subject
         },
         os.getenv('PHONE_VERIFY_SECRET'),
         headers={'phone': True},
