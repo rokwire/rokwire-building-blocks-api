@@ -15,6 +15,15 @@ Pay attention to these things:
   - The Dockerfile will need be changed to allow for the fact that the build context is one level above the individual web service apps.
   - [docker build instructions here](#docker-build)
 
+## run
+
+- make present-working-directory this one (`rokwire-building-blocks-api/auth-middleware-test-svc/`)
+- execute run command
+  - docker compose
+    - `$ docker-compose up`
+  - standard python (need to pip install requirements, and recommend using a virtualenv)
+    - `$ python flaskapp.py`
+
 ## docker build
 
 ### std docker
