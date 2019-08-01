@@ -35,15 +35,26 @@ def authenticate():
         abort(401)
     if unverified_header.get('phone', False):
         # phone number verify
-        id_info = jwt.decode(
-            _id_token,
-            'secret-key-goes-here',
-            audience='rokwire',
-        )
+        phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
+        if not phone_verify_secret:
+            logger.warning("PHONE_VERIFY_SECRET environment variable not set")
+            abort(401)
+        phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
+        if not phone_verify_audience:
+            logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
+            abort(401)
+        try:
+            id_info = jwt.decode(
+                _id_token,
+                phone_verify_secret,
+                audience=phone_verify_audience,
+            )
+        except jwt.DecodeError as de:
+            logger.warning("error on id_token decode. Message = %s" % str(de))
+            abort(401)
         # import pprint; pprint.pprint(id_info)
     else:
         # shibboleth
-        # SHIB_HOST = 'shibboleth-test.techservices.illinois.edu'
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
         kid = unverified_header.get('kid')
         if not kid:
