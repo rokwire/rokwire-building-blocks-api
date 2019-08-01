@@ -89,7 +89,7 @@ def verification_check():
             'phoneNumber': body_dict['phoneNumber'],
             'iat': datetime.utcnow(),  # issued at
             'aud': os.getenv('PHONE_VERIFY_AUDIENCE'),
-            'iss': socket.gethostname(),
+            'iss': 'https://' + socket.gethostname(),
         },
         os.getenv('PHONE_VERIFY_SECRET'),
         headers={'phone': True},
