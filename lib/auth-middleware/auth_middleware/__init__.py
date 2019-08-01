@@ -19,10 +19,15 @@ def authenticate():
         should_use_security_token_auth = getattr(view_func, '_use_security_token_auth', False)
     # print("should use security token auth = %s" % should_use_security_token_auth)
 
-    _id_token = request.headers.get('Id-Token')
-    if not _id_token:
-        logger.warning("Request missing Id-Token header")
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        logger.warning("Request missing Authorization header")
         abort(401)
+    ah_split = auth_header.split()
+    if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
+        logger.warning("invalid auth header. expecting 'bearer' and token with space between")
+        abort(401)
+    _id_token = ah_split[1]
     try:
         unverified_header = jwt.get_unverified_header(_id_token)
     except jwt.exceptions.PyJWTError as jwte:
