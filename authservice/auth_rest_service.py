@@ -92,7 +92,7 @@ def verification_check():
             'iat': now.timestamp(),  # issued at
             'exp': (now + relativedelta(months=1)).timestamp(),  # expiration
             'aud': os.getenv('PHONE_VERIFY_AUDIENCE'),  # audience
-            'iss': 'https://' + socket.gethostname(),  # issuer
+            'iss': 'https://' + socket.getfqdn(),  # issuer
             'sub': body_dict['phoneNumber'],  # subject
         },
         os.getenv('PHONE_VERIFY_SECRET'),
