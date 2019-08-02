@@ -53,7 +53,13 @@ You need to have Docker installed in your computer.
 ```
 $ docker-compose up
 ```
-#### Build Docker image and push to Rokwire's Amazon Web Service Elastic Container Registry (Optional)
+
+## Deployment notes
+
+more instructions can be found [here](https://opensource.ncsa.illinois.edu/confluence/pages/viewpage.action?pageId=147917580)
+
+### Build Docker image and push to Rokwire's Amazon Web Service Elastic Container Registry
+
 - `$ docker-compose build` or maybe `$ docker-compose build --no-cache --force-rm`
 - `$ docker tag rokwire/authservice_web 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/authservice_web`
 - `$ docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/authservice_web`
