@@ -79,7 +79,7 @@ def authenticate():
         if not id_info:
             logger.warning("id_info was not returned from decode")
             abort(401)
-        if id_info['iss'] not in [SHIB_HOST, 'https://' + SHIB_HOST,]:
+        if id_info['iss'] != 'https://' + SHIB_HOST:
             logger.warning("invalid iss of %s" % id_info['iss'])
             abort(401)
     request.user_token_data = id_info
