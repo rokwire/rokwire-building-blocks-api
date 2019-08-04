@@ -19,6 +19,8 @@ tags:
   description: API endpoints for managing mobile app configuration
 - name: Logs
   description: API endpoints for managing logs
+- name: Authentication
+  description: API endpoints for managing user phone number verification.
 paths:
   /profiles:
     post:
@@ -899,6 +901,84 @@ paths:
         500:
           description: Internal error
   
+  /authentication/phone-initiate:
+    post:
+      summary: Initiate phone number verification
+      description: |
+        Step 1 of 2 for phone number verification. Initiates the verification with a text or
+        call that contains a code. That code should then be provided to the
+        /authentication/phone-verify endpoint. Note: The phoneNumber property must include a
+        prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
+      tags:
+        - Authentication
+      operationId: auth_rest_service.initiate_verification
+      responses:
+        201:
+          description: initiation successful
+        400:
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthPhoneVerifyInitBody'
+            examples:
+              sms:
+                value:
+                  phoneNumber: "+12175557890"
+                  channel: "sms"
+              call:
+                value:
+                  phoneNumber: "+12175557890"
+                  channel: "call"
+  /authentication/phone-verify:
+    post:
+      summary: Complete phone number verification
+      description: |
+        Step 2 of 2 for phone number verification. The request body should contain the code
+        that was sent to the end user as a result of the /authentication/phone-initiate
+        endpoint. phone-verify will check if the code matches what was originally sent to
+        the user. Note: The phoneNumber property must include a prefix plus symbol (+),
+        the country code (e.g., 1 for USA), and the area code.
+      tags:
+        - Authentication
+      operationId: auth_rest_service.verification_check
+      responses:
+        200:
+          description: the result of the verification
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      id_token:
+                        type: string
+                    required:
+                      - success
+                      - id_token
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                    required:
+                      - success
+              example:
+                success: true
+                id_token: deadbeef1234
+        400:
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthPhoneVerifyCheckBody'
 components:
   schemas:
     Non-pii:
@@ -1217,6 +1297,42 @@ components:
         customAttribute5:
           type: string
           description: Custom attribute provided for future use.
+    PhoneNumber:
+      type: string
+      minLength: 4
+      maxLength: 20
+      example: "+12175557890"
+    AuthPhoneVerifyInitBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        channel:
+          type: string
+          enum:
+            - sms
+            - call
+      required:
+        - phoneNumber
+        - channel
+      example:
+        phoneNumber: "+12175557890"
+        channel: "sms"
+    AuthPhoneVerifyCheckBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+      required:
+        - phoneNumber
+        - code
+      example:
+        phoneNumber: "+12175557890"
+        code: "123456"  
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
