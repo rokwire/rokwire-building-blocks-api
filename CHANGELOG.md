@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile rest service dockerized
 - Image update and fileDescriptor moved to pii from non-pii
 - Test profiles building block rest service deployed in AWS server
+- Logging building block API definitions.
 
 ### Changed
 - Update events schema to remove endDate as required field and add createdBy and createDate.
