@@ -1265,8 +1265,8 @@ components:
           type: object
           description: Object containing relevant device settings. 
         userAction:
-          $ref: '#/components/schemas/userAction'
-    userAction:
+          $ref: '#/components/schemas/UserAction'
+    UserAction:
       type: object
       description: Object containing details of user action.
       properties:
