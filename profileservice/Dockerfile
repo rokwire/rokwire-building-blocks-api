@@ -23,4 +23,4 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     FLASK_ENV="development"
 
 #CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5001"]
-CMD ["gunicorn", "eventservice:create_app()", "--config", "/app/eventservice/gunicorn.config.py"]
+CMD ["gunicorn", "profileservice:create_app()", "--config", "/app/profileservice/gunicorn.config.py"]
