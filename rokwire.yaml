@@ -168,7 +168,10 @@ paths:
       tags:
       - PII
       summary: Create PII entry
-      description: This creates a new PII entry.
+      description: |
+        This creates a new PII entry.
+        
+        Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       operationId: createPii
       security:
         - UserAuth: []
@@ -190,7 +193,10 @@ paths:
       tags:
       - PII
       summary: Get PII by PID
-      description: Returns a single PII
+      description: |
+        Returns a single PII entry.
+        
+        Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
       operationId: getPiiById
       security:
         - UserAuth: []
@@ -225,6 +231,8 @@ paths:
       tags:
       - PII
       summary: Updates a PII with form data
+      description: |
+        Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
       operationId: updatePiiWithForm
       security:
         - UserAuth: []
@@ -266,6 +274,8 @@ paths:
       tags:
       - PII
       summary: Deletes a PII
+      description: |
+        Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
       operationId: deletePii
       security:
         - UserAuth: []
@@ -294,7 +304,10 @@ paths:
       tags:
       - Events
       summary: searches events
-      description: By passing in the appropriate options, you can search for events matching your criteria in the system
+      description: |
+        By passing in the appropriate options, you can search for events matching your criteria in the system
+        
+        Auth: Requires a valid API Key for access.
       operationId: searchEvents
       security:
         - ApiKeyAuth: []
@@ -404,7 +417,10 @@ paths:
       tags:
         - Events
       summary: create an event
-      description: create an event record into the system
+      description: |
+        create an event record into the system
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: createEvent
       security:
         - UserAuth: []
@@ -433,6 +449,10 @@ paths:
       tags:
       - Events
       summary: Updates one event with form data
+      description: |
+        Update the event record matching the eventId.
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: updateEventWithForm
       security:
         - UserAuth: []
@@ -474,6 +494,10 @@ paths:
       tags:
       - Events
       summary: Deletes an event by the given event id
+      description: |
+        Delete the event record matching the eventId.
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: deleteEvent
       security:
         - UserAuth: []
@@ -501,7 +525,12 @@ paths:
       tags:
       - Events
       summary: get events categories
-      description: return back a list of categories and subcategories
+      description: |
+        return back a list of categories and subcategories
+        
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: search results matching criteria
@@ -523,6 +552,10 @@ paths:
       tags:
       - Events
       summary: Get IDs of all images associated with the requested event.
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       operationId: requestImages
       parameters:
         - name: eventId
@@ -548,6 +581,10 @@ paths:
       tags:
         - Events
       summary: Upload an image to the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
       operationId: uploadImages
       requestBody:
         description: Image file to upload and associate with the requested event
@@ -592,6 +629,10 @@ paths:
       tags:
       - Events
       summary: Download an event image by providing the IDs of the event and the image.
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       operationId: requestImage
       parameters:
       - name: eventId
@@ -623,6 +664,10 @@ paths:
       tags:
       - Events
       summary: Update an image associated with the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
       operationId: updateImage
       requestBody:
         description: Image file to add to the event
@@ -673,6 +718,10 @@ paths:
       tags:
       - Events
       summary: Delete an image associated with the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
       operationId: deleteImage
       parameters:
       - name: eventId
@@ -715,6 +764,8 @@ paths:
       tags:
       - App Configuration
       summary: Creates mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: createAppConfig
       security:
         - UserAuth: []
@@ -742,6 +793,8 @@ paths:
       tags:
       - App Configuration
       summary: Reads mobile app configuration
+      description: |
+        Auth: Requires a valid API Key for access.
       operationId: getAppConfig
       security:
         - ApiKeyAuth: []
@@ -765,6 +818,8 @@ paths:
       tags:
       - App Configuration
       summary: Reads mobile app configuration by given id
+      description: |
+        Auth: Requires a valid API Key for access.
       operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
@@ -796,6 +851,8 @@ paths:
       tags:
       - App Configuration
       summary: Updates mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: updateAppConfig
       security:
         - UserAuth: []
@@ -832,6 +889,8 @@ paths:
       tags:
       - App Configuration
       summary: Deletes mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: deleteAppConfig
       security:
         - UserAuth: []
