@@ -62,7 +62,7 @@ $ docker-compose up
 
 ##### Docker Compose environment variable configuration
 
-Create a file called `credentials.env`.  See [here](https://docs.docker.com/compose/environment-variables/#the-env-file) for documentation on `.env` files.  Here are the environment variables that need to be defined:
+To run locally with Docker Compose, you will need to create a file called `credentials.env`.  See [here](https://docs.docker.com/compose/environment-variables/#the-env-file) for documentation on `.env` files.  Here are the environment variables that need to be defined:
 
 - `TWILIO_ACCT_SID`
 - `TWILIO_AUTH_TOKEN`
