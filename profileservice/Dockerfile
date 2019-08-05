@@ -23,4 +23,4 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     FLASK_ENV="development"
 
 #CMD ["python", "profile_rest_service.py"]
-CMD ["falsk run --port 5001"]
+CMD ["flask run --port 5001"]
