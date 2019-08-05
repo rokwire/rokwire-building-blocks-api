@@ -138,7 +138,7 @@ paths:
       - Profile
       summary: Deletes a profile
       description: |
-        Auth: Requires a valid API Key and uuid for access.
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: deleteProfile
       security:
         - ApiKeyAuth: []
