@@ -18,6 +18,9 @@ def get_app_configs():
     results = list()
     args = request.args
     query = dict()
+    version = args.get('mobileAppVersion')
+    if version is not None and dbutils.check_appversion_format(version) == False:
+        abort(404)
     try:
         query = format_query(args, query)
     except Exception as ex:
@@ -139,7 +142,7 @@ def server_401_error(error=None):
 def server_404_error(error=None):
     message = {
         'status': 404,
-        'message': 'App config not found : ' + request.url,
+        'message': 'App config not found : ' + request.url + '. If search by mobile app version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
     }
     resp = flask.jsonify(message)
     resp.status_code = 404
@@ -155,7 +158,6 @@ def server_405_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 405
     return resp
-
 
 @bp.errorhandler(500)
 def server_500_error(error=None):
