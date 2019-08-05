@@ -22,5 +22,4 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     FLASK_APP="profile_rest_service" \
     FLASK_ENV="development"
 
-#CMD ["python", "profile_rest_service.py"]
-CMD ["flask", "run", "--port", "5001"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5001"]
