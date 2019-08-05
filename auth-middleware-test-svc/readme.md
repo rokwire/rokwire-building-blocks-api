@@ -14,6 +14,7 @@ Pay attention to these things:
         - `auth-middleware`
   - The Dockerfile will need be changed to allow for the fact that the build context is one level above the individual web service apps.
   - [docker build instructions here](#docker-build)
+- See the readme.md file for the `lib/auth-middleware` python package for environment variables that will need to be set in your building block instance.
 
 ## run
 
