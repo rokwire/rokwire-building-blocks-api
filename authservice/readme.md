@@ -49,10 +49,27 @@ These secrets are set up to validate the incoming requests from the mobile app.
 $ python auth_rest_service.py
 ```
 ### Run as a Docker Container
+
+#### Docker Compose
+
 You need to have Docker installed in your computer.
+
+##### Run command
+
 ```
 $ docker-compose up
 ```
+
+##### Docker Compose environment variable configuration
+
+Create a file called `credentials.env`.  See [here](https://docs.docker.com/compose/environment-variables/#the-env-file) for documentation on `.env` files.  Here are the environment variables that need to be defined:
+
+- `TWILIO_ACCT_SID`
+- `TWILIO_AUTH_TOKEN`
+- `TWILIO_VERIFY_SERVICE_ID`
+- `PHONE_VERIFY_SECRET`
+- `PHONE_VERIFY_AUDIENCE`
+
 
 ## Deployment notes
 
