@@ -18,6 +18,9 @@ WORKDIR /usr/src/app/profileservice/restservice
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
-    MONGO_PII_URL=""
+    MONGO_PII_URL="" \
+    FLASK_APP="profile_rest_service" \
+    FLASK_ENV="development"
 
-CMD ["python", "profile_rest_service.py"]
+#CMD ["python", "profile_rest_service.py"]
+CMD ["falsk run --port 5001"]
