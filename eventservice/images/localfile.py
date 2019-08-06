@@ -4,6 +4,11 @@ import tempfile
 from flask import current_app
 
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+
 def savefile(file, filename):
     try:
         _, tmpfolder = os.path.split(tempfile.mkdtemp())
@@ -18,7 +23,8 @@ def savefile(file, filename):
 
 def deletefile(tmpfile):
     try:
-        tmpfolder, _ = os.path.split(tmpfile)
-        shutil.rmtree(tmpfolder)
+        if os.path.exists(tmpfile):
+            tmpfolder, _ = os.path.split(tmpfile)
+            shutil.rmtree(tmpfolder)
     except Exception as ex:
         pass

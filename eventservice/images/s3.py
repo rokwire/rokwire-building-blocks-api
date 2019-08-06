@@ -1,6 +1,7 @@
 import os
 import tempfile
 import boto3
+from .localfile import deletefile
 from flask import current_app
 
 
@@ -23,6 +24,7 @@ class S3EventsImages:
             with open(tmpfile, 'wb') as f:
                 self.client.download_fileobj(self.bucket, fileobj, f)
         except Exception as ex:
+            deletefile(tmpfile)
             raise
         return tmpfile
 
