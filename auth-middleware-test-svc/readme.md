@@ -27,6 +27,9 @@ Pay attention to these things:
 
 ## docker build
 
+## Environment variables
+Please add the required environment variables to .env file. This will be imported into the docker container when running docker compose command. 
+
 ### std docker
 
 - make present-working-directory the parent directory
