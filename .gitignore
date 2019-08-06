@@ -32,3 +32,10 @@ profileservice/dao/__pycache__
 profileservice/restservice/__pycache__
 
 authservice/credentials.env
+
+# Docker ENV files
+.env
+
+# Python builds
+*.egg-info/
+dist/
