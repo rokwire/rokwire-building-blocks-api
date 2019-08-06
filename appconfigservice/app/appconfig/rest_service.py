@@ -6,6 +6,7 @@ from bson import ObjectId
 from appconfig import db as conn
 from appconfig import dbutils 
 from flask import Blueprint, request, make_response, abort, current_app
+from pymongo.errors import DuplicateKeyError
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -66,6 +67,9 @@ def post_app_config():
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: app config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(500)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -84,11 +88,13 @@ def update_app_config(id):
         add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(500)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
-
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
