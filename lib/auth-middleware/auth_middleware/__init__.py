@@ -48,6 +48,7 @@ def authenticate():
                 _id_token,
                 phone_verify_secret,
                 audience=phone_verify_audience,
+                verify=True
             )
         except jwt.DecodeError as de:
             logger.warning("error on id_token decode. Message = %s" % str(de))
@@ -56,6 +57,7 @@ def authenticate():
     else:
         # shibboleth
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
+        SHIB_CLIENT_ID = os.getenv('SHIBBOLETH_CLIENT_ID')
         kid = unverified_header.get('kid')
         if not kid:
             logger.warning("kid not found in unverified header")
@@ -72,7 +74,7 @@ def authenticate():
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            id_info = jwt.decode(_id_token, key=pub_key, audience="rokwire-auth-poc")
+            id_info = jwt.decode(_id_token, key=pub_key, audience=SHIB_CLIENT_ID, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             abort(401)
