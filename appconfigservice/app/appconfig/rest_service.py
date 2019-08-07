@@ -7,6 +7,7 @@ from appconfig import db as conn
 from appconfig import dbutils 
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
+import pymongo
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -29,7 +30,7 @@ def get_app_configs():
         abort(500)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("mobileAppVersion", pymongo.DESCENDING)]):
             config = decode(document)
             results.append(config)
     except Exception as ex:
