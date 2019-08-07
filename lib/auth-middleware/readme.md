@@ -7,3 +7,4 @@ They should match the ones that are set in the `authservice` flask app.
 - `PHONE_VERIFY_SECRET`
 - `PHONE_VERIFY_AUDIENCE`
 - `SHIBBOLETH_HOST`
+- `SHIBBOLETH_CLIENT_ID`
