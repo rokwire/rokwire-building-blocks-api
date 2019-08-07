@@ -47,8 +47,7 @@ def format_query(args, query):
 
 
 def required_check(req_data):
-    if req_data['startDate'] is None or req_data['sponsor'] is None or req_data['title'] is None \
-            or req_data['category'] is None:
+    if req_data['startDate'] is None or req_data['title'] is None or req_data['category'] is None:
         return False
     return True
 

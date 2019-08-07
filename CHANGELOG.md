@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test profiles building block rest service deployed in AWS server
 - Add searching by mobile app version feature to App Config API
 - Add secretKeys to App Config
+- Logging building block API definitions.
 
 ### Changed
 - Update events schema to remove endDate as required field and add createdBy and createDate.

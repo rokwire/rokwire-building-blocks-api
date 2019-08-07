@@ -17,6 +17,8 @@ tags:
   description: API endpoints for managing events.
 - name: App Configuration
   description: API endpoints for managing mobile app configuration
+- name: Logs
+  description: API endpoints for managing logs
 - name: Authentication
   description: API endpoints for managing user phone number verification.
 paths:
@@ -492,7 +494,7 @@ paths:
     get:
       tags:
       - Events
-      summary: get events categories
+      summary: Get events categories
       description: return back a list of categories and subcategories
       responses:
         200:
@@ -510,6 +512,24 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/tags:
+    get:
+      tags:
+      - Events
+      summary: Get a list of Rokwire event tags
+      operationId: getTags
+      responses:
+        200:
+          description: Getting event tags successful
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+        500: 
+          description: Internal error
+
   /events/{eventId}/images:
     get:
       tags:
@@ -854,6 +874,60 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
+  /logs:
+    post:
+      tags:
+      - Logs
+      summary: Create log entries
+      description: Create log entries from the app.
+      operationId: createLog
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: A JSON array of one or more log entries. The schema of the request body is only provided as a reference and by default all of its properties are optional.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Logs"
+            example:
+              - timestamp: "2019-10-05T16:16:50Z"
+                uuid: "e696663c-06fa-4f23-9427-4376849acb73"
+                os: ios
+                osVersion: "12.4"
+                appVersion: "0.9.5"
+                device: Samsung Galaxy s10
+                deviceSettings:
+                userAction:
+                  type: view
+                  name: homePanel
+                  mainFeature: Home
+                  subFeature: Explore
+              - timestamp: "2019-10-05T16:16:51Z"
+                uuid: "e696663c-06fa-4f23-9427-4376849acb73"
+                os: ios
+                osVersion: "12.4"
+                appVersion: "0.9.5"
+                device: Samsung Galaxy s10
+                deviceSettings:
+                userAction:
+                  type: view
+                  name: homePanel
+                  mainFeature: Home
+                  subFeature: Explore
+                  customAttribute1: Double click
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
+  
   /authentication/phone-initiate:
     post:
       summary: Initiate phone number verification
@@ -1193,17 +1267,65 @@ components:
           type: object
         secretKeys:
           type: object
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-KEY
-      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the X-API-Key header must contain an API key corresponding to a supported client.
-    UserAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    Logs:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the log event as defined by RFC 3339 in the format YYYY-MM-DDThh:mm:ssZ
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the app user. 
+        os:
+          type: string
+          description: Name of operating system on the device running the app.
+        osVersion:
+          type: string
+          description: Version of operating system on the device running the app.
+        appVersion:
+          type: string
+          description: App version.
+        device:
+          type: string
+          description: Name of device running the app.
+        deviceSettings:
+          type: object
+          description: Object containing relevant device settings. 
+        userAction:
+          $ref: '#/components/schemas/UserAction'
+    UserAction:
+      type: object
+      description: Object containing details of user action.
+      properties:
+        type:
+          type: string
+          description: Type of user action. Examples can be 'click', 'view', etc.
+        name:
+          type: string
+          description: Name of user action. This can include the page user is viewing or the UI widget the user is clicking on when generating a log entry. This property can depend on the user action type.
+        mainFeature:
+          type: string
+          description: Name of the main feature that the user is using when generating a log entry.
+        subFeature:
+          type: string
+          description: Name of the sub-feature that the user is using when generating a log entry.
+        customAttribute1:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute2:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute3:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute4:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute5:
+          type: string
+          description: Custom attribute provided for future use.
     PhoneNumber:
       type: string
       minLength: 4
@@ -1239,4 +1361,15 @@ components:
         - code
       example:
         phoneNumber: "+12175557890"
-        code: "123456"
+        code: "123456"  
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the X-API-Key header must contain an API key corresponding to a supported client.
+    UserAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
