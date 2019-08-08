@@ -557,6 +557,10 @@ paths:
       - Events
       summary: Get a list of Rokwire event tags
       operationId: getTags
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: Getting event tags successful
@@ -996,6 +1000,10 @@ paths:
         call that contains a code. That code should then be provided to the
         /authentication/phone-verify endpoint. Note: The phoneNumber property must include a
         prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
+
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       tags:
         - Authentication
       operationId: auth_rest_service.initiate_verification
@@ -1027,6 +1035,10 @@ paths:
         endpoint. phone-verify will check if the code matches what was originally sent to
         the user. Note: The phoneNumber property must include a prefix plus symbol (+),
         the country code (e.g., 1 for USA), and the area code.
+
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       tags:
         - Authentication
       operationId: auth_rest_service.verification_check
