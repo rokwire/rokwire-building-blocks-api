@@ -760,7 +760,8 @@ paths:
       parameters:
         - name: mobileAppVersion
           in: path
-          description: query by mobile app version, results contain all app configurations equal or prior to the given app version 
+          description: query by mobile app version, results contain all app configurations if no paramer is given; If given mobileAppVersion, it will return
+          one app config that is equal or most close to the given gversion 
           required: false
           style: simple
           explode: false
@@ -1259,6 +1260,7 @@ components:
           type: string
         mobileAppVersion:
           type: string
+          description: unique and is empty or conforms major.minor.patch format
         platformBuildingBlocks: 
           type: object
         thirdPartyServices:
@@ -1267,6 +1269,18 @@ components:
           type: object
         secretKeys:
           type: object
+      required:
+        - mobileAppVersion
+        - platformBuildingBlocks
+        - thirdPartyServices
+        - otherUniversityServices
+        - secretKeys
+      example:
+        mobileAppVersion: "" or "1.0.2"
+        platformBuildingBlocks: {} or {'appconfig': 'http://rokwire.illinois.edu/app/configs'}
+        thirdPartyServices: {} or {"facebook": "http://facebook.com", "instagram_url": "https://instagram.com"}
+        otherUniversityServices: {} or {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"}
+        secretKeys: {} or {"my_secret_key": "123abc456"}
     Logs:
       type: object
       properties:

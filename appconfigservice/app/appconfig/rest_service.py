@@ -21,7 +21,7 @@ def get_app_configs():
     args = request.args
     query = dict()
     version = args.get('mobileAppVersion')
-    if version is not None and dbutils.check_appversion_format(version) == False:
+    if version and dbutils.check_appversion_format(version) == False:
         abort(404)
     try:
         query = format_query(args, query)
@@ -30,9 +30,14 @@ def get_app_configs():
         abort(500)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("mobileAppVersion", pymongo.DESCENDING)]):
-            config = decode(document)
-            results.append(config)
+        if version:
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query).sort([("mobileAppVersion", pymongo.DESCENDING)]).limit(1):
+                config = decode(document)
+                results.append(config)
+        else:
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query).sort([("mobileAppVersion", pymongo.DESCENDING)]):
+                config = decode(document)
+                results.append(config)
     except Exception as ex:
             __logger.exception(ex)
             abort(500)
@@ -47,7 +52,7 @@ def get_app_config_by_id(id):
         abort(400)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}, {"version_numbers": 0}):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}):
             config = decode(document)
             results.append(config)
     except Exception as ex:
@@ -64,7 +69,6 @@ def post_app_config():
         abort(400)
     try:
         db = conn.get_db()
-        add_version_numbers(req_data)
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: app config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
@@ -86,7 +90,6 @@ def update_app_config(id):
         abort(400)
     try:
         db = conn.get_db()
-        add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
     except DuplicateKeyError as err:
@@ -179,23 +182,19 @@ def server_500_error(error=None):
 def format_query(args, query):
     version = args.get('mobileAppVersion')
     if version is not None and dbutils.check_appversion_format(version):
-        m = re.match(dbutils.VERSION_NUMBER_REGX, version)
-        query = {'$or': [
-            {'version_numbers.major': {'$lt' : int(m.group(1))}},
-            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
-            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
-        ]}
+        #m = re.match(dbutils.VERSION_NUMBER_REGX, version)
+        #query = {'$or': [
+        #    {'version_numbers.major': {'$lt' : int(m.group(1))}},
+        #    {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
+        #    {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
+        #]}
+        query = {'mobileAppVersion': {'$lte': version}}
     return query
-
-def add_version_numbers(req_data):
-    version = req_data['mobileAppVersion']
-    version_numbers = dbutils.create_version_numbers(version)
-    req_data['version_numbers'] = version_numbers
     
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
             req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
-            req_data['secretKeys'] is None or dbutils.check_appversion_format(req_data['mobileAppVersion']) is False:
+            req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
     

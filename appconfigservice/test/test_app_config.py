@@ -40,8 +40,7 @@ def test_post_app_config(client, app):
         db = conn.get_db()
         config = db[current_app.config['APP_CONFIGS_COLLECTION']].find_one({'mobileAppVersion': '0.1.0'})
         assert config['mobileAppVersion'] == '0.1.0'
-        assert config['version_numbers'] == {'major': 0, 'minor': 1, 'patch': 0}
-
+       
 def test_update_app_config(client, app):
     """Test PUT API"""
     id = None
