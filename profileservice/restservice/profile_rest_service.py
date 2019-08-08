@@ -1,14 +1,12 @@
 import sys
-
-sys.path.append('../')
+sys.path.append('../../')
 import datetime
 import logging
 import uuid as uuidlib
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request
 from flask_restful import Resource, Api
 from bson import ObjectId
-from werkzeug.exceptions import HTTPException
 
 import profileservice.configs as cfg
 import profileservice.restservice.utils.mongoutils as mongoutils
@@ -25,6 +23,7 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
+
 if cfg.FLASK_ENV == "production":
     app.before_request(middleware.authenticate)
     print("Production mode")
