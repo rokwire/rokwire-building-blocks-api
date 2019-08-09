@@ -1,9 +1,13 @@
 import logging
 import flask
+import re
 
 from bson import ObjectId
 from appconfig import db as conn
+from appconfig import dbutils 
 from flask import Blueprint, request, make_response, abort, current_app
+from pymongo.errors import DuplicateKeyError
+import pymongo
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -16,6 +20,9 @@ def get_app_configs():
     results = list()
     args = request.args
     query = dict()
+    version = args.get('mobileAppVersion')
+    if version and dbutils.check_appversion_format(version) == False:
+        abort(404)
     try:
         query = format_query(args, query)
     except Exception as ex:
@@ -23,10 +30,14 @@ def get_app_configs():
         abort(500)
     try:
         db = conn.get_db()
-        print(current_app.config['APP_CONFIGS_COLLECTION'])
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query):
-            config = decode(document)
-            results.append(config)
+        if version:
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]).limit(1):
+                config = decode(document)
+                results.append(config)
+        else:
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]):
+                config = decode(document)
+                results.append(config)
     except Exception as ex:
             __logger.exception(ex)
             abort(500)
@@ -41,7 +52,7 @@ def get_app_config_by_id(id):
         abort(400)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}, {"version_numbers": 0}):
             config = decode(document)
             results.append(config)
     except Exception as ex:
@@ -58,9 +69,13 @@ def post_app_config():
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: app config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(500)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -76,13 +91,16 @@ def update_app_config(id):
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(500)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
-
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
@@ -136,7 +154,7 @@ def server_401_error(error=None):
 def server_404_error(error=None):
     message = {
         'status': 404,
-        'message': 'App config not found : ' + request.url,
+        'message': 'App config not found : ' + request.url + '. If search by mobile app version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
     }
     resp = flask.jsonify(message)
     resp.status_code = 404
@@ -153,7 +171,6 @@ def server_405_error(error=None):
     resp.status_code = 405
     return resp
 
-
 @bp.errorhandler(500)
 def server_500_error(error=None):
     message = {
@@ -165,13 +182,30 @@ def server_500_error(error=None):
     return resp
 
 def format_query(args, query):
-    if args.get('mobileAppVersion'):
-        query['mobileAppVersion'] = args.get('mobileAppVersion')
+    """
+    If mobileAppVersion parameter is given, we will order by version numbers because natural order of mobileAppVersion string does not work
+    For example 10.0.1 and 5.9.80, natural order, query = {'mobileAppVersion': {'$lte': version}}, will place 5.9.80 first.
+    In reality, we are looking for 10.0.1 being the first
+    """
+    version = args.get('mobileAppVersion')
+    if version is not None and dbutils.check_appversion_format(version):
+        m = re.match(dbutils.VERSION_NUMBER_REGX, version)
+        query = {'$or': [
+            {'version_numbers.major': {'$lt' : int(m.group(1))}},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
+        ]}
     return query
+
+def add_version_numbers(req_data):
+    version = req_data['mobileAppVersion']
+    version_numbers = dbutils.create_version_numbers(version)
+    req_data['version_numbers'] = version_numbers
     
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
-            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None:
+            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
+            req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
     
@@ -185,5 +219,7 @@ def decode(document):
     dto['platformBuildingBlocks'] = document['platformBuildingBlocks']
     dto['thirdPartyServices'] = document['thirdPartyServices']
     dto['otherUniversityServices'] = document['otherUniversityServices']
+    if 'secretKeys' in document.keys():
+        dto['secretKeys'] = document['secretKeys']
     return dto
     
