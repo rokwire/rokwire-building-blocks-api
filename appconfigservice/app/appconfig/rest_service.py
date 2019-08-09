@@ -31,11 +31,11 @@ def get_app_configs():
     try:
         db = conn.get_db()
         if version:
-            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query).sort([("mobileAppVersion", pymongo.DESCENDING)]).limit(1):
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]).limit(1):
                 config = decode(document)
                 results.append(config)
         else:
-            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query).sort([("mobileAppVersion", pymongo.DESCENDING)]):
+            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]):
                 config = decode(document)
                 results.append(config)
     except Exception as ex:
@@ -52,7 +52,7 @@ def get_app_config_by_id(id):
         abort(400)
     try:
         db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}):
+        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}, {"version_numbers": 0}):
             config = decode(document)
             results.append(config)
     except Exception as ex:
@@ -69,6 +69,7 @@ def post_app_config():
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: app config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
@@ -90,6 +91,7 @@ def update_app_config(id):
         abort(400)
     try:
         db = conn.get_db()
+        add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
     except DuplicateKeyError as err:
@@ -180,16 +182,25 @@ def server_500_error(error=None):
     return resp
 
 def format_query(args, query):
+    """
+    If mobileAppVersion parameter is given, we will order by version numbers because natural order of mobileAppVersion string does not work
+    For example 10.0.1 and 5.9.80, natural order, query = {'mobileAppVersion': {'$lte': version}}, will place 5.9.80 first.
+    In reality, we are looking for 10.0.1 being the first
+    """
     version = args.get('mobileAppVersion')
     if version is not None and dbutils.check_appversion_format(version):
-        #m = re.match(dbutils.VERSION_NUMBER_REGX, version)
-        #query = {'$or': [
-        #    {'version_numbers.major': {'$lt' : int(m.group(1))}},
-        #    {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
-        #    {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
-        #]}
-        query = {'mobileAppVersion': {'$lte': version}}
+        m = re.match(dbutils.VERSION_NUMBER_REGX, version)
+        query = {'$or': [
+            {'version_numbers.major': {'$lt' : int(m.group(1))}},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
+        ]}
     return query
+
+def add_version_numbers(req_data):
+    version = req_data['mobileAppVersion']
+    version_numbers = dbutils.create_version_numbers(version)
+    req_data['version_numbers'] = version_numbers
     
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
