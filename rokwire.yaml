@@ -801,6 +801,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AppConfig'
+            examples:
+              withoutSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.1"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices:
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: {}
+              withSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.2"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices: 
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: 
+                    my_secret_key_1: "123abc456"
+                    my_secret_key_2: "123456abc"
         required: true
       responses:
         201:
@@ -1354,12 +1381,6 @@ components:
         - thirdPartyServices
         - otherUniversityServices
         - secretKeys
-      example:
-        mobileAppVersion: "1.0.2"
-        platformBuildingBlocks: {'appconfig': 'https://api.rokwire.illinois.edu/app/configs'}
-        thirdPartyServices: {"facebook": "https://facebook.com", "instagram_url": "https://instagram.com"}
-        otherUniversityServices: {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"}
-        secretKeys: {"my_secret_key": "123abc456"}
     Logs:
       type: object
       properties:
