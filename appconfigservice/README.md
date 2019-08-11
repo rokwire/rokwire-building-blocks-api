@@ -38,15 +38,17 @@ flask run
 Using cURL to interact with the API:
 ```
 
-curl -H "Content-Type: application/json" -d '{"mobileAppVersion": "0.1.0", "platformBuildingBlocks": {"events_url": "https://api-dev.rokwire.illinois.edu/events"}, "thirdPartyServices": {"instagram_host_url": "https://instagram.com/"}, "otherUniversityServices": {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"}}' -X POST http://localhost:5000/app/configs   
+curl -H "Content-Type: application/json" -d '{"mobileAppVersion": "0.1.0", "platformBuildingBlocks": {"events_url": "https://api-dev.rokwire.illinois.edu/events"}, "thirdPartyServices": {"instagram_host_url": "https://instagram.com/"}, "otherUniversityServices": {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"}, "secretKeys": {}}' -X POST http://localhost:5000/app/configs   
 
 curl -X GET http://localhost:5000/app/configs 
 
 curl -X DELETE http://localhost:5000/app/configs/5d27858e633c14d86da2ee0c
 
-curl -H "Content-Type: application/json" -d '{"mobileAppVersion": "0.1.0", "platformBuildingBlocks": {"events_url": "https://api-dev.rokwire.illinois.edu/events", "appconfig": "http://api.rokwire.illinois.edu/app/configs"}, "thirdPartyServices": {"instagram_host_url": "https://instagram.com/", "twitter_host_url": "https://twitter.com/"}, "otherUniversityServices": {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api", "privacy_policy_url": "https://www.vpaa.uillinois.edu/resources/web_privacy"}}' -X PUT http://localhost:5000/app/configs/5d278c719725c37c8c811e2a 
+curl -H "Content-Type: application/json" -d '{"mobileAppVersion": "0.1.0", "platformBuildingBlocks": {"events_url": "https://api-dev.rokwire.illinois.edu/events", "appconfig": "http://api.rokwire.illinois.edu/app/configs"}, "thirdPartyServices": {"instagram_host_url": "https://instagram.com/", "twitter_host_url": "https://twitter.com/"}, "otherUniversityServices": {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api", "privacy_policy_url": "https://www.vpaa.uillinois.edu/resources/web_privacy"}, "secretKeys": {'xx-key': "1234abcd#7890efg"}}' -X PUT http://localhost:5000/app/configs/5d278c719725c37c8c811e2a 
 
 curl -X GET http://localhost:5000/app/configs/5d278c719725c37c8c811e2a
+
+curl -X GET http://localhost:5000/app/configs?mobileAppVersion=1.0.0
 
 ```
 
