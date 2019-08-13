@@ -1,9 +1,6 @@
 import logging
 import flask
 
-# import sys
-# sys.path.append('../')
-
 from .db import get_db
 from .config import LOGGING_COLL_NAME
 from flask import Blueprint, request, make_response, abort, Flask
@@ -107,6 +104,3 @@ def server_500_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
-
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=True)
