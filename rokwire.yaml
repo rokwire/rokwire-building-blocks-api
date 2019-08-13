@@ -801,6 +801,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AppConfig'
+            examples:
+              withoutSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.1"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices:
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: {}
+              withSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.2"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices: 
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: 
+                    my_secret_key_1: "123abc456"
+                    my_secret_key_2: "123456abc"
         required: true
       responses:
         201:
@@ -826,11 +853,9 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - name: mobileAppVersion
-          in: path
-          description: query by mobile app version, results contain all app configurations if no paramer is given; If given mobileAppVersion, it will return
-          one app config that is equal or most close to the given gversion 
-          required: false
-          style: simple
+          in: query
+          description: query by mobile app version, results contain all app configurations if no paramer is given; If given mobileAppVersion, it will return the closest app config that is less than or equal to the given version.
+          style: form
           explode: false
           schema:
             type: string
@@ -1356,12 +1381,6 @@ components:
         - thirdPartyServices
         - otherUniversityServices
         - secretKeys
-      example:
-        mobileAppVersion: "" or "1.0.2"
-        platformBuildingBlocks: {} or {'appconfig': 'http://rokwire.illinois.edu/app/configs'}
-        thirdPartyServices: {} or {"facebook": "http://facebook.com", "instagram_url": "https://instagram.com"}
-        otherUniversityServices: {} or {"illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"}
-        secretKeys: {} or {"my_secret_key": "123abc456"}
     Logs:
       type: object
       properties:
