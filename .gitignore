@@ -33,5 +33,9 @@ profileservice/restservice/__pycache__
 
 authservice/credentials.env
 
-# appconfig egg
-appconfigservice/app/appconfig.egg-info
+# Docker ENV files
+.env
+
+# Python builds
+*.egg-info/
+dist/
