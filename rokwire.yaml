@@ -324,6 +324,14 @@ paths:
         explode: true
         schema:
           type: string
+     - name: recurrenceId
+          in: query
+          description: The parameter to search events based on a specific recurrence ID.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
       - name: tags
         in: query
         description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
