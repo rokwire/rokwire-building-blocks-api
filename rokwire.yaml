@@ -1219,6 +1219,10 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
+        recurringFlag: boolean
+          description: a flag to denote this is recurring event
+        recurringID: integer
+          description: recurring id
         category:
           type: string
           enum:
