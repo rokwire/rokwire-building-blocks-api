@@ -60,7 +60,7 @@ The examples use 'curl' command to implement rest method to an end point `http:/
 ### POST non-pii data for creating uuid:
 The app will post without any information to the endpoint (This will happen when the app installed in the device for the first time)
 ```
-curl  -X POST http://localhost:5000/profiless
+curl  -X POST http://localhost:5000/profiles
 ```
 API will return newly created UUID
 ```
@@ -105,7 +105,7 @@ curl -X PUT -d `{
                  "level": 1,
                  "dateModified": "2019-06-01T10:15:23Z"
               },
-            }' -H "Content-Type: application/json" -X PUT http://localhost:5000/profiles/a6856b73-d453-4515-8002-56e8d0522136
+            }' -H "Content-Type: application/json" http://localhost:5000/profiles/a6856b73-d453-4515-8002-56e8d0522136
 ```
 API will return update non-pii dataset
 ```
@@ -203,7 +203,7 @@ This is for creating a new PII dataset. This will happend when the user login to
 curl -X POST -d `{
               "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
               "phone": "123-456-7890",
-            }' -H "Content-Type: application/json" -X PUT http://localhost:5000/profiles/pii
+            }' -H "Content-Type: application/json" http://localhost:5000/profiles/pii
 ```
 API will return newly created pii dataset
 ```
@@ -224,7 +224,7 @@ curl -X PUT -d `{
               "username": "jd325",
               "uin": "2340345",
               "netid": "jd123"
-            }' -H "Content-Type: application/json" -X PUT http://localhost:5000/profiles/pii/90e7b9ee-de9c-4e2e-a32a-0295e92b035b
+            }' -H "Content-Type: application/json" http://localhost:5000/profiles/pii/90e7b9ee-de9c-4e2e-a32a-0295e92b035b
 ```
 API will return update non-pii dataset
 ```
