@@ -35,7 +35,7 @@ def post_events():
         for i in range(len(in_json)):
             json_entry = in_json[i]
             uuid = json_entry["uuid"]
-            object_id = db[LOGGING_COLL_NAME].insert(json_entry)
+            db[LOGGING_COLL_NAME].insert(json_entry)
             msg = "[POST]: logging record posted: uuid = %s" % str(uuid)
             __logger.info(msg)
     except Exception as ex:
