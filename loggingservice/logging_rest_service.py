@@ -15,28 +15,45 @@ bp = Blueprint('logging_rest_service', __name__, url_prefix='/logs')
 def post_events():
     try:
         in_json = request.get_json(force=True)
-
+        if isinstance(in_json, list) == False:
+            msg = "request json is not a list"
+            __logger.info(msg)
+            return server_400_error(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
 
     try:
-        uuid = in_json["uuid"]
         db = get_db()
 
         # # for local test
         # from pymongo import MongoClient
         # client = MongoClient("mongodb://localhost:27017", connect=False)
         # db = client["loggingdb"]
-        # LOGGING_COLL_NAME = "LogginDataset"
+        # LOGGING_COLL_NAME = "logs"
 
-        object_id = db[LOGGING_COLL_NAME].insert(in_json)
-        msg = "[POST]: logging record posted: uuid = %s" % str(uuid)
-        __logger.info(msg)
+        for i in range(len(in_json)):
+            json_entry = in_json[i]
+            uuid = json_entry["uuid"]
+            object_id = db[LOGGING_COLL_NAME].insert(json_entry)
+            msg = "[POST]: logging record posted: uuid = %s" % str(uuid)
+            __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    return success_response(201, msg, str(uuid))
+
+    return success_response_only_status_code(200, "logging information successfully posted")
+
+
+def success_response_only_status_code(status_code, msg):
+    message = {
+        'status': status_code,
+        'message': msg
+    }
+    resp = flask.jsonify(message)
+    resp.status_code = status_code
+
+    return make_response(resp)
 
 
 def success_response(status_code, msg, uuid):
@@ -104,3 +121,7 @@ def server_500_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
+
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,6 +1,6 @@
 # Logging Building Block
 
-The goal of the Logging Building Block is to provide a set of RESTFul web services to log all the activities of the app.
+The goal of the Logging Building Block is to provide a set of RESTFul web services to log all the activities of the bp.
                       
 
 ## Setup Environment
@@ -31,7 +31,7 @@ docker run --rm --name logging -e LOGGING_MONGO_URL=mongodb://mongodb_ip_address
 If you need to edit config.py where you have to specify mongo database name and collection name.
 ```
 LOGGING_DB_NAME="loggingdb"
-LOGGING_COLL_NAME="LogginDataset"
+LOGGING_COLL_NAME="logs"
 ```
 
 
