@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#116](https://github.com/rokwire/rokwire-building-blocks-api/issues/116)
 - added an ability to store and retrieve schema free information
 [#117](https://github.com/rokwire/rokwire-building-blocks-api/issues/117)
+- added privacySettings in PII data model
+[#138](https://github.com/rokwire/rokwire-building-blocks-api/issues/138)
 
 
 ### Changed
@@ -41,6 +43,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#86](https://github.com/rokwire/rokwire-building-blocks-api/issues/86)
 - README file has examples for the endpoints
 [#119](https://github.com/rokwire/rokwire-building-blocks-api/issues/119)
+- database indexing system changed for document DB
+[#127](https://github.com/rokwire/rokwire-building-blocks-api/issues/127)
+- updated logging system based on Flask RESTFul service
+[#130](https://github.com/rokwire/rokwire-building-blocks-api/issues/130)
 
 ### Fixed
 

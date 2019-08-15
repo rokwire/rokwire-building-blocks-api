@@ -2,6 +2,7 @@ import copy
 
 from profileservice.dao.interest import Interest
 from profileservice.dao.favorites import Favorites
+from profileservice.dao.privacysettings import PrivacySettings
 
 """
 set non pii dataset
@@ -60,6 +61,16 @@ def update_non_pii_dataset_from_json(dataset, injson):
         dataset.set_negativeInterestTags(injson["negativeInterestTags"])
         del outjson["negativeInterestTags"]
     except:
+        pass
+    try:
+        privacySettings = PrivacySettings()
+        level = injson["privacySettings"]["level"]
+        date_modified = injson["privacySettings"]["dateModified"]
+        privacySettings.set_level(level)
+        privacySettings.set_date_modified(date_modified)
+
+        dataset.set_privacy_settings(privacySettings)
+    except Exception as e:
         pass
     try:
         dataset.set_creation_date(injson["creationDate"])
