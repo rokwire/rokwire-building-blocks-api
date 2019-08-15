@@ -17,13 +17,20 @@ tags:
   description: API endpoints for managing events.
 - name: App Configuration
   description: API endpoints for managing mobile app configuration
+- name: Logs
+  description: API endpoints for managing logs
+- name: Authentication
+  description: API endpoints for managing user phone number verification.
 paths:
   /profiles:
     post:
       tags:
       - Profile
       summary: Create profile
-      description: Create non-PII profile with profile id.
+      description: |
+        Create non-PII profile with profile id.
+        
+        Auth: Requires a valid API Key for access.
       operationId: createProfile
       security:
         - ApiKeyAuth: []
@@ -52,7 +59,10 @@ paths:
       tags:
       - Profile
       summary: Find profile by ID
-      description: Returns a single profile
+      description: |
+        Returns a single profile
+        
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: getProfileById
       security:
         - ApiKeyAuth: []
@@ -87,6 +97,8 @@ paths:
       tags:
       - Profile
       summary: Updates a profile with form data
+      description: |
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: updateProfileWithForm
       security:
         - ApiKeyAuth: []
@@ -129,6 +141,8 @@ paths:
       tags:
       - Profile
       summary: Deletes a profile
+      description: |
+        Auth: Requires a valid API Key and profile uuid for access.
       operationId: deleteProfile
       security:
         - ApiKeyAuth: []
@@ -158,7 +172,10 @@ paths:
       tags:
       - PII
       summary: Create PII entry
-      description: This creates a new PII entry.
+      description: |
+        This creates a new PII entry.
+        
+        Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       operationId: createPii
       security:
         - UserAuth: []
@@ -180,7 +197,10 @@ paths:
       tags:
       - PII
       summary: Get PII by PID
-      description: Returns a single PII
+      description: |
+        Returns a single PII entry.
+        
+        Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
       operationId: getPiiById
       security:
         - UserAuth: []
@@ -215,6 +235,8 @@ paths:
       tags:
       - PII
       summary: Updates a PII with form data
+      description: |
+        Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
       operationId: updatePiiWithForm
       security:
         - UserAuth: []
@@ -256,6 +278,8 @@ paths:
       tags:
       - PII
       summary: Deletes a PII
+      description: |
+        Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
       operationId: deletePii
       security:
         - UserAuth: []
@@ -284,7 +308,10 @@ paths:
       tags:
       - Events
       summary: searches events
-      description: By passing in the appropriate options, you can search for events matching your criteria in the system
+      description: |
+        By passing in the appropriate options, you can search for events matching your criteria in the system
+        
+        Auth: Requires a valid API Key for access.
       operationId: searchEvents
       security:
         - ApiKeyAuth: []
@@ -394,7 +421,10 @@ paths:
       tags:
         - Events
       summary: create an event
-      description: create an event record into the system
+      description: |
+        create an event record into the system
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: createEvent
       security:
         - UserAuth: []
@@ -423,6 +453,10 @@ paths:
       tags:
       - Events
       summary: Updates one event with form data
+      description: |
+        Update the event record matching the eventId.
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: updateEventWithForm
       security:
         - UserAuth: []
@@ -464,6 +498,10 @@ paths:
       tags:
       - Events
       summary: Deletes an event by the given event id
+      description: |
+        Delete the event record matching the eventId.
+        
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
       operationId: deleteEvent
       security:
         - UserAuth: []
@@ -490,8 +528,13 @@ paths:
     get:
       tags:
       - Events
-      summary: get events categories
-      description: return back a list of categories and subcategories
+      summary: Get events categories
+      description: |
+        return back a list of categories and subcategories
+        
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: search results matching criteria
@@ -508,11 +551,247 @@ paths:
           description: Event not found
         500:
           description: Internal error
+  /events/tags:
+    get:
+      tags:
+      - Events
+      summary: Get a list of Rokwire event tags
+      operationId: getTags
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Getting event tags successful
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+        500: 
+          description: Internal error
+
+  /events/{eventId}/images:
+    get:
+      tags:
+      - Events
+      summary: Get IDs of all images associated with the requested event.
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      operationId: requestImages
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200: 
+          description: Getting image IDs successful.
+          content:
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: binary
+        500:
+          description: Internal error
+    post: 
+      tags:
+        - Events
+      summary: Upload an image to the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
+      operationId: uploadImages
+      requestBody:
+        description: Image file to upload and associate with the requested event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        201: 
+          description: Images uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Image ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+  /events/{eventId}/images/{imageId}:
+    get:
+      tags:
+      - Events
+      summary: Download an event image by providing the IDs of the event and the image.
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      operationId: requestImage
+      parameters:
+      - name: eventId
+        in: path 
+        description: Event ID
+        required: true 
+        schema:
+          type: integer 
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200:
+          description: Successful image download
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        500:
+          description: Internal Error
+      
+    put:
+      tags:
+      - Events
+      summary: Update an image associated with the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
+      operationId: updateImage
+      requestBody:
+        description: Image file to add to the event
+        content: 
+          image/*:
+            schema: 
+              type: string
+              format: binary
+              minLength: 1
+              maxLength: 5000000
+      parameters: 
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        200: 
+          description: Image updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
+    delete:
+      tags:
+      - Events
+      summary: Delete an image associated with the specified event
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireEventManager (?) group.
+      security:
+        - UserAuth: []
+      operationId: deleteImage
+      parameters:
+      - name: eventId
+        in: path
+        description: Event ID
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        description: ID of the image that needs to be deleted
+        required: true
+        schema:
+          type: integer 
+          format: int64
+      responses:
+        202:
+          description: Image is deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: integer
+                    description: Operation status code
+                  id: 
+                    type: integer
+                    format: int64
+                    description: Event ID
+                  message:
+                    type: string
+                    description: The description of the operation
+        500:
+          description: Internal error
+  
   /app/configs:
     post:
       tags:
       - App Configuration
       summary: Creates mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: createAppConfig
       security:
         - UserAuth: []
@@ -522,6 +801,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AppConfig'
+            examples:
+              withoutSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.1"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices:
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: {}
+              withSecretKeys:
+                value:
+                  mobileAppVersion: "1.0.2"
+                  platformBuildingBlocks: 
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
+                  thirdPartyServices: 
+                    facebook: https://facebook.com
+                    instagram_url: https://instagram.com
+                  otherUniversityServices: 
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
+                  secretKeys: 
+                    my_secret_key_1: "123abc456"
+                    my_secret_key_2: "123456abc"
         required: true
       responses:
         201:
@@ -540,9 +846,19 @@ paths:
       tags:
       - App Configuration
       summary: Reads mobile app configuration
+      description: |
+        Auth: Requires a valid API Key for access.
       operationId: getAppConfig
       security:
         - ApiKeyAuth: []
+      parameters:
+        - name: mobileAppVersion
+          in: query
+          description: query by mobile app version, results contain all app configurations if no paramer is given; If given mobileAppVersion, it will return the closest app config that is less than or equal to the given version.
+          style: form
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: successfully read mobile app configuration
@@ -563,6 +879,8 @@ paths:
       tags:
       - App Configuration
       summary: Reads mobile app configuration by given id
+      description: |
+        Auth: Requires a valid API Key for access.
       operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
@@ -594,6 +912,8 @@ paths:
       tags:
       - App Configuration
       summary: Updates mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: updateAppConfig
       security:
         - UserAuth: []
@@ -630,6 +950,8 @@ paths:
       tags:
       - App Configuration
       summary: Deletes mobile app configuration
+      description: |
+        Auth: Requires a valid id_token that indicates membership in the RokwireAppConfigManager (?) group.
       operationId: deleteAppConfig
       security:
         - UserAuth: []
@@ -651,6 +973,146 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
+  /logs:
+    post:
+      tags:
+      - Logs
+      summary: Create log entries
+      description: Create log entries from the app.
+      operationId: createLog
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: A JSON array of one or more log entries. The schema of the request body is only provided as a reference and by default all of its properties are optional.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Logs"
+            example:
+              - timestamp: "2019-10-05T16:16:50Z"
+                uuid: "e696663c-06fa-4f23-9427-4376849acb73"
+                os: ios
+                osVersion: "12.4"
+                appVersion: "0.9.5"
+                device: Samsung Galaxy s10
+                deviceSettings:
+                userAction:
+                  type: view
+                  name: homePanel
+                  mainFeature: Home
+                  subFeature: Explore
+              - timestamp: "2019-10-05T16:16:51Z"
+                uuid: "e696663c-06fa-4f23-9427-4376849acb73"
+                os: ios
+                osVersion: "12.4"
+                appVersion: "0.9.5"
+                device: Samsung Galaxy s10
+                deviceSettings:
+                userAction:
+                  type: view
+                  name: homePanel
+                  mainFeature: Home
+                  subFeature: Explore
+                  customAttribute1: Double click
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
+  
+  /authentication/phone-initiate:
+    post:
+      summary: Initiate phone number verification
+      description: |
+        Step 1 of 2 for phone number verification. Initiates the verification with a text or
+        call that contains a code. That code should then be provided to the
+        /authentication/phone-verify endpoint. Note: The phoneNumber property must include a
+        prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
+
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Authentication
+      operationId: auth_rest_service.initiate_verification
+      responses:
+        201:
+          description: initiation successful
+        400:
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthPhoneVerifyInitBody'
+            examples:
+              sms:
+                value:
+                  phoneNumber: "+12175557890"
+                  channel: "sms"
+              call:
+                value:
+                  phoneNumber: "+12175557890"
+                  channel: "call"
+  /authentication/phone-verify:
+    post:
+      summary: Complete phone number verification
+      description: |
+        Step 2 of 2 for phone number verification. The request body should contain the code
+        that was sent to the end user as a result of the /authentication/phone-initiate
+        endpoint. phone-verify will check if the code matches what was originally sent to
+        the user. Note: The phoneNumber property must include a prefix plus symbol (+),
+        the country code (e.g., 1 for USA), and the area code.
+
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Authentication
+      operationId: auth_rest_service.verification_check
+      responses:
+        200:
+          description: the result of the verification
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      id_token:
+                        type: string
+                    required:
+                      - success
+                      - id_token
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                    required:
+                      - success
+              example:
+                success: true
+                id_token: deadbeef1234
+        400:
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthPhoneVerifyCheckBody'
 components:
   schemas:
     Non-pii:
@@ -702,6 +1164,19 @@ components:
                 type: array
                 items:
                   type: string
+        privacySettings:
+          type: object
+          properties:
+            level:
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+            dataModified:
+              type: string
         creationDate:
           type: string
         lastModifiedDate:
@@ -891,12 +1366,116 @@ components:
           type: string
         mobileAppVersion:
           type: string
+          description: unique and is empty or conforms major.minor.patch format
         platformBuildingBlocks: 
           type: object
         thirdPartyServices:
           type: object
         otherUniversityServices:
           type: object
+        secretKeys:
+          type: object
+      required:
+        - mobileAppVersion
+        - platformBuildingBlocks
+        - thirdPartyServices
+        - otherUniversityServices
+        - secretKeys
+    Logs:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the log event as defined by RFC 3339 in the format YYYY-MM-DDThh:mm:ssZ
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the app user. 
+        os:
+          type: string
+          description: Name of operating system on the device running the app.
+        osVersion:
+          type: string
+          description: Version of operating system on the device running the app.
+        appVersion:
+          type: string
+          description: App version.
+        device:
+          type: string
+          description: Name of device running the app.
+        deviceSettings:
+          type: object
+          description: Object containing relevant device settings. 
+        userAction:
+          $ref: '#/components/schemas/UserAction'
+    UserAction:
+      type: object
+      description: Object containing details of user action.
+      properties:
+        type:
+          type: string
+          description: Type of user action. Examples can be 'click', 'view', etc.
+        name:
+          type: string
+          description: Name of user action. This can include the page user is viewing or the UI widget the user is clicking on when generating a log entry. This property can depend on the user action type.
+        mainFeature:
+          type: string
+          description: Name of the main feature that the user is using when generating a log entry.
+        subFeature:
+          type: string
+          description: Name of the sub-feature that the user is using when generating a log entry.
+        customAttribute1:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute2:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute3:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute4:
+          type: string
+          description: Custom attribute provided for future use.
+        customAttribute5:
+          type: string
+          description: Custom attribute provided for future use.
+    PhoneNumber:
+      type: string
+      minLength: 4
+      maxLength: 20
+      example: "+12175557890"
+    AuthPhoneVerifyInitBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        channel:
+          type: string
+          enum:
+            - sms
+            - call
+      required:
+        - phoneNumber
+        - channel
+      example:
+        phoneNumber: "+12175557890"
+        channel: "sms"
+    AuthPhoneVerifyCheckBody:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+      required:
+        - phoneNumber
+        - code
+      example:
+        phoneNumber: "+12175557890"
+        code: "123456"  
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

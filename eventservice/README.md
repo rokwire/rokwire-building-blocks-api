@@ -214,6 +214,10 @@ This query will return back all events whose title contains the word `pi`.
 ```
 /events?title=pi
 ```
+This query will return back all events whose title contains the word `pi` and `day`.
+```
+/events?title=pi&title=day
+```
 
 ### Tags Search:
 

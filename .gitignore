@@ -5,6 +5,9 @@ bin/
 .cache/
 venv
 
+# virtualenvs
+**/venv
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
@@ -27,3 +30,12 @@ hs_err_pid*
 profileservice/__pycache__
 profileservice/dao/__pycache__
 profileservice/restservice/__pycache__
+
+authservice/credentials.env
+
+# Docker ENV files
+.env
+
+# Python builds
+*.egg-info/
+dist/
