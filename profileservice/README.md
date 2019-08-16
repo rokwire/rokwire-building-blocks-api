@@ -29,9 +29,9 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 ### Use Docker
 **Build a docker image**
+The directory should be root directory
 ```
-cd profileservice
-docker build -t rokwire/profile-building-block .
+docker build -t rokwire/profile-building-block  -f profileservice/Dockerfile .
 ```
 **Run the docker container image**
 ```
