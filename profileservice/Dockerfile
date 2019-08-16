@@ -24,6 +24,6 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     PHONE_VERIFY_SECRET="" \
     PHONE_VERIFY_AUDIENCE="" \
     SHIBBOLETH_HOST="" \
-    SHIBBOLETH_CLIENT_ID="" \
+    SHIBBOLETH_CLIENT_ID=""
 
 CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
