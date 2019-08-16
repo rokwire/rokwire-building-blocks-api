@@ -324,14 +324,14 @@ paths:
         explode: true
         schema:
           type: string
-     - name: recurrenceId
-          in: query
-          description: The parameter to search events based on a specific recurrence ID.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
+      - name: recurrenceId
+        in: query
+        description: The parameter to search events based on a specific recurrence ID.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
       - name: tags
         in: query
         description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
@@ -1227,9 +1227,11 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
-        recurringFlag: boolean
+        recurringFlag: 
+          type: boolean
           description: a flag to denote this is recurring event
-        recurrenceId: integer
+        recurrenceId: 
+          type: integer
           description: recurring id
         category:
           type: string
