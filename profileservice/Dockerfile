@@ -20,6 +20,10 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
     MONGO_PII_URL="" \
     FLASK_APP="profile_rest_service" \
-    FLASK_ENV="development"
+    FLASK_ENV="development" \
+    PHONE_VERIFY_SECRET="" \
+    PHONE_VERIFY_AUDIENCE="" \
+    SHIBBOLETH_HOST="" \
+    SHIBBOLETH_CLIENT_ID="" \
 
-CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5001"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]

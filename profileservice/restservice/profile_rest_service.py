@@ -8,6 +8,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from bson import ObjectId
 
+import auth_middleware
 import profileservice.configs as cfg
 import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.restservice.utils.jsonutils as jsonutils
@@ -15,7 +16,6 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 import profileservice.restservice.utils.otherutils as otherutils
 
-from profileservice import middleware
 from profileservice.dao.pii_data import PiiData
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
@@ -25,7 +25,7 @@ api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
 
 if cfg.FLASK_ENV == "production":
-    app.before_request(middleware.authenticate)
+    app.before_request(auth_middleware.authenticate)
     print("Production mode")
 else:
     print("Development mode")
@@ -36,7 +36,7 @@ mongoutils.index_pii_data()
 profile rest service root directory
 """
 class NonPiiRootDir(Resource):
-    # @middleware.use_security_token_auth
+    # @auth_middleware.use_security_token_auth
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
