@@ -2,14 +2,15 @@ import logging
 import flask
 
 from .db import get_db
-from .config import LOGGING_COLL_NAME
+from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
 from flask import Blueprint, request, make_response, abort, Flask
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
 __logger = logging.getLogger("loggingservice")
 
-bp = Blueprint('logging_rest_service', __name__, url_prefix='/logs')
+bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
+
 
 @bp.route('/', methods=['POST'])
 def post_events():
