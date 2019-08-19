@@ -38,8 +38,8 @@ def post_events():
         if in_json is not None:
             db[LOGGING_COLL_NAME].insert_many(in_json)
 
-        msg = "[POST]: logging record posted."
-        __logger.info(msg)
+            msg = "[POST]: logging record posted."
+            __logger.info(msg)
 
     except Exception as ex:
         __logger.exception(ex)
