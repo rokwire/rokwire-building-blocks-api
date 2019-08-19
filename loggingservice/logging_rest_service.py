@@ -14,9 +14,10 @@ bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
 
 @bp.route('/', methods=['POST'])
 def post_events():
+    in_json = None
     try:
         in_json = request.get_json(force=True)
-        if isinstance(in_json, list) == False:
+        if not isinstance(in_json, list):
             msg = "request json is not a list"
             __logger.info(msg)
             return server_400_error(msg)
@@ -33,12 +34,13 @@ def post_events():
         # db = client["loggingdb"]
         # LOGGING_COLL_NAME = "logs"
 
-        for i in range(len(in_json)):
-            json_entry = in_json[i]
-            uuid = json_entry["uuid"]
-            db[LOGGING_COLL_NAME].insert(json_entry)
-            msg = "[POST]: logging record posted: uuid = %s" % str(uuid)
-            __logger.info(msg)
+        # Insert log entries to database.
+        if in_json is not None:
+            db[LOGGING_COLL_NAME].insert_many(in_json)
+
+        msg = "[POST]: logging record posted."
+        __logger.info(msg)
+
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
