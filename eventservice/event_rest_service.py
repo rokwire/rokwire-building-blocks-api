@@ -170,15 +170,25 @@ def partial_update_event(event_id):
 def get_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
-    event = dict()
+    db = None
+    event = {}
     try:
         db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)})
-        msg = "[Get Event]: event id %s" % (str(event_id))
-        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
+    if db is not None:
+        event = db['events'].find_one({'_id': ObjectId(event_id)})
+
+        if event is None:
+            abort(404)
+
+        event['id'] = str(event['_id'])
+        del event['_id']
+
+        msg = "[Get Event]: event id %s" % (event['id'])
+        __logger.info(msg)
 
     return flask.jsonify(event)
 
