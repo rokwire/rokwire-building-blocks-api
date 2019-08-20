@@ -4,8 +4,18 @@ import re
 
 def format_query(args, query):
     # title text query
+
+    if args.getlist('title'):
+        titles = ''
+        for title in args.getlist('title'):
+            titles += "\"%s\" " % title
+        query['$text'] = {'$search': titles}
+
+        # query['$text'] = {'$search': '\"apple\" \"banana\"'}
+    """
     if args.get('title'):
         query['$text'] = {'$search': args.get('title')}
+    """
     # category query
     if args.getlist('category'):
         category_query = list()
@@ -37,8 +47,7 @@ def format_query(args, query):
 
 
 def required_check(req_data):
-    if req_data['startDate'] is None or req_data['sponsor'] is None or req_data['title'] is None \
-            or req_data['category'] is None:
+    if req_data['startDate'] is None or req_data['title'] is None or req_data['category'] is None:
         return False
     return True
 

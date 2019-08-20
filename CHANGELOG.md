@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add events multiple titles search.
 - Add skip and limit on events query.
 - This CHANGELOG file
 - Events Building Block.
@@ -20,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile rest service dockerized
 - Image update and fileDescriptor moved to pii from non-pii
 - Test profiles building block rest service deployed in AWS server
+- Add searching by mobile app version feature to App Config API
+- Add secretKeys to App Config
+- Logging building block API definitions.
+- Auth middleware library.
 
 ### Changed
 - Update events schema to remove endDate as required field and add createdBy and createDate.
@@ -42,3 +47,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Events building block API definition to improve text.
 - API documentation in YAML file to reflect the latest code and made text improvements.
+- Issues with API specification YAML file related to app config building block.
+- Indentation issues with API specification YAML file
