@@ -1495,7 +1495,7 @@ components:
       type: apiKey
       in: header
       name: ROKWIRE-API-KEY
-      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the X-API-Key header must contain an API key corresponding to a supported client.
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     UserAuth:
       type: http
       scheme: bearer
