@@ -18,6 +18,8 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
 
 WORKDIR /usr/src/app/profileservice/restservice
 
+RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
     MONGO_PII_URL="" \
