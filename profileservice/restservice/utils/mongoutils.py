@@ -6,7 +6,7 @@ import profileservice.configs as cfg
 from bson import ObjectId
 from bson.json_util import dumps
 from flask import make_response
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.dao.pii_data import PiiData
@@ -285,18 +285,14 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', 'text'),
-                            ('generalInterests', 'text'),
-                            ('athleticsInterests', 'text')])
+    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)])
 
 """
 index non pii collection
 """
 def index_pii_data():
-    db_pii.pii_collection.create_index([('pid', 'text'),
-                             ('firstname', 'text'),
-                             ('lastname', 'text'),
-                             ('email', 'text'),
-                             ('username', 'text'),
-                             ('uin', 'text'), ('netid', 'text'),
-                             ('phone', 'text')])
+    db_pii.pii_collection.create_index([('pid', ASCENDING),
+                             ('firstname', ASCENDING),
+                             ('lastname', ASCENDING),
+                             ('email', ASCENDING),
+                             ('phone', ASCENDING)])

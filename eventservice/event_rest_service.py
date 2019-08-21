@@ -1,4 +1,6 @@
 import io
+import os
+import json
 import logging
 import flask
 
@@ -16,6 +18,18 @@ __logger = logging.getLogger("eventservice")
 
 bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
 
+
+@bp.route('/tags', methods=['GET'])
+def get_tags():
+    response = []
+    try:
+        tags_path = os.path.join(current_app.root_path, "tags.json")
+        with open(tags_path, 'r') as tags_file:
+            response = json.load(tags_file)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return flask.jsonify(response)
 
 @bp.route('/categories', methods=['GET'])
 def get_categories():

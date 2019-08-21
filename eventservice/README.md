@@ -214,6 +214,10 @@ This query will return back all events whose title contains the word `pi`.
 ```
 /events?title=pi
 ```
+This query will return back all events whose title contains the word `pi` and `day`.
+```
+/events?title=pi&title=day
+```
 
 ### Tags Search:
 
@@ -225,6 +229,7 @@ This query will return all events whose tags contain ``coffee`` and ``music``.
 
 ### Target Audience Search:
 
+**Note: This feature in search has been temporarily turned off.**
 This query will return all events whose target audience is either ``student`` or ``staff``.
 
 ```
