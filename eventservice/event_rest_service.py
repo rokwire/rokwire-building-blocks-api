@@ -31,6 +31,7 @@ def get_tags():
         abort(500)
     return flask.jsonify(response)
 
+
 @bp.route('/categories', methods=['GET'])
 def get_categories():
     results = list()
@@ -174,25 +175,18 @@ def partial_update_event(event_id):
 def get_event(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
-    db = None
-    event = {}
+
+    event = dict()
     try:
         db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
+        if event is None:
+            abort(404)
+        msg = "[Get Event]: event id %s" % (str(event_id))
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-
-    if db is not None:
-        event = db['events'].find_one({'_id': ObjectId(event_id)})
-
-        if event is None:
-            abort(404)
-
-        event['id'] = str(event['_id'])
-        del event['_id']
-
-        msg = "[Get Event]: event id %s" % (event['id'])
-        __logger.info(msg)
 
     return flask.jsonify(event)
 
@@ -268,6 +262,7 @@ def put_imagefile(event_id, image_id):
     
     return success_response(200, msg, str(image_id))
 
+
 @bp.route('/<event_id>/images', methods=['GET'])
 def get_imagefiles(event_id):
     try:
@@ -289,6 +284,7 @@ def get_imagefiles(event_id):
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, imageid_list)
+
 
 @bp.route('/<event_id>/images', methods=['POST'])
 def post_imagefile(event_id):
