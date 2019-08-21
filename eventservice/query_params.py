@@ -11,7 +11,7 @@ def format_query(args, query):
         query['$text'] = {'$search': titles}
     # recurrenceId query
     if args.get('recurrenceId'):
-        query['recurrenceId'] = {'recurrenceId': int(args.get('recurrenceId'))}
+        query['recurrenceId'] = {'$eq': int(args.get('recurrenceId'))}
     # category query
     if args.getlist('category'):
         category_query = list()
