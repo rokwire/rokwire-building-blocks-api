@@ -5,6 +5,7 @@ MONGO_PROFILE_URL = os.getenv('MONGO_PROFILE_URL', 'localhost:27017')
 MONGO_PII_URL = os.getenv('MONGO_PII_URL', 'localhost:27017')
 FLASK_APP = os.getenv('FLASK_APP', 'profile_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
+PROFILE_ENDPOINT = os.getenv('PROFILE_ENDPOINT', '/profiles')
 
 PROFILE_DB_NAME = 'profiledb'
 PII_DB_NAME = 'piidb'

@@ -23,6 +23,7 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PII_URL="" \
     FLASK_APP="profile_rest_service" \
     FLASK_ENV="development" \
+    PROFILE_ENDPOINT="/profiles" \
     PHONE_VERIFY_SECRET="" \
     PHONE_VERIFY_AUDIENCE="" \
     SHIBBOLETH_HOST="" \
