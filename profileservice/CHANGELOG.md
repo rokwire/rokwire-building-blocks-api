@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#127](https://github.com/rokwire/rokwire-building-blocks-api/issues/127)
 - updated logging system based on Flask RESTFul service
 [#130](https://github.com/rokwire/rokwire-building-blocks-api/issues/130)
+- made profile building block flask using the flask server configuration
+[#92](https://github.com/rokwire/rokwire-building-blocks-api/issues/92)
 
 ### Fixed
 
