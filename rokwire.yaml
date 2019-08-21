@@ -324,6 +324,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: recurrenceId
+        in: query
+        description: The parameter to search events based on a specific recurrence ID.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
       - name: tags
         in: query
         description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee and music
@@ -1255,6 +1263,12 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
+        recurringFlag: 
+          type: boolean
+          description: a flag to denote this is recurring event
+        recurrenceId: 
+          type: integer
+          description: recurring id
         category:
           type: string
           enum:
@@ -1516,8 +1530,8 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: X-API-KEY
-      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the X-API-Key header must contain an API key corresponding to a supported client.
+      name: ROKWIRE-API-KEY
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     UserAuth:
       type: http
       scheme: bearer

@@ -1,5 +1,4 @@
 import sys
-
 sys.path.append('../../')
 import datetime
 import logging
@@ -9,6 +8,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from bson import ObjectId
 
+import auth_middleware
 import profileservice.configs as cfg
 import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.restservice.utils.jsonutils as jsonutils
@@ -16,7 +16,6 @@ import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 import profileservice.restservice.utils.otherutils as otherutils
 
-from profileservice import middleware
 from profileservice.dao.pii_data import PiiData
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
@@ -24,8 +23,12 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
-# app.before_request(middleware.authenticate)
 
+if cfg.FLASK_ENV == "production":
+    app.before_request(auth_middleware.authenticate)
+    print("Production mode")
+else:
+    print("Development mode")
 mongoutils.index_non_pii_data()
 mongoutils.index_pii_data()
 
@@ -33,7 +36,7 @@ mongoutils.index_pii_data()
 profile rest service root directory
 """
 class NonPiiRootDir(Resource):
-    # @middleware.use_security_token_auth
+    # @auth_middleware.use_security_token_auth
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
@@ -84,6 +87,9 @@ class DealNonPii(Resource):
         self.logger = kwargs.get('logger')
 
     def get_data_list(self, uuid):
+        resp = None
+        is_error = False
+
         if uuid != None:
             is_objectid = mongoutils.check_if_objectid(uuid)
 
@@ -99,25 +105,30 @@ class DealNonPii(Resource):
             if len(data_list) > 1:
                 msg = "There are more than 1 profile record: " + str(uuid)
                 self.logger.error(msg)
-                return rs_handlers.bad_request(msg)
-
-            if len(data_list) == 0:
+                is_error = True
+                resp = rs_handlers.bad_request(msg)
+            elif len(data_list) == 0:
                 msg = "There is no profile record for the uuid: " + str(uuid)
                 self.logger.error(msg)
-                return rs_handlers.bad_request(msg)
+                is_error = True
+                resp = rs_handlers.bad_request(msg)
 
-            return data_list, is_objectid
+            return data_list, is_objectid, is_error, resp
 
         else:
             msg = "the profile does not exist: " + str(uuid)
             self.logger.error(msg)
-            return rs_handlers.not_found("Profile not found")
+            resp = rs_handlers.not_found("Profile not found")
+
+            return None, None, True, resp
 
     def get(self, uuid):
         msg = "request profile information: " + str(uuid)
         self.logger.debug(msg)
 
-        data_list, is_objectid = self.get_data_list(uuid)
+        data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
+        if is_error:
+            return resp
         out_json = jsonutils.remove_null_subcategory(data_list[0])
         out_json = mongoutils.construct_json_from_query_list(out_json)
 
@@ -177,7 +188,9 @@ class DealNonPii(Resource):
         return out_json
 
     def delete(self, uuid):
-        data_list, is_objectid = self.get_data_list(uuid)
+        data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
+        if is_error:
+            return resp
 
         if (is_objectid):
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
@@ -317,6 +330,9 @@ class DealPii(Resource):
         self.logger = kwargs.get('logger')
 
     def get_data_list(self, pid):
+        is_error = False
+        resp = None
+
         if pid != None:
             is_objectid = mongoutils.check_if_objectid(pid)
 
@@ -331,26 +347,37 @@ class DealPii(Resource):
             if len(data_list) > 1:
                 msg = "There are more than 1 pii record: " + str(pid)
                 self.logger.error(msg)
-                return rs_handlers.bad_request(msg)
+                is_error = True
+                resp = rs_handlers.bad_request(msg)
+
+                return None, None, is_error, resp
 
             if len(data_list) == 0:
                 msg = "There is no pii record for the uuid: " + str(pid)
                 self.logger.error(msg)
-                return rs_handlers.bad_request(msg)
+                is_error = True
+                resp = rs_handlers.bad_request(msg)
+
+                return None, None, is_error, resp
 
             if len(data_list) > 0:
-                return data_list, is_objectid
+                return data_list, is_objectid, is_error, resp
 
         else:
             msg = "Pii dataset does not exist: " + str(pid)
             self.logger.error(msg)
-            return rs_handlers.not_found("Pii entry not found")
+            is_error = True
+            resp = rs_handlers.not_found("Pii entry not found")
+
+            return None, None, is_error, resp
 
     def get(self, pid):
         msg = "request profile information: " + str(pid)
         self.logger.debug(msg)
 
-        data_list, is_objectid = self.get_data_list(pid)
+        data_list, is_objectid, is_error, resp = self.get_data_list(pid)
+        if is_error:
+            return resp
 
         # remove fileDescriptors from db_data
         data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
@@ -415,7 +442,9 @@ class DealPii(Resource):
         return out_json
 
     def delete(self, pid):
-        data_list, is_objectid = self.get_data_list(pid)
+        data_list, is_objectid, is_error, resp = self.get_data_list(pid)
+        if is_error:
+            return resp
 
         if (is_objectid):
             mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
