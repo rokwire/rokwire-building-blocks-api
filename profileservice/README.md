@@ -29,13 +29,13 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 ### Use Docker
 **Build a docker image**
+The directory should be root directory
 ```
-cd profileservice
-docker build -t rokwire/profile-building-block .
+docker build -t rokwire/profile-building-block  -f profileservice/Dockerfile .
 ```
 **Run the docker container image**
 ```
-docker run --name profile-building-block -d --restart=always -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 (-v /path/to/local/folder:/usr/src/app/rest) -d rokwire/profile-building-block
+docker run --name profile-building-block -d --restart=always -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 (-v /path/to/local/folder:/usr/src/app/rest) -d rokwire/profile-building-block
 ```
 
 ### Local run without docker
@@ -52,8 +52,9 @@ virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
 cd restservice
-python restservice/profile_rest_service.py`
+python profile_rest_service.py`
 ```
+If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
 
 ## Sample profile building block process for non-pii
 The examples use 'curl' command to implement rest method to an end point `http://localhost:5000/profiles`.

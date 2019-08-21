@@ -26,12 +26,13 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd loggingservice
 ./docker.sh
-docker run --rm --name logging -e LOGGING_MONGO_URL=mongodb://mongodb_ip_address:mongodb_port -p 5000:5000 rokwire/logging-building-block
+docker run --rm --name logging -e LOGGING_MONGO_URL=mongodb://mongodb_ip_address:mongodb_port -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
 ```
-If you need to edit config.py where you have to specify mongo database name and collection name.
+You can edit config.py to specify mongo database name, collection name, and a URL prefix.
 ```
 LOGGING_DB_NAME="loggingdb"
 LOGGING_COLL_NAME="logs"
+LOGGING_URL_PREFIX="/logs"
 ```
 
 

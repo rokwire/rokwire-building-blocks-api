@@ -285,9 +285,7 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', ASCENDING),
-                            ('interests.category', ASCENDING),
-                            ('interests.subcategories', ASCENDING)])
+    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)])
 
 """
 index non pii collection
