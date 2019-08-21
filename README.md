@@ -21,13 +21,13 @@ There are several ways to view API design and document using Swagger:
 
 - Create Rokwire Platform API Docker image using instructions in section `Docker / AWS ECR` and run:
         
-      docker run -p 80:8080 rokwire/api-doc` 
+      docker run -p 80:8080 rokwire/api-doc 
 
   Then access the API doc at http://localhost/docs.
 
 ## Docker / AWS ECR
 
-Create Docker image for Rokwire Platform API and push to AWS ECR for deployment using Fargate:
+Create Docker image for Rokwire Platform API and push to AWS ECR for deployment using Fargate from within AWS CLI:
 
 ```
 docker build -t rokwire/api-doc .
