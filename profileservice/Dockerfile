@@ -2,10 +2,6 @@ FROM python:3-alpine
 
 EXPOSE 5000
 
-WORKDIR /usr/src/app/lib
-
-COPY lib .
-
 WORKDIR /usr/src/app/profileservice
 
 COPY profileservice .
