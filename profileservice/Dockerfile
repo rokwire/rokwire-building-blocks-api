@@ -18,11 +18,14 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
 
 WORKDIR /usr/src/app/profileservice/restservice
 
+RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
     MONGO_PII_URL="" \
     FLASK_APP="profile_rest_service" \
     FLASK_ENV="development" \
+    PROFILE_ENDPOINT="/profiles" \
     PHONE_VERIFY_SECRET="" \
     PHONE_VERIFY_AUDIENCE="" \
     SHIBBOLETH_HOST="" \

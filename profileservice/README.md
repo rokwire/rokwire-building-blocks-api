@@ -35,7 +35,7 @@ docker build -t rokwire/profile-building-block  -f profileservice/Dockerfile .
 ```
 **Run the docker container image**
 ```
-docker run --name profile-building-block -d --restart=always -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 (-v /path/to/local/folder:/usr/src/app/rest) -d rokwire/profile-building-block
+docker run --name profile-building-block -d --restart=always -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 (-v /path/to/local/folder:/usr/src/app/rest) -d rokwire/profile-building-block
 ```
 
 ### Local run without docker
@@ -52,6 +52,8 @@ virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
 cd restservice
+export FLASK_APP=profile_rest_service
+export FLASK_ENV=development
 python profile_rest_service.py`
 ```
 If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 

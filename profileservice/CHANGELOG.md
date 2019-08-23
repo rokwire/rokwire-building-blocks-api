@@ -49,6 +49,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#130](https://github.com/rokwire/rokwire-building-blocks-api/issues/130)
 - made profile building block flask using the flask server configuration
 [#92](https://github.com/rokwire/rokwire-building-blocks-api/issues/92)
+- modified profiles building block's rest endpoint prefix to environmental variable
+[#187](https://github.com/rokwire/rokwire-building-blocks-api/issues/92)
 
 ### Fixed
 
