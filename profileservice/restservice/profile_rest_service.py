@@ -520,16 +520,19 @@ class DealPii(Resource):
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
-api.add_resource(NonPiiRootDir, '/profiles', endpoint='non_pii_root',
+
+endpoint_prefix = cfg.PROFILE_ENDPOINT
+
+api.add_resource(NonPiiRootDir, endpoint_prefix, endpoint='non_pii_root',
                  resource_class_kwargs={'logger': logging.getLogger('profileservice')
                                         })
-api.add_resource(DealNonPii, '/profiles/<uuid>', endpoint='deal_non_pii',
+api.add_resource(DealNonPii, endpoint_prefix + '/<uuid>', endpoint='deal_non_pii',
                  resource_class_kwargs={'logger': logging.getLogger('profileservice')
                                         })
-api.add_resource(PiiRootDir, '/profiles/pii', endpoint='pii_root',
+api.add_resource(PiiRootDir, endpoint_prefix + '/pii', endpoint='pii_root',
                  resource_class_kwargs={'logger': logging.getLogger('profileservice')
                                         })
-api.add_resource(DealPii, '/profiles/pii/<pid>', endpoint='deal_pii',
+api.add_resource(DealPii, endpoint_prefix + '/pii/<pid>', endpoint='deal_pii',
                  resource_class_kwargs={'logger': logging.getLogger('profileservice')
                                         })
 
