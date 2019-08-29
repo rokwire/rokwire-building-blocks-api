@@ -22,7 +22,7 @@ rokwire_app_config_manager_group = 'RokwireAppConfigManager'
 
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
-
+DEBUG_ON = False
 
 def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
@@ -103,17 +103,18 @@ def authenticate(group_name=None):
         if keyset_resp.status_code != 200:
             logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
             abort(401)
-        ### Next lines replace the keys for the Shib service with a locally generated set. This lets us sign id_tokens and verify them.
-        # NOTE that the key file MUST only contain public keys. If there is private key information, tjhe JWT library will
-        # create private keys and then explode with strange errors doing the validation. In other words, it has very poor key
-        # resolution.
-        file1 = open("/home/ncsa/temp/rokwire/pub_keys.jwk", "r")
-        lines = file1.readlines()
-        file1.close()
-        my_lst_str = ''.join(map(str, lines))
-        keyset = json.loads(my_lst_str)
-        ### Next line is to be uncommented to re-instate using shib service keys.
-        # keyset = keyset_resp.json()
+        if (DEBUG_ON):
+            ### Next lines replace the keys for the Shib service with a locally generated set. This lets us sign id_tokens and verify them.
+            # NOTE that the key file MUST only contain public keys. If there is private key information, tjhe JWT library will
+            # create private keys and then explode with strange errors doing the validation. In other words, it has very poor key
+            # resolution.
+            file1 = open("/home/ncsa/temp/rokwire/pub_keys.jwk", "r")
+            lines = file1.readlines()
+            file1.close()
+            my_lst_str = ''.join(map(str, lines))
+            keyset = json.loads(my_lst_str)
+        else:
+            keyset = keyset_resp.json()
         matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
         if len(matching_jwks) != 1:
             logger.warning("should have exactly one match for kid = %s" % kid)
