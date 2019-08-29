@@ -5,7 +5,7 @@ import datetime
 import logging
 import uuid as uuidlib
 
-from flask import Flask, request
+from flask import Flask, request, abort
 from flask_restful import Resource, Api
 from bson import ObjectId
 
@@ -20,6 +20,7 @@ from profileservice import middleware
 from profileservice.dao.pii_data import PiiData
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
+import auth_middleware
 
 app = Flask(__name__)
 api = Api(app)
@@ -29,9 +30,13 @@ app.config['JSON_SORT_KEYS'] = False
 mongoutils.index_non_pii_data()
 mongoutils.index_pii_data()
 
+
 """
 profile rest service root directory
 """
+
+
+# Note that this corresponds to the ../profiles/{uuid} end points, as opposed to the profiles/pii endpoints.
 class NonPiiRootDir(Resource):
     # @middleware.use_security_token_auth
     def __init__(self, **kwargs):
@@ -56,6 +61,8 @@ class NonPiiRootDir(Resource):
             pass
 
         if is_new_install:
+            print('rokwire-api-key= ' + request.headers.get('rokwire-api-key'))
+            auth_middleware.verify_secret(request)
             # new installation of the app
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
@@ -74,7 +81,6 @@ class NonPiiRootDir(Resource):
             self.logger.info(msg)
 
             return rs_handlers.return_id(msg, 'uuid', profile_uuid)
-
 
 """
 provide profile information by profile id or remove it
@@ -114,16 +120,23 @@ class DealNonPii(Resource):
             return rs_handlers.not_found("Profile not found")
 
     def get(self, uuid):
+        auth_middleware.verify_secret(request)
+
         msg = "request profile information: " + str(uuid)
         self.logger.debug(msg)
-
-        data_list, is_objectid = self.get_data_list(uuid)
+        try:
+            data_list, is_objectid = self.get_data_list(uuid)
+        except:
+            # If there is no uuid found for this request, reject this as unauthorized.
+            abort(401)
         out_json = jsonutils.remove_null_subcategory(data_list[0])
         out_json = mongoutils.construct_json_from_query_list(out_json)
 
         return out_json
 
     def put(self, uuid):
+        auth_middleware.verify_secret(request)
+
         try:
             in_json = request.get_json()
         except Exception as ex:
@@ -177,8 +190,11 @@ class DealNonPii(Resource):
         return out_json
 
     def delete(self, uuid):
-        data_list, is_objectid = self.get_data_list(uuid)
-
+        auth_middleware.verify_secret(request)
+        try:
+            data_list, is_objectid = self.get_data_list(uuid)
+        except:
+            abort(401)
         if (is_objectid):
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
             msg = "deleted profile information: " + str(id)
@@ -235,6 +251,7 @@ class PiiRootDir(Resource):
         is_new_entry = False
         try:
             in_json = request.get_json()
+            print(in_json)
         except Exception as ex:
             self.logger.exception(ex)
             return rs_handlers.bad_request('json format error')
@@ -347,6 +364,7 @@ class DealPii(Resource):
             return rs_handlers.not_found("Pii entry not found")
 
     def get(self, pid):
+        auth_middleware.authenticate()
         msg = "request profile information: " + str(pid)
         self.logger.debug(msg)
 
@@ -359,6 +377,8 @@ class DealPii(Resource):
         return out_json
 
     def put(self, pid):
+        auth_middleware.authenticate()
+
         try:
             in_json = request.get_json()
         except Exception as ex:
@@ -415,6 +435,8 @@ class DealPii(Resource):
         return out_json
 
     def delete(self, pid):
+        auth_middleware.authenticate()
+
         data_list, is_objectid = self.get_data_list(pid)
 
         if (is_objectid):

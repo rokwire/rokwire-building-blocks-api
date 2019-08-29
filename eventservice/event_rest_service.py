@@ -7,6 +7,7 @@ from bson import ObjectId
 from .db import get_db
 from . import query_params
 from flask import Blueprint, request, make_response, abort, current_app
+import auth_middleware
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -15,8 +16,12 @@ __logger = logging.getLogger("eventservice")
 bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
 
 
+# A couple of proposed groups
+
+
 @bp.route('/tags', methods=['GET'])
 def get_tags():
+    auth_middleware.verify_secret(request)
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "tags.json")
@@ -29,6 +34,7 @@ def get_tags():
 
 @bp.route('/categories', methods=['GET'])
 def get_categories():
+    auth_middleware.verify_secret(request)
     results = list()
     try:
         db = get_db()
@@ -44,6 +50,7 @@ def get_categories():
 
 @bp.route('/', methods=['GET'])
 def get_events():
+    auth_middleware.verify_secret(request)
     results = list()
     args = request.args
     query = dict()
@@ -75,6 +82,7 @@ def get_events():
 
 @bp.route('/', methods=['POST'])
 def post_events():
+    auth_middleware.authenticate("RokwireEventManager")
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):

@@ -1,16 +1,45 @@
 import logging
 import flask
+import jwt
+import json
+import os
+import requests
 
 from flask import request, abort
+from datetime import datetime
+from cryptography.hazmat.primitives.asymmetric import rsa
 
 logger = logging.getLogger(__name__)
+# First cut. This is a list of secrets (eventually this can come from a database and setting it is effectively caching it)
+# The zero-th element of this list is the currently active key.
+# At this point we have decided that a secret is going to be a version 4 UUID.
+secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
+# The header in the request
+rokwire_api_key_header = 'rokwire-api-key'
+
+# This is the is member of claim name from the
+uiucedu_is_member_of = "uiucedu_is_member_of"
 
 
-def authenticate():
-    import os
-    import jwt
-    import json
-    import requests
+def get_bearer_token(request):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        logger.warning("Request missing Authorization header")
+        abort(401)
+    ah_split = auth_header.split()
+    if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
+        logger.warning("invalid auth header. expecting 'bearer' and token with space between")
+        abort(401)
+    _id_token = ah_split[1]
+    return _id_token
+
+
+# Checks the id_token. This will either check the token from the UIUC Shibboleth service or a generated
+# one from ROKwire for phone-based authentication.
+# Use: invoke in the call. This this works, nothing happens (and processing continues) or it fails. There
+# are no other options.
+# This does return the id_token so that, e.g. group memberships may be checked.
+def authenticate(group_name=None):
 
     should_use_security_token_auth = False
     app = flask.current_app
@@ -62,17 +91,30 @@ def authenticate():
         if not kid:
             logger.warning("kid not found in unverified header")
             abort(401)
+        # Comment about the next bit. The Py JWT package's support for getting the keys
+        # and verifying against said key is (like the rest of it) undocumented.
+        # These calls may therefore change without warning without notification in future
+        # releases of that library. If this stops working, check the Py JWT libraries first.
+
         keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
         if keyset_resp.status_code != 200:
             logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
             abort(401)
-        keyset = keyset_resp.json()
+        # Next lines replace the keys for the SHib service with a locally generated set. This lets us sign id_tokens and verify them.
+        file1 = open("/home/ncsa/temp/rokwire/keys.jwk", "r")
+        lines = file1.readlines()
+        file1.close()
+        my_lst_str = ''.join(map(str, lines))
+        keyset = json.loads(my_lst_str)
+        # Next line is to be uncommented to re-instate using shib service keys.
+        # keyset = keyset_resp.json()
         matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
         if len(matching_jwks) != 1:
             logger.warning("should have exactly one match for kid = %s" % kid)
             abort(401)
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+        print(pub_key)
         try:
             id_info = jwt.decode(_id_token, key=pub_key, audience=SHIB_CLIENT_ID, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
@@ -85,7 +127,28 @@ def authenticate():
             logger.warning("invalid iss of %s" % id_info['iss'])
             abort(401)
     request.user_token_data = id_info
-    return
+    if (group_name != None):
+        # So we are to check is a group membership is required.
+        is_member_of = id_info[uiucedu_is_member_of]
+        print("is_member_of" + is_member_of)
+        if group_name not in is_member_of:
+            logger.warning("user is not a member of the group " + group_name)
+            abort(401)
+    return id_info
+
+
+# Checks that the request has the right secret for this. This call is used initially and assumes that
+# the header contains the x-api-key. This (trivially) returns true of the verification worked and
+# otherwise will return various other exit codes.
+def verify_secret(request):
+    key = request.headers.get(rokwire_api_key_header)
+    if not key:
+        logger.warning("Request missing the " + rokwire_api_key_header + " header")
+        abort(400)  # missing header means bad request
+    if (key == os.getenv('ROKWIRE_API_KEY')):
+        return True
+    abort(401)  # failed matching means unauthorized in this context.
+
 
 
 def use_security_token_auth(func):
