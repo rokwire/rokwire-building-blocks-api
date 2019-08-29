@@ -8,6 +8,7 @@ from appconfig import dbutils
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 import pymongo
+import auth_middleware
 
 logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
@@ -17,6 +18,7 @@ bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
 @bp.route('/', methods=['GET'])
 def get_app_configs():
+    auth_middleware.verify_secret(request)
     results = list()
     args = request.args
     query = dict()
@@ -47,6 +49,7 @@ def get_app_configs():
 
 @bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
+    auth_middleware.verify_secret(request)
     results = list()
     if not ObjectId.is_valid(id):
         abort(400)
@@ -64,6 +67,8 @@ def get_app_config_by_id(id):
 
 @bp.route('/', methods=['POST'])
 def post_app_config():
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         abort(400)
@@ -84,6 +89,8 @@ def post_app_config():
 
 @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+
     if not ObjectId.is_valid(id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -104,6 +111,8 @@ def update_app_config(id):
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+
     if not ObjectId.is_valid(id):
         abort(400)
     try:

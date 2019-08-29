@@ -82,7 +82,7 @@ def get_events():
 
 @bp.route('/', methods=['POST'])
 def post_events():
-    auth_middleware.authenticate("RokwireEventManager")
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -108,6 +108,8 @@ def post_events():
 
 @bp.route('/<event_id>', methods=['PUT'])
 def update_event(event_id):
+    auth_middleware.authenticate("RokwireEventManager")
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -134,6 +136,8 @@ def update_event(event_id):
 
 @bp.route('/<event_id>', methods=['PATCH'])
 def partial_update_event(event_id):
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -176,6 +180,8 @@ def partial_update_event(event_id):
 
 @bp.route('/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     try:

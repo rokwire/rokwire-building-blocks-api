@@ -16,6 +16,9 @@ logger = logging.getLogger(__name__)
 secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
+# Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
+rokwire_event_manager_group = 'RokwireEventManager'
+rokwire_app_config_manager_group = 'RokwireAppConfigManager'
 
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
@@ -100,13 +103,16 @@ def authenticate(group_name=None):
         if keyset_resp.status_code != 200:
             logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
             abort(401)
-        # Next lines replace the keys for the SHib service with a locally generated set. This lets us sign id_tokens and verify them.
-        file1 = open("/home/ncsa/temp/rokwire/keys.jwk", "r")
+        ### Next lines replace the keys for the Shib service with a locally generated set. This lets us sign id_tokens and verify them.
+        # NOTE that the key file MUST only contain public keys. If there is private key information, tjhe JWT library will
+        # create private keys and then explode with strange errors doing the validation. In other words, it has very poor key
+        # resolution.
+        file1 = open("/home/ncsa/temp/rokwire/pub_keys.jwk", "r")
         lines = file1.readlines()
         file1.close()
         my_lst_str = ''.join(map(str, lines))
         keyset = json.loads(my_lst_str)
-        # Next line is to be uncommented to re-instate using shib service keys.
+        ### Next line is to be uncommented to re-instate using shib service keys.
         # keyset = keyset_resp.json()
         matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
         if len(matching_jwks) != 1:
@@ -114,7 +120,6 @@ def authenticate(group_name=None):
             abort(401)
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
-        print(pub_key)
         try:
             id_info = jwt.decode(_id_token, key=pub_key, audience=SHIB_CLIENT_ID, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
@@ -130,7 +135,7 @@ def authenticate(group_name=None):
     if (group_name != None):
         # So we are to check is a group membership is required.
         is_member_of = id_info[uiucedu_is_member_of]
-        print("is_member_of" + is_member_of)
+        print("is_member_of" + str(is_member_of))
         if group_name not in is_member_of:
             logger.warning("user is not a member of the group " + group_name)
             abort(401)
