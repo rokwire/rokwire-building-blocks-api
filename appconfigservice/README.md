@@ -81,7 +81,7 @@ Make sure the repository called rokwire/app_config exists in ECR. Then create Do
 ```
 cd appconfigservice 
 ./build_app_config.sh
-sudo docker tag app_config:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+docker tag app_config:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 $(aws ecr get-login --no-include-email --region us-east-2)
-sudo docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 ```
