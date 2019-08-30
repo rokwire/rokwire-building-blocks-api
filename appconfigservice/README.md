@@ -73,3 +73,15 @@ cd appconfigservice/deployment
 ./stop_app_config_container.sh
 
 ```
+
+## Docker / AWS ECR
+
+Make sure the repository called rokwire/app_config exists in ECR. Then create Docker image for Rokwire Platform API and push to AWS ECR for deployment. For
+
+```
+cd appconfigservice 
+./build_app_config.sh
+sudo docker tag app_config:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+$(aws ecr get-login --no-include-email --region us-east-2)
+sudo docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+```
