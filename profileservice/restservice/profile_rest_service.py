@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('../../')
 import datetime
 import logging
@@ -35,6 +36,8 @@ mongoutils.index_pii_data()
 """
 profile rest service root directory
 """
+
+
 class NonPiiRootDir(Resource):
     # @auth_middleware.use_security_token_auth
     def __init__(self, **kwargs):
@@ -71,8 +74,8 @@ class NonPiiRootDir(Resource):
             profile_uuid = dataset["uuid"]
 
             # use this if it needs to return actual dataset
-            #dataset = jsonutils.remove_objectid_from_dataset(dataset)
-            #out_json = mongoutils.construct_json_from_query_list(dataset)
+            # dataset = jsonutils.remove_objectid_from_dataset(dataset)
+            # out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
             self.logger.info(msg)
 
@@ -82,6 +85,8 @@ class NonPiiRootDir(Resource):
 """
 provide profile information by profile id or remove it
 """
+
+
 class DealNonPii(Resource):
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
@@ -212,6 +217,8 @@ class DealNonPii(Resource):
 """"
 get or post pii dataset
 """
+
+
 class PiiRootDir(Resource):
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
@@ -325,6 +332,8 @@ class PiiRootDir(Resource):
 """
 provide profile information by profile id or remove it
 """
+
+
 class DealPii(Resource):
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
@@ -518,7 +527,8 @@ class DealPii(Resource):
 #             self.logger.error(msg)
 #             return rs_handlers.bad_request(msg)
 
-logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
+logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
                     level=logging.INFO)
 
 endpoint_prefix = cfg.PROFILE_ENDPOINT
