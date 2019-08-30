@@ -24,6 +24,9 @@ EXPOSE 5000
 COPY ./app /app
 WORKDIR /app
 
+#For using DocumentDB
+RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+
 # Make /app/* available to be imported by Python globally to better support several use cases like Alembic migrations.
 ENV PYTHONPATH=/app
 
