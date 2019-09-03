@@ -8,6 +8,7 @@ import uuid as uuidlib
 from flask import Flask, request
 from flask_restful import Resource, Api
 from bson import ObjectId
+from time import gmtime
 
 import auth_middleware
 import profileservice.configs as cfg
@@ -527,9 +528,9 @@ class DealPii(Resource):
 #             self.logger.error(msg)
 #             return rs_handlers.bad_request(msg)
 
-logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S',
-                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 
 endpoint_prefix = cfg.PROFILE_ENDPOINT
 

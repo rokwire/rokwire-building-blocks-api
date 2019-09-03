@@ -4,10 +4,11 @@ import flask
 from .db import get_db
 from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
 from flask import Blueprint, request, make_response, abort
+from time import gmtime
 
-logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S',
-                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("loggingservice")
 
 bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
