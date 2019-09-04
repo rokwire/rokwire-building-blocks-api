@@ -535,16 +535,16 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
 endpoint_prefix = cfg.PROFILE_ENDPOINT
 
 api.add_resource(NonPiiRootDir, endpoint_prefix, endpoint='non_pii_root',
-                 resource_class_kwargs={'logger': logging.getLogger('profileservice')
+                 resource_class_kwargs={'logger': logging.getLogger('profile_building_block')
                                         })
 api.add_resource(DealNonPii, endpoint_prefix + '/<uuid>', endpoint='deal_non_pii',
-                 resource_class_kwargs={'logger': logging.getLogger('profileservice')
+                 resource_class_kwargs={'logger': logging.getLogger('profile_building_block')
                                         })
 api.add_resource(PiiRootDir, endpoint_prefix + '/pii', endpoint='pii_root',
-                 resource_class_kwargs={'logger': logging.getLogger('profileservice')
+                 resource_class_kwargs={'logger': logging.getLogger('profile_building_block')
                                         })
 api.add_resource(DealPii, endpoint_prefix + '/pii/<pid>', endpoint='deal_pii',
-                 resource_class_kwargs={'logger': logging.getLogger('profileservice')
+                 resource_class_kwargs={'logger': logging.getLogger('profile_building_block')
                                         })
 
 # TODO this should be uncommneted when this needed
