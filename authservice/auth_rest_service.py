@@ -102,7 +102,6 @@ def verification_check():
         os.getenv('PHONE_VERIFY_SECRET'),
         headers={'phone': True},
     ).decode('utf-8')
-    print("id_token = %s" % id_token)
     return {
         'success': True,
         'id_token': id_token,
