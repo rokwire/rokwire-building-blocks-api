@@ -212,16 +212,9 @@ def check_format(req_data):
     return True
     
 def decode(document):
-    dto = {}
     oid = document['_id']
     if isinstance(oid, ObjectId):
         oid = str(oid)
-    dto['id'] = oid
-    dto['mobileAppVersion'] = document['mobileAppVersion']
-    dto['platformBuildingBlocks'] = document['platformBuildingBlocks']
-    dto['thirdPartyServices'] = document['thirdPartyServices']
-    dto['otherUniversityServices'] = document['otherUniversityServices']
-    if 'secretKeys' in document.keys():
-        dto['secretKeys'] = document['secretKeys']
-    return dto
-    
+    document['id'] = oid
+    del document['_id']  # Remove _id field from the dictionary
+    return document
