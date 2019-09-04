@@ -9,7 +9,7 @@ from time import gmtime
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
-__logger = logging.getLogger("loggingservice")
+__logger = logging.getLogger("logging_building_block")
 
 bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
 
