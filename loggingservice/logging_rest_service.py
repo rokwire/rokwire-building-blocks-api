@@ -40,8 +40,9 @@ def post_events():
         if in_json is not None:
             db[LOGGING_COLL_NAME].insert_many(in_json)
 
-            msg = "[POST]: logging record posted."
-            __logger.info(msg)
+            # Write incoming click stream data to log (for easy integration with Splunk)
+            for log in in_json:
+                __logger.info(log)
 
     except Exception as ex:
         __logger.exception(ex)
