@@ -10,8 +10,13 @@ import connexion
 from datetime import datetime
 from flask import request, abort
 from dateutil.relativedelta import relativedelta
+from time import gmtime
 
-logger = logging.getLogger(__name__)
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
+
+logger = logging.getLogger("authentication_building_block")
 
 
 def is_digits(x):
@@ -98,7 +103,6 @@ def verification_check():
         os.getenv('PHONE_VERIFY_SECRET'),
         headers={'phone': True},
     ).decode('utf-8')
-    print("id_token = %s" % id_token)
     return {
         'success': True,
         'id_token': id_token,

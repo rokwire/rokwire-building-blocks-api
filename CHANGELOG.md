@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add recurring event search
 - Add events multiple titles search.
 - Add skip and limit on events query.
 - This CHANGELOG file
@@ -25,8 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add secretKeys to App Config
 - Logging building block API definitions.
 - Auth middleware library.
+- Dockerfile for Rokwire Platform API documentation and updated README.
 
 ### Changed
+- events tag search has been changed to logic or.
 - Update events schema to remove endDate as required field and add createdBy and createDate.
 - Update events schema according to discussion and feedback.
 - Update rokwire.yaml for events build block.

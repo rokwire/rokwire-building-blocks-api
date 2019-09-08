@@ -14,7 +14,6 @@ def get_db():
         g.db = g.client.get_database(name=EVENT_DB_NAME)
     return g.db
 
-
 def close_db(e=None):
     client = g.pop('client', None)
 

@@ -2,20 +2,24 @@ import logging
 import flask
 
 from .db import get_db
-from .config import LOGGING_COLL_NAME
-from flask import Blueprint, request, make_response, abort, Flask
+from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
+from flask import Blueprint, request, make_response, abort
+from time import gmtime
 
-logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
-__logger = logging.getLogger("loggingservice")
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
+__logger = logging.getLogger("logging_building_block")
 
-bp = Blueprint('logging_rest_service', __name__, url_prefix='/logs')
+bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
+
 
 @bp.route('/', methods=['POST'])
 def post_events():
+    in_json = None
     try:
         in_json = request.get_json(force=True)
-        if isinstance(in_json, list) == False:
+        if not isinstance(in_json, list):
             msg = "request json is not a list"
             __logger.info(msg)
             return server_400_error(msg)
@@ -32,12 +36,14 @@ def post_events():
         # db = client["loggingdb"]
         # LOGGING_COLL_NAME = "logs"
 
-        for i in range(len(in_json)):
-            json_entry = in_json[i]
-            uuid = json_entry["uuid"]
-            db[LOGGING_COLL_NAME].insert(json_entry)
-            msg = "[POST]: logging record posted: uuid = %s" % str(uuid)
-            __logger.info(msg)
+        # Insert log entries to database.
+        if in_json is not None:
+            db[LOGGING_COLL_NAME].insert_many(in_json)
+
+            # Write incoming click stream data to log (for easy integration with Splunk)
+            for log in in_json:
+                __logger.info(log)
+
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -121,7 +127,6 @@ def server_500_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
-
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=5000, debug=True)
