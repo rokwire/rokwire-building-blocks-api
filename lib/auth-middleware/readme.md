@@ -7,5 +7,5 @@ They should match the ones that are set in the `authservice` flask app.
 - `PHONE_VERIFY_SECRET`
 - `PHONE_VERIFY_AUDIENCE`
 - `SHIBBOLETH_HOST`
+- `SHIBBOLETH_CLIENT_ID`
 - `ROKWIRE_API_KEY`
--  `SHIBBOLETH_CLIENT_ID
