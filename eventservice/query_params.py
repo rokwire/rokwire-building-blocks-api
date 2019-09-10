@@ -24,7 +24,7 @@ def format_query(args, query):
         query['categorymainsub'] = {'$in': category_query}
     # tags query
     if args.getlist('tags'):
-        query['tags'] = {'$all': args.getlist('tags')}
+        query['tags'] = {'$in': args.getlist('tags')}
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):

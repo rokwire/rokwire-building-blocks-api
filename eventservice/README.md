@@ -221,7 +221,7 @@ This query will return back all events whose title contains the word `pi` and `d
 
 ### Tags Search:
 
-This query will return all events whose tags contain ``coffee`` and ``music``.
+This query will return all events whose tags contain ``coffee`` `or` ``music``.
 
 ```
 /events?tags=coffee&tags=music

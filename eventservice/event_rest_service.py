@@ -11,10 +11,12 @@ from .images.s3 import S3EventsImages
 from .images import localfile
 from flask import Blueprint, request, make_response, send_file, abort, current_app
 from werkzeug.utils import secure_filename
+from time import gmtime
 
-logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
-__logger = logging.getLogger("eventservice")
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
+__logger = logging.getLogger("events_building_block")
 
 bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
 
