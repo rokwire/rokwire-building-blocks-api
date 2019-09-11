@@ -61,27 +61,36 @@ curl -d "@appconfig-v100.json" -X PUT http://localhost:5000/app/configs/5d38b9a5
 
 ```
 
-## Run docker in production
+## Run docker in a VM
 
 OS: Ubuntu 18.0.4
 ```
 vi .bashrc
 alias python=python3
 alias pip=pip3
-cd appconfigservice/deployment
+cd rokwire-building-blocks-api/deployment
 ./start_app_config_container.sh
 ./stop_app_config_container.sh
 
 ```
 
-## Docker / AWS ECR
+## Docker Instructions
+
+```
+cd rokwire-building-blocks-api 
+docker build -f appconfigservice/Dockerfile -t rokwire/app-config-building-block:latest .
+cd appconfigservice
+docker run --rm --name app_config --env-file .env -e APP_CONFIG_MONGO_URL=<mongo_url> -p 5000:5000 rokwire/app-config-building-block
+```
+
+## AWS ECR Instructions
 
 Make sure the repository called rokwire/app_config exists in ECR. Then create Docker image for Rokwire Platform API and push to AWS ECR for deployment. For
 
 ```
-cd appconfigservice 
-./build_app_config.sh
-docker tag app_config:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+cd rokwire-building-blocks-api 
+docker build -f appconfigservice/Dockerfile -t rokwire/app-config-building-block:latest .
+docker tag rokwire/app-config-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 $(aws ecr get-login --no-include-email --region us-east-2)
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 ```
