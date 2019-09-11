@@ -1,9 +1,0 @@
-version: '3'
-services:
-  app-config:
-    image: rokwire/app-config-building-block:latest
-    build:
-      context: ../
-      dockerfile: appconfigservice/Dockerfile
-    ports: ["5000:5000"]
-    env_file: .env
