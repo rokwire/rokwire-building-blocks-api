@@ -25,6 +25,27 @@ cd appconfigservice
 pip install -e .
 ```
 
+## Environment File
+
+You need to have a .env file in this directory that contains credentials required for authentication. 
+Not all of these variables may be required for this building block. 
+
+Example file format:
+
+```
+TWILIO_ACCT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_VERIFY_SERVICE_ID=<Twilio Verify Service ID>
+
+PHONE_VERIFY_SECRET=<Phone Verify Secret> 
+PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
+
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+
+ROKWIRE_API_KEY=<Rokwire API Key>
+```
+
 ## Run in Development Mode
 ```
 cd appconfigservice
