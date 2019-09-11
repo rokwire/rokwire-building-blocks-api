@@ -1,5 +1,7 @@
 import logging
 import flask
+import json
+import sys
 
 from .db import get_db
 from .config import LOGGING_URL_PREFIX #, LOGGING_COLL_NAME
@@ -42,7 +44,7 @@ def post_events():
 
             # Write incoming click stream data to log (for easy integration with Splunk)
             for log in in_json:
-                __logger.info(log)
+                __logger.info(json.dumps(log))
 
     except Exception as ex:
         __logger.exception(ex)
