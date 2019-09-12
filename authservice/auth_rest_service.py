@@ -11,12 +11,16 @@ from datetime import datetime
 from flask import request, abort
 from dateutil.relativedelta import relativedelta
 from time import gmtime
+from dotenv import load_dotenv
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 
 logger = logging.getLogger("authentication_building_block")
+
+# Load .env file
+load_dotenv()
 
 
 def is_digits(x):
