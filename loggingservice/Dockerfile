@@ -3,7 +3,8 @@ FROM python:3
 LABEL maintainer="ywkim@illinois.edu"
 
 WORKDIR /app
-COPY . /app/loggingservice/
+COPY loggingservice /app/loggingservice/
+COPY lib /lib/
 RUN pip install -r /app/loggingservice/requirements.txt
 
 # For using DocumentDB

@@ -1,9 +1,10 @@
 import logging
 import flask
+import auth_middleware
 
 from .db import get_db
 from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
-from flask import Blueprint, request, make_response, abort
+from flask import Blueprint, request, make_response, abort, app
 from time import gmtime
 
 logging.Formatter.converter = gmtime
@@ -16,6 +17,7 @@ bp = Blueprint('logging_rest_service', __name__, url_prefix=LOGGING_URL_PREFIX)
 
 @bp.route('/', methods=['POST'])
 def post_events():
+    auth_middleware.verify_secret(request)
     in_json = None
     try:
         in_json = request.get_json(force=True)
