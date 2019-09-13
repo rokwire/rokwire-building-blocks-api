@@ -100,8 +100,7 @@ cd rokwire-building-blocks-api/deployment
 ```
 cd rokwire-building-blocks-api 
 docker build -f appconfigservice/Dockerfile -t rokwire/app-config-building-block:latest .
-cd appconfigservice
-docker run --rm --name app_config --env-file .env -e APP_CONFIG_MONGO_URL=<mongo_url> -p 5000:5000 rokwire/app-config-building-block
+docker run --rm --name app_config --env-file appconfigservice/.env -e APP_CONFIG_MONGO_URL=<mongo_url> -p 5000:5000 rokwire/app-config-building-block
 ```
 
 ## AWS ECR Instructions
