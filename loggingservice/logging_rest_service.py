@@ -4,7 +4,7 @@ import auth_middleware
 
 from .db import get_db
 from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
-from flask import Blueprint, request, make_response, abort
+from flask import Blueprint, request, make_response, abort, app
 from time import gmtime
 
 logging.Formatter.converter = gmtime

@@ -1,3 +1,6 @@
 Flask==1.0.2
 pymongo==3.7.2
 gunicorn==19.9.0
+python-dotenv==0.10.3
+
+../lib/auth-middleware

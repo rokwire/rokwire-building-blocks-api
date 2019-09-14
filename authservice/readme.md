@@ -28,7 +28,7 @@ Step 2 of 2 for phone number verification. The request body should contain the c
 ## Running the Building Block
 
 ### Configuration
-Please set up the following environment variables in the terminal (when running as Python Flask Application) or in `credentials.env` file (when running as a Docker container):
+Please set up the following environment variables in the terminal (when running as Python Flask Application) or in `.env` file (when running as a Docker container):
 
 #### Twilio API Credentials
 These credentials can be obtained by logging into Twilio account and visiting https://www.twilio.com/console.
@@ -62,13 +62,14 @@ $ docker-compose up
 
 ##### Docker Compose environment variable configuration
 
-To run locally with Docker Compose, you will need to create a file called `credentials.env`.  See [here](https://docs.docker.com/compose/environment-variables/#the-env-file) for documentation on `.env` files.  Here are the environment variables that need to be defined:
+To run locally with Docker Compose, you will need to create a file called `.env`.  See [here](https://docs.docker.com/compose/environment-variables/#the-env-file) for documentation on `.env` files.  Here are the environment variables that need to be defined:
 
 - `TWILIO_ACCT_SID`
 - `TWILIO_AUTH_TOKEN`
 - `TWILIO_VERIFY_SERVICE_ID`
 - `PHONE_VERIFY_SECRET`
 - `PHONE_VERIFY_AUDIENCE`
+- `ROKWIRE-API-KEY`
 
 
 ## Deployment notes
@@ -78,7 +79,7 @@ more instructions can be found [here](https://opensource.ncsa.illinois.edu/confl
 ### Build Docker image and push to Rokwire's Amazon Web Service Elastic Container Registry
 
 - `$ docker-compose build` or maybe `$ docker-compose build --no-cache --force-rm`
-- `$ docker tag rokwire/authservice_web 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/authservice_web`
+- `$ docker tag rokwire/authentication-building-block 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/authservice_web`
 - `$ docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/authservice_web`
 - If you receive this message, `denied: Your Authorization Token has expired. Please run 'aws ecr get-login --no-include-email' to fetch a new one.`
     - `$ $(aws ecr get-login --no-include-email --region us-east-2)`
