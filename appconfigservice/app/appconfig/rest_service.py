@@ -69,7 +69,7 @@ def get_app_config_by_id(id):
 
 @bp.route('/', methods=['POST'])
 def post_app_config():
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group, True)
 
     req_data = request.get_json(force=True)
     if not check_format(req_data):
@@ -91,7 +91,7 @@ def post_app_config():
 
 @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group, True)
 
     if not ObjectId.is_valid(id):
         abort(400)
@@ -113,7 +113,7 @@ def update_app_config(id):
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group, True)
 
     if not ObjectId.is_valid(id):
         abort(400)

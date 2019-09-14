@@ -48,6 +48,8 @@ class NonPiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def post(self):
+        print("NOT IN PII!!!!")
+
         is_new_install = True
 
         # check if uuid is in there otherwise it is either a first installation
@@ -228,11 +230,14 @@ get or post pii dataset
 """
 
 
+# These correspond to call to the /profiles/pii endpoint
 class PiiRootDir(Resource):
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
     def get(self):
+        auth_middleware.authenticate()
+
         term_pid = request.args.get('pid', None)
         term_username = request.args.get('username', None)
         term_phone = request.args.get('phone', None)
@@ -261,10 +266,11 @@ class PiiRootDir(Resource):
             return out_json
 
     def post(self):
+        auth_middleware.authenticate()
+
         is_new_entry = False
         try:
             in_json = request.get_json()
-            print(in_json)
         except Exception as ex:
             self.logger.exception(ex)
             return rs_handlers.bad_request('json format error')

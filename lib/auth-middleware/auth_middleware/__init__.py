@@ -17,7 +17,9 @@ secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
-rokwire_event_manager_group = 'RokwireEventManager'
+rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
+rokwire_events_uploader = 'uiucedu_is_member_of":["urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
+rokwire_web_app = 'uiucedu_is_member_of":["urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
 rokwire_app_config_manager_group = 'RokwireAppConfigManager'
 
 # This is the is member of claim name from the
@@ -42,7 +44,7 @@ def get_bearer_token(request):
 # Use: invoke in the call. This this works, nothing happens (and processing continues) or it fails. There
 # are no other options.
 # This does return the id_token so that, e.g. group memberships may be checked.
-def authenticate(group_name=None):
+def authenticate(group_name=None, internal_token_only=False):
 
     should_use_security_token_auth = False
     app = flask.current_app
@@ -61,12 +63,18 @@ def authenticate(group_name=None):
         abort(401)
     _id_token = ah_split[1]
     try:
+        # We need to get both the header and the payload initially as unverified since we have to
+        # check their issuer, key id and a few other items before we can figure out how to unpack them
         unverified_header = jwt.get_unverified_header(_id_token)
+        unverified_payload = jwt.decode(_id_token, verify=False)
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on get unverified header. message = %s" % jwte)
         abort(401)
     if unverified_header.get('phone', False):
-        # phone number verify
+        # phone number verify -- reject if this should be another type of token.
+        if internal_token_only:
+            logger.warning('incorrect id token type.')
+            abort(401)
         phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
         if not phone_verify_secret:
             logger.warning("PHONE_VERIFY_SECRET environment variable not set")
@@ -87,34 +95,58 @@ def authenticate(group_name=None):
             abort(401)
         # import pprint; pprint.pprint(id_info)
     else:
+        # Note there are two cases here that are closely related. Basically we can only differentiate them
+        # by which issuer is in the id token.
         # shibboleth
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
-        SHIB_CLIENT_ID = os.getenv('SHIBBOLETH_CLIENT_ID')
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
+
+        issuer = unverified_payload.get('iss')
+        if not issuer:
+            logger.warning("Issuer not found. Aborting.")
+            abort(401)
         kid = unverified_header.get('kid')
         if not kid:
-            logger.warning("kid not found in unverified header")
+            logger.warning("kid not found. Aborting.")
             abort(401)
-        # Comment about the next bit. The Py JWT package's support for getting the keys
-        # and verifying against said key is (like the rest of it) undocumented.
-        # These calls may therefore change without warning without notification in future
-        # releases of that library. If this stops working, check the Py JWT libraries first.
+        valid_issuer = False
+        keyset = None
+        target_client_id = None
 
-        keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
-        if keyset_resp.status_code != 200:
-            logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
-            abort(401)
-        if (DEBUG_ON):
-            ### Next lines replace the keys for the Shib service with a locally generated set. This lets us sign id_tokens and verify them.
-            # NOTE that the key file MUST only contain public keys. If there is private key information, tjhe JWT library will
-            # create private keys and then explode with strange errors doing the validation. In other words, it has very poor key
-            # resolution.
-            file1 = open("/home/ncsa/temp/rokwire/pub_keys.jwk", "r")
+        if issuer == ROKWIRE_ISSUER:
+            if not internal_token_only:
+                logger.warning("incorrect token")
+                abort(401)
+            valid_issuer = True
+            # Path to the ROKWire public key for its id tokens
+            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
+            file1 = open(LOCAL_KEY_PATH, "r")
             lines = file1.readlines()
             file1.close()
             my_lst_str = ''.join(map(str, lines))
             keyset = json.loads(my_lst_str)
-        else:
+            target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
+
+        if issuer == 'https://' + SHIB_HOST:
+            if internal_token_only:
+                logger.warning("incorrect token type")
+                abort(401)
+            valid_issuer = True
+            keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+            if keyset_resp.status_code != 200:
+                logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
+                abort(401)
             keyset = keyset_resp.json()
+            target_client_id = os.getenv('SHIBBOLETH_CLIENT_ID')
+
+        # Comment about the next bit. The Py JWT package's support for getting the keys
+        # and verifying against said key is (like the rest of it) undocumented.
+        # These calls may therefore change without warning without notification in future
+        # releases of that library. If this stops working, check the Py JWT libraries first.
+        if not valid_issuer:
+            logger.warning("invalid issuer = %s" % issuer)
+            abort(401)
+
         matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
         if len(matching_jwks) != 1:
             logger.warning("should have exactly one match for kid = %s" % kid)
@@ -122,15 +154,12 @@ def authenticate(group_name=None):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            id_info = jwt.decode(_id_token, key=pub_key, audience=SHIB_CLIENT_ID, verify=True)
+            id_info = jwt.decode(_id_token, key=pub_key, audience=target_client_id, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             abort(401)
         if not id_info:
             logger.warning("id_info was not returned from decode")
-            abort(401)
-        if id_info['iss'] != 'https://' + SHIB_HOST:
-            logger.warning("invalid iss of %s" % id_info['iss'])
             abort(401)
     request.user_token_data = id_info
     if (group_name != None):
