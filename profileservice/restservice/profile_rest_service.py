@@ -1,4 +1,5 @@
 import sys
+import json
 
 sys.path.append('../../')
 import datetime
@@ -75,10 +76,10 @@ class NonPiiRootDir(Resource):
             profile_uuid = dataset["uuid"]
 
             # use this if it needs to return actual dataset
-            # dataset = jsonutils.remove_objectid_from_dataset(dataset)
+            dataset = jsonutils.remove_objectid_from_dataset(dataset)
             # out_json = mongoutils.construct_json_from_query_list(dataset)
             msg = "new profile with new uuid has been created: " + str(profile_uuid)
-            self.logger.info(msg)
+            self.logger.info("POST " + json.dumps(dataset))
 
             return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
@@ -136,6 +137,8 @@ class DealNonPii(Resource):
         if is_error:
             return resp
         out_json = jsonutils.remove_null_subcategory(data_list[0])
+        self.logger.info("GET " + json.dumps(out_json))
+
         out_json = mongoutils.construct_json_from_query_list(out_json)
 
         return out_json
@@ -187,9 +190,9 @@ class DealNonPii(Resource):
 
         non_pii_dataset = jsonutils.remove_file_descriptor_from_dataset(non_pii_dataset)
         out_json = jsonutils.remove_null_subcategory(non_pii_dataset)
-        out_json = mongoutils.construct_json_from_query_list(out_json)
         msg = "Profile data has been posted with : " + str(uuid)
-        self.logger.info(msg)
+        self.logger.info("PUT " + json.dumps(out_json))
+        out_json = mongoutils.construct_json_from_query_list(out_json)
 
         return out_json
 
@@ -200,13 +203,13 @@ class DealNonPii(Resource):
 
         if (is_objectid):
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-            msg = "deleted profile information: " + str(id)
+            msg = "DELETE " + str(id)
             self.logger.info(msg)
             return rs_handlers.entry_deleted(id)
 
         try:
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-            msg = "deleted profile information: " + str(uuid)
+            msg = "DELETE " + str(uuid)
             self.logger.info(msg)
             return rs_handlers.entry_deleted(uuid)
         except:
@@ -320,7 +323,7 @@ class PiiRootDir(Resource):
                 return rs_handlers.not_implemented("Invalid ID supplied")
 
             msg = "Pii data has been posted with : " + str(pid)
-            self.logger.info(msg)
+            self.logger.info(json.dumps(pii_dataset))
 
             return rs_handlers.return_id(msg, 'pid', pid)
         else:
