@@ -3,7 +3,8 @@ FROM python:3
 LABEL maintainer="bing@illinois.edu"
 
 WORKDIR /app
-COPY . /app/eventservice/
+COPY eventservice /app/eventservice/
+COPY lib /lib/
 RUN pip install -r /app/eventservice/requirements.txt
 
 CMD ["gunicorn", "eventservice:create_app()", "--config", "/app/eventservice/gunicorn.config.py"]
