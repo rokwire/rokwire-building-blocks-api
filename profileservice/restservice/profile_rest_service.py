@@ -27,11 +27,11 @@ app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
 
-# if cfg.FLASK_ENV == "production":
-#     app.before_request(auth_middleware.authenticate)
-#     print("Production mode")
-# else:
-#     print("Development mode")
+if cfg.FLASK_ENV == "production":
+    app.before_request(auth_middleware.authenticate)
+    print("Production mode")
+else:
+    print("Development mode")
 mongoutils.index_non_pii_data()
 mongoutils.index_pii_data()
 
