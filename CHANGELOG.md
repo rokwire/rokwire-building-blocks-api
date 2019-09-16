@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add Docker env for AWS fargate deploy
 - Add recurring event search
 - Add events multiple titles search.
 - Add skip and limit on events query.

@@ -8,6 +8,7 @@ import auth_middleware
 from bson import ObjectId
 from .db import get_db
 from . import query_params
+from .config import URL_PREFIX
 from .images.s3 import S3EventsImages
 from .images import localfile
 from flask import Blueprint, request, make_response, send_file, abort, current_app
@@ -19,7 +20,7 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("events_building_block")
 
-bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
+bp = Blueprint('event_rest_service', __name__, url_prefix=URL_PREFIX)
 
 
 # A couple of proposed groups
