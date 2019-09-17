@@ -65,6 +65,8 @@ export FLASK_ENV=development
 python profile_rest_service.py`
 ```
 
+If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
+
 The profile building block should be running at http://localhost:5000
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
@@ -74,8 +76,6 @@ cd rokwire-building-blocks-api
 docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
 docker run --name profile --rm --env-file=profileservice/restservice/.env -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
 ```
-
-If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
 
 ### AWS ECR Instructions
 
