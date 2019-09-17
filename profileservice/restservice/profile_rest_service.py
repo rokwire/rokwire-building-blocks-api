@@ -21,17 +21,11 @@ import profileservice.restservice.utils.otherutils as otherutils
 from profileservice.dao.pii_data import PiiData
 from profileservice.dao.non_pii_data import NonPiiData
 from profileservice.restservice.utils.otherutils import create_file_descriptor
-import auth_middleware
 
 app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
 
-if cfg.FLASK_ENV == "production":
-    app.before_request(auth_middleware.authenticate)
-    print("Production mode")
-else:
-    print("Development mode")
 mongoutils.index_non_pii_data()
 mongoutils.index_pii_data()
 
@@ -48,7 +42,7 @@ class NonPiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def post(self):
-        print("NOT IN PII!!!!")
+        auth_middleware.verify_secret(request)
 
         is_new_install = True
 
@@ -68,8 +62,6 @@ class NonPiiRootDir(Resource):
             pass
 
         if is_new_install:
-            print('rokwire-api-key= ' + request.headers.get('rokwire-api-key'))
-            auth_middleware.verify_secret(request)
             # new installation of the app
             currenttime = datetime.datetime.now()
             currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
