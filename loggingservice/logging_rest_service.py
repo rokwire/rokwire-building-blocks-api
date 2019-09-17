@@ -1,10 +1,12 @@
 import logging
 import flask
 import auth_middleware
+import json
+import sys
 
 from .db import get_db
-from .config import LOGGING_COLL_NAME, LOGGING_URL_PREFIX
-from flask import Blueprint, request, make_response, abort, app
+from .config import LOGGING_URL_PREFIX #, LOGGING_COLL_NAME
+from flask import Blueprint, request, make_response, abort
 from time import gmtime
 
 logging.Formatter.converter = gmtime
@@ -31,7 +33,7 @@ def post_events():
         abort(400)
 
     try:
-        db = get_db()
+        # db = get_db()
 
         # # for local test
         # from pymongo import MongoClient
@@ -41,11 +43,11 @@ def post_events():
 
         # Insert log entries to database.
         if in_json is not None:
-            db[LOGGING_COLL_NAME].insert_many(in_json)
+            # db[LOGGING_COLL_NAME].insert_many(in_json)
 
             # Write incoming click stream data to log (for easy integration with Splunk)
             for log in in_json:
-                __logger.info(log)
+                __logger.info(json.dumps(log))
 
     except Exception as ex:
         __logger.exception(ex)
