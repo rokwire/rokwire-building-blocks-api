@@ -128,8 +128,7 @@ def authenticate(group_name=None, internal_token_only=False):
             #            lines = file1.readlines()
             #            file1.close()
             lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
-            my_lst_str = ''.join(map(str, lines))
-            keyset = json.loads(my_lst_str)
+            keyset = json.loads(lines)
             target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
 
         if issuer == 'https://' + SHIB_HOST:
