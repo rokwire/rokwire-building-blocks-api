@@ -9,7 +9,8 @@ ENV EVENT_MONGO_URL="" \
 RUN mkdir -p /app/eventservice/events-images/
 
 WORKDIR /app
-COPY . /app/eventservice/
+COPY eventservice /app/eventservice/
+COPY lib /lib/
 RUN pip install -r /app/eventservice/requirements.txt
 
 CMD ["gunicorn", "eventservice:create_app()", "--config", "/app/eventservice/gunicorn.config.py"]

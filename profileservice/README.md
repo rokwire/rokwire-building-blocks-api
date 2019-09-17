@@ -23,22 +23,30 @@ results.
 
 The necessary configuration should be configured in configure file (configs.py) that is located under profileservice folder. This contains the MongoDB url, database name, collection name and so on. Modify the information in the file appropriately.
 
+## Environment File
+
+You need to have a .env file in the `restservice` directory that contains credentials required for authentication. 
+Not all of these variables may be required for this building block. 
+
+Example file format:
+
+```
+TWILIO_ACCT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_VERIFY_SERVICE_ID=<Twilio Verify Service ID>
+
+PHONE_VERIFY_SECRET=<Phone Verify Secret> 
+PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
+
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+
+ROKWIRE_API_KEY=<Rokwire API Key>
+```
+
 ## Run application
-Run ```python restservice/profile_rest_service.py``` and the profile building block should be running at http://localhost:5000
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
-### Use Docker
-**Build a docker image**
-The directory should be root directory
-```
-docker build -t rokwire/profile-building-block  -f profileservice/Dockerfile .
-```
-**Run the docker container image**
-```
-docker run --name profile-building-block -d --restart=always -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 (-v /path/to/local/folder:/usr/src/app/rest) -d rokwire/profile-building-block
-```
-
-### Local run without docker
+### Run locally without Docker
 
 This service uses the python Flask and PyMongo library.
 
@@ -56,7 +64,30 @@ export FLASK_APP=profile_rest_service
 export FLASK_ENV=development
 python profile_rest_service.py`
 ```
+
 If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
+
+The profile building block should be running at http://localhost:5000
+The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+
+### Docker Instructions
+```
+cd rokwire-building-blocks-api
+docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
+docker run --name profile --rm --env-file=profileservice/restservice/.env -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
+```
+
+### AWS ECR Instructions
+
+Make sure the repository called rokwire/profileservice exists in ECR. Then create Docker image for Rokwire Platform API and push to AWS ECR for deployment.
+
+```
+cd rokwire-building-blocks-api 
+docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
+docker tag rokwire/profile-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/profileservice:latest
+$(aws ecr get-login --no-include-email --region us-east-2)
+docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/profileservice:latest
+```
 
 ## Sample profile building block process for non-pii
 The examples use 'curl' command to implement rest method to an end point `http://localhost:5000/profiles`.

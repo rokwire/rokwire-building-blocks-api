@@ -6,7 +6,7 @@ import datetime
 import logging
 import uuid as uuidlib
 
-from flask import Flask, request
+from flask import Flask, request, abort
 from flask_restful import Resource, Api
 from bson import ObjectId
 from time import gmtime
@@ -27,25 +27,24 @@ app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
 
-if cfg.FLASK_ENV == "production":
-    app.before_request(auth_middleware.authenticate)
-    print("Production mode")
-else:
-    print("Development mode")
 mongoutils.index_non_pii_data()
 mongoutils.index_pii_data()
+
 
 """
 profile rest service root directory
 """
 
 
+# Note that this corresponds to the ../profiles/{uuid} end points, as opposed to the profiles/pii endpoints.
 class NonPiiRootDir(Resource):
     # @auth_middleware.use_security_token_auth
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
     def post(self):
+        auth_middleware.verify_secret(request)
+
         is_new_install = True
 
         # check if uuid is in there otherwise it is either a first installation
@@ -82,7 +81,6 @@ class NonPiiRootDir(Resource):
             self.logger.info("POST " + json.dumps(dataset))
 
             return rs_handlers.return_id(msg, 'uuid', profile_uuid)
-
 
 """
 provide profile information by profile id or remove it
@@ -130,9 +128,10 @@ class DealNonPii(Resource):
             return None, None, True, resp
 
     def get(self, uuid):
+        auth_middleware.verify_secret(request)
+
         msg = "request profile information: " + str(uuid)
         self.logger.debug(msg)
-
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
             return resp
@@ -144,6 +143,8 @@ class DealNonPii(Resource):
         return out_json
 
     def put(self, uuid):
+        auth_middleware.verify_secret(request)
+
         try:
             in_json = request.get_json()
         except Exception as ex:
@@ -197,6 +198,7 @@ class DealNonPii(Resource):
         return out_json
 
     def delete(self, uuid):
+        auth_middleware.verify_secret(request)
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
             return resp
@@ -223,11 +225,14 @@ get or post pii dataset
 """
 
 
+# These correspond to call to the /profiles/pii endpoint
 class PiiRootDir(Resource):
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
     def get(self):
+        auth_middleware.authenticate()
+
         term_pid = request.args.get('pid', None)
         term_username = request.args.get('username', None)
         term_phone = request.args.get('phone', None)
@@ -256,6 +261,8 @@ class PiiRootDir(Resource):
             return out_json
 
     def post(self):
+        auth_middleware.authenticate()
+
         is_new_entry = False
         try:
             in_json = request.get_json()
@@ -385,6 +392,7 @@ class DealPii(Resource):
             return None, None, is_error, resp
 
     def get(self, pid):
+        auth_middleware.authenticate()
         msg = "request profile information: " + str(pid)
         self.logger.debug(msg)
 
@@ -399,6 +407,8 @@ class DealPii(Resource):
         return out_json
 
     def put(self, pid):
+        auth_middleware.authenticate()
+
         try:
             in_json = request.get_json()
         except Exception as ex:
@@ -455,10 +465,11 @@ class DealPii(Resource):
         return out_json
 
     def delete(self, pid):
+        auth_middleware.authenticate()
+
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
             return resp
-
         if (is_objectid):
             mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
             msg = "deleted pii information: " + str(pid)

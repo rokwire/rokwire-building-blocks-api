@@ -1,4 +1,10 @@
 import os
+
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
+
 # this has to be have the file path to the folder for saving image files and other necessary files from rest service
 PROFILE_REST_STORAGE = os.getenv('REST_STORAGE', '/usr/src/app/rest')
 MONGO_PROFILE_URL = os.getenv('MONGO_PROFILE_URL', 'localhost:27017')
