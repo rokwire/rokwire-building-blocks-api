@@ -3,6 +3,7 @@ import flask
 import jwt
 import json
 import os
+import base64
 import requests
 
 from flask import request, abort
@@ -18,9 +19,9 @@ secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
 rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
-rokwire_events_uploader = 'uiucedu_is_member_of":["urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
-rokwire_web_app = 'uiucedu_is_member_of":["urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
-rokwire_app_config_manager_group = 'RokwireAppConfigManager'
+rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
+rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+# rokwire_app_config_manager_group = 'RokwireAppConfigManager'
 
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
@@ -119,10 +120,14 @@ def authenticate(group_name=None, internal_token_only=False):
                 abort(401)
             valid_issuer = True
             # Path to the ROKWire public key for its id tokens
-            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
-            file1 = open(LOCAL_KEY_PATH, "r")
-            lines = file1.readlines()
-            file1.close()
+            # This is kept in case we decide to revive it, but has been replaced with
+            # simply setting the single key (as a JWK blob) in the environment
+            # and decoding it here.
+            #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
+            #            file1 = open(LOCAL_KEY_PATH, "r")
+            #            lines = file1.readlines()
+            #            file1.close()
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
             my_lst_str = ''.join(map(str, lines))
             keyset = json.loads(my_lst_str)
             target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
