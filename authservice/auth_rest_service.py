@@ -6,6 +6,7 @@ import socket
 import logging
 import requests
 import connexion
+import auth_middleware
 
 from datetime import datetime
 from flask import request, abort
@@ -34,10 +35,12 @@ ISDIGITS_SCHEMA = schema.Schema(
 
 
 def initiate_verification():
+    auth_middleware.verify_secret(request)
+
     # addl_schema = schema.Schema(
     #     {'phoneNumber': ISDIGITS_SCHEMA},
     #     ignore_extra_keys=True,
-    # )
+    # )x
     body_dict = request.get_json(force=True)
     # try:
     #     addl_schema.validate(body_dict)
@@ -65,6 +68,8 @@ def initiate_verification():
 
 
 def verification_check():
+    auth_middleware.verify_secret(request)
+
     addl_schema = schema.Schema(
         {'code': ISDIGITS_SCHEMA},
         ignore_extra_keys=True,
