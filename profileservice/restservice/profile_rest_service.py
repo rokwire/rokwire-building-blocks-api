@@ -38,12 +38,11 @@ profile rest service root directory
 
 # Note that this corresponds to the ../profiles/{uuid} end points, as opposed to the profiles/pii endpoints.
 class NonPiiRootDir(Resource):
-    # @auth_middleware.use_security_token_auth
     def __init__(self, **kwargs):
         self.logger = kwargs.get('logger')
 
     def post(self):
-        # auth_middleware.verify_secret(request)
+        auth_middleware.verify_secret(request)
 
         is_new_install = True
 
@@ -128,7 +127,7 @@ class DealNonPii(Resource):
             return None, None, True, resp
 
     def get(self, uuid):
-        # auth_middleware.verify_secret(request)
+        auth_middleware.verify_secret(request)
 
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
@@ -141,7 +140,7 @@ class DealNonPii(Resource):
         return out_json
 
     def put(self, uuid):
-        # auth_middleware.verify_secret(request)
+        auth_middleware.verify_secret(request)
 
         try:
             in_json = request.get_json()
@@ -194,7 +193,7 @@ class DealNonPii(Resource):
         return out_json
 
     def delete(self, uuid):
-        # auth_middleware.verify_secret(request)
+        auth_middleware.verify_secret(request)
 
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
@@ -230,7 +229,7 @@ class PiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def get(self):
-        # auth_middleware.authenticate()
+        auth_middleware.authenticate()
 
         term_pid = request.args.get('pid', None)
         term_username = request.args.get('username', None)
@@ -260,7 +259,7 @@ class PiiRootDir(Resource):
             return out_json
 
     def post(self):
-        # auth_middleware.authenticate()
+        auth_middleware.authenticate()
 
         is_new_entry = False
         try:
@@ -397,7 +396,7 @@ class DealPii(Resource):
             return None, None, is_error, resp
 
     def get(self, pid):
-        # auth_middleware.authenticate()
+        auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
@@ -412,7 +411,7 @@ class DealPii(Resource):
         return out_json
 
     def put(self, pid):
-        # auth_middleware.authenticate()
+        auth_middleware.authenticate()
 
         try:
             in_json = request.get_json()
@@ -468,7 +467,7 @@ class DealPii(Resource):
         return out_json
 
     def delete(self, pid):
-        # auth_middleware.authenticate()
+        auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
