@@ -43,7 +43,7 @@ class NonPiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def post(self):
-        auth_middleware.verify_secret(request)
+        # auth_middleware.verify_secret(request)
 
         is_new_install = True
 
@@ -56,8 +56,8 @@ class NonPiiRootDir(Resource):
             dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, non_pii_uuid)
             if dataset is not None:
                 is_new_install = False
-                msg = "UUID in input json already exists in the database " + str(non_pii_uuid)
-                self.logger.error(msg)
+                msg = "{\"UUID in input json already exists in the database\": \"" + str(non_pii_uuid) + "\"}"
+                self.logger.error("POST " + json.dumps(json.loads(msg)))
                 return rs_handlers.bad_request(msg)
         except:
             pass
@@ -108,30 +108,28 @@ class DealNonPii(Resource):
             data_list = list(db_data)
 
             if len(data_list) > 1:
-                msg = "There are more than 1 profile record: " + str(uuid)
-                self.logger.error(msg)
+                msg = "{\"There are more than 1 profile record\": \"" + str(uuid) + "\"}"
+                self.logger.error("GET " + json.dumps(json.loads(msg)))
                 is_error = True
                 resp = rs_handlers.bad_request(msg)
             elif len(data_list) == 0:
-                msg = "There is no profile record for the uuid: " + str(uuid)
-                self.logger.error(msg)
+                msg = "{\"There is no profile record for the uuid\": \"" + str(uuid) + "\"}"
+                self.logger.error("GET " + json.dumps(json.loads(msg)))
                 is_error = True
                 resp = rs_handlers.bad_request(msg)
 
             return data_list, is_objectid, is_error, resp
 
         else:
-            msg = "the profile does not exist: " + str(uuid)
-            self.logger.error(msg)
+            msg = "{\"The profile does not exist\": \"" + str(uuid) + "\"}"
+            self.logger.error("GET " + json.dumps(json.loads(msg)))
             resp = rs_handlers.not_found("Profile not found")
 
             return None, None, True, resp
 
     def get(self, uuid):
-        auth_middleware.verify_secret(request)
+        # auth_middleware.verify_secret(request)
 
-        msg = "request profile information: " + str(uuid)
-        self.logger.debug(msg)
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
             return resp
@@ -143,30 +141,28 @@ class DealNonPii(Resource):
         return out_json
 
     def put(self, uuid):
-        auth_middleware.verify_secret(request)
+        # auth_middleware.verify_secret(request)
 
         try:
             in_json = request.get_json()
         except Exception as ex:
-            self.logger.exception(ex)
+            msg = "{\"json format error\": \"" + str(uuid) + "\"}"
+            self.logger.error("PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('json format error')
 
         # check if the uuid is really existing in the database
         non_pii_dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, uuid)
 
         if non_pii_dataset is None:
-            msg = "There is no profile dataset with given uuid " + str(uuid)
-            self.logger.error(msg)
+            msg = "{\"There is no profile dataset with given uuid\": \"" + str(uuid) + "\"}"
+            self.logger.error("PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.not_found("Profile not found")
-
-        msg = "Profile data will be updated with the id of " + str(uuid)
-        self.logger.debug(msg)
 
         # the level check in in_json should be performed
         level_ok, level = otherutils.check_privacy_level(in_json)
         if level_ok == False:
-            msg = "The given privacy level is not correct: " + level
-            self.logger.error(msg)
+            msg = "{\"The given privacy level is not correct\": \"" + str(level) + "\"}"
+            self.logger.error("PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request(msg)
 
         non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
@@ -184,8 +180,8 @@ class DealNonPii(Resource):
                                                                             non_pii_dataset, restjson)
 
         if result is None:
-            msg = "Failed to update non Profile dataset: " + str(uuid)
-            self.logger.error(msg)
+            msg = "{\"Failed to update non Profile dataset\": \"" + str(uuid) + "\"}"
+            self.logger.error("PUT " + json.dumps(json.loads(msg)))
 
             return rs_handlers.not_implemented("Invalid ID supplied")
 
@@ -198,25 +194,28 @@ class DealNonPii(Resource):
         return out_json
 
     def delete(self, uuid):
-        auth_middleware.verify_secret(request)
+        # auth_middleware.verify_secret(request)
+
         data_list, is_objectid, is_error, resp = self.get_data_list(uuid)
         if is_error:
             return resp
 
         if (is_objectid):
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-            msg = "DELETE " + str(id)
-            self.logger.info(msg)
+
+            msg = "{\"deleted non pii information\": \"" + str(id) + "\"}"
+            self.logger.error("DELETE " + json.dumps(json.loads(msg)))
             return rs_handlers.entry_deleted(id)
 
         try:
             mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-            msg = "DELETE " + str(uuid)
-            self.logger.info(msg)
+            msg = "{\"deleted non pii information\": \"" + str(uuid) + "\"}"
+            self.logger.error("DELETE " + json.dumps(json.loads(msg)))
             return rs_handlers.entry_deleted(uuid)
         except:
-            msg = "failed to deleted. the dataset does not exist: " + str(uuid)
-            self.logger.error(msg)
+            msg = "{\"failed to deleted. the dataset does not exist\": \"" + str(uuid) + "\"}"
+            self.logger.error("DELETE " + json.dumps(json.loads(msg)))
+
             return rs_handlers.not_found("Profile not found")
 
 
@@ -231,7 +230,7 @@ class PiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def get(self):
-        auth_middleware.authenticate()
+        # auth_middleware.authenticate()
 
         term_pid = request.args.get('pid', None)
         term_username = request.args.get('username', None)
@@ -261,20 +260,22 @@ class PiiRootDir(Resource):
             return out_json
 
     def post(self):
-        auth_middleware.authenticate()
+        # auth_middleware.authenticate()
 
         is_new_entry = False
         try:
             in_json = request.get_json()
         except Exception as ex:
-            self.logger.exception(ex)
+            msg = "{\"json format error\": \"\"}"
+            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('json format error')
 
         # get uuid, if failed it is a bad request
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         except Exception as ex:
-            self.logger.exception(ex)
+            msg = "{\"Invalid ID supplied\": \"\"}"
+            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('Invalid ID supplied')
 
         # check if it is a new record or existing record
@@ -291,7 +292,9 @@ class PiiRootDir(Resource):
             dataset = mongoutils.get_pii_dataset_from_field('email', email)
             if dataset is not None:
                 pid = dataset.get_pid()
-                return rs_handlers.return_id('The email already exists.', 'pid', pid)
+                msg = "{\"Email already existst\": \"" + str(pid) + "\"}"
+                self.logger.error("PII POST " + json.dumps(json.loads(msg)))
+                return rs_handlers.return_id('Email already exists.', 'pid', pid)
         except:
             pass
 
@@ -301,6 +304,8 @@ class PiiRootDir(Resource):
             dataset = mongoutils.get_pii_dataset_from_field('phone', phone)
             if dataset is not None:
                 pid = dataset.get_pid()
+                msg = "{\"Phone number already existst\": \"" + str(pid) + "\"}"
+                self.logger.error("PII POST " + json.dumps(json.loads(msg)))
                 return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
         except:
             pass
@@ -324,18 +329,18 @@ class PiiRootDir(Resource):
             pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
             if pii_dataset is None:
-                msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
-                self.logger.error(msg)
+                msg = "{\"Failed to update non pii uuid into pii dataset\": \"" + str(pid) + "\"}"
+                self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
 
                 return rs_handlers.not_implemented("Invalid ID supplied")
 
             msg = "Pii data has been posted with : " + str(pid)
-            self.logger.info(json.dumps(pii_dataset))
+            self.logger.info(json.dumps("PII PUT " + jsonutils.remove_objectid_from_dataset(pii_dataset)))
 
             return rs_handlers.return_id(msg, 'pid', pid)
         else:
-            msg = 'The request is wrong or the entry already exists'
-            self.logger.error(msg)
+            msg = "{\"The request is wrong or the entry already exists\": \"" + str(pid) + "\"}"
+            self.logger.error("PII GET " + json.dumps(json.loads(msg)))
 
             return rs_handlers.bad_request("Invalid ID supplied")
 
@@ -365,16 +370,16 @@ class DealPii(Resource):
 
             data_list = list(db_data)
             if len(data_list) > 1:
-                msg = "There are more than 1 pii record: " + str(pid)
-                self.logger.error(msg)
+                msg = "{\"There are more than 1 pii record\": \"" + str(pid) + "\"}"
+                self.logger.error("PII GET " + json.dumps(json.loads(msg)))
                 is_error = True
                 resp = rs_handlers.bad_request(msg)
 
                 return None, None, is_error, resp
 
             if len(data_list) == 0:
-                msg = "There is no pii record for the uuid: " + str(pid)
-                self.logger.error(msg)
+                msg = "{\"There is no pii record for the pid\": \"" + str(pid) + "\"}"
+                self.logger.error("PII GET " + json.dumps(json.loads(msg)))
                 is_error = True
                 resp = rs_handlers.bad_request(msg)
 
@@ -384,17 +389,15 @@ class DealPii(Resource):
                 return data_list, is_objectid, is_error, resp
 
         else:
-            msg = "Pii dataset does not exist: " + str(pid)
-            self.logger.error(msg)
+            msg = "{\"Pii dataset does not exist\": \"" + str(pid) + "\"}"
+            self.logger.error("PII GET " + json.dumps(json.loads(msg)))
             is_error = True
             resp = rs_handlers.not_found("Pii entry not found")
 
             return None, None, is_error, resp
 
     def get(self, pid):
-        auth_middleware.authenticate()
-        msg = "request profile information: " + str(pid)
-        self.logger.debug(msg)
+        # auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
@@ -404,27 +407,27 @@ class DealPii(Resource):
         data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
         out_json = mongoutils.construct_json_from_query_list(data_list[0])
 
+        self.logger.error("PII GET " + json.dumps(jsonutils.remove_objectid_from_dataset(data_list[0])))
+
         return out_json
 
     def put(self, pid):
-        auth_middleware.authenticate()
+        # auth_middleware.authenticate()
 
         try:
             in_json = request.get_json()
         except Exception as ex:
-            self.logger.exception(ex)
+            msg = "{\"json format error\": \"" + str(pid) + "\"}"
+            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('json format error')
 
         # check if the pid is really existing in the database
         pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
 
         if pii_dataset == None:
-            msg = "There is no dataset with given pii uuid " + str(pid)
-            self.logger.error(msg)
+            msg = "{\"There is no dataset with given pii uuid\": \"" + str(pid) + "\"}"
+            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
             return rs_handlers.not_found("Pii not found")
-
-        msg = "Pii data will be updated with the id of " + str(pid)
-        self.logger.info(msg)
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
         currenttime = datetime.datetime.now()
@@ -452,39 +455,39 @@ class DealPii(Resource):
                                                                               pii_dataset)
 
         if result is None:
-            msg = "Failed to update non pii uuid into pii dataset: " + str(pid)
-            self.logger.error(msg)
+            msg = "{\"Failed to update non pii uuid into pii dataset\": \"" + str(pid) + "\"}"
+            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
 
             return rs_handlers.not_implemented("Invalid ID supplied")
 
         pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
         out_json = mongoutils.construct_json_from_query_list(pii_dataset)
         msg = "Pii data has been updated : " + str(pid)
-        self.logger.debug(msg)
+        self.logger.info("PII PUT " + json.dumps(jsonutils.remove_objectid_from_dataset(pii_dataset)))
 
         return out_json
 
     def delete(self, pid):
-        auth_middleware.authenticate()
+        # auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
             return resp
         if (is_objectid):
             mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-            msg = "deleted pii information: " + str(pid)
-            self.logger.info(msg)
+            msg = "{\"deleted pii information\": \"" + str(pid) + "\"}"
+            self.logger.info("PII DELETE " + json.dumps(json.loads(msg)))
 
             return rs_handlers.entry_deleted(id)
 
         try:
             mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_PID: pid})
-            msg = "deleted pii information: " + str(pid)
-            self.logger.info(msg)
+            msg = "{\"deleted pii information\": \"" + str(pid) + "\"}"
+            self.logger.info("PII DELETE " + json.dumps(json.loads(msg)))
             return rs_handlers.entry_deleted(pid)
         except:
-            msg = "failed to deleted pii. not found: " + str(pid)
-            self.logger.error(msg)
+            msg = "{\"failed to deleted pii. not found\": \"" + str(pid) + "\"}"
+            self.logger.error("PII DELETE " + json.dumps(json.loads(msg)))
             return rs_handlers.not_found("Profile not found")
 
 
@@ -542,6 +545,9 @@ class DealPii(Resource):
 #             self.logger.error(msg)
 #             return rs_handlers.bad_request(msg)
 
+log = logging.getLogger('werkzeug')
+log.disabled = True
+
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
@@ -565,6 +571,7 @@ api.add_resource(DealPii, endpoint_prefix + '/pii/<pid>', endpoint='deal_pii',
 # api.add_resource(UploadProfileImage, '/profiles/pii/<pid>/uploadImage', endpoint='upload_profile_image',
 #                  resource_class_kwargs={'logger': logging.getLogger('profileservice')
 #                                         })
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
