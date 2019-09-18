@@ -432,11 +432,13 @@ paths:
       description: |
         create an event record into the system
         
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       operationId: createEvent
       security:
         - UserAuth: []
@@ -468,11 +470,13 @@ paths:
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       operationId: getEventWithEventId
       security:
         - UserAuth: []
@@ -508,11 +512,13 @@ paths:
       description: |
         Update the event record matching the eventId.
         
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       operationId: updateEventWithForm
       security:
         - UserAuth: []
@@ -557,11 +563,13 @@ paths:
       description: |
         Delete the event record matching the eventId.
         
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       operationId: deleteEvent
       security:
         - UserAuth: []
@@ -668,11 +676,13 @@ paths:
         - Events
       summary: Upload an image to the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       security:
         - UserAuth: []
       operationId: uploadImages
@@ -755,11 +765,13 @@ paths:
       - Events
       summary: Update an image associated with the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       security:
         - UserAuth: []
       operationId: updateImage
@@ -813,11 +825,13 @@ paths:
       - Events
       summary: Delete an image associated with the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app"
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
       security:
         - UserAuth: []
       operationId: deleteImage
@@ -863,8 +877,9 @@ paths:
       - App Configuration
       summary: Creates mobile app configuration
       description: |
-        Auth: Requires a valid id_token that indicates membership in the following group:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager"
+        Auth: Requires a valid id_token that indicates membership in the following group\:
+        
+          ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       operationId: createAppConfig
       security:
         - UserAuth: []
@@ -986,8 +1001,9 @@ paths:
       - App Configuration
       summary: Updates mobile app configuration
       description: |
-        Auth: Requires a valid id_token that indicates membership in the following group:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager"
+        Auth: Requires a valid id_token that indicates membership in the following group\:
+        
+          ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       operationId: updateAppConfig
       security:
         - UserAuth: []
@@ -1025,8 +1041,9 @@ paths:
       - App Configuration
       summary: Deletes mobile app configuration
       description: |
-        Auth: Requires a valid id_token that indicates membership in the following group:
-          "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager"
+        Auth: Requires a valid id_token that indicates membership in the following group\:
+        
+        ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       operationId: deleteAppConfig
       security:
         - UserAuth: []
