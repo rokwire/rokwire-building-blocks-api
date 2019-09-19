@@ -470,13 +470,8 @@ paths:
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        
+        Auth: Requires a valid API Key for access.
       operationId: getEventWithEventId
       security:
         - UserAuth: []
@@ -1070,7 +1065,10 @@ paths:
       tags:
       - Logs
       summary: Create log entries
-      description: Create log entries from the app.
+      description: |
+        Create log entries from the app.
+          
+          Auth: Requires a valid API Key for access.
       operationId: createLog
       security:
         - ApiKeyAuth: []
