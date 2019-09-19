@@ -20,8 +20,8 @@ rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
 rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
-rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
-# rokwire_app_config_manager_group = 'RokwireAppConfigManager'
+rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
 
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
