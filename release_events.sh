@@ -2,7 +2,7 @@
 
 source release_base_script.sh
 
-###### APP CONFIG BUILDING BLOCK ######
-docker build -f appconfigservice/Dockerfile -t ${PROJECT_NAME}/app-config-building-block:${VERSION} .
-docker tag rokwire/app-config-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/${PROJECT_NAME}/app_config:${VERSION}
-docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/${PROJECT_NAME}/app_config:${VERSION}
+###### PROFILE BUILDING BLOCK ######
+docker build -f eventservice/Dockerfile -t ${PROJECT_NAME}/events-building-block:${VERSION} .
+docker tag ${PROJECT_NAME}/events-building-block:${VERSION} 779619664536.dkr.ecr.us-east-2.amazonaws.com/${PROJECT_NAME}/eventservice:${VERSION}
+docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/${PROJECT_NAME}/eventservice:${VERSION}
