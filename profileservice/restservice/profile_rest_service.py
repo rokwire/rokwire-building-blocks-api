@@ -266,7 +266,7 @@ class PiiRootDir(Resource):
             in_json = request.get_json()
         except Exception as ex:
             msg = "{\"json format error\": \"\"}"
-            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
+            self.logger.error("PII POST " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('json format error')
 
         # get uuid, if failed it is a bad request
@@ -274,7 +274,7 @@ class PiiRootDir(Resource):
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         except Exception as ex:
             msg = "{\"Invalid ID supplied\": \"\"}"
-            self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
+            self.logger.error("PII POST " + json.dumps(json.loads(msg)))
             return rs_handlers.bad_request('Invalid ID supplied')
 
         # check if it is a new record or existing record
@@ -329,12 +329,12 @@ class PiiRootDir(Resource):
 
             if pii_dataset is None:
                 msg = "{\"Failed to update non pii uuid into pii dataset\": \"" + str(pid) + "\"}"
-                self.logger.error("PII PUT " + json.dumps(json.loads(msg)))
+                self.logger.error("PII POST " + json.dumps(json.loads(msg)))
 
                 return rs_handlers.not_implemented("Invalid ID supplied")
 
             msg = "Pii data has been posted with : " + str(pid)
-            self.logger.info(json.dumps("PII PUT " + jsonutils.remove_objectid_from_dataset(pii_dataset)))
+            self.logger.info(json.dumps("PII POST " + jsonutils.remove_objectid_from_dataset(pii_dataset)))
 
             return rs_handlers.return_id(msg, 'pid', pid)
         else:
