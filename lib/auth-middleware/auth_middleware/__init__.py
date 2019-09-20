@@ -40,11 +40,16 @@ def get_bearer_token(request):
     return _id_token
 
 
-# Checks the id_token. This will either check the token from the UIUC Shibboleth service or a generated
-# one from ROKwire for phone-based authentication.
-# Use: invoke in the call. This this works, nothing happens (and processing continues) or it fails. There
+# Checks the id_token. This will either check the token from the UIUC Shibboleth service or one generated
+# one from Rokwire for phone-based authentication and supporting different client applications.
+# Use: invoke in the call. Either this works, nothing happens (and processing continues) or it fails. There
 # are no other options.
 # This does return the id_token so that, e.g. group memberships may be checked.
+# internal_token_only = True indicates that the incoming token is a Rokwire internal only token and it should be used
+# only when the issuer is Rokwire.
+# internal_token_only = False indicates that the incoming token is NOT a Rokwire internal only token and can be issued
+# by any Rokwire identified issuer including itself. This is to support use cases where an action can be done by either
+# a Shibboleth/phone-based user or a user using a custom client application. E.g. event creation.
 def authenticate(group_name=None, internal_token_only=False):
 
     should_use_security_token_auth = False
@@ -115,9 +120,6 @@ def authenticate(group_name=None, internal_token_only=False):
         target_client_id = None
 
         if issuer == ROKWIRE_ISSUER:
-            if not internal_token_only:
-                logger.warning("incorrect token")
-                abort(401)
             valid_issuer = True
             # Path to the ROKWire public key for its id tokens
             # This is kept in case we decide to revive it, but has been replaced with
