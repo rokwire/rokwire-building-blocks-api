@@ -21,6 +21,9 @@ rokwire_api_key_header = 'rokwire-api-key'
 rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
 rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+rokwire_events_approver = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
+ALL_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_app_config_manager_group,
+              rokwire_events_approver]
 # rokwire_app_config_manager_group = 'RokwireAppConfigManager'
 
 # This is the is member of claim name from the
@@ -45,7 +48,7 @@ def get_bearer_token(request):
 # Use: invoke in the call. This this works, nothing happens (and processing continues) or it fails. There
 # are no other options.
 # This does return the id_token so that, e.g. group memberships may be checked.
-def authenticate(group_name=None, internal_token_only=False):
+def authenticate(group_name=[]):
 
     should_use_security_token_auth = False
     app = flask.current_app
@@ -73,9 +76,8 @@ def authenticate(group_name=None, internal_token_only=False):
         abort(401)
     if unverified_header.get('phone', False):
         # phone number verify -- reject if this should be another type of token.
-        if internal_token_only:
-            logger.warning('incorrect id token type.')
-            abort(401)
+        # Note that this is custom created and the issuer may well vary (since it unhelpfully contains an
+        # IP address) so having a "phone" entry in the header effectively takes the place of the issuer.
         phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
         if not phone_verify_secret:
             logger.warning("PHONE_VERIFY_SECRET environment variable not set")
@@ -113,12 +115,10 @@ def authenticate(group_name=None, internal_token_only=False):
         valid_issuer = False
         keyset = None
         target_client_id = None
+        valid_issuer = True
 
+        # nest, we figure out the key to use for checking the signature based on the issuer.
         if issuer == ROKWIRE_ISSUER:
-            if not internal_token_only:
-                logger.warning("incorrect token")
-                abort(401)
-            valid_issuer = True
             # Path to the ROKWire public key for its id tokens
             # This is kept in case we decide to revive it, but has been replaced with
             # simply setting the single key (as a JWK blob) in the environment
@@ -133,10 +133,6 @@ def authenticate(group_name=None, internal_token_only=False):
             target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
 
         if issuer == 'https://' + SHIB_HOST:
-            if internal_token_only:
-                logger.warning("incorrect token type")
-                abort(401)
-            valid_issuer = True
             keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
             if keyset_resp.status_code != 200:
                 logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
@@ -167,11 +163,18 @@ def authenticate(group_name=None, internal_token_only=False):
             logger.warning("id_info was not returned from decode")
             abort(401)
     request.user_token_data = id_info
-    if (group_name != None):
+    # Only look for groups if there are groups passed in.
+    if (len(group_name) != 0):
+        is_member_found = False
         # So we are to check is a group membership is required.
         is_member_of = id_info[uiucedu_is_member_of]
-        print("is_member_of" + str(is_member_of))
-        if group_name not in is_member_of:
+        for group in group_name:
+            if group in is_member_of:
+                print("member found=" + str(group))
+                is_member_found = True
+                break
+        if not is_member_found:
+            print("no member found")
             logger.warning("user is not a member of the group " + group_name)
             abort(401)
     return id_info
