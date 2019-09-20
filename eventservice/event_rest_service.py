@@ -90,7 +90,7 @@ def get_events():
 
 @bp.route('/', methods=['POST'])
 def post_events():
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -116,7 +116,7 @@ def post_events():
 
 @bp.route('/<event_id>', methods=['PUT'])
 def update_event(event_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
 
     if not ObjectId.is_valid(event_id):
@@ -145,7 +145,7 @@ def update_event(event_id):
 
 @bp.route('/<event_id>', methods=['PATCH'])
 def partial_update_event(event_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -189,7 +189,7 @@ def partial_update_event(event_id):
 
 @bp.route('/<event_id>', methods=['GET'])
 def get_event(event_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.verify_secret(request)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -210,7 +210,7 @@ def get_event(event_id):
 
 @bp.route('/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -255,7 +255,7 @@ def download_imagefile(event_id, image_id):
 
 @bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
 def put_imagefile(event_id, image_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     tmpfile = None
     try:
@@ -313,7 +313,7 @@ def get_imagefiles(event_id):
 
 @bp.route('/<event_id>/images', methods=['POST'])
 def post_imagefile(event_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     tmpfile = None
     try:
@@ -345,7 +345,7 @@ def post_imagefile(event_id):
 
 @bp.route('/<event_id>/images/<image_id>', methods=['DELETE'])
 def delete_imagefile(event_id, image_id):
-    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group, True)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:
