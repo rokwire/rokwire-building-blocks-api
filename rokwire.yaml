@@ -1371,6 +1371,8 @@ components:
           type: string
         speaker:
           type: string
+        registrationLabel:
+          type: string
         registrationURL:
           type: string
         cost:

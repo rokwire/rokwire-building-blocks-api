@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update rokwire.yaml for images entry points of events building block
 - Temporarily ignoring `targetAudience` search query string in events.
 - Changed api doc path from http://.../api/docs to http://.../docs since our domain api.rokwire.illinois.edu contains "api" word.
+- Update Events schema to include registrationLabel
 
 ### Fixed
 - Events building block API definition to improve text.
