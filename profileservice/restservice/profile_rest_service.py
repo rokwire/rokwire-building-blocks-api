@@ -334,7 +334,7 @@ class PiiRootDir(Resource):
                 return rs_handlers.not_implemented("Invalid ID supplied")
 
             msg = "Pii data has been posted with : " + str(pid)
-            self.logger.info(json.dumps("PII POST " + jsonutils.remove_objectid_from_dataset(pii_dataset)))
+            self.logger.info("PII POST " + json.dumps(jsonutils.remove_objectid_from_dataset(pii_dataset)))
 
             return rs_handlers.return_id(msg, 'pid', pid)
         else:
