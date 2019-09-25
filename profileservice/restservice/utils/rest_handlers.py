@@ -19,9 +19,9 @@ def return_id(msg, idfield, id):
 
     return make_response(resp)
 
-def entry_deleted(id):
+def entry_deleted(id_type, id):
     message = {
-        'message': 'Object is deleted with id of : ' + id
+        id_type: id
     }
     resp = jsonify(message)
     resp.status_code = 202
@@ -52,7 +52,10 @@ def forbidden(error=None):
 @app.errorhandler(404)
 def not_found(error=None):
     if error is not None:
-        message = {'message': error + ": " + request.url}
+        message = {
+            'message': 'Not Found: ' + request.url,
+            'reason': error
+        }
     else:
         message = {'message': 'Not Found: ' + request.url}
     resp = jsonify(message)
@@ -84,6 +87,7 @@ def internal_server_error(error=None):
 def not_implemented(error=None):
     message = {
         'message': 'Not Implemented: ' + request.url,
+        'reson': error
     }
     resp = jsonify(message)
     resp.status_code = 501
