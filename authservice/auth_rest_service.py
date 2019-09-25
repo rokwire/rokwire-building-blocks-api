@@ -6,17 +6,22 @@ import socket
 import logging
 import requests
 import connexion
+import auth_middleware
 
 from datetime import datetime
 from flask import request, abort
 from dateutil.relativedelta import relativedelta
 from time import gmtime
+from dotenv import load_dotenv
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 
 logger = logging.getLogger("authentication_building_block")
+
+# Load .env file
+load_dotenv()
 
 
 def is_digits(x):
@@ -30,10 +35,12 @@ ISDIGITS_SCHEMA = schema.Schema(
 
 
 def initiate_verification():
+    auth_middleware.verify_secret(request)
+
     # addl_schema = schema.Schema(
     #     {'phoneNumber': ISDIGITS_SCHEMA},
     #     ignore_extra_keys=True,
-    # )
+    # )x
     body_dict = request.get_json(force=True)
     # try:
     #     addl_schema.validate(body_dict)
@@ -61,6 +68,8 @@ def initiate_verification():
 
 
 def verification_check():
+    auth_middleware.verify_secret(request)
+
     addl_schema = schema.Schema(
         {'code': ISDIGITS_SCHEMA},
         ignore_extra_keys=True,

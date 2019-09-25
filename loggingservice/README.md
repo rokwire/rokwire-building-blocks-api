@@ -11,6 +11,16 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Environment File
+
+You need to have a .env file in this directory that contains credentials required for authentication. 
+
+Example file format:
+
+```
+ROKWIRE_API_KEY=<Rokwire API Key>
+```
+
 ## Run in Development Mode
 
 ```
@@ -22,17 +32,28 @@ flask run
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
-## Run as Docker Container in Local
+## Docker Instructions
 ```
-cd loggingservice
-./docker.sh
-docker run --rm --name logging -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
+cd rokwire-building-blocks-api
+docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
+docker run --rm --name logging --env-file loggingservice/.env -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
 ```
-You can edit config.py to specify mongo database name, collection name, and a URL prefix.
+You can edit config.py or environment variable to specify a URL prefix.
 ```
 LOGGING_URL_PREFIX="/logs"
 ```
 
+## AWS ECR Instructions
+
+Make sure the repository called rokwire/logging-building-block exists in ECR. Then create Docker image for Rokwire Platform API and push to AWS ECR for deployment.
+
+```
+$(aws ecr get-login --no-include-email --region us-east-2)
+cd rokwire-building-blocks-api
+docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
+docker tag rokwire/logging-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/logging-building-block:latest
+docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/logging-building-block:latest
+```
 
 ## Sample Logs for Post Endpoint:
 
