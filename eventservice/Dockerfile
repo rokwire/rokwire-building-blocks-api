@@ -4,6 +4,7 @@ LABEL maintainer="bing@illinois.edu"
 
 ENV EVENT_MONGO_URL="" \
     EVENT_DB_NAME="" \
+    AWS_IMAGE_FOLDER_PREFIX="" \
     URL_PREFIX=""
 
 RUN mkdir -p /app/eventservice/events-images/
