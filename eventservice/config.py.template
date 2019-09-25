@@ -6,6 +6,7 @@ load_dotenv()
 EVENT_MONGO_URL = os.getenv('EVENT_MONGO_URL', 'mongodb://localhost:27017')
 EVENT_DB_NAME = os.getenv('EVENT_DB_NAME', 'rokwire')
 URL_PREFIX = os.getenv('URL_PREFIX', '/events')
+AWS_IMAGE_FOLDER_PREFIX=os.getenv('AWS_IMAGE_FOLDER_PREFIX', 'events')
 
 IMAGE_COLLECTION='images'
 IMAGE_FILE_MOUNTPOINT="~/images/"
@@ -15,6 +16,5 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 AWS_ACCESS_KEY_ID=""
 AWS_SECRET_ACCESS_KEY=""
-AWS_IMAGE_FOLDER_PREFIX="events"
 BUCKET=""
 REGION=""
