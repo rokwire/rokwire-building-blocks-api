@@ -8,11 +8,7 @@ from flask import current_app
 class S3EventsImages:
     def __init__(self):
         self.bucket = current_app.config['BUCKET']
-        self.aws_access_key_id = current_app.config['AWS_ACCESS_KEY_ID']
-        self.aws_secret_access_key = current_app.config['AWS_SECRET_ACCESS_KEY']
-        self.region_name = current_app.config['REGION']
-        self.client = boto3.client('s3', aws_access_key_id=self.aws_access_key_id,
-                                   aws_secret_access_key=self.aws_secret_access_key, region_name=self.region_name)
+        self.client = boto3.client('s3')
 
     def download(self, event_id, image_id):
         try:
