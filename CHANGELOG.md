@@ -55,3 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API documentation in YAML file to reflect the latest code and made text improvements.
 - Issues with API specification YAML file related to app config building block.
 - Indentation issues with API specification YAML file
+
+### Removed
+- References to AWS keys and variables in the Events Building Block.
