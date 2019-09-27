@@ -7,5 +7,7 @@ requests>=2.22.0
 pyjwt==1.7.1
 cryptography>=2.7
 python-dotenv==0.10.3
+gunicorn==19.9.0
+gevent==1.4.0
 
 ../lib/auth-middleware
