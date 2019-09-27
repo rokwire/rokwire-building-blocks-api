@@ -58,6 +58,7 @@ class NonPiiRootDir(Resource):
                 is_new_install = False
                 msg = "{\"reason\": \"UUID in input json already exists in the database: " + str(non_pii_uuid) + "\"}"
                 msg_json = jsonutils.create_log_json("Profile", "POST", json.loads(msg))
+                msg_json['error'] = 'Bad Request: ' + request.url
                 self.logger.error("POST " + json.dumps(json.loads(msg_json)))
                 return rs_handlers.bad_request(msg)
         except:
@@ -112,12 +113,14 @@ class DealNonPii(Resource):
             if len(data_list) > 1:
                 msg = "{\"reason\": \"There are more than 1 profile record: " + str(uuid) + "\"}"
                 msg_json = jsonutils.create_log_json("Profile", "GET", json.loads(msg))
+                msg_json['error'] = 'Bad Request: ' + request.url
                 self.logger.error("GET " + json.dumps(msg_json))
                 is_error = True
                 resp = rs_handlers.bad_request(msg_json)
             elif len(data_list) == 0:
                 msg = "{\"reason\": \"There is no profile record for the uuid: " + str(uuid) + "\"}"
                 msg_json = jsonutils.create_log_json("Profile", "GET", json.loads(msg))
+                msg_json['error'] = 'Bad Request: ' + request.url
                 self.logger.error("GET " + json.dumps(msg_json))
                 is_error = True
                 resp = rs_handlers.bad_request(msg_json)
@@ -127,6 +130,7 @@ class DealNonPii(Resource):
         else:
             msg = "{\"reason\": \"The profile does not exist: " + str(uuid) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "GET", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("GET " + json.dumps(msg_json))
             resp = rs_handlers.not_found(msg_json)
 
@@ -154,6 +158,7 @@ class DealNonPii(Resource):
         except Exception as ex:
             msg = "{\"reason\": \"json format error: " + str(uuid) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "PUT", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PUT " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
@@ -163,6 +168,7 @@ class DealNonPii(Resource):
         if non_pii_dataset is None:
             msg = "{\"reason\": \"There is no profile dataset with given uuid: " + str(uuid) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "PUT", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("PUT " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
 
@@ -171,6 +177,7 @@ class DealNonPii(Resource):
         if level_ok == False:
             msg = "{\"reason\": \"The given privacy level is not correct: " + str(level) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "PUT", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PUT " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
@@ -191,6 +198,7 @@ class DealNonPii(Resource):
         if result is None:
             msg = "{\"reason\": \"Failed to update non Profile dataset: " + str(uuid) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "PUT", json.loads(msg))
+            msg_json['error'] = 'Not Implemented: ' + request.url
             self.logger.error("PUT " + json.dumps(msg_json))
             return rs_handlers.not_implemented(msg_json)
 
@@ -225,6 +233,7 @@ class DealNonPii(Resource):
         except:
             msg = "{\"reason\": \"failed to deleted. the dataset does not exist: " + str(uuid) + "\"}"
             msg_json = jsonutils.create_log_json("Profile", "DELETE", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("DELETE " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
 
@@ -278,6 +287,7 @@ class PiiRootDir(Resource):
         except Exception as ex:
             msg = "{\"reason\": \"json format error: \"}"
             msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PII POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
@@ -287,6 +297,7 @@ class PiiRootDir(Resource):
         except Exception as ex:
             msg = "{\"reason\": \"uuid not supplied\"}"
             msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PII POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
@@ -306,7 +317,8 @@ class PiiRootDir(Resource):
                 pid = dataset.get_pid()
                 msg = "{\"reason\": \"Email already existst: " + str(pid) + "\"}"
                 msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
-                self.logger.error("PII POST " + json.dumps(msg_json))
+                msg_json['warning'] = 'Email already exists: ' + request.url
+                self.logger.warning("PII POST " + json.dumps(msg_json))
                 return rs_handlers.return_id('Email already exists.', 'pid', pid)
         except:
             pass
@@ -319,6 +331,7 @@ class PiiRootDir(Resource):
                 pid = dataset.get_pid()
                 msg = "{\"reason\": \"Phone number already existst: " + str(pid) + "\"}"
                 msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+                msg_json['warning'] = 'Phone number already exists: ' + request.url
                 self.logger.error("PII POST " + json.dumps(msg_json))
                 return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
         except:
@@ -345,6 +358,7 @@ class PiiRootDir(Resource):
             if pii_dataset is None:
                 msg = "{\"reason\": \"Failed to update non pii uuid into pii dataset: " + str(pid) + "\"}"
                 msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+                msg_json['error'] = 'Not Implemented: ' + request.url
                 self.logger.error("PII POST " + json.dumps(msg_json))
                 return rs_handlers.not_implemented(msg_json)
 
@@ -355,8 +369,9 @@ class PiiRootDir(Resource):
         else:
             msg = "{\"reason\": \"The request is wrong or the entry already exists: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PII POST " + json.dumps(msg_json))
-            return rs_handlers.bad_request("Invalid ID supplied")
+            return rs_handlers.bad_request(msg_json)
 
 
 """
@@ -386,6 +401,7 @@ class DealPii(Resource):
             if len(data_list) > 1:
                 msg = "{\"reason\": \"There are more than 1 pii record: " + str(pid) + "\"}"
                 msg_json = jsonutils.create_log_json("PII", "GET", json.loads(msg))
+                msg_json['error'] = 'Bad Request: ' + request.url
                 self.logger.error("PII GET " + json.dumps(msg_json))
                 is_error = True
                 resp = rs_handlers.bad_request(msg_json)
@@ -395,6 +411,7 @@ class DealPii(Resource):
             if len(data_list) == 0:
                 msg = "{\"reason\": \"There is no pii record for the pid: " + str(pid) + "\"}"
                 msg_json = jsonutils.create_log_json("PII", "GET", json.loads(msg))
+                msg_json['error'] = 'Bad Request: ' + request.url
                 self.logger.error("PII GET " + json.dumps(msg_json))
                 is_error = True
                 resp = rs_handlers.bad_request(msg_json)
@@ -407,6 +424,7 @@ class DealPii(Resource):
         else:
             msg = "{\"reason\": \"Pii dataset does not exist: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "GET", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("PII GET " + json.dumps(msg_json))
             is_error = True
             resp = rs_handlers.not_found(msg_json)
@@ -436,6 +454,7 @@ class DealPii(Resource):
         except Exception as ex:
             msg = "{\"reason\": \"json format error: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "PUT", json.loads(msg))
+            msg_json['error'] = 'Bad Request: ' + request.url
             self.logger.error("PII PUT " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
@@ -445,6 +464,7 @@ class DealPii(Resource):
         if pii_dataset == None:
             msg = "{\"reason\": \"There is no dataset with given pii uuid: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "PUT", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("PII PUT " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
 
@@ -476,8 +496,9 @@ class DealPii(Resource):
         if result is None:
             msg = "{\"reason\": \"Failed to update non pii uuid into pii dataset: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "PUT", json.loads(msg))
+            msg_json['error'] = 'Not Implemented: ' + request.url
             self.logger.error("PII PUT " + json.dumps(msg_json))
-            return rs_handlers.not_implemented("Invalid ID supplied")
+            return rs_handlers.not_implemented(msg_json)
 
         pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
         out_json = mongoutils.construct_json_from_query_list(pii_dataset)
@@ -508,6 +529,7 @@ class DealPii(Resource):
         except:
             msg = "{\"reason\": \"failed to deleted pii. not found: " + str(pid) + "\"}"
             msg_json = jsonutils.create_log_json("PII", "DELETE", json.loads(msg))
+            msg_json['error'] = 'Not Found: ' + request.url
             self.logger.info("PII DELETE " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
 
