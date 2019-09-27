@@ -49,12 +49,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Temporarily ignoring `targetAudience` search query string in events.
 - Changed api doc path from http://.../api/docs to http://.../docs since our domain api.rokwire.illinois.edu contains "api" word.
 - Update Events schema to include registrationLabel
+- Gunicorn gevent worker class to increase performance.
+- Make better use of event category indexes for performance.
+- Sort events by startDate and then endDate.
+- Switch profile service to use gunicorn.
 
 ### Fixed
 - Events building block API definition to improve text.
 - API documentation in YAML file to reflect the latest code and made text improvements.
 - Issues with API specification YAML file related to app config building block.
 - Indentation issues with API specification YAML file
+- MongoClient use in several blocks broke connection pooling
 
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
