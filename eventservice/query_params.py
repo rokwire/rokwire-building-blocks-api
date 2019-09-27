@@ -3,42 +3,57 @@ import re
 
 
 def format_query(args, query):
+    query_parts = []
     # title text query
     if args.getlist('title'):
         titles = ''
         for title in args.getlist('title'):
             titles += "\"%s\" " % title
-        query['$text'] = {'$search': titles}
+        query_parts.append({'$text': {'$search': titles}})
     # recurrenceId query
     if args.get('recurrenceId'):
-        query['recurrenceId'] = {'$eq': int(args.get('recurrenceId'))}
+        query_parts.append({'recurrenceId': {'$eq': int(args.get('recurrenceId'))}})
     # category query
     if args.getlist('category'):
-        category_query = list()
+        category_main = []
+        category_mainSub = []
         for category in args.getlist('category'):
             if len(category.split('.')) == 2:
-                category_query.append(category)
+                category_mainSub.append(category)
             else:
-                wildcard = re.compile("^" + category.split('.')[0] + ".*")
-                category_query.append(wildcard)
-        query['categorymainsub'] = {'$in': category_query}
+                category_main.append(category)
+
+        if category_main and category_mainSub:
+            # If we have both a main and sub categories then use an $or
+            # and search on both of the columns (so that indexes can
+            # be used).
+            query_parts.append({'$or': [
+                {'category': {'$in': category_main}},
+                {'categorymainsub': {'$in': category_mainSub}},
+            ]})
+        elif category_main:
+            query_parts.append({'category': {'$in': category_main}})
+        elif category_mainSub:
+            query_parts.append({'categorymainsub': {'$in': category_mainSub}})
     # tags query
     if args.getlist('tags'):
-        query['tags'] = {'$in': args.getlist('tags')}
+        query_parts.append({'tags': {'$in': args.getlist('tags')}})
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):
     #    query['targetAudience'] = {'$in': args.getlist('targetAudience')}
     # datetime range query
     if args.get('startDate'):
-        query['startDate'] = {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}
+        query_parts.append({'startDate': {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}})
     if args.get('endDate'):
-        query['endDate'] = {'$lte': datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")}
+        query_parts.append({'endDate': {'$lte': datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")}})
     # geolocation query
     if args.get('latitude') and args.get('longitude') and args.get('radius'):
         coordinates = [float(args.get('longitude')), float(args.get('latitude'))]
         radius_meters = int(args.get('radius'))
-        query['coordinates'] = {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}
+        query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
+
+    query['$and'] = query_parts
     return query
 
 
