@@ -4,6 +4,7 @@ import json
 import logging
 import flask
 import auth_middleware
+import pymongo
 
 from bson import ObjectId
 from .db import get_db
@@ -70,7 +71,13 @@ def get_events():
     if query:
         try:
             db = get_db()
-            events = db['events'].find(query, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
+            events = db['events'].find(
+                query,
+                {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
+            ).sort([
+                ('startDate', pymongo.ASCENDING),
+                ('endDate', pymongo.ASCENDING),
+            ])
             if args.get('limit') and args.get('skip'):
                 events = events.limit(int(args.get('limit'))).skip(int(args.get('skip')))
             elif args.get('limit'):
@@ -282,7 +289,7 @@ def put_imagefile(event_id, image_id):
         abort(500)
     finally:
         localfile.deletefile(tmpfile)
-    
+
     return success_response(200, msg, str(image_id))
 
 
@@ -295,7 +302,7 @@ def get_imagefiles(event_id):
         result = db[current_app.config['IMAGE_COLLECTION']].find(
             filter={
                 'eventId': event_id
-            }, 
+            },
             projection={
                 '_id': True
             }
