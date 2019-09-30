@@ -53,7 +53,8 @@ def format_query(args, query):
         radius_meters = int(args.get('radius'))
         query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
 
-    query['$and'] = query_parts
+    if query_parts:
+        query['$and'] = query_parts
     return query
 
 
