@@ -73,7 +73,7 @@ def get_events():
             db = get_db()
             events = db['events'].find(
                 query,
-                {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
+                {'coordinates': 0, 'categorymainsub': 0}
             ).sort([
                 ('startDate', pymongo.ASCENDING),
                 ('endDate', pymongo.ASCENDING),
@@ -85,6 +85,8 @@ def get_events():
             elif args.get('skip'):
                 events = events.limit(int(args.get('skip')))
             for data_tuple in events:
+                data_tuple['id'] = str(data_tuple['_id'])
+                del data_tuple['_id']
                 results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
