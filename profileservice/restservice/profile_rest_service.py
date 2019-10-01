@@ -12,6 +12,7 @@ from bson import ObjectId
 from time import gmtime
 
 import auth_middleware
+import json
 import profileservice.configs as cfg
 import profileservice.restservice.utils.mongoutils as mongoutils
 import profileservice.restservice.utils.jsonutils as jsonutils
@@ -80,7 +81,7 @@ class NonPiiRootDir(Resource):
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
             non_pii_dataset.set_creation_date(currenttime)
-       .set_last_modified_date(currenttime)
+            non_pii_dataset.set_last_modified_date(currenttime)
             dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
             profile_uuid = dataset["uuid"]
 
