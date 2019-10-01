@@ -6,9 +6,7 @@ def format_query(args, query):
     query_parts = []
     # title text query
     if args.getlist('title'):
-        titles = ''
-        for title in args.getlist('title'):
-            titles += "\"%s\" " % title
+        titles = ' '.join(['"%s"' % t for t in args.getlist('title')])
         query_parts.append({'$text': {'$search': titles}})
     # recurrenceId query
     if args.get('recurrenceId'):
@@ -44,12 +42,31 @@ def format_query(args, query):
     #    query['targetAudience'] = {'$in': args.getlist('targetAudience')}
     # datetime range query
     if args.get('startDate'):
-        query_parts.append({'startDate': {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}})
+        value = datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$gte': value}})
     if args.get('endDate'):
-        query_parts.append({'endDate': {'$lte': datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")}})
+        value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the next highest 15min. This uses timedelta in case the
+        # minute calculation turns out to be 60
+        value = value + datetime.timedelta(
+            minutes=((15 - value.minute) % 15),
+            seconds=-value.second,
+            microseconds=-value.microsecond
+        )
+        query_parts.append({'endDate': {'$lte': value}})
     # geolocation query
     if args.get('latitude') and args.get('longitude') and args.get('radius'):
-        coordinates = [float(args.get('longitude')), float(args.get('latitude'))]
+        # Round to a 100m box to improve caching
+        coordinates = [
+            round(float(args.get('longitude')), 3),
+            round(float(args.get('latitude')), 3)
+        ]
         radius_meters = int(args.get('radius'))
         query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
 
