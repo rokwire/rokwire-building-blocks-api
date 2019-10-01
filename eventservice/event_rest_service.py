@@ -5,6 +5,8 @@ import logging
 import flask
 import auth_middleware
 import pymongo
+import cachetools.keys
+import bson.json_util
 
 from bson import ObjectId
 from .db import get_db
@@ -15,6 +17,7 @@ from .images import localfile
 from flask import Blueprint, request, make_response, send_file, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
+from cachetools import cached, TTLCache
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -23,6 +26,14 @@ __logger = logging.getLogger("events_building_block")
 
 bp = Blueprint('event_rest_service', __name__, url_prefix=URL_PREFIX)
 
+
+def _cache_querykey(query, *args, **kwargs):
+    """
+    Get a cache key where the first argument to the function is a
+    MongoDB query. It does this by using the BSON dumps util.
+    """
+    query_json = bson.json_util.dumps(query, sort_keys=True)
+    return cachetools.keys.hashkey(query_json, *args, **kwargs)
 
 # A couple of proposed groups
 
@@ -60,7 +71,6 @@ def get_categories():
 @bp.route('/', methods=['GET'])
 def get_events():
     auth_middleware.verify_secret(request)
-    results = list()
     args = request.args
     query = dict()
     try:
@@ -68,33 +78,43 @@ def get_events():
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
+    results = '[]'
+    results_len = 0
     if query:
         try:
-            db = get_db()
-            events = db['events'].find(
+            results, results_len = _get_events_query(
                 query,
-                {'coordinates': 0, 'categorymainsub': 0}
-            ).sort([
-                ('startDate', pymongo.ASCENDING),
-                ('endDate', pymongo.ASCENDING),
-            ])
-            if args.get('limit') and args.get('skip'):
-                events = events.limit(int(args.get('limit'))).skip(int(args.get('skip')))
-            elif args.get('limit'):
-                events = events.limit(int(args.get('limit')))
-            elif args.get('skip'):
-                events = events.limit(int(args.get('skip')))
-            for data_tuple in events:
-                data_tuple['id'] = str(data_tuple['_id'])
-                del data_tuple['_id']
-                results.append(data_tuple)
+                args.get('limit', 0, int),
+                args.get('skip', 0, int)
+            )
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
 
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+    __logger.info("[GET]: %s nRecords = %d ", request.url, results_len)
+    return results
+
+@cached(cache=TTLCache(maxsize=1000, ttl=600), key=_cache_querykey)
+def _get_events_query(query, limit, skip):
+    db = get_db()
+    cursor = db['events'].find(
+        query,
+        {'coordinates': 0, 'categorymainsub': 0}
+    ).sort([
+        ('startDate', pymongo.ASCENDING),
+        ('endDate', pymongo.ASCENDING),
+    ])
+    if limit > 0:
+        cursor = cursor.limit(limit)
+    if skip > 0:
+        cursor = cursor.skip(skip)
+
+    events = []
+    for event in cursor:
+        event['id'] = str(event.pop('_id'))
+        events.append(event)
+    return flask.jsonify(events), len(events)
 
 
 @bp.route('/', methods=['POST'])
