@@ -1,4 +1,4 @@
-import json
+from flask import make_response
 
 def remove_objectid_from_dataset(dataset):
     if "_id" in dataset:
@@ -34,3 +34,9 @@ def create_log_json(ep_name, ep_method, in_json):
     in_json['ep_method'] = ep_method
 
     return in_json
+
+def create_auth_fail_message():
+    out_json = make_response("{\"Authentication Failed\": \"The user info in id token and db are not matching.\"}")
+    out_json.mimetype = 'application/json'
+
+    return out_json

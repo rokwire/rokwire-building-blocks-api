@@ -7,7 +7,7 @@ import logging
 import uuid as uuidlib
 import copy
 
-from flask import Flask, request, abort
+from flask import Flask, request
 from flask_restful import Resource, Api
 from bson import ObjectId
 from time import gmtime
@@ -19,6 +19,7 @@ import profileservice.restservice.utils.jsonutils as jsonutils
 import profileservice.restservice.utils.datasetutils as datasetutils
 import profileservice.restservice.utils.rest_handlers as rs_handlers
 import profileservice.restservice.utils.otherutils as otherutils
+import profileservice.restservice.utils.tokenutils as tokenutils
 
 from profileservice.dao.pii_data import PiiData
 from profileservice.dao.non_pii_data import NonPiiData
@@ -431,12 +432,34 @@ class DealPii(Resource):
 
             return None, None, is_error, resp
 
+    def check_id(self, id_token, data_list):
+        id_type, id_string = tokenutils.get_id_info_from_token(id_token)
+        auth_pass = False
+
+        if id_type == 1:  # pii data
+            # get uin from data_list
+            uin = data_list['uin']
+            if str(uin) == str(id_string):
+                auth_pass = True
+        elif id_type == 2:  # non-pii data
+            # get phone number from data_list
+            phone_number = data_list['phone']
+            if str(phone_number) == str(id_string):
+                auth_pass = True
+
+        return auth_pass
+
     def get(self, pid):
-        auth_middleware.authenticate()
+        auth_resp = auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
             return resp
+
+        auth_pass = self.check_id(auth_resp, data_list[0])
+
+        if not (auth_pass):
+            return jsonutils.create_auth_fail_message()
 
         # remove fileDescriptors from db_data
         data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
@@ -447,7 +470,7 @@ class DealPii(Resource):
         return out_json
 
     def put(self, pid):
-        auth_middleware.authenticate()
+        auth_resp = auth_middleware.authenticate()
 
         try:
             in_json = request.get_json()
@@ -467,6 +490,12 @@ class DealPii(Resource):
             msg_json['error'] = 'Not Found: ' + request.url
             self.logger.error("PII PUT " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
+
+        tmp_dataset = json.loads(json.dumps(pii_dataset.__dict__))
+        auth_pass = self.check_id(auth_resp, tmp_dataset)
+
+        if not (auth_pass):
+            return jsonutils.create_auth_fail_message()
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
         currenttime = datetime.datetime.now()
@@ -507,11 +536,17 @@ class DealPii(Resource):
         return out_json
 
     def delete(self, pid):
-        auth_middleware.authenticate()
+        auth_resp = auth_middleware.authenticate()
 
         data_list, is_objectid, is_error, resp = self.get_data_list(pid)
         if is_error:
             return resp
+
+        auth_pass = self.check_id(auth_resp, data_list[0])
+
+        if not (auth_pass):
+            return jsonutils.create_auth_fail_message()
+
         if (is_objectid):
             mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
             msg = "{\"pid\": \"" + str(pid) + "\"}"
