@@ -9,5 +9,6 @@ cryptography>=2.7
 python-dotenv==0.10.3
 gunicorn==19.9.0
 gevent==1.4.0
+Flask-gzip==0.2
 
 ../lib/auth-middleware

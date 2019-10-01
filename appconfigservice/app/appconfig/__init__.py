@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_gzip import Gzip
 from appconfig import db
 from appconfig import rest_service
 
@@ -15,6 +16,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(rest_service.bp)
 
+    Gzip(app)
     # Connect to database
     db.init_db(app)
 

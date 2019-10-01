@@ -7,6 +7,7 @@ import logging
 import uuid as uuidlib
 
 from flask import Flask, request, abort
+from flask_gzip import Gzip
 from flask_restful import Resource, Api
 from bson import ObjectId
 from time import gmtime
@@ -25,6 +26,7 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = Flask(__name__)
 api = Api(app)
+Gzip(app)
 app.config['JSON_SORT_KEYS'] = False
 
 mongoutils.index_non_pii_data()

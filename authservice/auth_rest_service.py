@@ -10,6 +10,7 @@ import auth_middleware
 
 from datetime import datetime
 from flask import request, abort
+from flask_gzip import Gzip
 from dateutil.relativedelta import relativedelta
 from time import gmtime
 from dotenv import load_dotenv
@@ -134,7 +135,7 @@ app.add_api(
     resolver_error=501,
 )
 
-
+Gzip(app)
 # @app.app.before_request
 # def before_request():
 #     user_agent = request.headers.get('User-Agent')

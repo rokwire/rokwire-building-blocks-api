@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_gzip import Gzip
 from . import db
 from . import event_rest_service
 
@@ -9,6 +10,8 @@ def create_app():
     app.url_map.strict_slashes = False
     app.register_blueprint(event_rest_service.bp)
     app.config.from_pyfile('config.py', silent=True)
+
+    Gzip(app)
     # Connect to database
     db.init_db(app)
 
