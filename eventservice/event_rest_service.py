@@ -235,17 +235,13 @@ def download_imagefile(event_id, image_id):
     msg = "[download image]: event id %s, status: 200" % (str(event_id))
     tmp_file = None
     try:
-        db = get_db()
-        if db[current_app.config['IMAGE_COLLECTION']].find_one({"_id": ObjectId(image_id)}):
-            tmp_file = S3EventsImages().download(event_id, image_id)
-            with open(tmp_file, 'rb') as f:
-                return send_file(
-                    io.BytesIO(f.read()),
-                    attachment_filename=event_id + "." + image_id+'.jpg',
-                    mimetype='image/jpg'
-                )
-        else:
-            raise
+        tmp_file = S3EventsImages().download(event_id, image_id)
+        with open(tmp_file, 'rb') as f:
+            return send_file(
+                io.BytesIO(f.read()),
+                attachment_filename=event_id + "." + image_id+'.jpg',
+                mimetype='image/jpg'
+            )
     except Exception as ex:
         __logger.exception(ex)
         msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
