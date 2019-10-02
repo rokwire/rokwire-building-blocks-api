@@ -1,6 +1,6 @@
 def get_id_info_from_token(in_token):
     # in_token = convert_str_to_dict(in_token)
-    id_type = 0 # 0 for no id string, 1 for pii data, 2 for non-pii
+    id_type = 0 # 0 for no pii, 1 for uin id, 2 phone id
     id_string = ""
 
     # check if the pii token is from campus or from outside the campus
