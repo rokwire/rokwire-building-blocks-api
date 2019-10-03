@@ -16,4 +16,6 @@ RUN pip install -r /app/requirements.txt
 # For using DocumentDB
 RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
 
+VOLUME /var/cache/app
+
 CMD ["gunicorn", "appconfig:create_app()", "--config", "/app/gunicorn.config.py"]
