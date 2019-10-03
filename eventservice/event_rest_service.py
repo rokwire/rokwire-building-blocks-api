@@ -14,10 +14,20 @@ from . import query_params
 from .config import URL_PREFIX
 from .images.s3 import S3EventsImages
 from .images import localfile
-from flask import Blueprint, request, make_response, send_file, abort, current_app
+from flask import Blueprint, request, make_response, redirect, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
 from cachetools import cached, TTLCache
+
+# Populate cache defaults here instead of config.py because they are
+# used in function decorators before the config.py is loaded into the
+# Flask app environment
+CACHE_DEFAULT        = os.getenv("CACHE_DEFAULT", '{"maxsize": 1000, "ttl": 600}')
+CACHE_GETEVENTS      = json.loads(os.getenv("CACHE_GETEVENTS", CACHE_DEFAULT))
+CACHE_GETEVENT       = json.loads(os.getenv("CACHE_GETEVENT", CACHE_DEFAULT))
+CACHE_GETEVENTIMAGES = json.loads(os.getenv("CACHE_GETEVENTIMAGES", CACHE_DEFAULT))
+CACHE_GETCATEGORIES  = json.loads(os.getenv("CACHE_GETCATEGORIES", CACHE_DEFAULT))
+
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -55,17 +65,32 @@ def get_tags():
 @bp.route('/categories', methods=['GET'])
 def get_categories():
     auth_middleware.verify_secret(request)
-    results = list()
+
     try:
-        db = get_db()
-        for data_tuple in db['categories'].find({}, {'_id': 0}):
-            results.append(data_tuple)
+        response, results_len = _get_categories_resp()
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+
+    __logger.info("[GET]: %s nRecords = %d ", request.url, results_len)
+    return response
+
+@cached(cache=TTLCache(**CACHE_GETCATEGORIES))
+def _get_categories_resp():
+    """
+    Perform the get_categories query and serialize the results. This is
+    its own function to enable caching to work.
+
+    Returns: (response, count of categories)
+    """
+    db = get_db()
+    cursor = db['categories'].find(
+        {},
+        {'_id': 0}
+    ).sort('category', pymongo.ASCENDING)
+
+    categories = list(cursor)
+    return flask.jsonify(categories), len(categories)
 
 
 @bp.route('/', methods=['GET'])
@@ -79,24 +104,30 @@ def get_events():
         __logger.exception(ex)
         abort(500)
 
-    results = '[]'
-    results_len = 0
-    if query:
-        try:
-            results, results_len = _get_events_query(
-                query,
-                args.get('limit', 0, int),
-                args.get('skip', 0, int)
-            )
-        except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
+    try:
+        response, results_len = _get_events_resp(
+            query,
+            args.get('limit', 0, int),
+            args.get('skip', 0, int)
+        )
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, results_len)
-    return results
+    return response
 
-@cached(cache=TTLCache(maxsize=1000, ttl=600), key=_cache_querykey)
-def _get_events_query(query, limit, skip):
+@cached(cache=TTLCache(**CACHE_GETEVENTS), key=_cache_querykey)
+def _get_events_resp(query, limit, skip):
+    """
+    Perform the get_events query and serialize the results. This is
+    its own function to enable caching to work.
+
+    Returns: (response, count of events)
+    """
+    if not query:
+        return flask.jsonify([]), 0
+
     db = get_db()
     cursor = db['events'].find(
         query,
@@ -222,19 +253,34 @@ def get_event(event_id):
 
     if not ObjectId.is_valid(event_id):
         abort(400)
-    event = dict()
-    try:
-        db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
 
-        msg = "[Get Event]: event id %s" % (str(event_id))
-        __logger.info(msg)
+    try:
+        response, found = _get_event_resp({'_id': ObjectId(event_id)})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    if not event:
+
+    if not found:
         abort(404)
-    return flask.jsonify(event)
+
+    __logger.info("[Get Event]: event id %s", event_id)
+    return response
+
+@cached(cache=TTLCache(**CACHE_GETEVENT), key=_cache_querykey)
+def _get_event_resp(query):
+    """
+    Perform the get_event query and serialize the results. This is
+    its own function to enable caching to work.
+
+    Returns: (response, found)
+    """
+    db = get_db()
+    event = db['events'].find_one(
+        query,
+        {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
+    )
+
+    return flask.jsonify(event), bool(event)
 
 
 @bp.route('/<event_id>', methods=['DELETE'])
@@ -259,27 +305,18 @@ def delete_event(event_id):
 def download_imagefile(event_id, image_id):
     auth_middleware.verify_secret(request)
 
-    msg = "[download image]: event id %s, status: 200" % (str(event_id))
-    tmp_file = None
-    try:
-        db = get_db()
-        if db[current_app.config['IMAGE_COLLECTION']].find_one({"_id": ObjectId(image_id)}):
-            tmp_file = S3EventsImages().download(event_id, image_id)
-            with open(tmp_file, 'rb') as f:
-                return send_file(
-                    io.BytesIO(f.read()),
-                    attachment_filename=event_id + "." + image_id+'.jpg',
-                    mimetype='image/jpg'
-                )
-        else:
-            raise
-    except Exception as ex:
-        __logger.exception(ex)
-        msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
-        abort(500)
-    finally:
-        __logger.info(msg)
-        localfile.deletefile(tmp_file)
+    if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
+        abort(400)
+
+    url = current_app.config['IMAGE_URL'].format(
+        bucket=current_app.config['BUCKET'],
+        region=os.getenv('AWS_DEFAULT_REGION'),
+        prefix=current_app.config['AWS_IMAGE_FOLDER_PREFIX'],
+        event_id=event_id,
+        image_id=image_id,
+    )
+    __logger.info("[download image] redirect to %s", url)
+    return redirect(url, code=302)
 
 
 @bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
@@ -319,25 +356,36 @@ def put_imagefile(event_id, image_id):
 def get_imagefiles(event_id):
     auth_middleware.verify_secret(request)
 
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+
     try:
-        db = get_db()
-        result = db[current_app.config['IMAGE_COLLECTION']].find(
-            filter={
-                'eventId': event_id
-            },
-            projection={
-                '_id': True
-            }
-        )
-        if result:
-            imageid_list = [str(x['_id']) for x in result]
-        else:
-            imageid_list = []
-        msg = "[get images]: find %d images related to event %s" % (len(imageid_list), event_id)
+        response, image_ids_len = _get_imagefiles_resp({'eventId': event_id})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    return success_response(200, msg, imageid_list)
+
+    return response
+
+@cached(cache=TTLCache(**CACHE_GETEVENTIMAGES), key=_cache_querykey)
+def _get_imagefiles_resp(query):
+    """
+    Perform the get_imagefiles query and serialize the results. This is
+    its own function to enable caching to work.
+
+    Returns: (response, count of image IDs)
+    """
+    db = get_db()
+    cursor = db[current_app.config['IMAGE_COLLECTION']].find(
+        query,
+        {'_id': 1}
+    )
+
+    image_ids = [str(i['_id']) for i in cursor]
+    image_ids_len = len(image_ids)
+
+    msg = "[get images]: find %d images related to event %s" % (image_ids_len, query)
+    return success_response(200, msg, image_ids), image_ids_len
 
 
 @bp.route('/<event_id>/images', methods=['POST'])
