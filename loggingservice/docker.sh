@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t rokwire/logging-building-block .
+docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .

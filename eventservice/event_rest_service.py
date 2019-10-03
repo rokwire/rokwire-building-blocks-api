@@ -1,22 +1,28 @@
+import io
 import os
 import json
 import logging
 import flask
+import auth_middleware
 
 from bson import ObjectId
 from .db import get_db
 from . import query_params
-from flask import Blueprint, request, make_response, abort, current_app
-import auth_middleware
+from .config import URL_PREFIX
+from .images.s3 import S3EventsImages
+from .images import localfile
+from flask import Blueprint, request, make_response, send_file, abort, current_app
+from werkzeug.utils import secure_filename
+from time import gmtime
 
-logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
-__logger = logging.getLogger("eventservice")
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
+__logger = logging.getLogger("events_building_block")
+
+bp = Blueprint('event_rest_service', __name__, url_prefix=URL_PREFIX)
 
 bp = Blueprint('event_rest_service', __name__, url_prefix='/events')
-
-
-# A couple of proposed groups
 
 
 @bp.route('/tags', methods=['GET'])
@@ -62,7 +68,7 @@ def get_events():
     if query:
         try:
             db = get_db()
-            events = db['events'].find(query, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
+            events = db['events'].find(query, {'coordinates': 0, 'categorymainsub': 0})
             if args.get('limit') and args.get('skip'):
                 events = events.limit(int(args.get('limit'))).skip(int(args.get('skip')))
             elif args.get('limit'):
@@ -70,6 +76,8 @@ def get_events():
             elif args.get('skip'):
                 events = events.limit(int(args.get('skip')))
             for data_tuple in events:
+                data_tuple['id'] = str(data_tuple['_id'])
+                del data_tuple['_id']
                 results.append(data_tuple)
         except Exception as ex:
             __logger.exception(ex)
@@ -82,7 +90,7 @@ def get_events():
 
 @bp.route('/', methods=['POST'])
 def post_events():
-    auth_middleware.authenticate("RokwireEventManager")
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -108,6 +116,9 @@ def post_events():
 
 @bp.route('/<event_id>', methods=['PUT'])
 def update_event(event_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -134,6 +145,8 @@ def update_event(event_id):
 
 @bp.route('/<event_id>', methods=['PATCH'])
 def partial_update_event(event_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -174,8 +187,31 @@ def partial_update_event(event_id):
     return success_response(200, msg, str(event_id))
 
 
+@bp.route('/<event_id>', methods=['GET'])
+def get_event(event_id):
+    auth_middleware.verify_secret(request)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+    event = dict()
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
+
+        msg = "[Get Event]: event id %s" % (str(event_id))
+        __logger.info(msg)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    if not event:
+        abort(404)
+    return flask.jsonify(event)
+
+
 @bp.route('/<event_id>', methods=['DELETE'])
 def delete_event(event_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
     if not ObjectId.is_valid(event_id):
         abort(400)
     try:
@@ -187,6 +223,140 @@ def delete_event(event_id):
         __logger.exception(ex)
         abort(500)
 
+    return success_response(202, msg, str(event_id))
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['GET'])
+def download_imagefile(event_id, image_id):
+    auth_middleware.verify_secret(request)
+
+    msg = "[download image]: event id %s, status: 200" % (str(event_id))
+    tmp_file = None
+    try:
+        db = get_db()
+        if db[current_app.config['IMAGE_COLLECTION']].find_one({"_id": ObjectId(image_id)}):
+            tmp_file = S3EventsImages().download(event_id, image_id)
+            with open(tmp_file, 'rb') as f:
+                return send_file(
+                    io.BytesIO(f.read()),
+                    attachment_filename=event_id + "." + image_id + '.jpg',
+                    mimetype='image/jpg'
+                )
+        else:
+            raise
+    except Exception as ex:
+        __logger.exception(ex)
+        msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
+        abort(500)
+    finally:
+        __logger.info(msg)
+        localfile.deletefile(tmp_file)
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
+def put_imagefile(event_id, image_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
+    tmpfile = None
+    try:
+        db = get_db()
+        # check if image exists
+        if db[current_app.config['IMAGE_COLLECTION']].find_one({'_id': ObjectId(image_id)}):
+            file = request.files.get('file')
+            if file:
+                if file.filename == '':
+                    raise
+                if localfile.allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    tmpfile = localfile.savefile(file, filename)
+                    S3EventsImages().upload(tmpfile, event_id, image_id)
+                    msg = "[put image]: image id %s" % (str(image_id))
+                else:
+                    raise
+            else:
+                raise
+        else:
+            raise
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    finally:
+        localfile.deletefile(tmpfile)
+
+    return success_response(200, msg, str(image_id))
+
+
+@bp.route('/<event_id>/images', methods=['GET'])
+def get_imagefiles(event_id):
+    auth_middleware.verify_secret(request)
+
+    try:
+        db = get_db()
+        result = db[current_app.config['IMAGE_COLLECTION']].find(
+            filter={
+                'eventId': event_id
+            },
+            projection={
+                '_id': True
+            }
+        )
+        if result:
+            imageid_list = [str(x['_id']) for x in result]
+        else:
+            imageid_list = []
+        msg = "[get images]: find %d images related to event %s" % (len(imageid_list), event_id)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return success_response(200, msg, imageid_list)
+
+
+@bp.route('/<event_id>/images', methods=['POST'])
+def post_imagefile(event_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
+    tmpfile = None
+    try:
+        file = request.files.get('file')
+        if file:
+            if file.filename == '':
+                raise
+            if localfile.allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                tmpfile = localfile.savefile(file, filename)
+                db = get_db()
+                result = db[current_app.config['IMAGE_COLLECTION']].insert_one({
+                    'eventId': event_id
+                })
+                image_id = str(result.inserted_id)
+                S3EventsImages().upload(tmpfile, event_id, image_id)
+                msg = "[post image]: image id %s" % (str(image_id))
+            else:
+                raise
+        else:
+            raise
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    finally:
+        localfile.deletefile(tmpfile)
+    return success_response(201, msg, str(image_id))
+
+
+@bp.route('/<event_id>/images/<image_id>', methods=['DELETE'])
+def delete_imagefile(event_id, image_id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
+    msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
+    try:
+        S3EventsImages().delete(event_id, image_id)
+        db = get_db()
+        db[current_app.config['IMAGE_COLLECTION']].delete_one({
+            '_id': ObjectId(image_id)
+        })
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
     return success_response(202, msg, str(event_id))
 
 

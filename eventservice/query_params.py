@@ -4,18 +4,14 @@ import re
 
 def format_query(args, query):
     # title text query
-
     if args.getlist('title'):
         titles = ''
         for title in args.getlist('title'):
             titles += "\"%s\" " % title
         query['$text'] = {'$search': titles}
-
-        # query['$text'] = {'$search': '\"apple\" \"banana\"'}
-    """
-    if args.get('title'):
-        query['$text'] = {'$search': args.get('title')}
-    """
+    # recurrenceId query
+    if args.get('recurrenceId'):
+        query['recurrenceId'] = {'$eq': int(args.get('recurrenceId'))}
     # category query
     if args.getlist('category'):
         category_query = list()
@@ -28,7 +24,7 @@ def format_query(args, query):
         query['categorymainsub'] = {'$in': category_query}
     # tags query
     if args.getlist('tags'):
-        query['tags'] = {'$all': args.getlist('tags')}
+        query['tags'] = {'$in': args.getlist('tags')}
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):

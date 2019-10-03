@@ -6,5 +6,8 @@ google-auth==1.6.3
 requests>=2.22.0
 pyjwt==1.7.1
 cryptography>=2.7
+python-dotenv==0.10.3
 
 ../lib/auth-middleware
+
+

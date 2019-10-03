@@ -26,5 +26,7 @@
         "user_auth_url": "https://shibboleth-test.techservices.illinois.edu/idp/profile/oidc/userinfo",
         "shibboleth_auth_token_url": "https://{shibboleth_client_id}:{shibboleth_client_secret}@shibboleth-test.techservices.illinois.edu/idp/profile/oidc/token",
         "illini_cash_base_url": "https://shibtest.housing.illinois.edu/MobileAppWS/api"
+    },
+  "secretKeys": {
     }
 }

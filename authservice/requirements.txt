@@ -5,6 +5,9 @@ requests==2.22.0
 pyjwt==1.7.1
 gunicorn==19.9.0
 python-dateutil==2.8.0
+python-dotenv==0.10.3
+
+../lib/auth-middleware
 
 #dev
 ipython

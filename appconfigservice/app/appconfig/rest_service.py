@@ -7,16 +7,20 @@ from appconfig import db as conn
 from appconfig import dbutils 
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
+from time import gmtime
 import pymongo
+import auth_middleware
 
-logging.basicConfig(format='%(asctime)-15s %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s',
-                    level=logging.INFO)
-__logger = logging.getLogger("app_config_service")
+logging.Formatter.converter = gmtime
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
+                    format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
+__logger = logging.getLogger("app_config_building_block")
 
 bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
 @bp.route('/', methods=['GET'])
 def get_app_configs():
+    auth_middleware.verify_secret(request)
     results = list()
     args = request.args
     query = dict()
@@ -47,6 +51,7 @@ def get_app_configs():
 
 @bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
+    auth_middleware.verify_secret(request)
     results = list()
     if not ObjectId.is_valid(id):
         abort(400)
@@ -64,6 +69,8 @@ def get_app_config_by_id(id):
 
 @bp.route('/', methods=['POST'])
 def post_app_config():
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         abort(400)
@@ -84,6 +91,8 @@ def post_app_config():
 
 @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
     if not ObjectId.is_valid(id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -104,6 +113,8 @@ def update_app_config(id):
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
+    auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
+
     if not ObjectId.is_valid(id):
         abort(400)
     try:
@@ -210,16 +221,9 @@ def check_format(req_data):
     return True
     
 def decode(document):
-    dto = {}
     oid = document['_id']
     if isinstance(oid, ObjectId):
         oid = str(oid)
-    dto['id'] = oid
-    dto['mobileAppVersion'] = document['mobileAppVersion']
-    dto['platformBuildingBlocks'] = document['platformBuildingBlocks']
-    dto['thirdPartyServices'] = document['thirdPartyServices']
-    dto['otherUniversityServices'] = document['otherUniversityServices']
-    if 'secretKeys' in document.keys():
-        dto['secretKeys'] = document['secretKeys']
-    return dto
-    
+    document['id'] = oid
+    del document['_id']  # Remove _id field from the dictionary
+    return document

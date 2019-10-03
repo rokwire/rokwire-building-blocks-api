@@ -1,1 +1,1 @@
-sudo docker build -t=app_config:latest .
+docker build -t=app_config:latest .

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add Docker env for AWS fargate deploy
+- Add recurring event search
 - Add events multiple titles search.
 - Add skip and limit on events query.
 - This CHANGELOG file
@@ -25,8 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add secretKeys to App Config
 - Logging building block API definitions.
 - Auth middleware library.
+- Dockerfile for Rokwire Platform API documentation and updated README.
 
 ### Changed
+- add events building block S3 folder as env variable.
+- events tag search has been changed to logic or.
 - Update events schema to remove endDate as required field and add createdBy and createDate.
 - Update events schema according to discussion and feedback.
 - Update rokwire.yaml for events build block.
@@ -43,9 +48,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update rokwire.yaml for images entry points of events building block
 - Temporarily ignoring `targetAudience` search query string in events.
 - Changed api doc path from http://.../api/docs to http://.../docs since our domain api.rokwire.illinois.edu contains "api" word.
+- Update Events schema to include registrationLabel
 
 ### Fixed
 - Events building block API definition to improve text.
 - API documentation in YAML file to reflect the latest code and made text improvements.
 - Issues with API specification YAML file related to app config building block.
 - Indentation issues with API specification YAML file
+
+### Removed
+- References to AWS keys and variables in the Events Building Block.

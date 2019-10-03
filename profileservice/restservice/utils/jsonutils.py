@@ -27,3 +27,11 @@ def remove_null_subcategory(injson):
             del interest['subcategories']
 
     return injson
+
+
+def create_log_json(ep_name, ep_method, in_json):
+    in_json['ep_building_block'] = "profile_building_block"
+    in_json['ep_name'] = ep_name
+    in_json['ep_method'] = ep_method
+
+    return in_json

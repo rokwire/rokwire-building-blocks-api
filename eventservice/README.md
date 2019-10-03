@@ -11,6 +11,25 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Environment File
+
+You need to have a .env file in this directory that contains credentials required for authentication.
+
+Example file format:
+
+```
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+
+ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+
+# AWS environment variables to set when running on development machine. 
+# This is not required when running within AWS.
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
+```
+
 ## Run in Development Mode
 
 ```
@@ -24,9 +43,9 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 
 ## Run as Docker Container in Local
 ```
-cd eventservice
-./docker.sh
-docker run --rm --name events -v $PWD/config.py:/app/eventservice/config.py -p 5000:5000 rokwire/events-building-block
+cd rokwire-building-blocks-api
+docker build -f eventservice/Dockerfile -t rokwire/events-building-block .
+docker run --rm --name events --env-file eventservice/.env -p 5000:5000 rokwire/events-building-block
 ```
 You need to edit config.py where you have to specify mongo url.
 ```
@@ -34,6 +53,17 @@ EVENT_MONGO_URL="mongodb://MongoDBMachinePublicIP:27017"
 EVENT_DB_NAME="eventdb"
 ```
 
+## AWS ECR Instructions
+
+Make sure the repository called rokwire/eventservice exists in ECR. Then create Docker image for Rokwire Platform API and push to AWS ECR for deployment.
+
+```
+cd rokwire-building-blocks-api 
+docker build -f eventservice/Dockerfile -t rokwire/events-building-block .
+docker tag rokwire/events-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/eventservice:latest
+$(aws ecr get-login --no-include-email --region us-east-2)
+docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/eventservice:latest
+```
 
 ## Sample Events for Post Endpoint:
 
@@ -221,7 +251,7 @@ This query will return back all events whose title contains the word `pi` and `d
 
 ### Tags Search:
 
-This query will return all events whose tags contain ``coffee`` and ``music``.
+This query will return all events whose tags contain ``coffee`` `or` ``music``.
 
 ```
 /events?tags=coffee&tags=music
