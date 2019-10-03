@@ -1,9 +1,5 @@
-import bson.json_util
-import cachetools
-import json
 import logging
 import flask
-import os
 import re
 
 from bson import ObjectId
@@ -12,17 +8,9 @@ from appconfig import dbutils
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 from time import gmtime
+from .cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 import pymongo
 import auth_middleware
-from cachetools import cached, TTLCache
-
-# Populate cache defaults here instead of config.py because they are
-# used in function decorators before the config.py is loaded into the
-# Flask app environment
-CACHE_DEFAULT        = os.getenv("CACHE_DEFAULT", '{"maxsize": 1000, "ttl": 600}')
-CACHE_GETAPPCONFIGS  = json.loads(os.getenv("CACHE_GETAPPCONFIGS", CACHE_DEFAULT))
-CACHE_GETAPPCONFIG   = json.loads(os.getenv("CACHE_GETAPPCONFIG", CACHE_DEFAULT))
-
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -30,14 +18,6 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
 __logger = logging.getLogger("app_config_building_block")
 
 bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
-
-def _cache_querykey(query, *args, **kwargs):
-    """
-    Get a cache key where the first argument to the function is a
-    MongoDB query. It does this by using the BSON dumps util.
-    """
-    query_json = bson.json_util.dumps(query, sort_keys=True)
-    return cachetools.keys.hashkey(query_json, *args, **kwargs)
 
 
 @bp.route('/', methods=['GET'])
@@ -57,21 +37,21 @@ def get_app_configs():
         abort(500)
 
     try:
-        response, app_configs_len = _get_app_configs_resp(query, version)
+        result = _get_app_configs_result(query, version)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    __logger.info("[GET]: %s nRecords = %d ", request.url, app_configs_len)
-    return response
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
 
-@cached(cache=TTLCache(**CACHE_GETAPPCONFIGS), key=_cache_querykey)
-def _get_app_configs_resp(query, version):
+@memoize_query(**CACHE_GET_APPCONFIGS)
+def _get_app_configs_result(query, version):
     """
-    Perform the get_app_configs query and serialize the results. This is
+    Perform the get_app_configs query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, count of app configs)
+    Returns: result
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -85,8 +65,7 @@ def _get_app_configs_resp(query, version):
     if version:
         cursor = cursor.limit(1)
 
-    app_configs = [decode(c) for c in cursor]
-    return flask.jsonify(app_configs), len(app_configs)
+    return [decode(c) for c in cursor]
 
 
 @bp.route('/<id>', methods=['GET'])
@@ -97,21 +76,21 @@ def get_app_config_by_id(id):
         abort(400)
 
     try:
-        response, app_configs_len = _get_app_config_by_id_resp({"_id": ObjectId(id)})
+        result = _get_app_config_by_id_result({"_id": ObjectId(id)})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    __logger.info("[GET]: %s nRecords = %d ", request.url, app_configs_len)
-    return response
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
 
-@cached(cache=TTLCache(**CACHE_GETAPPCONFIG), key=_cache_querykey)
-def _get_app_config_by_id_resp(query):
+@memoize_query(**CACHE_GET_APPCONFIG)
+def _get_app_config_by_id_result(query):
     """
-    Perform the get_app_config_by_id query and serialize the results. This is
+    Perform the get_app_config_by_id query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, count of app configs)
+    Returns: result
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -119,8 +98,7 @@ def _get_app_config_by_id_resp(query):
         {"version_numbers": 0}
     )
 
-    app_configs = [decode(c) for c in cursor]
-    return flask.jsonify(app_configs), len(app_configs)
+    return [decode(c) for c in cursor]
 
 
 @bp.route('/', methods=['POST'])
