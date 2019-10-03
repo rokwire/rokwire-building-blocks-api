@@ -14,7 +14,7 @@ from . import query_params
 from .config import URL_PREFIX
 from .images.s3 import S3EventsImages
 from .images import localfile
-from flask import Blueprint, request, make_response, send_file, abort, current_app
+from flask import Blueprint, request, make_response, redirect, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
 from cachetools import cached, TTLCache
@@ -305,27 +305,18 @@ def delete_event(event_id):
 def download_imagefile(event_id, image_id):
     auth_middleware.verify_secret(request)
 
-    msg = "[download image]: event id %s, status: 200" % (str(event_id))
-    tmp_file = None
-    try:
-        db = get_db()
-        if db[current_app.config['IMAGE_COLLECTION']].find_one({"_id": ObjectId(image_id)}):
-            tmp_file = S3EventsImages().download(event_id, image_id)
-            with open(tmp_file, 'rb') as f:
-                return send_file(
-                    io.BytesIO(f.read()),
-                    attachment_filename=event_id + "." + image_id+'.jpg',
-                    mimetype='image/jpg'
-                )
-        else:
-            raise
-    except Exception as ex:
-        __logger.exception(ex)
-        msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
-        abort(500)
-    finally:
-        __logger.info(msg)
-        localfile.deletefile(tmp_file)
+    if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
+        abort(400)
+
+    url = current_app.config['IMAGE_URL'].format(
+        bucket=current_app.config['BUCKET'],
+        region=os.getenv('AWS_DEFAULT_REGION'),
+        prefix=current_app.config['AWS_IMAGE_FOLDER_PREFIX'],
+        event_id=event_id,
+        image_id=image_id,
+    )
+    __logger.info("[download image] redirect to %s", url)
+    return redirect(url, code=302)
 
 
 @bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
