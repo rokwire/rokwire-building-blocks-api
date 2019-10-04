@@ -489,12 +489,12 @@ class DealPii(Resource):
         id_type, id_string = tokenutils.get_id_info_from_token(id_token)
         auth_pass = False
 
-        if id_type == 1:  # pii data
+        if id_type == 1:  # Shibboleth ID Token
             # get uin from data_list
             uin = data_list['uin']
             if str(uin) == str(id_string):
                 auth_pass = True
-        elif id_type == 2:  # non-pii data
+        elif id_type == 2:  # Phone ID Token
             # get phone number from data_list
             phone_number = data_list['phone']
             if str(phone_number) == str(id_string):
