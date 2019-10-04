@@ -28,35 +28,12 @@ def convert_str_to_dict(in_token):
             return converted_dict
 
 def get_data_from_token(in_token):
-    tk_is_uin = False
-    tk_is_phone = False
-    tk_uin = None
-    tk_firstname = None
-    tk_lastname = None
-    tk_email = None
-    tk_phone = None
-
-    try:
-        tk_uin = in_token['uiucedu_uin']
-        tk_is_uin = True
-    except:
-        pass
-    try:
-        tk_firstname = in_token['given_name']
-    except:
-        pass
-    try:
-        tk_lastname = in_token['family_name']
-    except:
-        pass
-    try:
-        tk_email = in_token['email']
-    except:
-        pass
-    try:
-        tk_phone = in_token['phoneNumber']
-        tk_is_phone = True
-    except:
-        pass
+    tk_uin = in_token.get('uiucedu_uin')
+    tk_is_uin = tk_uin is not None
+    tk_firstname = in_token.get('given_name')
+    tk_lastname = in_token.get('family_name')
+    tk_email = in_token.get('email')
+    tk_phone = in_token.get('phoneNumber')
+    tk_is_phone = tk_phone is not None
 
     return tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone
