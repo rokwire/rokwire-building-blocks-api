@@ -338,7 +338,7 @@ class PiiRootDir(Resource):
                     auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
 
                 if not (auth_pass):
-                    msg = "{\"Authentication Failed\": \"The user info in id token and db are not matching.\"}"
+                    msg = "{\"reason\": \"The user info in id token and db are not matching.\"}"
                     msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
                     msg_json['error'] = 'Authentication Failed: ' + request.url
                     self.logger.warning("PII POST " + json.dumps(msg_json))
@@ -363,7 +363,7 @@ class PiiRootDir(Resource):
                 auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
 
             if not (auth_pass):
-                msg = "{\"Authentication Failed\": \"The user info in id token and db are not matching.\"}"
+                msg = "{\"reason\": \"The user info in id token and db are not matching.\"}"
                 msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
                 msg_json['error'] = 'Authentication Failed: ' + request.url
                 self.logger.warning("PII POST " + json.dumps(msg_json))
