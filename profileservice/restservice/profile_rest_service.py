@@ -314,7 +314,8 @@ class PiiRootDir(Resource):
         tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(auth_resp)
 
         is_new_entry = False
-        auth_pass = False
+        # Todo following variable should be revived if the email or phone number can get updated
+        # auth_pass = False
 
         try:
             in_json = request.get_json()
@@ -345,69 +346,93 @@ class PiiRootDir(Resource):
             dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, pid)
 
             # if it is an existing entry, then check if the information in db matches with the id token
-            auth_pass = self.check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+            auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
         except:
             dataset = None
             is_new_entry = True
 
         # check if the email already exists
-        try:
-            email = in_json['email']
-            dataset = mongoutils.get_pii_dataset_from_field('email', email)
-            if dataset is not None:
-                # check if the id token and db info matches
-                if not (auth_pass):
-                    auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+        if tk_is_uin:
+            try:
+                dataset = mongoutils.get_pii_dataset_from_field('email', tk_email)
+                # if there is a dataset, it means that the email is existing in the database
+                if dataset is not None:
+                    # ToDo Following lines will be commented out due to the following assumption
+                    # that the email in the database doesn't get updated so, no change in email.
+                    # However, if there is email update available, the following part should be revived.
+                    # # check if the id token and db info matches
+                    # if not (auth_pass):
+                    #     auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+                    #
+                    # if not (auth_pass):
+                    #     msg = {
+                    #         "reason": "The user info in id token and db are not matching.",
+                    #         "error": "Authentication Failed: " + request.url,
+                    #     }
+                    #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
+                    #     self.logger.error("PII POST " + json.dumps(msg_json))
+                    #     return jsonutils.create_auth_fail_message()
 
-                if not (auth_pass):
+                    pid = dataset.get_pid()
                     msg = {
-                        "reason": "The user info in id token and db are not matching.",
-                        "error": "Authentication Failed: " + request.url,
+                        "reason": "Email already existst: " + str(pid) ,
+                        "warning": "Email already exists: " + request.url,
                     }
                     msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                    self.logger.error("PII POST " + json.dumps(msg_json))
-                    return jsonutils.create_auth_fail_message()
+                    self.logger.warning("PII POST " + json.dumps(msg_json))
 
-                pid = dataset.get_pid()
-                msg = {
-                    "reason": "Email already existst: " + str(pid) ,
-                    "warning": "Email already exists: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                self.logger.warning("PII POST " + json.dumps(msg_json))
-                return rs_handlers.return_id('Email already exists.', 'pid', pid)
-        except:
-            pass
+                    # if it is email based token id (on campus), it should update the information,
+                    # to update the missing UIN and other information that happened in the very first period
+                    # of the app release. This also will help the user and app update the information,
+                    # if there were any update happened in Shibboleth id information
+                    if tk_firstname is not None:
+                        dataset.set_firstname(tk_firstname)
+                    if tk_lastname is not None:
+                        dataset.set_lastname(tk_lastname)
+                    if tk_email is not None:
+                        dataset.set_email(tk_email)
+                    if tk_phone is not None:
+                        dataset.set_phone(tk_phone)
+                    if tk_uin is not None:
+                        dataset.set_uin(tk_uin)
+                    result, dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
+
+                    return rs_handlers.return_id('Email already exists.', 'pid', pid)
+            except:
+                pass
 
         # check if the phonenumber already exists
-        try:
-            phone = in_json['phone']
-            dataset = mongoutils.get_pii_dataset_from_field('phone', phone)
+        if tk_is_phone:
+            try:
+                dataset = mongoutils.get_pii_dataset_from_field('phone', tk_phone)
 
-            # check if the id token and db info matches
-            if not (auth_pass):
-                auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+                # ToDo Following lines will be commented out due to the following assumption
+                # that the email in the database doesn't get updated so, no change in email.
+                # However, if there is email update available, the following part should be revived.
+                # check if the id token and db info matches
+                # if not (auth_pass):
+                #     auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+                #
+                # if not (auth_pass):
+                #     msg = {
+                #         "reason": "The user info in id token and db are not matching.",
+                #         "error": "Authentication Failed: " + request.url,
+                #     }
+                #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
+                #     self.logger.error("PII POST " + json.dumps(msg_json))
+                #     return jsonutils.create_auth_fail_message()
 
-            if not (auth_pass):
-                msg = {
-                    "reason": "The user info in id token and db are not matching.",
-                    "error": "Authentication Failed: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                self.logger.error("PII POST " + json.dumps(msg_json))
-                return jsonutils.create_auth_fail_message()
-
-            if dataset is not None:
-                pid = dataset.get_pid()
-                msg = {
-                    "reason": "Phone number already exists: " + str(pid),
-                    "warning": "Phone number already exists: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                self.logger.warning("PII POST " + json.dumps(msg_json))
-                return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
-        except:
-            pass
+                if dataset is not None:
+                    pid = dataset.get_pid()
+                    msg = {
+                        "reason": "Phone number already exists: " + str(pid),
+                        "warning": "Phone number already exists: " + request.url,
+                    }
+                    msg_json = jsonutils.create_log_json("PII", "POST", msg)
+                    self.logger.warning("PII POST " + json.dumps(msg_json))
+                    return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
+            except:
+                pass
 
         if dataset is not None:
             is_new_entry = False
@@ -530,9 +555,10 @@ class DealPii(Resource):
         auth_pass = False
 
         if id_type == 1:  # Shibboleth ID Token
-            # get uin from data_list
-            uin = data_list['uin']
-            if uin == id_string:
+            # get id info from data_list
+            # id_from_db = data_list['uin'] use this when you need to use uin
+            id_from_db = data_list['email']
+            if id_from_db == id_string:
                 auth_pass = True
         elif id_type == 2:  # Phone ID Token
             # get phone number from data_list
@@ -567,6 +593,18 @@ class DealPii(Resource):
 
         try:
             in_json = request.get_json()
+            # ToDo if there is any phone number or email information in input json, they will be removed
+            # since the current policy is not updating the email or phone number
+            # until further decision
+            try:
+                del in_json["email"]
+            except:
+                pass
+            try:
+                del in_json["phone"]
+            except:
+                pass
+
         except Exception as ex:
             msg = {
                 "reason": "Json format error: " + str(pid),
