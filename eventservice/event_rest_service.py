@@ -5,8 +5,6 @@ import logging
 import flask
 import auth_middleware
 import pymongo
-import cachetools.keys
-import bson.json_util
 
 from bson import ObjectId
 from .db import get_db
@@ -17,17 +15,7 @@ from .images import localfile
 from flask import Blueprint, request, make_response, redirect, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
-from cachetools import cached, TTLCache
-
-# Populate cache defaults here instead of config.py because they are
-# used in function decorators before the config.py is loaded into the
-# Flask app environment
-CACHE_DEFAULT        = os.getenv("CACHE_DEFAULT", '{"maxsize": 1000, "ttl": 600}')
-CACHE_GETEVENTS      = json.loads(os.getenv("CACHE_GETEVENTS", CACHE_DEFAULT))
-CACHE_GETEVENT       = json.loads(os.getenv("CACHE_GETEVENT", CACHE_DEFAULT))
-CACHE_GETEVENTIMAGES = json.loads(os.getenv("CACHE_GETEVENTIMAGES", CACHE_DEFAULT))
-CACHE_GETCATEGORIES  = json.loads(os.getenv("CACHE_GETCATEGORIES", CACHE_DEFAULT))
-
+from .cache import memoize, memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -36,14 +24,6 @@ __logger = logging.getLogger("events_building_block")
 
 bp = Blueprint('event_rest_service', __name__, url_prefix=URL_PREFIX)
 
-
-def _cache_querykey(query, *args, **kwargs):
-    """
-    Get a cache key where the first argument to the function is a
-    MongoDB query. It does this by using the BSON dumps util.
-    """
-    query_json = bson.json_util.dumps(query, sort_keys=True)
-    return cachetools.keys.hashkey(query_json, *args, **kwargs)
 
 # A couple of proposed groups
 
@@ -67,21 +47,21 @@ def get_categories():
     auth_middleware.verify_secret(request)
 
     try:
-        response, results_len = _get_categories_resp()
+        result = _get_categories_result()
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    __logger.info("[GET]: %s nRecords = %d ", request.url, results_len)
-    return response
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
 
-@cached(cache=TTLCache(**CACHE_GETCATEGORIES))
-def _get_categories_resp():
+@memoize(**CACHE_GET_CATEGORIES)
+def _get_categories_result():
     """
-    Perform the get_categories query and serialize the results. This is
+    Perform the get_categories query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, count of categories)
+    Returns: result
     """
     db = get_db()
     cursor = db['categories'].find(
@@ -89,8 +69,7 @@ def _get_categories_resp():
         {'_id': 0}
     ).sort('category', pymongo.ASCENDING)
 
-    categories = list(cursor)
-    return flask.jsonify(categories), len(categories)
+    return list(cursor)
 
 
 @bp.route('/', methods=['GET'])
@@ -105,7 +84,7 @@ def get_events():
         abort(500)
 
     try:
-        response, results_len = _get_events_resp(
+        result = _get_events_result(
             query,
             args.get('limit', 0, int),
             args.get('skip', 0, int)
@@ -114,19 +93,19 @@ def get_events():
         __logger.exception(ex)
         abort(500)
 
-    __logger.info("[GET]: %s nRecords = %d ", request.url, results_len)
-    return response
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
 
-@cached(cache=TTLCache(**CACHE_GETEVENTS), key=_cache_querykey)
-def _get_events_resp(query, limit, skip):
+@memoize_query(**CACHE_GET_EVENTS)
+def _get_events_result(query, limit, skip):
     """
-    Perform the get_events query and serialize the results. This is
+    Perform the get_events query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, count of events)
+    Returns: result
     """
     if not query:
-        return flask.jsonify([]), 0
+        return []
 
     db = get_db()
     cursor = db['events'].find(
@@ -145,7 +124,7 @@ def _get_events_resp(query, limit, skip):
     for event in cursor:
         event['id'] = str(event.pop('_id'))
         events.append(event)
-    return flask.jsonify(events), len(events)
+    return events
 
 
 @bp.route('/', methods=['POST'])
@@ -255,24 +234,24 @@ def get_event(event_id):
         abort(400)
 
     try:
-        response, found = _get_event_resp({'_id': ObjectId(event_id)})
+        result = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    if not found:
+    if not result:
         abort(404)
 
     __logger.info("[Get Event]: event id %s", event_id)
-    return response
+    return flask.jsonify(result)
 
-@cached(cache=TTLCache(**CACHE_GETEVENT), key=_cache_querykey)
-def _get_event_resp(query):
+@memoize_query(**CACHE_GET_EVENT)
+def _get_event_result(query):
     """
-    Perform the get_event query and serialize the results. This is
+    Perform the get_event query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, found)
+    Returns: result
     """
     db = get_db()
     event = db['events'].find_one(
@@ -280,7 +259,7 @@ def _get_event_resp(query):
         {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
     )
 
-    return flask.jsonify(event), bool(event)
+    return event
 
 
 @bp.route('/<event_id>', methods=['DELETE'])
@@ -360,20 +339,21 @@ def get_imagefiles(event_id):
         abort(400)
 
     try:
-        response, image_ids_len = _get_imagefiles_resp({'eventId': event_id})
+        result = _get_imagefiles_result({'eventId': event_id})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    return response
+    msg = "[get images]: find %d images related to event %s" % (len(result), event_id)
+    return success_response(200, msg, result)
 
-@cached(cache=TTLCache(**CACHE_GETEVENTIMAGES), key=_cache_querykey)
-def _get_imagefiles_resp(query):
+@memoize_query(**CACHE_GET_EVENTIMAGES)
+def _get_imagefiles_result(query):
     """
-    Perform the get_imagefiles query and serialize the results. This is
+    Perform the get_imagefiles query and return the results. This is
     its own function to enable caching to work.
 
-    Returns: (response, count of image IDs)
+    Returns: result
     """
     db = get_db()
     cursor = db[current_app.config['IMAGE_COLLECTION']].find(
@@ -381,11 +361,7 @@ def _get_imagefiles_resp(query):
         {'_id': 1}
     )
 
-    image_ids = [str(i['_id']) for i in cursor]
-    image_ids_len = len(image_ids)
-
-    msg = "[get images]: find %d images related to event %s" % (image_ids_len, query)
-    return success_response(200, msg, image_ids), image_ids_len
+    return [str(i['_id']) for i in cursor]
 
 
 @bp.route('/<event_id>/images', methods=['POST'])

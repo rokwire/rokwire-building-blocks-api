@@ -47,7 +47,8 @@ def post_events():
 
             # Write incoming click stream data to log (for easy integration with Splunk)
             for log in in_json:
-                __logger.info(json.dumps(log))
+                print(json.dumps(log))
+            sys.stdout.flush()
 
     except Exception as ex:
         __logger.exception(ex)
