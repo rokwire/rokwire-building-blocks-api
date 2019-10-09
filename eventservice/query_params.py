@@ -39,7 +39,7 @@ def format_query(args, query):
             query_parts.append({'categorymainsub': {'$in': category_mainSub}})
     # tags query
     if args.getlist('tags'):
-        query_parts.append({'tags': {'$in': args.getlist('tags')}})
+        query_parts.append({'tags': {'$in': sorted(args.getlist('tags'))}})
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):
