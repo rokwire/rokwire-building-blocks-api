@@ -21,6 +21,10 @@ def format_query(args, query):
             else:
                 category_main.append(category)
 
+        # Sort the categories for better caching
+        category_main = sorted(category_main)
+        category_mainSub = sorted(category_mainSub)
+
         if category_main and category_mainSub:
             # If we have both a main and sub categories then use an $or
             # and search on both of the columns (so that indexes can
@@ -35,7 +39,7 @@ def format_query(args, query):
             query_parts.append({'categorymainsub': {'$in': category_mainSub}})
     # tags query
     if args.getlist('tags'):
-        query_parts.append({'tags': {'$in': args.getlist('tags')}})
+        query_parts.append({'tags': {'$in': sorted(args.getlist('tags'))}})
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):
