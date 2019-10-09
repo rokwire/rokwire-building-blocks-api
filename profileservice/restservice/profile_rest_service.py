@@ -354,7 +354,7 @@ class PiiRootDir(Resource):
         # check if the email already exists
         if tk_is_uin:
             try:
-                dataset = mongoutils.get_pii_dataset_from_field('email', tk_email)
+                dataset = mongoutils.get_pii_dataset_from_field('uin', tk_uin)
                 # if there is a dataset, it means that the email is existing in the database
                 if dataset is not None:
                     # ToDo Following lines will be commented out due to the following assumption
@@ -375,29 +375,26 @@ class PiiRootDir(Resource):
 
                     pid = dataset.get_pid()
                     msg = {
-                        "reason": "Email already existst: " + str(pid) ,
-                        "warning": "Email already exists: " + request.url,
+                        "reason": "UIN already existst: " + str(pid) ,
+                        "warning": "UIN already exists: " + request.url,
                     }
                     msg_json = jsonutils.create_log_json("PII", "POST", msg)
                     self.logger.warning("PII POST " + json.dumps(msg_json))
 
-                    # if it is email based token id (on campus), it should update the information,
-                    # to update the missing UIN and other information that happened in the very first period
-                    # of the app release. This also will help the user and app update the information,
-                    # if there were any update happened in Shibboleth id information
-                    if tk_firstname is not None:
-                        dataset.set_firstname(tk_firstname)
-                    if tk_lastname is not None:
-                        dataset.set_lastname(tk_lastname)
-                    if tk_email is not None:
-                        dataset.set_email(tk_email)
-                    if tk_phone is not None:
-                        dataset.set_phone(tk_phone)
-                    if tk_uin is not None:
-                        dataset.set_uin(tk_uin)
-                    result, dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
+                    # ToDo following lines are commneted out because it is not necessary for now
+                    # # if it is email based token id (on campus), it should update the information,
+                    # # to update the missing UIN and other information that happened in the very first period
+                    # # of the app release. This also will help the user and app update the information,
+                    # # if there were any update happened in Shibboleth id information
+                    # if tk_firstname is not None:
+                    #     dataset.set_firstname(tk_firstname)
+                    # if tk_lastname is not None:
+                    #     dataset.set_lastname(tk_lastname)
+                    # if tk_uin is not None:
+                    #     dataset.set_uin(tk_uin)
+                    # result, dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
 
-                    return rs_handlers.return_id('Email already exists.', 'pid', pid)
+                    return rs_handlers.return_id('UIN already exists.', 'pid', pid)
             except:
                 pass
 
@@ -556,14 +553,13 @@ class DealPii(Resource):
 
         if id_type == 1:  # Shibboleth ID Token
             # get id info from data_list
-            # id_from_db = data_list['uin'] use this when you need to use uin
-            id_from_db = data_list['email']
+            id_from_db = data_list['uin']
             if id_from_db == id_string:
                 auth_pass = True
         elif id_type == 2:  # Phone ID Token
             # get phone number from data_list
-            phone_number = data_list['phone']
-            if phone_number == id_string:
+            id_from_db = data_list['phone']
+            if id_from_db == id_string:
                 auth_pass = True
 
         return auth_pass
@@ -593,17 +589,19 @@ class DealPii(Resource):
 
         try:
             in_json = request.get_json()
-            # ToDo if there is any phone number or email information in input json, they will be removed
-            # since the current policy is not updating the email or phone number
-            # until further decision
-            try:
-                del in_json["email"]
-            except:
-                pass
-            try:
-                del in_json["phone"]
-            except:
-                pass
+            # ToDo following lines are commented out for now
+            #  but it should be used if the email and phone number get updated
+            # # if there is any phone number or email information in input json, they will be removed
+            # # since the current policy is not updating the email or phone number
+            # # until further decision
+            # try:
+            #     del in_json["uin"]
+            # except:
+            #     pass
+            # try:
+            #     del in_json["phone"]
+            # except:
+            #     pass
 
         except Exception as ex:
             msg = {

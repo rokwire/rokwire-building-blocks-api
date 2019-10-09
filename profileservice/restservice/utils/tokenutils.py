@@ -3,17 +3,19 @@ def get_id_info_from_token(in_token):
     id_type = 0 # 0 for no pii, 1 for uin id, 2 phone id
     id_string = ""
 
-    # TODO following lines are modified to use email instead of uin in id checking for GET, POST, and DELETE
+
     # check if the pii token is from campus or from outside the campus
     # if there is uin, it is from campus
-    # if 'uiucedu_uin' in in_token:
-    #     id_string = in_token['uiucedu_uin']
-    #     id_type = 1
-
-    # if there is email, it is from campus
-    if 'email' in in_token:
-        id_string = in_token['email']
+    if 'uiucedu_uin' in in_token:
+        id_string = in_token['uiucedu_uin']
         id_type = 1
+
+    # TODO following lines are modified to use email instead of uin in id checking
+    #  for GET, POST, and DELETE
+    # # if there is email, it is from campus
+    # if 'email' in in_token:
+    #     id_string = in_token['email']
+    #     id_type = 1
 
     # if there is phone number, it is from outside the campus
     if 'phoneNumber' in in_token:
