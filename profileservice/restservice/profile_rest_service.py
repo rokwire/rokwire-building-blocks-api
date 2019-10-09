@@ -375,7 +375,7 @@ class PiiRootDir(Resource):
 
                     pid = dataset.get_pid()
                     msg = {
-                        "reason": "UIN already existst: " + str(pid) ,
+                        "reason": "UIN already exists: " + str(pid) ,
                         "warning": "UIN already exists: " + request.url,
                     }
                     msg_json = jsonutils.create_log_json("PII", "POST", msg)
