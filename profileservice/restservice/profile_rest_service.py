@@ -125,12 +125,12 @@ class DealNonPii(Resource):
             elif len(data_list) == 0:
                 msg = {
                     "reason": "There is no profile record for the uuid: " + str(uuid),
-                    "error": "Bad Request: " + request.url,
+                    "error": "Not Found: " + request.url,
                 }
                 msg_json = jsonutils.create_log_json("Profile", "GET", msg)
                 self.logger.error("GET " + json.dumps(msg_json))
                 is_error = True
-                resp = rs_handlers.bad_request(msg_json)
+                resp = rs_handlers.not_found(msg_json)
 
             return data_list, is_objectid, is_error, resp
 
@@ -362,12 +362,18 @@ class PiiRootDir(Resource):
                     # However, if there is email update available, the following part should be revived.
                     # # check if the id token and db info matches
                     # if not (auth_pass):
-                    #     auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+                    #     msg = {
+                    #         "reason": "The user info in id token and db are not matching.",
+                    #         "error": "Authorization Failed."
+                    #     }
+                    #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
+                    #     self.logger.error("PII POST " + json.dumps(msg_json))
+                    #     return jsonutils.create_auth_fail_message()
                     #
                     # if not (auth_pass):
                     #     msg = {
                     #         "reason": "The user info in id token and db are not matching.",
-                    #         "error": "Authentication Failed: " + request.url,
+                    #         "error": "Authorization Failed."
                     #     }
                     #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
                     #     self.logger.error("PII POST " + json.dumps(msg_json))
@@ -413,7 +419,7 @@ class PiiRootDir(Resource):
                 # if not (auth_pass):
                 #     msg = {
                 #         "reason": "The user info in id token and db are not matching.",
-                #         "error": "Authentication Failed: " + request.url,
+                #         "error": "Authorization Failed."
                 #     }
                 #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
                 #     self.logger.error("PII POST " + json.dumps(msg_json))
@@ -523,12 +529,12 @@ class DealPii(Resource):
             if len(data_list) == 0:
                 msg = {
                     "reason": "There is no pii record for the pid: " + str(pid),
-                    "error": "Bad Request: " + request.url,
+                    "error": "Not Found: " + request.url,
                 }
                 msg_json = jsonutils.create_log_json("PII", "GET", msg)
                 self.logger.error("PII GET " + json.dumps(msg_json))
                 is_error = True
-                resp = rs_handlers.bad_request(msg_json)
+                resp = rs_handlers.not_found(msg_json)
 
                 return None, None, is_error, resp
 
@@ -574,6 +580,12 @@ class DealPii(Resource):
         auth_pass = self.check_id(auth_resp, data_list[0])
 
         if not (auth_pass):
+            msg = {
+                "reason": "The user info in id token and db are not matching.",
+                "error": "Authorization Failed."
+            }
+            msg_json = jsonutils.create_log_json("PII", "GET", msg)
+            self.logger.error("PII GET " + json.dumps(msg_json))
             return jsonutils.create_auth_fail_message()
 
         # remove fileDescriptors from db_data
@@ -586,6 +598,8 @@ class DealPii(Resource):
 
     def put(self, pid):
         auth_resp = auth_middleware.authenticate()
+        tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
+            auth_resp)
 
         try:
             in_json = request.get_json()
@@ -628,6 +642,12 @@ class DealPii(Resource):
         auth_pass = self.check_id(auth_resp, tmp_dataset)
 
         if not (auth_pass):
+            msg = {
+                "reason": "The user info in id token and db are not matching.",
+                "error": "Authorization Failed."
+            }
+            msg_json = jsonutils.create_log_json("PII", "PUT", msg)
+            self.logger.error("PII PUT " + json.dumps(msg_json))
             return jsonutils.create_auth_fail_message()
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
@@ -651,6 +671,18 @@ class DealPii(Resource):
                 pii_dataset.set_non_pii_uuid(non_pii_uuid)
         except:
             pass
+
+        # update dataset from id token info
+        if tk_firstname is not None:
+            pii_dataset.set_firstname(tk_firstname)
+        if tk_lastname is not None:
+            pii_dataset.set_lastname(tk_lastname)
+        if tk_email is not None:
+            pii_dataset.set_email(tk_email)
+        if tk_phone is not None:
+            pii_dataset.set_phone(tk_phone)
+        if tk_uin is not None:
+            pii_dataset.set_uin(tk_uin)
 
         result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid,
                                                                               pii_dataset)
@@ -680,6 +712,12 @@ class DealPii(Resource):
         auth_pass = self.check_id(auth_resp, data_list[0])
 
         if not (auth_pass):
+            msg = {
+                "reason": "The user info in id token and db are not matching.",
+                "error": "Authorization Failed."
+            }
+            msg_json = jsonutils.create_log_json("PII", "DELETE", msg)
+            self.logger.error("PII DELETE " + json.dumps(msg_json))
             return jsonutils.create_auth_fail_message()
 
         if (is_objectid):

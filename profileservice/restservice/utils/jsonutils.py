@@ -36,7 +36,8 @@ def create_log_json(ep_name, ep_method, in_json):
     return in_json
 
 def create_auth_fail_message():
-    out_json = make_response("{\"Authentication Failed\": \"The user info in id token and db are not matching.\"}")
+    out_json = make_response("{\"Authorization Failed\": \"The user info in id token and db are not matching.\"}")
     out_json.mimetype = 'application/json'
+    out_json.status_code = 403
 
     return out_json
