@@ -284,7 +284,9 @@ def delete_event(event_id):
 
 @bp.route('/<event_id>/images/<image_id>', methods=['GET'])
 def download_imagefile(event_id, image_id):
-    auth_middleware.verify_secret(request)
+    # TODO: add in again when the client starts sending the API key for this
+    # endpoint
+    #auth_middleware.verify_secret(request)
 
     if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
         abort(400)
