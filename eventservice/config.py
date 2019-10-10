@@ -17,3 +17,6 @@ ALLOWED_EXTENSIONS = ast.literal_eval(os.getenv("ALLOWED_EXTENSIONS", "{'txt', '
 
 AWS_IMAGE_FOLDER_PREFIX = os.getenv("AWS_IMAGE_FOLDER_PREFIX", "events")
 BUCKET = os.getenv("AWS_S3_BUCKET", "rokwire-events-s3-images")
+
+GZIP_LEVEL = int(os.getenv('GZIP_LEVEL', '6'))
+GZIP_MIN_SIZE = int(os.getenv('GZIP_MIN_SIZE', '102400'))

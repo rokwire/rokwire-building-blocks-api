@@ -24,6 +24,9 @@ logger = logging.getLogger("authentication_building_block")
 # Load .env file
 load_dotenv()
 
+GZIP_LEVEL = int(os.getenv('GZIP_LEVEL', '6'))
+GZIP_MIN_SIZE = int(os.getenv('GZIP_MIN_SIZE', '102400'))
+
 
 def is_digits(x):
     return x.isdigit()
@@ -135,7 +138,7 @@ app.add_api(
     resolver_error=501,
 )
 
-Gzip(app)
+Gzip(app.app, compress_level=GZIP_LEVEL, minimum_size=GZIP_MIN_SIZE)
 # @app.app.before_request
 # def before_request():
 #     user_agent = request.headers.get('User-Agent')

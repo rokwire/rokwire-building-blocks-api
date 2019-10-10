@@ -9,3 +9,6 @@ load_dotenv(verbose=True)
 # LOGGING_DB_NAME="loggingdb"
 # LOGGING_COLL_NAME="logs"
 LOGGING_URL_PREFIX = os.getenv('LOGGING_URL_PREFIX', '/logs')
+
+GZIP_LEVEL = int(os.getenv('GZIP_LEVEL', '6'))
+GZIP_MIN_SIZE = int(os.getenv('GZIP_MIN_SIZE', '102400'))

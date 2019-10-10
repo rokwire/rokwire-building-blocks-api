@@ -27,7 +27,7 @@ from profileservice.restservice.utils.otherutils import create_file_descriptor
 
 app = Flask(__name__)
 api = Api(app)
-Gzip(app)
+Gzip(app, compress_level=cfg.GZIP_LEVEL, minimum_size=cfg.GZIP_MIN_SIZE)
 app.config['JSON_SORT_KEYS'] = False
 
 mongoutils.index_non_pii_data()

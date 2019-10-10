@@ -20,3 +20,6 @@ PII_DB_PII_COLL_NAME = 'PiiDataset'
 FIELD_OBJECTID = '_id'
 FIELD_PROFILE_UUID = 'uuid'
 FIELD_PID = 'pid'
+
+GZIP_LEVEL = int(os.getenv('GZIP_LEVEL', '6'))
+GZIP_MIN_SIZE = int(os.getenv('GZIP_MIN_SIZE', '102400'))

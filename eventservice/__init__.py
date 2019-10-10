@@ -11,7 +11,7 @@ def create_app():
     app.register_blueprint(event_rest_service.bp)
     app.config.from_pyfile('config.py', silent=True)
 
-    Gzip(app)
+    Gzip(app, compress_level=app.config['GZIP_LEVEL'], minimum_size=app.config['GZIP_MIN_SIZE'])
     # Connect to database
     db.init_db(app)
 
