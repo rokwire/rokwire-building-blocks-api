@@ -3,7 +3,9 @@ import os
 import json
 import logging
 import flask
+import flask.json
 import auth_middleware
+import pymongo
 
 from bson import ObjectId
 from .db import get_db
@@ -11,9 +13,10 @@ from . import query_params
 from .config import URL_PREFIX
 from .images.s3 import S3EventsImages
 from .images import localfile
-from flask import Blueprint, request, make_response, send_file, abort, current_app
+from flask import Blueprint, request, make_response, redirect, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
+from .cache import memoize, memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -43,23 +46,37 @@ def get_tags():
 @bp.route('/categories', methods=['GET'])
 def get_categories():
     auth_middleware.verify_secret(request)
-    results = list()
+
     try:
-        db = get_db()
-        for data_tuple in db['categories'].find({}, {'_id': 0}):
-            results.append(data_tuple)
+        result, result_len = _get_categories_result()
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+
+    __logger.debug("[GET]: %s nRecords = %d ", request.url, result_len)
+    return current_app.response_class(result, mimetype='application/json')
+
+@memoize(**CACHE_GET_CATEGORIES)
+def _get_categories_result():
+    """
+    Perform the get_categories query and return the serialized results. This is
+    its own function to enable caching to work.
+
+    Returns: (string, count)
+    """
+    db = get_db()
+    cursor = db['categories'].find(
+        {},
+        {'_id': 0}
+    ).sort('category', pymongo.ASCENDING)
+
+    categories = list(cursor)
+    return flask.json.dumps(categories), len(categories)
 
 
 @bp.route('/', methods=['GET'])
 def get_events():
     auth_middleware.verify_secret(request)
-    results = list()
     args = request.args
     query = dict()
     try:
@@ -67,27 +84,49 @@ def get_events():
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    if query:
-        try:
-            db = get_db()
-            events = db['events'].find(query, {'coordinates': 0, 'categorymainsub': 0})
-            if args.get('limit') and args.get('skip'):
-                events = events.limit(int(args.get('limit'))).skip(int(args.get('skip')))
-            elif args.get('limit'):
-                events = events.limit(int(args.get('limit')))
-            elif args.get('skip'):
-                events = events.limit(int(args.get('skip')))
-            for data_tuple in events:
-                data_tuple['id'] = str(data_tuple['_id'])
-                del data_tuple['_id']
-                results.append(data_tuple)
-        except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
 
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+    try:
+        result, result_len = _get_events_result(
+            query,
+            args.get('limit', 0, int),
+            args.get('skip', 0, int)
+        )
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    __logger.debug("[GET]: %s nRecords = %d ", request.url, result_len)
+    return current_app.response_class(result, mimetype='application/json')
+
+@memoize_query(**CACHE_GET_EVENTS)
+def _get_events_result(query, limit, skip):
+    """
+    Perform the get_events query and return the serialized results. This is
+    its own function to enable caching to work.
+
+    Returns: (string, count)
+    """
+    if not query:
+        return []
+
+    db = get_db()
+    cursor = db['events'].find(
+        query,
+        {'coordinates': 0, 'categorymainsub': 0}
+    ).sort([
+        ('startDate', pymongo.ASCENDING),
+        ('endDate', pymongo.ASCENDING),
+    ])
+    if limit > 0:
+        cursor = cursor.limit(limit)
+    if skip > 0:
+        cursor = cursor.skip(skip)
+
+    events = []
+    for event in cursor:
+        event['id'] = str(event.pop('_id'))
+        events.append(event)
+    return flask.json.dumps(events), len(events)
 
 
 @bp.route('/', methods=['POST'])
@@ -109,7 +148,7 @@ def post_events():
         db = get_db()
         event_id = db['events'].insert(req_data)
         msg = "[POST]: event record created: id = %s" % str(event_id)
-        __logger.info(msg)
+        __logger.debug(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -182,7 +221,7 @@ def partial_update_event(event_id):
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
         msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
-        __logger.info(msg)
+        __logger.debug(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -195,19 +234,34 @@ def get_event(event_id):
 
     if not ObjectId.is_valid(event_id):
         abort(400)
-    event = dict()
-    try:
-        db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 0, 'categorymainsub': 0})
 
-        msg = "[Get Event]: event id %s" % (str(event_id))
-        __logger.info(msg)
+    try:
+        result, result_found = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    if not event:
+
+    if not result_found:
         abort(404)
-    return flask.jsonify(event)
+
+    __logger.debug("[Get Event]: event id %s", event_id)
+    return current_app.response_class(result, mimetype='application/json')
+
+@memoize_query(**CACHE_GET_EVENT)
+def _get_event_result(query):
+    """
+    Perform the get_event query and return the serialized results. This is
+    its own function to enable caching to work.
+
+    Returns: (string, found)
+    """
+    db = get_db()
+    event = db['events'].find_one(
+        query,
+        {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
+    )
+
+    return flask.json.dumps(event), (not event is None)
 
 
 @bp.route('/<event_id>', methods=['DELETE'])
@@ -220,7 +274,7 @@ def delete_event(event_id):
         db = get_db()
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
         msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
-        __logger.info(msg)
+        __logger.debug(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -230,25 +284,22 @@ def delete_event(event_id):
 
 @bp.route('/<event_id>/images/<image_id>', methods=['GET'])
 def download_imagefile(event_id, image_id):
-    auth_middleware.verify_secret(request)
+    # TODO: add in again when the client starts sending the API key for this
+    # endpoint
+    #auth_middleware.verify_secret(request)
 
-    msg = "[download image]: event id %s, status: 200" % (str(event_id))
-    tmp_file = None
-    try:
-        tmp_file = S3EventsImages().download(event_id, image_id)
-        with open(tmp_file, 'rb') as f:
-            return send_file(
-                io.BytesIO(f.read()),
-                attachment_filename=event_id + "." + image_id+'.jpg',
-                mimetype='image/jpg'
-            )
-    except Exception as ex:
-        __logger.exception(ex)
-        msg = "[download image]: event id %s, status: %d" % (str(event_id), 500)
-        abort(500)
-    finally:
-        __logger.info(msg)
-        localfile.deletefile(tmp_file)
+    if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
+        abort(400)
+
+    url = current_app.config['IMAGE_URL'].format(
+        bucket=current_app.config['BUCKET'],
+        region=os.getenv('AWS_DEFAULT_REGION'),
+        prefix=current_app.config['AWS_IMAGE_FOLDER_PREFIX'],
+        event_id=event_id,
+        image_id=image_id,
+    )
+    __logger.debug("[download image] redirect to %s", url)
+    return redirect(url, code=302)
 
 
 @bp.route('/<event_id>/images/<image_id>', methods=['PUT'])
@@ -280,7 +331,7 @@ def put_imagefile(event_id, image_id):
         abort(500)
     finally:
         localfile.deletefile(tmpfile)
-    
+
     return success_response(200, msg, str(image_id))
 
 
@@ -288,25 +339,33 @@ def put_imagefile(event_id, image_id):
 def get_imagefiles(event_id):
     auth_middleware.verify_secret(request)
 
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+
     try:
-        db = get_db()
-        result = db[current_app.config['IMAGE_COLLECTION']].find(
-            filter={
-                'eventId': event_id
-            }, 
-            projection={
-                '_id': True
-            }
-        )
-        if result:
-            imageid_list = [str(x['_id']) for x in result]
-        else:
-            imageid_list = []
-        msg = "[get images]: find %d images related to event %s" % (len(imageid_list), event_id)
+        result = _get_imagefiles_result({'eventId': event_id})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    return success_response(200, msg, imageid_list)
+
+    msg = "[get images]: find %d images related to event %s" % (len(result), event_id)
+    return success_response(200, msg, result)
+
+@memoize_query(**CACHE_GET_EVENTIMAGES)
+def _get_imagefiles_result(query):
+    """
+    Perform the get_imagefiles query and return the results. This is
+    its own function to enable caching to work.
+
+    Returns: result
+    """
+    db = get_db()
+    cursor = db[current_app.config['IMAGE_COLLECTION']].find(
+        query,
+        {'_id': 1}
+    )
+
+    return [str(i['_id']) for i in cursor]
 
 
 @bp.route('/<event_id>/images', methods=['POST'])

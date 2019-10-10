@@ -10,6 +10,6 @@ def create_app():
     app.register_blueprint(event_rest_service.bp)
     app.config.from_pyfile('config.py', silent=True)
     # Connect to database
-    db.init_app(app)
+    db.init_db(app)
 
     return app

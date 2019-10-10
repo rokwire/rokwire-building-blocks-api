@@ -4,10 +4,11 @@ import re
 
 from bson import ObjectId
 from appconfig import db as conn
-from appconfig import dbutils 
+from appconfig import dbutils
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 from time import gmtime
+from .cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 import pymongo
 import auth_middleware
 
@@ -18,54 +19,87 @@ __logger = logging.getLogger("app_config_building_block")
 
 bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
+
 @bp.route('/', methods=['GET'])
 def get_app_configs():
     auth_middleware.verify_secret(request)
-    results = list()
     args = request.args
-    query = dict()
+
     version = args.get('mobileAppVersion')
     if version and dbutils.check_appversion_format(version) == False:
         abort(404)
+
+    query = dict()
     try:
         query = format_query(args, query)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
     try:
-        db = conn.get_db()
-        if version:
-            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]).limit(1):
-                config = decode(document)
-                results.append(config)
-        else:
-            for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find(query, {"version_numbers": 0}).sort([("version_numbers.major", pymongo.DESCENDING), ("version_numbers.minor", pymongo.DESCENDING), ("version_numbers.patch", pymongo.DESCENDING)]):
-                config = decode(document)
-                results.append(config)
+        result = _get_app_configs_result(query, version)
     except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+        __logger.exception(ex)
+        abort(500)
+
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
+
+@memoize_query(**CACHE_GET_APPCONFIGS)
+def _get_app_configs_result(query, version):
+    """
+    Perform the get_app_configs query and return the results. This is
+    its own function to enable caching to work.
+
+    Returns: result
+    """
+    db = conn.get_db()
+    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
+        query,
+        {"version_numbers": 0}
+    ).sort([
+        ("version_numbers.major", pymongo.DESCENDING),
+        ("version_numbers.minor", pymongo.DESCENDING),
+        ("version_numbers.patch", pymongo.DESCENDING)
+    ])
+    if version:
+        cursor = cursor.limit(1)
+
+    return [decode(c) for c in cursor]
+
 
 @bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
     auth_middleware.verify_secret(request)
-    results = list()
+
     if not ObjectId.is_valid(id):
         abort(400)
+
     try:
-        db = conn.get_db()
-        for document in db[current_app.config['APP_CONFIGS_COLLECTION']].find({"_id": ObjectId(id)}, {"version_numbers": 0}):
-            config = decode(document)
-            results.append(config)
+        result = _get_app_config_by_id_result({"_id": ObjectId(id)})
     except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
-    msg = "[GET]: %s nRecords = %d " % (request.url, len(results))
-    __logger.info(msg)
-    return flask.jsonify(results)
+        __logger.exception(ex)
+        abort(500)
+
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
+
+@memoize_query(**CACHE_GET_APPCONFIG)
+def _get_app_config_by_id_result(query):
+    """
+    Perform the get_app_config_by_id query and return the results. This is
+    its own function to enable caching to work.
+
+    Returns: result
+    """
+    db = conn.get_db()
+    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
+        query,
+        {"version_numbers": 0}
+    )
+
+    return [decode(c) for c in cursor]
+
 
 @bp.route('/', methods=['POST'])
 def post_app_config():
@@ -212,18 +246,17 @@ def add_version_numbers(req_data):
     version = req_data['mobileAppVersion']
     version_numbers = dbutils.create_version_numbers(version)
     req_data['version_numbers'] = version_numbers
-    
+
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
             req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
             req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
-    
+
 def decode(document):
-    oid = document['_id']
+    oid = document.pop('_id')
     if isinstance(oid, ObjectId):
         oid = str(oid)
     document['id'] = oid
-    del document['_id']  # Remove _id field from the dictionary
     return document
