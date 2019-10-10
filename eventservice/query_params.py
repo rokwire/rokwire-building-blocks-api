@@ -1,0 +1,137 @@
+import datetime
+import re
+
+
+def format_query(args, query):
+    query_parts = []
+    # title text query
+    if args.getlist('title'):
+        titles = ' '.join(['"%s"' % t for t in args.getlist('title')])
+        query_parts.append({'$text': {'$search': titles}})
+    # recurrenceId query
+    if args.get('recurrenceId'):
+        query_parts.append({'recurrenceId': {'$eq': int(args.get('recurrenceId'))}})
+    # category query
+    if args.getlist('category'):
+        category_main = []
+        category_mainSub = []
+        for category in args.getlist('category'):
+            if len(category.split('.')) == 2:
+                category_mainSub.append(category)
+            else:
+                category_main.append(category)
+
+        # Sort the categories for better caching
+        category_main = sorted(category_main)
+        category_mainSub = sorted(category_mainSub)
+
+        if category_main and category_mainSub:
+            # If we have both a main and sub categories then use an $or
+            # and search on both of the columns (so that indexes can
+            # be used).
+            query_parts.append({'$or': [
+                {'category': {'$in': category_main}},
+                {'categorymainsub': {'$in': category_mainSub}},
+            ]})
+        elif category_main:
+            query_parts.append({'category': {'$in': category_main}})
+        elif category_mainSub:
+            query_parts.append({'categorymainsub': {'$in': category_mainSub}})
+    # tags query
+    if args.getlist('tags'):
+        query_parts.append({'tags': {'$in': sorted(args.getlist('tags'))}})
+    # target audience query
+    # TODO: temporarily turn off targetAudience search
+    # if args.get('targetAudience'):
+    #    query['targetAudience'] = {'$in': args.getlist('targetAudience')}
+    # datetime range query
+    if args.get('startDate'):
+        value = datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$gte': value}})
+    if args.get('endDate'):
+        value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the next highest 15min. This uses timedelta in case the
+        # minute calculation turns out to be 60
+        value = value + datetime.timedelta(
+            minutes=((15 - value.minute) % 15),
+            seconds=-value.second,
+            microseconds=-value.microsecond
+        )
+        query_parts.append({'endDate': {'$lte': value}})
+    # geolocation query
+    if args.get('latitude') and args.get('longitude') and args.get('radius'):
+        # Round to a 100m box to improve caching
+        coordinates = [
+            round(float(args.get('longitude')), 3),
+            round(float(args.get('latitude')), 3)
+        ]
+        radius_meters = int(args.get('radius'))
+        query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
+
+    if query_parts:
+        query['$and'] = query_parts
+    return query
+
+
+def required_check(req_data):
+    if req_data['startDate'] is None or req_data['title'] is None or req_data['category'] is None:
+        return False
+    return True
+
+
+def formate_datetime(req_data):
+    if req_data.get('startDate'):
+        start_date = req_data.get('startDate')
+        req_data['startDate'] = datetime.datetime.strptime(start_date, "%Y/%m/%dT%H:%M:%S")
+    if req_data.get('endDate'):
+        end_date = req_data.get('endDate')
+        req_data['endDate'] = datetime.datetime.strptime(end_date, "%Y/%m/%dT%H:%M:%S")
+    return req_data
+
+
+def formate_location(req_data):
+    if req_data.get('location'):
+        loc = req_data.get('location')
+        if loc.get('longitude') and loc.get('latitude'):
+            req_data['coordinates'] = [loc.get('longitude'), loc.get('latitude')]
+    return req_data
+
+
+def formate_category(req_data):
+    if req_data.get('category') and req_data.get('subcategory'):
+        req_data['categorymainsub'] = req_data.get('category') + '.' + req_data.get('subcategory')
+    elif req_data.get('category'):
+        req_data['categorymainsub'] = req_data.get('category')
+    return req_data
+
+
+def update_category(req_data, data_tuple):
+    if req_data.get('category') or req_data.get('subcategory'):
+        category_main = ''
+        category_sub = ''
+        if data_tuple.get('categorymainsub'):
+            category_main = data_tuple.get('categorymainsub').split('.')[0]
+            if len(data_tuple.get('categorymainsub').split('.')) == 2:
+                category_sub = data_tuple.get('categorymainsub').split('.')[1]
+        if req_data.get('category'):
+            category_main = req_data.get('category')
+        if req_data.get('subcategory'):
+            category_sub = req_data.get('subcategory')
+        req_data['categorymainsub'] = category_main + "." + category_sub
+    return req_data
+
+
+def update_coordinates(req_data, coordinates):
+    if req_data.get('location.latitude'):
+        coordinates[1] = req_data.get('location.latitude')
+        req_data['coordinates'] = coordinates
+
+    if req_data.get('location.longitude'):
+        coordinates[0] = req_data.get('location.longitude')
+        req_data['coordinates'] = coordinates
