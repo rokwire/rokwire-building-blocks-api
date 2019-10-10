@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
-rokwire_api_key_value = os.getenv('ROKWIRE_API_KEY')
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
 rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
@@ -187,7 +186,7 @@ def verify_secret(request):
     if not key:
         logger.warning("Request missing the " + rokwire_api_key_header + " header")
         abort(400)  # missing header means bad request
-    if key == rokwire_api_key_value:
+    if (key == os.getenv('ROKWIRE_API_KEY')):
         return True
     abort(401)  # failed matching means unauthorized in this context.
 
