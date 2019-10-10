@@ -12,7 +12,7 @@ CACHE_GET_DEFAULT    = os.getenv("CACHE_GET_DEFAULT", '{"expire": 600}')
 CACHE_GET_APPCONFIGS = json.loads(os.getenv("CACHE_GET_APPCONFIGS", CACHE_GET_DEFAULT))
 CACHE_GET_APPCONFIG  = json.loads(os.getenv("CACHE_GET_APPCONFIG", CACHE_GET_DEFAULT))
 
-CACHE_SETTINGS.setdefault('size_limit', 9 * 1025 * 1024 * 1024) # 9GB cache
+CACHE_SETTINGS.setdefault('size_limit', 3.5 * 1025 * 1024 * 1024) # 3.5GB cache
 cache = diskcache.Cache(
     directory=CACHE_DIRECTORY,
     **CACHE_SETTINGS,
