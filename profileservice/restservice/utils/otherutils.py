@@ -1,6 +1,8 @@
 import hashlib
 import os
 import urllib
+
+from datetime import datetime
 from mimetypes import MimeTypes
 
 from bson import ObjectId
@@ -61,6 +63,15 @@ def create_file_descriptor(data_repo_dir, file):
     fd.set_md5sum(hash_md5.hexdigest())
 
     return fd
+
+"""
+convert utd time format for rokwire
+"""
+def get_current_time_utc():
+    currenttime = datetime.utcnow()
+    (formattedtime, micro) = currenttime.strftime('%Y-%m-%dT%H:%M:%S.%f').split('.')
+    formattedtime = "%s.%03dZ" % (formattedtime, int(micro) / 1000)
+    return formattedtime
 
 """
 check privacy level to see if they are correct value
