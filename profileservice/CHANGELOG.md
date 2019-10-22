@@ -53,6 +53,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#187](https://github.com/rokwire/rokwire-building-blocks-api/issues/197)
 - modified profiles building block's log to show the endpoint information
 [#244](https://github.com/rokwire/rokwire-building-blocks-api/issues/244)
+- created a method for checking the id information by comparing id token and db information
+[#66](https://github.com/rokwire/rokwire-building-blocks-api/issues/66)
+- information in the id token is used for creating and updating the pii dataset
+[#257](https://github.com/rokwire/rokwire-building-blocks-api/issues/257)
 
 ### Fixed
 
