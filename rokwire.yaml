@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Platform API
   description: Rokwire Platform API Documentation
-  version: 0.0.1
+  version: 1.0.1
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
