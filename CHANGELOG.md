@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2019-10-30
+### Fixed
+- Updated CHANGELOGs with release information. [#256](https://github.com/rokwire/rokwire-building-blocks-api/issues/265)
+
+## [1.0.0] - 2019-10-10
 ### Added
 - Add Docker env for AWS fargate deploy
 - Add recurring event search
