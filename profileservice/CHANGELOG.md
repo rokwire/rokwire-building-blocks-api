@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1 - 2019-04-19
+## 1.0.0 - 2019-10-10
 ### Added
 - creaste profile data model boiler plate.
 [SCCI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
@@ -57,6 +57,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#66](https://github.com/rokwire/rokwire-building-blocks-api/issues/66)
 - information in the id token is used for creating and updating the pii dataset
 [#257](https://github.com/rokwire/rokwire-building-blocks-api/issues/257)
-
-### Fixed
-
