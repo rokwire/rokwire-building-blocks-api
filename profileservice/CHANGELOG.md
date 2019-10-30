@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0.0 - 2019-10-10
 ### Added
-- creaste profile data model boiler plate.
+- create profile data model boiler plate.
 [SCCI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
 - created profile restservice boiler plate.
 [SCCI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
@@ -29,10 +29,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ### Changed
-[SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
 - separated non-pii data and pii data
-[SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
+[SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
 - separated non-pii and pii database
+[SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
 - image update and fileDescriptor moved to pii from non-pii
 [#72](https://github.com/rokwire/rokwire-building-blocks-api/issues/72)
 - separated non-pii and pii database url
