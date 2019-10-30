@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] - 2019-10-30
 ### Changed
-- Updated version number and server URLs in API definition. [#259]()
+- Updated version number and server URLs in API definition. [#269](https://github.com/rokwire/rokwire-building-blocks-api/issues/269)
 
 ## [1.0.1] - 2019-10-30
 ### Fixed
