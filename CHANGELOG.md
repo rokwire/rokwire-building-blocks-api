@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+- Update Events Service Readme to add CACHE_DIRECTORY
+
 ## [1.0.1] - 2019-10-30
 ### Fixed
 - Updated CHANGELOGs with release information. [#256](https://github.com/rokwire/rokwire-building-blocks-api/issues/265)
