@@ -3,42 +3,79 @@ import re
 
 
 def format_query(args, query):
+    query_parts = []
     # title text query
     if args.getlist('title'):
-        titles = ''
-        for title in args.getlist('title'):
-            titles += "\"%s\" " % title
-        query['$text'] = {'$search': titles}
+        titles = ' '.join(['"%s"' % t for t in args.getlist('title')])
+        query_parts.append({'$text': {'$search': titles}})
     # recurrenceId query
     if args.get('recurrenceId'):
-        query['recurrenceId'] = {'$eq': int(args.get('recurrenceId'))}
+        query_parts.append({'recurrenceId': {'$eq': int(args.get('recurrenceId'))}})
     # category query
     if args.getlist('category'):
-        category_query = list()
+        category_main = []
+        category_mainSub = []
         for category in args.getlist('category'):
             if len(category.split('.')) == 2:
-                category_query.append(category)
+                category_mainSub.append(category)
             else:
-                wildcard = re.compile("^" + category.split('.')[0] + ".*")
-                category_query.append(wildcard)
-        query['categorymainsub'] = {'$in': category_query}
+                category_main.append(category)
+
+        # Sort the categories for better caching
+        category_main = sorted(category_main)
+        category_mainSub = sorted(category_mainSub)
+
+        if category_main and category_mainSub:
+            # If we have both a main and sub categories then use an $or
+            # and search on both of the columns (so that indexes can
+            # be used).
+            query_parts.append({'$or': [
+                {'category': {'$in': category_main}},
+                {'categorymainsub': {'$in': category_mainSub}},
+            ]})
+        elif category_main:
+            query_parts.append({'category': {'$in': category_main}})
+        elif category_mainSub:
+            query_parts.append({'categorymainsub': {'$in': category_mainSub}})
     # tags query
     if args.getlist('tags'):
-        query['tags'] = {'$in': args.getlist('tags')}
+        query_parts.append({'tags': {'$in': sorted(args.getlist('tags'))}})
     # target audience query
     # TODO: temporarily turn off targetAudience search
     # if args.get('targetAudience'):
     #    query['targetAudience'] = {'$in': args.getlist('targetAudience')}
     # datetime range query
     if args.get('startDate'):
-        query['startDate'] = {'$gte': datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")}
+        value = datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$gte': value}})
     if args.get('endDate'):
-        query['endDate'] = {'$lte': datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")}
+        value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the next highest 15min. This uses timedelta in case the
+        # minute calculation turns out to be 60
+        value = value + datetime.timedelta(
+            minutes=((15 - value.minute) % 15),
+            seconds=-value.second,
+            microseconds=-value.microsecond
+        )
+        query_parts.append({'endDate': {'$lte': value}})
     # geolocation query
     if args.get('latitude') and args.get('longitude') and args.get('radius'):
-        coordinates = [float(args.get('longitude')), float(args.get('latitude'))]
+        # Round to a 100m box to improve caching
+        coordinates = [
+            round(float(args.get('longitude')), 3),
+            round(float(args.get('latitude')), 3)
+        ]
         radius_meters = int(args.get('radius'))
-        query['coordinates'] = {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}
+        query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
+
+    if query_parts:
+        query['$and'] = query_parts
     return query
 
 
