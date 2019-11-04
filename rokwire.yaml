@@ -2,12 +2,14 @@ openapi: 3.0.0
 info:
   title: Rokwire Platform API
   description: Rokwire Platform API Documentation
-  version: 0.0.1
+  version: 1.0.2
 servers:
-- url: https://api.rokwire.illinois.edu/v1
-  description: Production instance (tentative URL - might get changed based on discussions)
-- url: https://api-dev.rokwire.illinois.edu/v1
-  description: Development instance (tentative URL - might get changed based on discussions)
+- url: https://api.rokwire.illinois.edu
+  description: Production server
+- url: https://api-test.rokwire.illinois.edu
+  description: Test server
+- url: https://api-dev.rokwire.illinois.edu
+  description: Development server
 tags:
 - name: Profile
   description: API endpoints for managing non-PII user profile.
