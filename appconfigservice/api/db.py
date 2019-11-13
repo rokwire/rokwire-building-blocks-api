@@ -1,8 +1,9 @@
+import pymongo
 from flask import current_app, g
 from pymongo.mongo_client import MongoClient
-import pymongo
 
 client = None
+
 
 def get_db():
     if 'db' not in g:

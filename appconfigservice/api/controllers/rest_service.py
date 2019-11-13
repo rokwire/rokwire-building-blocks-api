@@ -1,16 +1,17 @@
 import logging
-import flask
 import re
+from time import gmtime
 
-from bson import ObjectId
+import auth_middleware
+import flask
+import pymongo
 from appconfig import db as conn
 from appconfig import dbutils
+from bson import ObjectId
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
-from time import gmtime
+
 from appconfigservice.api.models import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
-import pymongo
-import auth_middleware
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -44,6 +45,7 @@ def get_app_configs():
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
+
 
 @memoize_query(**CACHE_GET_APPCONFIGS)
 def _get_app_configs_result(query, version):
@@ -83,6 +85,7 @@ def get_app_config_by_id(id):
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
+
 
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
@@ -144,6 +147,7 @@ def update_app_config(id):
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
+
 
 @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
@@ -216,6 +220,7 @@ def server_405_error(error=None):
     resp.status_code = 405
     return resp
 
+
 @bp.errorhandler(500)
 def server_500_error(error=None):
     message = {
@@ -225,6 +230,7 @@ def server_500_error(error=None):
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
+
 
 def format_query(args, query):
     """
@@ -236,23 +242,30 @@ def format_query(args, query):
     if version is not None and dbutils.check_appversion_format(version):
         m = re.match(dbutils.VERSION_NUMBER_REGX, version)
         query = {'$or': [
-            {'version_numbers.major': {'$lt' : int(m.group(1))}},
-            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
-            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}}, {'version_numbers.minor': {'$eq': int(m.group(2))}}, {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
+            {'version_numbers.major': {'$lt': int(m.group(1))}},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}},
+                      {'version_numbers.minor': {'$lt': int(m.group(2))}}]},
+            {'$and': [{'version_numbers.major': {'$eq': int(m.group(1))}},
+                      {'version_numbers.minor': {'$eq': int(m.group(2))}},
+                      {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
         ]}
     return query
+
 
 def add_version_numbers(req_data):
     version = req_data['mobileAppVersion']
     version_numbers = dbutils.create_version_numbers(version)
     req_data['version_numbers'] = version_numbers
 
+
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
             req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
-            req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
+            req_data['secretKeys'] is None or (
+            req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
+
 
 def decode(document):
     oid = document.pop('_id')

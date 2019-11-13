@@ -1,6 +1,7 @@
-from flask import Flask
 from appconfig import db
 from appconfig import rest_service
+from flask import Flask
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
