@@ -30,6 +30,12 @@ AWS_ACCESS_KEY_ID=<AWS Access Key ID>
 AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
+You also need to set CACHE_DIRECTORY to a valid file folder.
+For example:
+```
+CACHE_DIRECTORY=yourlocalfilefolder
+```
+
 ## Run in Development Mode
 
 ```
