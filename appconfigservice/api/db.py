@@ -14,7 +14,7 @@ def init_db(app):
     global client
     client = MongoClient(app.config['APP_CONFIG_MONGO_URL'])
 
-    # Create indexes on app start
+    # Create indexes on api start
     db = client.get_database(name=app.config['APP_CONFIG_DB_NAME'])
     app_configs = db[app.config['APP_CONFIGS_COLLECTION']]
     app_configs.create_index([("mobileAppVersion", pymongo.DESCENDING)], unique=True)

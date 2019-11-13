@@ -7,9 +7,9 @@ setup(
     version='1.0.0',
     maintainer='Xiaoxia Liao',
     maintainer_email='xialiao@illinois.edu',
-    description='The app config building block',
-    package_dir={'': 'app'},
-    packages=find_namespace_packages(where='app'),
+    description='The api config building block',
+    package_dir={'': 'api'},
+    packages=find_namespace_packages(where='api'),
     include_package_data=True,
     zip_safe=False,
     install_requires=[

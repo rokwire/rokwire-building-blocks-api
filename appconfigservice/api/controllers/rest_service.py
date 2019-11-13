@@ -8,7 +8,7 @@ from appconfig import dbutils
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 from time import gmtime
-from .cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
+from appconfigservice.api.models import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 import pymongo
 import auth_middleware
 
@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("app_config_building_block")
 
-bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
+bp = Blueprint('app_config_rest_service', __name__, url_prefix='/api/configs')
 
 
 @bp.route('/', methods=['GET'])
@@ -112,7 +112,7 @@ def post_app_config():
         db = conn.get_db()
         add_version_numbers(req_data)
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
-        msg = "[POST]: app config document created: id = %s" % str(app_config_id)
+        msg = "[POST]: api config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
     except DuplicateKeyError as err:
         __logger.error(err)
@@ -136,7 +136,7 @@ def update_app_config(id):
         db = conn.get_db()
         add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
-        msg = "[PUT]: app config id %s, nUpdate = %d " % (str(id), status.modified_count)
+        msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(500)
@@ -154,7 +154,7 @@ def delete_app_config(id):
     try:
         db = conn.get_db()
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].delete_one({'_id': ObjectId(id)})
-        msg = "[DELETE]: app config id %s, nDelete = %d " % (str(id), status.deleted_count)
+        msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
@@ -199,7 +199,7 @@ def server_401_error(error=None):
 def server_404_error(error=None):
     message = {
         'status': 404,
-        'message': 'App config not found : ' + request.url + '. If search by mobile app version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
+        'message': 'App config not found : ' + request.url + '. If search by mobile api version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
     }
     resp = flask.jsonify(message)
     resp.status_code = 404
