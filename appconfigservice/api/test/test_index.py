@@ -1,7 +1,8 @@
 import json
 
-from .. import db as conn
 from flask import current_app
+
+from .. import db as conn
 
 
 def test_post_dup_version(client, app):

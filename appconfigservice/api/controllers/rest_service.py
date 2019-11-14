@@ -2,16 +2,16 @@ import logging
 import re
 from time import gmtime
 
-import lib.auth_middleware
+import auth_middleware
 import flask
 import pymongo
-from .. import db as conn
-from ..utils import dbutils
 from bson import ObjectId
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 
+from .. import db as conn
 from ..cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
+from ..utils import dbutils
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
