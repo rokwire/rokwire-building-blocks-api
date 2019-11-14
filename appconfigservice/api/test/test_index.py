@@ -1,6 +1,6 @@
 import json
 
-from appconfig import db as conn
+from .. import db as conn
 from flask import current_app
 
 

@@ -1,4 +1,4 @@
-from appconfig import dbutils
+from ..utils import dbutils
 
 
 def test_valid_appversion():

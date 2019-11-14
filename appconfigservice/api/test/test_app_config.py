@@ -1,8 +1,7 @@
 import json
-
 import pytest
-from appconfig import create_app
-from appconfig import db as conn
+from ..models import create_app
+from .. import db as conn
 from flask import current_app
 
 

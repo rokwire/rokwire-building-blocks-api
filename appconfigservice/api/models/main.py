@@ -1,4 +1,4 @@
-from appconfig import create_app
+from . import create_app
 
 if __name__ in ['__main__', 'appconfig.main']:
     app = create_app()

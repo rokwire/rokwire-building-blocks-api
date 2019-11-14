@@ -1,5 +1,5 @@
-from appconfig import db
-from appconfig import rest_service
+from .. import db
+from ..controllers import rest_service
 from flask import Flask
 
 
