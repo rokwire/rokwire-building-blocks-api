@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#66](https://github.com/rokwire/rokwire-building-blocks-api/issues/66)
 - information in the id token is used for creating and updating the pii dataset
 [#257](https://github.com/rokwire/rokwire-building-blocks-api/issues/257)
+- refactored using connexion
+[#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
 
 ### Fixed
 
