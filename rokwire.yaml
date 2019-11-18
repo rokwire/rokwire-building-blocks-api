@@ -12,17 +12,17 @@ servers:
   description: Development server
 tags:
 - name: Profile
-  description: API endpoints for managing non-PII user profile.
+  description: API endpoints of the Profile building block that manages Non-Personally Identifiable Information (Non-PII) in the user's profile.
 - name: PII
-  description: API endpoints for managing PII user profile.
+  description: API endpoints of the Profile building block that manages Personally Identifiable Information (PII) in the user's profile.
 - name: Events
-  description: API endpoints for managing events.
+  description: API endpoints of the Events building block that managing events.
 - name: App Configuration
-  description: API endpoints for managing mobile app configuration
+  description: API endpoints of the App Config building block that manages mobile app configuration details.
 - name: Logs
-  description: API endpoints for managing logs
+  description: API endpoints of the Logging building block that manages logs.
 - name: Authentication
-  description: API endpoints for managing user phone number verification.
+  description: API endpoints of the Authentication building block that manages user's phone number verification.
 paths:
   /profiles:
     post:
