@@ -1,14 +1,13 @@
 import logging
 import re
-from time import gmtime
-
-import auth_middleware
 import flask
 import pymongo
+from time import gmtime
 from bson import ObjectId
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 
+import auth_middleware
 from .. import db as conn
 from ..cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 from ..utils import dbutils
@@ -18,7 +17,7 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("app_config_building_block")
 
-bp = Blueprint('app_config_rest_service', __name__, url_prefix='/api/configs')
+bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
 
 @bp.route('/', methods=['GET'])
