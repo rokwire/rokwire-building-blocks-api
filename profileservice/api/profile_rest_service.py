@@ -5,7 +5,7 @@ import controllers.configs as cfg
 from time import gmtime
 from rokwireresolver import RokwireResolver
 
-debug = True
+debug = cfg.DEBUG
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
