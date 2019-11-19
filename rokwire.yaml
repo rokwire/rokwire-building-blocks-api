@@ -33,8 +33,8 @@ paths:
         Create non-PII profile with profile id.
         
         Auth: Requires a valid API Key for access.
-#      security:
-#        - ApiKeyAuth: []
+      security:
+        - ApiKeyAuth: []
 #      requestBody:
 #        description: Created profile object
 #        content:
@@ -64,8 +64,8 @@ paths:
         Returns a single profile
         
         Auth: Requires a valid API Key and profile uuid for access.
-#      security:
-#        - ApiKeyAuth: []
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -99,8 +99,8 @@ paths:
       summary: Updates a profile with form data
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-#      security:
-#        - ApiKeyAuth: []
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -141,8 +141,8 @@ paths:
       summary: Deletes a profile
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-#      security:
-#        - ApiKeyAuth: []
+      security:
+        - ApiKeyAuth: []
       parameters:
       - name: uuid
         in: path
@@ -172,8 +172,8 @@ paths:
         This creates a new PII entry.
 
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
-#      security:
-#        - UserAuth: []
+      security:
+        - UserAuth: []
       responses:
         200:
           description: Ok
@@ -196,8 +196,8 @@ paths:
         Returns a single PII entry.
 
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-#      security:
-#        - UserAuth: []
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
@@ -231,8 +231,8 @@ paths:
       summary: Updates a PII with form data
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
-#      security:
-#        - UserAuth: []
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
@@ -273,8 +273,8 @@ paths:
       summary: Deletes a PII
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
-#      security:
-#        - UserAuth: []
+      security:
+        - UserAuth: []
       parameters:
       - name: pid
         in: path
