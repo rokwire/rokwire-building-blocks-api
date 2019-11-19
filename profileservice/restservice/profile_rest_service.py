@@ -266,7 +266,8 @@ class PiiRootDir(Resource):
         self.logger = kwargs.get('logger')
 
     def get(self):
-        auth_middleware.authenticate()
+        # Requirement is that the secret is correct and later the uuid must be checked too.
+        auth_middleware.verify_secret(request)
 
         term_pid = request.args.get('pid', None)
         term_username = request.args.get('username', None)
@@ -308,12 +309,28 @@ class PiiRootDir(Resource):
         return auth_pass
 
     def post(self):
-        auth_resp = auth_middleware.authenticate()
+        in_json = auth_middleware.authenticate(auth_middleware.ALL_GROUPS)
         tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(auth_resp)
 
         is_new_entry = False
-        # Todo following variable should be revived if the email or phone number can get updated
-        # auth_pass = False
+        # NOTE: In what follows, the signed JWT is used as the source for information. As this stands now,
+        # a token issued by the phone service will only ever have that  because it never has an included uuid.
+        # This logic therefore needs to be checked.
+
+        # check if the phonenumber already exists
+        # THIS NEXT BLOCK  IS PROPOSED 11/19/2019
+#        try:
+#            phone = in_json['phone']
+#            dataset = mongoutils.get_pii_dataset_from_field('phone', phone)
+#            if dataset is not None:
+#                pid = dataset.get_pid()
+#                msg = "{\"reason\": \"Phone number already exists: " + str(pid) + "\"}"
+#                msg_json = jsonutils.create_log_json("PII", "POST", json.loads(msg))
+#                msg_json['warning'] = 'Phone number already exists: ' + request.url
+#                self.logger.error("PII POST " + json.dumps(msg_json))
+#                return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
+#        except:
+#            pass
 
         try:
             in_json = request.get_json()
