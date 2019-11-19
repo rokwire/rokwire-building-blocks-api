@@ -3,6 +3,5 @@ pymongo[tls,srv]==3.7.2
 gunicorn==19.9.0
 python-dotenv==0.10.3
 gevent==1.4.0
-dnspython==2.0.0
 
 ../lib/auth-middleware
