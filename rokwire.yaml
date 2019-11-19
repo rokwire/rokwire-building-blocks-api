@@ -309,9 +309,9 @@ paths:
     get:
       tags:
       - Events
-      summary: Get events based on different search criteria.
+      summary: Get events based on a search criteria.
       description: |
-        By passing in the appropriate options, you can search for events matching your criteria in the system
+        Search through the event records in the system by providing appropriate query terms.
         
         Auth: Requires a valid API Key for access.
       operationId: searchEvents
@@ -459,7 +459,7 @@ paths:
                   startDate: 'Mon, 05 Aug 2019 19:00:00 GMT'
                   title: Event Title 2
         400:
-          description: Bad request.
+          description: Bad Request.
         401:
           description: Unauthorized.
         500:
@@ -467,9 +467,9 @@ paths:
     post:
       tags:
         - Events
-      summary: create an event
+      summary: Create an event.
       description: |
-        create an event record into the system
+        Create an event record in the system.
         
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
@@ -482,19 +482,41 @@ paths:
       security:
         - UserAuth: []
       requestBody:
-        description: Created event object
+        description: Event request body.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Event'
+            example:
+              category: Community
+              description: Event description
+              endDate: '2019/05/02T16:00:00'
+              location:
+                latitude: 40.1078955
+                longitude: -88.224036
+                floor: 2
+                description: Event location description
+              sponsor: Event sponsor name
+              startDate: '2019/05/02T11:00:00'
+              tags:
+                - tag1
+                - tag2
+              targetAudience:
+                - students
+                - alumni
+                - faculty
+                - public
+              title: Event title
         required: true
       responses:
         201:
-          description: Events created
+          description: Event created
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Event'
+              example:
+                id: 5dd371b5b68b4236253dbe8d
+                message: '[POST]: event record created: id = 5dd371b5b68b4236253dbe8d'
+                status: 201
         400:
           description: Bad request
         401:
