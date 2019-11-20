@@ -59,13 +59,12 @@ cd profileservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-cd restservice
 export FLASK_APP=profile_rest_service
 export FLASK_ENV=development
-python profile_rest_service.py`
+python api/profile_rest_service.py`
 ```
 
-If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
+If you want to use gunicorn, cd into api folder then, use ` gunicorn profile_rest_service:app -c gunicorn.config.py` instead of `python api/profile_rest_service.py` 
 
 The profile building block should be running at http://localhost:5000
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
