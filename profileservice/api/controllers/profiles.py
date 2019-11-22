@@ -20,9 +20,8 @@ import utils.tokenutils as tokenutils
 from models.pii_data import PiiData
 from models.non_pii_data import NonPiiData
 
-def post():
-    auth_middleware.verify_secret(request)
 
+def post():
     is_new_install = True
 
     # check if uuid is in there otherwise it is either a first installation
@@ -66,8 +65,6 @@ def post():
         return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
 def get(uuid=None):
-    auth_middleware.verify_secret(request)
-
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
         return resp
@@ -80,8 +77,6 @@ def get(uuid=None):
     return out_json
 
 def put(uuid=None):
-    auth_middleware.verify_secret(request)
-
     try:
         in_json = request.get_json()
     except Exception as ex:
@@ -148,8 +143,6 @@ def put(uuid=None):
     return out_json
 
 def delete(uuid=None):
-    auth_middleware.verify_secret(request)
-
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
         return resp

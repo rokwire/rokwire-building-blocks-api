@@ -5,6 +5,7 @@ import json
 import os
 import base64
 import requests
+from connexion.exceptions import OAuthProblem
 
 from flask import request, abort
 from datetime import datetime
@@ -190,6 +191,15 @@ def verify_secret(request):
         return True
     abort(401)  # failed matching means unauthorized in this context.
 
+
+def verify_apikey(key, required_scopes=None):
+    if not key:
+        logger.warning("API key is missing the " + rokwire_api_key_header + " header")
+        raise OAuthProblem('Missing API Key')
+    if (key == os.getenv('ROKWIRE_API_KEY')):
+        return {'token_valid': True}
+    else:
+        raise OAuthProblem('Invailid API Key')
 
 
 def use_security_token_auth(func):
