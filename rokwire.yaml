@@ -1577,4 +1577,5 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      x-bearerInfoFunc: lib.auth-middleware.auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.

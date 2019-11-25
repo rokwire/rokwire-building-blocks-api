@@ -69,11 +69,42 @@ def authenticate(group_name=None, internal_token_only=False):
         logger.warning("invalid auth header. expecting 'bearer' and token with space between")
         abort(401)
     _id_token = ah_split[1]
+    id_info = verify_userauth(_id_token, group_name, internal_token_only)
+
+    return id_info
+
+
+# Checks that the request has the right secret for this. This call is used initially and assumes that
+# the header contains the x-api-key. This (trivially) returns true of the verification worked and
+# otherwise will return various other exit codes.
+def verify_secret(request):
+    key = request.headers.get(rokwire_api_key_header)
+    if not key:
+        logger.warning("Request missing the " + rokwire_api_key_header + " header")
+        abort(400)  # missing header means bad request
+    if (key == os.getenv('ROKWIRE_API_KEY')):
+        return True
+    abort(401)  # failed matching means unauthorized in this context.
+
+
+def verify_apikey(key, required_scopes=None):
+    if not key:
+        logger.warning("API key is missing the " + rokwire_api_key_header + " header")
+        raise OAuthProblem('Missing API Key')
+    if (key == os.getenv('ROKWIRE_API_KEY')):
+        return {'token_valid': True}
+    else:
+        raise OAuthProblem('Invailid API Key')
+
+def verify_userauth(id_token, group_name=None, internal_token_only=False):
+    if not id_token:
+        logger.warning("Request missing id token")
+        abort(401)
     try:
         # We need to get both the header and the payload initially as unverified since we have to
         # check their issuer, key id and a few other items before we can figure out how to unpack them
-        unverified_header = jwt.get_unverified_header(_id_token)
-        unverified_payload = jwt.decode(_id_token, verify=False)
+        unverified_header = jwt.get_unverified_header(id_token)
+        unverified_payload = jwt.decode(id_token, verify=False)
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on get unverified header. message = %s" % jwte)
         abort(401)
@@ -92,7 +123,7 @@ def authenticate(group_name=None, internal_token_only=False):
             abort(401)
         try:
             id_info = jwt.decode(
-                _id_token,
+                id_token,
                 phone_verify_secret,
                 audience=phone_verify_audience,
                 verify=True
@@ -161,7 +192,7 @@ def authenticate(group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            id_info = jwt.decode(_id_token, key=pub_key, audience=target_client_id, verify=True)
+            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             abort(401)
@@ -177,30 +208,6 @@ def authenticate(group_name=None, internal_token_only=False):
             logger.warning("user is not a member of the group " + group_name)
             abort(401)
     return id_info
-
-
-# Checks that the request has the right secret for this. This call is used initially and assumes that
-# the header contains the x-api-key. This (trivially) returns true of the verification worked and
-# otherwise will return various other exit codes.
-def verify_secret(request):
-    key = request.headers.get(rokwire_api_key_header)
-    if not key:
-        logger.warning("Request missing the " + rokwire_api_key_header + " header")
-        abort(400)  # missing header means bad request
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return True
-    abort(401)  # failed matching means unauthorized in this context.
-
-
-def verify_apikey(key, required_scopes=None):
-    if not key:
-        logger.warning("API key is missing the " + rokwire_api_key_header + " header")
-        raise OAuthProblem('Missing API Key')
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return {'token_valid': True}
-    else:
-        raise OAuthProblem('Invailid API Key')
-
 
 def use_security_token_auth(func):
     func._use_security_token_auth = True
