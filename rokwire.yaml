@@ -4,11 +4,11 @@ info:
   description: Rokwire Platform API Documentation
   version: 1.0.2
 servers:
-- url: https://controllers.rokwire.illinois.edu
+- url: https://api.rokwire.illinois.edu
   description: Production server
-- url: https://controllers-test.rokwire.illinois.edu
+- url: https://api-test.rokwire.illinois.edu
   description: Test server
-- url: https://controllers-dev.rokwire.illinois.edu
+- url: https://api-dev.rokwire.illinois.edu
   description: Development server
 tags:
 - name: Profile
@@ -881,25 +881,25 @@ paths:
                 value:
                   mobileAppVersion: "1.0.1"
                   platformBuildingBlocks: 
-                    appconfig: https://controllers.rokwire.illinois.edu/app/configs
-                    profile: https://controllers.rokwire.illinois.edu/profiles
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
                   thirdPartyServices: 
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
                   otherUniversityServices:
-                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/controllers
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
                   secretKeys: {}
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
                   platformBuildingBlocks: 
-                    appconfig: https://controllers.rokwire.illinois.edu/app/configs
-                    profile: https://controllers.rokwire.illinois.edu/profiles
+                    appconfig: https://api.rokwire.illinois.edu/app/configs
+                    profile: https://api.rokwire.illinois.edu/profiles
                   thirdPartyServices: 
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
                   otherUniversityServices: 
-                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/controllers
+                    illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
                   secretKeys: 
                     my_secret_key_1: "123abc456"
                     my_secret_key_2: "123456abc"
