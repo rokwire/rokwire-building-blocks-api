@@ -25,7 +25,7 @@ The necessary configuration should be configured in configure file (configs.py) 
 
 ## Environment File
 
-You need to have a .env file in the `restservice` directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
 Example file format:
@@ -45,25 +45,6 @@ ROKWIRE_API_KEY=<Rokwire API Key>
 ```
 
 ## Run application
-
-### Environment File
-
-You need to have a .env file in this directory that contains credentials required for authentication.
-
-Example file format:
-
-```
-SHIBBOLETH_HOST=<Shibboleth Host Name>
-SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
-
-ROKWIRE_API_KEY=<Rokwire API Key>
-ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
-
-# AWS environment variables to set when running on development machine. 
-# This is not required when running within AWS.
-AWS_ACCESS_KEY_ID=<AWS Access Key ID>
-AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
-```
 
 ### Run locally without Docker
 
