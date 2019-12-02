@@ -18,8 +18,7 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
 
 WORKDIR /usr/src/app/profileservice/api
 
-RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem && \
-  mv ../../lib .
+RUN mv ../../lib .
 
 COPY rokwire.yaml .
 

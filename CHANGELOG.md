@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## Changed
 - Update Events Service Readme to add CACHE_DIRECTORY. [#275](https://github.com/rokwire/rokwire-building-blocks-api/issues/275)
+- Refactored using connexion. [#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
 
 ## [1.0.2] - 2019-10-30
 ### Changed
@@ -40,6 +41,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auth middleware library.
 - Dockerfile for Rokwire Platform API documentation and updated README.
 - Add caching to app-config and events GET endpoints.
+- Create profile data model boiler plate.
+- Created profile restservice boiler plate.
+- Added time stamp
+- Added age over 13
+- Checking method for email and phone number to prevent duplicate entry
+- Profile rest service dockerized
+- Added favorites
+- Added positive and negative interest tags
+- Added an ability to store and retrieve schema free information
+- Added privacySettings in PII data model
 
 ### Changed
 - download events image file from S3 without checking the image id from db.
@@ -67,6 +78,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sort events by startDate and then endDate.
 - Switch profile service to use gunicorn.
 - Redirect events images to S3 instead of trying to serve them directly.
+- Separated non-pii data and pii data
+- Separated non-pii and pii database
+- Image update and fileDescriptor moved to pii from non-pii
+- Separated non-pii and pii database url
+- Profile building block rest api changed to Flask RESTFul api service
+- Non-pii interests has been modified with category and subcategory
+- README file has examples for the profile endpoints
+- Database indexing system changed for document DB
+- Updated logging system based on Flask RESTFul service
+- Made profile building block flask using the flask server configuration
+- Modified profiles building block's rest endpoint prefix to environmental variable
+- Modified profiles building block's log to show the endpoint information
+- Created a method for checking the id information by comparing id token and db information
+- Information in the id token is used for creating and updating the pii dataset
 
 ### Fixed
 - Events building block API definition to improve text.
