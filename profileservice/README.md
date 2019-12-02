@@ -25,7 +25,7 @@ The necessary configuration should be configured in configure file (configs.py) 
 
 ## Environment File
 
-You need to have a .env file in the `restservice` directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
 Example file format:
