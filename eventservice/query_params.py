@@ -1,9 +1,18 @@
 import datetime
 import re
+from bson import ObjectId
 
 
 def format_query(args, query):
     query_parts = []
+    # multiple events ids
+    if args.getlist('id'):
+        ids = list()
+        for event_id in args.getlist('id'):
+            if ObjectId.is_valid(event_id):
+                ids.append(ObjectId(event_id))
+        if ids:
+            query_parts.append({'_id': {'$in': ids}})
     # title text query
     if args.getlist('title'):
         titles = ' '.join(['"%s"' % t for t in args.getlist('title')])
