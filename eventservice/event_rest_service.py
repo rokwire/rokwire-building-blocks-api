@@ -76,7 +76,7 @@ def _get_categories_result():
 
 @bp.route('/', methods=['GET'])
 def get_events():
-    #auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
     args = request.args
     query = dict()
     try:
