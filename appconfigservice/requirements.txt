@@ -1,5 +1,5 @@
 Flask==1.0.2
-pymongo==3.7.2
+pymongo[tls,srv]==3.7.2
 pytest==5.0.1
 gunicorn==19.9.0
 python-dotenv==0.10.3
