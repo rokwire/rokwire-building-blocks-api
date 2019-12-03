@@ -25,6 +25,9 @@ app = flask.Flask(__name__)
 
 # @bp.route('/', methods=['GET'])
 def get_app_configs():
+    """
+        GET app config from the request.
+    """
     auth_middleware.verify_secret(request)
     args = request.args
     version = args.get('mobileAppVersion')
@@ -46,7 +49,6 @@ def get_app_configs():
         result = _get_app_configs_result(query, version)
 
     # TODO: Missing 401 error handler
-    #   unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
@@ -63,8 +65,8 @@ def get_app_configs():
 @memoize_query(**CACHE_GET_APPCONFIGS)
 def _get_app_configs_result(query, version):
     """
-    Perform the get_app_configs query and return a list of results. This is
-    its own function to enable caching to work.
+        Perform the get_app_configs query and return a list of results. This is
+        its own function to enable caching to work.
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -83,6 +85,11 @@ def _get_app_configs_result(query, version):
 
 # @bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
+    """
+        GET app config from a single id.
+        :param id: the input id
+        :return: get the requested app config
+    """
     auth_middleware.verify_secret(request)
 
     # Invalid input ID -- not matched with yaml file
@@ -121,6 +128,9 @@ def _get_app_config_by_id_result(query):
 
 # @bp.route('/', methods=['POST'])
 def post_app_config():
+    """
+        POST when creating a mobile app configuration
+    """
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
     req_data = request.get_json(force=True)
 
@@ -150,12 +160,15 @@ def post_app_config():
 
 # @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
+    """
+        UPDATE the app config by input id.
+    """
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     # invalid input error
     if not ObjectId.is_valid(id):
         abort(405)
-        server_401_error()
+        #server_401_error()
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         server_405_error()
@@ -168,12 +181,13 @@ def update_app_config(id):
     # unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
-        server_401_error
+        abort(401)
+    #TODO: INVALID INPUT 405 ERROR
 
     # internal error
     except Exception as ex:
         __logger.exception(ex)
-        server_500_error()
+        abort(500)
     return success_response(200, msg, str(id))
 
 
@@ -181,16 +195,21 @@ def update_app_config(id):
 def delete_app_config(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
+    #invalid id
     if not ObjectId.is_valid(id):
-        abort(400)
+        abort(404)
+
     try:
         db = conn.get_db()
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].delete_one({'_id': ObjectId(id)})
         msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
+
+    #TODO: 401 ERROR
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
     return success_response(202, msg, str(id))
 
 

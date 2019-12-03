@@ -3,7 +3,7 @@ from flask import Flask
 from . import db
 from .controllers import rest_service
 
-
+"""
 def create_app(test_config=None):
     app = Flask(__name__)
     app.url_map.strict_slashes = False
@@ -21,3 +21,5 @@ def create_app(test_config=None):
     db.init_db(app)
 
     return app
+"""
+

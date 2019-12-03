@@ -3,8 +3,9 @@ import logging
 import connexion
 from time import gmtime
 
-from appconfigservice.api.controllers.config import API_LOC
-from appconfigservice.api.rokwireresolver import RokwireResolver
+from .controllers.config import API_LOC
+#import .controllers.config as cfg
+from .rokwireresolver import RokwireResolver
 
 debug = True
 

@@ -1,6 +1,5 @@
 from connexion import Resolver
 
-
 class RokwireResolver(Resolver):
     """
     Resolves endpoint functions using REST semantics (unless overridden by specifying operationId)
