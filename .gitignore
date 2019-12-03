@@ -39,3 +39,6 @@ authservice/credentials.env
 # Python builds
 *.egg-info/
 dist/
+
+#Cache file
+*.db.*

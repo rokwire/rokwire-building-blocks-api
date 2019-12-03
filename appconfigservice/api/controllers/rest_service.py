@@ -112,9 +112,8 @@ def get_app_config_by_id(id):
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
     """
-        Perform the get_app_config_by_id query and returns a list of results. This is
+    Perform the get_app_config_by_id query and returns a list of results. This is
     its function to enable caching to work.
-
     Returns: a list of results
     """
     db = conn.get_db()
@@ -160,9 +159,7 @@ def post_app_config():
 
 # @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
-    """
-        UPDATE the app config by input id.
-    """
+#UPDATE the app config by input id.
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     # invalid input error
@@ -210,6 +207,7 @@ def delete_app_config(id):
         __logger.exception(ex)
         abort(500)
 
+    ##successfully deleted with 202 code returned
     return success_response(202, msg, str(id))
 
 
@@ -241,7 +239,7 @@ def server_400_error(error=None):
 
 # @bp.errorhandler(401)
 # UNAUTHORIZED ERROR HANDLER
-@app.errorhandler(400)
+@app.errorhandler(401)
 def server_401_error(error=None):
     if error is None:
         error = {
@@ -315,8 +313,9 @@ def format_query(args, query):
     return query
 
 
-# to add a new mobile version in db
+
 def add_version_numbers(req_data):
+    # to add a new mobile version into req_data db
     version = req_data['mobileAppVersion']
     version_numbers = dbutils.create_version_numbers(version)
     req_data['version_numbers'] = version_numbers
@@ -324,14 +323,14 @@ def add_version_numbers(req_data):
 
 def check_format(req_data):
     """
-    Check if any one of them is invalid:
-        - mobile version & format in the db
-        - platform Building Blocks
-        - third Party Services
-        - other University Services
-        - secret Keys
-    :return: True or False
-    """
+        See if the format is valid by checking one of things from db is invalid:
+            - mobile version & format in the db
+            - platform Building Blocks
+            - third Party Services
+            - other University Services
+            - secret Keys
+        :return: True or False
+       """
     if (not req_data['mobileAppVersion']) or (not req_data['platformBuildingBlocks']) or \
             (not req_data['thirdPartyServices']) or (not req_data['otherUniversityServices']) or \
             (not req_data['secretKeys']) or \
