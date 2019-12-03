@@ -4,7 +4,7 @@ import pytest
 from flask import current_app
 
 from .. import db as conn
-from ..models import create_app
+from .. import create_app
 
 
 @pytest.fixture

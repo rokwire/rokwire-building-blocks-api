@@ -933,7 +933,6 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfig
       security:
         - ApiKeyAuth: []
       parameters:
@@ -966,7 +965,6 @@ paths:
       summary: Reads mobile app configuration by given id
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -1001,7 +999,7 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: updateAppConfig
+      #operationId: updateAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1041,7 +1039,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: deleteAppConfig
       security:
         - UserAuth: []
       parameters:

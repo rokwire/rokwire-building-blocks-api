@@ -1,13 +1,14 @@
 import logging
 import re
+from time import gmtime
+
+import auth_middleware
 import flask
 import pymongo
-from time import gmtime
 from bson import ObjectId
 from flask import Blueprint, request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 
-import auth_middleware
 from .. import db as conn
 from ..cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 from ..utils import dbutils
@@ -17,10 +18,10 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("app_config_building_block")
 
-bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
+#bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
 
-@bp.route('/', methods=['GET'])
+#@bp.route('/', methods=['GET'])
 def get_app_configs():
     auth_middleware.verify_secret(request)
     args = request.args
@@ -49,10 +50,8 @@ def get_app_configs():
 @memoize_query(**CACHE_GET_APPCONFIGS)
 def _get_app_configs_result(query, version):
     """
-    Perform the get_app_configs query and return the results. This is
+    Perform the get_app_configs query and return a list of results. This is
     its own function to enable caching to work.
-
-    Returns: result
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -69,7 +68,7 @@ def _get_app_configs_result(query, version):
     return [decode(c) for c in cursor]
 
 
-@bp.route('/<id>', methods=['GET'])
+#@bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
     auth_middleware.verify_secret(request)
 
@@ -89,10 +88,10 @@ def get_app_config_by_id(id):
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
     """
-    Perform the get_app_config_by_id query and return the results. This is
-    its own function to enable caching to work.
+        Perform the get_app_config_by_id query and returns a list of results. This is
+    its function to enable caching to work.
 
-    Returns: result
+    Returns: a list
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -103,11 +102,13 @@ def _get_app_config_by_id_result(query):
     return [decode(c) for c in cursor]
 
 
-@bp.route('/', methods=['POST'])
+#@bp.route('/', methods=['POST'])
 def post_app_config():
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     req_data = request.get_json(force=True)
+
+    # bad request error
     if not check_format(req_data):
         abort(400)
     try:
@@ -116,39 +117,49 @@ def post_app_config():
         app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
         msg = "[POST]: api config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
+
+    #unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(500)
+        abort(401)
+
+    #internal other error
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
     return success_response(201, msg, str(app_config_id))
 
 
-@bp.route('/<id>', methods=['PUT'])
+#@bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
+    #invalid input error
     if not ObjectId.is_valid(id):
-        abort(400)
+        abort(405)
     req_data = request.get_json(force=True)
     if not check_format(req_data):
-        abort(400)
+        abort(405)
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
+
+    #unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(500)
+        abort(401)
+
+    #internal error
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
 
 
-@bp.route('/<id>', methods=['DELETE'])
+#@bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
@@ -164,7 +175,8 @@ def delete_app_config(id):
         abort(500)
     return success_response(202, msg, str(id))
 
-
+#=================================UTIL FUNCTIONS FOR REST SERVICES=====================================#
+#SUCCESS REQUEST HANDLER
 def success_response(status_code, msg, app_config_id):
     message = {
         'status': status_code,
@@ -176,7 +188,8 @@ def success_response(status_code, msg, app_config_id):
     return make_response(resp)
 
 
-@bp.errorhandler(400)
+#@bp.errorhandler(400)
+#BAD REQUEST ERROR HANDLER
 def server_400_error(error=None):
     message = {
         'status': 400,
@@ -187,7 +200,8 @@ def server_400_error(error=None):
     return resp
 
 
-@bp.errorhandler(401)
+#@bp.errorhandler(401)
+#UNAUTHORIZED ERROR HANDLER
 def server_401_error(error=None):
     message = {
         'status': 401,
@@ -198,7 +212,8 @@ def server_401_error(error=None):
     return resp
 
 
-@bp.errorhandler(404)
+#@bp.errorhandler(404)
+#NOT FOUND ERROR HANDLER
 def server_404_error(error=None):
     message = {
         'status': 404,
@@ -209,7 +224,8 @@ def server_404_error(error=None):
     return resp
 
 
-@bp.errorhandler(405)
+#@bp.errorhandler(405)
+#INVALID INPUT ERROR HANDLER
 def server_405_error(error=None):
     message = {
         'status': 405,
@@ -220,7 +236,8 @@ def server_405_error(error=None):
     return resp
 
 
-@bp.errorhandler(500)
+#@bp.errorhandler(500)
+#INTERNAL ERROR HANDLER
 def server_500_error(error=None):
     message = {
         'status': 500,
@@ -233,9 +250,13 @@ def server_500_error(error=None):
 
 def format_query(args, query):
     """
-    If mobileAppVersion parameter is given, we will order by version numbers because natural order of mobileAppVersion string does not work
+    If mobileAppVersion parameter is given, we order by version numbers since natural order of mobileAppVersion string does not work.
     For example 10.0.1 and 5.9.80, natural order, query = {'mobileAppVersion': {'$lte': version}}, will place 5.9.80 first.
     In reality, we are looking for 10.0.1 being the first
+
+    :param args: for getting mobile version
+    :param query: input query
+    :return: a formatted query
     """
     version = args.get('mobileAppVersion')
     if version is not None and dbutils.check_appversion_format(version):
