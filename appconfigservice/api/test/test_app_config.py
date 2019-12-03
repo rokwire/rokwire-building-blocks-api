@@ -3,8 +3,8 @@ import json
 import pytest
 from flask import current_app
 
-from .. import db as conn
 from .. import create_app
+from .. import db as conn
 
 
 @pytest.fixture

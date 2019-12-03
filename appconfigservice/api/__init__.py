@@ -1,4 +1,5 @@
 from flask import Flask
+
 from . import db
 from .controllers import rest_service
 

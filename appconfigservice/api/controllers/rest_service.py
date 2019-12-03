@@ -1,13 +1,13 @@
 import logging
 import re
-from time import gmtime
 
 import auth_middleware
 import flask
 import pymongo
 from bson import ObjectId
-from flask import Blueprint, request, make_response, abort, current_app
+from flask import request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
+from time import gmtime
 
 from .. import db as conn
 from ..cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
@@ -17,31 +17,44 @@ logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
 __logger = logging.getLogger("app_config_building_block")
+app = flask.Flask(__name__)
 
-#bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
+
+# bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
 
-#@bp.route('/', methods=['GET'])
+# @bp.route('/', methods=['GET'])
 def get_app_configs():
     auth_middleware.verify_secret(request)
     args = request.args
-
     version = args.get('mobileAppVersion')
-    if version and dbutils.check_appversion_format(version) == False:
-        abort(404)
-
     query = dict()
+
+    # AppConfig not found
+    if (not version) or (not dbutils.check_appversion_format(version)):
+        abort(404)
+        # server_404_error()
+
     try:
         query = format_query(args, query)
-    except Exception as ex:
+    except Exception as ex:  # unalbe to format a query
         __logger.exception(ex)
         abort(500)
+        # server_500_error()
 
     try:
         result = _get_app_configs_result(query, version)
-    except Exception as ex:
+
+    # TODO: Missing 401 error handler
+    #   unauthorized error
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(401)
+        # server_404_error()
+    except Exception as ex:  # unable to get config results
         __logger.exception(ex)
         abort(500)
+        # server_500_error()
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
@@ -68,12 +81,16 @@ def _get_app_configs_result(query, version):
     return [decode(c) for c in cursor]
 
 
-#@bp.route('/<id>', methods=['GET'])
+# @bp.route('/<id>', methods=['GET'])
 def get_app_config_by_id(id):
     auth_middleware.verify_secret(request)
 
+    # Invalid input ID -- not matched with yaml file
     if not ObjectId.is_valid(id):
-        abort(400)
+        abort(405)
+        # server_405_error()
+
+    # TODO: Missing 404 and 401 error handler
 
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
@@ -91,7 +108,7 @@ def _get_app_config_by_id_result(query):
         Perform the get_app_config_by_id query and returns a list of results. This is
     its function to enable caching to work.
 
-    Returns: a list
+    Returns: a list of results
     """
     db = conn.get_db()
     cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
@@ -102,15 +119,15 @@ def _get_app_config_by_id_result(query):
     return [decode(c) for c in cursor]
 
 
-#@bp.route('/', methods=['POST'])
+# @bp.route('/', methods=['POST'])
 def post_app_config():
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
-
     req_data = request.get_json(force=True)
 
     # bad request error
     if not check_format(req_data):
         abort(400)
+
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
@@ -118,12 +135,12 @@ def post_app_config():
         msg = "[POST]: api config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
 
-    #unauthorized error
+    # unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
 
-    #internal other error
+    # internal other error
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -131,35 +148,36 @@ def post_app_config():
     return success_response(201, msg, str(app_config_id))
 
 
-#@bp.route('/<id>', methods=['PUT'])
+# @bp.route('/<id>', methods=['PUT'])
 def update_app_config(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
-    #invalid input error
+    # invalid input error
     if not ObjectId.is_valid(id):
         abort(405)
+        server_401_error()
     req_data = request.get_json(force=True)
     if not check_format(req_data):
-        abort(405)
+        server_405_error()
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
         status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
 
-    #unauthorized error
+    # unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(401)
+        server_401_error
 
-    #internal error
+    # internal error
     except Exception as ex:
         __logger.exception(ex)
-        abort(500)
+        server_500_error()
     return success_response(200, msg, str(id))
 
 
-#@bp.route('/<id>', methods=['DELETE'])
+# @bp.route('/<id>', methods=['DELETE'])
 def delete_app_config(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
@@ -175,8 +193,9 @@ def delete_app_config(id):
         abort(500)
     return success_response(202, msg, str(id))
 
-#=================================UTIL FUNCTIONS FOR REST SERVICES=====================================#
-#SUCCESS REQUEST HANDLER
+
+# =================================UTIL FUNCTIONS FOR REST SERVICES=====================================#
+# SUCCESS REQUEST HANDLER
 def success_response(status_code, msg, app_config_id):
     message = {
         'status': status_code,
@@ -188,61 +207,66 @@ def success_response(status_code, msg, app_config_id):
     return make_response(resp)
 
 
-#@bp.errorhandler(400)
-#BAD REQUEST ERROR HANDLER
+# @bp.errorhandler(400)
+# BAD REQUEST ERROR HANDLER
+@app.errorhandler(400)
 def server_400_error(error=None):
-    message = {
-        'status': 400,
-        'message': 'Bad request : ' + request.url,
-    }
-    resp = flask.jsonify(message)
+    if error is None:
+        error = {
+            'error': 'Bad Request: ' + request.url,
+        }
+    resp = flask.jsonify(error)
     resp.status_code = 400
     return resp
 
 
-#@bp.errorhandler(401)
-#UNAUTHORIZED ERROR HANDLER
+# @bp.errorhandler(401)
+# UNAUTHORIZED ERROR HANDLER
+@app.errorhandler(400)
 def server_401_error(error=None):
-    message = {
-        'status': 401,
-        'message': 'Unauthorized : ' + request.url,
-    }
-    resp = flask.jsonify(message)
+    if error is None:
+        error = {
+            'message': 'Unauthorized : ' + request.url,
+        }
+    resp = flask.jsonify(error)
     resp.status_code = 401
     return resp
 
 
-#@bp.errorhandler(404)
-#NOT FOUND ERROR HANDLER
+# @bp.errorhandler(404)
+# NOT FOUND ERROR HANDLER
+@app.errorhandler(404)
 def server_404_error(error=None):
-    message = {
-        'status': 404,
-        'message': 'App config not found : ' + request.url + '. If search by mobile api version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
-    }
-    resp = flask.jsonify(message)
+    if error is None:
+        error = {
+            'message': 'App config not found : ' + request.url + '. If search by mobile api version, please check the given version conforms major.minor.patch format, for example, 1.2.0',
+        }
+    resp = flask.jsonify(error)
     resp.status_code = 404
     return resp
 
 
-#@bp.errorhandler(405)
-#INVALID INPUT ERROR HANDLER
+# @bp.errorhandler(405)
+@app.errorhandler(405)
+# INVALID INPUT ERROR HANDLER
 def server_405_error(error=None):
-    message = {
-        'status': 405,
-        'message': 'Invalid input : ' + request.url,
-    }
-    resp = flask.jsonify(message)
+    if error is None:
+        error = {
+            'message': 'Invalid input : ' + request.url,
+        }
+    resp = flask.jsonify(error)
     resp.status_code = 405
     return resp
 
 
-#@bp.errorhandler(500)
-#INTERNAL ERROR HANDLER
+# @bp.errorhandler(500)
+# INTERNAL ERROR HANDLER
+@app.errorhandler(500)
 def server_500_error(error=None):
-    message = {
-        'status': 500,
-        'message': 'Internal error : ' + request.url,
-    }
+    if error is None:
+        message = {
+            'message': 'Internal error : ' + request.url,
+        }
     resp = flask.jsonify(message)
     resp.status_code = 500
     return resp
@@ -272,6 +296,7 @@ def format_query(args, query):
     return query
 
 
+# to add a new mobile version in db
 def add_version_numbers(req_data):
     version = req_data['mobileAppVersion']
     version_numbers = dbutils.create_version_numbers(version)
@@ -279,10 +304,19 @@ def add_version_numbers(req_data):
 
 
 def check_format(req_data):
-    if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
-            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
-            req_data['secretKeys'] is None or (
-            req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
+    """
+    Check if any one of them is invalid:
+        - mobile version & format in the db
+        - platform Building Blocks
+        - third Party Services
+        - other University Services
+        - secret Keys
+    :return: True or False
+    """
+    if (not req_data['mobileAppVersion']) or (not req_data['platformBuildingBlocks']) or \
+            (not req_data['thirdPartyServices']) or (not req_data['otherUniversityServices']) or \
+            (not req_data['secretKeys']) or \
+            (req_data['mobileAppVersion'] and (not dbutils.check_appversion_format(req_data['mobileAppVersion']))):
         return False
     return True
 
