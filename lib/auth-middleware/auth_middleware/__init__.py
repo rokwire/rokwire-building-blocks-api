@@ -32,11 +32,11 @@ def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
     if not auth_header:
         logger.warning("Request missing Authorization header")
-        abort(401)
+        raise OAuthProblem('Missing authorization header')
     ah_split = auth_header.split()
     if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
         logger.warning("invalid auth header. expecting 'bearer' and token with space between")
-        abort(401)
+        raise OAuthProblem('Invalid request header')
     _id_token = ah_split[1]
     return _id_token
 
@@ -63,11 +63,11 @@ def authenticate(group_name=None, internal_token_only=False):
     auth_header = request.headers.get('Authorization')
     if not auth_header:
         logger.warning("Request missing Authorization header")
-        abort(401)
+        raise OAuthProblem('Missing authorization header')
     ah_split = auth_header.split()
     if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
         logger.warning("invalid auth header. expecting 'bearer' and token with space between")
-        abort(401)
+        raise OAuthProblem('Invalid request header')
     _id_token = ah_split[1]
     id_info = verify_userauth(_id_token, group_name, internal_token_only)
 
@@ -81,10 +81,10 @@ def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:
         logger.warning("Request missing the " + rokwire_api_key_header + " header")
-        abort(400)  # missing header means bad request
+        raise OAuthProblem('Missing API Key')  # missing header means bad request
     if (key == os.getenv('ROKWIRE_API_KEY')):
         return True
-    abort(401)  # failed matching means unauthorized in this context.
+    raise OAuthProblem('Invalid API Key') # failed matching means unauthorized in this context.
 
 
 def verify_apikey(key, required_scopes=None):
@@ -99,7 +99,7 @@ def verify_apikey(key, required_scopes=None):
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
     if not id_token:
         logger.warning("Request missing id token")
-        abort(401)
+        raise OAuthProblem('Missing id token')
     try:
         # We need to get both the header and the payload initially as unverified since we have to
         # check their issuer, key id and a few other items before we can figure out how to unpack them
@@ -107,20 +107,20 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         unverified_payload = jwt.decode(id_token, verify=False)
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on get unverified header. message = %s" % jwte)
-        abort(401)
+        raise OAuthProblem('Invalid token')
     if unverified_header.get('phone', False):
         # phone number verify -- reject if this should be another type of token.
         if internal_token_only:
             logger.warning('incorrect id token type.')
-            abort(401)
+            raise OAuthProblem('Invalid token')
         phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
         if not phone_verify_secret:
             logger.warning("PHONE_VERIFY_SECRET environment variable not set")
-            abort(401)
+            raise OAuthProblem('Invalid token')
         phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
         if not phone_verify_audience:
             logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
-            abort(401)
+            raise OAuthProblem('Invalid token')
         try:
             id_info = jwt.decode(
                 id_token,
@@ -130,7 +130,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             )
         except jwt.DecodeError as de:
             logger.warning("error on id_token decode. Message = %s" % str(de))
-            abort(401)
+            raise OAuthProblem('Invalid token')
         # import pprint; pprint.pprint(id_info)
     else:
         # Note there are two cases here that are closely related. Basically we can only differentiate them
@@ -142,11 +142,11 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         issuer = unverified_payload.get('iss')
         if not issuer:
             logger.warning("Issuer not found. Aborting.")
-            abort(401)
+            raise OAuthProblem('Invalid token')
         kid = unverified_header.get('kid')
         if not kid:
             logger.warning("kid not found. Aborting.")
-            abort(401)
+            raise OAuthProblem('Invalid token')
         valid_issuer = False
         keyset = None
         target_client_id = None
@@ -168,12 +168,12 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         if issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
-                abort(401)
+                raise OAuthProblem('Invalid token')
             valid_issuer = True
             keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
             if keyset_resp.status_code != 200:
                 logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
-                abort(401)
+                raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
             target_client_id = os.getenv('SHIBBOLETH_CLIENT_ID')
 
@@ -183,22 +183,22 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         # releases of that library. If this stops working, check the Py JWT libraries first.
         if not valid_issuer:
             logger.warning("invalid issuer = %s" % issuer)
-            abort(401)
+            raise OAuthProblem('Invalid token')
 
         matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
         if len(matching_jwks) != 1:
             logger.warning("should have exactly one match for kid = %s" % kid)
-            abort(401)
+            raise OAuthProblem('Invalid token')
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
             id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
-            abort(401)
+            raise OAuthProblem('Invalid token')
         if not id_info:
             logger.warning("id_info was not returned from decode")
-            abort(401)
+            raise OAuthProblem('Invalid token')
     request.user_token_data = id_info
     if (group_name != None):
         # So we are to check is a group membership is required.
@@ -206,7 +206,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         print("is_member_of" + str(is_member_of))
         if group_name not in is_member_of:
             logger.warning("user is not a member of the group " + group_name)
-            abort(401)
+            raise OAuthProblem('Invalid token')
     return id_info
 
 def use_security_token_auth(func):
