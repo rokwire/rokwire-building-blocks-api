@@ -411,6 +411,14 @@ paths:
           minimum: 0
           type: integer
           format: int32
+      - name: id
+        in: query
+        description: The parameter for searching multiple events based on their IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
