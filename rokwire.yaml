@@ -314,7 +314,6 @@ paths:
         By passing in the appropriate options, you can search for events matching your criteria in the system
         
         Auth: Requires a valid API Key for access.
-      #operationId: searchEvents
 #      security:
 #        - ApiKeyAuth: []
       parameters:
@@ -441,9 +440,8 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: createEvent
-      security:
-        - UserAuth: []
+#      security:
+#        - UserAuth: []
       requestBody:
         description: Created event object
         content:
@@ -465,7 +463,7 @@ paths:
         500:
           description: Internal error
 
-  /events/{eventId}:
+  /events/{event_id}:
     get:
       tags:
       - Events
@@ -474,11 +472,10 @@ paths:
         Get the event record matching the eventId.
 
         Auth: Requires a valid API Key for access.
-      operationId: getEventWithEventId
-      security:
-        - UserAuth: []
+#      security:
+#        - UserAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: ID of the event that needs to be updated
         required: true
@@ -516,11 +513,10 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: updateEventWithForm
-      security:
-        - UserAuth: []
+#      security:
+#        - UserAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: ID of the event that needs to be updated
         required: true
@@ -567,19 +563,17 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: deleteEvent
-      security:
-        - UserAuth: []
+#      security:
+#        - UserAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: event id to delete
         required: true
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         202:
           description: Event is deleted
@@ -589,6 +583,56 @@ paths:
           description: Unauthorized
         404:
           description: Event not found
+    patch:
+      tags:
+        - Events
+      summary: Updates one event with form data
+      description: |
+        Update the event record matching the eventId.
+
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
+#      security:
+#        - UserAuth: []
+      parameters:
+        - name: event_id
+          in: path
+          description: ID of the event that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: patch one event object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          description: Invalid ID supplied
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
   /events/categories:
     get:
       tags:
@@ -679,8 +723,8 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      security:
-        - UserAuth: []
+#      security:
+#        - UserAuth: []
       operationId: uploadImages
       requestBody:
         description: Image file to upload and associate with the requested event

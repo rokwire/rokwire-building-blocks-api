@@ -121,3 +121,162 @@ def _get_categories_result():
 
     categories = list(cursor)
     return flask.json.dumps(categories), len(categories)
+
+
+def get(event_id):
+    # auth_middleware.verify_secret(request)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+
+    try:
+        result, result_found = _get_event_result({'_id': ObjectId(event_id)})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not result_found:
+        abort(404)
+
+    __logger.debug("[Get Event]: event id %s", event_id)
+    return current_app.response_class(result, mimetype='application/json')
+
+
+@memoize_query(**CACHE_GET_EVENT)
+def _get_event_result(query):
+    """
+    Perform the get_event query and return the serialized results. This is
+    its own function to enable caching to work.
+    Returns: (string, found)
+    """
+    db = get_db()
+    event = db['events'].find_one(
+        query,
+        {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
+    )
+
+    return flask.json.dumps(event), (not event is None)
+
+
+# post
+def post():
+    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+    req_data = request.get_json(force=True)
+
+    if not query_params.required_check(req_data):
+        abort(400)
+    try:
+        req_data = query_params.formate_datetime(req_data)
+        req_data = query_params.formate_location(req_data)
+        req_data = query_params.formate_category(req_data)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(400)
+
+    try:
+        db = get_db()
+        event_id = db['events'].insert(req_data)
+        msg = "[POST]: event record created: id = %s" % str(event_id)
+        __logger.debug(msg)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return success_response(201, msg, str(event_id))
+
+
+def put(event_id):
+    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+    req_data = request.get_json(force=True)
+
+    if not query_params.required_check(req_data):
+        abort(400)
+    try:
+        req_data = query_params.formate_datetime(req_data)
+        req_data = query_params.formate_location(req_data)
+        req_data = query_params.formate_category(req_data)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(400)
+
+    try:
+        db = get_db()
+        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return success_response(200, msg, str(event_id))
+
+
+def patch(event_id):
+    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+    req_data = request.get_json(force=True)
+    try:
+        req_data = query_params.formate_datetime(req_data)
+        if req_data.get('category') or req_data.get('subcategory'):
+            db = get_db()
+            for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'categorymainsub': 1}):
+                req_data = query_params.update_category(req_data, data_tuple)
+                break
+
+        coordinates = []
+        try:
+            if req_data.get('location.latitude') or req_data.get('location.latitude'):
+                db = get_db()
+                for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 1}):
+                    coordinates = data_tuple.get('coordinates')
+                    if not coordinates:
+                        abort(500)
+                    break
+                req_data = query_params.update_coordinates(req_data, coordinates)
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
+
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(405)
+
+    try:
+        db = get_db()
+        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+        __logger.debug(msg)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return success_response(200, msg, str(event_id))
+
+def delete(event_id):
+    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+    try:
+        db = get_db()
+        status = db['events'].delete_one({'_id': ObjectId(event_id)})
+        msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
+        __logger.debug(msg)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    return success_response(202, msg, str(event_id))
+
+
+def success_response(status_code, msg, event_id):
+    message = {
+        'status': status_code,
+        'id': event_id,
+        'message': msg
+    }
+    resp = flask.jsonify(message)
+    resp.status_code = status_code
+
+    return make_response(resp)
