@@ -433,7 +433,7 @@ paths:
       summary: create an event
       description: |
         create an event record into the system
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -472,7 +472,7 @@ paths:
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-        
+
         Auth: Requires a valid API Key for access.
       operationId: getEventWithEventId
       security:
@@ -508,7 +508,7 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -559,7 +559,7 @@ paths:
       summary: Deletes an event by the given event id
       description: |
         Delete the event record matching the eventId.
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -596,7 +596,7 @@ paths:
       summary: Get events categories
       description: |
         return back a list of categories and subcategories
-        
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -631,11 +631,11 @@ paths:
           description: Getting event tags successful
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   type: string
-        500: 
+        500:
           description: Internal error
 
   /events/{eventId}/images:
@@ -657,7 +657,7 @@ paths:
             type: integer
             format: int64
       responses:
-        200: 
+        200:
           description: Getting image IDs successful.
           content:
             multipart/form-data:
@@ -668,7 +668,7 @@ paths:
                   format: binary
         500:
           description: Internal error
-    post: 
+    post:
       tags:
         - Events
       summary: Upload an image to the specified event
@@ -685,33 +685,33 @@ paths:
       operationId: uploadImages
       requestBody:
         description: Image file to upload and associate with the requested event
-        content: 
+        content:
           image/*:
-            schema: 
+            schema:
               type: string
               format: binary
               minLength: 1
               maxLength: 5000000
-      parameters: 
+      parameters:
       - name: eventId
         in: path
         description: Event ID
         required: true
-        schema: 
+        schema:
           type: integer
           format: int64
       responses:
-        201: 
+        201:
           description: Images uploaded
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Image ID
@@ -720,7 +720,7 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
+
   /events/{eventId}/images/{imageId}:
     get:
       tags:
@@ -733,18 +733,18 @@ paths:
       operationId: requestImage
       parameters:
       - name: eventId
-        in: path 
+        in: path
         description: Event ID
-        required: true 
+        required: true
         schema:
-          type: integer 
+          type: integer
           format: int64
       - name: imageId
         in: path
         description: Requested image ID
         required: true
         schema:
-          type: integer 
+          type: integer
           format: int64
       responses:
         200:
@@ -756,7 +756,7 @@ paths:
                 format: binary
         500:
           description: Internal Error
-      
+
     put:
       tags:
       - Events
@@ -774,19 +774,19 @@ paths:
       operationId: updateImage
       requestBody:
         description: Image file to add to the event
-        content: 
+        content:
           image/*:
-            schema: 
+            schema:
               type: string
               format: binary
               minLength: 1
               maxLength: 5000000
-      parameters: 
+      parameters:
       - name: eventId
         in: path
         description: Event ID
         required: true
-        schema: 
+        schema:
           type: integer
           format: int64
       - name: imageId
@@ -794,20 +794,20 @@ paths:
         description: Requested image ID
         required: true
         schema:
-          type: integer 
+          type: integer
           format: int64
       responses:
-        200: 
+        200:
           description: Image updated
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Event ID
@@ -816,7 +816,7 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
+
     delete:
       tags:
       - Events
@@ -837,7 +837,7 @@ paths:
         in: path
         description: Event ID
         required: true
-        schema: 
+        schema:
           type: integer
           format: int64
       - name: imageId
@@ -845,7 +845,7 @@ paths:
         description: ID of the image that needs to be deleted
         required: true
         schema:
-          type: integer 
+          type: integer
           format: int64
       responses:
         202:
@@ -855,10 +855,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Event ID

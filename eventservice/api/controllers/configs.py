@@ -1,24 +1,22 @@
 import os
-
+import ast
 from dotenv import load_dotenv
 
 # Load .env file
 load_dotenv()
 
-# this has to be have the file path to the folder for saving image files and other necessary files from rest service
-PROFILE_REST_STORAGE = os.getenv('REST_STORAGE', '/usr/src/app/rest')
-MONGO_PROFILE_URL = os.getenv('MONGO_PROFILE_URL', 'localhost:27017')
-MONGO_PII_URL = os.getenv('MONGO_PII_URL', 'localhost:27017')
-FLASK_APP = os.getenv('FLASK_APP', 'profile_rest_service')
-FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 API_LOC = os.getenv('API_LOC', '../../')
-PROFILE_ENDPOINT = os.getenv('PROFILE_ENDPOINT', '/events')
 DEBUG = os.getenv('DEBUG', 'False')
 
-PROFILE_DB_NAME = 'profiledb'
-PII_DB_NAME = 'piidb'
-PROFILE_DB_PROFILE_COLL_NAME = 'NonPiiDataset'
-PII_DB_PII_COLL_NAME = 'PiiDataset'
-FIELD_OBJECTID = '_id'
-FIELD_PROFILE_UUID = 'uuid'
-FIELD_PID = 'pid'
+EVENT_MONGO_URL = os.getenv("EVENT_MONGO_URL", "mongodb://localhost:27017")
+EVENT_DB_NAME = os.getenv("EVENT_DB_NAME", "rokwire")
+URL_PREFIX = os.getenv("URL_PREFIX", "/events")
+
+IMAGE_COLLECTION = os.getenv("IMAGE_COLLECTION", "images")
+IMAGE_FILE_MOUNTPOINT = os.getenv("IMAGE_FILE_MOUNTPOINT", "eventservice/events-images/")
+IMAGE_URL = os.getenv("IMAGE_URL", "https://{bucket}.s3-{region}.amazonaws.com/{prefix}/{event_id}/{image_id}.jpg")
+MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", "4194304"))  # 4 * 1024 * 1024
+ALLOWED_EXTENSIONS = ast.literal_eval(os.getenv("ALLOWED_EXTENSIONS", "{'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}"))
+
+AWS_IMAGE_FOLDER_PREFIX = os.getenv("AWS_IMAGE_FOLDER_PREFIX", "events")
+BUCKET = os.getenv("AWS_S3_BUCKET", "rokwire-events-s3-images")
