@@ -315,8 +315,8 @@ paths:
         
         Auth: Requires a valid API Key for access.
       #operationId: searchEvents
-      security:
-        - ApiKeyAuth: []
+#      security:
+#        - ApiKeyAuth: []
       parameters:
       - name: title
         in: query
