@@ -598,8 +598,8 @@ paths:
         return back a list of categories and subcategories
 
         Auth: Requires a valid API Key for access.
-      security:
-        - ApiKeyAuth: []
+#      security:
+#        - ApiKeyAuth: []
       responses:
         200:
           description: search results matching criteria
@@ -621,11 +621,10 @@ paths:
       tags:
       - Events
       summary: Get a list of Rokwire event tags
-      operationId: getTags
       description: |
         Auth: Requires a valid API Key for access.
-      security:
-        - ApiKeyAuth: []
+#      security:
+#        - ApiKeyAuth: []
       responses:
         200:
           description: Getting event tags successful

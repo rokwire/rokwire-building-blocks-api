@@ -80,8 +80,8 @@ def _get_events_result(query, limit, skip):
     return flask.json.dumps(events), len(events)
 
 
-def tags():
-    auth_middleware.verify_secret(request)
+def tags_search():
+    # auth_middleware.verify_secret(request)
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "tags.json")
@@ -91,3 +91,33 @@ def tags():
         __logger.exception(ex)
         abort(500)
     return flask.jsonify(response)
+
+
+def categories_search():
+    # auth_middleware.verify_secret(request)
+
+    try:
+        result, result_len = _get_categories_result()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    __logger.debug("[GET]: %s nRecords = %d ", request.url, result_len)
+    return current_app.response_class(result, mimetype='application/json')
+
+
+@memoize(**CACHE_GET_CATEGORIES)
+def _get_categories_result():
+    """
+    Perform the get_categories query and return the serialized results. This is
+    its own function to enable caching to work.
+    Returns: (string, count)
+    """
+    db = get_db()
+    cursor = db['categories'].find(
+        {},
+        {'_id': 0}
+    ).sort('category', pymongo.ASCENDING)
+
+    categories = list(cursor)
+    return flask.json.dumps(categories), len(categories)
