@@ -314,7 +314,7 @@ paths:
         By passing in the appropriate options, you can search for events matching your criteria in the system
         
         Auth: Requires a valid API Key for access.
-      operationId: searchEvents
+      #operationId: searchEvents
       security:
         - ApiKeyAuth: []
       parameters:

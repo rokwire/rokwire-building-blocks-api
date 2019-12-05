@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 # Load .env file
 load_dotenv()
 
+API_LOC = os.getenv('API_LOC', '../')
+DEBUG = os.getenv('DEBUG', 'False')
+
 EVENT_MONGO_URL = os.getenv("EVENT_MONGO_URL", "mongodb://localhost:27017")
 EVENT_DB_NAME = os.getenv("EVENT_DB_NAME", "rokwire")
 URL_PREFIX = os.getenv("URL_PREFIX", "/events")
