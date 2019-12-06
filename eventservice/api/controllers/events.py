@@ -8,19 +8,18 @@ import auth_middleware
 import pymongo
 
 from bson import ObjectId
-
-
-from bson import ObjectId
-from utils.db import get_db
-from utils import query_params
-from controllers.configs import URL_PREFIX
-from controllers.images.s3 import S3EventsImages
-from controllers.images import localfile
-from flask import Blueprint, request, make_response, redirect, abort, current_app
+from flask import request, make_response, redirect, abort, current_app
 from werkzeug.utils import secure_filename
 from time import gmtime
+
+import controllers.configs as cfg
+from utils.db import get_db
+from utils import query_params
+from controllers.images.s3 import S3EventsImages
+from controllers.images import localfile
+
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-#
+
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
                     format='%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s')
@@ -28,7 +27,7 @@ __logger = logging.getLogger("events_building_block")
 
 
 def search():
-    # auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
     args = request.args
     query = dict()
     try:
@@ -81,7 +80,7 @@ def _get_events_result(query, limit, skip):
 
 
 def tags_search():
-    # auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "tags.json")
@@ -94,7 +93,7 @@ def tags_search():
 
 
 def categories_search():
-    # auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
 
     try:
         result, result_len = _get_categories_result()
@@ -124,7 +123,7 @@ def _get_categories_result():
 
 
 def get(event_id):
-    # auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -158,9 +157,8 @@ def _get_event_result(query):
     return flask.json.dumps(event), (not event is None)
 
 
-# post
 def post():
-    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -185,7 +183,7 @@ def post():
 
 
 def put(event_id):
-    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -212,7 +210,7 @@ def put(event_id):
 
 
 def patch(event_id):
-    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -253,8 +251,9 @@ def patch(event_id):
         abort(500)
     return success_response(200, msg, str(event_id))
 
+
 def delete(event_id):
-    # auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -268,6 +267,139 @@ def delete(event_id):
         abort(500)
 
     return success_response(202, msg, str(event_id))
+
+
+def images_search(event_id):
+    auth_middleware.verify_secret(request)
+
+    if not ObjectId.is_valid(event_id):
+        abort(400)
+
+    try:
+        result = _get_imagefiles_result({'eventId': event_id})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    msg = "[get images]: find %d images related to event %s" % (len(result), event_id)
+    return success_response(200, msg, result)
+
+
+@memoize_query(**CACHE_GET_EVENTIMAGES)
+def _get_imagefiles_result(query):
+    """
+    Perform the get_imagefiles query and return the results. This is
+    its own function to enable caching to work.
+    Returns: result
+    """
+    db = get_db()
+    cursor = db[cfg.IMAGE_COLLECTION].find(
+        query,
+        {'_id': 1}
+    )
+
+    return [str(i['_id']) for i in cursor]
+
+
+def images_post(event_id):
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    tmpfile = None
+    try:
+        file = request.files.get('file')
+        if file:
+            if file.filename == '':
+                raise
+            if localfile.allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                tmpfile = localfile.savefile(file, filename)
+                db = get_db()
+                result = db[cfg.IMAGE_COLLECTION].insert_one({
+                    'eventId': event_id
+                })
+                image_id = str(result.inserted_id)
+                S3EventsImages().upload(tmpfile, event_id, image_id)
+                msg = "[post image]: image id %s" % (str(image_id))
+            else:
+                raise
+        else:
+            raise
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    finally:
+        localfile.deletefile(tmpfile)
+    return success_response(201, msg, str(image_id))
+
+
+def images_get(event_id, image_id):
+    # TODO: add in again when the client starts sending the API key for this
+    # endpoint
+    auth_middleware.verify_secret(request)
+
+    if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
+        abort(400)
+
+    url = cfg.IMAGE_URL.format(
+        bucket=cfg.BUCKET,
+        region=os.getenv('AWS_DEFAULT_REGION'),
+        prefix=cfg.AWS_IMAGE_FOLDER_PREFIX,
+        event_id=event_id,
+        image_id=image_id,
+    )
+    __logger.debug("[download image] redirect to %s", url)
+    return redirect(url, code=302)
+
+
+def images_put(event_id, image_id):
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    tmpfile = None
+    try:
+        db = get_db()
+        # check if image exists
+        if db[cfg.IMAGE_COLLECTION].find_one({'_id': ObjectId(image_id)}):
+            file = request.files.get('file')
+            if file:
+                if file.filename == '':
+                    raise
+                if localfile.allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    tmpfile = localfile.savefile(file, filename)
+                    S3EventsImages().upload(tmpfile, event_id, image_id)
+                    msg = "[put image]: image id %s" % (str(image_id))
+                else:
+                    raise
+            else:
+                raise
+        else:
+            raise
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    finally:
+        localfile.deletefile(tmpfile)
+
+    return success_response(200, msg, str(image_id))
+
+
+def images_delete(event_id, image_id):
+    auth_middleware.authenticate(auth_middleware.rokwire_event_manager_group)
+
+    msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
+    try:
+        S3EventsImages().delete(event_id, image_id)
+        db = get_db()
+        db[cfg.IMAGE_COLLECTION].delete_one({
+            '_id': ObjectId(image_id)
+        })
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return success_response(202, msg, str(event_id))
+
+
+
 
 
 def success_response(status_code, msg, event_id):
