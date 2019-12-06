@@ -877,7 +877,7 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: createAppConfig
+      #operationId: createAppConfig
       security:
         - UserAuth: []
       requestBody:
