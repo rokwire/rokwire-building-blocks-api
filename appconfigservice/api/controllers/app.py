@@ -24,7 +24,7 @@ app = flask.Flask(__name__)
 
 
 # @bp.route('/', methods=['GET'])
-def get_app_configs():
+def configs_get():
     """
         GET app config from the request.
     """
@@ -61,30 +61,8 @@ def get_app_configs():
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
 
-
-@memoize_query(**CACHE_GET_APPCONFIGS)
-def _get_app_configs_result(query, version):
-    """
-        Perform the get_app_configs query and return a list of results. This is
-        its own function to enable caching to work.
-    """
-    db = conn.get_db()
-    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
-        query,
-        {"version_numbers": 0}
-    ).sort([
-        ("version_numbers.major", pymongo.DESCENDING),
-        ("version_numbers.minor", pymongo.DESCENDING),
-        ("version_numbers.patch", pymongo.DESCENDING)
-    ])
-    if version:
-        cursor = cursor.limit(1)
-
-    return [decode(c) for c in cursor]
-
-
 # @bp.route('/<id>', methods=['GET'])
-def get_app_config_by_id(id):
+def configs_get(id):
     """
         GET app config from a single id.
         :param id: the input id
@@ -109,6 +87,26 @@ def get_app_config_by_id(id):
     return flask.jsonify(result)
 
 
+@memoize_query(**CACHE_GET_APPCONFIGS)
+def _get_app_configs_result(query, version):
+    """
+        Perform the get_app_configs query and return a list of results. This is
+        its own function to enable caching to work.
+    """
+    db = conn.get_db()
+    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
+        query,
+        {"version_numbers": 0}
+    ).sort([
+        ("version_numbers.major", pymongo.DESCENDING),
+        ("version_numbers.minor", pymongo.DESCENDING),
+        ("version_numbers.patch", pymongo.DESCENDING)
+    ])
+    if version:
+        cursor = cursor.limit(1)
+
+    return [decode(c) for c in cursor]
+
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
     """
@@ -126,7 +124,7 @@ def _get_app_config_by_id_result(query):
 
 
 # @bp.route('/', methods=['POST'])
-def post_app_config():
+def configs_post():
     """
         POST when creating a mobile app configuration
     """
@@ -156,9 +154,8 @@ def post_app_config():
 
     return success_response(201, msg, str(app_config_id))
 
-
 # @bp.route('/<id>', methods=['PUT'])
-def update_app_config(id):
+def configs_put(id):
 #UPDATE the app config by input id.
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
@@ -187,9 +184,8 @@ def update_app_config(id):
         abort(500)
     return success_response(200, msg, str(id))
 
-
 # @bp.route('/<id>', methods=['DELETE'])
-def delete_app_config(id):
+def configs_delete(id):
     auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     #invalid id
