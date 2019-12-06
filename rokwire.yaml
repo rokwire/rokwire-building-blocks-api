@@ -419,6 +419,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: superEventId
+        in: query
+        description: The parameter for searching sub events based on the ID of a super event.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
