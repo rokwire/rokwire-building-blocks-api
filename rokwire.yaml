@@ -35,13 +35,13 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
-#      requestBody:
-#        description: Created profile object
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/Non-pii'
-#        required: false
+      requestBody:
+        description: Created profile object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Non-pii'
+        required: false
       responses:
         200:
           description: OK
