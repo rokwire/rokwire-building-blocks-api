@@ -1,7 +1,7 @@
 from flask import Flask
 
 from . import db
-from .controllers import rest_service
+from .controllers import appconfig
 
 """
 def create_app(test_config=None):
