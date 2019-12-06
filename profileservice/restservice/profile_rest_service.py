@@ -69,8 +69,7 @@ class NonPiiRootDir(Resource):
 
         if is_new_install:
             # new installation of the app
-            currenttime = datetime.datetime.now()
-            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+            currenttime = otherutils.get_current_time_utc()
             non_pii_dataset = NonPiiData('')
             non_pii_uuid = str(uuidlib.uuid4())
             non_pii_dataset.set_uuid(non_pii_uuid)
@@ -197,8 +196,7 @@ class DealNonPii(Resource):
             return rs_handlers.bad_request(msg_json)
 
         non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
-        currenttime = datetime.datetime.now()
-        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        currenttime = otherutils.get_current_time_utc()
         non_pii_dataset.set_last_modified_date(currenttime)
 
         result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(
@@ -444,8 +442,7 @@ class PiiRootDir(Resource):
 
         if is_new_entry:
             # insert new pii_dataset
-            currenttime = datetime.datetime.now()
-            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+            currenttime = otherutils.get_current_time_utc()
             pid = str(uuidlib.uuid4())
             pii_dataset.set_pid(pid)
             non_pii_uuid_from_dataset = []
@@ -651,8 +648,8 @@ class DealPii(Resource):
             return jsonutils.create_auth_fail_message()
 
         pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
-        currenttime = datetime.datetime.now()
-        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        currenttime = otherutils.get_current_time_utc()
+
         pii_dataset.set_last_modified_date(currenttime)
 
         # update pii_dataset's non_pii_uuid
@@ -779,8 +776,7 @@ class DealPii(Resource):
 #         file_descriptors.append(fd)
 #         pii_dataset.set_file_descriptors(file_descriptors)
 #         pii_dataset.set_image_url(fd.dataURL)
-#         currenttime = datetime.datetime.now()
-#         currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+#         currenttime = otherutils.get_current_time_utc()
 #         pii_dataset.set_last_modified_date(currenttime)
 #
 #         result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, pii_dataset)
