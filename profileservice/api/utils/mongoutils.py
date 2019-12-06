@@ -1,6 +1,6 @@
 import json
 import logging
-import profileservice.configs as cfg
+import controllers.configs as cfg
 
 
 from bson import ObjectId
@@ -8,9 +8,9 @@ from bson.json_util import dumps
 from flask import make_response
 from pymongo import MongoClient, ASCENDING
 
-from profileservice.dao.non_pii_data import NonPiiData
-from profileservice.dao.pii_data import PiiData
-import profileservice.restservice.utils.jsonutils as jsonutils
+from models.non_pii_data import NonPiiData
+from models.pii_data import PiiData
+import utils.jsonutils as jsonutils
 
 client_profile = MongoClient(cfg.MONGO_PROFILE_URL, connect=False)
 db_profile = client_profile[cfg.PROFILE_DB_NAME]
