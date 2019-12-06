@@ -2,7 +2,7 @@ import json
 
 from flask import current_app
 
-from .. import db as conn
+from ..utils import db as conn
 
 
 def test_get_by_version(client, app):

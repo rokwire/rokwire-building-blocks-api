@@ -9,9 +9,9 @@ from flask import request, make_response, abort, current_app
 from pymongo.errors import DuplicateKeyError
 from time import gmtime
 
-from .. import db as conn
-from ..cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
-from ..utils import dbutils
+from utils import db as conn
+from utils.cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
+from utils import dbutils
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -28,7 +28,7 @@ def configs_get():
     """
         GET app config from the request.
     """
-    auth_middleware.verify_secret(request)
+    # auth_middleware.verify_secret(request)
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
@@ -69,8 +69,7 @@ def configs_get(id):
         :return: get the requested app config
     """
     auth_middleware.verify_secret(request)
-
-    # Invalid input ID -- not matched with yaml file
+     #Invalid input ID -- not matched with yaml file
     if not ObjectId.is_valid(id):
         abort(405)
         # server_405_error()

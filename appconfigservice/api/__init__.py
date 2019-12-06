@@ -1,6 +1,4 @@
-from flask import Flask
-
-from . import db
+from .utils import db
 from .controllers import app
 
 """
