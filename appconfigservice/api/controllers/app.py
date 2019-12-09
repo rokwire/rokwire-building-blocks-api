@@ -48,11 +48,11 @@ def configs_get():
     try:
         result = _get_app_configs_result(query, version)
 
-    # TODO: Missing 401 error handler
+    # unauthorized
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
-        # server_404_error()
+
     except Exception as ex:  # unable to get config results
         __logger.exception(ex)
         abort(500)
@@ -71,13 +71,15 @@ def configs_get(id):
     auth_middleware.verify_secret(request)
     #Invalid input ID -- not matched with yaml file
     if not ObjectId.is_valid(id):
-        abort(405)
-        # server_405_error()
-
-    # TODO: Missing 404 and 401 error handler
+        abort(404)
 
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
+
+    # unauthorized
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(401)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -151,6 +153,7 @@ def configs_post():
         __logger.exception(ex)
         abort(500)
 
+    #successfully created with 201
     return success_response(201, msg, str(app_config_id))
 
 # @bp.route('/<id>', methods=['PUT'])
@@ -161,10 +164,10 @@ def configs_put(id):
     # invalid input error
     if not ObjectId.is_valid(id):
         abort(405)
-        #server_401_error()
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
-        server_405_error()
+        abort(405)
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
@@ -175,7 +178,6 @@ def configs_put(id):
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
-    #TODO: INVALID INPUT 405 ERROR
 
     # internal error
     except Exception as ex:
@@ -197,7 +199,10 @@ def configs_delete(id):
         msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
 
-    #TODO: 401 ERROR
+    #unauthorized error with 401
+    except DuplicateKeyError as err:
+        __logger.error(err)
+        abort(401)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
