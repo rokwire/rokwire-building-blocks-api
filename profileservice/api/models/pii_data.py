@@ -1,4 +1,4 @@
-import profileservice.restservice.utils.datasetutils as datasetutils
+import utils.datasetutils as datasetutils
 
 class PiiData:
     def __init__(self, injson):

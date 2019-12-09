@@ -33,7 +33,6 @@ paths:
         Create non-PII profile with profile id.
         
         Auth: Requires a valid API Key for access.
-      operationId: createProfile
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -65,7 +64,6 @@ paths:
         Returns a single profile
         
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: getProfileById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -101,7 +99,6 @@ paths:
       summary: Updates a profile with form data
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: updateProfileWithForm
       security:
         - ApiKeyAuth: []
       parameters:
@@ -112,8 +109,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         description: update profile object
         content:
@@ -145,7 +141,6 @@ paths:
       summary: Deletes a profile
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: deleteProfile
       security:
         - ApiKeyAuth: []
       parameters:
@@ -156,8 +151,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         202:
           description: Profile is deleted
@@ -176,9 +170,8 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
-        
+
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
-      operationId: createPii
       security:
         - UserAuth: []
       responses:
@@ -201,9 +194,8 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
-        
+
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-      operationId: getPiiById
       security:
         - UserAuth: []
       parameters:
@@ -239,7 +231,6 @@ paths:
       summary: Updates a PII with form data
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
-      operationId: updatePiiWithForm
       security:
         - UserAuth: []
       parameters:
@@ -282,7 +273,6 @@ paths:
       summary: Deletes a PII
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
-      operationId: deletePii
       security:
         - UserAuth: []
       parameters:
@@ -1230,7 +1220,7 @@ components:
           items:
             type: string
         favorites:
-          type: array
+          type: object
           items:
             properties:
               eventIds:
@@ -1276,7 +1266,7 @@ components:
         pid:
           type: string
         uuid:
-          type: array
+          type: string
           items:
             type: string
         userName:
@@ -1308,10 +1298,10 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
-        recurringFlag: 
+        recurringFlag:
           type: boolean
           description: a flag to denote this is recurring event
-        recurrenceId: 
+        recurrenceId:
           type: integer
           description: recurring id
         category:
@@ -1464,7 +1454,7 @@ components:
         mobileAppVersion:
           type: string
           description: unique and is empty or conforms major.minor.patch format
-        platformBuildingBlocks: 
+        platformBuildingBlocks:
           type: object
         thirdPartyServices:
           type: object
@@ -1488,7 +1478,7 @@ components:
         uuid:
           type: string
           format: uuid
-          description: UUID of the app user. 
+          description: UUID of the app user.
         os:
           type: string
           description: Name of operating system on the device running the app.
@@ -1503,7 +1493,7 @@ components:
           description: Name of device running the app.
         deviceSettings:
           type: object
-          description: Object containing relevant device settings. 
+          description: Object containing relevant device settings.
         userAction:
           $ref: '#/components/schemas/UserAction'
     UserAction:
@@ -1572,15 +1562,17 @@ components:
         - code
       example:
         phoneNumber: "+12175557890"
-        code: "123456"  
+        code: "123456"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: ROKWIRE-API-KEY
+      x-apikeyInfoFunc: lib.auth-middleware.auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     UserAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      x-bearerInfoFunc: lib.auth-middleware.auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.

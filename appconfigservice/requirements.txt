@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Flask==1.1.1
+=======
+Flask==1.0.2
+>>>>>>> feature/279-rokwire-platform-refactoring
 pymongo[tls,srv]==3.7.2
 pytest==5.0.1
 gunicorn==19.9.0
