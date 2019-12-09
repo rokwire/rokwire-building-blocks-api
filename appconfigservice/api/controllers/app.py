@@ -28,7 +28,7 @@ def configs_get():
     """
         GET app config from the request.
     """
-    # auth_middleware.verify_secret(request)
+    auth_middleware.verify_secret(request)
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
@@ -69,7 +69,7 @@ def configs_get(id):
         :return: get the requested app config
     """
     auth_middleware.verify_secret(request)
-     #Invalid input ID -- not matched with yaml file
+    #Invalid input ID -- not matched with yaml file
     if not ObjectId.is_valid(id):
         abort(405)
         # server_405_error()
@@ -127,7 +127,7 @@ def configs_post():
     """
         POST when creating a mobile app configuration
     """
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
     req_data = request.get_json(force=True)
 
     # bad request error
