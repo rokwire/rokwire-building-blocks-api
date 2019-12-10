@@ -28,7 +28,7 @@ def configs_get():
     """
         GET app config from the request.
     """
-    auth_middleware.verify_secret(request)
+    #auth_middleware.verify_secret(request)
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
@@ -68,7 +68,7 @@ def configs_get(id):
         :param id: the input id
         :return: get the requested app config
     """
-    auth_middleware.verify_secret(request)
+    #auth_middleware.verify_secret(request)
     #Invalid input ID -- not matched with yaml file
     if not ObjectId.is_valid(id):
         abort(405)
@@ -156,7 +156,7 @@ def configs_post():
 # @bp.route('/<id>', methods=['PUT'])
 def configs_put(id):
 #UPDATE the app config by input id.
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     # invalid input error
     if not ObjectId.is_valid(id):
@@ -185,7 +185,7 @@ def configs_put(id):
 
 # @bp.route('/<id>', methods=['DELETE'])
 def configs_delete(id):
-    auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
+    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     #invalid id
     if not ObjectId.is_valid(id):
