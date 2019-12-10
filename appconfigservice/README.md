@@ -52,9 +52,12 @@ ROKWIRE_API_CLIENT_ID=<Rokwire API Client ID>
 ## Run in Development Mode
 ```
 cd appconfigservice
-export FLASK_APP=appconfig
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+export FLASK_APP=appconfig_rest_service
 export FLASK_ENV=development
-flask run
+python api/appconfig_rest_service.py
 ```
 
 ## API Usage Examples
