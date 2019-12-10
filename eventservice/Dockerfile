@@ -13,4 +13,6 @@ RUN pip install -r /app/eventservice/requirements.txt
 VOLUME /var/cache/app
 WORKDIR /app/eventservice/api
 
+COPY /lib/ /app/eventservice/api/
+
 CMD ["gunicorn", "events_rest_service:app", "--config", "/app/eventservice/api/gunicorn.config.py"]
