@@ -12,6 +12,7 @@ from time import gmtime
 from utils import db as conn
 from utils.cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 from utils import dbutils
+import controllers.config as cfg
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -24,11 +25,13 @@ app = flask.Flask(__name__)
 
 
 # @bp.route('/', methods=['GET'])
-def configs_get():
+def configs_search():
     """
         GET app config from the request.
     """
-    #auth_middleware.verify_secret(request)
+    print("configs get ----- ")
+    # auth_middleware.verify_secret(request)
+
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
@@ -60,6 +63,9 @@ def configs_get():
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
+
+def get():
+    print("gettttt  ")
 
 # @bp.route('/<id>', methods=['GET'])
 def configs_get(id):
@@ -93,7 +99,7 @@ def _get_app_configs_result(query, version):
         its own function to enable caching to work.
     """
     db = conn.get_db()
-    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
+    cursor = db[cfg.APP_CONFIGS_COLLECTION].find(
         query,
         {"version_numbers": 0}
     ).sort([
@@ -114,7 +120,7 @@ def _get_app_config_by_id_result(query):
     Returns: a list of results
     """
     db = conn.get_db()
-    cursor = db[current_app.config['APP_CONFIGS_COLLECTION']].find(
+    cursor = db[cfg.APP_CONFIGS_COLLECTION].find(
         query,
         {"version_numbers": 0}
     )
@@ -137,7 +143,7 @@ def configs_post():
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
-        app_config_id = db[current_app.config['APP_CONFIGS_COLLECTION']].insert_one(req_data).inserted_id
+        app_config_id = db[cfg.APP_CONFIGS_COLLECTION].insert_one(req_data).inserted_id
         msg = "[POST]: api config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
 
@@ -168,7 +174,7 @@ def configs_put(id):
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
-        status = db[current_app.config['APP_CONFIGS_COLLECTION']].update_one({'_id': ObjectId(id)}, {"$set": req_data})
+        status = db[cfg.APP_CONFIGS_COLLECTION].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
 
     # unauthorized error
@@ -193,7 +199,7 @@ def configs_delete(id):
 
     try:
         db = conn.get_db()
-        status = db[current_app.config['APP_CONFIGS_COLLECTION']].delete_one({'_id': ObjectId(id)})
+        status = db[cfg.APP_CONFIGS_COLLECTION].delete_one({'_id': ObjectId(id)})
         msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
 

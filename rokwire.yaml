@@ -923,8 +923,8 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-      security:
-        - ApiKeyAuth: []
+#      security:
+#        - ApiKeyAuth: []
       parameters:
         - name: mobileAppVersion
           in: query

@@ -6,6 +6,7 @@ from time import gmtime
 from controllers.config import API_LOC
 #import .controllers.config as cfg
 from rokwireresolver import RokwireResolver
+from utils import db
 
 debug = True
 
@@ -19,6 +20,8 @@ if debug:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.DEBUG)
 else:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
+
+db.init_db()
 
 app = connexion.FlaskApp(__name__, debug=debug, specification_dir=API_LOC)
 app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
