@@ -1,5 +1,7 @@
 FROM python:3-alpine
 
+LABEL maintainer="ywkim@illinois.edu"
+
 EXPOSE 5000
 
 WORKDIR /usr/src/app/lib
