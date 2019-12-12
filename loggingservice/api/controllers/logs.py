@@ -19,7 +19,7 @@ def post():
             return rs_handlers.server_400_error(msg)
     except Exception as ex:
         logging.exception(ex)
-        raise OAuthProblem('Invalid token')
+        raise OAuthProblem(ex)
 
     try:
         # db = get_db()
@@ -41,6 +41,6 @@ def post():
 
     except Exception as ex:
         logging.exception(ex)
-        abort(500)
+        raise OAuthProblem(ex)
 
     return rs_handlers.success_response_only_status_code(200, "logging information successfully posted")
