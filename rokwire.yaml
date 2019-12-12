@@ -1107,7 +1107,7 @@ paths:
                 osVersion: "12.4"
                 appVersion: "0.9.5"
                 device: Samsung Galaxy s10
-                deviceSettings:
+                deviceSettings:{}
                 userAction:
                   type: view
                   name: homePanel
