@@ -13,21 +13,41 @@ pip install -r requirements.txt
 
 ## Environment File
 
-You need to have a .env file in this directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
+Not all of these variables may be required for this building block. 
 
 Example file format:
 
 ```
+TWILIO_ACCT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_VERIFY_SERVICE_ID=<Twilio Verify Service ID>
+
+PHONE_VERIFY_SECRET=<Phone Verify Secret> 
+PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
+
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+
 ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+
+# AWS environment variables to set when running on development machine. 
+# This is not required when running within AWS.
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
 ## Run in Development Mode
 
 ```
-cd rokwire-building-blocks-api
+cd loggingservice
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
 export FLASK_APP=loggingservice
 export FLASK_ENV=development
-flask run
+gunicorn profile_rest_service:app -c gunicorn.config.py
 ```
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
