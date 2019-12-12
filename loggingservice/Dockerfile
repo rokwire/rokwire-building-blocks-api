@@ -1,25 +1,31 @@
-FROM python:3
+FROM python:3-alpine
 
 LABEL maintainer="ywkim@illinois.edu"
 
 EXPOSE 5000
 
-WORKDIR /app
+WORKDIR /usr/src/app/lib
 
-COPY loggingservice /app/loggingservice/
+COPY lib .
 
-COPY lib /lib/
+WORKDIR /usr/src/app/loggingservice
 
-RUN pip install -r /app/loggingservice/requirements.txt
+COPY loggingservice .
 
-WORKDIR /app/loggingservice/api
+RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
+  apk --update add --virtual build-dependencies libffi-dev openssl-dev python-dev py-pip build-base && \
+  pip install --upgrade pip && \
+  pip install -r requirements.txt --no-cache-dir && \
+  apk del build-dependencies
 
-RUN mv /lib .
+WORKDIR /usr/src/app/loggingservice/api
+
+RUN mv ../../lib .
 
 COPY rokwire.yaml .
 
 #ENV LOGGING_MONGO_URL=""
 ENV LOGGING_URL_PREFIX="/logs"
 
-CMD ["gunicorn", "loggingservice:create_app()", "--config", "/app/loggingservice/gunicorn.config.py"]
+CMD ["gunicorn", "loggin_rest_service:app", "--config", "/usr/src/app/loggingservice/api/gunicorn.config.py"]
 
