@@ -9,3 +9,10 @@ load_dotenv(verbose=True)
 # LOGGING_DB_NAME="loggingdb"
 # LOGGING_COLL_NAME="logs"
 LOGGING_URL_PREFIX = os.getenv('LOGGING_URL_PREFIX', '/logs')
+FLASK_APP = os.getenv('FLASK_APP', 'profile_rest_service')
+FLASK_ENV = os.getenv('FLASK_ENV', 'production')
+API_LOC = os.getenv('API_LOC', '../../')
+
+DEBUG = os.getenv('DEBUG', 'False')
+
+
