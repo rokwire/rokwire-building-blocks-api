@@ -65,9 +65,8 @@ cd profileservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-export FLASK_APP=profile_rest_service
-export FLASK_ENV=development
-python api/profile_rest_service.py`
+cp -r ../lib api/lib
+python api/profile_rest_service.py
 ```
 
 If you want to use gunicorn, cd into api folder then, use ` gunicorn profile_rest_service:app -c gunicorn.config.py` instead of `python api/profile_rest_service.py` 
