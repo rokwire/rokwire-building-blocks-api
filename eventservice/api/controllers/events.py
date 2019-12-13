@@ -27,7 +27,6 @@ __logger = logging.getLogger("events_building_block")
 
 
 def search():
-    auth_middleware.verify_secret(request)
     args = request.args
     query = dict()
     try:
@@ -80,7 +79,6 @@ def _get_events_result(query, limit, skip):
 
 
 def tags_search():
-    auth_middleware.verify_secret(request)
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "tags.json")
@@ -123,8 +121,6 @@ def _get_categories_result():
 
 
 def get(event_id):
-    auth_middleware.verify_secret(request)
-
     if not ObjectId.is_valid(event_id):
         abort(400)
 
@@ -270,8 +266,6 @@ def delete(event_id):
 
 
 def images_search(event_id):
-    auth_middleware.verify_secret(request)
-
     if not ObjectId.is_valid(event_id):
         abort(400)
 
@@ -335,8 +329,6 @@ def images_post(event_id):
 def images_get(event_id, image_id):
     # TODO: add in again when the client starts sending the API key for this
     # endpoint
-    auth_middleware.verify_secret(request)
-
     if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
         abort(400)
 
@@ -397,9 +389,6 @@ def images_delete(event_id, image_id):
         __logger.exception(ex)
         abort(500)
     return success_response(202, msg, str(event_id))
-
-
-
 
 
 def success_response(status_code, msg, event_id):

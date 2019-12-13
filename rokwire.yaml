@@ -473,7 +473,7 @@ paths:
 
         Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: event_id
         in: path
