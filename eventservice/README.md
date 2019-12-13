@@ -241,6 +241,10 @@ It will return back a list of main categories and sub categories:
 ]
 ```
 
+## One Example of Getting Super Event Tags Endpoint:
+```
+curl -X GET http://localhost:5000/super-events/tags
+```
 
 ## Query Search Examples:
 
@@ -290,6 +294,12 @@ This query will return back all events whose geolocation is within ``800`` meter
 This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category. It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be `Football`. The result also contains all the events whose main category is `Community`.
 ```
 /events?category=Athletics.Football&category=Community
+```
+
+### Super Event Search
+When this query parameter is set to the ID of a super event, the endpoint will return all events as a list (including all the details) that are marked as a sub event of this super event.
+```
+/events?superEventId=5cd1ecb94207d96e66ca2e67
 ```
 
 ## MongoDB
