@@ -401,6 +401,22 @@ paths:
           minimum: 0
           type: integer
           format: int32
+      - name: id
+        in: query
+        description: The parameter for searching multiple events based on their IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: superEventId
+        in: query
+        description: The parameter for searching sub events based on the ID of a super event.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
@@ -1401,6 +1417,26 @@ components:
           - rejected
           - incomplete
           - archived
+        isSuperEvent:
+          type: boolean
+          description: States whether an event is a super event (`true`) or not (`false`). A super event is defined as an event that contains one more sub events. E.g. conference, workshop, exhibition, etc. Each sub event can be a featured sub event and can contain a track that the sub event belongs to.
+        subEvents:
+          type: array
+          description: A list of objects containg some basic details about the sub events that are part of a super event. This property currently applies only to a super event. I.e. this assumes that `isSuperEvent` is set to `true`.
+          items:
+            $ref: "#/components/schemas/SubEventDetails"
+    SubEventDetails:
+      type: object
+      properties:
+        id: 
+          type: string
+          description: ID of the sub event. A sub event is a regular event, except that it's associated with a another event called a super event.
+        isFeatured:
+          type: boolean
+          description: Inidicates whether a sub event is a featured sub event (`true`) or not (`false`). This property can be used to highlight a sub event.
+        track:
+          type: string
+          description: Stores the track or a category that the sub event belongs to. This property can be used to group one or more sub events that are part of a super event. Here, we are using the term *track* in order to differentiate this from the *category* property that is part of the *Event* object.
     Categories:
       type: object
       properties:
