@@ -1,8 +1,8 @@
 import copy
 
-from profileservice.dao.interest import Interest
-from profileservice.dao.favorites import Favorites
-from profileservice.dao.privacysettings import PrivacySettings
+from models.interest import Interest
+from models.favorites import Favorites
+from models.privacysettings import PrivacySettings
 
 """
 set non pii dataset

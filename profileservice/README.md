@@ -25,7 +25,7 @@ The necessary configuration should be configured in configure file (configs.py) 
 
 ## Environment File
 
-You need to have a .env file in the `restservice` directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
 Example file format:
@@ -42,6 +42,12 @@ SHIBBOLETH_HOST=<Shibboleth Host Name>
 SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
 
 ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+
+# AWS environment variables to set when running on development machine. 
+# This is not required when running within AWS.
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
 ## Run application
@@ -59,13 +65,12 @@ cd profileservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-cd restservice
 export FLASK_APP=profile_rest_service
 export FLASK_ENV=development
-python profile_rest_service.py`
+python api/profile_rest_service.py`
 ```
 
-If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
+If you want to use gunicorn, cd into api folder then, use ` gunicorn profile_rest_service:app -c gunicorn.config.py` instead of `python api/profile_rest_service.py` 
 
 The profile building block should be running at http://localhost:5000
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.

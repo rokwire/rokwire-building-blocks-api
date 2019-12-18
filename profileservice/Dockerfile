@@ -16,14 +16,17 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
   pip install -r requirements.txt --no-cache-dir && \
   apk del build-dependencies
 
-WORKDIR /usr/src/app/profileservice/restservice
+WORKDIR /usr/src/app/profileservice/api
 
-RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+RUN mv ../../lib .
+
+COPY rokwire.yaml .
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \
     MONGO_PII_URL="" \
+    API_LOC="." \
     FLASK_APP="profile_rest_service" \
     FLASK_ENV="development"
 
-CMD ["gunicorn", "profile_rest_service:app", "--config", "/usr/src/app/profileservice/gunicorn.config.py"]
+CMD ["gunicorn", "profile_rest_service:app", "--config", "/usr/src/app/profileservice/api/gunicorn.config.py"]
