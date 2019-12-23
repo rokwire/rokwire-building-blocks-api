@@ -6,8 +6,9 @@ from bson import ObjectId
 def format_query(args, query):
     query_parts = []
     # superevent id
-    if args.get('superEventId'):
-        query_parts.append({'id': args.get('superEventId')})
+    super_event_id = args.get('superEventId')
+    if super_event_id and ObjectId.is_valid(super_event_id):
+        query_parts.append({'_id': ObjectId(super_event_id)})
         query_parts.append({'isSuperEvent': True})
     # multiple events ids
     if args.getlist('id'):
