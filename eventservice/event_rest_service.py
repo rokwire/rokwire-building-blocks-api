@@ -28,6 +28,19 @@ bp = Blueprint('event_rest_service', __name__, url_prefix=URL_PREFIX)
 
 # A couple of proposed groups
 
+@bp.route('/super-events/tags', methods=['GET'])
+def get_superevents_tags():
+    auth_middleware.verify_secret(request)
+    response = []
+    try:
+        tags_path = os.path.join(current_app.root_path, "superevents_tags.json")
+        with open(tags_path, 'r') as tags_file:
+            response = json.load(tags_file)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return flask.jsonify(response)
+
 
 @bp.route('/tags', methods=['GET'])
 def get_tags():
@@ -109,6 +122,11 @@ def _get_events_result(query, limit, skip):
     if not query:
         return []
 
+    is_super_event = False
+    for cond in query.get('$and'):
+        if cond.get('isSuperEvent'):
+            is_super_event = True
+
     db = get_db()
     cursor = db['events'].find(
         query,
@@ -124,8 +142,24 @@ def _get_events_result(query, limit, skip):
 
     events = []
     for event in cursor:
+        # use the db `_id` as id in the returning event.
         event['id'] = str(event.pop('_id'))
-        events.append(event)
+        if is_super_event:
+            subevents_ids = list()
+            for subevent in event.get('subEvents'):
+                subevents_ids.append(ObjectId(subevent.get("id")))
+            subevents_cursor = db['events'].find(
+                {'_id': {'$in': subevents_ids}},
+                {'coordinates': 0, 'categorymainsub': 0}
+            ).sort([
+                ('startDate', pymongo.ASCENDING),
+                ('endDate', pymongo.ASCENDING),
+            ])
+            for subevent_detail in subevents_cursor:
+                subevent_detail['id'] = str(subevent_detail.pop('_id'))
+                events.append(subevent_detail)
+        else:
+            events.append(event)
     return flask.json.dumps(events), len(events)
 
 
