@@ -299,7 +299,7 @@ This query supports main categories search and main/sub categories search. The r
 ### Super Event Search
 When this query parameter is set to the ID of a super event, the endpoint will return all events as a list (including all the details) that are marked as a sub event of this super event.
 ```
-/events?superEventId=5cd1ecb94207d96e66ca2e67
+/events?superEventId=<ID of a super event>
 ```
 
 ## MongoDB
@@ -324,4 +324,3 @@ db.events.createIndex({'sponsor': 1})
 db.events.createIndex({'categorymainsub': 1})
 db.events.createIndex({'coordinates': "2dsphere"})
 ```
-
