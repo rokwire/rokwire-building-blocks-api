@@ -142,6 +142,7 @@ def _get_events_result(query, limit, skip):
 
     events = []
     for event in cursor:
+        # return db `_id` as id field in the returning event.
         event['id'] = str(event.pop('_id'))
         if is_super_event:
             subevents_ids = list()
