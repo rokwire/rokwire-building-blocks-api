@@ -241,6 +241,10 @@ It will return back a list of main categories and sub categories:
 ]
 ```
 
+## One Example of Getting Super Event Tags Endpoint:
+```
+curl -X GET http://localhost:5000/super-events/tags
+```
 
 ## Query Search Examples:
 
@@ -292,6 +296,12 @@ This query supports main categories search and main/sub categories search. The r
 /events?category=Athletics.Football&category=Community
 ```
 
+### Super Event Search
+When this query parameter is set to the ID of a super event, the endpoint will return all events as a list (including all the details) that are marked as a sub event of this super event.
+```
+/events?superEventId=<ID of a super event>
+```
+
 ## MongoDB
 
 You can import predefined categories into the local mongodb.
@@ -314,4 +324,3 @@ db.events.createIndex({'sponsor': 1})
 db.events.createIndex({'categorymainsub': 1})
 db.events.createIndex({'coordinates': "2dsphere"})
 ```
-
