@@ -9,6 +9,8 @@ if [[ "${GIT_BRANCH}" = "master" ]]; then
     VERSION=${VERSION:-"$(git describe --abbrev=0 --tags)"}
 elif [[ "${GIT_BRANCH}" = "develop" ]]; then
     VERSION="develop"
+elif [[ "${GIT_BRANCH}" = "feature/279-rokwire-platform-refactoring" ]]; then
+    VERSION="279-refactor"
 else
     exit 0
 fi

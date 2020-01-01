@@ -33,7 +33,6 @@ paths:
         Create non-PII profile with profile id.
         
         Auth: Requires a valid API Key for access.
-      operationId: createProfile
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -65,7 +64,6 @@ paths:
         Returns a single profile
         
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: getProfileById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -101,7 +99,6 @@ paths:
       summary: Updates a profile with form data
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: updateProfileWithForm
       security:
         - ApiKeyAuth: []
       parameters:
@@ -112,8 +109,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         description: update profile object
         content:
@@ -145,7 +141,6 @@ paths:
       summary: Deletes a profile
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: deleteProfile
       security:
         - ApiKeyAuth: []
       parameters:
@@ -156,8 +151,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         202:
           description: Profile is deleted
@@ -176,9 +170,8 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
-        
+
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
-      operationId: createPii
       security:
         - UserAuth: []
       responses:
@@ -201,9 +194,8 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
-        
+
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-      operationId: getPiiById
       security:
         - UserAuth: []
       parameters:
@@ -239,7 +231,6 @@ paths:
       summary: Updates a PII with form data
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
-      operationId: updatePiiWithForm
       security:
         - UserAuth: []
       parameters:
@@ -282,7 +273,6 @@ paths:
       summary: Deletes a PII
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
-      operationId: deletePii
       security:
         - UserAuth: []
       parameters:
@@ -410,6 +400,22 @@ paths:
           minimum: 0
           type: integer
           format: int32
+      - name: id
+        in: query
+        description: The parameter for searching multiple events based on their IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: superEventId
+        in: query
+        description: The parameter for searching sub events based on the ID of a super event.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
@@ -1263,7 +1269,7 @@ components:
           items:
             type: string
         favorites:
-          type: array
+          type: object
           items:
             properties:
               eventIds:
@@ -1309,7 +1315,7 @@ components:
         pid:
           type: string
         uuid:
-          type: array
+          type: string
           items:
             type: string
         userName:
@@ -1341,10 +1347,10 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
-        recurringFlag: 
+        recurringFlag:
           type: boolean
           description: a flag to denote this is recurring event
-        recurrenceId: 
+        recurrenceId:
           type: integer
           description: recurring id
         category:
@@ -1441,6 +1447,26 @@ components:
           - rejected
           - incomplete
           - archived
+        isSuperEvent:
+          type: boolean
+          description: States whether an event is a super event (`true`) or not (`false`). A super event is defined as an event that contains one more sub events. E.g. conference, workshop, exhibition, etc. Each sub event can be a featured sub event and can contain a track that the sub event belongs to.
+        subEvents:
+          type: array
+          description: A list of objects containg some basic details about the sub events that are part of a super event. This property currently applies only to a super event. I.e. this assumes that `isSuperEvent` is set to `true`.
+          items:
+            $ref: "#/components/schemas/SubEventDetails"
+    SubEventDetails:
+      type: object
+      properties:
+        id: 
+          type: string
+          description: ID of the sub event. A sub event is a regular event, except that it's associated with a another event called a super event.
+        isFeatured:
+          type: boolean
+          description: Inidicates whether a sub event is a featured sub event (`true`) or not (`false`). This property can be used to highlight a sub event.
+        track:
+          type: string
+          description: Stores the track or a category that the sub event belongs to. This property can be used to group one or more sub events that are part of a super event. Here, we are using the term *track* in order to differentiate this from the *category* property that is part of the *Event* object.
     Categories:
       type: object
       properties:
@@ -1497,7 +1523,7 @@ components:
         mobileAppVersion:
           type: string
           description: unique and is empty or conforms major.minor.patch format
-        platformBuildingBlocks: 
+        platformBuildingBlocks:
           type: object
         thirdPartyServices:
           type: object
@@ -1521,7 +1547,7 @@ components:
         uuid:
           type: string
           format: uuid
-          description: UUID of the app user. 
+          description: UUID of the app user.
         os:
           type: string
           description: Name of operating system on the device running the app.
@@ -1536,7 +1562,7 @@ components:
           description: Name of device running the app.
         deviceSettings:
           type: object
-          description: Object containing relevant device settings. 
+          description: Object containing relevant device settings.
         userAction:
           $ref: '#/components/schemas/UserAction'
     UserAction:
@@ -1605,7 +1631,7 @@ components:
         - code
       example:
         phoneNumber: "+12175557890"
-        code: "123456"  
+        code: "123456"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
