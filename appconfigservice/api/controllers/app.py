@@ -21,19 +21,15 @@ __logger = logging.getLogger("app_config_building_block")
 app = flask.Flask(__name__)
 
 
-# bp = Blueprint('app_config_rest_service', __name__, url_prefix='/app/configs')
 
-
-# @bp.route('/', methods=['GET'])
-def configs_search():
+def configs_search(mobileAppVersion=None):
     """
         GET app config from the request.
     """
-    print("configs get ----- ")
-    # auth_middleware.verify_secret(request)
 
     args = request.args
-    version = args.get('mobileAppVersion')
+    #version = args.get('mobileAppVersion')
+    version = mobileAppVersion
     query = dict()
 
     # AppConfig not found
@@ -64,10 +60,18 @@ def configs_search():
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
 
-def get():
-    print("gettttt  ")
 
-# @bp.route('/<id>', methods=['GET'])
+def configs_get():
+    result = {}
+    try:
+        result = _get_app_configs_all()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    return flask.jsonify(result)
+
+
 def configs_get(id):
     """
         GET app config from a single id.
@@ -111,6 +115,15 @@ def _get_app_configs_result(query, version):
         cursor = cursor.limit(1)
 
     return [decode(c) for c in cursor]
+
+def _get_app_configs_all():
+    """
+        Returns all app configs as a list.
+    """
+    db = conn.get_db()
+    result = db[cfg.APP_CONFIGS_COLLECTION]
+
+    return result
 
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
@@ -225,7 +238,6 @@ def success_response(status_code, msg, app_config_id):
     return make_response(resp)
 
 
-# @bp.errorhandler(400)
 # BAD REQUEST ERROR HANDLER
 @app.errorhandler(400)
 def server_400_error(error=None):
@@ -238,7 +250,6 @@ def server_400_error(error=None):
     return resp
 
 
-# @bp.errorhandler(401)
 # UNAUTHORIZED ERROR HANDLER
 @app.errorhandler(401)
 def server_401_error(error=None):
@@ -251,7 +262,6 @@ def server_401_error(error=None):
     return resp
 
 
-# @bp.errorhandler(404)
 # NOT FOUND ERROR HANDLER
 @app.errorhandler(404)
 def server_404_error(error=None):
@@ -264,7 +274,6 @@ def server_404_error(error=None):
     return resp
 
 
-# @bp.errorhandler(405)
 @app.errorhandler(405)
 # INVALID INPUT ERROR HANDLER
 def server_405_error(error=None):

@@ -867,7 +867,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      #operationId: createAppConfig
       security:
         - UserAuth: []
       requestBody:
@@ -923,8 +922,8 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-#      security:
-#        - ApiKeyAuth: []
+      security:
+        - ApiKeyAuth: []
       parameters:
         - name: mobileAppVersion
           in: query
@@ -989,7 +988,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      #operationId: updateAppConfig
       security:
         - UserAuth: []
       parameters:

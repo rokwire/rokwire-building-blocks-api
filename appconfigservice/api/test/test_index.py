@@ -101,8 +101,8 @@ def test_order_by_version(client, app):
         "otherUniversityServices": {},
         "secretKeys": {}
     }
-    assert client.post('/api/configs', data=json.dumps(req_data_9), content_type='application/json').status_code == 201
-    response = client.get('/api/configs')
+    assert client.post('/app/configs', data=json.dumps(req_data_9), content_type='application/json').status_code == 201
+    response = client.get('/app/configs')
     documents = json.loads(response.data)
     size = len(documents)
     assert size == 9

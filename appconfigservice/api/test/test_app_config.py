@@ -1,21 +1,20 @@
 import json
-
+import flask
+import connexion
 import pytest
 from flask import current_app
-
-from .. import create_app
+from controllers.config import API_LOC
+#import .controllers.config as cfg
+from rokwireresolver import RokwireResolver
 from ..utils import db as conn
 
 
 @pytest.fixture
 def app():
     """Create and configure a new api instance for each test."""
-    app = create_app({
-        "APP_CONFIG_MONGO_URL": "mongodb://localhost:27017",
-        "APP_CONFIG_DB_NAME": "app_config_db",
-        "APP_CONFIG_MAX_POOLSIZE": 100,
-        "APP_CONFIGS_COLLECTION": "app_configs"
-    })
+    app = connexion.FlaskApp(__name__, specification_dir=API_LOC)
+    app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
+                resolver_error=501)
     yield app
 
 
@@ -66,7 +65,7 @@ def test_update_app_config(client, app):
         "secretKeys": {"xx-key": "blahblah...blah"}
     }
     if id is not None:
-        assert client.put('/api/configs/' + str(id), data=json.dumps(new_data),
+        assert client.put('/app/configs/' + str(id), data=json.dumps(new_data),
                           content_type='application/json').status_code == 200
     with app.app_context():
         db = conn.get_db()
@@ -76,8 +75,8 @@ def test_update_app_config(client, app):
 
 def test_get_app_config(client, app):
     """Test GET API given mobile api version"""
-    assert client.get('/api/configs?mobileAppVersion=0.1.0').status_code == 200
-    response = client.get('/api/configs')
+    assert client.get('/app/configs?mobileAppVersion=0.1.0').status_code == 200
+    response = client.get('/app/configs')
     assert b'0.1.0' in response.data
 
 
@@ -89,14 +88,14 @@ def test_get_app_config_by_id(client, app):
         config = db[current_app.config['APP_CONFIGS_COLLECTION']].find_one({'mobileAppVersion': '0.1.0'})
         id = config['_id']
     if id is not None:
-        resp = client.get('/api/configs/' + str(id))
+        resp = client.get('/app/configs/' + str(id))
         assert resp.status_code == 200
         assert b'0.1.0' in resp.data
 
 
 def test_secret_key(client, app):
     """Test GET API given mobile api version"""
-    response = client.get('/api/configs?mobileAppVersion=0.1.0')
+    response = client.get('/app/configs?mobileAppVersion=0.1.0')
     assert b'blahblah' in response.data
 
 
@@ -108,5 +107,5 @@ def test_delete_app_config(client, app):
         for doc in db[current_app.config['APP_CONFIGS_COLLECTION']].find({'mobileAppVersion': '0.1.0'}):
             id = doc['_id']
             if id is not None:
-                resp = client.delete('/api/configs/' + str(id))
+                resp = client.delete('/app/configs/' + str(id))
                 assert (resp.status_code == 202)

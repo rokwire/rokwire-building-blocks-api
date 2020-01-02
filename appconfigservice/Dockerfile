@@ -20,5 +20,5 @@ RUN mv /lib .
 
 #VOLUME /var/cache/app
 
-#CMD ["gunicorn", "appconfig_rest_service:app", "--config", "./gunicorn.config.py"]
+CMD ["gunicorn", "appconfig_rest_service:app", "--config", "./gunicorn.config.py"]
 #gunicorn appconfig_rest_service:app --config ./gunicorn.config.py
