@@ -28,4 +28,4 @@ app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireReso
             resolver_error=501)
 
 if __name__ == '__main__':
-    app.run(port=5000, host=None, server='flask', debug=debug)
+    app.run(port=5000, host=None, server='flask' )

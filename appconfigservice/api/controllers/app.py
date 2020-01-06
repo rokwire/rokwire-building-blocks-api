@@ -22,27 +22,32 @@ app = flask.Flask(__name__)
 
 
 
-def configs_search(mobileAppVersion=None):
+def configs_search():
     """
         GET app config from the request.
     """
 
     args = request.args
-    #version = args.get('mobileAppVersion')
-    version = mobileAppVersion
+    version = args.get('mobileAppVersion')
+    #version = mobileAppVersion
     query = dict()
 
-    # AppConfig not found
-    if (not version) or (not dbutils.check_appversion_format(version)):
-        abort(404)
-        # server_404_error()
+    #FOR DEBUGGING:
+    # print("configs_search")
+    # print(version)
+
+    # strange error happend if uncomment following parts
+    # if not dbutils.check_appversion_format(version):
+    #     abort(404)
 
     try:
         query = format_query(args, query)
     except Exception as ex:  # unalbe to format a query
         __logger.exception(ex)
         abort(500)
-        # server_500_error()
+
+    if not version:
+        version = None
 
     try:
         result = _get_app_configs_result(query, version)
@@ -51,25 +56,14 @@ def configs_search(mobileAppVersion=None):
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
-        # server_404_error()
+
     except Exception as ex:  # unable to get config results
         __logger.exception(ex)
         abort(500)
-        # server_500_error()
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
 
-
-def configs_get():
-    result = {}
-    try:
-        result = _get_app_configs_all()
-    except Exception as ex:
-        __logger.exception(ex)
-        abort(500)
-
-    return flask.jsonify(result)
 
 
 def configs_get(id):
@@ -78,8 +72,7 @@ def configs_get(id):
         :param id: the input id
         :return: get the requested app config
     """
-    #auth_middleware.verify_secret(request)
-    #Invalid input ID -- not matched with yaml file
+    #print("configs_get_id")
     if not ObjectId.is_valid(id):
         abort(405)
         # server_405_error()
@@ -102,6 +95,12 @@ def _get_app_configs_result(query, version):
         Perform the get_app_configs query and return a list of results. This is
         its own function to enable caching to work.
     """
+    # print("_get_app_configs_result: ")
+    # print("query: ")
+    # print(query)
+    # print("version: ")
+    # print(version)
+
     db = conn.get_db()
     cursor = db[cfg.APP_CONFIGS_COLLECTION].find(
         query,
@@ -116,14 +115,6 @@ def _get_app_configs_result(query, version):
 
     return [decode(c) for c in cursor]
 
-def _get_app_configs_all():
-    """
-        Returns all app configs as a list.
-    """
-    db = conn.get_db()
-    result = db[cfg.APP_CONFIGS_COLLECTION]
-
-    return result
 
 @memoize_query(**CACHE_GET_APPCONFIG)
 def _get_app_config_by_id_result(query):
