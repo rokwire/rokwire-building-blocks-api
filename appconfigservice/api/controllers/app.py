@@ -32,13 +32,8 @@ def configs_search():
     #version = mobileAppVersion
     query = dict()
 
-    #FOR DEBUGGING:
-    # print("configs_search")
-    # print(version)
-
-    # strange error happend if uncomment following parts
-    # if not dbutils.check_appversion_format(version):
-    #     abort(404)
+    if version and dbutils.check_appversion_format(version) == False:
+        abort(404)
 
     try:
         query = format_query(args, query)
@@ -72,10 +67,8 @@ def configs_get(id):
         :param id: the input id
         :return: get the requested app config
     """
-    #print("configs_get_id")
     if not ObjectId.is_valid(id):
         abort(405)
-        # server_405_error()
 
     # TODO: Missing 404 and 401 error handler
 
@@ -95,11 +88,6 @@ def _get_app_configs_result(query, version):
         Perform the get_app_configs query and return a list of results. This is
         its own function to enable caching to work.
     """
-    # print("_get_app_configs_result: ")
-    # print("query: ")
-    # print(query)
-    # print("version: ")
-    # print(version)
 
     db = conn.get_db()
     cursor = db[cfg.APP_CONFIGS_COLLECTION].find(
@@ -132,15 +120,12 @@ def _get_app_config_by_id_result(query):
     return [decode(c) for c in cursor]
 
 
-# @bp.route('/', methods=['POST'])
 def configs_post():
     """
         POST when creating a mobile app configuration
     """
-    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
     req_data = request.get_json(force=True)
 
-    # bad request error
     if not check_format(req_data):
         abort(400)
 
@@ -163,15 +148,14 @@ def configs_post():
 
     return success_response(201, msg, str(app_config_id))
 
-# @bp.route('/<id>', methods=['PUT'])
 def configs_put(id):
-#UPDATE the app config by input id.
+    #UPDATE the app config by input id.
     #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
-    # invalid input error
+
     if not ObjectId.is_valid(id):
         abort(405)
-        #server_401_error()
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         server_405_error()
@@ -181,23 +165,17 @@ def configs_put(id):
         status = db[cfg.APP_CONFIGS_COLLECTION].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
 
-    # unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
     #TODO: INVALID INPUT 405 ERROR
 
-    # internal error
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
 
-# @bp.route('/<id>', methods=['DELETE'])
 def configs_delete(id):
-    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
-
-    #invalid id
     if not ObjectId.is_valid(id):
         abort(404)
 
@@ -212,7 +190,6 @@ def configs_delete(id):
         __logger.exception(ex)
         abort(500)
 
-    ##successfully deleted with 202 code returned
     return success_response(202, msg, str(id))
 
 
