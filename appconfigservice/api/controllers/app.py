@@ -21,7 +21,6 @@ __logger = logging.getLogger("app_config_building_block")
 app = flask.Flask(__name__)
 
 
-
 def configs_search():
     """
         GET app config from the request.
@@ -29,7 +28,7 @@ def configs_search():
 
     args = request.args
     version = args.get('mobileAppVersion')
-    #version = mobileAppVersion
+    # version = mobileAppVersion
     query = dict()
 
     if version and dbutils.check_appversion_format(version) == False:
@@ -58,7 +57,6 @@ def configs_search():
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
-
 
 
 def configs_get(id):
@@ -148,10 +146,10 @@ def configs_post():
 
     return success_response(201, msg, str(app_config_id))
 
-def configs_put(id):
-    #UPDATE the app config by input id.
-    #auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
+def configs_put(id):
+    # UPDATE the app config by input id.
+    # auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     if not ObjectId.is_valid(id):
         abort(405)
@@ -168,12 +166,13 @@ def configs_put(id):
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(401)
-    #TODO: INVALID INPUT 405 ERROR
+    # TODO: INVALID INPUT 405 ERROR
 
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     return success_response(200, msg, str(id))
+
 
 def configs_delete(id):
     if not ObjectId.is_valid(id):
@@ -185,7 +184,7 @@ def configs_delete(id):
         msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
 
-    #TODO: 401 ERROR
+    # TODO: 401 ERROR
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -289,7 +288,6 @@ def format_query(args, query):
                       {'version_numbers.patch': {'$lte': int(m.group(3))}}]}
         ]}
     return query
-
 
 
 def add_version_numbers(req_data):

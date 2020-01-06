@@ -1,11 +1,12 @@
 import json
-import flask
+
 import connexion
 import pytest
-from flask import current_app
 from controllers.config import API_LOC
-#import .controllers.config as cfg
+from flask import current_app
+# import .controllers.config as cfg
 from rokwireresolver import RokwireResolver
+
 from ..utils import db as conn
 
 
