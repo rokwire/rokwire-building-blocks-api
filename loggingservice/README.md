@@ -46,7 +46,7 @@ virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp -r ../lib api/lib
-python profile_rest_service.py
+python logging_rest_service.py
 ```
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
