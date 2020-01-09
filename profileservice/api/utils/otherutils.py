@@ -7,7 +7,7 @@ from mimetypes import MimeTypes
 
 from bson import ObjectId
 
-from profileservice.dao.filedescriptor import FileDescriptor
+from models.filedescriptor import FileDescriptor
 
 """
 create FileDescriptor object
