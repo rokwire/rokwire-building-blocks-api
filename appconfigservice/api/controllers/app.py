@@ -21,7 +21,7 @@ __logger = logging.getLogger("app_config_building_block")
 app = flask.Flask(__name__)
 
 
-def configs_search():
+def configs_search(mobileAppVersion=None):
     """
         GET app config from the request.
     """
@@ -39,10 +39,6 @@ def configs_search():
     except Exception as ex:  # unalbe to format a query
         __logger.exception(ex)
         abort(500)
-
-    if not version:
-        version = None
-
     try:
         result = _get_app_configs_result(query, version)
 
@@ -122,8 +118,8 @@ def configs_post():
     """
         POST when creating a mobile app configuration
     """
+    print("config post")
     req_data = request.get_json(force=True)
-
     if not check_format(req_data):
         abort(400)
 
@@ -151,6 +147,7 @@ def configs_put(id):
     # UPDATE the app config by input id.
     # auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
+    print(configs_put)
     if not ObjectId.is_valid(id):
         abort(405)
 
