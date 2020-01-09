@@ -148,12 +148,12 @@ def configs_put(id):
     # auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
 
     print(configs_put)
-    if not ObjectId.is_valid(id):
-        abort(405)
 
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         server_405_error()
+    if not ObjectId.is_valid(id):
+        abort(405)
     try:
         db = conn.get_db()
         add_version_numbers(req_data)
