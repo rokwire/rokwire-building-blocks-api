@@ -22,13 +22,8 @@ app = flask.Flask(__name__)
 
 
 def configs_search(mobileAppVersion=None):
-    """
-        GET app config from the request.
-    """
-
     args = request.args
     version = args.get('mobileAppVersion')
-    # version = mobileAppVersion
     query = dict()
 
     if version and dbutils.check_appversion_format(version) == False:
@@ -56,11 +51,6 @@ def configs_search(mobileAppVersion=None):
 
 
 def configs_get(id):
-    """
-        GET app config from a single id.
-        :param id: the input id
-        :return: get the requested app config
-    """
     if not ObjectId.is_valid(id):
         abort(405)
 
@@ -115,10 +105,6 @@ def _get_app_config_by_id_result(query):
 
 
 def configs_post():
-    """
-        POST when creating a mobile app configuration
-    """
-    print("config post")
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         abort(400)
@@ -144,11 +130,6 @@ def configs_post():
 
 
 def configs_put(id):
-    # UPDATE the app config by input id.
-    # auth_middleware.authenticate(auth_middleware.rokwire_app_config_manager_group)
-
-    print(configs_put)
-
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         server_405_error()
@@ -174,14 +155,12 @@ def configs_put(id):
 def configs_delete(id):
     if not ObjectId.is_valid(id):
         abort(404)
-
     try:
         db = conn.get_db()
         status = db[cfg.APP_CONFIGS_COLLECTION].delete_one({'_id': ObjectId(id)})
         msg = "[DELETE]: api config id %s, nDelete = %d " % (str(id), status.deleted_count)
         __logger.info(msg)
 
-    # TODO: 401 ERROR
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -190,7 +169,6 @@ def configs_delete(id):
 
 
 # =================================UTIL FUNCTIONS FOR REST SERVICES=====================================#
-# SUCCESS REQUEST HANDLER
 def success_response(status_code, msg, app_config_id):
     message = {
         'status': status_code,
@@ -202,7 +180,6 @@ def success_response(status_code, msg, app_config_id):
     return make_response(resp)
 
 
-# BAD REQUEST ERROR HANDLER
 @app.errorhandler(400)
 def server_400_error(error=None):
     if error is None:
@@ -214,7 +191,6 @@ def server_400_error(error=None):
     return resp
 
 
-# UNAUTHORIZED ERROR HANDLER
 @app.errorhandler(401)
 def server_401_error(error=None):
     if error is None:
@@ -226,7 +202,6 @@ def server_401_error(error=None):
     return resp
 
 
-# NOT FOUND ERROR HANDLER
 @app.errorhandler(404)
 def server_404_error(error=None):
     if error is None:
@@ -239,7 +214,6 @@ def server_404_error(error=None):
 
 
 @app.errorhandler(405)
-# INVALID INPUT ERROR HANDLER
 def server_405_error(error=None):
     if error is None:
         error = {
@@ -250,8 +224,6 @@ def server_405_error(error=None):
     return resp
 
 
-# @bp.errorhandler(500)
-# INTERNAL ERROR HANDLER
 @app.errorhandler(500)
 def server_500_error(error=None):
     if error is None:
