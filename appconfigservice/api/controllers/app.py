@@ -31,7 +31,7 @@ def configs_search(mobileAppVersion=None):
 
     try:
         query = format_query(args, query)
-    except Exception as ex:  # unalbe to format a query
+    except Exception as ex:  # unable to format a query
         __logger.exception(ex)
         abort(500)
     try:
