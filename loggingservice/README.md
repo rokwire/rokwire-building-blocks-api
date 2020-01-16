@@ -13,21 +13,39 @@ pip install -r requirements.txt
 
 ## Environment File
 
-You need to have a .env file in this directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
+Not all of these variables may be required for this building block. 
 
 Example file format:
 
 ```
-ROKWIRE_API_KEY=<Rokwire API Key>
+TWILIO_ACCT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_VERIFY_SERVICE_ID=<Twilio Verify Service ID>
+
+PHONE_VERIFY_SECRET=<Phone Verify Secret> 
+PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
+
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+
+ROKWIRE_API_KEY=<Rokwire API Key>	ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+
+# AWS environment variables to set when running on development machine. 
+# This is not required when running within AWS.
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
 ## Run in Development Mode
 
 ```
-cd rokwire-building-blocks-api
-export FLASK_APP=loggingservice
-export FLASK_ENV=development
-flask run
+cd loggingservice
+export FLASK_APP=loggingservice	virtualenv -p python3 venv
+export FLASK_ENV=development	source venv/bin/activate
+flask run	pip install -r requirements.txt
+python logging_rest_service.py
 ```
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
@@ -35,8 +53,8 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ## Docker Instructions
 ```
 cd rokwire-building-blocks-api
-docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
-docker run --rm --name logging --env-file loggingservice/.env -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
+docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .	docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
+docker run --rm --name logging --env-file loggingservice/.env -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block	docker run --name logging --rm --env-file loggingservice/.env -e API_LOC=. -e DEBUG=False -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
 ```
 You can edit config.py or environment variable to specify a URL prefix.
 ```

@@ -65,8 +65,6 @@ cd profileservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-export FLASK_APP=profile_rest_service
-export FLASK_ENV=development
 python api/profile_rest_service.py`
 ```
 
@@ -79,7 +77,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
-docker run --name profile --rm --env-file=profileservice/restservice/.env -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
+docker run --name profile --rm --env-file=profileservice/restservice/.env -e PROFILE_ENDPOINT=/profiles -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
 ```
 
 ### AWS ECR Instructions

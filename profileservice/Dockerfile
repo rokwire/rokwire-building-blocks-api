@@ -1,5 +1,7 @@
 FROM python:3-alpine
 
+LABEL maintainer="ywkim@illinois.edu"
+
 EXPOSE 5000
 
 WORKDIR /usr/src/app/lib
@@ -17,8 +19,6 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
   apk del build-dependencies
 
 WORKDIR /usr/src/app/profileservice/api
-
-RUN mv ../../lib .
 
 COPY rokwire.yaml .
 
