@@ -21,7 +21,7 @@ if debug:
 else:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
 
-#db.init_db()
+# db.init_db()
 
 app = connexion.FlaskApp(__name__, specification_dir=API_LOC)
 app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),

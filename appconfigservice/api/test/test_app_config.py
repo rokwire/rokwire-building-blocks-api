@@ -40,7 +40,7 @@ def test_post_app_config(client, app):
         "otherUniversityServices": {},
         "secretKeys": {}
     }
-    assert client.post('/api/configs', data=json.dumps(req_data), content_type='application/json').status_code == 201
+    assert client.post('/app/configs', data=json.dumps(req_data), content_type='application/json').status_code == 201
     with app.app_context():
         db = conn.get_db()
         config = db[current_app.config['APP_CONFIGS_COLLECTION']].find_one({'mobileAppVersion': '0.1.0'})
