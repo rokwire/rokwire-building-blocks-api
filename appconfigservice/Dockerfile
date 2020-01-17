@@ -5,7 +5,6 @@ LABEL maintainer="sandeeps@illinois.edu"
 WORKDIR /app
 
 COPY appconfigservice ./appconfigservice
-COPY appconfigservice/requirements.txt requirements.txt
 COPY lib ../lib/
 COPY rokwire.yaml .
 
