@@ -39,3 +39,4 @@ authservice/credentials.env
 # Python builds
 *.egg-info/
 dist/
+/appconfigservice/.python-version
