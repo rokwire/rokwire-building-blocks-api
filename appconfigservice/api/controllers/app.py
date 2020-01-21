@@ -6,7 +6,7 @@ import flask
 import pymongo
 from bson import ObjectId
 from flask import request, make_response, abort, current_app
-from pymongo.errors import DuplicateKeyError
+from pymongo.errors import DuplicateKeyError, CursorNotFound
 from time import gmtime
 
 from utils import db as conn
@@ -39,6 +39,10 @@ def configs_search(mobileAppVersion=None):
         if len(result) == 0:
             abort(404)
 
+    except CursorNotFound as ex:
+        __logger.exception(ex)
+        abort(404)
+
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(400)
@@ -59,7 +63,9 @@ def configs_get(id):
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
         if len(result) == 0:
             abort(404)
-
+    except CursorNotFound as ex:
+        __logger.exception(ex)
+        abort(404)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
