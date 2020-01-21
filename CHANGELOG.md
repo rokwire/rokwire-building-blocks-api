@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update Events Service Readme to add CACHE_DIRECTORY. [#275](https://github.com/rokwire/rokwire-building-blocks-api/issues/275)
 - Refactored profile building using connexion. [#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
+- Refactored App Config building using connexion. [#294](https://github.com/rokwire/rokwire-building-blocks-api/issues/294)
 
 ## [1.0.2] - 2019-10-30
 ### Changed

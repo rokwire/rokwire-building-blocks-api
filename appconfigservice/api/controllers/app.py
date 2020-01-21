@@ -27,7 +27,7 @@ def configs_search(mobileAppVersion=None):
     query = dict()
 
     if version and dbutils.check_appversion_format(version) == False:
-        abort(404)
+        abort(400)
 
     try:
         query = format_query(args, query)
@@ -36,13 +36,13 @@ def configs_search(mobileAppVersion=None):
         abort(500)
     try:
         result = _get_app_configs_result(query, version)
+        if result == None: abort(404)
 
-    # TODO: Missing 401 error handler
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(401)
+        abort(400)
 
-    except Exception as ex:  # unable to get config results
+    except Exception as ex:  
         __logger.exception(ex)
         abort(500)
 
@@ -54,10 +54,10 @@ def configs_get(id):
     if not ObjectId.is_valid(id):
         abort(405)
 
-    # TODO: Missing 404 and 401 error handler
-
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
+        if result == None: abort(404)
+
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -120,7 +120,6 @@ def configs_post():
         __logger.error(err)
         abort(400)
 
-    # internal other error
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -143,7 +142,6 @@ def configs_put(id):
     except DuplicateKeyError as err:
         __logger.error(err)
         abort(400)
-    # TODO: INVALID INPUT 405 ERROR
 
     except Exception as ex:
         __logger.exception(ex)
