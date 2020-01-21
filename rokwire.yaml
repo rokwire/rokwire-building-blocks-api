@@ -903,7 +903,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: {}
+                  secretKeys: ""
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
@@ -915,9 +915,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices: 
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: 
-                    my_secret_key_1: "123abc456"
-                    my_secret_key_2: "123456abc"
+                  secretKeys: "123abc456"
         required: true
       responses:
         201:
@@ -957,6 +955,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -990,6 +990,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
