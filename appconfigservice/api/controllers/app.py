@@ -51,7 +51,7 @@ def configs_search(mobileAppVersion=None):
 
 def configs_get(id):
     if not ObjectId.is_valid(id):
-        abort(404)
+        abort(400)
 
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
