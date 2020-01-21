@@ -8,7 +8,7 @@ from controllers.config import API_LOC
 from rokwireresolver import RokwireResolver
 from utils import db
 
-debug = True
+debug = False
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
