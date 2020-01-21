@@ -22,32 +22,27 @@ app = flask.Flask(__name__)
 
 
 def configs_search(mobileAppVersion=None):
-    args = request.args
-    version = args.get('mobileAppVersion')
-    query = dict()
-    result = []
+        args = request.args
+        version = args.get('mobileAppVersion')
+        query = dict()
 
-    if version and dbutils.check_appversion_format(version) == False:
-        abort(400)
+        if version and dbutils.check_appversion_format(version) == False:
+            abort(400)
 
-    try:
-        query = format_query(args, query)
-    except Exception as ex:  # unable to format a query
-        __logger.exception(ex)
-        abort(500)
-    try:
-        result = _get_app_configs_result(query, version)
-    except CursorNotFound as ex:
-        __logger.exception(ex)
-        abort(404)
-    except Exception as ex:  
-        __logger.exception(ex)
-        abort(500)
-    if len(result) == 0:
-        abort(404)
+        try:
+            query = format_query(args, query)
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
+        try:
+            result = _get_app_configs_result(query, version)
 
-    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
-    return flask.jsonify(result)
+        except Exception as ex:
+            __logger.exception(ex)
+            abort(500)
+
+        __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+        return flask.jsonify(result)
 
 
 def configs_get(id):
