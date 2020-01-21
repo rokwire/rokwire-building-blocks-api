@@ -116,10 +116,9 @@ def configs_post():
         msg = "[POST]: api config document created: id = %s" % str(app_config_id)
         __logger.info(msg)
 
-    # unauthorized error
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(401)
+        abort(400)
 
     # internal other error
     except Exception as ex:
@@ -143,7 +142,7 @@ def configs_put(id):
 
     except DuplicateKeyError as err:
         __logger.error(err)
-        abort(401)
+        abort(400)
     # TODO: INVALID INPUT 405 ERROR
 
     except Exception as ex:
@@ -267,19 +266,9 @@ def add_version_numbers(req_data):
 
 
 def check_format(req_data):
-    """
-        See if the format is valid by checking one of things from db is invalid:
-            - mobile version & format in the db
-            - platform Building Blocks
-            - third Party Services
-            - other University Services
-            - secret Keys
-        :return: True or False
-       """
-    if (not req_data['mobileAppVersion']) or (not req_data['platformBuildingBlocks']) or \
-            (not req_data['thirdPartyServices']) or (not req_data['otherUniversityServices']) or \
-            (not req_data['secretKeys']) or \
-            (req_data['mobileAppVersion'] and (not dbutils.check_appversion_format(req_data['mobileAppVersion']))):
+    if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
+            req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
+            req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
 

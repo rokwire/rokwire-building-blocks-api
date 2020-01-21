@@ -1459,7 +1459,7 @@ components:
         otherUniversityServices:
           type: object
         secretKeys:
-          type: object
+          type: string
       required:
         - mobileAppVersion
         - platformBuildingBlocks
