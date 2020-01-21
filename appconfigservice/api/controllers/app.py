@@ -27,7 +27,7 @@ def configs_search(mobileAppVersion=None):
     query = dict()
 
     if version and dbutils.check_appversion_format(version) == False:
-        abort(400)
+        abort(404)
 
     try:
         query = format_query(args, query)
@@ -36,7 +36,6 @@ def configs_search(mobileAppVersion=None):
         abort(500)
     try:
         result = _get_app_configs_result(query, version)
-        if result == None: abort(404)
 
     except DuplicateKeyError as err:
         __logger.error(err)
@@ -52,11 +51,10 @@ def configs_search(mobileAppVersion=None):
 
 def configs_get(id):
     if not ObjectId.is_valid(id):
-        abort(405)
+        abort(404)
 
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
-        if result == None: abort(404)
 
     except Exception as ex:
         __logger.exception(ex)
