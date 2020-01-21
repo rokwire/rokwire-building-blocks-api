@@ -36,7 +36,8 @@ def configs_search(mobileAppVersion=None):
         abort(500)
     try:
         result = _get_app_configs_result(query, version)
-        if result == None: abort(404)
+        if len(result) == 0:
+            abort(404)
 
     except DuplicateKeyError as err:
         __logger.error(err)
@@ -56,7 +57,8 @@ def configs_get(id):
 
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
-        if result == None: abort(404)
+        if len(result) == 0:
+            abort(404)
 
     except Exception as ex:
         __logger.exception(ex)
