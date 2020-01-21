@@ -25,6 +25,7 @@ def configs_search(mobileAppVersion=None):
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
+    result = []
 
     if version and dbutils.check_appversion_format(version) == False:
         abort(400)
@@ -36,42 +37,32 @@ def configs_search(mobileAppVersion=None):
         abort(500)
     try:
         result = _get_app_configs_result(query, version)
-        if len(result) == 0:
-            abort(404)
-
     except CursorNotFound as ex:
         __logger.exception(ex)
         abort(404)
-
-    except DuplicateKeyError as err:
-        __logger.error(err)
-        abort(400)
-
     except Exception as ex:  
         __logger.exception(ex)
         abort(500)
+    if len(result) == 0:
+        abort(404)
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
     return flask.jsonify(result)
 
 
 def configs_get(id):
+    result = []
     if not ObjectId.is_valid(id):
         abort(400)
-
     try:
         result = _get_app_config_by_id_result({"_id": ObjectId(id)})
-        if len(result) == 0:
-            abort(404)
-    except CursorNotFound as ex:
-        __logger.exception(ex)
-        abort(404)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-
+    if len(result) == 0:
+        abort(404)
     __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
-    return flask.jsonify(result)
+    return flask.jsonify(result[0])
 
 
 @memoize_query(**CACHE_GET_APPCONFIGS)
