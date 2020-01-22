@@ -913,7 +913,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: createAppConfig
       security:
         - UserAuth: []
       requestBody:
@@ -934,7 +933,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: {}
+                  secretKeys: ""
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
@@ -946,9 +945,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices: 
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: 
-                    my_secret_key_1: "123abc456"
-                    my_secret_key_2: "123456abc"
+                  secretKeys: "123abc456"
         required: true
       responses:
         201:
@@ -969,7 +966,6 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfig
       security:
         - ApiKeyAuth: []
       parameters:
@@ -989,6 +985,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -1002,7 +1000,6 @@ paths:
       summary: Reads mobile app configuration by given id
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -1023,6 +1020,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -1037,7 +1036,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: updateAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1077,7 +1075,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: deleteAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1530,7 +1527,7 @@ components:
         otherUniversityServices:
           type: object
         secretKeys:
-          type: object
+          type: string
       required:
         - mobileAppVersion
         - platformBuildingBlocks
@@ -1637,11 +1634,11 @@ components:
       type: apiKey
       in: header
       name: ROKWIRE-API-KEY
-      x-apikeyInfoFunc: lib.auth-middleware.auth_middleware.verify_apikey
+      x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     UserAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: lib.auth-middleware.auth_middleware.verify_userauth
+      x-bearerInfoFunc: auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
