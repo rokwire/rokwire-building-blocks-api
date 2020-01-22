@@ -650,7 +650,17 @@ def pii_put(pid=None):
     non_pii_uuid_from_dataset = pii_dataset.get_uuid()
     try:
         non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-        pii_dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset)
+        # both non_pii_uuid and non_pii_uuid_from_dataset should be list
+        if (type(non_pii_uuid) is not list) or (type(non_pii_uuid_from_dataset) is not list):
+            msg = {
+                "reason": "The uuid information is not a list.",
+                "error": "Json format error."
+            }
+            msg_json = jsonutils.create_log_json("PII", "PUT", msg)
+            logging.error("PII PUT " + json.dumps(msg_json))
+            return jsonutils.create_auth_fail_message()
+        for i in range(len(non_pii_uuid)):
+            pii_dataset = append_non_pii_uuid(non_pii_uuid[i], non_pii_uuid_from_dataset, pii_dataset)
     except:
         pass
 

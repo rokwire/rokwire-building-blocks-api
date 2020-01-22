@@ -1284,7 +1284,7 @@ components:
         pid:
           type: string
         uuid:
-          type: string
+          type: array
           items:
             type: string
         userName:

@@ -253,7 +253,7 @@ API will return newly created pii dataset
 This method is for updateing the information of the existing pii
 ```
 curl -X PUT -d `{
-              "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+              "uuid": ["a6856b73-d453-4515-8002-56e8d0522136"],
               "lastname": "doe",
               "firstname": "john",
               "phone": "123-456-7890",
