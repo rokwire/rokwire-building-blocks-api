@@ -246,9 +246,30 @@ def pii_post():
     # get uuid, if failed it is a bad request
     try:
         non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
+        if isinstance(non_pii_uuid, list) == False:
+            msg = {
+                "reason": "The uuid information is not a list.",
+                "error": "Json format error."
+            }
+            msg_json = jsonutils.create_log_json("PII", "POST", msg)
+            logging.error("PII POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
+
     except Exception as ex:
         msg = {
             "reason": "uuid not supplied.",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("PII", "POST", msg)
+        logging.error("PII POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    # get non_pii_uuid value from the list
+    if len(non_pii_uuid) > 0:
+        non_pii_uuid = non_pii_uuid[0]
+    else:
+        msg = {
+            "reason": "uuid list is empty.",
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("PII", "POST", msg)
@@ -658,7 +679,7 @@ def pii_put(pid=None):
             }
             msg_json = jsonutils.create_log_json("PII", "PUT", msg)
             logging.error("PII PUT " + json.dumps(msg_json))
-            return jsonutils.create_auth_fail_message()
+            return rs_handlers.bad_request(msg_json)
         for i in range(len(non_pii_uuid)):
             pii_dataset = append_non_pii_uuid(non_pii_uuid[i], non_pii_uuid_from_dataset, pii_dataset)
     except:

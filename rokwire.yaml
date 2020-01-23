@@ -31,7 +31,7 @@ paths:
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
-        
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -170,6 +170,7 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
+        Either email or phonenumber should be provided. Also, uuid must be provided as well.
 
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       security:
@@ -1217,6 +1218,7 @@ components:
       properties:
         uuid:
           type: string
+          format: uuid
         over13:
           type: boolean
         interests:
@@ -1279,6 +1281,8 @@ components:
         lastModifiedDate:
           type: string
     Pii:
+      required:
+        - uuid
       type: object
       properties:
         pid:
@@ -1287,6 +1291,7 @@ components:
           type: array
           items:
             type: string
+            format: uuid
         userName:
           type: string
         firstname:
