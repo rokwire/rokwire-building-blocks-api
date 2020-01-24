@@ -680,8 +680,11 @@ def pii_put(pid=None):
             msg_json = jsonutils.create_log_json("PII", "PUT", msg)
             logging.error("PII PUT " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
-        for i in range(len(non_pii_uuid)):
-            pii_dataset = append_non_pii_uuid(non_pii_uuid[i], non_pii_uuid_from_dataset, pii_dataset)
+
+        pii_dataset.set_uuid(non_pii_uuid)
+        # # the following lines can be used for item to item comparison and append when it is needed
+        # for i in range(len(non_pii_uuid)):
+        #     pii_dataset = append_non_pii_uuid(non_pii_uuid[i], non_pii_uuid_from_dataset, pii_dataset)
     except:
         pass
 
