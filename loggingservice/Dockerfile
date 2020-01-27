@@ -12,8 +12,11 @@ WORKDIR /usr/src/app/loggingservice
 
 COPY loggingservice .
 
-RUN pip install --upgrade pip && \
-  pip install -r requirements.txt --no-cache-dir 
+RUN apk --update add python py-pip openssl ca-certificates py-openssl wget && \
+  apk --update add --virtual build-dependencies libffi-dev openssl-dev python-dev py-pip build-base && \
+  pip install --upgrade pip && \
+  pip install -r requirements.txt --no-cache-dir && \
+  apk del build-dependencies
 
 WORKDIR /usr/src/app/loggingservice/api
 
