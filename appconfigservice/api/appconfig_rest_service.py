@@ -4,11 +4,12 @@ import connexion
 from time import gmtime
 
 from controllers.config import API_LOC
+from controllers.config import DEBUG
 # import .controllers.config as cfg
 from rokwireresolver import RokwireResolver
 from utils import db
 
-debug = False
+debug = DEBUG
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
