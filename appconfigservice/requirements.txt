@@ -1,9 +1,14 @@
-Flask==1.0.2
+Flask==1.1.1
 pymongo[tls,srv]==3.7.2
 pytest==5.0.1
+requests==2.22.0
+pyjwt==1.7.1
+cryptography==2.7
 gunicorn==19.9.0
 python-dotenv==0.10.3
 gevent==1.4.0
 diskcache==4.0.0
+connexion==2.4.0
 
 ../lib/auth-middleware
+
