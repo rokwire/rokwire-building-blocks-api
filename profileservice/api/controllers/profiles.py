@@ -342,6 +342,14 @@ def pii_post():
 
             if dataset is not None:
                 pid = dataset.get_pid()
+                non_pii_uuid_from_dataset = dataset.uuid
+                try:
+                    dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
+                except:
+                    pass
+                currenttime = otherutils.get_current_time_utc()
+                dataset.set_last_modified_date(currenttime)
+                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
                 msg = {
                     "reason": "Phone number already exists: " + str(pid),
                     "warning": "Phone number already exists: " + request.url,
@@ -438,6 +446,20 @@ def pii_get():
         if out_json == None:
             return rs_handlers.not_found()
         return out_json
+
+def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
+    is_non_pii_uuid_in_json_new = True
+    # check if non-pii-uuid is already in there
+    for i in range(len(non_pii_uuid_from_dataset)):
+        if non_pii_uuid == non_pii_uuid_from_dataset[i]:
+            is_non_pii_uuid_in_json_new = False
+
+    # adde non-pii uuid in json only if it is new uuid
+    if is_non_pii_uuid_in_json_new:
+        non_pii_uuid_from_dataset.append(non_pii_uuid)
+        pii_dataset.set_non_pii_uuid(non_pii_uuid)
+
+    return pii_dataset
 
 
 def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
@@ -628,16 +650,7 @@ def pii_put(pid=None):
     non_pii_uuid_from_dataset = pii_dataset.get_uuid()
     try:
         non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-        is_non_pii_uuid_in_json_new = True
-        # check if non-pii-uuid is already in there
-        for i in range(len(non_pii_uuid_from_dataset)):
-            if non_pii_uuid == non_pii_uuid_from_dataset[i]:
-                is_non_pii_uuid_in_json_new = False
-
-        # adde non-pii uuid in json only if it is now uuid
-        if is_non_pii_uuid_in_json_new:
-            non_pii_uuid_from_dataset.append(non_pii_uuid)
-            pii_dataset.set_non_pii_uuid(non_pii_uuid)
+        pii_dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset)
     except:
         pass
 
