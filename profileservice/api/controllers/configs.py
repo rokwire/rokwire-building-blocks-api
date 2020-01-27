@@ -13,7 +13,7 @@ FLASK_APP = os.getenv('FLASK_APP', 'profile_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 API_LOC = os.getenv('API_LOC', '../../')
 PROFILE_ENDPOINT = os.getenv('PROFILE_ENDPOINT', '/profiles')
-DEBUG = os.getenv('DEBUG', 'False')
+DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 PROFILE_DB_NAME = 'profiledb'
 PII_DB_NAME = 'piidb'

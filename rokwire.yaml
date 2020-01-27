@@ -884,7 +884,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: createAppConfig
       security:
         - UserAuth: []
       requestBody:
@@ -905,7 +904,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: {}
+                  secretKeys: ""
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
@@ -917,9 +916,7 @@ paths:
                     instagram_url: https://instagram.com
                   otherUniversityServices: 
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: 
-                    my_secret_key_1: "123abc456"
-                    my_secret_key_2: "123456abc"
+                  secretKeys: "123abc456"
         required: true
       responses:
         201:
@@ -940,7 +937,6 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfig
       security:
         - ApiKeyAuth: []
       parameters:
@@ -960,6 +956,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -973,7 +971,6 @@ paths:
       summary: Reads mobile app configuration by given id
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -994,6 +991,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -1008,7 +1007,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: updateAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1048,7 +1046,6 @@ paths:
         Auth: Requires a valid id_token that indicates membership in the following group\:
         
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: deleteAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1504,7 +1501,7 @@ components:
         otherUniversityServices:
           type: object
         secretKeys:
-          type: object
+          type: string
       required:
         - mobileAppVersion
         - platformBuildingBlocks
