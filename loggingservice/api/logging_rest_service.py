@@ -1,6 +1,6 @@
 import connexion
 import logging
-import models.config as cfg
+import controllers.config as cfg
 
 from time import gmtime
 from rokwireresolver import RokwireResolver
