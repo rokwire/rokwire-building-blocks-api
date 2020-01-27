@@ -96,9 +96,8 @@ It will return back the `post` status in json which includes the internal id as 
 
 ```
 {
-    message": "[POST]: logging record posted: uuid = 56fe224b-3600-4b66-ac8d-5d2906e19fc61",
-    "status": 201,
-    "uuid": "56fe224b-3600-4b66-ac8d-5d2906e19fc61"
+    "message": "logging information successfully posted",
+    "status": 200
 }
 ```
 

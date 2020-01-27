@@ -13,4 +13,4 @@ FLASK_APP = os.getenv('FLASK_APP', 'logging_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 API_LOC = os.getenv('API_LOC', '../../')
 
-DEBUG = os.getenv('DEBUG', 'False')
+DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
