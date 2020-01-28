@@ -3,12 +3,14 @@ import re
 APP_VERION_REGX = "^\d+.\d+.\d+$"
 VERSION_NUMBER_REGX = '^(\d+).(\d+).(\d+)$'
 
+
 def check_appversion_format(version):
-    m = re.match(APP_VERION_REGX, version)
+    matching_result = re.match(APP_VERION_REGX, version)
     matched = False
-    if m:
-        matched = (m.group(0) == version)
+    if matching_result:
+        matched = (matching_result.group(0) == version)
     return matched
+
 
 def create_version_numbers(version):
     version_numbers = {}
