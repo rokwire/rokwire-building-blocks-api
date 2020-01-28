@@ -2,7 +2,6 @@ import os
 import tempfile
 import boto3
 from .localfile import deletefile
-from flask import current_app
 import controllers.configs as cfg
 
 
