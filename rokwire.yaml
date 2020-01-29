@@ -1498,6 +1498,20 @@ components:
           type: object
         secretKeys:
           type: string
+        upgrade:
+          type: object
+          properties:
+            available_version:
+              type: string
+            required_version:
+              type: string
+            url:
+              type: object
+              properties:
+                android: 
+                  type: string
+                ios:
+                  type: string
       required:
         - mobileAppVersion
         - platformBuildingBlocks
