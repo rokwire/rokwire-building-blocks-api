@@ -1074,7 +1074,6 @@ paths:
         Create log entries from the app.
           
           Auth: Requires a valid API Key for access.
-      operationId: createLog
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -1093,7 +1092,7 @@ paths:
                 osVersion: "12.4"
                 appVersion: "0.9.5"
                 device: Samsung Galaxy s10
-                deviceSettings:
+                deviceSettings: {}
                 userAction:
                   type: view
                   name: homePanel
@@ -1105,7 +1104,7 @@ paths:
                 osVersion: "12.4"
                 appVersion: "0.9.5"
                 device: Samsung Galaxy s10
-                deviceSettings:
+                deviceSettings: {}
                 userAction:
                   type: view
                   name: homePanel
