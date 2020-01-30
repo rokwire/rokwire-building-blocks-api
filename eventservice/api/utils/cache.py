@@ -17,7 +17,7 @@ CACHE_GET_CATEGORIES  = json.loads(os.getenv("CACHE_GET_CATEGORIES", CACHE_GET_D
 CACHE_SETTINGS.setdefault('size_limit', 3.5 * 1025 * 1024 * 1024) # 3.5GB cache
 cache = diskcache.Cache(
     directory=CACHE_DIRECTORY,
-    **CACHE_SETTINGS,
+    **CACHE_SETTINGS
 )
 
 

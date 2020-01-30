@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored Profile building block using connexion. [#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
 - Update release script to build and push refactoring branch docker image. [#308](https://github.com/rokwire/rokwire-building-blocks-api/issues/308)
 - Refactored App Config building block using connexion. [#294](https://github.com/rokwire/rokwire-building-blocks-api/issues/294)
-- Set App Config Building Block's `debug = false` by defalt. [#332](https://github.com/rokwire/rokwire-building-blocks-api/issues/332)
+- Refactored Events Building Block using connexion. [#296](https://github.com/rokwire/rokwire-building-blocks-api/issues/296)
+- Set App Config Building Block's debug flag to false by default. [#332](https://github.com/rokwire/rokwire-building-blocks-api/issues/332)
 
 ## [1.0.2] - 2019-10-30
 ### Changed
