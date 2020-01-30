@@ -38,7 +38,8 @@ def test_post_app_config(client, app):
         "platformBuildingBlocks": {},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "blabla",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data), content_type='application/json').status_code == 201
     with app.app_context():
@@ -63,7 +64,14 @@ def test_update_app_config(client, app):
         },
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {"xx-key": "blahblah...blah"}
+        "secretKeys": "blabla",
+        "upgrade": {
+            "available_version": "0.1.1",
+            "required_version": "0.1.0",
+            "url": {
+                "android": "market://details?id=com.dropbox.android",
+                "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"}
+        }
     }
     if id is not None:
         assert client.put('/app/configs/' + str(id), data=json.dumps(new_data),
