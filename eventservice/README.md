@@ -303,7 +303,7 @@ When this query parameter is set to the ID of a super event, the endpoint will r
 ## MongoDB
 
 You can import predefined categories into the local mongodb.
-mongoimport --db eventdb --collection categories --file categories.json
+mongoimport --db eventdb --collection categories --file api/categories.json
 
 Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
 text index and geospatial index.
