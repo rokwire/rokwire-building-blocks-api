@@ -4,11 +4,12 @@ import connexion
 from time import gmtime
 
 from controllers.config import API_LOC
+from controllers.config import DEBUG
 # import .controllers.config as cfg
 from rokwireresolver import RokwireResolver
 from utils import db
 
-debug = True
+debug = DEBUG
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
@@ -28,4 +29,4 @@ app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireReso
             resolver_error=501)
 
 if __name__ == '__main__':
-    app.run(port=5000, host=None, server='flask')
+    app.run(port=5000, host=None, server='flask',debug=debug)
