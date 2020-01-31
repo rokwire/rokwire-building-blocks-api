@@ -1278,8 +1278,6 @@ components:
         lastModifiedDate:
           type: string
     Pii:
-      required:
-        - uuid
       type: object
       properties:
         pid:
