@@ -235,10 +235,10 @@ API will return the message
 
 ## Sample profile building block process for pii
 ### POST pii to create a new pii dataset:
-This is for creating a new PII dataset. This will happend when the user login to the app for the first time. Input json should contain uuid and at least one unique identifier either email or phone number.
+This is for creating a new PII dataset. This is used when the user logs in to the app for the first time. Request JSON body should contain UUID as a list.
 ```
 curl -X POST -d `{
-              "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+              "uuid": ["a6856b73-d453-4515-8002-56e8d0522136"],
               "phone": "123-456-7890",
             }' -H "Content-Type: application/json" http://localhost:5000/profiles/pii
 ```
@@ -250,10 +250,10 @@ API will return newly created pii dataset
 }
 ```
 ### PUT pii information to update pii dataset:
-This method is for updateing the information of the existing pii
+This method is for updating the information of the existing PII profile data.
 ```
 curl -X PUT -d `{
-              "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+              "uuid": ["a6856b73-d453-4515-8002-56e8d0522136"],
               "lastname": "doe",
               "firstname": "john",
               "phone": "123-456-7890",
