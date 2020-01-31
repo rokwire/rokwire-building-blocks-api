@@ -170,7 +170,7 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
-        Either email or phonenumber should be provided. Also, uuid must be provided as well.
+        User's UUID must be provided in the form of a list.
 
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       security:
