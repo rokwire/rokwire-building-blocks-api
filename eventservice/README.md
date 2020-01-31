@@ -39,10 +39,8 @@ CACHE_DIRECTORY=yourlocalfilefolder
 ## Run in Development Mode
 
 ```
-cd rokwire-building-blocks-api
-export FLASK_APP=eventservice
-export FLASK_ENV=development
-flask run
+cd rokwire-building-blocks-api/eventservice
+python api/events_rest_service.py
 ```
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
@@ -241,6 +239,10 @@ It will return back a list of main categories and sub categories:
 ]
 ```
 
+## One Example of Getting Super Event Tags Endpoint:
+```
+curl -X GET http://localhost:5000/super-events/tags
+```
 
 ## Query Search Examples:
 
@@ -292,10 +294,16 @@ This query supports main categories search and main/sub categories search. The r
 /events?category=Athletics.Football&category=Community
 ```
 
+### Super Event Search
+When this query parameter is set to the ID of a super event, the endpoint will return all events as a list (including all the details) that are marked as a sub event of this super event.
+```
+/events?superEventId=<ID of a super event>
+```
+
 ## MongoDB
 
 You can import predefined categories into the local mongodb.
-mongoimport --db eventdb --collection categories --file categories.json
+mongoimport --db eventdb --collection categories --file api/categories.json
 
 Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
 text index and geospatial index.
@@ -314,4 +322,3 @@ db.events.createIndex({'sponsor': 1})
 db.events.createIndex({'categorymainsub': 1})
 db.events.createIndex({'coordinates': "2dsphere"})
 ```
-
