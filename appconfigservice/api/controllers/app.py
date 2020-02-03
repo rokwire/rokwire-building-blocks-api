@@ -99,6 +99,8 @@ def _get_app_config_by_id_result(query):
 
 
 def configs_post():
+    auth_middleware.authorize(auth_middleware.rokwire_app_config_manager_group)
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         abort(400)
@@ -122,6 +124,8 @@ def configs_post():
 
 
 def configs_put(id):
+    auth_middleware.authorize(auth_middleware.rokwire_app_config_manager_group)
+
     req_data = request.get_json(force=True)
     if not check_format(req_data):
         abort(405)
@@ -144,6 +148,8 @@ def configs_put(id):
 
 
 def configs_delete(id):
+    auth_middleware.authorize(auth_middleware.rokwire_app_config_manager_group)
+
     if not ObjectId.is_valid(id):
         abort(404)
     try:
