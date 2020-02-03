@@ -91,7 +91,6 @@ def tags_search():
 
 
 def categories_search():
-    auth_middleware.verify_secret(request)
 
     try:
         result, result_len = _get_categories_result()
