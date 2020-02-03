@@ -1,15 +1,13 @@
+import base64
+import json
 import logging
+import os
+
 import flask
 import jwt
-import json
-import os
-import base64
 import requests
 from connexion.exceptions import OAuthProblem
-
-from flask import request, abort, g
-from datetime import datetime
-from cryptography.hazmat.primitives.asymmetric import rsa
+from flask import request, g
 
 logger = logging.getLogger(__name__)
 # First cut. This is a list of secrets (eventually this can come from a database and setting it is effectively caching it)
@@ -27,6 +25,7 @@ rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
+
 
 def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
@@ -116,6 +115,7 @@ def verify_apikey(key, required_scopes=None):
         return {'token_valid': True}
     else:
         raise OAuthProblem('Invailid API Key')
+
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
     if not id_token:
@@ -224,6 +224,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
     g.user_token_data = id_info
 
     return id_info
+
 
 def use_security_token_auth(func):
     func._use_security_token_auth = True
