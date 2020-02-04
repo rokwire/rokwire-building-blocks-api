@@ -12,7 +12,8 @@ def test_post_dup_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "blabla",
+        "upgrade" :{}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_1), content_type='application/json').status_code == 201
     req_data_2 = {
@@ -20,7 +21,8 @@ def test_post_dup_version(client, app):
         "platformBuildingBlocks": {"events": "http://api.rokwire.illinois.edu/events"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_2), content_type='application/json').status_code == 500
     with app.app_context():
@@ -35,7 +37,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_1), content_type='application/json').status_code == 201
     req_data_2 = {
@@ -43,7 +46,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_2), content_type='application/json').status_code == 201
     req_data_3 = {
@@ -51,7 +55,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_3), content_type='application/json').status_code == 201
     req_data_4 = {
@@ -59,7 +64,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_4), content_type='application/json').status_code == 201
     req_data_5 = {
@@ -67,7 +73,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_5), content_type='application/json').status_code == 201
     req_data_6 = {
@@ -75,7 +82,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_6), content_type='application/json').status_code == 201
     req_data_7 = {
@@ -83,7 +91,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_7), content_type='application/json').status_code == 201
     req_data_8 = {
@@ -91,7 +100,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_8), content_type='application/json').status_code == 201
     req_data_9 = {
@@ -99,7 +109,8 @@ def test_order_by_version(client, app):
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
         "thirdPartyServices": {},
         "otherUniversityServices": {},
-        "secretKeys": {}
+        "secretKeys": "abc",
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_9), content_type='application/json').status_code == 201
     response = client.get('/app/configs')
