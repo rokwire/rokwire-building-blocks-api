@@ -62,7 +62,7 @@ paths:
       summary: Find profile by ID
       description: |
         Returns a single profile
-        
+
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
@@ -303,7 +303,7 @@ paths:
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
-        
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -904,7 +904,7 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
+
   /app/configs:
     post:
       tags:
@@ -912,7 +912,7 @@ paths:
       summary: Creates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -926,10 +926,10 @@ paths:
               withoutSecretKeys:
                 value:
                   mobileAppVersion: "1.0.1"
-                  platformBuildingBlocks: 
+                  platformBuildingBlocks:
                     appconfig: https://api.rokwire.illinois.edu/app/configs
                     profile: https://api.rokwire.illinois.edu/profiles
-                  thirdPartyServices: 
+                  thirdPartyServices:
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
                   otherUniversityServices:
@@ -937,27 +937,27 @@ paths:
                   secretKeys: ""
                   upgrade:
                     available_version: "1.0.2"
-                    required_version: "1.0.0",
+                    required_version: "1.0.0"
                     "url":
-                      "android": "market://details?id=com.dropbox.android",
+                      "android": "market://details?id=com.dropbox.android"
                       "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
-                  platformBuildingBlocks: 
+                  platformBuildingBlocks:
                     appconfig: https://api.rokwire.illinois.edu/app/configs
                     profile: https://api.rokwire.illinois.edu/profiles
-                  thirdPartyServices: 
+                  thirdPartyServices:
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
-                  otherUniversityServices: 
+                  otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
                   secretKeys: "123abc456"
                   upgrade:
                     available_version: "1.0.2"
-                    required_version: "1.0.0",
+                    required_version: "1.0.0"
                     "url":
-                      "android": "market://details?id=com.dropbox.android",
+                      "android": "market://details?id=com.dropbox.android"
                       "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
         required: true
       responses:
@@ -1047,7 +1047,7 @@ paths:
       summary: Updates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -1086,7 +1086,7 @@ paths:
       summary: Deletes mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -1115,7 +1115,7 @@ paths:
       summary: Create log entries
       description: |
         Create log entries from the app.
-          
+
           Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -1163,7 +1163,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  
+
   /authentication/phone-initiate:
     post:
       summary: Initiate phone number verification
@@ -1469,7 +1469,7 @@ components:
     SubEventDetails:
       type: object
       properties:
-        id: 
+        id:
           type: string
           description: ID of the sub event. A sub event is a regular event, except that it's associated with a another event called a super event.
         isFeatured:
@@ -1552,7 +1552,7 @@ components:
             url:
               type: object
               properties:
-                android: 
+                android:
                   type: string
                 ios:
                   type: string
