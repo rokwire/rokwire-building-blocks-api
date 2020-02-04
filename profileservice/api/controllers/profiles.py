@@ -4,11 +4,9 @@ import logging
 import uuid as uuidlib
 import copy
 
-from flask import jsonify, request
+from flask import jsonify, request, g
 from bson import ObjectId
-from flask import g
 
-import auth_middleware
 import controllers.configs as cfg
 import utils.mongoutils as mongoutils
 import utils.jsonutils as jsonutils
