@@ -64,6 +64,7 @@ def post():
 
         return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
+
 def get(uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
@@ -75,6 +76,7 @@ def get(uuid=None):
     out_json = mongoutils.construct_json_from_query_list(out_json)
 
     return out_json
+
 
 def put(uuid=None):
     try:
@@ -142,6 +144,7 @@ def put(uuid=None):
 
     return out_json
 
+
 def delete(uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
@@ -168,6 +171,7 @@ def delete(uuid=None):
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.error("DELETE " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
 
 def get_data_list(uuid):
     resp = None
@@ -216,6 +220,7 @@ def get_data_list(uuid):
         resp = rs_handlers.not_found(msg_json)
 
     return None, None, True, resp
+
 
 def pii_post():
     # msg = {'message': 'POST info for PII:'}
@@ -434,6 +439,7 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
+
 def pii_get():
     # msg = {'message': 'GET info for PII:'}
     # resp = jsonify(msg)
@@ -468,6 +474,7 @@ def pii_get():
         if out_json == None:
             return rs_handlers.not_found()
         return out_json
+
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
@@ -511,6 +518,7 @@ def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
 #     logging.debug("DELETE " + json.dumps(msg))
 #
 #     return resp
+
 
 def get_data_list_pid(pid):
     is_error = False
@@ -566,6 +574,7 @@ def get_data_list_pid(pid):
 
         return None, None, is_error, resp
 
+
 def check_id(id_token, data_list):
     id_type, id_string = tokenutils.get_id_info_from_token(id_token)
     auth_pass = False
@@ -582,6 +591,7 @@ def check_id(id_token, data_list):
             auth_pass = True
 
     return auth_pass
+
 
 def pii_get(pid=None):
     # Get ID Token data from global context variable.
@@ -609,6 +619,7 @@ def pii_get(pid=None):
     logging.info("PII GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
 
     return out_json
+
 
 def pii_put(pid=None):
     # Get ID Token data from global context variable.
@@ -720,6 +731,7 @@ def pii_put(pid=None):
     msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset))
     logging.info("PII PUT " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
     return out_json
+
 
 def pii_delete(pid=None):
     # Get ID Token data from global context variable.
