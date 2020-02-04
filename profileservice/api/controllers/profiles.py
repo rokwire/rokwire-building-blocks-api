@@ -6,7 +6,7 @@ import copy
 
 from flask import jsonify, request
 from bson import ObjectId
-from flask import jsonify
+from flask import g
 
 import auth_middleware
 import controllers.configs as cfg
@@ -224,7 +224,9 @@ def pii_post():
     # logging.debug("POST " + json.dumps(msg))
     #
     # return resp
-    auth_resp = auth_middleware.authenticate()
+
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
     tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
         auth_resp)
 
@@ -439,7 +441,6 @@ def pii_get():
     # logging.debug("GET " + json.dumps(msg))
     #
     # return resp
-    auth_middleware.authenticate()
 
     term_pid = request.args.get('pid', None)
     term_username = request.args.get('username', None)
@@ -583,7 +584,8 @@ def check_id(id_token, data_list):
     return auth_pass
 
 def pii_get(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
 
     data_list, is_objectid, is_error, resp = get_data_list_pid(pid)
     if is_error:
@@ -609,7 +611,8 @@ def pii_get(pid=None):
     return out_json
 
 def pii_put(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
     tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
         auth_resp)
 
@@ -719,7 +722,8 @@ def pii_put(pid=None):
     return out_json
 
 def pii_delete(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
 
     data_list, is_objectid, is_error, resp = get_data_list_pid(pid)
     if is_error:
