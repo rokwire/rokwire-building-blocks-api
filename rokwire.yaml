@@ -935,6 +935,12 @@ paths:
                   otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
                   secretKeys: ""
+                  upgrade:
+                    available_version: "1.0.2"
+                    required_version: "1.0.0",
+                    "url":
+                      "android": "market://details?id=com.dropbox.android",
+                      "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
@@ -947,6 +953,12 @@ paths:
                   otherUniversityServices: 
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
                   secretKeys: "123abc456"
+                  upgrade:
+                    available_version: "1.0.2"
+                    required_version: "1.0.0",
+                    "url":
+                      "android": "market://details?id=com.dropbox.android",
+                      "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
         required: true
       responses:
         201:
