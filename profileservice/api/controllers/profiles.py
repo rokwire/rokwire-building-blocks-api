@@ -316,26 +316,20 @@ def pii_post():
                 #     return jsonutils.create_auth_fail_message()
 
                 pid = dataset.get_pid()
+                non_pii_uuid_from_dataset = dataset.uuid
+                try:
+                    dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
+                except:
+                    pass
+                currenttime = otherutils.get_current_time_utc()
+                dataset.set_last_modified_date(currenttime)
+                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
                 msg = {
                     "reason": "UIN already exists: " + str(pid),
                     "warning": "UIN already exists: " + request.url,
                 }
                 msg_json = jsonutils.create_log_json("PII", "POST", msg)
                 logging.warning("PII POST " + json.dumps(msg_json))
-
-                # ToDo following lines are commneted out because it is not necessary for now
-                # # if it is email based token id (on campus), it should update the information,
-                # # to update the missing UIN and other information that happened in the very first period
-                # # of the app release. This also will help the user and app update the information,
-                # # if there were any update happened in Shibboleth id information
-                # if tk_firstname is not None:
-                #     dataset.set_firstname(tk_firstname)
-                # if tk_lastname is not None:
-                #     dataset.set_lastname(tk_lastname)
-                # if tk_uin is not None:
-                #     dataset.set_uin(tk_uin)
-                # result, dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
-
                 return rs_handlers.return_id('UIN already exists.', 'pid', pid)
         except:
             pass
