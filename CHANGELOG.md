@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Add superevent tags. 
-- Add superevent tags endpoint into rowkireyaml.file
+- Add super event tags. 
+- Add super event tags endpoint into rokwire.yaml file.
+
+### Fixed
+- Super events operation Id.
 
 ## [1.0.4] - 2020-01-17
 ### Added

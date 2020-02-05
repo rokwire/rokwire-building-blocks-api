@@ -658,7 +658,7 @@ paths:
       tags:
       - Events
       summary: Get a list of Rokwire super event tags
-      operationId: getTags
+      operationId: getSuperEventsTags
       description: |
         Auth: Requires a valid API Key for access.
       security:
