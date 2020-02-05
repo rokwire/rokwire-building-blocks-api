@@ -252,14 +252,22 @@ def pii_post():
     try:
         non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         if isinstance(non_pii_uuid, list) == False:
-            msg = {
-                "reason": "The uuid information is not a list.",
-                "error": "Json format error."
-            }
-            msg_json = jsonutils.create_log_json("PII", "POST", msg)
-            logging.error("PII POST " + json.dumps(msg_json))
-            return rs_handlers.bad_request(msg_json)
+            # # this is an error routine when it is not a list
+            # # for now, this should be commented out because the endpoint will accept both string and list
+            # # after chaning the app only send uuid as a list, following lines should be revived
+            # msg = {
+            #     "reason": "The uuid information is not a list.",
+            #     "error": "Json format error."
+            # }
+            # msg_json = jsonutils.create_log_json("PII", "POST", msg)
+            # logging.error("PII POST " + json.dumps(msg_json))
+            # return rs_handlers.bad_request(msg_json)
 
+            # if non_pii_uuid is not a list,
+            # we assume that it is a single string uuid object so convert this to a list with single item
+            tmp_list = []
+            tmp_list.append(non_pii_uuid)
+            non_pii_uuid = tmp_list
     except Exception as ex:
         msg = {
             "reason": "uuid not supplied.",

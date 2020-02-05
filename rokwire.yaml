@@ -40,7 +40,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Non-pii'
+              oneOf:
+                - $ref: '#/components/schemas/Non-pii'
         required: false
       responses:
         200:
@@ -1254,6 +1255,7 @@ components:
   schemas:
     Non-pii:
       type: object
+      nullable: true
       properties:
         uuid:
           type: string
