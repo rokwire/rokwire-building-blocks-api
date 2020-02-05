@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add super event tags endpoint into rowkire.yaml file.
+
 ## [1.0.4] - 2020-01-17
 ### Added
 - API design and code changes to support super events. [#302](https://github.com/rokwire/rokwire-building-blocks-api/issues/302)
@@ -95,4 +98,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rokwire/rokwire-building-blocks-api/releases/tag/1.0.0
-
