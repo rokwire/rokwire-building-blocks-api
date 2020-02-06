@@ -4,11 +4,9 @@ import logging
 import uuid as uuidlib
 import copy
 
-from flask import jsonify, request
+from flask import jsonify, request, g
 from bson import ObjectId
-from flask import jsonify
 
-import auth_middleware
 import controllers.configs as cfg
 import utils.mongoutils as mongoutils
 import utils.jsonutils as jsonutils
@@ -64,6 +62,7 @@ def post():
 
         return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
+
 def get(uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
@@ -75,6 +74,7 @@ def get(uuid=None):
     out_json = mongoutils.construct_json_from_query_list(out_json)
 
     return out_json
+
 
 def put(uuid=None):
     try:
@@ -142,6 +142,7 @@ def put(uuid=None):
 
     return out_json
 
+
 def delete(uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
@@ -168,6 +169,7 @@ def delete(uuid=None):
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.error("DELETE " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
 
 def get_data_list(uuid):
     resp = None
@@ -217,6 +219,7 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
+
 def pii_post():
     # msg = {'message': 'POST info for PII:'}
     # resp = jsonify(msg)
@@ -224,7 +227,9 @@ def pii_post():
     # logging.debug("POST " + json.dumps(msg))
     #
     # return resp
-    auth_resp = auth_middleware.authenticate()
+
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
     tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
         auth_resp)
 
@@ -426,6 +431,7 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
+
 def pii_get():
     # msg = {'message': 'GET info for PII:'}
     # resp = jsonify(msg)
@@ -433,7 +439,6 @@ def pii_get():
     # logging.debug("GET " + json.dumps(msg))
     #
     # return resp
-    auth_middleware.authenticate()
 
     term_pid = request.args.get('pid', None)
     term_username = request.args.get('username', None)
@@ -461,6 +466,7 @@ def pii_get():
         if out_json == None:
             return rs_handlers.not_found()
         return out_json
+
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
@@ -504,6 +510,7 @@ def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
 #     logging.debug("DELETE " + json.dumps(msg))
 #
 #     return resp
+
 
 def get_data_list_pid(pid):
     is_error = False
@@ -559,6 +566,7 @@ def get_data_list_pid(pid):
 
         return None, None, is_error, resp
 
+
 def check_id(id_token, data_list):
     id_type, id_string = tokenutils.get_id_info_from_token(id_token)
     auth_pass = False
@@ -576,8 +584,10 @@ def check_id(id_token, data_list):
 
     return auth_pass
 
+
 def pii_get(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
 
     data_list, is_objectid, is_error, resp = get_data_list_pid(pid)
     if is_error:
@@ -602,8 +612,10 @@ def pii_get(pid=None):
 
     return out_json
 
+
 def pii_put(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
     tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
         auth_resp)
 
@@ -712,8 +724,10 @@ def pii_put(pid=None):
     logging.info("PII PUT " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
     return out_json
 
+
 def pii_delete(pid=None):
-    auth_resp = auth_middleware.authenticate()
+    # Get ID Token data from global context variable.
+    auth_resp = g.user_token_data
 
     data_list, is_objectid, is_error, resp = get_data_list_pid(pid)
     if is_error:
