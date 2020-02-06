@@ -176,6 +176,19 @@ paths:
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       security:
         - UserAuth: []
+      requestBody:
+        description: PII profile data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pii'
+            examples:
+              uuidAsList:
+                value:
+                  uuid: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]
+              uuidAsString:
+                value:
+                  uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
       responses:
         200:
           description: Ok
@@ -1327,10 +1340,13 @@ components:
         pid:
           type: string
         uuid:
-          type: array
-          items:
-            type: string
-            format: uuid
+          oneOf:
+            - type: string
+              format: uuid
+            - type: array
+              items:
+                type: string
+                format: uuid
         userName:
           type: string
         firstname:
