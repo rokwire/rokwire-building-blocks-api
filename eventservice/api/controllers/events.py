@@ -110,7 +110,7 @@ def tags_search():
     return flask.jsonify(response)
 
 
-def superevents_tags_search():
+def super_events_tags_search():
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "superevents_tags.json")
