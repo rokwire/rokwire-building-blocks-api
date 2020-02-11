@@ -701,7 +701,26 @@ paths:
                   type: string
         500:
           description: Internal error
-
+  /events/super-events/tags:
+    get:
+      tags:
+      - Events
+      summary: Get a list of Rokwire super event tags
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Getting super event tags successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        500:
+          description: Internal error
   /events/{event_id}/images:
     get:
       tags:

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add superevents tag to refactoring branch.
 - Get events by multiple event ids.
 - Add dnspython module to enable mongodb+srv:// URIs [#235](https://github.com/rokwire/rokwire-building-blocks-api/issues/235)
 - API design changes to support super events. [#302](https://github.com/rokwire/rokwire-building-blocks-api/issues/302)
