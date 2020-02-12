@@ -4,41 +4,16 @@ The goal of the App Config Building Block is to provide a set of RESTFul web ser
 Please see API documentation for more details at https://api.rokwire.illinois.edu/docs/
                       
 
-## Setup Environment
-```
-cd appconfigservice
-virtualenv -p python3 venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+## REQUREMENTS
+- **MongoDB** installed
+- **[Python 3.5+](https://www.python.org)**
 
-## Run in Development Mode
-```
-cd appconfigservice
-source venv/bin/activate
-export FLASK_ENV=development
-python api/appconfig_rest_service.py
-```
-
-## Unit tests
-```
-cd appconfigservice
-pip install '.[test]'
-pytest
-```
-
-## Build and install   
-```
-cd appconfigservice
-pip install -e .
-```
-
-## Environment File
+## CONFIGURATIONS
 
 We need to have a .env file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
-Example file format:
+Example `.env` file format:
 ```
 TWILIO_ACCT_SID=<Twilio Account SID>
 TWILIO_AUTH_TOKEN=<Twilio Auth Token>
@@ -54,6 +29,23 @@ ROKWIRE_API_KEY=<Rokwire API Key>
 ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
 ROKWIRE_PUB_KEY=<Rokwire Public Key>
 ROKWIRE_API_CLIENT_ID=<Rokwire API Client ID>
+```
+
+
+
+### RUNNING WITHOUT DOCKER
+- Setup Environment
+```
+cd appconfigservice
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+- Run AppConfig module
+```
+source venv/bin/activate
+export FLASK_ENV=development
+python api/appconfig_rest_service.py
 ```
 
 ## API Examples
@@ -122,4 +114,17 @@ docker build -f appconfigservice/Dockerfile -t rokwire/app-config-building-block
 docker tag rokwire/app-config-building-block:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 $(aws ecr get-login --no-include-email --region us-east-2)
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
+```
+
+## Unit tests
+```
+cd appconfigservice
+pip install '.[test]'
+pytest
+```
+
+## Build and install   
+```
+cd appconfigservice
+pip install -e .
 ```
