@@ -31,9 +31,7 @@ ROKWIRE_PUB_KEY=<Rokwire Public Key>
 ROKWIRE_API_CLIENT_ID=<Rokwire API Client ID>
 ```
 
-
-
-### Run in Development Mode without Docker
+#### Run in Development Mode without Docker
 To setup environment:
 ```
 cd appconfigservice
