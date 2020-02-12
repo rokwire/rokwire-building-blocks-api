@@ -123,15 +123,3 @@ docker tag rokwire/app-config-building-block:latest 779619664536.dkr.ecr.us-east
 $(aws ecr get-login --no-include-email --region us-east-2)
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/app_config:latest
 ```
-
-## Run docker in a VM
-OS: Ubuntu 18.0.4
-```
-vi .bashrc
-alias python=python3
-alias pip=pip3
-cd rokwire-building-blocks-api/deployment
-./start_app_config_container.sh
-./stop_app_config_container.sh
-
-```
