@@ -4,12 +4,12 @@ The goal of the App Config Building Block is to provide a set of RESTFul web ser
 Please see API documentation for more details at https://api.rokwire.illinois.edu/docs/
                       
 
-## REQUREMENTS
+## Getting Started
+#### Requirements
 - **MongoDB** installed
 - **[Python 3.5+](https://www.python.org)**
 
-## CONFIGURATIONS
-
+#### Set up Environment File
 We need to have a .env file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
@@ -33,22 +33,22 @@ ROKWIRE_API_CLIENT_ID=<Rokwire API Client ID>
 
 
 
-### RUNNING WITHOUT DOCKER
-- Setup Environment
+### Run in Development Mode without Docker
+To setup environment:
 ```
 cd appconfigservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-- Run AppConfig module
+And run AppConfig module:
 ```
 source venv/bin/activate
 export FLASK_ENV=development
 python api/appconfig_rest_service.py
 ```
 
-## API Examples
+### API Examples
 Using Postman to interact with the API (i.e. `GET/POST/PUT/DELETE`):
 
 1. Set up authorization in Header
@@ -93,7 +93,7 @@ curl -d "@appconfig-v100.json" -X PUT http://localhost:5000/app/configs/5d38b9a5
 
 ```
 
-## Docker Instructions
+## Docker Run Instructions
 
 ```
 cd rokwire-building-blocks-api 
