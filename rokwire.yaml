@@ -40,7 +40,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Non-pii'
+              oneOf:
+                - $ref: '#/components/schemas/Non-pii'
         required: false
       responses:
         200:
@@ -170,11 +171,24 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
-        User's UUID must be provided in the form of a list.
+        User's UUID must be provided as a string or as a list of string.
 
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       security:
         - UserAuth: []
+      requestBody:
+        description: PII profile data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pii'
+            examples:
+              uuidAsList:
+                value:
+                  uuid: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]
+              uuidAsString:
+                value:
+                  uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
       responses:
         200:
           description: Ok
@@ -687,7 +701,26 @@ paths:
                   type: string
         500:
           description: Internal error
-
+  /events/super-events/tags:
+    get:
+      tags:
+      - Events
+      summary: Get a list of Rokwire super event tags
+      description: |
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Getting super event tags successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        500:
+          description: Internal error
   /events/{event_id}/images:
     get:
       tags:
@@ -1254,6 +1287,7 @@ components:
   schemas:
     Non-pii:
       type: object
+      nullable: true
       properties:
         uuid:
           type: string
@@ -1325,10 +1359,13 @@ components:
         pid:
           type: string
         uuid:
-          type: array
-          items:
-            type: string
-            format: uuid
+          oneOf:
+            - type: string
+              format: uuid
+            - type: array
+              items:
+                type: string
+                format: uuid
         userName:
           type: string
         firstname:

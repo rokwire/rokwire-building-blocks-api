@@ -52,11 +52,15 @@ def _get_events_result(query, limit, skip):
     """
     Perform the get_events query and return the serialized results. This is
     its own function to enable caching to work.
-
     Returns: (string, count)
     """
     if not query:
         return []
+
+    is_super_event = False
+    for cond in query.get('$and'):
+        if cond.get('isSuperEvent'):
+            is_super_event = True
 
     db = get_db()
     cursor = db['events'].find(
@@ -73,8 +77,24 @@ def _get_events_result(query, limit, skip):
 
     events = []
     for event in cursor:
+        # use the db `_id` as id in the returning event.
         event['id'] = str(event.pop('_id'))
-        events.append(event)
+        if is_super_event:
+            subevents_ids = list()
+            for subevent in event.get('subEvents'):
+                subevents_ids.append(ObjectId(subevent.get("id")))
+            subevents_cursor = db['events'].find(
+                {'_id': {'$in': subevents_ids}},
+                {'coordinates': 0, 'categorymainsub': 0}
+            ).sort([
+                ('startDate', pymongo.ASCENDING),
+                ('endDate', pymongo.ASCENDING),
+            ])
+            for subevent_detail in subevents_cursor:
+                subevent_detail['id'] = str(subevent_detail.pop('_id'))
+                events.append(subevent_detail)
+        else:
+            events.append(event)
     return flask.json.dumps(events), len(events)
 
 
@@ -82,6 +102,18 @@ def tags_search():
     response = []
     try:
         tags_path = os.path.join(current_app.root_path, "tags.json")
+        with open(tags_path, 'r') as tags_file:
+            response = json.load(tags_file)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    return flask.jsonify(response)
+
+
+def super_events_tags_search():
+    response = []
+    try:
+        tags_path = os.path.join(current_app.root_path, "superevents_tags.json")
         with open(tags_path, 'r') as tags_file:
             response = json.load(tags_file)
     except Exception as ex:
