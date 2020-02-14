@@ -1,11 +1,10 @@
 import logging
-
-import connexion
 from time import gmtime
 
+import connexion
 from controllers.config import API_LOC
+from controllers.config import APP_CONFIG_URL_PREFIX
 from controllers.config import DEBUG
-# import .controllers.config as cfg
 from rokwireresolver import RokwireResolver
 from utils import db
 
@@ -25,8 +24,9 @@ else:
 db.init_db()
 
 app = connexion.FlaskApp(__name__, specification_dir=API_LOC)
-app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
+app.add_api('rokwire.yaml', base_path=APP_CONFIG_URL_PREFIX, arguments={'title': 'Rokwire'},
+            resolver=RokwireResolver('controllers'),
             resolver_error=501)
 
 if __name__ == '__main__':
-    app.run(port=5000, host=None, server='flask',debug=debug)
+    app.run(port=5000, host=None, server='flask', debug=debug)

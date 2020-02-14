@@ -1,18 +1,17 @@
 import logging
 import re
+from time import gmtime
 
 import auth_middleware
+import controllers.config as cfg
 import flask
 import pymongo
 from bson import ObjectId
-from flask import request, make_response, abort, current_app
-from pymongo.errors import DuplicateKeyError, CursorNotFound
-from time import gmtime
-
+from flask import request, make_response, abort
+from pymongo.errors import DuplicateKeyError
 from utils import db as conn
-from utils.cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 from utils import dbutils
-import controllers.config as cfg
+from utils.cache import memoize_query, CACHE_GET_APPCONFIG, CACHE_GET_APPCONFIGS
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -22,27 +21,27 @@ app = flask.Flask(__name__)
 
 
 def configs_search(mobileAppVersion=None):
-        args = request.args
-        version = args.get('mobileAppVersion')
-        query = dict()
+    args = request.args
+    version = args.get('mobileAppVersion')
+    query = dict()
 
-        if version and dbutils.check_appversion_format(version) == False:
-            abort(400)
+    if version and dbutils.check_appversion_format(version) == False:
+        abort(400)
 
-        try:
-            query = format_query(args, query)
-        except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
-        try:
-            result = _get_app_configs_result(query, version)
+    try:
+        query = format_query(args, query)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    try:
+        result = _get_app_configs_result(query, version)
 
-        except Exception as ex:
-            __logger.exception(ex)
-            abort(500)
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
 
-        __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
-        return flask.jsonify(result)
+    __logger.info("[GET]: %s nRecords = %d ", request.url, len(result))
+    return flask.jsonify(result)
 
 
 def configs_get(id):
@@ -266,7 +265,8 @@ def add_version_numbers(req_data):
 def check_format(req_data):
     if req_data['mobileAppVersion'] is None or req_data['platformBuildingBlocks'] is None or \
             req_data['thirdPartyServices'] is None or req_data['otherUniversityServices'] is None or \
-            req_data['secretKeys'] is None or (req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
+            req_data['secretKeys'] is None or (
+            req_data['mobileAppVersion'] and dbutils.check_appversion_format(req_data['mobileAppVersion']) is False):
         return False
     return True
 

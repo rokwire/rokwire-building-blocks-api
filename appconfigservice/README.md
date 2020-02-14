@@ -96,7 +96,7 @@ curl -d "@appconfig-v100.json" -X PUT http://localhost:5000/app/configs/5d38b9a5
 ```
 cd rokwire-building-blocks-api 
 docker build -f appconfigservice/Dockerfile -t rokwire/app-config-building-block:latest .
-docker run --rm --name app_config --env-file appconfigservice/.env -e APP_CONFIG_MONGO_URL=<mongo_url> -p 5000:5000 rokwire/app-config-building-block
+docker run --rm --name app_config --env-file appconfigservice/.env -e APP_CONFIG_URL_PREFIX=<url_prefix_starting_with_slash> -e APP_CONFIG_MONGO_URL=<mongo_url> -p 5000:5000 rokwire/app-config-building-block
 ```
 where `<mongo_url> =mongodb://localhost:27017` is in current setting
 
