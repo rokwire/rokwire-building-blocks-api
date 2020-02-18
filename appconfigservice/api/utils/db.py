@@ -1,7 +1,7 @@
-import pymongo
-from flask import current_app, g
-from pymongo.mongo_client import MongoClient
 import controllers.config as cfg
+import pymongo
+from flask import g
+from pymongo.mongo_client import MongoClient
 
 client = None
 

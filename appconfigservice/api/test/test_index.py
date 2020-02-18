@@ -13,7 +13,7 @@ def test_post_dup_version(client, app):
         "thirdPartyServices": {},
         "otherUniversityServices": {},
         "secretKeys": "blabla",
-        "upgrade" :{}
+        "upgrade": {}
     }
     assert client.post('/app/configs', data=json.dumps(req_data_1), content_type='application/json').status_code == 201
     req_data_2 = {

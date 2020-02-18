@@ -9,6 +9,7 @@ COPY lib ../lib/
 COPY rokwire.yaml .
 
 ENV APP_CONFIG_MONGO_URL=""
+ENV APP_CONFIG_URL_PREFIX=""
 
 RUN pip install -r ./appconfigservice/requirements.txt
 WORKDIR /app/appconfigservice/api
