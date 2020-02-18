@@ -42,7 +42,7 @@ pip install -r requirements.txt
 And run AppConfig module:
 ```
 export FLASK_ENV=development
-sudo python api/appconfig_rest_service.py
+python api/appconfig_rest_service.py
 ```
 
 ### API Examples
