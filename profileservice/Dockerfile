@@ -27,6 +27,7 @@ ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PII_URL="" \
     API_LOC="." \
     FLASK_APP="profile_rest_service" \
-    FLASK_ENV="development"
+    FLASK_ENV="development" \
+    PROFILE_URL_PREFIX=""
 
 CMD ["gunicorn", "profile_rest_service:app", "--config", "/usr/src/app/profileservice/api/gunicorn.config.py"]

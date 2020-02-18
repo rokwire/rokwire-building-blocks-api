@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API design changes to support super events. [#302](https://github.com/rokwire/rokwire-building-blocks-api/issues/302)
 - Add an optional `upgrade` object in app config [#328](https://github.com/rokwire/rokwire-building-blocks-api/issues/328)
 - Add a method to auth_middleware library for doing authorization. [#342](https://github.com/rokwire/rokwire-building-blocks-api/issues/342)
-
+- Add a base path to logging and profiles service. [#362](https://github.com/rokwire/rokwire-building-blocks-api/issues/362)
 ## [1.0.5] - 2020-02-05
 ### Added
 - Add super event tags. 

@@ -23,6 +23,6 @@ WORKDIR /usr/src/app/loggingservice/api
 COPY rokwire.yaml .
 
 #ENV LOGGING_MONGO_URL=""
-ENV LOGGING_URL_PREFIX="/logs"
+ENV LOGGING_URL_PREFIX=""
 
 CMD ["gunicorn", "logging_rest_service:app", "--config", "/usr/src/app/loggingservice/api/gunicorn.config.py"]
