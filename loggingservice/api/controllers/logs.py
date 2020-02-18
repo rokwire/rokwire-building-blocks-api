@@ -4,7 +4,6 @@ import sys
 
 from connexion.exceptions import OAuthProblem
 
-# from models.config import LOGGING_URL_PREFIX #, LOGGING_COLL_NAME
 from flask import request
 
 import utils.rest_handlers as rs_handlers
