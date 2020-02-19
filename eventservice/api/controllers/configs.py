@@ -10,7 +10,8 @@ DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 EVENT_MONGO_URL = os.getenv("EVENT_MONGO_URL", "mongodb://localhost:27017")
 EVENT_DB_NAME = os.getenv("EVENT_DB_NAME", "rokwire")
-URL_PREFIX = os.getenv("URL_PREFIX", "/events")
+# set default as empty, since connexion will set events as the root path defined by the yml file.
+URL_PREFIX = os.getenv("URL_PREFIX", "")
 
 IMAGE_COLLECTION = os.getenv("IMAGE_COLLECTION", "images")
 IMAGE_FILE_MOUNTPOINT = os.getenv("IMAGE_FILE_MOUNTPOINT", "events-images")
