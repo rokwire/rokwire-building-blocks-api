@@ -7,9 +7,10 @@ import diskcache
 # Populate cache defaults here instead of config.py because they are
 # used in function decorators before the config.py is loaded into the
 # Flask api environment
+
 CACHE_DIRECTORY = os.getenv('CACHE_DIRECTORY', '/var/cache/app')
 CACHE_SETTINGS = json.loads(os.getenv('CACHE_SETTINGS', '{}'))
-CACHE_GET_DEFAULT = os.getenv("CACHE_GET_DEFAULT", '{"expire": 600}')
+CACHE_GET_DEFAULT = os.getenv("CACHE_GET_DEFAULT", '{"expire": 0}')
 CACHE_GET_APPCONFIGS = json.loads(os.getenv("CACHE_GET_APPCONFIGS", CACHE_GET_DEFAULT))
 CACHE_GET_APPCONFIG = json.loads(os.getenv("CACHE_GET_APPCONFIG", CACHE_GET_DEFAULT))
 
