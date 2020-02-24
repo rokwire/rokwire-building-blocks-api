@@ -329,13 +329,24 @@ class PiiRootDir(Resource):
         # get uuid, if failed it is a bad request
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
+            if isinstance(non_pii_uuid, list): # when the input uuid is a list
+                if len(non_pii_uuid) > 0:
+                    non_pii_uuid = non_pii_uuid[0]
+                else:
+                    msg = {
+                        "reason": "uuid not supplied.",
+                        "error": "Bad Request: " + request.url,
+                    }
+                    msg_json = jsonutils.create_log_json("PII", "POST", msg)
+                    logging.error("PII POST " + json.dumps(msg_json))
+                    return rs_handlers.bad_request(msg_json)
         except Exception as ex:
             msg = {
                 "reason": "uuid not supplied.",
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("PII", "POST", msg)
-            self.logger.error("PII POST " + json.dumps(msg_json))
+            logging.error("PII POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
         # check if it is a new record or existing record
@@ -656,16 +667,17 @@ class DealPii(Resource):
         non_pii_uuid_from_dataset = pii_dataset.get_uuid()
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-            is_non_pii_uuid_in_json_new = True
-            # check if non-pii-uuid is already in there
-            for i in range(len(non_pii_uuid_from_dataset)):
-                if non_pii_uuid == non_pii_uuid_from_dataset[i]:
-                    is_non_pii_uuid_in_json_new = False
+            # both non_pii_uuid and non_pii_uuid_from_dataset should be list
+            if (type(non_pii_uuid) is not list) or (type(non_pii_uuid_from_dataset) is not list):
+                msg = {
+                    "reason": "The uuid information is not a list.",
+                    "error": "Json format error."
+                }
+                msg_json = jsonutils.create_log_json("PII", "PUT", msg)
+                logging.error("PII PUT " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg_json)
 
-            # adde non-pii uuid in json only if it is now uuid
-            if is_non_pii_uuid_in_json_new:
-                non_pii_uuid_from_dataset.append(non_pii_uuid)
-                pii_dataset.set_non_pii_uuid(non_pii_uuid)
+            pii_dataset.set_uuid(non_pii_uuid)
         except:
             pass
 
