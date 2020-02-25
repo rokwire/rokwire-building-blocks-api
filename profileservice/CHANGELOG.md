@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 - time stamps in profiles changed to the UTC that is the same as logging building block
 [#262](https://github.com/rokwire/rokwire-building-blocks-api/issues/262)
+- added compatibility in Profile PII's uuid for string and list
+[#372](https://github.com/rokwire/rokwire-building-blocks-api/issues/372)
 
 ## 1.0.0 - 2019-10-10
 ### Added
