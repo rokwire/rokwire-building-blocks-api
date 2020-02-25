@@ -486,7 +486,6 @@ def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     # adde non-pii uuid in json only if it is new uuid
     if is_non_pii_uuid_in_json_new:
         non_pii_uuid_from_dataset.append(non_pii_uuid)
-        pii_dataset.set_non_pii_uuid(non_pii_uuid)
 
     return pii_dataset
 
