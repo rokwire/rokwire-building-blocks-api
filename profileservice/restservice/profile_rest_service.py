@@ -329,7 +329,7 @@ class PiiRootDir(Resource):
         # get uuid, if failed it is a bad request
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-            if isinstance(non_pii_uuid, list) == False: # when the input uuid is a list
+            if not isinstance(non_pii_uuid, list): # when the input uuid is a list
                 tmp_list = []
                 tmp_list.append(non_pii_uuid)
                 non_pii_uuid = tmp_list
@@ -395,10 +395,7 @@ class PiiRootDir(Resource):
 
                     pid = dataset.get_pid()
                     non_pii_uuid_from_dataset = dataset.uuid
-                    try:
-                        dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                    except:
-                        pass
+                    dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
                     currenttime = otherutils.get_current_time_utc()
                     dataset.set_last_modified_date(currenttime)
                     result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
@@ -424,7 +421,7 @@ class PiiRootDir(Resource):
 
                     return rs_handlers.return_id('UIN already exists.', 'pid', pid)
             except:
-                pass
+                return rs_handlers.internal_server_error()
 
         # check if the phonenumber already exists
         if tk_is_phone:
@@ -450,10 +447,7 @@ class PiiRootDir(Resource):
                 if dataset is not None:
                     pid = dataset.get_pid()
                     non_pii_uuid_from_dataset = dataset.uuid
-                    try:
-                        dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                    except:
-                        print("error")
+                    dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
                     currenttime = otherutils.get_current_time_utc()
                     dataset.set_last_modified_date(currenttime)
                     result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
@@ -465,7 +459,7 @@ class PiiRootDir(Resource):
                     self.logger.warning("PII POST " + json.dumps(msg_json))
                     return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
             except:
-                pass
+                return rs_handlers.internal_server_error()
 
         if dataset is not None:
             is_new_entry = False
@@ -525,7 +519,7 @@ class PiiRootDir(Resource):
             if non_pii_uuid == non_pii_uuid_from_dataset[i]:
                 is_non_pii_uuid_in_json_new = False
 
-        # adde non-pii uuid in json only if it is new uuid
+        # add non-pii uuid in json only if it is new uuid
         if is_non_pii_uuid_in_json_new:
             non_pii_uuid_from_dataset.append(non_pii_uuid)
 
