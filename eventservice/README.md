@@ -49,7 +49,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f eventservice/Dockerfile -t rokwire/events-building-block .
-docker run --rm --name events --env-file eventservice/.env -p 5000:5000 rokwire/events-building-block
+docker run --rm --name events --env-file eventservice/.env -e URL_PREFIX=<URL prefix> -p 5000:5000 rokwire/events-building-block
 ```
 You need to edit config.py where you have to specify mongo url.
 ```
