@@ -329,13 +329,29 @@ class PiiRootDir(Resource):
         # get uuid, if failed it is a bad request
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
+            if not isinstance(non_pii_uuid, list): # when the input uuid is a list
+                tmp_list = []
+                tmp_list.append(non_pii_uuid)
+                non_pii_uuid = tmp_list
         except Exception as ex:
             msg = {
                 "reason": "uuid not supplied.",
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("PII", "POST", msg)
-            self.logger.error("PII POST " + json.dumps(msg_json))
+            logging.error("PII POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
+
+        # get non_pii_uuid value from the list
+        if len(non_pii_uuid) > 0:
+            non_pii_uuid = non_pii_uuid[0]
+        else:
+            msg = {
+                "reason": "uuid list is empty.",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("PII", "POST", msg)
+            logging.error("PII POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
         # check if it is a new record or existing record
@@ -378,6 +394,11 @@ class PiiRootDir(Resource):
                     #     return jsonutils.create_auth_fail_message()
 
                     pid = dataset.get_pid()
+                    non_pii_uuid_from_dataset = dataset.uuid
+                    dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
+                    currenttime = otherutils.get_current_time_utc()
+                    dataset.set_last_modified_date(currenttime)
+                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
                     msg = {
                         "reason": "UIN already exists: " + str(pid) ,
                         "warning": "UIN already exists: " + request.url,
@@ -400,7 +421,7 @@ class PiiRootDir(Resource):
 
                     return rs_handlers.return_id('UIN already exists.', 'pid', pid)
             except:
-                pass
+                return rs_handlers.internal_server_error()
 
         # check if the phonenumber already exists
         if tk_is_phone:
@@ -425,6 +446,11 @@ class PiiRootDir(Resource):
 
                 if dataset is not None:
                     pid = dataset.get_pid()
+                    non_pii_uuid_from_dataset = dataset.uuid
+                    dataset = self.append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
+                    currenttime = otherutils.get_current_time_utc()
+                    dataset.set_last_modified_date(currenttime)
+                    result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
                     msg = {
                         "reason": "Phone number already exists: " + str(pid),
                         "warning": "Phone number already exists: " + request.url,
@@ -433,7 +459,7 @@ class PiiRootDir(Resource):
                     self.logger.warning("PII POST " + json.dumps(msg_json))
                     return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
             except:
-                pass
+                return rs_handlers.internal_server_error()
 
         if dataset is not None:
             is_new_entry = False
@@ -486,6 +512,18 @@ class PiiRootDir(Resource):
             self.logger.error("PII POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
+    def append_non_pii_uuid(self, non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
+        is_non_pii_uuid_in_json_new = True
+        # check if non-pii-uuid is already in there
+        for i in range(len(non_pii_uuid_from_dataset)):
+            if non_pii_uuid == non_pii_uuid_from_dataset[i]:
+                is_non_pii_uuid_in_json_new = False
+
+        # add non-pii uuid in json only if it is new uuid
+        if is_non_pii_uuid_in_json_new:
+            non_pii_uuid_from_dataset.append(non_pii_uuid)
+
+        return pii_dataset
 
 """
 provide profile information by profile id or remove it
@@ -656,16 +694,17 @@ class DealPii(Resource):
         non_pii_uuid_from_dataset = pii_dataset.get_uuid()
         try:
             non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
-            is_non_pii_uuid_in_json_new = True
-            # check if non-pii-uuid is already in there
-            for i in range(len(non_pii_uuid_from_dataset)):
-                if non_pii_uuid == non_pii_uuid_from_dataset[i]:
-                    is_non_pii_uuid_in_json_new = False
+            # both non_pii_uuid and non_pii_uuid_from_dataset should be list
+            if (type(non_pii_uuid) is not list) or (type(non_pii_uuid_from_dataset) is not list):
+                msg = {
+                    "reason": "The uuid information is not a list.",
+                    "error": "Json format error."
+                }
+                msg_json = jsonutils.create_log_json("PII", "PUT", msg)
+                logging.error("PII PUT " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg_json)
 
-            # adde non-pii uuid in json only if it is now uuid
-            if is_non_pii_uuid_in_json_new:
-                non_pii_uuid_from_dataset.append(non_pii_uuid)
-                pii_dataset.set_non_pii_uuid(non_pii_uuid)
+            pii_dataset.set_uuid(non_pii_uuid)
         except:
             pass
 
