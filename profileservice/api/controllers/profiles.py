@@ -330,10 +330,7 @@ def pii_post():
 
                 pid = dataset.get_pid()
                 non_pii_uuid_from_dataset = dataset.uuid
-                try:
-                    dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                except:
-                    pass
+                dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
                 currenttime = otherutils.get_current_time_utc()
                 dataset.set_last_modified_date(currenttime)
                 result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
@@ -345,7 +342,7 @@ def pii_post():
                 logging.warning("PII POST " + json.dumps(msg_json))
                 return rs_handlers.return_id('UIN already exists.', 'pid', pid)
         except:
-            pass
+            return rs_handlers.internal_server_error()
 
     # check if the phonenumber already exists
     if tk_is_phone:
@@ -371,10 +368,7 @@ def pii_post():
             if dataset is not None:
                 pid = dataset.get_pid()
                 non_pii_uuid_from_dataset = dataset.uuid
-                try:
-                    dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                except:
-                    pass
+                dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
                 currenttime = otherutils.get_current_time_utc()
                 dataset.set_last_modified_date(currenttime)
                 result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
@@ -386,7 +380,7 @@ def pii_post():
                 logging.warning("PII POST " + json.dumps(msg_json))
                 return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
         except:
-            pass
+            return rs_handlers.internal_server_error()
 
     if dataset is not None:
         is_new_entry = False
