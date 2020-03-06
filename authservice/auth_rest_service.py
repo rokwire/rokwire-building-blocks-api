@@ -135,7 +135,7 @@ app.add_api(
 )
 
 
-# @api.api.before_request
+# @app.app.before_request
 # def before_request():
 #     user_agent = request.headers.get('User-Agent')
 #     if user_agent == 'ELB-HealthChecker/2.0':
