@@ -4,18 +4,16 @@ LABEL maintainer="sandeeps@illinois.edu"
 
 WORKDIR /app
 
-COPY appconfigservice/app /app
-COPY appconfigservice/requirements.txt /app/requirements.txt
-COPY appconfigservice/gunicorn.config.py /app/gunicorn.config.py
-COPY lib /lib/
+COPY appconfigservice ./appconfigservice
+COPY lib ../lib/
+COPY rokwire.yaml .
 
 ENV APP_CONFIG_MONGO_URL=""
+ENV APP_CONFIG_URL_PREFIX=""
 
-RUN pip install -r /app/requirements.txt
-
-# For using DocumentDB
-RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+RUN pip install -r ./appconfigservice/requirements.txt
+WORKDIR /app/appconfigservice/api
 
 VOLUME /var/cache/app
 
-CMD ["gunicorn", "appconfig:create_app()", "--config", "/app/gunicorn.config.py"]
+CMD ["gunicorn", "appconfig_rest_service:app", "--config", "../gunicorn.config.py"]
