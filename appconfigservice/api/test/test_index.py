@@ -6,7 +6,7 @@ from ..utils import db as conn
 
 
 def test_post_dup_version(client, app):
-    """POST couple of api config with same mobile api version and expect error"""
+    """POST couple of app config with same mobile app version and expect error"""
     req_data_1 = {
         "mobileAppVersion": "0.1.0",
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
@@ -31,7 +31,7 @@ def test_post_dup_version(client, app):
 
 
 def test_order_by_version(client, app):
-    """POST multiple api config and check order"""
+    """POST multiple app config and check order"""
     req_data_1 = {
         "mobileAppVersion": "0.9.9",
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},

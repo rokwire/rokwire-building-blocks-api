@@ -42,7 +42,7 @@ def test_search_by_bad_version(client, app):
 
 
 def test_search_by_version(client, app):
-    """POST multiple api config and check order"""
+    """POST multiple app config and check order"""
     req_data_4 = {
         "mobileAppVersion": "0.9.9",
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},

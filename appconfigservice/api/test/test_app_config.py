@@ -83,14 +83,14 @@ def test_update_app_config(client, app):
 
 
 def test_get_app_config(client, app):
-    """Test GET API given mobile api version"""
+    """Test GET API given mobile app version"""
     assert client.get('/app/configs?mobileAppVersion=0.1.0').status_code == 200
     response = client.get('/app/configs')
     assert b'0.1.0' in response.data
 
 
 def test_get_app_config_by_id(client, app):
-    """Test GET API given an api config identifier"""
+    """Test GET API given an app config identifier"""
     id = None
     with app.app_context():
         db = conn.get_db()
@@ -103,7 +103,7 @@ def test_get_app_config_by_id(client, app):
 
 
 def test_secret_key(client, app):
-    """Test GET API given mobile api version"""
+    """Test GET API given mobile app version"""
     response = client.get('/app/configs?mobileAppVersion=0.1.0')
     assert b'blahblah' in response.data
 
