@@ -6,7 +6,7 @@ from ..utils import db as conn
 
 
 def test_get_by_version(client, app):
-    """POST couple of api config, then search by version, finally delete those posted items."""
+    """POST couple of app config, then search by version, finally delete those posted items."""
     req_data_1 = {
         "mobileAppVersion": "0.1.0",
         "platformBuildingBlocks": {"appconfig": "https://api.rokwire.illinois.edu/app/configs"},
