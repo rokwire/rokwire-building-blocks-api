@@ -4,6 +4,8 @@ LABEL maintainer="ywkim@illinois.edu"
 
 EXPOSE 5000
 
+RUN wget wget https://assets.rokwire.illinois.edu/mongo-ca.pem /etc/ssl/certs/.
+
 WORKDIR /usr/src/app/lib
 
 COPY lib .
