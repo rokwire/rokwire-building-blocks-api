@@ -4,7 +4,8 @@ LABEL maintainer="ywkim@illinois.edu"
 
 EXPOSE 5000
 
-RUN wget wget https://assets.rokwire.illinois.edu/mongo-ca.pem /etc/ssl/certs/.
+RUN apk update && apk add wget && \
+  wget https://assets.rokwire.illinois.edu/mongo-ca.pem -O /etc/ssl/certs/mongo-ca.pem
 
 WORKDIR /usr/src/app/lib
 
