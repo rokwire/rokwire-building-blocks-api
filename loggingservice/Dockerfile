@@ -1,16 +1,28 @@
-FROM python:3
+FROM python:3-alpine
 
 LABEL maintainer="ywkim@illinois.edu"
 
-WORKDIR /app
-COPY loggingservice /app/loggingservice/
-COPY lib /lib/
-RUN pip install -r /app/loggingservice/requirements.txt
+EXPOSE 5000
 
-# For using DocumentDB
-RUN wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+WORKDIR /usr/src/app/lib
+
+COPY lib .
+
+WORKDIR /usr/src/app/loggingservice
+
+COPY loggingservice .
+
+RUN apk --update add python py-pip openssl ca-certificates py-openssl && \
+  apk --update add --virtual build-dependencies libffi-dev openssl-dev python-dev py-pip build-base && \
+  pip install --upgrade pip && \
+  pip install -r requirements.txt --no-cache-dir && \
+  apk del build-dependencies
+
+WORKDIR /usr/src/app/loggingservice/api
+
+COPY rokwire.yaml .
 
 #ENV LOGGING_MONGO_URL=""
-ENV LOGGING_URL_PREFIX="/logs"
+ENV LOGGING_URL_PREFIX=""
 
-CMD ["gunicorn", "loggingservice:create_app()", "--config", "/app/loggingservice/gunicorn.config.py"]
+CMD ["gunicorn", "logging_rest_service:app", "--config", "/usr/src/app/loggingservice/api/gunicorn.config.py"]

@@ -25,7 +25,7 @@ The necessary configuration should be configured in configure file (configs.py) 
 
 ## Environment File
 
-You need to have a .env file in the `restservice` directory that contains credentials required for authentication. 
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
 Not all of these variables may be required for this building block. 
 
 Example file format:
@@ -42,6 +42,12 @@ SHIBBOLETH_HOST=<Shibboleth Host Name>
 SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
 
 ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+
+# AWS environment variables to set when running on development machine. 
+# This is not required when running within AWS.
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
 ## Run application
@@ -59,13 +65,10 @@ cd profileservice
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-cd restservice
-export FLASK_APP=profile_rest_service
-export FLASK_ENV=development
-python profile_rest_service.py`
+python api/profile_rest_service.py`
 ```
 
-If you want to use flask use `flask run --host=0.0.0.0 --port=5000` instead of `python restservice/profile_rest_service.py` 
+If you want to use gunicorn, cd into api folder then, use ` gunicorn profile_rest_service:app -c gunicorn.config.py` instead of `python api/profile_rest_service.py` 
 
 The profile building block should be running at http://localhost:5000
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
@@ -74,8 +77,11 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
-docker run --name profile --rm --env-file=profileservice/restservice/.env -e PROFILE_ENDPOINT=/profiles -e FLASK_APP=profile_rest_service -e FLASK_ENV=development -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
+docker run --name profile --rm --env-file=profileservice/.env -e PROFILE_URL_PREFIX=<url_prefix_starting_with_slash> -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
 ```
+You can edit config.py or environment variable to specify a URL prefix by modifying PROFILE_URL_PREFIX variable.
+If you need to make just /profiles as endpoint, put the vaiable value to empty string or do not include this variable.
+
 
 ### AWS ECR Instructions
 
@@ -232,10 +238,10 @@ API will return the message
 
 ## Sample profile building block process for pii
 ### POST pii to create a new pii dataset:
-This is for creating a new PII dataset. This will happend when the user login to the app for the first time. Input json should contain uuid and at least one unique identifier either email or phone number.
+This is for creating a new PII dataset. This is used when the user logs in to the app for the first time. Request JSON body should contain UUID as a list.
 ```
 curl -X POST -d `{
-              "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+              "uuid": ["a6856b73-d453-4515-8002-56e8d0522136"],
               "phone": "123-456-7890",
             }' -H "Content-Type: application/json" http://localhost:5000/profiles/pii
 ```
@@ -247,10 +253,10 @@ API will return newly created pii dataset
 }
 ```
 ### PUT pii information to update pii dataset:
-This method is for updateing the information of the existing pii
+This method is for updating the information of the existing PII profile data.
 ```
 curl -X PUT -d `{
-              "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+              "uuid": ["a6856b73-d453-4515-8002-56e8d0522136"],
               "lastname": "doe",
               "firstname": "john",
               "phone": "123-456-7890",

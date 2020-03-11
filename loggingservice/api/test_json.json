@@ -1,0 +1,33 @@
+[
+  {
+    "timestamp": "2019-10-05T16:16:50Z",
+    "uuid": "e696663c-06fa-4f23-9427-4376849acb73",
+    "os": "ios",
+    "osVersion": "12.4",
+    "appVersion": "0.9.5",
+    "device": "Samsung Galaxy s10",
+    "deviceSettings": {},
+    "userAction": {
+      "type": "view",
+      "name": "homePanel",
+      "mainFeature": "Home",
+      "subFeature": "Explore"
+    }
+  },
+  {
+    "timestamp": "2019-10-05T16:16:51Z",
+    "uuid": "e696663c-06fa-4f23-9427-4376849acb73",
+    "os": "ios",
+    "osVersion": "12.4",
+    "appVersion": "0.9.5",
+    "device": "Samsung Galaxy s10",
+    "deviceSettings": {},
+    "userAction": {
+      "type": "view",
+      "name": "homePanel",
+      "mainFeature": "Home",
+      "subFeature": "Explore",
+      "customAttribute1": "Double click"
+    }
+  }
+]
