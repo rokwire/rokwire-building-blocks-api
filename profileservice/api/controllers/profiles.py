@@ -450,7 +450,7 @@ def devicedata_search():
         return rs_handlers.bad_request(msg_json)
 
     try:
-        out_json = mongoutils.get_pii_result(query)
+        out_json = mongoutils.get_profile_result(query)
     except Exception as ex:
         msg = {
             "reason": "There is no result " + str(args),
@@ -461,21 +461,47 @@ def devicedata_search():
         return rs_handlers.not_found(msg_json)
 
     if out_json is not None:
+        # TODO if the out_json only need to contain device token and uuid, perform following.
+        #  Otherwise just leave out_json as it is
+        out_json = build_favorites_eventid_result(out_json)
+
         msg = {
-            "search": "Pii search performed with arguments of : " + str(args),
+            "search": "Device Data search performed with arguments of : " + str(args),
             "result": out_json,
         }
         msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
         logging.info("Device Data SEARCH " + json.dumps(msg))
+
         return out_json
     else:
         msg = {
             "reason": "There is no result " + str(args),
             "error": "No Result: " + request.url,
         }
-        msg_json = jsonutils.create_log_json("PII", "SEARCH", msg)
-        logging.error("PII SEARCH " + json.dumps(msg_json))
+        msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
+        logging.error("Device Data SEARCH " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
+def build_favorites_eventid_result(in_json):
+    if isinstance(in_json, list):  # json list
+        out_list = []
+        for single_json in in_json:
+            tmp_json = {}
+            tmp_json["uuid"] = single_json["uuid"]
+            try:
+                tmp_json['fcmTokens'] = single_json["fcmTokens"]
+            except:
+                pass
+            out_list.append(tmp_json)
+        out_json = out_list
+    else:
+        out_json = {}
+        out_json["uuid"] = in_json["uuid"]
+        try:
+            out_json['fcmTokens'] = in_json["fcmTokens"]
+        except:
+            pass
+    return out_json
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True

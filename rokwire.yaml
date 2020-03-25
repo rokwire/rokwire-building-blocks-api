@@ -67,7 +67,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: eventId
+        - name: favorites.eventId
           in: query
           description: The parameter for searching Profile's device data based on keywords in the email.
           required: false

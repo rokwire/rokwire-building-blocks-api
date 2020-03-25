@@ -14,8 +14,9 @@ def format_query(args, query):
 def format_query_device_data(args, query):
     query_parts = []
 
-    if args.get('eventId'):
-        query_parts.append({'eventId': {'$eq': args.get('eventId')}})
+    if args.get('favorites.eventId'):
+        # make sure it has been changed to eventIds from eventid since the db field name is eventIds
+        query_parts.append({'favorites.eventIds': {'$eq': args.get('favorites.eventId')}})
     # if args.get('template'):
     #     query_parts.append({'template': {'$eq': args.get('template')}})
 

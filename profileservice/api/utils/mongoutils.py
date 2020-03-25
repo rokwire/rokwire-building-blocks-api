@@ -21,6 +21,27 @@ db_pii.pii_collection = db_pii[cfg.PII_DB_PII_COLL_NAME]
 """
 get query output json of PII from query using search arguments
 """
+def get_profile_result(query):
+    if not query:
+        return None
+
+    db_data = db_profile.non_pii_collection.find(query, {'_id': 0})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+"""
+get query output json of PII from query using search arguments
+"""
 def get_pii_result(query):
     if not query:
         return None
