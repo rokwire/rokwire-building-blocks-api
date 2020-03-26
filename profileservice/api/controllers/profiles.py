@@ -435,7 +435,7 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
-def devicedata_search():
+def device_data_search():
     args = request.args
     query = dict()
     try:

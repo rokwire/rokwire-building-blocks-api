@@ -56,7 +56,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/devicedata:
+  /profiles/device-data:
     get:
       tags:
         - Profile
