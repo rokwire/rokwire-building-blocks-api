@@ -486,13 +486,17 @@ def build_favorites_eventid_result(in_json):
     if isinstance(in_json, list):  # json list
         out_list = []
         for single_json in in_json:
-            tmp_json = {}
-            tmp_json["uuid"] = single_json["uuid"]
             try:
-                tmp_json['fcmTokens'] = single_json["fcmTokens"]
+                if len(single_json["fcmTokens"]) > 0:
+                    for i in range(len(single_json["fcmTokens"])):
+                        tmp_json = {}
+                        tmp_json["uuid"] = single_json["uuid"]
+                        tmp_json['deviceToken'] = single_json["fcmTokens"][i]
+                        out_list.append(tmp_json)
             except:
-                pass
-            out_list.append(tmp_json)
+                tmp_json = {}
+                tmp_json["uuid"] = single_json["uuid"]
+                out_list.append(tmp_json)
         out_json = out_list
     else:
         out_json = {}

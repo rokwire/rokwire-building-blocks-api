@@ -81,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Non-pii-search-eventid'
+                $ref: '#/components/schemas/NonPIIDeviceData'
         400:
           description: Bad request
         401:
@@ -1416,15 +1416,15 @@ components:
           type: string
         lastModifiedDate:
           type: string
-    Non-pii-search-eventid:
-      type: object
+    NonPIIDeviceData:
+      type: array
       nullable: true
       properties:
         uuid:
           type: string
           format: uuid
         fcmTokens:
-          type: array
+          type: string
           items:
             type: string
     Event:
