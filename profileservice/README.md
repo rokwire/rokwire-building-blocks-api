@@ -321,21 +321,20 @@ API will return the message
 }
 ```
 ### SEARCH non-pii dataset using eventId
-Search existing non-pii dataset by using eventId in the favorites. 
-The result is a single json object or json list. 
+Search existing Non-PII dataset by using eventId in the favorites and return the UUIDs and device tokens of those users who have favorited that particular event. 
 ```
-curl http://localhost:5000/profiles/device-data?favorites.eventId=5e17f8e0703183000a5225e0
+curl http://localhost:5000/profiles/device-data?favorites.eventId=<event ID>
 ```
 API will return the message
 ```
 [
  {
-   "uuid": <any uuid that filtered>
-   "deviceToken":[<any uuid that filtered>],
+   "uuid": "<uuid of a user who has favorited the event>",
+   "deviceToken":"<device token of a user who has favorited the event>"
   },
  {
-   "uuid": "<any uuid that filtered>
-   "deviceToken":[<any uuid that filtered>],
+   "uuid": ""<uuid of a user who has favorited the event>",
+   "deviceToken":"<device token of a user who has favorited the event>"
   }
 ]
 ```
