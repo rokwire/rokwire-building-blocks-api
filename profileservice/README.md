@@ -333,7 +333,7 @@ API will return the message
    "deviceToken":"<device token of a user who has favorited the event>"
   },
  {
-   "uuid": ""<uuid of a user who has favorited the event>",
+   "uuid": "<uuid of a user who has favorited the event>",
    "deviceToken":"<device token of a user who has favorited the event>"
   }
 ]
