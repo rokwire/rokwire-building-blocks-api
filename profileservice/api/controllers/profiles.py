@@ -453,12 +453,12 @@ def device_data_search():
         out_json = mongoutils.get_profile_result(query)
     except Exception as ex:
         msg = {
-            "reason": "There is no result " + str(args),
-            "error": "No Result: " + request.url,
+            "reason": "The query is wrong or bad argument " + str(args),
+            "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
         logging.error("Device Data SEARCH " + json.dumps(msg_json))
-        return rs_handlers.not_found(msg_json)
+        return rs_handlers.bad_request(msg_json)
 
     if out_json is None:
         out_json = []

@@ -88,8 +88,6 @@ paths:
           description: Bad request
         401:
           description: Unauthorized
-        404:
-          description: Not Found
         500:
           description: Internal error
   /profiles/{uuid}:
