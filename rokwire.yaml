@@ -69,7 +69,7 @@ paths:
       parameters:
         - name: favorites.eventId
           in: query
-          description: The parameter for searching Profile's device data based on keywords in the email.
+          description: The parameter for searching Non PII device data based on user's favorite Event's ID
           required: false
           style: form
           explode: true
@@ -81,7 +81,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NonPIIDeviceData'
+                type: array
+                items:
+                  $ref: '#/components/schemas/NonPIIDeviceData'
         400:
           description: Bad request
         401:
@@ -1417,16 +1419,14 @@ components:
         lastModifiedDate:
           type: string
     NonPIIDeviceData:
-      type: array
+      type: object
       nullable: true
       properties:
+        deviceToken:
+          type: string
         uuid:
           type: string
           format: uuid
-        fcmTokens:
-          type: string
-          items:
-            type: string
     Event:
       required:
         - title

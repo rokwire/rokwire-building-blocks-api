@@ -460,31 +460,25 @@ def device_data_search():
         logging.error("Device Data SEARCH " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
-    if out_json is not None:
+    if out_json is None:
+        out_json = []
+    else:
         # TODO if the out_json only need to contain device token and uuid, perform following.
         #  Otherwise just leave out_json as it is
         out_json = build_favorites_eventid_result(out_json)
 
-        msg = {
-            "search": "Device Data search performed with arguments of : " + str(args),
-            "result": out_json,
-        }
-        msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
-        logging.info("Device Data SEARCH " + json.dumps(msg))
+    msg = {
+        "search": "Device Data search performed with arguments of : " + str(args),
+        "result": out_json,
+    }
+    msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
+    logging.info("Device Data SEARCH " + json.dumps(msg))
 
-        return out_json
-    else:
-        msg = {
-            "reason": "There is no result " + str(args),
-            "error": "No Result: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
-        logging.error("Device Data SEARCH " + json.dumps(msg_json))
-        return rs_handlers.not_found(msg_json)
+    return out_json
 
 def build_favorites_eventid_result(in_json):
+    out_list = []
     if isinstance(in_json, list):  # json list
-        out_list = []
         for single_json in in_json:
             try:
                 if len(single_json["fcmTokens"]) > 0:
@@ -497,15 +491,20 @@ def build_favorites_eventid_result(in_json):
                 tmp_json = {}
                 tmp_json["uuid"] = single_json["uuid"]
                 out_list.append(tmp_json)
-        out_json = out_list
     else:
-        out_json = {}
-        out_json["uuid"] = in_json["uuid"]
         try:
-            out_json['fcmTokens'] = in_json["fcmTokens"]
+            if len(in_json["fcmTokens"]) > 0:
+                for i in range(len(in_json["fcmTokens"])):
+                    tmp_json = {}
+                    tmp_json["uuid"] = in_json["uuid"]
+                    tmp_json['deviceToken'] = in_json["fcmTokens"][i]
+                    out_list.append(tmp_json)
         except:
-            pass
-    return out_json
+            tmp_json = {}
+            tmp_json["uuid"] = in_json["uuid"]
+            out_list.append(tmp_json)
+
+    return out_list
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
