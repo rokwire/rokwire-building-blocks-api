@@ -60,7 +60,7 @@ paths:
     get:
       tags:
         - Profile
-      summary: searches Profile
+      summary: Get device token data from Non-PII profile
       description: |
         By passing in the appropriate options, you can search for Profile matching your criteria in the system
         Auth: Requires a valid API Key for access.
