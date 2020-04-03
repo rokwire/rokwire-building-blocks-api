@@ -320,3 +320,21 @@ API will return the message
 "message": "Object is deleted with id of : 90e7b9ee-de9c-4e2e-a32a-0295e92b035b"
 }
 ```
+### SEARCH Non-PII dataset using eventId
+Search existing Non-PII dataset by using eventId in the favorites and return the UUIDs and device tokens of those users who have favorited that particular event. 
+```
+curl http://localhost:5000/profiles/device-data?favorites.eventId=<event ID>
+```
+API will return the message
+```
+[
+ {
+   "uuid": "<uuid of a user who has favorited the event>",
+   "deviceToken":"<device token of a user who has favorited the event>"
+  },
+ {
+   "uuid": "<uuid of a user who has favorited the event>",
+   "deviceToken":"<device token of a user who has favorited the event>"
+  }
+]
+```
