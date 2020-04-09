@@ -1293,6 +1293,7 @@ components:
           type: string
           format: uuid
         over13:
+          nullable: true
           type: boolean
         interests:
           type: array
@@ -1305,14 +1306,17 @@ components:
                 items:
                  type: string
         positiveInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         negativeInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         favorites:
+          nullable: true
           type: object
           items:
             properties:
@@ -1337,6 +1341,7 @@ components:
                 items:
                   type: string
         privacySettings:
+          nullable: true
           type: object
           properties:
             level:
