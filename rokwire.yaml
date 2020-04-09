@@ -1327,6 +1327,7 @@ components:
           type: string
           format: uuid
         over13:
+          nullable: true
           type: boolean
         interests:
           type: array
