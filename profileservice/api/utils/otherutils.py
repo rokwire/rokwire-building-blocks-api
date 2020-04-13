@@ -81,7 +81,7 @@ def check_privacy_level(in_json):
     level_str = ["1", "2", "3", "4", "5"]
     level_ok = False
     try:
-        level = in_json["ifExternallyDeployed"]["level"]
+        level = in_json["privacySettings"]["level"]
         for i in range(len(level_str)):
             if str(level) == level_str[i]:
                 level_ok = True
