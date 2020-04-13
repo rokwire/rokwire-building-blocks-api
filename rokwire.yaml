@@ -1,3 +1,30 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+
+@ywkim312
+Learn Git and GitHub without any code!
+Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
+
+
+rokwire
+/
+rokwire-building-blocks-api
+Private
+12
+0
+0
+ Code Issues 33 Pull requests 5 Actions Projects 0 Wiki Security Insights
+rokwire-building-blocks-api/rokwire.yaml
+@ywkim312 ywkim312 save for wip
+7829768 4 hours ago
+@ywkim312@sandeep-ps@bingzhang@jbasney@xialiao@wenjzhu@span14@fdhenard
+Executable File  1886 lines (1861 sloc)  55.6 KB
+
 openapi: 3.0.0
 info:
   title: Rokwire Platform API
@@ -31,7 +58,6 @@ paths:
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -67,7 +93,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: isOpenSource.eventId
+        - name: favorites.eventId
           in: query
           description: The parameter for searching Non PII device data based on user's favorite Event's ID
           required: false
@@ -97,12 +123,11 @@ paths:
       summary: Find profile by ID
       description: |
         Returns a single profile
-
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: name
+      - name: uuid
         in: path
         description: ID of profile to return
         required: true
@@ -137,7 +162,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: name
+      - name: uuid
         in: path
         description: ID of profile that needs to be updated
         required: true
@@ -179,7 +204,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: name
+      - name: uuid
         in: path
         description: Profile id to delete
         required: true
@@ -206,7 +231,6 @@ paths:
       description: |
         This creates a new PII entry.
         User's UUID must be provided as a string or as a list of string.
-
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
       security:
         - UserAuth: []
@@ -243,7 +267,6 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
-
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
       security:
         - UserAuth: []
@@ -351,7 +374,6 @@ paths:
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -487,7 +509,6 @@ paths:
       summary: create an event
       description: |
         create an event record into the system
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -525,7 +546,6 @@ paths:
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -560,7 +580,6 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -610,7 +629,6 @@ paths:
       summary: Deletes an event by the given event id
       description: |
         Delete the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -644,7 +662,6 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -695,7 +712,6 @@ paths:
       summary: Get events categories
       description: |
         return back a list of categories and subcategories
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -979,7 +995,6 @@ paths:
       summary: Creates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -1114,7 +1129,6 @@ paths:
       summary: Updates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -1153,7 +1167,6 @@ paths:
       summary: Deletes mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -1182,7 +1195,6 @@ paths:
       summary: Create log entries
       description: |
         Create log entries from the app.
-
           Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -1239,7 +1251,6 @@ paths:
         call that contains a code. That code should then be provided to the
         /authentication/phone-verify endpoint. Note: The phoneNumber property must include a
         prefix plus symbol (+), the country code (e.g., 1 for USA), and the area code.
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -1274,7 +1285,6 @@ paths:
         endpoint. phone-verify will check if the code matches what was originally sent to
         the user. Note: The phoneNumber property must include a prefix plus symbol (+),
         the country code (e.g., 1 for USA), and the area code.
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -1325,7 +1335,7 @@ components:
       properties:
         uuid:
           type: string
-          format: name
+          format: uuid
         over13:
           type: boolean
         interests:
@@ -1395,11 +1405,11 @@ components:
         uuid:
           oneOf:
             - type: string
-              format: name
+              format: uuid
             - type: array
               items:
                 type: string
-                format: name
+                format: uuid
         userName:
           type: string
         firstname:
@@ -1424,7 +1434,7 @@ components:
           type: string
         uuid:
           type: string
-          format: name
+          format: uuid
     Event:
       required:
         - title
@@ -1651,7 +1661,7 @@ components:
           description: Timestamp of the log event as defined by RFC 3339 in the format YYYY-MM-DDThh:mm:ssZ
         uuid:
           type: string
-          format: name
+          format: uuid
           description: UUID of the app user.
         os:
           type: string
@@ -1751,12 +1761,7 @@ components:
           type: boolean
         ifOpenSource:
           nullable: true
-          type: array
-          items:
-            properties:
-              soucrceCodeRepositoryUrl:
-                nullable: true
-                type: String
+          type: boolean
         apiDoc:
           nullable: true
           type: String
@@ -1801,7 +1806,7 @@ components:
         authMethod:
           nullable: true
           type: String
-        status:
+        Status:
           nullable: true
           type: array
           items:
