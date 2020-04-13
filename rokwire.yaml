@@ -1737,6 +1737,140 @@ components:
       example:
         phoneNumber: "+12175557890"
         code: "123456"
+    Capability:
+      type: object
+      nullable: true
+      properties:
+        name:
+          type: string
+        description:
+          nullable: true
+          type: String
+        isOpenSource:
+          nullable: true
+          type: boolean
+        ifOpenSource:
+          nullable: true
+          type: boolean
+        apiDoc:
+          nullable: true
+          type: String
+        deploymentStatus:
+          type: array
+          items:
+            properties:
+              internal:
+                nullable: true
+                type: String
+              external:
+                nullable: true
+                type: String
+        ifExternallyDeployed:
+          nullable: true
+          type: array
+          items:
+            properties:
+              apiUrl:
+                nullable: true
+                type: String
+        ifInternallyDeployed:
+          nullable: true
+          type: array
+          items:
+            properties:
+              dockerImage:
+                nullable: true
+                type: String
+              environmentalVariables:
+                nullable: true
+                type: String
+              databaseDetails:
+                nullable: true
+                type: String
+        version:
+          nullable: true
+          type: String
+        healthCheckUrl:
+          nullable: true
+          type: String
+        authMethod:
+          nullable: true
+          type: String
+        Status:
+          nullable: true
+          type: array
+          items:
+            properties:
+              submitted:
+                nullable: true
+                type: boolean
+              inReview:
+                nullable: true
+                type: boolean
+              approved:
+                nullable: true
+                type: boolean
+              published:
+                nullable: true
+                type: boolean
+        dataDeletionApiEndpoint:
+          nullable: true
+          type: array
+          items:
+            properties:
+              givenUUID:
+                nullable: true
+                type: String
+              allData:
+                nullable: true
+                type: boolean
+              checkWithOperations:
+                nullable: true
+                type: String
+        contacts:
+          nullable: true
+          type: array
+          items:
+            properties:
+              name:
+                nullable: true
+                type: String
+              email:
+                nullable: true
+                type: String
+              phone:
+                nullable: true
+                type: String
+              organization:
+                nullable: true
+                type: String
+              officialAddress:
+                nullable: true
+                type: String
+        contributorDetails:
+          nullable: true
+          type: array
+          items:
+            properties:
+              name:
+                nullable: true
+                type: String
+              email:
+                nullable: true
+                type: String
+              phone:
+                nullable: true
+                type: String
+              organization:
+                nullable: true
+                type: String
+              officialAddress:
+                nullable: true
+                type: String
+        creationDate:
+          type: string
+        lastModifiedDate:
+          type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
