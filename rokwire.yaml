@@ -31,7 +31,7 @@ paths:
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
-        
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
