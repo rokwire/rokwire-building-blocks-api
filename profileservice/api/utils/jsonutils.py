@@ -19,7 +19,7 @@ def remove_file_descriptor_from_data_list(data_list):
     return data_list
 
 def remove_null_subcategory(injson):
-    interests = injson["interests"]
+    interests = injson["description"]
     for i in range(len(interests)):
         interest = interests[i]
         subcategories = interest["subcategories"]

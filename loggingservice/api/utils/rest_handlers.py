@@ -19,7 +19,7 @@ def success_response_only_status_code(status_code, msg):
 def success_response(status_code, msg, uuid):
     message = {
         'status': status_code,
-        'uuid': uuid,
+        'name': uuid,
         'message': msg
     }
     resp = flask.jsonify(message)

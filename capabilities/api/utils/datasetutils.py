@@ -1,135 +1,164 @@
 import copy
 
-from models.interest import Interest
-from models.favorites import Favorites
-from models.privacysettings import PrivacySettings
+from models.ifopensource import IfOpenSource
+from models.deploymentstatus import DeploymentStatus
+from models.ifextneranllydeployed import IfExternallyDeployed
+from models.ifinternallydeployed import IfInternallyDeployed
+from models.healthcheckurl import HealthCheckUrl
+from models.status import Status
+from models.datadeletionapiendpoint import DataDeletionApiEndpoint
+from models.contacts import Contacts
+from models.contributordetails import ContributorDetails
 
 """
 set non pii dataset
 """
-def update_non_pii_dataset_from_json(dataset, injson):
+def update_capability_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
-        dataset.set_file_descriptors(injson['fileDescriptors'])
-        del outjson['fileDescriptors']
+        dataset.set_name(injson['name'])
+        del outjson['name']
     except:
         pass
     try:
-        dataset.set_over13(injson['over13'])
-        del outjson['over13']
+        dataset.set_description(injson['description'])
+        del outjson['description']
     except:
         pass
     try:
-        # check if it is a first interests
-        if dataset.get_interests() is not None:
-            for i in range(len(injson["interests"])):
-                interest = Interest()
-                category = injson["interests"][i]["category"]
-                interest.set_category(category)
-
-                try:
-                    subcategory_list = injson["interests"][i]["subcategories"]
-                    interest.subcategories = []
-                    for j in range(len(subcategory_list)):
-                        subcategory = injson["interests"][i]["subcategories"][j]
-                        interest.add_subcategories(subcategory)
-                except:
-                    pass
-                dataset.add_interests(interest)
-        else:
-            dataset.interests = []
-        del outjson["interests"]
+        dataset.set_is_open_source(injson['isOpenSource'])
+        del outjson['isOpenSource']
+    except:
+        pass
+    try:
+        ifOpenSource = IfOpenSource()
+        sourceCodeRepositoryUrl = injson["ifOpenSource"]["sourceCodeRepositoryUrl"]
+        ifOpenSource.set_soucrce_code_repository_url(sourceCodeRepositoryUrl)
+        dataset.set_if_open_source(ifOpenSource)
+        del outjson["isOpenSource"]
     except Exception as e:
         pass
     try:
-        favorites = Favorites()
-        favorites.set_eventIds(injson["favorites"]["eventIds"])
-        favorites.set_placeIds(injson["favorites"]["placeIds"])
-        favorites.set_diningPlaceIds(injson["favorites"]["diningPlaceIds"])
-        favorites.set_laundryPlaceIds(injson["favorites"]["laundryPlaceIds"])
-        favorites.set_athleticEventIds(injson["favorites"]["athleticEventIds"])
-        dataset.set_favorites(favorites)
-        del outjson["favorites"]
+        dataset.set_api_doc(injson['apiDoc'])
+        del outjson['apiDoc']
+    except:
+        pass
+    try:
+        deploymentStatus = DeploymentStatus()
+        internal = injson["deploymentStatus"]["internal"]
+        external = injson["deploymentStatus"]["external"]
+        deploymentStatus.set_internal(internal)
+        deploymentStatus.set_internal(external)
+        dataset.set_deployment_status(deploymentStatus)
+        del outjson["deploymentStatus"]
     except Exception as e:
         pass
     try:
-        dataset.set_positiveInterestTags(injson["positiveInterestTags"])
-        del outjson["positiveInterestTags"]
+        ifExternallyDeployed = IfExternallyDeployed()
+        apiUrl = injson["ifExternallyDeployed"]["apiUrl"]
+        ifExternallyDeployed.set_api_url(apiUrl)
+        dataset.set_if_externally_deployed(ifExternallyDeployed)
+        del outjson["ifExternallyDeployed"]
+    except Exception as e:
+        pass
+    try:
+        ifInternallyDeployed = IfInternallyDeployed()
+        dockerImage = injson["ifInternallyDeployed"]["dockerImage"]
+        environmentalVariables = injson["ifInternallyDeployed"]["environmentalVariables"]
+        databaseDetails = injson["ifInternallyDeployed"]["databaseDetails"]
+        ifInternallyDeployed.set_docker_image(dockerImage)
+        ifInternallyDeployed.set_environmental_variables(environmentalVariables)
+        ifInternallyDeployed.set_database_details(databaseDetails)
+        dataset.set_if_internally_deployed(ifInternallyDeployed)
+        del outjson["ifInternallyDeployed"]
+    except Exception as e:
+        pass
+    try:
+        dataset.set_version(injson['version'])
+        del outjson['version']
     except:
         pass
     try:
-        dataset.set_negativeInterestTags(injson["negativeInterestTags"])
-        del outjson["negativeInterestTags"]
+        healthCheckUrl = HealthCheckUrl()
+        discussion = injson["healthCheckUrl"]["discussion"]
+        healthCheckUrl.set_discussion(discussion)
+        dataset.set_health_check_url(healthCheckUrl)
+        del outjson["healthCheckUrl"]
+    except Exception as e:
+        pass
+    try:
+        dataset.set_auth_method(injson['authMethod'])
+        del outjson['authMethod']
     except:
         pass
     try:
-        privacySettings = PrivacySettings()
-        level = injson["privacySettings"]["level"]
-        date_modified = injson["privacySettings"]["dateModified"]
-        privacySettings.set_level(level)
-        privacySettings.set_date_modified(date_modified)
-
-        dataset.set_privacy_settings(privacySettings)
+        status = Status()
+        submitted = injson["status"]["submitted"]
+        inReview = injson["status"]["inReview"]
+        approved = injson["status"]["approved"]
+        pubulished = injson["status"]["pubulished"]
+        status.set_submitted(submitted)
+        status.set_in_review(inReview)
+        status.set_approved(approved)
+        status.set_pubulished(pubulished)
+        dataset.set_status(status)
+        del outjson["status"]
+    except Exception as e:
+        pass
+    try:
+        dataDeletionApiEndpoint = DataDeletionApiEndpoint()
+        uuid = injson["dataDeletionApiEndpoint"]["uuid"]
+        check = injson["dataDeletionApiEndpoint"]["check"]
+        dataDeletionApiEndpoint.set_uuid(uuid)
+        dataDeletionApiEndpoint.set_check(check)
+        dataset.set_data_deletion_api_endpoint(dataDeletionApiEndpoint)
+        del outjson["dataDeletionApiEndpoint"]
+    except Exception as e:
+        pass
+    try:
+        contacts = Contacts()
+        name = injson["contacts"]["name"]
+        email = injson["contacts"]["email"]
+        phone = injson["contacts"]["phone"]
+        organization = injson["contacts"]["organization"]
+        officialAddress = injson["contacts"]["officialAddress"]
+        contacts.set_name(name)
+        contacts.set_email(email)
+        contacts.set_phone(phone)
+        contacts.set_organization(organization)
+        contacts.set_officialAddress(officialAddress)
+        dataset.set_contacts(contacts)
+        del outjson["contacts"]
+    except Exception as e:
+        pass
+    try:
+        contributorDetails = ContributorDetails()
+        name = injson["contributorDetails"]["name"]
+        email = injson["contributorDetails"]["email"]
+        phone = injson["contributorDetails"]["phone"]
+        organization = injson["contributorDetails"]["organization"]
+        officialAddress = injson["contributorDetails"]["officialAddress"]
+        contributorDetails.set_name(name)
+        contributorDetails.set_email(email)
+        contributorDetails.set_phone(phone)
+        contributorDetails.set_organization(organization)
+        contributorDetails.set_officialAddress(officialAddress)
+        dataset.set_contributor_details(contributorDetails)
+        del outjson["contributorDetails"]
     except Exception as e:
         pass
     try:
         dataset.set_creation_date(injson["creationDate"])
+        del outjson["creationDate"]
     except Exception as e:
         pass
     try:
         dataset.set_last_modified_date(injson["lastModifiedDate"])
-    except Exception as e:
-        pass
-    try:
-        del outjson["creationDate"]
         del outjson["lastModifiedDate"]
-        del outjson["uuid"]
-    except:
+    except Exception as e:
         pass
 
     return dataset, outjson
 
-"""
-set pii dataset
-"""
-def update_pii_dataset_from_json(dataset, injson):
-    try:
-        dataset.set_lastname(injson['lastname'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_firstname(injson['firstname'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_phone(injson['phone'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_email(injson['email'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_username(injson['username'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_uin(injson['uin'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_netid(injson['netid'])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_creation_date(injson["creationDate"])
-    except Exception as e:
-        pass
-    try:
-        dataset.set_last_modified_date(injson["lastModifiedDate"])
-    except Exception as e:
-        pass
-
-    return dataset
 
 

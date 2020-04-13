@@ -24,12 +24,12 @@ from models.non_pii_data import NonPiiData
 def post():
     is_new_install = True
 
-    # check if uuid is in there otherwise it is either a first installation
+    # check if name is in there otherwise it is either a first installation
     try:
         in_json = request.get_json()
-        non_pii_uuid = in_json["uuid"]
+        non_pii_uuid = in_json["name"]
         # even if there is non_pii_uuid is in the input json, it could be a new one
-        # check if the dataset is existing with given uuid
+        # check if the dataset is existing with given name
         dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, non_pii_uuid)
         if dataset is not None:
             is_new_install = False
@@ -53,16 +53,16 @@ def post():
         non_pii_dataset.set_creation_date(currenttime)
         non_pii_dataset.set_last_modified_date(currenttime)
         dataset, id = mongoutils.insert_non_pii_dataset_to_mongodb(non_pii_dataset)
-        profile_uuid = dataset["uuid"]
+        profile_uuid = dataset["name"]
 
         # use this if it needs to return actual dataset
         dataset = jsonutils.remove_objectid_from_dataset(dataset)
         # out_json = mongoutils.construct_json_from_query_list(dataset)
-        msg = "new profile with new uuid has been created: " + str(profile_uuid)
+        msg = "new profile with new name has been created: " + str(profile_uuid)
         msg_json = jsonutils.create_log_json("Profile", "POST", dataset)
         logging.info("POST " + json.dumps(msg_json))
 
-        return rs_handlers.return_id(msg, 'uuid', profile_uuid)
+        return rs_handlers.return_id(msg, 'name', profile_uuid)
 
 
 def get(uuid=None):
@@ -90,12 +90,12 @@ def put(uuid=None):
         logging.error("PUT " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
-    # check if the uuid is really existing in the database
+    # check if the name is really existing in the database
     non_pii_dataset = mongoutils.get_non_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, uuid)
 
     if non_pii_dataset is None:
         msg = {
-            "reason": "There is no profile dataset with given uuid: " + str(uuid),
+            "reason": "There is no profile dataset with given name: " + str(uuid),
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Profile", "PUT", msg)
@@ -152,17 +152,17 @@ def delete(uuid=None):
 
     if (is_objectid):
         mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-        msg = {"uuid": str(id)}
+        msg = {"name": str(id)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('uuid', id)
+        return rs_handlers.entry_deleted('name', id)
 
     try:
         mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-        msg = {"uuid": str(id)}
+        msg = {"name": str(id)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('uuid', uuid)
+        return rs_handlers.entry_deleted('name', uuid)
     except:
         msg = {
             "reason": "Failed to delete. The dataset does not exist: " + str(uuid),
@@ -180,7 +180,7 @@ def get_data_list(uuid):
     if uuid != None:
         is_objectid = mongoutils.check_if_objectid(uuid)
 
-        # query using either non-pii ObjectId or uuid
+        # query using either non-pii ObjectId or name
         if (is_objectid):
             id = ObjectId(uuid)
             db_data = mongoutils.query_non_pii_dataset_by_objectid(id)
@@ -200,7 +200,7 @@ def get_data_list(uuid):
             resp = rs_handlers.bad_request(msg_json)
         elif len(data_list) == 0:
             msg = {
-                "reason": "There is no profile record for the uuid: " + str(uuid),
+                "reason": "There is no profile record for the name: " + str(uuid),
                 "error": "Not Found: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Profile", "GET", msg)
@@ -250,15 +250,15 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
-    # get uuid, if failed it is a bad request
+    # get name, if failed it is a bad request
     try:
         non_pii_uuid = in_json[cfg.FIELD_PROFILE_UUID]
         if isinstance(non_pii_uuid, list) == False:
             # # this is an error routine when it is not a list
             # # for now, this should be commented out because the endpoint will accept both string and list
-            # # after chaning the app only send uuid as a list, following lines should be revived
+            # # after chaning the app only send name as a list, following lines should be revived
             # msg = {
-            #     "reason": "The uuid information is not a list.",
+            #     "reason": "The name information is not a list.",
             #     "error": "Json format error."
             # }
             # msg_json = jsonutils.create_log_json("PII", "POST", msg)
@@ -266,13 +266,13 @@ def pii_post():
             # return rs_handlers.bad_request(msg_json)
 
             # if non_pii_uuid is not a list,
-            # we assume that it is a single string uuid object so convert this to a list with single item
+            # we assume that it is a single string name object so convert this to a list with single item
             tmp_list = []
             tmp_list.append(non_pii_uuid)
             non_pii_uuid = tmp_list
     except Exception as ex:
         msg = {
-            "reason": "uuid not supplied.",
+            "reason": "name not supplied.",
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("PII", "POST", msg)
@@ -284,7 +284,7 @@ def pii_post():
         non_pii_uuid = non_pii_uuid[0]
     else:
         msg = {
-            "reason": "uuid list is empty.",
+            "reason": "name list is empty.",
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("PII", "POST", msg)
@@ -415,7 +415,7 @@ def pii_post():
 
         if pii_dataset is None:
             msg = {
-                "reason": "Failed to update profile uuid into pii dataset: " + str(pid),
+                "reason": "Failed to update profile name into pii dataset: " + str(pid),
                 "error": "Not Implemented: " + request.url,
             }
             msg_json = jsonutils.create_log_json("PII", "POST", msg)
@@ -463,7 +463,7 @@ def device_data_search():
     if out_json is None:
         out_json = []
     else:
-        # TODO if the out_json only need to contain device token and uuid, perform following.
+        # TODO if the out_json only need to contain device token and name, perform following.
         #  Otherwise just leave out_json as it is
         out_json = build_favorites_eventid_result(out_json)
 
@@ -484,36 +484,36 @@ def build_favorites_eventid_result(in_json):
                 if len(single_json["fcmTokens"]) > 0:
                     for i in range(len(single_json["fcmTokens"])):
                         tmp_json = {}
-                        tmp_json["uuid"] = single_json["uuid"]
+                        tmp_json["name"] = single_json["name"]
                         tmp_json['deviceToken'] = single_json["fcmTokens"][i]
                         out_list.append(tmp_json)
             except:
                 tmp_json = {}
-                tmp_json["uuid"] = single_json["uuid"]
+                tmp_json["name"] = single_json["name"]
                 out_list.append(tmp_json)
     else:
         try:
             if len(in_json["fcmTokens"]) > 0:
                 for i in range(len(in_json["fcmTokens"])):
                     tmp_json = {}
-                    tmp_json["uuid"] = in_json["uuid"]
+                    tmp_json["name"] = in_json["name"]
                     tmp_json['deviceToken'] = in_json["fcmTokens"][i]
                     out_list.append(tmp_json)
         except:
             tmp_json = {}
-            tmp_json["uuid"] = in_json["uuid"]
+            tmp_json["name"] = in_json["name"]
             out_list.append(tmp_json)
 
     return out_list
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
-    # check if non-pii-uuid is already in there
+    # check if non-pii-name is already in there
     for i in range(len(non_pii_uuid_from_dataset)):
         if non_pii_uuid == non_pii_uuid_from_dataset[i]:
             is_non_pii_uuid_in_json_new = False
 
-    # adde non-pii uuid in json only if it is new uuid
+    # adde non-pii name in json only if it is new name
     if is_non_pii_uuid_in_json_new:
         non_pii_uuid_from_dataset.append(non_pii_uuid)
 
@@ -556,7 +556,7 @@ def get_data_list_pid(pid):
     if pid != None:
         is_objectid = mongoutils.check_if_objectid(pid)
 
-        # query using either non-pii ObjectId or uuid
+        # query using either non-pii ObjectId or name
         if (is_objectid):
             id = ObjectId(pid)
             db_data = mongoutils.query_pii_dataset_by_objectid(id)
@@ -686,7 +686,7 @@ def pii_put(pid=None):
 
     if pii_dataset == None:
         msg = {
-            "reason": "There is no dataset with given pii uuid: " + str(pid),
+            "reason": "There is no dataset with given pii name: " + str(pid),
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("PII", "PUT", msg)
@@ -717,7 +717,7 @@ def pii_put(pid=None):
         # both non_pii_uuid and non_pii_uuid_from_dataset should be list
         if (type(non_pii_uuid) is not list) or (type(non_pii_uuid_from_dataset) is not list):
             msg = {
-                "reason": "The uuid information is not a list.",
+                "reason": "The name information is not a list.",
                 "error": "Json format error."
             }
             msg_json = jsonutils.create_log_json("PII", "PUT", msg)
@@ -748,7 +748,7 @@ def pii_put(pid=None):
 
     if result is None:
         msg = {
-            "reason": "Failed to update non pii uuid into pii dataset: " + str(pid),
+            "reason": "Failed to update non pii name into pii dataset: " + str(pid),
             "error": "Not Implemented: " + request.url,
         }
         msg_json = jsonutils.create_log_json("PII", "PUT", msg)

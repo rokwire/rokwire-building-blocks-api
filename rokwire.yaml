@@ -67,7 +67,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: favorites.eventId
+        - name: isOpenSource.eventId
           in: query
           description: The parameter for searching Non PII device data based on user's favorite Event's ID
           required: false
@@ -102,7 +102,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: uuid
+      - name: name
         in: path
         description: ID of profile to return
         required: true
@@ -137,7 +137,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: uuid
+      - name: name
         in: path
         description: ID of profile that needs to be updated
         required: true
@@ -179,7 +179,7 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: uuid
+      - name: name
         in: path
         description: Profile id to delete
         required: true
@@ -1325,7 +1325,7 @@ components:
       properties:
         uuid:
           type: string
-          format: uuid
+          format: name
         over13:
           type: boolean
         interests:
@@ -1395,11 +1395,11 @@ components:
         uuid:
           oneOf:
             - type: string
-              format: uuid
+              format: name
             - type: array
               items:
                 type: string
-                format: uuid
+                format: name
         userName:
           type: string
         firstname:
@@ -1424,7 +1424,7 @@ components:
           type: string
         uuid:
           type: string
-          format: uuid
+          format: name
     Event:
       required:
         - title
@@ -1651,7 +1651,7 @@ components:
           description: Timestamp of the log event as defined by RFC 3339 in the format YYYY-MM-DDThh:mm:ssZ
         uuid:
           type: string
-          format: uuid
+          format: name
           description: UUID of the app user.
         os:
           type: string
@@ -1751,7 +1751,12 @@ components:
           type: boolean
         ifOpenSource:
           nullable: true
-          type: boolean
+          type: array
+          items:
+            properties:
+              soucrceCodeRepositoryUrl:
+                nullable: true
+                type: String
         apiDoc:
           nullable: true
           type: String
@@ -1796,7 +1801,7 @@ components:
         authMethod:
           nullable: true
           type: String
-        Status:
+        status:
           nullable: true
           type: array
           items:

@@ -74,7 +74,7 @@ def get_pii_http_output_query_result_using_field_string(fld, query_str):
 
         return out_json
     else:
-        msg = "the dataset does not exist with uuid of : " + str(query_str)
+        msg = "the dataset does not exist with name of : " + str(query_str)
         logging.error(msg)
 
         return None
@@ -325,7 +325,7 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)])
+    db_profile.non_pii_collection.create_index([('name', ASCENDING)])
 
 """
 index non pii collection
