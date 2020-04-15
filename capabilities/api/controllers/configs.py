@@ -13,6 +13,7 @@ API_LOC = os.getenv('API_LOC', '../../')
 CAPABILITY_URL_PREFIX = os.getenv('CAPABILITY_URL_PREFIX', '')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
-CAPABILITY_DB_NAME = 'profiledb'
+CAPABILITY_DB_NAME = 'capabilitydb'
 CAPABILITY_COLL_NAME = 'capabilities'
 FIELD_OBJECTID = '_id'
+FIELD_NAME = 'name'

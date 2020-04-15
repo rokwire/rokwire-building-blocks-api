@@ -56,6 +56,37 @@ def get_capability_http_output_query_result_using_field_string(fld, query_str):
         return None
 
 """
+query capability using field name and querystring and convert result to capability object
+"""
+def get_capability_dataset_from_field(fld, query_str):
+    db_data = query_capability_dataset(fld, query_str)
+    data_list = list(db_data)
+    if len(data_list) == 1:
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        dataset = Capability(json_load)
+
+        try:
+            dataset.set_name(json_load[cfg.FIELD_NAME])
+        except:
+            pass
+
+        return dataset
+
+    elif len(data_list) > 1:
+        #TODO create a method to handle this
+
+        return None
+
+    else:
+        msg = 'there is no output query result or multiple query result'
+        logging.debug(msg)
+
+        return None
+
+"""
 query capability using objectid and convert result to capability object
 """
 def get_capability_dataset_from_objectid(objectid):
@@ -146,6 +177,16 @@ def update_capability_dataset_in_mongo_by_objectid(objectid, datasetobj):
     dataset = json.loads(dataset)
     id = ObjectId(objectid)
     result = db_capability.capability_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
+
+    return result.acknowledged, dataset
+
+"""
+update capability dataset in mongodb by field
+"""
+def update_capability_dataset_in_mongo_by_field(fld, query_str, datasetobj):
+    dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
+    dataset = json.loads(dataset)
+    result = db_capability.capability_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 

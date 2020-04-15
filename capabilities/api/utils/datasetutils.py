@@ -2,7 +2,7 @@ import copy
 
 from models.ifopensource import IfOpenSource
 from models.deploymentstatus import DeploymentStatus
-from models.ifextneranllydeployed import IfExternallyDeployed
+from models.ifexternallydeployed import IfExternallyDeployed
 from models.ifinternallydeployed import IfInternallyDeployed
 from models.healthcheckurl import HealthCheckUrl
 from models.status import Status
