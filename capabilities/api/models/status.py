@@ -1,8 +1,9 @@
 class Status():
     def __init__(self):
         self.submitted = None
-        self.inReview = None
+        self.reviewing = None
         self.approved = None
+        self.disapproved = None
         self.pubulished = None
 
     def set_submitted(self, submitted):
@@ -11,17 +12,23 @@ class Status():
     def get_submitted(self):
         return self.submitted
 
-    def set_in_review(self, inReview):
-        self.inReview = inReview
+    def set_reviewing(self, reviewing):
+        self.reviewing = reviewing
 
-    def get_in_review(self):
-        return self.inReview
+    def get_reviewing(self):
+        return self.reviewing
 
     def set_approved(self, approved):
         self.approved = approved
 
     def get_approved(self):
         return self.approved
+
+    def set_disapproved(self, disapproved):
+        self.disapproved = disapproved
+
+    def get_disapproved(self):
+        return self.disapproved
 
     def set_pubulished(self, pubulished):
         self.pubulished = pubulished

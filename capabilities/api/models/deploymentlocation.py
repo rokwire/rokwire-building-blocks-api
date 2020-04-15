@@ -1,4 +1,4 @@
-class DeploymentStatus():
+class DeploymentLocation():
     def __init__(self):
         self.internal = None
         self.external = None

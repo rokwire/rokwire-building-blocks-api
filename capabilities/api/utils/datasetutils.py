@@ -1,14 +1,10 @@
 import copy
 
-from models.ifopensource import IfOpenSource
-from models.deploymentstatus import DeploymentStatus
-from models.ifexternallydeployed import IfExternallyDeployed
-from models.ifinternallydeployed import IfInternallyDeployed
-from models.healthcheckurl import HealthCheckUrl
-from models.status import Status
-from models.datadeletionapiendpoint import DataDeletionApiEndpoint
 from models.contacts import Contacts
-from models.contributordetails import ContributorDetails
+from models.datadeletionendpointdetails import DataDeletionEndpointDetails
+from models.deploymentlocation import DeploymentLocation
+from models.environmentvariables import EnvironmentVariables
+from models.status import Status
 
 """
 set non pii dataset
@@ -31,47 +27,44 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        ifOpenSource = IfOpenSource()
-        sourceCodeRepositoryUrl = injson["ifOpenSource"]["sourceCodeRepositoryUrl"]
-        ifOpenSource.set_soucrce_code_repository_url(sourceCodeRepositoryUrl)
-        dataset.set_if_open_source(ifOpenSource)
-        del outjson["isOpenSource"]
-    except Exception as e:
-        pass
-    try:
-        dataset.set_api_doc(injson['apiDoc'])
-        del outjson['apiDoc']
+        dataset.set_api_doc_url(injson['apiDocUrl'])
+        del outjson['apiDocUrl']
     except:
         pass
     try:
-        deploymentStatus = DeploymentStatus()
-        internal = injson["deploymentStatus"]["internal"]
-        external = injson["deploymentStatus"]["external"]
-        deploymentStatus.set_internal(internal)
-        deploymentStatus.set_internal(external)
-        dataset.set_deployment_status(deploymentStatus)
-        del outjson["deploymentStatus"]
+        environment_variables = DeploymentLocation()
+        internal = injson["deploymentLocation"]["internal"]
+        external = injson["deploymentLocation"]["external"]
+        environment_variables.set_internal(internal)
+        environment_variables.set_internal(external)
+        dataset.set_deployment_status(environment_variables)
+        del outjson["deploymentLocation"]
     except Exception as e:
         pass
     try:
-        ifExternallyDeployed = IfExternallyDeployed()
-        apiUrl = injson["ifExternallyDeployed"]["apiUrl"]
-        ifExternallyDeployed.set_api_url(apiUrl)
-        dataset.set_if_externally_deployed(ifExternallyDeployed)
-        del outjson["ifExternallyDeployed"]
+        dataset.set_api_base_url(injson['apiBaseUrl'])
+        del outjson['apiBaseUrl']
+    except:
+        pass
+    try:
+        dataset.set_docker_image_name(injson['dockerImageName'])
+        del outjson['dockerImageName']
+    except:
+        pass
+    try:
+        environment_variables = EnvironmentVariables()
+        key = injson["deploymentLocation"]["key"]
+        value = injson["deploymentLocation"]["value"]
+        environment_variables.set_internal(key)
+        environment_variables.set_internal(value)
+        dataset.set_deployment_status(environment_variables)
+        del outjson["deploymentLocation"]
     except Exception as e:
         pass
     try:
-        ifInternallyDeployed = IfInternallyDeployed()
-        dockerImage = injson["ifInternallyDeployed"]["dockerImage"]
-        environmentalVariables = injson["ifInternallyDeployed"]["environmentalVariables"]
-        databaseDetails = injson["ifInternallyDeployed"]["databaseDetails"]
-        ifInternallyDeployed.set_docker_image(dockerImage)
-        ifInternallyDeployed.set_environmental_variables(environmentalVariables)
-        ifInternallyDeployed.set_database_details(databaseDetails)
-        dataset.set_if_internally_deployed(ifInternallyDeployed)
-        del outjson["ifInternallyDeployed"]
-    except Exception as e:
+        dataset.set_database_details(injson['databaseDetails'])
+        del outjson['databaseDetails']
+    except:
         pass
     try:
         dataset.set_version(injson['version'])
@@ -79,10 +72,7 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        healthCheckUrl = HealthCheckUrl()
-        discussion = injson["healthCheckUrl"]["discussion"]
-        healthCheckUrl.set_discussion(discussion)
-        dataset.set_health_check_url(healthCheckUrl)
+        dataset.set_health_check_url(injson["healthCheckUrl"])
         del outjson["healthCheckUrl"]
     except Exception as e:
         pass
@@ -94,25 +84,27 @@ def update_capability_dataset_from_json(dataset, injson):
     try:
         status = Status()
         submitted = injson["status"]["submitted"]
-        inReview = injson["status"]["inReview"]
+        reviewing = injson["status"]["reviewing"]
         approved = injson["status"]["approved"]
+        disapproved = injson["status"]["disapproved"]
         pubulished = injson["status"]["pubulished"]
         status.set_submitted(submitted)
-        status.set_in_review(inReview)
+        status.set_in_review(reviewing)
         status.set_approved(approved)
+        status.set_disapproved(disapproved)
         status.set_pubulished(pubulished)
         dataset.set_status(status)
         del outjson["status"]
     except Exception as e:
         pass
     try:
-        dataDeletionApiEndpoint = DataDeletionApiEndpoint()
-        uuid = injson["dataDeletionApiEndpoint"]["uuid"]
-        check = injson["dataDeletionApiEndpoint"]["check"]
-        dataDeletionApiEndpoint.set_uuid(uuid)
-        dataDeletionApiEndpoint.set_check(check)
-        dataset.set_data_deletion_api_endpoint(dataDeletionApiEndpoint)
-        del outjson["dataDeletionApiEndpoint"]
+        data_deletion_endpoint_details = DataDeletionEndpointDetails()
+        deletion_endpoint = injson["dataDeletionEndpointDetails"]["deletionEndpoint"]
+        api_key = injson["dataDeletionEndpointDetails"]["apiKey"]
+        data_deletion_endpoint_details.set_uuid(deletion_endpoint)
+        data_deletion_endpoint_details.set_check(api_key)
+        dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_details)
+        del outjson["dataDeletionEndpointDetails"]
     except Exception as e:
         pass
     try:
@@ -129,22 +121,6 @@ def update_capability_dataset_from_json(dataset, injson):
         contacts.set_officialAddress(officialAddress)
         dataset.set_contacts(contacts)
         del outjson["contacts"]
-    except Exception as e:
-        pass
-    try:
-        contributorDetails = ContributorDetails()
-        name = injson["contributorDetails"]["name"]
-        email = injson["contributorDetails"]["email"]
-        phone = injson["contributorDetails"]["phone"]
-        organization = injson["contributorDetails"]["organization"]
-        officialAddress = injson["contributorDetails"]["officialAddress"]
-        contributorDetails.set_name(name)
-        contributorDetails.set_email(email)
-        contributorDetails.set_phone(phone)
-        contributorDetails.set_organization(organization)
-        contributorDetails.set_officialAddress(officialAddress)
-        dataset.set_contributor_details(contributorDetails)
-        del outjson["contributorDetails"]
     except Exception as e:
         pass
     try:

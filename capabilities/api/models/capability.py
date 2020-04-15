@@ -5,16 +5,17 @@ class Capability():
         self.name = None
         self.description = None
         self.isOpenSource = None
-        self.ifOpenSource = None
-        self.apiDoc = None
-        self.deploymentStatus = None
-        self.ifExternallyDeployed = None
-        self.ifInternallyDeployed = None
+        self.apiDocUrl = None
+        self.deploymentLocation = None
+        self.apiBaseUrl = None
+        self.dockerImageName = None
+        self.environmentVariables = None
+        self.databaseDetails = None
         self.version = None
         self.healthCheckUrl = None
         self.authMethod = None
         self.status = None
-        self.dataDeletionApiEndpoint = None
+        self.dataDeletionEndpointDetails = None
         self.contacts = None
         self.contributorDetails = None
         self.creationDate = None
@@ -40,35 +41,35 @@ class Capability():
     def get_is_open_source(self):
         return self.isOpenSource
 
-    def set_if_open_source(self, ifOpenSource):
-        self.ifOpenSource = ifOpenSource
+    def set_api_doc_url(self, apiDocUrl):
+        self.apiDocUrl = apiDocUrl
 
-    def get_if_open_source(self):
-        return self.ifOpenSource
+    def get_api_doc_url(self):
+        return self.apiDocUrl
 
-    def set_api_doc(self, apiDoc):
-        self.apiDoc = apiDoc
+    def set_deployment_location(self, deploymentLocation):
+        self.deploymentLocation = deploymentLocation
 
-    def get_api_doc(self):
-        return self.apiDoc
+    def get_deployment_location(self):
+        return self.deploymentLocation
 
-    def set_deployment_status(self, deploymentStatus):
-        self.deploymentStatus = deploymentStatus
+    def set_docker_image_name(self, dockerImageName):
+        self.dockerImageName = dockerImageName
 
-    def get_deployment_status(self):
-        return self.deploymentStatus
+    def get_docker_image_name(self):
+        return self.dockerImageName
 
-    def set_if_externally_deployed(self, ifExternallyDeployed):
-        self.ifExternallyDeployeds = ifExternallyDeployed
+    def set_environment_variables(self, environmentVariables):
+        self.environmentVariables = environmentVariables
 
-    def get_if_externally_deployeds(self):
-        return self.ifExternallyDeployeds
+    def get_environment_variables(self):
+        return self.environmentVariables
 
-    def set_if_internally_deployed(self, ifInternallyDeployed):
-        self.ifInternallyDeployed = ifInternallyDeployed
+    def set_database_details(self, databaseDetails):
+        self.databaseDetails = databaseDetails
 
-    def get_if_internally_deployed(self):
-        return self.ifInternallyDeployed
+    def get_database_details(self):
+        return self.databaseDetails
 
     def set_version(self, version):
         self.version = version
@@ -94,23 +95,17 @@ class Capability():
     def get_status(self):
         return self.status
 
-    def set_data_deletion_api_endpoint(self, dataDeletionApiEndpoint):
-        self.dataDeletionApiEndpoint = dataDeletionApiEndpoint
+    def set_data_deletion_endpoint_details(self, dataDeletionEndpointDetails):
+        self.dataDeletionEndpointDetails = dataDeletionEndpointDetails
 
-    def get_data_deletion_api_endpoint(self):
-        return self.dataDeletionApiEndpoint
+    def get_data_deletion_endpoint_details(self):
+        return self.dataDeletionEndpointDetails
 
     def set_contacts(self, contacts):
         self.contacts = contacts
 
     def get_contacts(self):
         return self.contacts
-
-    def set_contributor_details(self, contributorDetails):
-        self.contributorDetails = contributorDetails
-
-    def get_contributor_details(self):
-        return self.contributorDetails
 
     def set_creation_date(self, creationDate):
         self.creationDate = creationDate
