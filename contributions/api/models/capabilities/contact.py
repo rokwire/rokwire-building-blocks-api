@@ -1,4 +1,4 @@
-class Contacts:
+class Contact:
     def __init__(self):
         self.name = None
         self.email = None

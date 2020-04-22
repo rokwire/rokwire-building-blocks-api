@@ -1,7 +1,6 @@
 import json
 import datetime
 import logging
-import uuid as uuidlib
 import copy
 
 from flask import jsonify, request, g
@@ -16,8 +15,14 @@ import utils.tokenutils as tokenutils
 import utils.mongoutils as mongoutils
 
 from utils import query_params
-from models.capability import Capability
+from models.contribution import Contribution
+from models.capabilities.capability import Capability
+from pymongo import MongoClient, ASCENDING
 
+client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
+db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
+coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
+coll_capability = db_contribution[cfg.CAPABILITY_COLL_NAME]
 
 def post():
     is_new_install = True
@@ -28,15 +33,15 @@ def post():
         name = in_json["name"]
         # even if there is non_pii_uuid is in the input json, it could be a new one
         # check if the dataset is existing with given name
-        dataset = mongoutils.get_capability_dataset_from_field(cfg.FIELD_NAME, name)
+        dataset = mongoutils.get_dataset_from_field(coll_contribution, cfg.FIELD_NAME, name)
         if dataset is not None:
             is_new_install = False
             msg = {
                 "reason": "NAME in input json already exists in the database: " + str(name),
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "POST", msg)
-            logging.error("POST " + json.dumps(json.loads(msg_json)))
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg)
     except:
         pass
@@ -45,21 +50,38 @@ def post():
         # new installation of the app
         currenttime = datetime.datetime.now()
         currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-        capability_dataset = Capability('')
-        capability_dataset.set_name(name)
-        capability_dataset.set_creation_date(currenttime)
-        capability_dataset.set_last_modified_date(currenttime)
-        dataset, id = mongoutils.insert_capability_dataset_to_mongodb(capability_dataset)
-        capability_name = dataset["name"]
+        contribution_dataset = Contribution('')
+        contribution_dataset.set_name(name)
+        contribution_dataset.set_short_description(in_json["shortDescription"])
+        try:
+            contribution_dataset.set_long_description(in_json["longDescription"])
+        except:
+            pass
+        try:
+            contribution_dataset.set_capabilities(in_json["capabilities"])
+        except:
+            pass
+        try:
+            contribution_dataset.set_talents(in_json["talents"])
+        except:
+            pass
+        try:
+            contribution_dataset.set_contacts(in_json["contacts"])
+        except:
+            pass
+        contribution_dataset.set_date_created(currenttime)
+        contribution_dataset.set_date_modified(currenttime)
+        dataset, id = mongoutils.insert_dataset_to_mongodb(coll_contribution, contribution_dataset)
+        contribution_name = dataset["name"]
 
         # use this if it needs to return actual dataset
         dataset = jsonutils.remove_objectid_from_dataset(dataset)
         # out_json = mongoutils.construct_json_from_query_list(dataset)
-        msg = "new profile with new name has been created: " + str(capability_name)
-        msg_json = jsonutils.create_log_json("Profile", "POST", dataset)
+        msg = "new contribution has been created: " + str(contribution_name)
+        msg_json = jsonutils.create_log_json("Contribution", "POST", dataset)
         logging.info("POST " + json.dumps(msg_json))
 
-        return rs_handlers.return_id(msg, 'name', capability_name)
+        return rs_handlers.return_id(msg, 'name', contribution_name)
 
 
 def get(name=None):
@@ -67,7 +89,7 @@ def get(name=None):
     if is_error:
         return resp
     out_json = data_list[0]
-    msg_json = jsonutils.create_log_json("Capability", "GET", copy.copy(out_json))
+    msg_json = jsonutils.create_log_json("Contribution", "GET", copy.copy(out_json))
     logging.info("GET " + json.dumps(msg_json))
 
     out_json = mongoutils.construct_json_from_query_list(out_json)
@@ -144,6 +166,157 @@ def put(name=None):
 
 
 def delete(uuid=None):
+    data_list, is_objectid, is_error, resp = get_data_list(uuid)
+    if is_error:
+        return resp
+
+    if (is_objectid):
+        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
+        msg = {"name": str(id)}
+        msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
+        logging.info("DELETE " + json.dumps(msg_json))
+        return rs_handlers.entry_deleted('name', id)
+
+    try:
+        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
+        msg = {"name": str(id)}
+        msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
+        logging.info("DELETE " + json.dumps(msg_json))
+        return rs_handlers.entry_deleted('name', uuid)
+    except:
+        msg = {
+            "reason": "Failed to delete. The dataset does not exist: " + str(uuid),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
+        logging.error("DELETE " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)
+
+def capabilities_post():
+    is_new_install = True
+
+    # check if name is in there otherwise it is either a first installation
+    try:
+        in_json = request.get_json()
+        name = in_json["name"]
+        # even if there is non_pii_uuid is in the input json, it could be a new one
+        # check if the dataset is existing with given name
+        dataset = mongoutils.get_capability_dataset_from_field(cfg.FIELD_NAME, name)
+        if dataset is not None:
+            is_new_install = False
+            msg = {
+                "reason": "NAME in input json already exists in the database: " + str(name),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "POST", msg)
+            logging.error("POST " + json.dumps(json.loads(msg_json)))
+            return rs_handlers.bad_request(msg)
+    except:
+        pass
+
+    if is_new_install:
+        # new installation of the app
+        currenttime = datetime.datetime.now()
+        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        capability_dataset = Capability('')
+        capability_dataset.set_name(name)
+        capability_dataset.set_creation_date(currenttime)
+        capability_dataset.set_last_modified_date(currenttime)
+        dataset, id = mongoutils.insert_capability_dataset_to_mongodb(capability_dataset)
+        capability_name = dataset["name"]
+
+        # use this if it needs to return actual dataset
+        dataset = jsonutils.remove_objectid_from_dataset(dataset)
+        # out_json = mongoutils.construct_json_from_query_list(dataset)
+        msg = "new profile with new name has been created: " + str(capability_name)
+        msg_json = jsonutils.create_log_json("Profile", "POST", dataset)
+        logging.info("POST " + json.dumps(msg_json))
+
+        return rs_handlers.return_id(msg, 'name', capability_name)
+
+
+def capabilities_get(name=None):
+    data_list, is_objectid, is_error, resp = get_data_list(name)
+    if is_error:
+        return resp
+    out_json = data_list[0]
+    msg_json = jsonutils.create_log_json("Capability", "GET", copy.copy(out_json))
+    logging.info("GET " + json.dumps(msg_json))
+
+    out_json = mongoutils.construct_json_from_query_list(out_json)
+
+    return out_json
+
+
+def capabilities_put(name=None):
+    try:
+        in_json = request.get_json()
+    except Exception as ex:
+        msg = {
+            "reason": "Json format error: " + str(name),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Capability", "PUT", msg)
+        logging.error("PUT " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    # check if the name is really existing in the database
+    capability_dataset = mongoutils.get_capability_dataset_from_field(cfg.FIELD_NAME, name)
+
+    if capability_dataset is None:
+        msg = {
+            "reason": "There is no capability dataset with given name: " + str(name),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Capability", "PUT", msg)
+        logging.error("PUT " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)
+
+    # # the level check in in_json should be performed
+    # level_ok, level = otherutils.check_privacy_level(in_json)
+    # if level_ok == False:
+    #     msg = {
+    #         "reason": "The given privacy level is not correct: " + str(level),
+    #         "error": "Bad Request: " + request.url,
+    #     }
+    #     msg_json = jsonutils.create_log_json("Capability", "PUT", msg)
+    #     logging.error("PUT " + json.dumps(msg_json))
+    #     return rs_handlers.bad_request(msg_json)
+
+    capability_dataset, restjson = datasetutils.update_capability_dataset_from_json(capability_dataset, in_json)
+    currenttime = datetime.datetime.now()
+    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+    capability_dataset.set_last_modified_date(currenttime)
+
+    result, capability_dataset = mongoutils.update_capability_dataset_in_mongo_by_field(
+        cfg.FIELD_NAME, name,
+        capability_dataset)
+
+    # update the json information that doesn't belong to data schema
+    if len(restjson) > 0:
+        result, capability_dataset = mongoutils.update_json_with_no_schema(cfg.FIELD_NAME, name,
+                                                                        capability_dataset, restjson)
+
+    if result is None:
+        msg = {
+            "reason": "Failed to update Capability dataset: " + str(name),
+            "error": "Not Implemented: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Capability", "PUT", msg)
+        logging.error("PUT " + json.dumps(msg_json))
+        return rs_handlers.not_implemented(msg_json)
+
+    # capability_dataset = jsonutils.remove_file_descriptor_from_dataset(capability_dataset)
+    # out_json = jsonutils.remove_null_subcategory(capability_dataset)
+    out_json = capability_dataset
+    msg_json = jsonutils.create_log_json("Capability", "PUT", copy.copy(out_json))
+    logging.info("PUT " + json.dumps(msg_json))
+    out_json = mongoutils.construct_json_from_query_list(out_json)
+
+    return out_json
+
+
+def capabilities_delete(uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
         return resp

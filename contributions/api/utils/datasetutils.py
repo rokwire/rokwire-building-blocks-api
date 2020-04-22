@@ -1,13 +1,51 @@
 import copy
 
-from models.contacts import Contacts
-from models.datadeletionendpointdetails import DataDeletionEndpointDetails
-from models.deploymentlocation import DeploymentLocation
-from models.environmentvariables import EnvironmentVariables
-from models.status import Status
+from models.capabilities.contact import Contact
+from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
+from models.capabilities.deploymentlocation import DeploymentLocation
+from models.capabilities.environmentvariable import EnvironmentVariable
+from models.capabilities.status import Status
 
 """
-set non pii dataset
+update contribution dataset
+"""
+def update_contribution_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_name(injson['name'])
+        del outjson['name']
+    except:
+        pass
+    try:
+        dataset.set_short_description(injson['shortDescription'])
+        del outjson['shortDescription']
+    except:
+        pass
+    try:
+        dataset.set_capabilities(injson['capabilities'])
+        del outjson['capabilities']
+    except:
+        pass
+    try:
+        dataset.set_talents(injson['talents'])
+        del outjson['talents']
+    except:
+        pass
+    try:
+        dataset.set_date_created(injson["dateCreated"])
+        del outjson["dateCreated"]
+    except Exception as e:
+        pass
+    try:
+        dataset.set_date_modified(injson["dateModified"])
+        del outjson["dateModified"]
+    except Exception as e:
+        pass
+
+    return dataset, outjson
+
+"""
+set capability dataset
 """
 def update_capability_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
@@ -32,12 +70,12 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        environment_variables = DeploymentLocation()
+        deployment_location = DeploymentLocation()
         internal = injson["deploymentLocation"]["internal"]
         external = injson["deploymentLocation"]["external"]
-        environment_variables.set_internal(internal)
-        environment_variables.set_internal(external)
-        dataset.set_deployment_status(environment_variables)
+        deployment_location.set_internal(internal)
+        deployment_location.set_internal(external)
+        dataset.set_deployment_status(deployment_location)
         del outjson["deploymentLocation"]
     except Exception as e:
         pass
@@ -52,12 +90,12 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        environment_variables = EnvironmentVariables()
+        environment_variable = EnvironmentVariable()
         key = injson["deploymentLocation"]["key"]
         value = injson["deploymentLocation"]["value"]
-        environment_variables.set_internal(key)
-        environment_variables.set_internal(value)
-        dataset.set_deployment_status(environment_variables)
+        environment_variable.set_internal(key)
+        environment_variable.set_internal(value)
+        dataset.set_deployment_status(environment_variable)
         del outjson["deploymentLocation"]
     except Exception as e:
         pass
@@ -98,28 +136,28 @@ def update_capability_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
-        data_deletion_endpoint_details = DataDeletionEndpointDetails()
+        data_deletion_endpoint_detail = DataDeletionEndpointDetail()
         deletion_endpoint = injson["dataDeletionEndpointDetails"]["deletionEndpoint"]
         api_key = injson["dataDeletionEndpointDetails"]["apiKey"]
-        data_deletion_endpoint_details.set_uuid(deletion_endpoint)
-        data_deletion_endpoint_details.set_check(api_key)
-        dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_details)
+        data_deletion_endpoint_detail.set_uuid(deletion_endpoint)
+        data_deletion_endpoint_detail.set_check(api_key)
+        dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_detail)
         del outjson["dataDeletionEndpointDetails"]
     except Exception as e:
         pass
     try:
-        contacts = Contacts()
+        contact = Contact()
         name = injson["contacts"]["name"]
         email = injson["contacts"]["email"]
         phone = injson["contacts"]["phone"]
         organization = injson["contacts"]["organization"]
         officialAddress = injson["contacts"]["officialAddress"]
-        contacts.set_name(name)
-        contacts.set_email(email)
-        contacts.set_phone(phone)
-        contacts.set_organization(organization)
-        contacts.set_officialAddress(officialAddress)
-        dataset.set_contacts(contacts)
+        contact.set_name(name)
+        contact.set_email(email)
+        contact.set_phone(phone)
+        contact.set_organization(organization)
+        contact.set_officialAddress(officialAddress)
+        dataset.set_contacts(contact)
         del outjson["contacts"]
     except Exception as e:
         pass
@@ -135,6 +173,3 @@ def update_capability_dataset_from_json(dataset, injson):
         pass
 
     return dataset, outjson
-
-
-

@@ -7,7 +7,7 @@ def remove_objectid_from_dataset(dataset):
     return dataset
 
 def create_log_json(ep_name, ep_method, in_json):
-    in_json['ep_building_block'] = "capability_building_block"
+    in_json['ep_building_block'] = "contribution_building_block"
     in_json['ep_name'] = ep_name
     in_json['ep_method'] = ep_method
 

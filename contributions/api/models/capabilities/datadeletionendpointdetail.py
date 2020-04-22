@@ -1,4 +1,4 @@
-class DataDeletionEndpointDetails:
+class DataDeletionEndpointDetail:
     def __init__(self):
         self.deletionEndpoint = None
         self.apiKey = None
