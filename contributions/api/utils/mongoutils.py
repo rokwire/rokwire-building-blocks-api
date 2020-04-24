@@ -18,11 +18,11 @@ db_contribution.capability_collection = db_contribution[cfg.CAPABILITY_COLL_NAME
 """
 get query output json of capability from query using search arguments
 """
-def get_capability_result(query):
+def get_result(db_collection, query):
     if not query:
         return None
 
-    db_data = db_contribution.capability_collection.find(query, {'_id': 0})
+    db_data = db_collection.find(query, {'_id': 0})
     data_list = list(db_data)
 
     if len(data_list) > 0:

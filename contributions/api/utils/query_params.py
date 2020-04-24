@@ -1,3 +1,6 @@
+from bson import ObjectId
+
+
 def format_query(args, query):
     query_parts = []
 
@@ -11,14 +14,14 @@ def format_query(args, query):
 
     return query
 
-def format_query_device_data(args, query):
+def format_query_contribution(args, query):
     query_parts = []
 
-    if args.get('isOpenSource.eventId'):
+    if args.get('id'):
         # make sure it has been changed to eventIds from eventid since the db field name is eventIds
-        query_parts.append({'isOpenSource.eventIds': {'$eq': args.get('isOpenSource.eventId')}})
-    # if args.get('template'):
-    #     query_parts.append({'template': {'$eq': args.get('template')}})
+        query_parts.append({'_id': {'$eq': ObjectId(args.get('id'))}})
+    if args.get('name'):
+        query_parts.append({'name': {'$eq': args.get('name')}})
 
     if query_parts:
         query['$and'] = query_parts

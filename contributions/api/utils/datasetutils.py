@@ -74,8 +74,8 @@ def update_capability_dataset_from_json(dataset, injson):
         internal = injson["deploymentLocation"]["internal"]
         external = injson["deploymentLocation"]["external"]
         deployment_location.set_internal(internal)
-        deployment_location.set_internal(external)
-        dataset.set_deployment_status(deployment_location)
+        deployment_location.set_external(external)
+        dataset.set_deployment_location(deployment_location)
         del outjson["deploymentLocation"]
     except Exception as e:
         pass
@@ -91,12 +91,12 @@ def update_capability_dataset_from_json(dataset, injson):
         pass
     try:
         environment_variable = EnvironmentVariable()
-        key = injson["deploymentLocation"]["key"]
-        value = injson["deploymentLocation"]["value"]
-        environment_variable.set_internal(key)
-        environment_variable.set_internal(value)
-        dataset.set_deployment_status(environment_variable)
-        del outjson["deploymentLocation"]
+        key = injson["environmentVariable"]["key"]
+        value = injson["environmentVariable"]["value"]
+        environment_variable.set_key(key)
+        environment_variable.set_value(value)
+        dataset.set_environment_variable(environment_variable)
+        del outjson["environmentVariable"]
     except Exception as e:
         pass
     try:
@@ -138,9 +138,11 @@ def update_capability_dataset_from_json(dataset, injson):
     try:
         data_deletion_endpoint_detail = DataDeletionEndpointDetail()
         deletion_endpoint = injson["dataDeletionEndpointDetails"]["deletionEndpoint"]
+        description = injson["dataDeletionEndpointDetails"]["description"]
         api_key = injson["dataDeletionEndpointDetails"]["apiKey"]
-        data_deletion_endpoint_detail.set_uuid(deletion_endpoint)
-        data_deletion_endpoint_detail.set_check(api_key)
+        data_deletion_endpoint_detail.set_deletion_endpoint(deletion_endpoint)
+        data_deletion_endpoint_detail.set_description(description)
+        data_deletion_endpoint_detail.set_api_key(api_key)
         dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_detail)
         del outjson["dataDeletionEndpointDetails"]
     except Exception as e:

@@ -18,8 +18,8 @@ class Capability():
         self.dataDeletionEndpointDetails = None
         self.contacts = None
         self.contributorDetails = None
-        self.creationDate = None
-        self.lastModifiedDate = None
+        # self.creationDate = None
+        # self.lastModifiedDate = None
 
         self, restjson = datasetutils.update_capability_dataset_from_json(self, injson)
 
@@ -107,14 +107,14 @@ class Capability():
     def get_contacts(self):
         return self.contacts
 
-    def set_creation_date(self, creationDate):
-        self.creationDate = creationDate
-
-    def get_creation_date(self):
-        return self.creationDate
-
-    def set_last_modified_date(self, lastModifiedDate):
-        self.lastModifiedDate = lastModifiedDate
-
-    def get_last_modified_date(self):
-        return self.lastModifiedDate
+    # def set_creation_date(self, creationDate):
+    #     self.creationDate = creationDate
+    #
+    # def get_creation_date(self):
+    #     return self.creationDate
+    #
+    # def set_last_modified_date(self, lastModifiedDate):
+    #     self.lastModifiedDate = lastModifiedDate
+    #
+    # def get_last_modified_date(self):
+    #     return self.lastModifiedDate
