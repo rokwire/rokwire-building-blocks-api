@@ -292,7 +292,8 @@ def delete(event_id):
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-
+    if status.deleted_count == 0:
+        abort(404)
     return success_response(202, msg, str(event_id))
 
 
