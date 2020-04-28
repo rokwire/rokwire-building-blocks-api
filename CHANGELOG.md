@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Issue with incompatible Python and Connexion version in Authentication Building Block. [#389](https://github.com/rokwire/rokwire-building-blocks-api/issues/389)
 - Issue with date time format in event response. [#402](https://github.com/rokwire/rokwire-building-blocks-api/issues/402)
+- Issue with fields that need to be marked as nullable. [#409](https://github.com/rokwire/rokwire-building-blocks-api/issues/409)
 
 ## [1.0.6] - 2020-02-25
 ### Added
