@@ -1406,16 +1406,22 @@ components:
                 type: string
                 format: uuid
         userName:
+          nullable: true
           type: string
         firstname:
+          nullable: true
           type: string
         lastname:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
         imageUrl:
+          nullable: true
           type: string
         creationDate:
           type: string
