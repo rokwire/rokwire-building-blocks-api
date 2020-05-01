@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2020-05-01
+### Fixed
+- Version number in API Design YAML file.
+
 ## [1.2.0] - 2020-03-24
 ### Added
 - Add environment variable to set url prefix for the connexion events building block.
