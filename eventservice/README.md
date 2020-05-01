@@ -39,10 +39,8 @@ CACHE_DIRECTORY=yourlocalfilefolder
 ## Run in Development Mode
 
 ```
-cd rokwire-building-blocks-api
-export FLASK_APP=eventservice
-export FLASK_ENV=development
-flask run
+cd rokwire-building-blocks-api/eventservice
+python api/events_rest_service.py
 ```
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
 The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
@@ -51,7 +49,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f eventservice/Dockerfile -t rokwire/events-building-block .
-docker run --rm --name events --env-file eventservice/.env -p 5000:5000 rokwire/events-building-block
+docker run --rm --name events --env-file eventservice/.env -e URL_PREFIX=<URL prefix> -p 5000:5000 rokwire/events-building-block
 ```
 You need to edit config.py where you have to specify mongo url.
 ```
@@ -305,7 +303,7 @@ When this query parameter is set to the ID of a super event, the endpoint will r
 ## MongoDB
 
 You can import predefined categories into the local mongodb.
-mongoimport --db eventdb --collection categories --file categories.json
+mongoimport --db eventdb --collection categories --file api/categories.json
 
 Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
 text index and geospatial index.

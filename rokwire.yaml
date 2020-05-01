@@ -31,9 +31,8 @@ paths:
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
-        
+
         Auth: Requires a valid API Key for access.
-      operationId: createProfile
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -41,7 +40,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Non-pii'
+              oneOf:
+                - $ref: '#/components/schemas/Non-pii'
         required: false
       responses:
         200:
@@ -56,6 +56,40 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+  /profiles/device-data:
+    get:
+      tags:
+        - Profile
+      summary: Get device token data from Non-PII profile
+      description: |
+        By passing in the appropriate options, you can search for Profile matching your criteria in the system
+        Auth: Requires a valid API Key for access.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: favorites.eventId
+          in: query
+          description: The parameter for searching Non PII device data based on user's favorite Event's ID
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NonPIIDeviceData'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
   /profiles/{uuid}:
     get:
       tags:
@@ -63,9 +97,8 @@ paths:
       summary: Find profile by ID
       description: |
         Returns a single profile
-        
+
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: getProfileById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -101,7 +134,6 @@ paths:
       summary: Updates a profile with form data
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: updateProfileWithForm
       security:
         - ApiKeyAuth: []
       parameters:
@@ -112,8 +144,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         description: update profile object
         content:
@@ -145,7 +176,6 @@ paths:
       summary: Deletes a profile
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
-      operationId: deleteProfile
       security:
         - ApiKeyAuth: []
       parameters:
@@ -156,8 +186,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         202:
           description: Profile is deleted
@@ -176,11 +205,24 @@ paths:
       summary: Create PII entry
       description: |
         This creates a new PII entry.
-        
+        User's UUID must be provided as a string or as a list of string.
+
         Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
-      operationId: createPii
       security:
         - UserAuth: []
+      requestBody:
+        description: PII profile data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pii'
+            examples:
+              uuidAsList:
+                value:
+                  uuid: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]
+              uuidAsString:
+                value:
+                  uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
       responses:
         200:
           description: Ok
@@ -201,9 +243,8 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
-        
+
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-      operationId: getPiiById
       security:
         - UserAuth: []
       parameters:
@@ -239,7 +280,6 @@ paths:
       summary: Updates a PII with form data
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
-      operationId: updatePiiWithForm
       security:
         - UserAuth: []
       parameters:
@@ -282,7 +322,6 @@ paths:
       summary: Deletes a PII
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
-      operationId: deletePii
       security:
         - UserAuth: []
       parameters:
@@ -312,9 +351,8 @@ paths:
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
-        
+
         Auth: Requires a valid API Key for access.
-      operationId: searchEvents
       security:
         - ApiKeyAuth: []
       parameters:
@@ -449,7 +487,7 @@ paths:
       summary: create an event
       description: |
         create an event record into the system
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -457,7 +495,6 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: createEvent
       security:
         - UserAuth: []
       requestBody:
@@ -481,20 +518,19 @@ paths:
         500:
           description: Internal error
 
-  /events/{eventId}:
+  /events/{event_id}:
     get:
       tags:
       - Events
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-        
+
         Auth: Requires a valid API Key for access.
-      operationId: getEventWithEventId
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: ID of the event that needs to be updated
         required: true
@@ -524,7 +560,7 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -532,11 +568,10 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: updateEventWithForm
       security:
         - UserAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: ID of the event that needs to be updated
         required: true
@@ -575,7 +610,7 @@ paths:
       summary: Deletes an event by the given event id
       description: |
         Delete the event record matching the eventId.
-        
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -583,19 +618,17 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
           ```
-      operationId: deleteEvent
       security:
         - UserAuth: []
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: event id to delete
         required: true
         style: simple
         explode: false
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         202:
           description: Event is deleted
@@ -605,6 +638,56 @@ paths:
           description: Unauthorized
         404:
           description: Event not found
+    patch:
+      tags:
+        - Events
+      summary: Updates one event with form data
+      description: |
+        Update the event record matching the eventId.
+
+        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
+          ```
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          ```
+      security:
+        - UserAuth: []
+      parameters:
+        - name: event_id
+          in: path
+          description: ID of the event that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: patch one event object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          description: Invalid ID supplied
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
   /events/categories:
     get:
       tags:
@@ -612,7 +695,7 @@ paths:
       summary: Get events categories
       description: |
         return back a list of categories and subcategories
-        
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -637,7 +720,6 @@ paths:
       tags:
       - Events
       summary: Get a list of Rokwire event tags
-      operationId: getTags
       description: |
         Auth: Requires a valid API Key for access.
       security:
@@ -647,18 +729,17 @@ paths:
           description: Getting event tags successful
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   type: string
-        500: 
+        500:
           description: Internal error
   /events/super-events/tags:
     get:
       tags:
       - Events
       summary: Get a list of Rokwire super event tags
-      operationId: getSuperEventsTags
       description: |
         Auth: Requires a valid API Key for access.
       security:
@@ -668,13 +749,13 @@ paths:
           description: Getting super event tags successful
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   type: string
-        500: 
+        500:
           description: Internal error
-  /events/{eventId}/images:
+  /events/{event_id}/images:
     get:
       tags:
       - Events
@@ -683,17 +764,15 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
-      operationId: requestImages
       parameters:
-        - name: eventId
+        - name: event_id
           in: path
           description: Event ID
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
-        200: 
+        200:
           description: Getting image IDs successful.
           content:
             multipart/form-data:
@@ -704,7 +783,7 @@ paths:
                   format: binary
         500:
           description: Internal error
-    post: 
+    post:
       tags:
         - Events
       summary: Upload an image to the specified event
@@ -718,36 +797,34 @@ paths:
           ```
       security:
         - UserAuth: []
-      operationId: uploadImages
       requestBody:
         description: Image file to upload and associate with the requested event
-        content: 
+        content:
           image/*:
-            schema: 
+            schema:
               type: string
               format: binary
               minLength: 1
               maxLength: 5000000
-      parameters: 
-      - name: eventId
+      parameters:
+      - name: event_id
         in: path
         description: Event ID
         required: true
-        schema: 
-          type: integer
-          format: int64
+        schema:
+          type: string
       responses:
-        201: 
+        201:
           description: Images uploaded
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Image ID
@@ -756,8 +833,8 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
-  /events/{eventId}/images/{imageId}:
+
+  /events/{event_id}/images/{image_id}:
     get:
       tags:
       - Events
@@ -766,22 +843,19 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
-      operationId: requestImage
       parameters:
-      - name: eventId
-        in: path 
+      - name: event_id
+        in: path
         description: Event ID
-        required: true 
+        required: true
         schema:
-          type: integer 
-          format: int64
-      - name: imageId
+          type: string
+      - name: image_id
         in: path
         description: Requested image ID
         required: true
         schema:
-          type: integer 
-          format: int64
+          type: string
       responses:
         200:
           description: Successful image download
@@ -792,7 +866,7 @@ paths:
                 format: binary
         500:
           description: Internal Error
-      
+
     put:
       tags:
       - Events
@@ -807,43 +881,40 @@ paths:
           ```
       security:
         - UserAuth: []
-      operationId: updateImage
       requestBody:
         description: Image file to add to the event
-        content: 
+        content:
           image/*:
-            schema: 
+            schema:
               type: string
               format: binary
               minLength: 1
               maxLength: 5000000
-      parameters: 
-      - name: eventId
+      parameters:
+      - name: event_id
         in: path
         description: Event ID
         required: true
-        schema: 
-          type: integer
-          format: int64
-      - name: imageId
+        schema:
+          type: string
+      - name: image_id
         in: path
         description: Requested image ID
         required: true
         schema:
-          type: integer 
-          format: int64
+          type: string
       responses:
-        200: 
+        200:
           description: Image updated
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Event ID
@@ -852,7 +923,7 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
+
     delete:
       tags:
       - Events
@@ -867,22 +938,19 @@ paths:
           ```
       security:
         - UserAuth: []
-      operationId: deleteImage
       parameters:
-      - name: eventId
+      - name: event_id
         in: path
         description: Event ID
         required: true
-        schema: 
-          type: integer
-          format: int64
-      - name: imageId
+        schema:
+          type: string
+      - name: image_id
         in: path
         description: ID of the image that needs to be deleted
         required: true
         schema:
-          type: integer 
-          format: int64
+          type: string
       responses:
         202:
           description: Image is deleted
@@ -891,10 +959,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  status: 
+                  status:
                     type: integer
                     description: Operation status code
-                  id: 
+                  id:
                     type: integer
                     format: int64
                     description: Event ID
@@ -903,7 +971,7 @@ paths:
                     description: The description of the operation
         500:
           description: Internal error
-  
+
   /app/configs:
     post:
       tags:
@@ -911,9 +979,8 @@ paths:
       summary: Creates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: createAppConfig
       security:
         - UserAuth: []
       requestBody:
@@ -926,29 +993,39 @@ paths:
               withoutSecretKeys:
                 value:
                   mobileAppVersion: "1.0.1"
-                  platformBuildingBlocks: 
+                  platformBuildingBlocks:
                     appconfig: https://api.rokwire.illinois.edu/app/configs
                     profile: https://api.rokwire.illinois.edu/profiles
-                  thirdPartyServices: 
+                  thirdPartyServices:
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
                   otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: {}
+                  secretKeys: ""
+                  upgrade:
+                    available_version: "1.0.2"
+                    required_version: "1.0.0"
+                    "url":
+                      "android": "market://details?id=com.dropbox.android"
+                      "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
               withSecretKeys:
                 value:
                   mobileAppVersion: "1.0.2"
-                  platformBuildingBlocks: 
+                  platformBuildingBlocks:
                     appconfig: https://api.rokwire.illinois.edu/app/configs
                     profile: https://api.rokwire.illinois.edu/profiles
-                  thirdPartyServices: 
+                  thirdPartyServices:
                     facebook: https://facebook.com
                     instagram_url: https://instagram.com
-                  otherUniversityServices: 
+                  otherUniversityServices:
                     illini_cash_base_url: https://shibtest.housing.illinois.edu/MobileAppWS/api
-                  secretKeys: 
-                    my_secret_key_1: "123abc456"
-                    my_secret_key_2: "123456abc"
+                  secretKeys: "123abc456"
+                  upgrade:
+                    available_version: "1.0.2"
+                    required_version: "1.0.0"
+                    "url":
+                      "android": "market://details?id=com.dropbox.android"
+                      "ios": "itms-apps://itunes.apple.com/us/app/apple-store/id327630330"
         required: true
       responses:
         201:
@@ -969,7 +1046,6 @@ paths:
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfig
       security:
         - ApiKeyAuth: []
       parameters:
@@ -989,6 +1065,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -1002,7 +1080,6 @@ paths:
       summary: Reads mobile app configuration by given id
       description: |
         Auth: Requires a valid API Key for access.
-      operationId: getAppConfigById
       security:
         - ApiKeyAuth: []
       parameters:
@@ -1023,6 +1100,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppConfig'
+        400:
+          description: Bad request.
         401:
           description: Unauthorized
         404:
@@ -1035,9 +1114,8 @@ paths:
       summary: Updates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: updateAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1075,9 +1153,8 @@ paths:
       summary: Deletes mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
-        
+
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
-      operationId: deleteAppConfig
       security:
         - UserAuth: []
       parameters:
@@ -1105,9 +1182,8 @@ paths:
       summary: Create log entries
       description: |
         Create log entries from the app.
-          
+
           Auth: Requires a valid API Key for access.
-      operationId: createLog
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -1126,7 +1202,7 @@ paths:
                 osVersion: "12.4"
                 appVersion: "0.9.5"
                 device: Samsung Galaxy s10
-                deviceSettings:
+                deviceSettings: {}
                 userAction:
                   type: view
                   name: homePanel
@@ -1138,7 +1214,7 @@ paths:
                 osVersion: "12.4"
                 appVersion: "0.9.5"
                 device: Samsung Galaxy s10
-                deviceSettings:
+                deviceSettings: {}
                 userAction:
                   type: view
                   name: homePanel
@@ -1154,7 +1230,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  
+
   /authentication/phone-initiate:
     post:
       summary: Initiate phone number verification
@@ -1245,10 +1321,13 @@ components:
   schemas:
     Non-pii:
       type: object
+      nullable: true
       properties:
         uuid:
           type: string
+          format: uuid
         over13:
+          nullable: true
           type: boolean
         interests:
           type: array
@@ -1261,15 +1340,18 @@ components:
                 items:
                  type: string
         positiveInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         negativeInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         favorites:
-          type: array
+          nullable: true
+          type: object
           items:
             properties:
               eventIds:
@@ -1293,6 +1375,7 @@ components:
                 items:
                   type: string
         privacySettings:
+          nullable: true
           type: object
           properties:
             level:
@@ -1315,25 +1398,44 @@ components:
         pid:
           type: string
         uuid:
-          type: array
-          items:
-            type: string
+          oneOf:
+            - type: string
+              format: uuid
+            - type: array
+              items:
+                type: string
+                format: uuid
         userName:
+          nullable: true
           type: string
         firstname:
+          nullable: true
           type: string
         lastname:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
         imageUrl:
+          nullable: true
           type: string
         creationDate:
           type: string
         lastModifiedDate:
           type: string
+    NonPIIDeviceData:
+      type: object
+      nullable: true
+      properties:
+        deviceToken:
+          type: string
+        uuid:
+          type: string
+          format: uuid
     Event:
       required:
         - title
@@ -1347,10 +1449,10 @@ components:
         sourceEventId:
           type: string
           description: The ID of the event in the original event source (e.g., WebTools, EMS, etc.)
-        recurringFlag: 
+        recurringFlag:
           type: boolean
           description: a flag to denote this is recurring event
-        recurrenceId: 
+        recurrenceId:
           type: integer
           description: recurring id
         category:
@@ -1458,7 +1560,7 @@ components:
     SubEventDetails:
       type: object
       properties:
-        id: 
+        id:
           type: string
           description: ID of the sub event. A sub event is a regular event, except that it's associated with a another event called a super event.
         isFeatured:
@@ -1523,14 +1625,28 @@ components:
         mobileAppVersion:
           type: string
           description: unique and is empty or conforms major.minor.patch format
-        platformBuildingBlocks: 
+        platformBuildingBlocks:
           type: object
         thirdPartyServices:
           type: object
         otherUniversityServices:
           type: object
         secretKeys:
+          type: string
+        upgrade:
           type: object
+          properties:
+            available_version:
+              type: string
+            required_version:
+              type: string
+            url:
+              type: object
+              properties:
+                android:
+                  type: string
+                ios:
+                  type: string
       required:
         - mobileAppVersion
         - platformBuildingBlocks
@@ -1547,7 +1663,7 @@ components:
         uuid:
           type: string
           format: uuid
-          description: UUID of the app user. 
+          description: UUID of the app user.
         os:
           type: string
           description: Name of operating system on the device running the app.
@@ -1562,7 +1678,7 @@ components:
           description: Name of device running the app.
         deviceSettings:
           type: object
-          description: Object containing relevant device settings. 
+          description: Object containing relevant device settings.
         userAction:
           $ref: '#/components/schemas/UserAction'
     UserAction:
@@ -1631,15 +1747,17 @@ components:
         - code
       example:
         phoneNumber: "+12175557890"
-        code: "123456"  
+        code: "123456"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: ROKWIRE-API-KEY
+      x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     UserAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      x-bearerInfoFunc: auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.

@@ -6,6 +6,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2020-03-24
+### Added
+- Add environment variable to set url prefix for the connexion events building block.
+- Add super events tag to refactoring branch.
+- Get events by multiple event ids.
+- Add dnspython module to enable mongodb+srv:// URIs [#235](https://github.com/rokwire/rokwire-building-blocks-api/issues/235)
+- API design changes to support super events. [#302](https://github.com/rokwire/rokwire-building-blocks-api/issues/302)
+- Add an optional `upgrade` object in app config [#328](https://github.com/rokwire/rokwire-building-blocks-api/issues/328)
+- Add a method to auth_middleware library for doing authorization. [#342](https://github.com/rokwire/rokwire-building-blocks-api/issues/342)
+- Add a base path to logging and profiles service. [#362](https://github.com/rokwire/rokwire-building-blocks-api/issues/362)
+- Add a base path to appconfig service. [#364](https://github.com/rokwire/rokwire-building-blocks-api/issues/364)
+- Add error handlers in posting PII. [#376](https://github.com/rokwire/rokwire-building-blocks-api/issues/376)
+- Add nullable to several non-pii fields. [#398](https://github.com/rokwire/rokwire-building-blocks-api/issues/398)
+- Add endpoint for filtering non-pii data by using eventIds. [#391](https://github.com/rokwire/rokwire-building-blocks-api/issues/391)
+
+### Changed
+- Refactored Profile building block using connexion. [#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
+- Update release script to build and push refactoring branch docker image. [#308](https://github.com/rokwire/rokwire-building-blocks-api/issues/308)
+- Refactored App Config building block using connexion. [#294](https://github.com/rokwire/rokwire-building-blocks-api/issues/294)
+- Refactored Events Building Block using connexion. [#296](https://github.com/rokwire/rokwire-building-blocks-api/issues/296)
+- Set App Config Building Block's debug flag to false by default. [#332](https://github.com/rokwire/rokwire-building-blocks-api/issues/332)
+- UUID entry for posting new PII dataset changed to list from string. [#329](https://github.com/rokwire/rokwire-building-blocks-api/issues/329)
+- Update authorization calls in refactored Events, Profile, and App Config building blocks. [#342](https://github.com/rokwire/rokwire-building-blocks-api/issues/342)
+
+### Fixed
+- fix the return code when delete on a non-existing event.
+- Issue with incompatible Python and Connexion version in Authentication Building Block. [#389](https://github.com/rokwire/rokwire-building-blocks-api/issues/389)
+- Issue with date time format in event response. [#402](https://github.com/rokwire/rokwire-building-blocks-api/issues/402)
+- Issue with fields that need to be marked as nullable. [#409](https://github.com/rokwire/rokwire-building-blocks-api/issues/409)
+
 ## [1.0.6] - 2020-02-25
 ### Added
 - Compatibility in Profile PII's UUID for string and list [#372](https://github.com/rokwire/rokwire-building-blocks-api/issues/372)
@@ -65,6 +95,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auth middleware library.
 - Dockerfile for Rokwire Platform API documentation and updated README.
 - Add caching to app-config and events GET endpoints.
+- Create profile data model boiler plate. [SCCI-103](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-103)
+- Created profile restservice boiler plate. [SCCI-130](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-130)
+- Added time stamp. [SCCI-131](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-131)
+- Added age over 13. [SCCI-132](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-132)
+- Checking method for email and phone number to prevent duplicate entry. [#37](https://github.com/rokwire/rokwire-building-blocks-api/issues/37)
+- Profile rest service dockerized. [#62](https://github.com/rokwire/rokwire-building-blocks-api/issues/62)
+- Added favorites. [#115](https://github.com/rokwire/rokwire-building-blocks-api/issues/115)
+- Added positive and negative interest tags. [#116](https://github.com/rokwire/rokwire-building-blocks-api/issues/116)
+- Added an ability to store and retrieve schema free information. [#117](https://github.com/rokwire/rokwire-building-blocks-api/issues/117)
+- Added privacySettings in PII data model. [#138](https://github.com/rokwire/rokwire-building-blocks-api/issues/138)
+- created initial logging building block end point. [#61](https://github.com/rokwire/rokwire-building-blocks-api/issues/61)
+- created a sample logging data. [#173](https://github.com/rokwire/rokwire-building-blocks-api/issues/173)
 
 ### Changed
 - download events image file from S3 without checking the image id from db.
@@ -92,6 +134,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sort events by startDate and then endDate.
 - Switch profile service to use gunicorn.
 - Redirect events images to S3 instead of trying to serve them directly.
+- Separated non-pii data and pii data
+- Separated non-pii and pii database
+- Image update and fileDescriptor moved to pii from non-pii
+- Separated non-pii data and pii data. [SCCI-104](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-104)
+- Separated non-pii and pii database. [SCCI-123](https://opensource.ncsa.illinois.edu/jira/browse/SCCI-123)
+- Image update and fileDescriptor moved to pii from non-pii. [#72](https://github.com/rokwire/rokwire-building-blocks-api/issues/72)
+- Separated non-pii and pii database url. [#73](https://github.com/rokwire/rokwire-building-blocks-api/issues/73)
+- Profile building block rest api changed to Flask RESTFul api service. [#31](https://github.com/rokwire/rokwire-building-blocks-api/issues/31)
+- Non-pii interests has been modified with category and subcategory. [#86](https://github.com/rokwire/rokwire-building-blocks-api/issues/86)
+- README file has examples for the endpoints. [#119](https://github.com/rokwire/rokwire-building-blocks-api/issues/119)
+- Database indexing system changed for document DB. [#127](https://github.com/rokwire/rokwire-building-blocks-api/issues/127)
+- Updated logging system based on Flask RESTFul service. [#130](https://github.com/rokwire/rokwire-building-blocks-api/issues/130)
+- Made profile building block flask using the flask server configuration. [#92](https://github.com/rokwire/rokwire-building-blocks-api/issues/92)
+- Modified profiles building block's rest endpoint prefix to environmental variable. [#187](https://github.com/rokwire/rokwire-building-blocks-api/issues/197)
+- Modified profiles building block's log to show the endpoint information. [#244](https://github.com/rokwire/rokwire-building-blocks-api/issues/244)
+- Created a method for checking the id information by comparing id token and db information. [#66](https://github.com/rokwire/rokwire-building-blocks-api/issues/66)
+- Information in the id token is used for creating and updating the pii dataset. [#257](https://github.com/rokwire/rokwire-building-blocks-api/issues/257)
+- URL prefix to be configurable. [#181](https://github.com/rokwire/rokwire-building-blocks-api/issues/181)
+- All log entries are inserted in one database call.
 
 ### Fixed
 - Events building block API definition to improve text.
@@ -104,7 +165,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.6...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.6...1.2.0
 [1.0.6]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.3...1.0.4
