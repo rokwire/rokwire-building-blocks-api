@@ -95,7 +95,7 @@ def _get_events_result(query, limit, skip):
                 events.append(subevent_detail)
         else:
             events.append(event)
-    return flask.json.dumps(events), len(events)
+    return flask.json.dumps(events, default=query_params.format_datetime_response), len(events)
 
 
 def tags_search():
@@ -292,7 +292,8 @@ def delete(event_id):
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-
+    if status.deleted_count == 0:
+        abort(404)
     return success_response(202, msg, str(event_id))
 
 

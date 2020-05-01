@@ -14,7 +14,9 @@ import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
 import utils.otherutils as otherutils
 import utils.tokenutils as tokenutils
+import utils.mongoutils as mongoutils
 
+from utils import query_params
 from models.pii_data import PiiData
 from models.non_pii_data import NonPiiData
 
@@ -433,42 +435,76 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
+def device_data_search():
+    args = request.args
+    query = dict()
+    try:
+        query = query_params.format_query_device_data(args, query)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument " + str(args),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
+        logging.error("Device Data SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
-def pii_get():
-    # msg = {'message': 'GET info for PII:'}
-    # resp = jsonify(msg)
-    # resp.status_code = 200
-    # logging.debug("GET " + json.dumps(msg))
-    #
-    # return resp
+    try:
+        out_json = mongoutils.get_profile_result(query)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument " + str(args),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
+        logging.error("Device Data SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
-    term_pid = request.args.get('pid', None)
-    term_username = request.args.get('username', None)
-    term_phone = request.args.get('phone', None)
-    term_email = request.args.get('email', None)
+    if out_json is None:
+        out_json = []
+    else:
+        # TODO if the out_json only need to contain device token and uuid, perform following.
+        #  Otherwise just leave out_json as it is
+        out_json = build_favorites_eventid_result(out_json)
 
-    # TODO this if else method should smarter like case or something else
-    if term_pid != None:
-        out_json = mongoutils.get_pii_http_output_query_result_using_field_string(cfg.FIELD_PID, term_pid)
-        if out_json == None:
-            return rs_handlers.not_found()
-        return out_json
-    if term_username != None:
-        out_json = mongoutils.get_pii_http_output_query_result_using_field_string('username', term_username)
-        if out_json == None:
-            return rs_handlers.not_found()
-        return out_json
-    if term_phone != None:
-        out_json = mongoutils.get_pii_http_output_query_result_using_field_string('phone', term_phone)
-        if out_json == None:
-            return rs_handlers.not_found()
-        return out_json
-    if term_email != None:
-        out_json = mongoutils.get_pii_http_output_query_result_using_field_string('email', term_email)
-        if out_json == None:
-            return rs_handlers.not_found()
-        return out_json
+    msg = {
+        "search": "Device Data search performed with arguments of : " + str(args),
+        "result": out_json,
+    }
+    msg_json = jsonutils.create_log_json("Device Data", "SEARCH", msg)
+    logging.info("Device Data SEARCH " + json.dumps(msg))
 
+    return out_json
+
+def build_favorites_eventid_result(in_json):
+    out_list = []
+    if isinstance(in_json, list):  # json list
+        for single_json in in_json:
+            try:
+                if len(single_json["fcmTokens"]) > 0:
+                    for i in range(len(single_json["fcmTokens"])):
+                        tmp_json = {}
+                        tmp_json["uuid"] = single_json["uuid"]
+                        tmp_json['deviceToken'] = single_json["fcmTokens"][i]
+                        out_list.append(tmp_json)
+            except:
+                tmp_json = {}
+                tmp_json["uuid"] = single_json["uuid"]
+                out_list.append(tmp_json)
+    else:
+        try:
+            if len(in_json["fcmTokens"]) > 0:
+                for i in range(len(in_json["fcmTokens"])):
+                    tmp_json = {}
+                    tmp_json["uuid"] = in_json["uuid"]
+                    tmp_json['deviceToken'] = in_json["fcmTokens"][i]
+                    out_list.append(tmp_json)
+        except:
+            tmp_json = {}
+            tmp_json["uuid"] = in_json["uuid"]
+            out_list.append(tmp_json)
+
+    return out_list
 
 def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
