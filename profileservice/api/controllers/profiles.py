@@ -19,6 +19,7 @@ import utils.mongoutils as mongoutils
 from utils import query_params
 from models.pii_data import PiiData
 from models.non_pii_data import NonPiiData
+from models.testresultsconsent import TestResultsConsent
 
 
 def post():
@@ -400,6 +401,13 @@ def pii_post():
         pii_dataset.set_creation_date(currenttime)
         pii_dataset.set_last_modified_date(currenttime)
 
+        # to check if there is testResultsConsent and update modified date
+        try:
+            if in_json["testResultsConsent"]:
+                pii_dataset = update_test_results_consent(dataset)
+        except:
+            pass
+
         # update dataset from id token info
         if tk_firstname is not None:
             pii_dataset.set_firstname(tk_firstname)
@@ -476,6 +484,19 @@ def device_data_search():
 
     return out_json
 
+def update_test_results_consent(dataset):
+    # to check if there is testResultsConsent and update modified date
+    try:
+        currenttime = otherutils.get_current_time_utc()
+        testresultsconsent = TestResultsConsent()
+        testresultsconsent.set_consent_provided(dataset.testResultsConsent['consentProvided'])
+        testresultsconsent.set_date_modified(currenttime)
+        dataset.set_test_results_consent(testresultsconsent)
+    except:
+        pass
+
+    return dataset
+
 def build_favorites_eventid_result(in_json):
     out_list = []
     if isinstance(in_json, list):  # json list
@@ -531,23 +552,6 @@ def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
                 auth_pass = True
 
     return auth_pass
-
-# def pii_put(pid=None):
-#     msg = {'message': 'PUT info for PII:'}
-#     resp = jsonify(msg)
-#     resp.status_code = 200
-#     logging.debug("PUT " + json.dumps(msg))
-#
-#     return resp
-#
-# def pii_delete(pid=None):
-#     msg = {'message': 'DELETE info for PII:'}
-#     resp = jsonify(msg)
-#     resp.status_code = 200
-#     logging.debug("DELETE " + json.dumps(msg))
-#
-#     return resp
-
 
 def get_data_list_pid(pid):
     is_error = False
@@ -705,8 +709,23 @@ def pii_put(pid=None):
         logging.error("PII PUT " + json.dumps(msg_json))
         return jsonutils.create_auth_fail_message()
 
+    # get the current testResultsConset value to see if it is changed
+    # if changed, update last modified date after updating pii data
+    consent_provided = None
+    consent_last_modified = None
+    try:
+        consent_provided = pii_dataset.testResultsConsent["consentProvided"]
+        consent_last_modified = pii_dataset.testResultsConsent["dateModified"]
+    except:
+        pass
     pii_dataset = datasetutils.update_pii_dataset_from_json(pii_dataset, in_json)
     currenttime = otherutils.get_current_time_utc()
+
+    # if consentProvided value has been changed, update the last modified date
+    if consent_provided != pii_dataset.testResultsConsent['consentProvided']:
+        pii_dataset = update_test_results_consent(pii_dataset)
+    else: # record the exising modified date that got lost during the json update
+        pii_dataset.testResultsConsent['dateModified'] = consent_last_modified
 
     pii_dataset.set_last_modified_date(currenttime)
 

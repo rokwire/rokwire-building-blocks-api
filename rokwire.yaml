@@ -207,7 +207,7 @@ paths:
         This creates a new PII entry.
         User's UUID must be provided as a string or as a list of string.
 
-        Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
+        Auth: Requires a valid id_token for access. The UIN / phone number in the PII entry is populated from the id_token contents. Remaining data is obtained from the request body.
       security:
         - UserAuth: []
       requestBody:
@@ -1420,6 +1420,44 @@ components:
         phone:
           nullable: true
           type: string
+        birthYear:
+          nullable: true
+          type: integer
+          format: int8
+        address:
+          nullable: true
+          type: string
+        zipCode:
+           nullable: true
+           type: string
+        hoeCounty:
+          nullable: true
+          type: string
+        workCounty:
+          nullable: true
+          type: string
+        state:
+          nullable: true
+          type: string
+        country:
+          nullable: true
+          type: string
+        healthcareProviderIDs:
+          nullable: true
+          type: array
+          items:
+            type: string
+        testResultsConsent:
+          type: object
+          nullable: true
+          properties:
+            consentProvided :
+              type: boolean
+            dateModified:
+              type: string
+        photoImageBase64:
+          nullable: true
+          type: object
         imageUrl:
           nullable: true
           type: string
