@@ -5,18 +5,12 @@ import controllers.configs as cfg
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
-from pymongo import MongoClient, ASCENDING
+from pymongo import ASCENDING
+from models.contribution import Contribution
 
-from models.capabilities.capability import Capability
-import utils.jsonutils as jsonutils
-
-client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
-db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
-db_contribution.contribution_collection = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
-db_contribution.capability_collection = db_contribution[cfg.CAPABILITY_COLL_NAME]
 
 """
-get query output json of capability from query using search arguments
+get query output json from query using search arguments
 """
 def get_result(db_collection, query):
     if not query:
@@ -39,14 +33,14 @@ def get_result(db_collection, query):
 """
 get query output json from field name and query string
 """
-def get_capability_http_output_query_result_using_field_string(fld, query_str):
-    outjson = get_capability_query_json_from_field(fld, query_str)
+def get_http_output_query_result_using_field_string(collection, fld, query_str):
+    outjson = get_query_json_from_field(collection, fld, query_str)
     if (outjson is not None) and (len(outjson)) > 0:
         data_dump = dumps(outjson)
         out_json = make_response(data_dump)
         out_json.mimetype = 'application/json'
 
-        msg = "request capability information: " + str(query_str)
+        msg = "request information: " + str(query_str)
         logging.debug(msg)
 
         return out_json
@@ -57,17 +51,17 @@ def get_capability_http_output_query_result_using_field_string(fld, query_str):
         return None
 
 """
-query capability using field name and querystring and convert result to capability object
+query using field name and querystring and convert result to object
 """
-def get_dataset_from_field(db_collection, fld, query_str):
-    db_data = query_dataset(db_collection, fld, query_str)
+def get_contribution_dataset_from_field(collection, fld, query_str):
+    db_data = query_dataset(collection, fld, query_str)
     data_list = list(db_data)
     if len(data_list) == 1:
         data_dump = dumps(data_list)
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
-        dataset = Capability(json_load)
+        dataset = Contribution(json_load)
 
         try:
             dataset.set_name(json_load[cfg.FIELD_NAME])
@@ -79,7 +73,7 @@ def get_dataset_from_field(db_collection, fld, query_str):
     elif len(data_list) > 1:
         #TODO create a method to handle this
 
-        return None
+        return data_list
 
     else:
         msg = 'there is no output query result or multiple query result'
@@ -88,20 +82,20 @@ def get_dataset_from_field(db_collection, fld, query_str):
         return None
 
 """
-query capability using objectid and convert result to capability object
+query using objectid and convert result to object
 """
-def get_capability_dataset_from_objectid(objectid):
-    is_capability_id = check_if_objectid(objectid)
-    if is_capability_id:
+def get_contribution_dataset_from_objectid(collection, objectid):
+    is_object_id = check_if_objectid(objectid)
+    if is_object_id:
         id = ObjectId(objectid)
-        db_data = query_capability_dataset_by_objectid(id)
+        db_data = query_dataset_by_objectid(collection, id)
         data_list = list(db_data)
         if len(data_list) > 0:
             data_dump = dumps(data_list)
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
             json_load = json.loads(data_dump)
-            dataset = Capability(json_load)
+            dataset = Contribution(json_load)
 
             return dataset
         else:
@@ -110,10 +104,10 @@ def get_capability_dataset_from_objectid(objectid):
         return None
 
 """
-convert capability mongodb query using field result to json
+convert mongodb query using field result to json
 """
-def get_capability_query_json_from_field(fld, query_str):
-    db_data = query_dataset(db_collection, fld, query_str)
+def get_query_json_from_field(collection, fld, query_str):
+    db_data = query_dataset(collection, fld, query_str)
     data_list = list(db_data)
     if len(data_list) > 0:
         data_dump = dumps(data_list)
@@ -138,13 +132,13 @@ def check_if_objectid(query_str):
     return is_objectid
 
 """
-query capability dataset using object id
+query dataset using object id
 """
-def query_capability_dataset_by_objectid(objectid):
-    return db_contribution.capability_collection.find({'_id': objectid})
+def query_dataset_by_objectid(collection, objectid):
+    return collection.find({'_id': objectid})
 
 """
-qyery capability dataset using field
+qyery dataset using field
 """
 def query_dataset(db_collection, fld, query_str):
     return db_collection.find({fld: query_str}, {'_id': False})
@@ -160,7 +154,7 @@ def construct_json_from_query_list(data_list):
     return out_json
 
 """
-insert capability dataset to mognodb
+insert dataset to mognodb
 """
 def insert_dataset_to_mongodb(db_collection, indataset):
     dataset = json.dumps(indataset, default=lambda x: x.__dict__)
@@ -171,44 +165,42 @@ def insert_dataset_to_mongodb(db_collection, indataset):
     return dataset, id
 
 """
-update capability dataset in mongodb by objectid
+update dataset in mongodb by objectid
 """
-def update_capability_dataset_in_mongo_by_objectid(objectid, datasetobj):
+def update_dataset_in_mongo_by_objectid(collection, objectid, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
     id = ObjectId(objectid)
-    result = db_contribution.capability_collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
+    result = collection.update_one({'_id': id}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 
 """
-update capability dataset in mongodb by field
+update dataset in mongodb by field
 """
-def update_capability_dataset_in_mongo_by_field(fld, query_str, datasetobj):
+def update_dataset_in_mongo_by_field(collection, fld, query_str, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
-    result = db_contribution.capability_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
+    result = collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
 
 """
 update json that doesn't belong to data schema
 """
-def update_json_with_no_schema(fld, query_str, datasetobj, restjson):
-    dataset = db_contribution.capability_collection.find({fld: query_str}, {'_id': False})
+def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson):
+    dataset = collection.find({fld: query_str}, {'_id': False})
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
     for dictkey, dictelement in restjson.items():
         tmpDict = {dictkey: dictelement}
         dataset.update(tmpDict)
-        result = db_contribution.capability_collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
+        result = collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
 
     return result.acknowledged, dataset
 
 """
 index capability collection
 """
-def index_capability_data():
-    db_contribution.capability_collection.create_index([('name', ASCENDING),
-                                                        ('version', ASCENDING),
-                                                        ('description', ASCENDING)])
+def index_capability_data(collection):
+    collection.create_index([('name', ASCENDING), ('version', ASCENDING), ('description', ASCENDING)])

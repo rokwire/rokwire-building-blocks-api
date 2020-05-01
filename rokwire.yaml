@@ -1977,30 +1977,31 @@ components:
         shortDescription:
           type: string
         longDescription:
+          nullable: true
           type: string
         contributors:
+          nullable: true
           type: array
           items:
            oneOf:
             - $ref: '#/components/schemas/Person'
             - $ref: '#/components/schemas/Organization'
-        capabilities: 
+        capabilities:
+          nullable: true
           type: array
           items:
             $ref: '#/components/schemas/Capability'
         talents:
+          nullable: true
           type: array
           items:
             $ref: '#/components/schemas/Talent'
         dateCreated:
           type: string
           format: date-time
-          readOnly: true
         dateModified:
           type: string
           format: date-time
-          readOnly: true
-        
     Capability:
       type: object
       required:
