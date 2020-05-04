@@ -404,7 +404,7 @@ def pii_post():
         # to check if there is testResultsConsent and update modified date
         try:
             if in_json["testResultsConsent"]:
-                pii_dataset = update_test_results_consent(dataset)
+                pii_dataset = update_test_results_consent(pii_dataset)
         except:
             pass
 
