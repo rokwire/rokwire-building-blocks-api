@@ -1457,7 +1457,8 @@ components:
               type: string
         photoImageBase64:
           nullable: true
-          type: byte
+          type: string
+          format: byte
         imageUrl:
           nullable: true
           type: string
