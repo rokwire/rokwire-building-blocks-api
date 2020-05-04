@@ -722,10 +722,13 @@ def pii_put(pid=None):
     currenttime = otherutils.get_current_time_utc()
 
     # if consentProvided value has been changed, update the last modified date
-    if consent_provided != pii_dataset.testResultsConsent['consentProvided']:
-        pii_dataset = update_test_results_consent(pii_dataset)
-    else: # record the exising modified date that got lost during the json update
-        pii_dataset.testResultsConsent['dateModified'] = consent_last_modified
+    try:
+        if consent_provided != pii_dataset.testResultsConsent['consentProvided']:
+            pii_dataset = update_test_results_consent(pii_dataset)
+        else: # record the exising modified date that got lost during the json update
+            pii_dataset.testResultsConsent['dateModified'] = consent_last_modified
+    except:
+        pass
 
     pii_dataset.set_last_modified_date(currenttime)
 
