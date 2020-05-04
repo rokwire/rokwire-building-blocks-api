@@ -409,12 +409,12 @@ def pii_post():
             pass
 
         # update dataset from id token info
-        if tk_firstname is not None:
-            pii_dataset.set_firstname(tk_firstname)
-        if tk_lastname is not None:
-            pii_dataset.set_lastname(tk_lastname)
-        if tk_email is not None:
-            pii_dataset.set_email(tk_email)
+        # if tk_firstname is not None:
+        #     pii_dataset.set_firstname(tk_firstname)
+        # if tk_lastname is not None:
+        #     pii_dataset.set_lastname(tk_lastname)
+        # if tk_email is not None:
+        #     pii_dataset.set_email(tk_email)
         if tk_phone is not None:
             pii_dataset.set_phone(tk_phone)
         if tk_uin is not None:
@@ -751,12 +751,12 @@ def pii_put(pid=None):
         pass
 
     # update dataset from id token info
-    if tk_firstname is not None:
-        pii_dataset.set_firstname(tk_firstname)
-    if tk_lastname is not None:
-        pii_dataset.set_lastname(tk_lastname)
-    if tk_email is not None:
-        pii_dataset.set_email(tk_email)
+    # if tk_firstname is not None:
+    #     pii_dataset.set_firstname(tk_firstname)
+    # if tk_lastname is not None:
+    #     pii_dataset.set_lastname(tk_lastname)
+    # if tk_email is not None:
+    #     pii_dataset.set_email(tk_email)
     if tk_phone is not None:
         pii_dataset.set_phone(tk_phone)
     if tk_uin is not None:

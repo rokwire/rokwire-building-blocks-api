@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set App Config Building Block's debug flag to false by default. [#332](https://github.com/rokwire/rokwire-building-blocks-api/issues/332)
 - UUID entry for posting new PII dataset changed to list from string. [#329](https://github.com/rokwire/rokwire-building-blocks-api/issues/329)
 - Update authorization calls in refactored Events, Profile, and App Config building blocks. [#342](https://github.com/rokwire/rokwire-building-blocks-api/issues/342)
+- Differentiated verified and unverified data items in PII data and made unverified data updatable. [#424](https://github.com/rokwire/rokwire-building-blocks-api/issues/424)
 
 ### Fixed
 - fix the return code when delete on a non-existing event.
