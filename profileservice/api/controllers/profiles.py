@@ -408,7 +408,7 @@ def pii_post():
         except:
             pass
 
-        # update dataset from id token info
+        # update dataset from id token info. Currently, only UIN and phone number are considered verified information and hence gets precedence through ID Token validation / parsing.
         # if tk_firstname is not None:
         #     pii_dataset.set_firstname(tk_firstname)
         # if tk_lastname is not None:
@@ -750,7 +750,7 @@ def pii_put(pid=None):
     except:
         pass
 
-    # update dataset from id token info
+    # update dataset from id token info. Currently, only UIN and phone number are considered verified information and hence gets precedence through ID Token validation / parsing.
     # if tk_firstname is not None:
     #     pii_dataset.set_firstname(tk_firstname)
     # if tk_lastname is not None:
