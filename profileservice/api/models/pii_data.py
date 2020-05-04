@@ -4,6 +4,7 @@ class PiiData:
     def __init__(self, injson):
         self.lastname = None
         self.firstname = None
+        self.middlename = None
         self.phone = None
         self.email = None
         self.username = None
@@ -43,6 +44,12 @@ class PiiData:
 
     def get_firstname(self):
         return self.firstname
+
+    def set_middlename(self, middlename):
+        self.middlename = middlename
+
+    def get_middlename(self):
+        return self.middlename
 
     def set_phone(self, phone):
         self.phone = phone

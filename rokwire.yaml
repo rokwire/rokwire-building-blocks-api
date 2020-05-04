@@ -1414,6 +1414,9 @@ components:
         lastname:
           nullable: true
           type: string
+        middlename:
+          nullable: true
+          type: string
         email:
           nullable: true
           type: string

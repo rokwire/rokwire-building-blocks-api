@@ -103,6 +103,10 @@ def update_pii_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
+        dataset.set_middlename(injson['middlename'])
+    except Exception as e:
+        pass
+    try:
         dataset.set_phone(injson['phone'])
     except Exception as e:
         pass
