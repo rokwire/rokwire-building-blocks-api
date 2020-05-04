@@ -1430,7 +1430,7 @@ components:
         zipCode:
            nullable: true
            type: string
-        hoeCounty:
+        homeCounty:
           nullable: true
           type: string
         workCounty:
@@ -1457,14 +1457,16 @@ components:
               type: string
         photoImageBase64:
           nullable: true
-          type: object
+          type: byte
         imageUrl:
           nullable: true
           type: string
         creationDate:
           type: string
+          readOnly: true
         lastModifiedDate:
           type: string
+          readOnly: true
     NonPIIDeviceData:
       type: object
       nullable: true
