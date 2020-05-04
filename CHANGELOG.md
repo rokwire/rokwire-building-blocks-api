@@ -6,10 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2020-05-03
+## Fixed
+- Bug related to including env file in docker image. [#419](https://github.com/rokwire/rokwire-building-blocks-api/issues/419)
+
+## [1.2.1] - 2020-05-01
+### Fixed
+- Version number in API Design YAML file. [#414](https://github.com/rokwire/rokwire-building-blocks-api/issues/414)
+
+## [1.2.0] - 2020-03-24
 ### Added
-- Add environment variable to set url prefix for the connexion events building block.
-- Add super events tag to refactoring branch.
-- Get events by multiple event ids.
+- Add environment variable to set url prefix for the connexion events building block. [#369](https://github.com/rokwire/rokwire-building-blocks-api/issues/369)
+- Add super events tag to refactoring branch. [#316](https://github.com/rokwire/rokwire-building-blocks-api/issues/316)
+- Get events by multiple event ids. [#268](https://github.com/rokwire/rokwire-building-blocks-api/issues/268)
 - Add dnspython module to enable mongodb+srv:// URIs [#235](https://github.com/rokwire/rokwire-building-blocks-api/issues/235)
 - API design changes to support super events. [#302](https://github.com/rokwire/rokwire-building-blocks-api/issues/302)
 - Add an optional `upgrade` object in app config [#328](https://github.com/rokwire/rokwire-building-blocks-api/issues/328)
@@ -17,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add a base path to logging and profiles service. [#362](https://github.com/rokwire/rokwire-building-blocks-api/issues/362)
 - Add a base path to appconfig service. [#364](https://github.com/rokwire/rokwire-building-blocks-api/issues/364)
 - Add error handlers in posting PII. [#376](https://github.com/rokwire/rokwire-building-blocks-api/issues/376)
-- Add endpoint for filtering non-pii data by using eventIds. [#391](https://github.com/rokwire/rokwire-building-blocks-api/issues/391)
 - Add nullable to several non-pii fields. [#398](https://github.com/rokwire/rokwire-building-blocks-api/issues/398)
 - Add more fields in PII and updated API design. [#411](https://github.com/rokwire/rokwire-building-blocks-api/issues/411) 
 - Add endpoint for filtering non-pii data by using eventIds. [#391](https://github.com/rokwire/rokwire-building-blocks-api/issues/391)
@@ -63,13 +71,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update Events Service Readme to add CACHE_DIRECTORY. [#275](https://github.com/rokwire/rokwire-building-blocks-api/issues/275)
-- Refactored Profile building block using connexion. [#284](https://github.com/rokwire/rokwire-building-blocks-api/issues/284)
-- Update release script to build and push refactoring branch docker image. [#308](https://github.com/rokwire/rokwire-building-blocks-api/issues/308)
-- Refactored App Config building block using connexion. [#294](https://github.com/rokwire/rokwire-building-blocks-api/issues/294)
-- Refactored Events Building Block using connexion. [#296](https://github.com/rokwire/rokwire-building-blocks-api/issues/296)
-- Set App Config Building Block's debug flag to false by default. [#332](https://github.com/rokwire/rokwire-building-blocks-api/issues/332)
-- UUID entry for posting new PII dataset changed to list from string. [#329](https://github.com/rokwire/rokwire-building-blocks-api/issues/329)
-- Update authorization calls in refactored Events, Profile, and App Config building blocks. [#342](https://github.com/rokwire/rokwire-building-blocks-api/issues/342)
 
 ## [1.0.2] - 2019-10-30
 ### Changed
@@ -173,7 +174,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.6...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.2...HEAD
+[1.2.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.6...1.2.0
 [1.0.6]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.3...1.0.4
