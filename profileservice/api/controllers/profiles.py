@@ -63,6 +63,9 @@ def post():
         msg_json = jsonutils.create_log_json("Profile", "POST", dataset)
         logging.info("POST " + json.dumps(msg_json))
 
+        # trigger database indexing
+        mongoutils.index_non_pii_data()
+
         return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
 
@@ -420,6 +423,9 @@ def pii_post():
         if tk_uin is not None:
             pii_dataset.set_uin(tk_uin)
         pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
+
+        # trigger database indexing
+        mongoutils.index_pii_data()
 
         if pii_dataset is None:
             msg = {
