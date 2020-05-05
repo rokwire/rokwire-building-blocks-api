@@ -14,9 +14,11 @@ import utils.jsonutils as jsonutils
 client_profile = MongoClient(cfg.MONGO_PROFILE_URL, connect=False)
 db_profile = client_profile[cfg.PROFILE_DB_NAME]
 db_profile.non_pii_collection = db_profile[cfg.PROFILE_DB_PROFILE_COLL_NAME]
+db_profile.non_pii_collection.create_index([("uuid", ASCENDING)])
 client_pii = MongoClient(cfg.MONGO_PII_URL, connect=False)
 db_pii = client_pii[cfg.PII_DB_NAME]
 db_pii.pii_collection = db_pii[cfg.PII_DB_PII_COLL_NAME]
+db_pii.pii_collection.create_index([("pid", ASCENDING), ("uin", ASCENDING), ("phone", ASCENDING)])
 
 """
 get query output json of PII from query using search arguments
@@ -332,7 +334,5 @@ index non pii collection
 """
 def index_pii_data():
     db_pii.pii_collection.create_index([('pid', ASCENDING),
-                             ('firstname', ASCENDING),
-                             ('lastname', ASCENDING),
-                             ('email', ASCENDING),
+                             ('uin', ASCENDING),
                              ('phone', ASCENDING)])
