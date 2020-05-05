@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ## Added
-- Couple of examples to Profile PII API documentation.[#426](https://github.com/rokwire/rokwire-building-blocks-api/issues/426)
+- Couple of examples to Profile PII API documentation. [#426](https://github.com/rokwire/rokwire-building-blocks-api/issues/426)
 
 ## [1.2.2] - 2020-05-03
 ## Fixed
