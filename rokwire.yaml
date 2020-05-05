@@ -242,7 +242,6 @@ paths:
                   state: Illinois
                   testResultsConsent:
                     consentProvided: true
-                    dateModified: '2020-05-05T04:44:45.943Z'
                   workCounty: Donnieberg
                   zipCode: "61801"
       responses:
