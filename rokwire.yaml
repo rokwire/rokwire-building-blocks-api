@@ -1466,11 +1466,11 @@ components:
           nullable: true
           type: string
         creationDate:
+          description: creation date will not be modified once it get set.
           type: string
-          readOnly: true
         lastModifiedDate:
+          description: last modified date will be updated in the endpoint not from the input request.
           type: string
-          readOnly: true
     NonPIIDeviceData:
       type: object
       nullable: true

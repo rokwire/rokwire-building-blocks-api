@@ -731,6 +731,8 @@ def pii_put(pid=None):
         pass
 
     pii_dataset.set_last_modified_date(currenttime)
+    # remove creation date field so doesn't get updated
+    del pii_dataset.creationDate
 
     # update pii_dataset's non_pii_uuid
     non_pii_uuid_from_dataset = pii_dataset.get_uuid()
