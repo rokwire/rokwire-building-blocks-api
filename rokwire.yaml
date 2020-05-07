@@ -1512,7 +1512,6 @@ components:
               type: boolean
             dateModified:
               type: string
-              readOnly: true
         photoImageBase64:
           nullable: true
           type: string
