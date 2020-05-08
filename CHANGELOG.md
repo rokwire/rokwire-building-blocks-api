@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Couple of examples to Profile PII API documentation. [#426](https://github.com/rokwire/rokwire-building-blocks-api/issues/426)
 
+## Removed
+- Read-only property from couple of PII fields. [#432](https://github.com/rokwire/rokwire-building-blocks-api/issues/432)
+
 ## [1.2.2] - 2020-05-03
 ## Fixed
 - Bug related to including env file in docker image. [#419](https://github.com/rokwire/rokwire-building-blocks-api/issues/419)

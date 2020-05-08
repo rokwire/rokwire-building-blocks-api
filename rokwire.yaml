@@ -1579,10 +1579,8 @@ components:
           type: string
         creationDate:
           type: string
-          readOnly: true
         lastModifiedDate:
           type: string
-          readOnly: true
     NonPIIDeviceData:
       type: object
       nullable: true
