@@ -258,7 +258,7 @@ paths:
                     address: 79137 Kristina Lights
                     birthYear: 1999
                     country: USA
-                    creationDate: 2020-05-05T04:44:45.943Z
+                    creationDate: "2020-05-05T04:44:45.943Z"
                     email: Janie.Daniel33@hotmail.com
                     firstname: Ben
                     healthcareProviderIDs:
@@ -267,7 +267,7 @@ paths:
                       - aeb55bab-ebe3-4066-9f1a-323502a58c12
                     homeCounty: Josianeburgh
                     imageUrl: null
-                    lastModifiedDate: 2020-05-05T04:44:45.943Z
+                    lastModifiedDate: "2020-05-05T04:44:45.943Z"
                     lastname: Barrows
                     middlename: Levin
                     netid: null
@@ -277,7 +277,7 @@ paths:
                     state: Illinois
                     testResultsConsent:
                       consentProvided: true
-                      dateModified: 2020-05-05T04:44:45.943Z
+                      dateModified: "2020-05-05T04:44:45.943Z"
                     uin: "100000001"
                     username: null
                     uuid:
@@ -355,7 +355,7 @@ paths:
               address: 2000 Kristina Lights
               birthYear: 1999
               country: USA
-              creationDate: 2020-05-05T04:44:45.943Z
+              creationDate: "2020-05-05T04:44:45.943Z"
               email: Alice.Bob@hotmail.com
               firstname: Ben
               healthcareProviderIDs:
@@ -363,7 +363,7 @@ paths:
                 - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
               homeCounty: Josianeburgh
               imageUrl: null
-              lastModifiedDate: 2020-05-05T04:44:45.943Z
+              lastModifiedDate: "2020-05-05T04:44:45.943Z"
               lastname: Barrows
               middlename: Levin
               netid: null
@@ -373,7 +373,7 @@ paths:
               state: Illinois
               testResultsConsent:
                 consentProvided: false
-                dateModified: 2020-05-05T04:44:45.943Z
+                dateModified: "2020-05-05T04:44:45.943Z"
               uin: "100000001"
               username: null
               uuid:
@@ -400,7 +400,7 @@ paths:
                   - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
                 homeCounty: Josianeburgh
                 imageUrl: null
-                lastModifiedDate: 2020-05-05T04:44:45.943Z
+                lastModifiedDate: "2020-05-05T04:44:45.943Z"
                 lastname: Barrows
                 middlename: Levin
                 netid: null
@@ -410,7 +410,7 @@ paths:
                 state: Illinois
                 testResultsConsent:
                   consentProvided: false
-                  dateModified: 2020-05-05T04:44:45.943Z
+                  dateModified: "2020-05-05T04:44:45.943Z"
                 uin: "100000001"
                 username: null
                 uuid:
