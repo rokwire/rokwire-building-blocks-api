@@ -687,6 +687,7 @@ def pii_put(pid=None):
 
     # check if the pid is really existing in the database
     pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
+    creation_date = pii_dataset.get_creation_date()
 
     if pii_dataset == None:
         msg = {
@@ -731,8 +732,9 @@ def pii_put(pid=None):
         pass
 
     pii_dataset.set_last_modified_date(currenttime)
-    # remove creation date field so doesn't get updated
+    # remove creation date field and pid so doesn't get updated
     del pii_dataset.creationDate
+    del pii_dataset.pid
 
     # update pii_dataset's non_pii_uuid
     non_pii_uuid_from_dataset = pii_dataset.get_uuid()
@@ -778,6 +780,13 @@ def pii_put(pid=None):
         msg_json = jsonutils.create_log_json("PII", "PUT", msg)
         logging.error("PII PUT " + json.dumps(msg_json))
         return rs_handlers.not_implemented(msg_json)
+
+    # add pid and original creation date to dataset for output json
+    try:
+        pii_dataset["pid"] = pid
+        pii_dataset["creationDate"] = creation_date
+    except:
+        pass
 
     pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
     out_json = mongoutils.construct_json_from_query_list(pii_dataset)
