@@ -2,15 +2,25 @@ import utils.datasetutils as datasetutils
 
 class PiiData:
     def __init__(self, injson):
+        self.pid = None
         self.lastname = None
         self.firstname = None
+        self.middlename = None
         self.phone = None
         self.email = None
         self.username = None
         self.uin = None
         self.netid = None
-        self.pid = None
-        self.uuid = None
+        self.birthYear = None
+        self.address = None
+        self.zipCode = None
+        self.homeCounty = None
+        self.workCounty = None
+        self.state = None
+        self.country = None
+        self.healthcareProviderIDs = None
+        self.testResultsConsent = None
+        self.photoImageBase64 = None
         self.imageUrl = None
         self.fileDescriptors = None
         self.creationDate = None
@@ -35,6 +45,12 @@ class PiiData:
 
     def get_firstname(self):
         return self.firstname
+
+    def set_middlename(self, middlename):
+        self.middlename = middlename
+
+    def get_middlename(self):
+        return self.middlename
 
     def set_phone(self, phone):
         self.phone = phone
@@ -75,6 +91,66 @@ class PiiData:
 
     def get_uuid(self):
         return self.uuid
+
+    def set_birth_year(self, birthYear):
+        self.birthYear = birthYear
+
+    def get_birth_year(self):
+        return self.birthYear
+
+    def set_address(self, address ):
+        self.address  = address
+
+    def get_address(self):
+        return self.address
+
+    def set_zip_code(self, zipCode):
+        self.zipCode = zipCode
+
+    def get_zip_code(self):
+        return self.zipCode
+
+    def set_home_county(self, homeCounty):
+        self.homeCounty = homeCounty
+
+    def get_home_county(self):
+        return self.homeCounty
+
+    def set_work_county(self, workCounty):
+        self.workCounty = workCounty
+
+    def get_work_county(self):
+        return self.workCounty
+
+    def set_state(self, state):
+        self.state = state
+
+    def get_state(self):
+        return self.state
+
+    def set_country(self, country):
+        self.country = country
+
+    def get_country(self):
+        return self.country
+
+    def set_healthcare_provider_ids(self, healthcareProviderIDs):
+        self.healthcareProviderIDs = healthcareProviderIDs
+
+    def get_healthcare_provider_ids(self):
+        return self.healthcareProviderIDs
+
+    def set_test_results_consent(self, testResultsConsent):
+        self.testResultsConsent = testResultsConsent
+
+    def get_test_results_consent(self):
+        return self.testResultsConsent
+
+    def set_photo_image_base64(self, photoImageBase64):
+        self.photoImageBase64 = photoImageBase64
+
+    def get_photo_image_base64(self):
+        return self.photoImageBase64
 
     def add_file_descriptor(self, fileDescriptor):
         if (fileDescriptor is not None):
