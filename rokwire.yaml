@@ -217,12 +217,34 @@ paths:
             schema:
               $ref: '#/components/schemas/Pii'
             examples:
-              uuidAsList:
+              UUID list:
                 value:
                   uuid: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]
-              uuidAsString:
+              UUID string:
                 value:
                   uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              UUID string with more request body:
+                value:
+                  uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  address: 79137 Kristina Lights
+                  birthYear: 1999
+                  country: USA
+                  email: Janie.Daniel33@hotmail.com
+                  firstname: Ben
+                  healthcareProviderIDs:
+                    - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                    - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                    - aeb55bab-ebe3-4066-9f1a-323502a58c12
+                  homeCounty: Josianeburgh
+                  lastname: Barrows
+                  middlename: Levin
+                  phone: +17972114377
+                  photoImageBase64: null
+                  state: Illinois
+                  testResultsConsent:
+                    consentProvided: true
+                  workCounty: Donnieberg
+                  zipCode: "61801"
       responses:
         200:
           description: Ok
@@ -230,6 +252,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pii'
+              examples:
+                UUID string with more request body:
+                  value:
+                    address: 79137 Kristina Lights
+                    birthYear: 1999
+                    country: USA
+                    creationDate: "2020-05-05T04:44:45.943Z"
+                    email: Janie.Daniel33@hotmail.com
+                    firstname: Ben
+                    healthcareProviderIDs:
+                      - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                      - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                      - aeb55bab-ebe3-4066-9f1a-323502a58c12
+                    homeCounty: Josianeburgh
+                    imageUrl: null
+                    lastModifiedDate: "2020-05-05T04:44:45.943Z"
+                    lastname: Barrows
+                    middlename: Levin
+                    netid: null
+                    phone: +17972114377
+                    photoImageBase64: null
+                    pid: c84bfd99-e40d-43d5-854f-33859de593d5
+                    state: Illinois
+                    testResultsConsent:
+                      consentProvided: true
+                      dateModified: "2020-05-05T04:44:45.943Z"
+                    uin: "100000001"
+                    username: null
+                    uuid:
+                      - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    workCounty: Donnieberg
+                    zipCode: "61801"
         400:
           description: Bad request
         401:
@@ -297,6 +351,35 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pii'
+            example:
+              address: 2000 Kristina Lights
+              birthYear: 1999
+              country: USA
+              creationDate: "2020-05-05T04:44:45.943Z"
+              email: Alice.Bob@hotmail.com
+              firstname: Ben
+              healthcareProviderIDs:
+                - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+              homeCounty: Josianeburgh
+              imageUrl: null
+              lastModifiedDate: "2020-05-05T04:44:45.943Z"
+              lastname: Barrows
+              middlename: Levin
+              netid: null
+              phone: "+17972114377"
+              photoImageBase64: null
+              pid: c84bfd99-e40d-43d5-854f-33859de593d5
+              state: Illinois
+              testResultsConsent:
+                consentProvided: false
+                dateModified: "2020-05-05T04:44:45.943Z"
+              uin: "100000001"
+              username: null
+              uuid:
+                - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+              workCounty: Donnieberg
+              zipCode: "61821"
         required: true
       responses:
         200:
@@ -305,6 +388,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pii'
+              example:
+                address: 2000 Kristina Lights
+                birthYear: 1999
+                country: USA
+                creationDate: 2020-05-05T04:44:45.943Z
+                email: Alice.Bob@hotmail.com
+                firstname: Ben
+                healthcareProviderIDs:
+                  - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                  - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                homeCounty: Josianeburgh
+                imageUrl: null
+                lastModifiedDate: "2020-05-05T04:44:45.943Z"
+                lastname: Barrows
+                middlename: Levin
+                netid: null
+                phone: "+17972114377"
+                photoImageBase64: null
+                pid: c84bfd99-e40d-43d5-854f-33859de593d5
+                state: Illinois
+                testResultsConsent:
+                  consentProvided: false
+                  dateModified: "2020-05-05T04:44:45.943Z"
+                uin: "100000001"
+                username: null
+                uuid:
+                  - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                workCounty: Donnieberg
+                zipCode: "61821"
             application/xml:
               schema:
                 $ref: '#/components/schemas/Pii'
