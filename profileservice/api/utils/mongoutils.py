@@ -329,12 +329,12 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)])
+    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)], background=True)
 
 """
 index non pii collection
 """
 def index_pii_data():
-    db_pii.pii_collection.create_index([('pid', ASCENDING),
-                             ('uin', ASCENDING),
-                             ('phone', ASCENDING)])
+    db_pii.pii_collection.create_index([('pid', ASCENDING)], background=True)
+    db_pii.pii_collection.create_index([('uin', ASCENDING)], background=True)
+    db_pii.pii_collection.create_index([('phone', ASCENDING)], background=True)
