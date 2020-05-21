@@ -153,10 +153,12 @@ def get_pii_dataset_from_field(fld, query_str):
             dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
         except:
             pass
-        try:
-            dataset.set_pid(json_load[cfg.FIELD_PID])
-        except:
-            pass
+
+        # this will not be implemented to protect pid get updated from request body
+        # try:
+        #     dataset.set_pid(json_load[cfg.FIELD_PID])
+        # except:
+        #     pass
 
         return dataset
 

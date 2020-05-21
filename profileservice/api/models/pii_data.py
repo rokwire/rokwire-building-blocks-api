@@ -2,6 +2,7 @@ import utils.datasetutils as datasetutils
 
 class PiiData:
     def __init__(self, injson):
+        self.pid = None
         self.lastname = None
         self.firstname = None
         self.middlename = None
