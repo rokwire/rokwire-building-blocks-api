@@ -39,16 +39,16 @@
         <h2 id = "contribute">Submit a contribution</h2>
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Contribution Name</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="email" placeholder="give a name of your contribution" name="email"></div>
+                <label class="control-label col-sm-2" >Contribution Name</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contribution_name" placeholder="give a name of your contribution" name="contribution_name"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Short Description</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="give a short description" name="short_des"></div>
+                <label class="control-label col-sm-2" >Short Description</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contribution_description" placeholder="give a short description" name="contribution_description"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="long_des">Long Description</label>
-                <div class="col-sm-10"><textarea id="long_des" name="long_des" placeholder="give a detailed description" style="height:150px"></textarea></div>
+                <label class="control-label col-sm-2" >Long Description</label>
+                <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_detail" placeholder="give a detailed description" style="height:150px"></textarea></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Contributor</label>
@@ -115,12 +115,19 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2" for="email">Capability Name</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="capability_name" placeholder="give a name of your contribution" name="capability_name"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="capability_name" placeholder="give a name of your capability" name="capability_name"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="short_des">Capability Description</label>
                 <div class="col-sm-10"><input type="text" class="form-control" id="capability_description" placeholder="give a short description" name="capability_description"></div>
             </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for capability</label>
+                <input type="file" id="capability_icon" name="capability_icon" accept="image/*">
+            </div>
+
+
             <div class="form-group">
                 <label class="control-label col-sm-2" for="short_des">API Doc URL</label>
                 <div class="col-sm-10"><input type="text" class="form-control" id="api_doc" placeholder="give a short description" name="api_doc"></div>
