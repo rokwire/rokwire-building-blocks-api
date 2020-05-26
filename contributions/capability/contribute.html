@@ -127,14 +127,17 @@
                 <input type="file" id="capability_icon" name="capability_icon" accept="image/*">
             </div>
 
-
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">API Doc URL</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="api_doc" placeholder="give a short description" name="api_doc"></div>
-            </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Is the Code Open Sourced? </label>
                 <label class = "form-check-label"><input class = "form-check-input" type="checkbox" id="open_source" name="open_source"> yes</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" >API Doc URL</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="api_url" placeholder="API documentation URL" name="api_url"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" >Source repo URL</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="source_url" placeholder="Source code repository URL (if open sourced)" name="source_url"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Deployment location</label>
@@ -144,11 +147,11 @@
 
             <div class="form-group">
                 <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="api_base" placeholder="give a name of your contribution" name="api_base"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="api_base" placeholder="API base URL" name="api_base"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="docker_img" placeholder="give a short description" name="docker_img"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="docker_img" placeholder="Docker image name (If internally deployed)" name="docker_img"></div>
             </div>
         </form>
 
@@ -167,11 +170,15 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2" >Database Detail</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="db-detail" placeholder="" name="db-detail"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="db-detail" placeholder="Details of API endpoint to delete user info given the user UUID" name="db-detail"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" >Version</label>
                 <div class="col-sm-10"><input type="text" class="form-control" id="version" placeholder="latest version number" name="version"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" >Version URL</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="version_url" placeholder="" name="version_url"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" >Health Check URL</label>
@@ -209,20 +216,20 @@
         <h3>Submit a Talent</h3>
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Talent Name</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="email" placeholder="give a name of your contribution" name="email"></div>
+                <label class="control-label col-sm-2" >Talent Name</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="talent_name" placeholder="give a name of your Talent" name="talent_name"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Talent Description</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="give a short description" name="short_des"></div>
+                <label class="control-label col-sm-2" >Talent Description</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="talent_description" placeholder="" name="talent_description"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Required Capabilit(y/ies)</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="give a short description" name="short_des"></div>
+                <label class="control-label col-sm-2" >Required Capabilit(y/ies)</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="required_capability"></div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">User Privacy Level</label>
+                <label class="control-label col-sm-2" >User Privacy Level</label>
                 <div class="col-sm-10"><input type="number" min="1" step="1" max="5" /></div>
             </div>
 
@@ -246,7 +253,8 @@
 
             <div class="form-group">
                 <label class="control-label col-sm-2" >Data Description</label>
-                <div class="col-sm-10"><input type="text" id="data_des" name="data_des" placeholder=".." style="height:150px"></div>
+                <div class="col-sm-10"><input type="text" id="data_des" name="data_des"
+                                              placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level." style="height:150px"></div>
             </div>
 
         </form>
@@ -267,19 +275,19 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2" >Contact Name</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="contact_name" placeholder="give a name of your contribution" name="contact_name"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contact_name" placeholder="" name="contact_name"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" >Contact Email</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="contact_email" placeholder="give a short description" name="contact_email"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contact_email" placeholder="" name="contact_email"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" >Contact Organization</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="contact_org" placeholder="give a name of your contribution" name="contact_org"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contact_org" placeholder="" name="contact_org"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" >Official Address</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="contact_address" placeholder="give a short description" name="contact_address"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" id="contact_address" placeholder="" name="contact_address"></div>
             </div>
         </form>
 
@@ -289,20 +297,20 @@
         <form class="form-horizontal">
             <h3>Self Certification</h3>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Deleting data upon request</label>
+                <label class="control-label col-sm-2" >Deleting data upon request</label>
                 <div class="col-sm-10"><input type="text" class="form-control" id="email" placeholder="Deleting data upon request" name="email"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Respecting privacy setting</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="Respecting privacy setting" name="short_des"></div>
+                <label class="control-label col-sm-2" >Respecting privacy setting</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="Certification" placeholder="Respecting privacy setting" name="short_des"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Disclose sponsors / ads</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="Disclose sponsors / ads" name="short_des"></div>
+                <label class="control-label col-sm-2" >Disclose sponsors / ads</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="Certification" placeholder="Disclose sponsors / ads" name="short_des"></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="short_des">Disclose right to use images</label>
-                <div class="col-sm-10"><input type="text" class="form-control" id="short_des" placeholder="Disclose right to use images" name="short_des"></div>
+                <label class="control-label col-sm-2" >Disclose right to use images</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="Certification" placeholder="Disclose right to use images" name="short_des"></div>
             </div>
         </form>
         <div class="row">
