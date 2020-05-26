@@ -2008,7 +2008,7 @@ components:
         - name
         - description
         - isOpenSource
-        - deploymentLocation
+        - deploymentDetails
         - healthCheckUrl
         - version
         - dataDeletionEndpointDetails
@@ -2023,42 +2023,45 @@ components:
           nullable: true
           type: string
           description: API documentation URL
-        deploymentLocation:
-          type: string
-          enum:
-           - internal
-           - external
-          description: >
-            Deployment location:
-              * `internal` - Within Rokwire Platform
-              * `external` - Outside Rokwire Platform
+        deploymentDetails:
+          type: object
+          properties:
+            location:
+              type: string
+              enum:
+               - internal
+               - external
+              description: >
+                Deployment location:
+                  * `internal` - Within Rokwire Platform
+                  * `external` - Outside Rokwire Platform
+            dockerImageName:
+              description: Docker image name (if available).
+              nullable: true
+              type: string
+            environmentVariables:
+              nullable: true
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+            databaseDetails:
+              nullable: true
+              type: string
+            authMethod:
+              nullable: true
+              type: string
         apiBaseUrl:
           description: API base URL
-          nullable: true
-          type: string
-        dockerImageName:
-          description: Docker image name (if available).
-          nullable: true
-          type: string
-        environmentVariables:
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-        databaseDetails:
           nullable: true
           type: string
         version:
           type: string
         healthCheckUrl:
-          nullable: true
-          type: string
-        authMethod:
           nullable: true
           type: string
         status:

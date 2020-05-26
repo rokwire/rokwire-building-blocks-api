@@ -6,14 +6,14 @@ class Capability():
         self.description = None
         self.isOpenSource = None
         self.apiDocUrl = None
-        self.deploymentLocation = None
+        self.deploymentDetails = None
         self.apiBaseUrl = None
-        self.dockerImageName = None
-        self.environmentVariables = None
-        self.databaseDetails = None
+        # self.dockerImageName = None
+        # self.environmentVariables = None
+        # self.databaseDetails = None
         self.version = None
         self.healthCheckUrl = None
-        self.authMethod = None
+        # self.authMethod = None
         self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None
@@ -47,11 +47,11 @@ class Capability():
     def get_api_doc_url(self):
         return self.apiDocUrl
 
-    def set_deployment_location(self, deploymentLocation):
-        self.deploymentLocation = deploymentLocation
+    def set_deployment_details(self, deploymentDetails):
+        self.deploymentDetails = deploymentDetails
 
-    def get_deployment_location(self):
-        return self.deploymentLocation
+    def get_deployment_details(self):
+        return self.deploymentDetails
 
     def set_docker_image_name(self, dockerImageName):
         self.dockerImageName = dockerImageName

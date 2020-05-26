@@ -2,7 +2,7 @@ import copy
 
 from models.capabilities.contact import Contact
 from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
-from models.capabilities.deploymentlocation import DeploymentLocation
+from models.capabilities.deploymentdetails import DeploymentDetails
 from models.capabilities.environmentvariable import EnvironmentVariable
 from models.capabilities.status import Status
 
@@ -70,12 +70,38 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        deployment_location = DeploymentLocation()
-        internal = injson["deploymentLocation"]["internal"]
-        external = injson["deploymentLocation"]["external"]
-        deployment_location.set_internal(internal)
-        deployment_location.set_external(external)
-        dataset.set_deployment_location(deployment_location)
+        deployment_details = DeploymentDetails()
+        try:
+            location = injson["deploymentLocation"]["location"]
+            deployment_details.set_location(location)
+        except:
+            pass
+        try:
+            docker_image_name = injson["deploymentLocation"]["dockerImageName"]
+            deployment_details.set_docker_image_name(docker_image_name)
+        except:
+            pass
+        try:
+            environment_variable = EnvironmentVariable()
+            key = injson["deploymentLocation"]["environmentVariable"]["key"]
+            value = injson["deploymentLocation"]["environmentVariable"]["value"]
+            environment_variable.set_key(key)
+            environment_variable.set_value(value)
+            deployment_details.set_environment_variable(environment_variable)
+            del outjson["environmentVariable"]
+        except Exception as e:
+            pass
+        try:
+            database_details = injson["deploymentLocation"]["databaseDetails"]
+            deployment_details.set_database_details(database_details)
+        except:
+            pass
+        try:
+            auth_method = injson["deploymentLocation"]["authMethod"]
+            deployment_details.set_auth_method(auth_method)
+        except:
+            pass
+        dataset.set_deployment_details(deployment_details)
         del outjson["deploymentLocation"]
     except Exception as e:
         pass
@@ -88,16 +114,6 @@ def update_capability_dataset_from_json(dataset, injson):
         dataset.set_docker_image_name(injson['dockerImageName'])
         del outjson['dockerImageName']
     except:
-        pass
-    try:
-        environment_variable = EnvironmentVariable()
-        key = injson["environmentVariable"]["key"]
-        value = injson["environmentVariable"]["value"]
-        environment_variable.set_key(key)
-        environment_variable.set_value(value)
-        dataset.set_environment_variable(environment_variable)
-        del outjson["environmentVariable"]
-    except Exception as e:
         pass
     try:
         dataset.set_database_details(injson['databaseDetails'])
@@ -121,46 +137,91 @@ def update_capability_dataset_from_json(dataset, injson):
         pass
     try:
         status = Status()
-        submitted = injson["status"]["submitted"]
-        reviewing = injson["status"]["reviewing"]
-        approved = injson["status"]["approved"]
-        disapproved = injson["status"]["disapproved"]
-        pubulished = injson["status"]["pubulished"]
-        status.set_submitted(submitted)
-        status.set_in_review(reviewing)
-        status.set_approved(approved)
-        status.set_disapproved(disapproved)
-        status.set_pubulished(pubulished)
+        try:
+            submitted = injson["status"]["submitted"]
+            status.set_submitted(submitted)
+        except:
+            pass
+        try:
+            reviewing = injson["status"]["reviewing"]
+            status.set_in_review(reviewing)
+        except:
+            pass
+        try:
+            approved = injson["status"]["approved"]
+            status.set_approved(approved)
+        except:
+            pass
+        try:
+            disapproved = injson["status"]["disapproved"]
+            status.set_disapproved(disapproved)
+        except:
+            pass
+        try:
+            pubulished = injson["status"]["pubulished"]
+            status.set_pubulished(pubulished)
+        except:
+            pass
         dataset.set_status(status)
         del outjson["status"]
     except Exception as e:
         pass
     try:
         data_deletion_endpoint_detail = DataDeletionEndpointDetail()
-        deletion_endpoint = injson["dataDeletionEndpointDetails"]["deletionEndpoint"]
-        description = injson["dataDeletionEndpointDetails"]["description"]
-        api_key = injson["dataDeletionEndpointDetails"]["apiKey"]
-        data_deletion_endpoint_detail.set_deletion_endpoint(deletion_endpoint)
-        data_deletion_endpoint_detail.set_description(description)
-        data_deletion_endpoint_detail.set_api_key(api_key)
+        try:
+            deletion_endpoint = injson["dataDeletionEndpointDetails"]["deletionEndpoint"]
+            data_deletion_endpoint_detail.set_deletion_endpoint(deletion_endpoint)
+        except:
+            pass
+        try:
+            description = injson["dataDeletionEndpointDetails"]["description"]
+            data_deletion_endpoint_detail.set_description(description)
+        except:
+            pass
+        try:
+            api_key = injson["dataDeletionEndpointDetails"]["apiKey"]
+            data_deletion_endpoint_detail.set_api_key(api_key)
+        except:
+            pass
         dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_detail)
-        del outjson["dataDeletionEndpointDetails"]
+        try:
+            del outjson["dataDeletionEndpointDetails"]
+        except:
+            pass
     except Exception as e:
         pass
     try:
         contact = Contact()
-        name = injson["contacts"]["name"]
-        email = injson["contacts"]["email"]
-        phone = injson["contacts"]["phone"]
-        organization = injson["contacts"]["organization"]
-        officialAddress = injson["contacts"]["officialAddress"]
-        contact.set_name(name)
-        contact.set_email(email)
-        contact.set_phone(phone)
-        contact.set_organization(organization)
-        contact.set_officialAddress(officialAddress)
+        try:
+            name = injson["contacts"]["name"]
+            contact.set_name(name)
+        except:
+            pass
+        try:
+            email = injson["contacts"]["email"]
+            contact.set_email(email)
+        except:
+            pass
+        try:
+            phone = injson["contacts"]["phone"]
+            contact.set_phone(phone)
+        except:
+            pass
+        try:
+            organization = injson["contacts"]["organization"]
+            contact.set_organization(organization)
+        except:
+            pass
+        try:
+            officialAddress = injson["contacts"]["officialAddress"]
+            contact.set_officialAddress(officialAddress)
+        except:
+            pass
         dataset.set_contacts(contact)
-        del outjson["contacts"]
+        try:
+            del outjson["contacts"]
+        except:
+            pass
     except Exception as e:
         pass
     try:
