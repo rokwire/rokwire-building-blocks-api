@@ -5,6 +5,7 @@ class Contribution():
         self.name = None
         self.shortDescription = None
         self.longDescription = None
+        self.contributors = None
         self.capabilities = None
         self.talents = None
         self.dateCreated = None
@@ -42,11 +43,11 @@ class Contribution():
     def get_talents(self):
         return self.talents
 
-    def set_contacts(self, contacts):
-        self.contacts = contacts
+    def set_contributors(self, contributors):
+        self.contributors = contributors
 
-    def get_contacts(self):
-        return self.contacts
+    def get_contributors(self):
+        return self.contributors
 
     def set_date_created(self, dateCreated):
         self.dateCreated = dateCreated

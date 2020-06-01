@@ -2182,16 +2182,22 @@ components:
       type: object
       properties:
         firstName:
+          nullable: true
           type: string
         middleName:
+          nullable: true
           type: string
         lastName:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
         affiliation:
+          nullable: true
           type: object
           allOf:
            - $ref: '#/components/schemas/Organization'
@@ -2199,12 +2205,16 @@ components:
       type: object
       properties:
         name:
+          nullable: true
           type: string
         address:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
   securitySchemes:
     ApiKeyAuth:

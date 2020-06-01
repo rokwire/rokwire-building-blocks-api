@@ -1,11 +1,15 @@
-class Contributors:
-    def __init__(self):
+import utils.datasetutils as datasetutils
+
+class Person:
+    def __init__(self, injson):
         self.firstname = None
         self.middlename = None
         self.lastname = None
         self.email = None
         self.phone = None
         self.affiliation = None
+
+        self, restjson = datasetutils.update_person_dataset_from_json(self, injson)
 
     def set_firstname(self, firstname):
         self.firstname = firstname

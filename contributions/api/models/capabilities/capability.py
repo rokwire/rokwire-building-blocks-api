@@ -17,7 +17,6 @@ class Capability():
         self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None
-        self.contributorDetails = None
         # self.creationDate = None
         # self.lastModifiedDate = None
 
