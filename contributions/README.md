@@ -66,7 +66,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ### Docker Instructions
 ```
 cd rokwire-building-blocks-api
-docker build -f contributionsservice/Dockerfile -t rokwire/contributions-building-block .
+docker build -f contributions/Dockerfile -t rokwire/contributions-building-block .
 docker run --name contribution --rm --env-file=contributions/.env -e CONTRIBUTION_URL_PREFIX=<url_prefix_starting_with_slash> -e MONGO_CONTRIBUTION_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/contributions-building-block
 ```
 You can edit config.py or environment variable to specify a URL prefix by modifying CONTRIBUTION_URL_PREFIX variable.
