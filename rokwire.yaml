@@ -1983,7 +1983,7 @@ components:
           nullable: true
           type: array
           items:
-           oneOf:
+           anyOf:
             - $ref: '#/components/schemas/Person'
             - $ref: '#/components/schemas/Organization'
         capabilities:

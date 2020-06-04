@@ -25,7 +25,7 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_capabilities(injson['contributors'])
+        dataset.set_contributors(injson['contributors'])
         del outjson['contributors']
     except:
         pass

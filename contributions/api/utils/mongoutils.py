@@ -5,9 +5,15 @@ import controllers.configs as cfg
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
-from pymongo import ASCENDING
+from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
 
+client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
+db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
+coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
+coll_contribution.create_index([("name", ASCENDING)], background=True)
+coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
+coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
 
 """
 get query output json from query using search arguments
