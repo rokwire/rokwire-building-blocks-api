@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2020-06-05
+## Changed
+- Stop printing logs in the Logging Building Block. [#444](https://github.com/rokwire/rokwire-building-blocks-api/issues/444)
+
 ## [1.3.0] - 2020-05-15
 ## Added
 - Add more fields in PII and updated API design. [#411](https://github.com/rokwire/rokwire-building-blocks-api/issues/411)

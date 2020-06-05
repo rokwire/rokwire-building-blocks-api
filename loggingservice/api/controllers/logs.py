@@ -34,9 +34,12 @@ def post():
             # db[LOGGING_COLL_NAME].insert_many(in_json)
 
             # Write incoming click stream data to log (for easy integration with Splunk)
-            for log in in_json:
-                print(json.dumps(log))
-            sys.stdout.flush()
+            # Temporarily disable printing logs to STDOUT.
+
+            # for log in in_json:
+            #     print(json.dumps(log))
+            # sys.stdout.flush()
+            pass
 
     except Exception as ex:
         logging.exception(ex)
