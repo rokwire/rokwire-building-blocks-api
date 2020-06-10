@@ -25,7 +25,7 @@ PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
 SHIBBOLETH_HOST=<Shibboleth Host Name>
 SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
 
-ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>
+ROKWIRE_API_KEY=<Rokwire API Key>
 ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
 ROKWIRE_PUB_KEY=<Rokwire Public Key>
 ROKWIRE_API_CLIENT_ID=<Rokwire API Client ID>

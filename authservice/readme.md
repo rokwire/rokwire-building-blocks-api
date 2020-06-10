@@ -69,7 +69,7 @@ To run locally with Docker Compose, you will need to create a file called `.env`
 - `TWILIO_VERIFY_SERVICE_ID`
 - `PHONE_VERIFY_SECRET`
 - `PHONE_VERIFY_AUDIENCE`
-- `ROKWIRE_API_KEY` - This can be a comma separated list of API keys. E.g. `ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>`
+- `ROKWIRE_API_KEY`
 
 
 ## Deployment notes
