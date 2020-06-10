@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # First cut. This is a list of secrets (eventually this can come from a database and setting it is effectively caching it)
 # The zero-th element of this list is the currently active key.
 # At this point we have decided that a secret is going to be a version 4 UUID.
-secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
+# E.g. secrets = ['2060e58d-b26d-4375-924a-05a964f9e5e8']
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
@@ -102,8 +102,13 @@ def verify_secret(request):
     if not key:
         logger.warning("Request missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')  # missing header means bad request
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return True
+    # Assumption is that the key is a comma separated list of uuid's
+    # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
+    # Otherwise, an error is raised.
+    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    for test_key in keys:
+        if key == test_key.strip():  # just in case there are embedded blanks
+            return True
     raise OAuthProblem('Invalid API Key') # failed matching means unauthorized in this context.
 
 
@@ -111,10 +116,15 @@ def verify_apikey(key, required_scopes=None):
     if not key:
         logger.warning("API key is missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return {'token_valid': True}
+    # Assumption is that the key is a comma separated list of uuid's
+    # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
+    # Otherwise, an error is raised.
+    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    for test_key in keys:
+        if key == test_key.strip():  # just in case there are embedded blanks
+            return {'token_valid': True}
     else:
-        raise OAuthProblem('Invailid API Key')
+        raise OAuthProblem('Invalid API Key')
 
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
