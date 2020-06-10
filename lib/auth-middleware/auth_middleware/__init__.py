@@ -97,13 +97,19 @@ def authorize(group_name=None):
 # Checks that the request has the right secret for this. This call is used initially and assumes that
 # the header contains the x-api-key. This (trivially) returns true of the verification worked and
 # otherwise will return various other exit codes.
+
+# This and the next call address https://github.com/rokwire/rokwire-building-blocks-api/pull/297
+# This pre-supposes that the ROKWIRE_API_KEY is a comma separated list (no spaces) of currently valid keys.
+
 def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:
         logger.warning("Request missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')  # missing header means bad request
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return True
+    keys = os.getenv('ROKWIRE_API_KEY').split(",")
+    for k in keys:
+        if (key == k):
+            return True
     raise OAuthProblem('Invalid API Key') # failed matching means unauthorized in this context.
 
 
@@ -111,10 +117,11 @@ def verify_apikey(key, required_scopes=None):
     if not key:
         logger.warning("API key is missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')
-    if (key == os.getenv('ROKWIRE_API_KEY')):
-        return {'token_valid': True}
-    else:
-        raise OAuthProblem('Invailid API Key')
+    keys = os.getenv('ROKWIRE_API_KEY').split(",")
+    for k in keys:
+        if (key == k):
+            return {'token_valid': True}
+    raise OAuthProblem('Invailid API Key')
 
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
