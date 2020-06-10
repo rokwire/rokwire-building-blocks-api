@@ -163,6 +163,14 @@ def update_pii_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
+        dataset.set_rsa_public_key (injson['rsaPublicKey'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_rsa_private_key_encrypted(injson['rsaPrivateKeyEncrypted'])
+    except Exception as e:
+        pass
+    try:
         testresultsconsent = TestResultsConsent()
         testresultsconsent.set_consent_provided(injson["testResultsConsent"]["consentProvided"])
         dataset.set_test_results_consent(injson['testResultsConsent'])

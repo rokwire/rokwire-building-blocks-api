@@ -19,6 +19,8 @@ class PiiData:
         self.state = None
         self.country = None
         self.healthcareProviderIDs = None
+        self.rsaPublicKey = None
+        self.rsaPrivateKeyEncrypted = None
         self.testResultsConsent = None
         self.photoImageBase64 = None
         self.imageUrl = None
@@ -139,6 +141,18 @@ class PiiData:
 
     def get_healthcare_provider_ids(self):
         return self.healthcareProviderIDs
+
+    def set_rsa_public_key(self, rsaPublicKey):
+        self.rsaPublicKey = rsaPublicKey
+
+    def get_rsa_public_key(self):
+        return self.rsaPublicKey
+
+    def set_rsa_private_key_encrypted(self, rsaPrivateKeyEncrypted):
+        self.rsaPrivateKeyEncrypted = rsaPrivateKeyEncrypted
+
+    def get_rsa_private_key_encrypted(self):
+        return self.rsaPrivateKeyEncrypted
 
     def set_test_results_consent(self, testResultsConsent):
         self.testResultsConsent = testResultsConsent

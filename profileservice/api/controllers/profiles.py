@@ -687,7 +687,6 @@ def pii_put(pid=None):
 
     # check if the pid is really existing in the database
     pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
-    creation_date = pii_dataset.get_creation_date()
 
     if pii_dataset == None:
         msg = {
@@ -698,6 +697,7 @@ def pii_put(pid=None):
         logging.error("PII PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
+    creation_date = pii_dataset.get_creation_date()
     tmp_dataset = json.loads(json.dumps(pii_dataset.__dict__))
     auth_pass = check_id(auth_resp, tmp_dataset)
 
