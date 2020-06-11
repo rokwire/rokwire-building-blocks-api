@@ -24,19 +24,19 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 # client_reg = RegistrationResponse(**info)
 # client.store_registration_info(client_reg)
 #
-# @bp.route('/register', methods=('GET', 'POST'))
-# def register():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         error = None
-#
-#         if not username:
-#             error = 'Username is required.'
-#         elif not password:
-#             error = 'Password is required.'
-#         flash(error)
-#     return render_template('contribute/contribute.html')
+@bp.route('/register', methods=('GET', 'POST'))
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        error = None
+
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
+        flash(error)
+    return render_template('auth/register.html')
 
 
 

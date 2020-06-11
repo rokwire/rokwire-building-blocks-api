@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/bar.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}">
     {% endblock %}
 
     {% block scripts %}
-    <script src="js/modernizr.js"></script> <!-- Modernizr -->
+    <script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     {% endblock %}
@@ -27,8 +27,8 @@
 
 <body>
  <div class="topnav" id="myTopnav">
-        <a href="#home" >Capability Catalog/Packager</a>
-        <a href="#contribute" class="active">Contribute</a>
+        <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
+        <a href="{{ url_for('contribute.create') }}">Contribute</a>
     </div>
 </body>
 </html>
