@@ -1,34 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% block meta %}
-    <meta charset="UTF-8">
-    {% endblock %}
+<!doctype html>
+<title>
+    {% block title %}{% endblock %} Contribution Catalog / Packager
+</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/bar.css">
+<script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    {% block title %}
-    <title>Contribution Catalog / Packager</title>
-    {% endblock %}
-
-    {% block styles %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/bar.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}">
-    {% endblock %}
-
-    {% block scripts %}
-    <script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    {% endblock %}
-</head>
-
-<body>
+<!--<nav>-->
+<!--  <h1>Flaskr</h1>-->
+<!--  <ul>-->
+<!--    {% if g.user %}-->
+<!--      <li><span>{{ g.user['username'] }}</span>-->
+<!--      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>-->
+<!--    {% else %}-->
+<!--      <li><a href="{{ url_for('auth.register') }}">Register</a>-->
+<!--      <li><a href="{{ url_for('auth.login') }}">Log In</a>-->
+<!--    {% endif %}-->
+<!--  </ul>-->
+<!--</nav>-->
  <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
         <a href="{{ url_for('contribute.create') }}">Contribute</a>
-    </div>
-</body>
-</html>
+ </div>
+
+
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>

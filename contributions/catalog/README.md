@@ -44,13 +44,13 @@ The second one:
     - FLASK_DEBUG=1
 
 ## Setup Environment
-
+- (Linux or MAC):
 ```
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-
+- (Windows):
 ```
 py -m venv env
 .\venv\Scripts\activate
