@@ -1,24 +1,65 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
-.filterDiv {
-  float: left;
-  background-color: #2196F3;
-  color: #ffffff;
-  width: 100px;
-  line-height: 100px;
-  text-align: center;
-  margin: 2px;
-  display: none;
+* {
+  box-sizing: border-box;
 }
 
+body {
+  background-color: #f1f1f1;
+  padding: 20px;
+  font-family: Arial;
+}
+
+/* Center website */
+.main {
+  max-width: 1000px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 50px;
+  word-break: break-all;
+}
+
+.row {
+  margin: 10px -16px;
+}
+
+/* Add padding BETWEEN each column */
+.row,
+.row > .column {
+  padding: 10px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  display: none; /* Hide all elements by default */
+}
+
+/* Clear floats after rows */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Content */
+.content {
+  background-color: white;
+  padding: 10px;
+}
+
+/* The "show" class is added to the filtered elements */
 .show {
   display: block;
-}
-
-.container {
-  margin-top: 20px;
-  overflow: hidden;
 }
 
 /* Style the buttons */
@@ -26,7 +67,7 @@
   border: none;
   outline: none;
   padding: 12px 16px;
-  background-color: #f1f1f1;
+  background-color: white;
   cursor: pointer;
 }
 
@@ -38,87 +79,87 @@
   background-color: #666;
   color: white;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Float four columns side by side */
-.column {
-  float: left;
-  width: 25%;
-  padding: 0 10px;
-}
-
-/* Remove extra left and right margins, due to padding */
-.row {margin: 0 -5px;}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive columns */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-}
-
-/* Style the counter cards */
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
-  text-align: center;
-  background-color: #f1f1f1;
-}
 </style>
+</head>
 <body>
 
-<h2>Catalog Home page</h2>
+<!-- MAIN (Center website) -->
+<div class="main">
+
+<h1>Contribution Catalog / Packager</h1>
+<!--<hr>-->
+
+<!--<h2>PORTFOLIO</h2>-->
 
 <div id="myBtnContainer">
   <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+  <button class="btn" onclick="filterSelection('capability')"> Capability</button>
   <button class="btn" onclick="filterSelection('talent')"> Talent</button>
-  <button class="btn" onclick="filterSelection('capability')"> capability</button>
 </div>
 
-<div class="container">
-  <div class="filterDiv capability">Capability</div>
-  <div class="filterDiv talent">Talent</div>
-</div>
 
 <div class="row">
-  <div class="column">
-    <div class="card">
-      <h3>Capability</h3>
-      <p>Some description</p>
-      <p>Organization/Contact</p>
+  <div class="column capability">
+    <div class="content">
+      <img src=""  style="width:100%">
+      <h4>capability</h4>
+      <p>description..</p>
+      <span class="label label-default">App Config</span>
+    </div>
+  </div>
+  <div class="column capability">
+    <div class="content">
+    <img src="" style="width:100%">
+      <h4>capability</h4>
+      <p>description..</p>
+      <span class="label label-default">Profile</span>
+    </div>
+  </div>
+  <div class="column capability">
+    <div class="content">
+    <img src=""  style="width:100%">
+      <h4>capability</h4>
+      <p>description..</p>
+      <span class="label label-default">Login</span>
     </div>
   </div>
 
-  <div class="column">
-    <div class="card">
-      <h3>Talent</h3>
-      <p>Some description</p>
-      <p>Organization/Contact</p>
+  <div class="column talent">
+    <div class="content">
+      <img src=""  style="width:100%">
+      <h4>talent</h4>
+      <p>description..</p>
+      <span class="label label-default">Login</span>
+    </div>
+  </div>
+  <div class="column talent">
+    <div class="content">
+    <img src="" style="width:100%">
+      <h4>talent</h4>
+      <p>description..</p>
+      <span class="label label-default">Auth</span>
+    </div>
+  </div>
+  <div class="column talent">
+    <div class="content">
+    <img src=""  style="width:100%">
+      <h4>talent</h4>
+      <p>description..</p>
+      <span class="label label-default">Events</span>
     </div>
   </div>
 
+<!-- END GRID -->
+</div>
+
+<!-- END MAIN -->
+</div>
 
 <script>
 filterSelection("all")
 function filterSelection(c) {
   var x, i;
-  x = document.getElementsByClassName("filterDiv");
+  x = document.getElementsByClassName("column");
   if (c == "all") c = "";
   for (i = 0; i < x.length; i++) {
     w3RemoveClass(x[i], "show");
@@ -146,6 +187,7 @@ function w3RemoveClass(element, name) {
   }
   element.className = arr1.join(" ");
 }
+
 
 // Add active class to the current button (highlight it)
 var btnContainer = document.getElementById("myBtnContainer");
