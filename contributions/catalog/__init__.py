@@ -1,5 +1,5 @@
 import os
-from flask import Flask, current_app, redirect, url_for, Blueprint, session
+from flask import Flask, g, flash, current_app, redirect, url_for, Blueprint, session, render_template
 from .config import Config
 from .db import init_app
 from .auth import bp as auth_bp
@@ -32,7 +32,8 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def hello():
-        return 'Hello, World!'
+        # return 'Hello, World!'
+        return render_template('contribute/home.html')
 
 
     return app
