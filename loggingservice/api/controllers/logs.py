@@ -3,9 +3,9 @@ import json
 import sys
 
 from connexion.exceptions import OAuthProblem
-
 from flask import request
 
+import controllers.config as cfg
 import utils.rest_handlers as rs_handlers
 
 def post():
@@ -34,12 +34,11 @@ def post():
             # db[LOGGING_COLL_NAME].insert_many(in_json)
 
             # Write incoming click stream data to log (for easy integration with Splunk)
-            # Temporarily disable printing logs to STDOUT.
-
-            # for log in in_json:
-            #     print(json.dumps(log))
-            # sys.stdout.flush()
-            pass
+            # if PRINT_LOG is True print out logs
+            if cfg.PRINT_LOG:
+                for log in in_json:
+                    print(json.dumps(log))
+                sys.stdout.flush()
 
     except Exception as ex:
         logging.exception(ex)
