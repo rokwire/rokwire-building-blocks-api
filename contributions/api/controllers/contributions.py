@@ -235,6 +235,31 @@ def delete(id=None):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
+def capabilities():
+    # this is an empty constructor for avoding capabilities serach connexion error
+    pass
+
+def capabilities_get():
+    pass
+
+def capabilities_post():
+    pass
+
+def capabilities_search():
+    pass
+
+def capabilities__search(id=None):
+    pass
+
+def talents():
+    pass
+
+def talents_get():
+    pass
+
+def talents__search():
+    pass
+
 def construct_capability(in_json):
     is_required_field = True
     error_required = ""
