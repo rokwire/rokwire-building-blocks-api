@@ -41,7 +41,7 @@ The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
-docker run --name logging --rm --env-file loggingservice/.env -e API_LOC=. -e DEBUG=False -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
+docker run --name logging --rm --env-file loggingservice/.env -e API_LOC=. -e PRINT_LOG=True -e DEBUG=False -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
 ```
 You can edit config.py or environment variable to specify a URL prefix by modifying LOGGIN_URL_PREFIX variable.
 If you need to make just /logs as endpoint, put the vaiable value to empty string or do not include this variable.
