@@ -12,17 +12,22 @@
 <!--    <link rel="stylesheet" href="css/bar.css">-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}">
+    <link rel="javascript"  href="{{ url_for('static', filename='js/modernizr.js') }}">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
 
 
 
 </head>
+
+<style>
+
+</style>
 <body>
 
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
-        <a href="#home" >Capability Catalog/Packager</a>
-        <a href="#contribute" class="active">Contribute</a>
+        <a href="{{ url_for('contribute.home') }}" >Capability Catalog/Packager</a>
+        <a href="{{ url_for('contribute.create') }}" class="active">Contribute</a>
     </div>
     <div>
         <nav>
