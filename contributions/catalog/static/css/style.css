@@ -1,7 +1,10 @@
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #2a4b45;
-    overflow: hidden;
+  overflow: hidden;
+  background-color: #2a4b45;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 /* Style the links inside the navigation bar */
