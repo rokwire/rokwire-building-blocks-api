@@ -1520,21 +1520,21 @@ paths:
           description: Internal server error
   /contributions/{id}/capabilities/:
     get:
-      summary: Return existing capabilities based on search criteria
-      tags: 
-       - Capability
+      summary: Get the Capabilities in a specific contribution
+      tags:
+        - Contributions
       parameters:
         - name: id
           in: path
-          description: The parameter for searching capability based on capability name
-          required: false
-          style: form
-          explode: true
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
           schema:
             type: string
       responses:
         200:
-          description: Search results
+          description: Capabilities in the given Contribution
           content:
             application/json:
               schema:
@@ -1650,35 +1650,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Talent'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        500:
-          description: Internal server error
-  /contributions/{id}/capabilities:
-    get:
-      summary: Get the Capabilities in a specific contribution
-      tags:
-       - Contributions
-      parameters:
-      - name: id
-        in: path
-        description: Contribution ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      responses:
-        200:
-          description: Capabilities in the given Contribution
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:

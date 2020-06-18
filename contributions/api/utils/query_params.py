@@ -28,3 +28,14 @@ def format_query_contribution(args, query):
 
     return query
 
+def format_query_capability(args, query):
+    query_parts = []
+
+    if args.get('name'):
+        query_parts.append({'capabilities.name': {'$eq': args.get('name')}})
+
+    if query_parts:
+        query['$and'] = query_parts
+
+    return query
+

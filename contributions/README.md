@@ -475,3 +475,198 @@ API will return the message
        "ID":"5ed9440f830d3038f4f8ffaa"
     }
 ```
+### GET capabilities in contribution data using contribution id
+To get the information about the existing non-pii dataset, this method should be used
+```
+curl http://localhost:5000/contributions/5ed57231830d301a14974900/capabilities
+```
+API will return the information of the capbilities in contribution dataset
+```
+    [
+       {
+          "apiBaseUrl":null,
+          "apiDocUrl":null,
+          "contacts":[
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             },
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             }
+          ],
+          "dataDeletionEndpointDetails":{
+             "apiKey":"apiKey",
+             "deletionEndpoint":"deletionEndpoint",
+             "description":"description"
+          },
+          "deploymentDetails":{
+             "authMethod":null,
+             "databaseDetails":null,
+             "dockerImageName":null,
+             "environmentVariables":null,
+             "location":null
+          },
+          "description":"capability description",
+          "healthCheckUrl":"healthCheckUrl",
+          "isOpenSource":true,
+          "name":"capability test1",
+          "status":"Submitted",
+          "version":"version"
+       },
+       {
+          "apiBaseUrl":null,
+          "apiDocUrl":null,
+          "contacts":[
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             },
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             }
+          ],
+          "dataDeletionEndpointDetails":{
+             "apiKey":"apiKey",
+             "deletionEndpoint":"deletionEndpoint",
+             "description":"description"
+          },
+          "deploymentDetails":{
+             "authMethod":null,
+             "databaseDetails":null,
+             "dockerImageName":null,
+             "environmentVariables":null,
+             "location":null
+          },
+          "description":"capability description",
+          "healthCheckUrl":"healthCheckUrl",
+          "isOpenSource":true,
+          "name":"capability test3",
+          "status":"Submitted",
+          "version":"version"
+       },
+       {
+          "apiBaseUrl":null,
+          "apiDocUrl":null,
+          "contacts":[
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             },
+             {
+                "email":null,
+                "name":null,
+                "officialAddress":null,
+                "organization":null,
+                "phone":null
+             }
+          ],
+          "dataDeletionEndpointDetails":{
+             "apiKey":"apiKey",
+             "deletionEndpoint":"deletionEndpoint",
+             "description":"description"
+          },
+          "deploymentDetails":{
+             "authMethod":null,
+             "databaseDetails":null,
+             "dockerImageName":null,
+             "environmentVariables":null,
+             "location":null
+          },
+          "description":"capability description",
+          "healthCheckUrl":"healthCheckUrl",
+          "isOpenSource":true,
+          "name":"capability test2",
+          "status":"Submitted",
+          "version":"version"
+       }
+    ]
+```
+### GET capabilities in contribution data using capability name
+To get the information about the existing non-pii dataset, this method should be used
+```
+http://localhost:5000/contributions/capabilities?name=test1
+```
+API will return the information of the capabilities with given name
+```
+    [
+      {
+        "apiBaseUrl": null,
+        "apiDocUrl": null,
+        "contacts": [
+          {
+            "email": null,
+            "name": null,
+            "officialAddress": null,
+            "organization": null,
+            "phone": null
+          },
+          {
+            "email": null,
+            "name": null,
+            "officialAddress": null,
+            "organization": null,
+            "phone": null
+          }
+        ],
+        "dataDeletionEndpointDetails": {
+          "apiKey": "apiKey",
+          "deletionEndpoint": "deletionEndpoint",
+          "description": "description"
+        },
+        "deploymentDetails": {
+          "authMethod": null,
+          "databaseDetails": null,
+          "dockerImageName": null,
+          "environmentVariables": null,
+          "location": null
+        },
+        "description": "capability description",
+        "healthCheckUrl": "healthCheckUrl",
+        "isOpenSource": true,
+        "name": "test1",
+        "status": "Submitted",
+        "version": "version"
+      },
+      {
+        "apiBaseUrl": null,
+        "apiDocUrl": null,
+        "contacts": null,
+        "dataDeletionEndpointDetails": {
+          "apiKey": "apiKey",
+          "deletionEndpoint": "deletionEndpoint",
+          "description": "description"
+        },
+        "deploymentDetails": {
+          "authMethod": null,
+          "databaseDetails": null,
+          "dockerImageName": null,
+          "environmentVariables": null,
+          "location": null
+        },
+        "description": "capability description",
+        "healthCheckUrl": "healthCheckUrl",
+        "isOpenSource": true,
+        "name": "test1",
+        "status": "Submitted",
+        "version": "version"
+      }
+    ]
+```
