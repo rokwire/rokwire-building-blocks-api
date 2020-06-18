@@ -116,6 +116,9 @@
                 </ol>
             </nav>
         </div>
+
+
+    <div id="capability-div">
         <h3 id = "capability">Submit a capability</h3>
         <form class="form-horizontal">
             <div class="form-group">
@@ -217,7 +220,10 @@
 
     </div>
 
-    <div class="container">
+    <div><button id = "add-capability">Add another Capability</button></div>
+
+
+    <div class="container" id="talent-div">
         <h3>Submit a Talent</h3>
         <form class="form-horizontal">
             <div class="form-group">
@@ -264,6 +270,7 @@
 
         </form>
     </div>
+        <div><button id = "add-talent">Add another Talent</button></div>
 
     <div>
         <nav>
@@ -360,16 +367,33 @@
         });
     });
 
+    function duplicate() {
+        var original = document.getElementById('capability' + i);
+        var clone = original.cloneNode(true); // "deep" clone
+        clone.id = "capability" + ++i; // there can only be one element with an ID
+        clone.onclick = duplicate; // event handlers are not cloned
+        original.parentNode.appendChild(clone);
+    }
 
 
-    // (function() {
-    //     var button=document.getElementById("add-user");
-    //     button.addEventListener('click', function(event) {
-    //         event.preventDefault();
-    //         var cln = document.getElementById("key-val").cloneNode(true);
-    //         document.getElementById("env").insertBefore(cln,this);
-    //         return false;
-    //     });
-    // })();
+    $(function() {
+        $("#add-capability").click(function(e) {
+            e.preventDefault();
+            var original = document.getElementById('capability-div');
+            var clone = original.cloneNode(true); // "deep" clone
+            $("#capability-div").append(clone);
+            $("#capability-div").append("<br>");
+        });
+    });
+
+    $(function() {
+        $("#add-talent").click(function(e) {
+            e.preventDefault();
+            var original = document.getElementById('talent-div');
+            var clone = original.cloneNode(true); // "deep" clone
+            $("#talent-div").append(clone);
+            $("#talent-div").append("<br>");
+        });
+    });
 </script>
 </html>
