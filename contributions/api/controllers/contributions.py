@@ -132,7 +132,7 @@ def search():
 
     return out_json
 
-def get(id=None):
+def get(id):
     data_list, is_objectid, is_error, resp = get_data_list(id)
     if is_error:
         return resp
@@ -143,7 +143,7 @@ def get(id=None):
 
     return out_json
 
-def put(id=None):
+def put(id):
     try:
         in_json = request.get_json()
     except Exception as ex:
@@ -207,7 +207,7 @@ def put(id=None):
 
     return out_json
 
-def delete(id=None):
+def delete(id):
     data_list, is_objectid, is_error, resp = get_data_list(id)
     if is_error:
         return resp
@@ -234,16 +234,6 @@ def delete(id=None):
     #     msg_json = jsonutils.create_log_json("Contribution", "DELETE", msg)
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
-
-# def capabilities():
-#     # this is an empty constructor for avoding capabilities serach connexion error
-#     pass
-
-def capabilities_get():
-    pass
-
-def capabilities_post():
-    pass
 
 def capabilities_search():
     args = request.args
@@ -302,7 +292,7 @@ def capabilities_search():
 
     return return_json
 
-def capabilities__search(id=None):
+def capabilities__search(id):
     try:
         contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
         capability_dataset = contribution_dataset.get_capabilities()
@@ -332,15 +322,6 @@ def capabilities__search(id=None):
     logging.info("Capability SEARCH " + json.dumps(msg))
 
     return capability_dataset
-
-def talents():
-    pass
-
-def talents_get():
-    pass
-
-def talents__search():
-    pass
 
 def construct_capability(in_json):
     is_required_field = True
