@@ -204,7 +204,7 @@ Triangle breadcrumb
         */
         content: '';
         position: absolute;
-        top: 0;
+        top: 50px;
         left: 100%;
         content: '';
         height: 0;
