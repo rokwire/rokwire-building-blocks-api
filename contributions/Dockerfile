@@ -26,6 +26,6 @@ ENV MONGO_CONTRIBUTION_URL="" \
     API_LOC="." \
     FLASK_APP="contributions_rest_service" \
     FLASK_ENV="development" \
-    PROFILE_URL_PREFIX=""
+    CONTRIBUTION_URL_PREFIX=""
 
 CMD ["gunicorn", "contributions_rest_service:app", "--config", "/usr/src/app/contributions/api/gunicorn.config.py"]
