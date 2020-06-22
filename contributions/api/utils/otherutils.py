@@ -1,7 +1,7 @@
 from datetime import datetime
 
 """
-convert utd time format for rokwire
+Get current time in UTC format.
 """
 def get_current_time_utc():
     currenttime = datetime.utcnow()
