@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Add environment variable for on/off of printing logs out. [#459](https://github.com/rokwire/rokwire-building-blocks-api/issues/459)
-- LICENCE file. [466](https://github.com/rokwire/rokwire-building-blocks-api/issues/466)
+- LICENSE file. [466](https://github.com/rokwire/rokwire-building-blocks-api/issues/466)
 
 ## [1.4.0] - 2020-06-11
 ### Added
