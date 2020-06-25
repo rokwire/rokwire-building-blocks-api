@@ -4,6 +4,7 @@ from models.capabilities.contact import Contact
 from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
 from models.capabilities.deploymentdetails import DeploymentDetails
 from models.capabilities.environmentvariable import EnvironmentVariable
+from models.talents.selfcertification import SelfCertification
 
 """
 update contribution dataset
@@ -286,6 +287,105 @@ def update_organization_dataset_from_json(dataset, injson):
         dataset.set_phone(injson["phone"])
         del outjson['email']
     except:
+        pass
+
+    return dataset, outjson
+
+"""
+set talent dataset
+"""
+def update_talent_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_name(injson['name'])
+        del outjson['name']
+    except:
+        pass
+    try:
+        dataset.set_short_description(injson['shortDescription'])
+        del outjson['shortDescription']
+    except:
+        pass
+    try:
+        dataset.set_long_description(injson['longDescription'])
+        del outjson['longDescription']
+    except:
+        pass
+    try:
+        capabilities_json = injson['requiredCapabilities']
+        capablities_list = []
+        for capability_json in capabilities_json:
+            capability_dataset = None
+            capability_dataset = update_capability_dataset_from_json(capability_dataset, capability_json)
+            if capability_dataset is not None:
+                capablities_list.append(capability_dataset)
+        dataset.set_required_capabilities(injson['requiredCapabilities'])
+        del outjson['requiredCapabilities']
+    except:
+        pass
+    try:
+        dataset.set_required_building_blocks(injson['requiredBuildingBlocks'])
+        del outjson['requiredBuildingBlocks']
+    except:
+        pass
+    try:
+        dataset.set_min_user_privacy_level(injson['minUserPrivacyLevel'])
+        del outjson['minUserPrivacyLevel']
+    except:
+        pass
+    try:
+        dataset.set_min_end_user_roles(injson['minEndUserRoles'])
+        del outjson['minEndUserRoles']
+    except:
+        pass
+    try:
+        dataset.set_start_date(injson['startDate'])
+        del outjson['startDate']
+    except:
+        pass
+    try:
+        dataset.set_end_date(injson['endDate'])
+        del outjson['endDate']
+    except:
+        pass
+    try:
+        dataset.set_data_description(injson['dataDescription'])
+        del outjson['dataDescription']
+    except:
+        pass
+    try:
+        self_certification = SelfCertification()
+        try:
+            data_deleteion_upon_request = injson["selfCertification"]["dataDeletionUponRequest"]
+            self_certification.set_data_deletion_upon_request(data_deleteion_upon_request)
+        except:
+            pass
+        try:
+            respecting_user_privacy_setting = injson["selfCertification"]["respectingUserPrivacySetting"]
+            self_certification.set_respecting_user_privacy_setting(respecting_user_privacy_setting)
+        except:
+            pass
+        try:
+            disclose_ads = injson["selfCertification"]["discloseAds"]
+            self_certification.set_disclose_ads(disclose_ads)
+        except:
+            pass
+        try:
+            disclose_sponsors = injson["selfCertification"]["discloseSponsors"]
+            self_certification.set_disclose_sponsors(disclose_sponsors)
+        except:
+            pass
+        try:
+            disclose_image_rights = injson["selfCertification"]["discloseImageRights"]
+            self_certification.set_disclose_image_rights(disclose_image_rights)
+        except:
+            pass
+        dataset.set_self_certification(self_certification)
+        try:
+            del outjson["selfCertification"]
+        except:
+            pass
+    except Exception as e:
         pass
 
     return dataset, outjson

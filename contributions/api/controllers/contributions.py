@@ -10,8 +10,6 @@ import controllers.configs as cfg
 import utils.jsonutils as jsonutils
 import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
-import utils.otherutils as otherutils
-import utils.tokenutils as tokenutils
 import utils.mongoutils as mongoutils
 
 from utils import query_params
@@ -19,7 +17,8 @@ from models.contribution import Contribution
 from models.person import Person
 from models.organization import Organization
 from models.capabilities.capability import Capability
-from pymongo import MongoClient, ASCENDING
+from models.talents.talent import Talent
+from pymongo import MongoClient
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -78,6 +77,19 @@ def post():
                     return rs_handlers.bad_request(msg)
                 capability_list.append(capability)
             contribution_dataset.set_capabilities(capability_list)
+        except:
+            pass
+
+        # set talent list
+        talent_list = []
+        try:
+            talent_json = in_json["talents"]
+            for i in range(len(talent_json)):
+                talent, rest_takebt_json, msg = construct_talent(talent_json[i])
+                if talent is None:
+                    return rs_handlers.bad_request(msg)
+                talent_list.append(talent)
+            contribution_dataset.set_talents(talent_list)
         except:
             pass
 
@@ -156,7 +168,6 @@ def put(id):
         return rs_handlers.bad_request(msg_json)
     # check if the given id exists
     contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
-    date_created = contribution_dataset.dateCreated
 
     if contribution_dataset is None:
         msg = {
@@ -167,7 +178,7 @@ def put(id):
         logging.error("PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
-
+    date_created = contribution_dataset.dateCreated
     contribution_dataset, restjson = datasetutils.update_contribution_dataset_from_json(contribution_dataset, in_json)
     currenttime = datetime.datetime.now()
     currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
@@ -198,8 +209,6 @@ def put(id):
         logging.error("PUT " + json.dumps(msg_json))
         return rs_handlers.not_implemented(msg_json)
 
-    # capability_dataset = jsonutils.remove_file_descriptor_from_dataset(capability_dataset)
-    # out_json = jsonutils.remove_null_subcategory(capability_dataset)
     out_json = contribution_dataset
     msg_json = jsonutils.create_log_json("Contribution", "PUT", copy.copy(out_json))
     logging.info("PUT " + json.dumps(msg_json))
@@ -288,7 +297,7 @@ def capabilities_search():
         "result": return_json,
     }
     msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-    logging.info("Capability SEARCH " + json.dumps(msg))
+    logging.info("Capability SEARCH " + json.dumps(msg_json))
 
     return return_json
 
@@ -355,6 +364,29 @@ def construct_capability(in_json):
     capability_dataset, restjson = datasetutils.update_capability_dataset_from_json(capability_dataset, in_json)
 
     return capability_dataset, restjson, None
+
+def construct_talent(in_json):
+    is_required_field = True
+    error_required = ""
+    try:
+        error_required = "name"
+        name = in_json["name"]
+        error_required = "shortDescription"
+        description = in_json["shortDescription"]
+    except:
+        msg = {
+            "reason": "Some of the required field in talent is not provided: " + str(error_required),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+        logging.error("POST " + json.dumps(msg_json))
+        return None, None, msg_json
+
+    # new installation of the app
+    talent_dataset = Talent('')
+    talent_dataset, restjson = datasetutils.update_talent_dataset_from_json(talent_dataset, in_json)
+
+    return talent_dataset, restjson, None
 
 def construct_contributors(in_json):
     # need to know if it is person or organization

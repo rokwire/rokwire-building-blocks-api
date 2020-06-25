@@ -8,12 +8,8 @@ class Capability():
         self.apiDocUrl = None
         self.deploymentDetails = None
         self.apiBaseUrl = None
-        # self.dockerImageName = None
-        # self.environmentVariables = None
-        # self.databaseDetails = None
         self.version = None
         self.healthCheckUrl = None
-        # self.authMethod = None
         self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None

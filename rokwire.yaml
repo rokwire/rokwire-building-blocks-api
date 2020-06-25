@@ -1498,7 +1498,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error+
-  /contributions/capabilities:
+  /contributions/capabilities/:
     get:
       summary: Return existing Capabilities based on search criteria
       tags:
