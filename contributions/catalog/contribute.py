@@ -1,5 +1,5 @@
 import functools
-
+import pymongo
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
 from .config import Config
-# from ..api.controllers.contributions import client_contribution, db_contribution, coll_contribution, post, get, put, search, delete
+from api.controllers.contributions import client_contribution, db_contribution, coll_contribution, post, get, put, search, delete
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -38,8 +38,12 @@ def home():
 @bp.route('/create', methods=['GET', "POST"])
 def create():
     if request.method == 'POST':
-        result = request.form
+        result = request.form.to_dict()
         print(result)
+        myclient = pymongo.MongoClient("mongodb://localhost:27017")
+        mydb = myclient["mydatabase"]
+        mycol = mydb["contribution"]
+        x = mycol.insert_one(result)
     #     # body = request.form['body']
-    #     # post()
+        post()
     return render_template('contribute/contribute.html')
