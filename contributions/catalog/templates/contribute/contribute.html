@@ -44,16 +44,16 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contribution Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="contribution_name" placeholder="give a name of your contribution" name="contribution_name">
+                        <input type="text" class="form-control" id="contribution_name" placeholder="give a name of your contribution" name="name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Short Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contribution_description" placeholder="give a short description" name="contribution_description"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contribution_description" placeholder="give a short description" name="shortDescription"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Long Description</label>
-                    <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_detail" placeholder="give a detailed description" style="height:150px"></textarea></div>
+                    <div class="col-sm-10"><textarea id="contribution_detail" name="longDescription" placeholder="give a detailed description" style="height:150px"></textarea></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Contributor</label>
@@ -63,49 +63,68 @@
                         <div><button id = "add-contributor-org">Add Contributor as Organization</button></div>
                 </div>
 
-            <div>
+            <div id = "organization" style="display: none">
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_name" placeholder="" name="org_name"></div>
+                    <label class="control-label col-sm-2" >Organization Name</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="org_name" placeholder="" name="name"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Address</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_address" placeholder="" name="org_address"></div>
+                    <label class="control-label col-sm-2" >Organization Address</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="org_address" placeholder="" name="address"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_email" placeholder="" name="org_email"></div>
+                    <label class="control-label col-sm-2" >Organization Email</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="org_email" placeholder="" name="email"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Phone</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_phone" placeholder="" name="org_phone"></div>
+                    <label class="control-label col-sm-2" >Organization Phone</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="org_phone" placeholder="" name="phone"></div>
                 </div>
 
             </div>
 
-            <div>
+            <div id = "contributor" style="display: none">
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contributor's first name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_fname" placeholder="" name="contributor_fname"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_fname" placeholder="" name="firstName"></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contributor's middle name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_mname" placeholder="" name="contributor_mname"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_mname" placeholder="" name="middleName"></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contributor's last name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_lname" placeholder="" name="contributor_lname"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_lname" placeholder="" name="lastName"></div>
                 </div>
+                                <div class="form-group">
+                    <label class="control-label col-sm-2" >Contributor Email</label>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="email"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" >Contributor Phone</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="" name="phone"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" >Affiliation Name</label>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="name"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" >Affiliation Address</label>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="address"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" >Affiliation Email</label>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="email"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" >Affiliation Phone</label>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="phone"></div>
+                </div>
+            </div>
 
     <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
-            <div>
-
-
-
-
-        </div>
 
         <div class="container">
             <div>
@@ -125,11 +144,11 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Capability Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_name" placeholder="give a name of your capability" name="capability_name"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_name" placeholder="give a name of your capability" name="name"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Capability Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_description" placeholder="give a short description" name="capability_description"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_description" placeholder="give a short description" name="description"></div>
                 </div>
 
                 <div class="form-group">
@@ -139,11 +158,11 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Is the Code Open Sourced? </label>
-                    <label class = "form-check-label"><input class = "form-check-input" type="checkbox" id="open_source" name="open_source"> yes</label>
+                    <label class = "form-check-label"><input class = "form-check-input" type="checkbox" id="open_source" name="isOpenSource"> yes</label>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >API Doc URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="api_url" placeholder="API documentation URL" name="api_url"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="api_url" placeholder="API documentation URL" name="apiDocUrl"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Source repo URL</label>
@@ -151,17 +170,17 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Deployment location</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_internal" name="open_source">internal</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_external" name="open_source">external</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_internal" name="location_internal">internal</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_external" name="location_external">external</label>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="api_base" placeholder="API base URL" name="api_base"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="api_base" placeholder="API base URL" name="apiBaseUrl"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="docker_img" placeholder="Docker image name (If internally deployed)" name="docker_img"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="docker_img" placeholder="Docker image name (If internally deployed)" name="dockerImageName"></div>
                 </div>
 
                 <div class="form-group">
@@ -176,7 +195,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Database Detail</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="db-detail" placeholder="Details of API endpoint to delete user info given the user UUID" name="db-detail"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="db-detail" placeholder="Details of API endpoint to delete user info given the user UUID" name="databaseDetails"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Version</label>
@@ -188,7 +207,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Health Check URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="health" placeholder="health check url" name="health"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="health" placeholder="health check url" name="healthCheckUrl"></div>
                 </div>
 
                 <div class="form-group">
@@ -202,7 +221,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Authentification Method</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="auth" placeholder="" name="auth"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="auth" placeholder="" name="authMethod"></div>
                 </div>
 
                 <div class="form-group">
@@ -224,43 +243,43 @@
             <h3>Submit a Talent</h3>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Talent Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_name" placeholder="give a name of your Talent" name="talent_name"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_name" placeholder="give a name of your Talent" name="name"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Talent Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_description" placeholder="" name="talent_description"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_description" placeholder="" name="shortDescription"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Required Capabilit(y/ies)</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="required_capability"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="requiredBuildingBlocks"></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >User Privacy Level</label>
-                    <div class="col-sm-10"><input type="number" min="1" step="1" max="5" /></div>
+                    <div class="col-sm-10"><input name="minUserPrivacyLevel" type="number" min="1" step="1" max="5" /></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">End User Role</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="student" name="status">student</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="visitor" name="status">visitor</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="alumni" name="status">alumni</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="employee" name="status">employee</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="parent" name="status">parent</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="fan" name="status">fan</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="student" name="student">student</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="visitor" name="visitor">visitor</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="alumni" name="alumni">alumni</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="employee" name="employee">employee</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="parent" name="parent">parent</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="fan" name="fan">fan</label>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Select active date range</label>
                     <label class ="form-check-label">start</label>
-                        <input class ="form-check-input" type="date" id="start_day" name="start_end">
+                        <input class ="form-check-input" type="date" id="start_day" name="startDate">
                     <label class ="form-check-label">end</label>
-                    <input class ="form-check-input" type="date" id="end_day" name="start_end">
+                    <input class ="form-check-input" type="date" id="end_day" name="endDate">
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Data Description</label>
-                    <div class="col-sm-10"><input type="text" id="data_des" name="data_des"
+                    <div class="col-sm-10"><input type="text" id="data_des" name="dataDescription"
                                                   placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level." style="height:150px"></div>
                 </div>
 
@@ -283,19 +302,19 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contact Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_name" placeholder="" name="contact_name"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_name" placeholder="" name="name"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contact Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_email" placeholder="" name="contact_email"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_email" placeholder="" name="email"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Contact Organization</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_org" placeholder="" name="contact_org"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_org" placeholder="" name="organization"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Official Address</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_address" placeholder="" name="contact_address"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_address" placeholder="" name="officialAddress"></div>
                 </div>
 
         </div>
@@ -305,19 +324,19 @@
                 <h3>Self Certification</h3>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Deleting data upon request</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Deleting data upon request" name="delete data"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Deleting data upon request" name="dataDeletionUponRequest"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Respecting privacy setting</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="Respecting privacy setting" name="privacy settomg"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="Respecting privacy setting" name="respectingUserPrivacySetting"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Disclose sponsors / ads</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose sponsors / ads" name="disclose sponsor"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose sponsors / ads" name="discloseAds"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >Disclose right to use images</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose right to use images" name="disclose img"></div>
+                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose right to use images" name="discloseImageRights"></div>
                 </div>
                 <div class="row">
                     <input type="submit" value="Submit">
