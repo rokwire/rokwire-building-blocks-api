@@ -7,11 +7,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
 from .config import Config
-from ..api.controllers.contributions import client_contribution, db_contribution, coll_contribution, post, get, put, search, delete
+# from ..api.controllers.contributions import client_contribution, db_contribution, coll_contribution, post, get, put, search, delete
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/', methods=['GET', 'POST'])
 def home():
     # if request.method == 'POST':
     #     title = request.form['title']
@@ -35,10 +35,11 @@ def home():
 
     return render_template('contribute/home.html')
 
-@bp.route('/create', methods=('POST'))
+@bp.route('/create', methods=['GET', "POST"])
 def create():
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        post()
+    # if request.method == 'POST':
+    #     name = request.form['contribution_name']
+    #     print(name)
+    #     # body = request.form['body']
+    #     # post()
     return render_template('contribute/contribute.html')
