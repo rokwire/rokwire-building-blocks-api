@@ -37,9 +37,9 @@ def home():
 
 @bp.route('/create', methods=['GET', "POST"])
 def create():
-    # if request.method == 'POST':
-    #     name = request.form['contribution_name']
-    #     print(name)
+    if request.method == 'POST':
+        result = request.form
+        print(result)
     #     # body = request.form['body']
     #     # post()
     return render_template('contribute/contribute.html')
