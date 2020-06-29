@@ -258,6 +258,9 @@ def delete(id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
+def allcapabilitiessearch():
+    print("test")
+
 def capabilities_search():
     args = request.args
     query = dict()

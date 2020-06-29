@@ -1498,9 +1498,10 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error+
-  /contributions/capabilities/:
+  /contributions/capabilities:
     get:
       summary: Return existing Capabilities based on search criteria
+      operationId: controllers.contributions.allcapabilitiessearch
       tags:
         - Contribution
       responses:
@@ -1578,7 +1579,7 @@ paths:
           description: Internal server error
     put:
       summary: Update a contribution
-      tags: 
+      tags:
        - Contributions
       parameters:
       - name: id
@@ -1607,7 +1608,7 @@ paths:
           description: Internal error
     delete:
       summary: Delete a contribution
-      tags: 
+      tags:
        - Contributions
       parameters:
       - name: id
