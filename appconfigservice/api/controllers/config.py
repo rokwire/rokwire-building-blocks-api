@@ -12,22 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from ..utils import dbutils
+import os
 
+from dotenv import load_dotenv
 
-def test_valid_appversion():
-    vers_1 = "0.1.0"
-    is_valid = dbutils.check_appversion_format(vers_1)
-    assert is_valid == True
-    vers_2 = "12.0.10"
-    is_valid = dbutils.check_appversion_format(vers_2)
-    assert is_valid == True
+# Load .env file
+load_dotenv()
 
+APP_CONFIG_MONGO_URL = os.getenv('APP_CONFIG_MONGO_URL', 'mongodb://localhost:27017')
+APP_CONFIG_DB_NAME = 'app_config_db'
+APP_CONFIG_MAX_POOLSIZE = 100,
+APP_CONFIG_URL_PREFIX = os.getenv('APP_CONFIG_URL_PREFIX', '')
+APP_CONFIGS_COLLECTION = 'app_configs'
 
-def test_invalid_appversion():
-    vers_1 = "0.1.2.3.4"
-    is_valid = dbutils.check_appversion_format(vers_1)
-    assert is_valid == False
-    vers_2 = "a.b.c"
-    is_valid = dbutils.check_appversion_format(vers_2)
-    assert is_valid == False
+API_LOC = os.getenv('API_LOC', '../../')
+# APP_CONFIG_ENDPOINT = os.getenv('APPCONFIG_ENDPOINT', '/rest_service')
+DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
