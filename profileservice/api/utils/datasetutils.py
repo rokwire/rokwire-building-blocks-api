@@ -183,6 +183,10 @@ def update_pii_dataset_from_json(dataset, injson):
     except Exception as e:
         pass
     try:
+        dataset.set_document_type(injson['documentType'])
+    except Exception as e:
+        pass
+    try:
         dataset.set_photo_image_base64(injson['photoImageBase64'])
     except Exception as e:
         pass

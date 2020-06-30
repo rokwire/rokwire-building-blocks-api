@@ -34,6 +34,7 @@ class PiiData:
         self.country = None
         self.healthcareProviderIDs = None
         self.testResultsConsent = None
+        self.documentType = None
         self.photoImageBase64 = None
         self.imageUrl = None
         self.fileDescriptors = None
@@ -159,6 +160,12 @@ class PiiData:
 
     def get_test_results_consent(self):
         return self.testResultsConsent
+
+    def set_document_type(self, documentType):
+        self.documentType = documentType
+
+    def get_document_type(self):
+        return self.documentType
 
     def set_photo_image_base64(self, photoImageBase64):
         self.photoImageBase64 = photoImageBase64

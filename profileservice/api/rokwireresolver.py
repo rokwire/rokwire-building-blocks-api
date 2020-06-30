@@ -69,7 +69,7 @@ class RokwireResolver(Resolver):
         method = operation.method.lower()
         if method == 'get' and '{' not in elements[-1]:
             method = self.collection_endpoint_name
-        print(name)
+        print(name + "_" + method)
 
         if name.count('.') < 2:
             return name + '.' + method
