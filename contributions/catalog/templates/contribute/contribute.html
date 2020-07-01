@@ -186,8 +186,8 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Enviroment Variable(s)</label>
                     <div class="col-sm-10" id ="key-val">
-                     <input class="form-inline" name="environmentVariables_Key" type="text" placeholder="Key">
-                        <input class="form-inline" name="environmentVariables_Value" type="text" placeholder="Value">
+                     <input class="form-inline" name="environmentVariables_key" type="text" placeholder="Key">
+                        <input class="form-inline" name="environmentVariables_value" type="text" placeholder="Value">
                         <br>
                     </div>
                     <div class="row"><button type = "submit" id='add-user'>Add more fields</button></div>
@@ -383,8 +383,8 @@
     $(function() {
         $("#add-user").click(function(e) {
             e.preventDefault();
-            $("#key-val").append("<input name=\"Key\" type=\"text\" placeholder=\"Key\">");
-            $("#key-val").append("<input name=\"Value\" type=\"text\" placeholder=\"Value\">");
+            $("#key-val").append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
+            $("#key-val").append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
             $("#key-val").append("<br>");
         });
     });
