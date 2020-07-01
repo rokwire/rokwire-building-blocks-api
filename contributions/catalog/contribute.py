@@ -7,7 +7,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
 from .config import Config
-from api.controllers.contributions import client_contribution, db_contribution, coll_contribution, post, get, put, search, delete
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -38,12 +37,40 @@ def home():
 @bp.route('/create', methods=['GET', "POST"])
 def create():
     if request.method == 'POST':
-        result = request.form.to_dict()
-        print(result)
+        result = request.form.to_dict(flat=True)
+        capability = to_capability(result)
+        talent = {}
+        # print(result)
+        print(capability)
         myclient = pymongo.MongoClient("mongodb://localhost:27017")
         mydb = myclient["mydatabase"]
         mycol = mydb["contribution"]
         x = mycol.insert_one(result)
     #     # body = request.form['body']
-        post()
+    #     post()
     return render_template('contribute/contribute.html')
+
+def to_capability(d):
+    if not d: return {}
+    capability = {}
+    env = []
+    deploymentDetails = {}
+    dataDeletionEndpointDetails = {}
+
+    for k,v in d.items():
+        if "environmentVariables_" in k:
+            name = k.split("environmentVariables_")[-1]
+            env.append({name : v})
+        if "deploymentDetails_" in k:
+            name = k.split("deploymentDetails_")[-1]
+            deploymentDetails[name] = v
+        if "dataDeletionEndpointDetails_" in k:
+            name = k.split("dataDeletionEndpointDetails_")[-1]
+            dataDeletionEndpointDetails[name] = v
+        if "capability_" in k:
+            name = k.split("capability_")[-1]
+            capability[name] = v
+    deploymentDetails["environmentVariables"] = env
+    capability["deploymentDetails"] = deploymentDetails
+    capability["dataDeletionEndpointDetails"] = dataDeletionEndpointDetails
+    return capability
