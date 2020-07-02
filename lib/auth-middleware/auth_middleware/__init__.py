@@ -21,7 +21,9 @@ rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-serv
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
 rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
 rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
-
+rokwire_event_approvers ="urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers"
+ALL_GROUPS=[rokwire_event_manager_group, rokwire_events_uploader, rokwire_app_config_manager_group, rokwire_events_web_app, rokwire_event_approvers]
+EVENT_GROUPS=[rokwire_event_manager_group, rokwire_events_uploader,  rokwire_event_approvers, rokwire_events_web_app]
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
@@ -73,22 +75,29 @@ def authenticate(group_name=None, internal_token_only=False):
     return id_info
 
 
-# Checks for group membership to perform authorization
-def authorize(group_name=None):
+# Checks for group membership to perform authorization. This accepts either a single string (the group name) of
+# a list of group names as a list.
+def authorize(group_names=None):
 
     if 'user_token_data' not in g:
         raise OAuthProblem('Token data not available for authorization. Most likely an authentication error.')
     else:
         id_info = g.user_token_data
 
-        if group_name is not None:
+        if group_names is not None:
+            if not isinstance(group_names, list):
+                group_names = [group_names]
             # So we are to check is a group membership is required.
             if uiucedu_is_member_of in id_info:
                 is_member_of = id_info[uiucedu_is_member_of]
                 print("is_member_of" + str(is_member_of))
-                if group_name not in is_member_of:
-                    logger.warning("user is not a member of the group " + group_name)
-                    raise OAuthProblem('Invalid token')
+                # So if one of the group_names elements is in the group, ok.
+                for x in group_names:
+                    if x in is_member_of:
+                        return
+
+                logger.warning("user is not a member any listed group in" + str(group_names))
+                raise OAuthProblem('Invalid token')
             else:
                 logger.warning(uiucedu_is_member_of + " field is not present in the ID Token")
                 raise OAuthProblem('Invalid token')

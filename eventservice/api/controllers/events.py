@@ -185,7 +185,7 @@ def _get_event_result(query):
 
 
 def post():
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -210,7 +210,7 @@ def post():
 
 
 def put(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -237,7 +237,7 @@ def put(event_id):
 
 
 def patch(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -280,7 +280,7 @@ def patch(event_id):
 
 
 def delete(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -328,7 +328,7 @@ def _get_imagefiles_result(query):
 
 
 def images_post(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     tmpfile = None
     try:
@@ -376,7 +376,7 @@ def images_get(event_id, image_id):
 
 
 def images_put(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     tmpfile = None
     try:
@@ -408,7 +408,7 @@ def images_put(event_id, image_id):
 
 
 def images_delete(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.EVENT_GROUPS)
 
     msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:
