@@ -386,7 +386,7 @@ def alltalentssearch():
                         talent_json = tmp_talent_json
                         return_json.append(talent_json)
         else:
-            talents_json = out_json["capabilities"]
+            talents_json = out_json["talents"]
             # TODO this is the case of only 1 args that is name.
             #  If there are more args this should be updated
             for tmp_talent_json in talents_json:
