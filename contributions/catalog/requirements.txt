@@ -1,3 +1,5 @@
-Flask==1.0.3
+Flask==1.1.1
 pymongo==3.7.2
 gunicorn==19.9.0
+Jinja2==2.10.1
+oic==1.1.2
