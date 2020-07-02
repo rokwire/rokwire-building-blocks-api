@@ -81,4 +81,4 @@ class RokwireResolver(Resolver):
         if name.count('.') < 2:
             return name + '.' + method
         else:
-            return name + '-' + method
+            return name + '_' + method

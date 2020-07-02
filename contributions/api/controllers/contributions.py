@@ -258,10 +258,10 @@ def delete(id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
-def allcapabilitiessearch():
-    print("test")
+# def allcapabilitiessearch():
+#     print("test")
 
-def capabilities_search():
+def allcapabilitiessearch():
     args = request.args
     query = dict()
     try:
@@ -318,7 +318,7 @@ def capabilities_search():
 
     return return_json
 
-def capabilities__search(id):
+def capabilities_search(id):
     try:
         contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
         capability_dataset = contribution_dataset.get_capabilities()
