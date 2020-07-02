@@ -250,10 +250,13 @@
                     <div class="col-sm-10"><input type="text" class="form-control" id="talent_description" placeholder="" name="talent_shortDescription"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Required Capabilit(y/ies)</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="talent_requiredBuildingBlocks"></div>
+                    <label class="control-label col-sm-2" >Required Building Block(s)</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="required_bb" placeholder="" name="talent_requiredBuildingBlocks"></div>
                 </div>
-
+              <div class="form-group">
+                    <label class="control-label col-sm-2" >Required Capabilit(y/ies)</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="talent_requiredCapabilities"></div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" >User Privacy Level</label>
                     <div class="col-sm-10"><input name="talent_minUserPrivacyLevel" type="number" min="1" step="1" max="5" /></div>
@@ -261,12 +264,12 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">End User Role</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="student" name="talent_role" value="student">student</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="visitor" name="talent_role" value="visitor">visitor</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="alumni" name="talent_role" value="alumni">alumni</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="employee" name="talent_role" value="employee">employee</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="parent" name="talent_role" value="parent">parent</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="fan" name="talent_role" value="fan">fan</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="student" name="talent_minEndUserRoles" value="student">student</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="visitor" name="talent_minEndUserRoles" value="visitor">visitor</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="alumni" name="talent_minEndUserRoles" value="alumni">alumni</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="employee" name="talent_minEndUserRoles" value="employee">employee</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="parent" name="talent_minEndUserRoles" value="parent">parent</label>
+                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="fan" name="talent_minEndUserRoles" value="fan">fan</label>
                 </div>
 
                 <div class="form-group">
@@ -343,7 +346,7 @@
                     <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose right to use images" name="selfcertificate_discloseImageRights"></div>
                 </div>
                 <div class="row">
-                    <input type="submit" href="{{ url_for('contribute.home') }}"value="Submit">
+                    <input type="submit" href="{{ url_for('contribute.submitted') }}"value="Submit">
                 </div>
 
 

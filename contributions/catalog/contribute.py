@@ -48,7 +48,7 @@ def create():
     return render_template('contribute/contribute.html')
 
 @bp.route('/submitted', methods=['GET', 'POST'])
-def finished():
+def submitted():
     return render_template('contribute/submitted.html')
 
 
@@ -129,6 +129,7 @@ def init_organization():
         "email": "",
         "phone": ""
     }
+
 def init_contact():
     d = {"name": "",
           "email": "",
@@ -169,6 +170,12 @@ def to_capability(d):
         for k,v in list(zip(env_k, env_v)):
             capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
         for k,v in d.items():
+                if "isOpenSource" in k:
+                    if v[i] == 'on':
+                        capability_list[i]["isOpenSource"] = True
+                    else:
+                        capability_list[i]["isOpenSource"] = False
+                    d[k][i] = capability_list[i]["isOpenSource"]
                 if "deploymentDetails_" in k:
                     name = k.split("deploymentDetails_")[-1]
                     capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
@@ -204,6 +211,9 @@ def to_talent(d):
 
     for i, talent in enumerate(talent_list):
         for k,v in d.items():
+                if "minUserPrivacyLevel" in k:
+                    talent_list[i]["minUserPrivacyLevel"] = int(v[i])
+                    d[k][i] = talent_list[i]["minUserPrivacyLevel"]
                 if "talent_" in k:
                     name = k.split("talent_")[-1]
                     talent_list[i][name] = v[i]
