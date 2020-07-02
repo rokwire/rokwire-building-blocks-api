@@ -37,12 +37,14 @@ def home():
 @bp.route('/create', methods=['GET', "POST"])
 def create():
     if request.method == 'POST':
-        # result = request.form.to_dict(flat=False)
-        result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
+        result = request.form.to_dict(flat=False)
+        # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         capability = to_capability(result)
         talent = to_talent(result)
-        print(capability)
-        print(talent)
+        contributor = to_contributor(result)
+        # print(capability)
+        # print(talent)
+        print(contributor)
         myclient = pymongo.MongoClient("mongodb://localhost:27017")
         mydb = myclient["mydatabase"]
         mycol = mydb["contribution"]
@@ -55,22 +57,22 @@ def init_capability():
     d = {'name': '',
          'description': '',
          'apiDocUrl': '',
-         'source_url': '',
+         'isOpenSource': '',
          'apiBaseUrl': '',
          'version': '',
-         'version_url': '',
          'healthCheckUrl': '',
          'status': '',
          'deploymentDetails': {
              'dockerImageName': '',
              'databaseDetails': '',
              'authMethod':'',
-             'environmentVariables': [{"key": "","value": ""}]
+             'environmentVariables': []
          },
          'dataDeletionEndpointDetails': {
              'endpoint': '',
              'api':''
-         }
+         },
+         "contacts" : [],
          }
     return d
 
@@ -87,7 +89,7 @@ def to_capability(d):
     for i, capability in enumerate(capability_list):
         env_k, env_v = d['environmentVariables_key'], d['environmentVariables_value']
         for k,v in list(zip(env_k, env_v)):
-            capability["deploymentDetails"]['environmentVariables'].append({k: v})
+            capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
         for k,v in d.items():
                 if "deploymentDetails_" in k:
                     name = k.split("deploymentDetails_")[-1]
@@ -97,7 +99,7 @@ def to_capability(d):
                     capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
                 if "capability_" in k:
                     name = k.split("capability_")[-1]
-                    capability[name] = v[i]
+                    capability_list[i][name] = v[i]
     return capability_list
 
 
@@ -107,9 +109,9 @@ def init_talent():
     "shortDescription": "",
     "longDescription": "",
     "requiredCapabilities" :[],
-    "requiredBuildingBlocks": [""],
+    "requiredBuildingBlocks": [],
     "minUserPrivacyLevel": 0,
-    "minEndUserRoles": [""],
+    "minEndUserRoles": [],
     "startDate": "",
     "endDate": "",
     "dataDescription": "",
@@ -137,7 +139,7 @@ def to_talent(d):
         for k,v in d.items():
                 if "talent_" in k:
                     name = k.split("talent_")[-1]
-                    talent[name] = v[i]
+                    talent_list[i][name] = v[i]
     return talent_list
 
 def init_contribution():
@@ -147,34 +149,75 @@ def init_contribution():
         "longDescription": "",
         "contributors": [],
         "capabilities" : [],
-        "talents": [],
+        "talents": []
     }
     return d
 
-
-
-def init_person():
-    d = {
-        "firstName": "",
-        "middleName": "",
-        "lastName": "",
-        "email": "",
-        "phone": "",
-        "affiliation": {
-          "name": "",
-          "address": "",
-          "email": "",
-          "phone": ""
+def to_contributor(d):
+    def init_person():
+        return {
+            "firstName": "",
+            "middleName": "",
+            "lastName": "",
+            "email": "",
+            "phone": "",
+            "affiliation": {
+              "name": "",
+              "address": "",
+              "email": "",
+              "phone": ""
+            }
         }
-    }
-    return d
+    def init_organization(): return {
+            "name": "",
+            "address": "",
+            "email": "",
+            "phone": ""
+        }
 
+    if not d: return {}
+    person_list = []
+    org_list = []
 
-def init_organization():
+    if 'org_name' in d:
+        if isinstance(d['org_name'], str):
+            org_list.append(init_organization())
+        else:
+            for _ in range(len(d['org_name'])):
+                org_list.append(init_organization())
+
+    if 'person_firstName' in d:
+        if isinstance(d['person_firstName'], str):
+            person_list.append(init_person())
+        else:
+            for _ in range(len(d['person_firstName'])):
+                person_list.append(init_person())
+
+    for i, e in enumerate(person_list):
+        for k,v in d.items():
+                if "affiliation_" in k.lower():
+                    # print(k,v)
+                    name = k.split("affiliation_")[-1]
+                    person_list[i]["affiliation"][name] = v[i]
+                if "person_" in k.lower():
+                    name = k.split("person_")[-1]
+                    person_list[i][name] = v[i]
+    # print(person_list)
+
+    for i, e in enumerate(org_list):
+        for k,v in d.items():
+                if "org_" in k:
+                    name = k.split("org_")[-1]
+                    org_list[i][name] = v[i]
+    if not person_list: return org_list
+    if not org_list: return person_list
+    return person_list + org_list
+
+def init_contact():
     d = {
-        "name": "",
-        "address": "",
-        "email": "",
-        "phone": ""
-    }
-    return d
+            "name": "",
+            "email": "",
+            "phone": "",
+            "organization": "",
+            "officialAddress": ""
+        }
