@@ -258,9 +258,6 @@ def delete(id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
-# def allcapabilitiessearch():
-#     print("test")
-
 def allcapabilitiessearch():
     args = request.args
     query = dict()
@@ -336,7 +333,7 @@ def capabilities_search(id):
             "reason": "There is no capability with given contribution id: " + str(id),
             "error": "Not Found: " + request.url,
         }
-        msg_json = jsonutils.create_log_json("Capability", "PUT", msg)
+        msg_json = jsonutils.create_log_json("Capability", "GET", msg)
         logging.error("Capability SEARCH " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
@@ -348,6 +345,94 @@ def capabilities_search(id):
     logging.info("Capability SEARCH " + json.dumps(msg))
 
     return capability_dataset
+
+def alltalentssearch():
+    args = request.args
+    query = dict()
+    try:
+        query = query_params.format_query_talent(args, query)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument " + str(args),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+        logging.error("Talent SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    try:
+        out_json = mongoutils.get_result(coll_contribution, query)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument " + str(args),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+        logging.error("Talent SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    return_json = []
+    if out_json is None:
+        return_json = []
+    else:   # extract out talent with the given name
+        if isinstance(out_json, list):
+            for tmp_json in out_json:
+                talents_json = tmp_json["talents"]
+                # TODO this is the case of only 1 args that is name.
+                #  If there are more args this should be updated
+                for tmp_talent_json in talents_json:
+                    talent_json = None
+                    if tmp_talent_json["name"] == args["name"]:
+                        talent_json = tmp_talent_json
+                        return_json.append(talent_json)
+        else:
+            talents_json = out_json["capabilities"]
+            # TODO this is the case of only 1 args that is name.
+            #  If there are more args this should be updated
+            for tmp_talent_json in talents_json:
+                talent_json = None
+                if tmp_talent_json["name"] == args["name"]:
+                    talent_json = tmp_talent_json
+                    return_json.append(talent_json)
+    msg = {
+        "search": "Talent search performed with arguments of : " + str(args),
+        "result": return_json,
+    }
+    msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+    logging.info("Talent SEARCH " + json.dumps(msg_json))
+
+    return return_json
+
+def talents_search(id):
+    try:
+        contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
+        talent_dataset = contribution_dataset.get_talents()
+    except Exception as ex:
+        msg = {
+            "reason": "There is no contribution dataset with given id: " + str(id),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+        logging.error("Talent SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    if talent_dataset is None:
+        msg = {
+            "reason": "There is no Talent with given contribution id: " + str(id),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Talent", "GET", msg)
+        logging.error("Talent SEARCH " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)
+
+    msg = {
+        "search": "Talent data in the contirubion dataset with given id : " + str(id),
+        "result": talent_dataset,
+    }
+    msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+    logging.info("Talent SEARCH " + json.dumps(msg))
+
+    return talent_dataset
 
 def construct_capability(in_json):
     is_required_field = True

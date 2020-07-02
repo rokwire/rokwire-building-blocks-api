@@ -52,3 +52,14 @@ def format_query_capability(args, query):
         query['$and'] = query_parts
 
     return query
+
+def format_query_talent(args, query):
+    query_parts = []
+
+    if args.get('name'):
+        query_parts.append({'talent.name': {'$eq': args.get('name')}})
+
+    if query_parts:
+        query['$and'] = query_parts
+
+    return query
