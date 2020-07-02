@@ -4,30 +4,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2020-07-01
+### Added
+- Add environment variable for on/off of printing logs out. [#459](https://github.com/rokwire/rokwire-building-blocks-api/issues/459)
+- LICENSE file. [#466](https://github.com/rokwire/rokwire-building-blocks-api/issues/466)
+- Add documentType field in PII dataset. [#473](https://github.com/rokwire/rokwire-building-blocks-api/issues/473)
+- Add standard license header to code file [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
+- Add license header for app config building block [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
+- Add enum value to documentType field in PII. [#476](https://github.com/rokwire/rokwire-building-blocks-api/issues/476)
 ## [1.4.0] - 2020-06-11
-## Added
+### Added
 - Index to PII and Non-PII database collections. [#428](https://github.com/rokwire/rokwire-building-blocks-api/issues/428)
 
-## Changed
+### Changed
 - Incoming requests can be validated against a list of API keys. [#277](https://github.com/rokwire/rokwire-building-blocks-api/issues/277)
 
 ## [1.3.1] - 2020-06-05
-## Changed
+### Changed
 - Stop printing logs in the Logging Building Block. [#444](https://github.com/rokwire/rokwire-building-blocks-api/issues/444)
 
 ## [1.3.0] - 2020-05-15
-## Added
+### Added
 - Add more fields in PII and updated API design. [#411](https://github.com/rokwire/rokwire-building-blocks-api/issues/411)
 - Couple of examples to Profile PII API documentation. [#426](https://github.com/rokwire/rokwire-building-blocks-api/issues/426)
 
-## Changed
+### Changed
 - Differentiated verified and unverified data items in PII data and made unverified data updatable. [#424](https://github.com/rokwire/rokwire-building-blocks-api/issues/424)
 - Some PII data fields became read-only (pid, creation date). [#431](https://github.com/rokwire/rokwire-building-blocks-api/issues/431)
 
-## Removed
+### Removed
 - Read-only property from couple of PII fields. [#432](https://github.com/rokwire/rokwire-building-blocks-api/issues/432)
 
-## Fixed
+### Fixed
 - Date string fields in PII examples. [#434](https://github.com/rokwire/rokwire-building-blocks-api/issues/434)
 - Couple of CHANGELOG entries. [#436](https://github.com/rokwire/rokwire-building-blocks-api/issues/436) 
 
@@ -198,8 +206,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...HEAD
-[1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.0...1.4.0
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.1...1.4.0
+[1.3.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.2...1.3.0
 [1.2.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.0...1.2.1
