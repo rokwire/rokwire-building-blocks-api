@@ -39,16 +39,12 @@ def create():
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
-        capability = to_capability(result)
-        talent = to_talent(result)
-        contributor = to_contributor(result)
-        # print(capability)
-        # print(talent)
-        print(contributor)
+        contribution = to_contribution(result)
+        print(contribution)
         myclient = pymongo.MongoClient("mongodb://localhost:27017")
         mydb = myclient["mydatabase"]
         mycol = mydb["contribution"]
-        x = mycol.insert_one(result)
+        x = mycol.insert_one(contribution)
     #     # body = request.form['body']
     #     post()
     return render_template('contribute/contribute.html')
@@ -153,6 +149,22 @@ def init_contribution():
     }
     return d
 
+def to_contribution(d):
+    if not d: return {}
+    res = init_contribution()
+    capability = to_capability(d)
+    res["capabilities"] = capability
+    talent = to_talent(d)
+    res["talents"] = talent
+    contributor = to_contributor(d)
+    res["contributors"] = contributor
+
+    for k, v in d.items():
+        if "contribution_" in k:
+            name = k.split("contribution_")[-1]
+            res[name] = v[0]
+    return res
+
 def to_contributor(d):
     def init_person():
         return {
@@ -209,8 +221,9 @@ def to_contributor(d):
                 if "org_" in k:
                     name = k.split("org_")[-1]
                     org_list[i][name] = v[i]
-    if not person_list: return org_list
-    if not org_list: return person_list
+
+    if not person_list or len(person_list) == 0: return org_list
+    if not org_list or len(person_list) == 0: return person_list
     return person_list + org_list
 
 def init_contact():
