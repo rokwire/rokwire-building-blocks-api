@@ -49,6 +49,18 @@ def create():
     #     post()
     return render_template('contribute/contribute.html')
 
+
+def init_contribution():
+    d = {
+        "name": "",
+        "shortDescription": "",
+        "longDescription": "",
+        "contributors": [],
+        "capabilities" : [],
+        "talents": []
+    }
+    return d
+
 def init_capability():
     d = {'name': '',
          'description': '',
@@ -68,9 +80,77 @@ def init_capability():
              'endpoint': '',
              'api':''
          },
-         "contacts" : [],
          }
     return d
+
+def init_talent():
+    d = {
+    "name" : "",
+    "shortDescription": "",
+    "longDescription": "",
+    "requiredCapabilities" :[],
+    "requiredBuildingBlocks": [],
+    "minUserPrivacyLevel": 0,
+    "minEndUserRoles": [],
+    "startDate": "",
+    "endDate": "",
+    "dataDescription": "",
+    "selfCertification": {
+      "dataDeletionUponRequest": "",
+      "respectingUserPrivacySetting": "",
+      "discloseAds": "",
+      "discloseSponsors": "",
+      "discloseImageRights": ""
+    }
+  }
+    return d
+
+def init_person():
+    return {
+        "firstName": "",
+        "middleName": "",
+        "lastName": "",
+        "email": "",
+        "phone": "",
+        "affiliation": {
+          "name": "",
+          "address": "",
+          "email": "",
+          "phone": ""
+        }
+    }
+
+def init_organization():
+    return {
+        "name": "",
+        "address": "",
+        "email": "",
+        "phone": ""
+    }
+def init_contact():
+    d = {"name": "",
+          "email": "",
+           "phone": "",
+            "organization": "",
+            "officialAddress": ""
+        }
+    return d
+
+def to_contribution(d):
+    if not d: return {}
+    res = init_contribution()
+    capability = to_capability(d)
+    res["capabilities"] = capability
+    talent = to_talent(d)
+    res["talents"] = talent
+    contributor = to_contributor(d)
+    res["contributors"] = contributor
+
+    for k, v in d.items():
+        if "contribution_" in k:
+            name = k.split("contribution_")[-1]
+            res[name] = v[0]
+    return res
 
 def to_capability(d):
     if not d: return {}
@@ -96,30 +176,19 @@ def to_capability(d):
                 if "capability_" in k:
                     name = k.split("capability_")[-1]
                     capability_list[i][name] = v[i]
+        capability_list[i]["contacts"]= to_contact(d)
     return capability_list
 
-
-def init_talent():
-    d = {
-    "name" : "",
-    "shortDescription": "",
-    "longDescription": "",
-    "requiredCapabilities" :[],
-    "requiredBuildingBlocks": [],
-    "minUserPrivacyLevel": 0,
-    "minEndUserRoles": [],
-    "startDate": "",
-    "endDate": "",
-    "dataDescription": "",
-    "selfCertification": {
-      "dataDeletionUponRequest": "",
-      "respectingUserPrivacySetting": "",
-      "discloseAds": "",
-      "discloseSponsors": "",
-      "discloseImageRights": ""
-    }
-  }
-    return d
+def to_contact(d):
+    if not d: return {}
+    res = [init_contact()]
+    for cont in res:
+        for k, v in d.items():
+            if "contact_" in k:
+                name = k.split("contact_")[-1]
+                print(name, v)
+                cont[name] = v[0]
+    return res
 
 def to_talent(d):
     if not d: return {}
@@ -138,55 +207,7 @@ def to_talent(d):
                     talent_list[i][name] = v[i]
     return talent_list
 
-def init_contribution():
-    d = {
-        "name": "",
-        "shortDescription": "",
-        "longDescription": "",
-        "contributors": [],
-        "capabilities" : [],
-        "talents": []
-    }
-    return d
-
-def to_contribution(d):
-    if not d: return {}
-    res = init_contribution()
-    capability = to_capability(d)
-    res["capabilities"] = capability
-    talent = to_talent(d)
-    res["talents"] = talent
-    contributor = to_contributor(d)
-    res["contributors"] = contributor
-
-    for k, v in d.items():
-        if "contribution_" in k:
-            name = k.split("contribution_")[-1]
-            res[name] = v[0]
-    return res
-
 def to_contributor(d):
-    def init_person():
-        return {
-            "firstName": "",
-            "middleName": "",
-            "lastName": "",
-            "email": "",
-            "phone": "",
-            "affiliation": {
-              "name": "",
-              "address": "",
-              "email": "",
-              "phone": ""
-            }
-        }
-    def init_organization(): return {
-            "name": "",
-            "address": "",
-            "email": "",
-            "phone": ""
-        }
-
     if not d: return {}
     person_list = []
     org_list = []
@@ -226,11 +247,4 @@ def to_contributor(d):
     if not org_list or len(person_list) == 0: return person_list
     return person_list + org_list
 
-def init_contact():
-    d = {
-            "name": "",
-            "email": "",
-            "phone": "",
-            "organization": "",
-            "officialAddress": ""
-        }
+
