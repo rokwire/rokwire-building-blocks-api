@@ -63,3 +63,4 @@ def format_query_talent(args, query):
         query['$and'] = query_parts
 
     return query
+
