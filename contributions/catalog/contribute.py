@@ -41,13 +41,15 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         contribution = to_contribution(result)
         print(contribution)
-        myclient = pymongo.MongoClient("mongodb://localhost:27017")
-        mydb = myclient["mydatabase"]
-        mycol = mydb["contribution"]
+        myclient = pymongo.MongoClient(Config.MONGO_URL)
+        mydb = myclient[Config.DB_NAME]
+        mycol = mydb[Config.DB_COLLECTION]
         x = mycol.insert_one(contribution)
-    #     # body = request.form['body']
-    #     post()
     return render_template('contribute/contribute.html')
+
+@bp.route('/submitted', methods=['GET', 'POST'])
+def finished():
+    return render_template('contribute/submitted.html')
 
 
 def init_contribution():
