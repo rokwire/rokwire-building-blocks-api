@@ -1578,9 +1578,12 @@ components:
           nullable: true
           type: string
         documentType:
-          nullable: true
-          description: The type of the user document that was scanned to populate certain PII fields like name, photoImageBase64, birthYear, etc.
+          description: The type of the user document that was scanned to populate certain PII fields like name, photoImage, birthYear, etc.
           type: string
+          nullable: true
+          enum:
+            - passport
+            - drivingLicense
         creationDate:
           description: creation date will not be modified once it get set.
           type: string
