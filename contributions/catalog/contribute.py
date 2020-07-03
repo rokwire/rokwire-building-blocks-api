@@ -13,27 +13,11 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-    # if request.method == 'POST':
-    #     title = request.form['title']
-    #     body = request.form['body']
-    #     error = None
-    #
-    #     if not title:
-    #         error = 'Title is required.'
-    #
-    #     if error is not None:
-    #         flash(error)
-    #     else:
-    #         db = get_db()
-    #         db.execute(
-    #             'INSERT INTO post (title, body, author_id)'
-    #             ' VALUES (?, ?, ?)',
-    #             (title, body, g.user['id'])
-    #         )
-    #         db.commit()
-    #         return redirect(url_for('blog.index'))
+    if request.method == 'GET':
+        pass
 
     return render_template('contribute/home.html')
+
 
 @bp.route('/create', methods=['GET', "POST"])
 def create():
@@ -47,6 +31,7 @@ def create():
         mycol = mydb[Config.DB_COLLECTION]
         x = mycol.insert_one(contribution)
     return render_template('contribute/contribute.html',)
+
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
