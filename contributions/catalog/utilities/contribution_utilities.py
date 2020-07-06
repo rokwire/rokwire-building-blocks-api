@@ -1,16 +1,18 @@
 from .capability_utilities import to_capability
 from .talent_utilities import to_talent
 
+
 def init_contribution():
     d = {
         "name": "",
         "shortDescription": "",
         "longDescription": "",
         "contributors": [],
-        "capabilities" : [],
+        "capabilities": [],
         "talents": []
     }
     return d
+
 
 def init_person():
     return {
@@ -20,12 +22,13 @@ def init_person():
         "email": "",
         "phone": "",
         "affiliation": {
-          "name": "",
-          "address": "",
-          "email": "",
-          "phone": ""
+            "name": "",
+            "address": "",
+            "email": "",
+            "phone": ""
         }
     }
+
 
 def init_organization():
     return {
@@ -56,25 +59,26 @@ def to_contributor(d):
                 person_list.append(init_person())
 
     for i, e in enumerate(person_list):
-        for k,v in d.items():
-                if "affiliation_" in k.lower():
-                    # print(k,v)
-                    name = k.split("affiliation_")[-1]
-                    person_list[i]["affiliation"][name] = v[i]
-                if "person_" in k.lower():
-                    name = k.split("person_")[-1]
-                    person_list[i][name] = v[i]
+        for k, v in d.items():
+            if "affiliation_" in k.lower():
+                # print(k,v)
+                name = k.split("affiliation_")[-1]
+                person_list[i]["affiliation"][name] = v[i]
+            if "person_" in k.lower():
+                name = k.split("person_")[-1]
+                person_list[i][name] = v[i]
     # print(person_list)
 
     for i, e in enumerate(org_list):
-        for k,v in d.items():
-                if "org_" in k:
-                    name = k.split("org_")[-1]
-                    org_list[i][name] = v[i]
+        for k, v in d.items():
+            if "org_" in k:
+                name = k.split("org_")[-1]
+                org_list[i][name] = v[i]
 
     if not person_list or len(person_list) == 0: return org_list
     if not org_list or len(person_list) == 0: return person_list
     return person_list + org_list
+
 
 def to_contribution(d):
     if not d: return {}
