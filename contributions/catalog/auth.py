@@ -1,23 +1,20 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+from oic import rndstr
+from oic.oic.message import AuthorizationResponse
+from oic.utils.http_util import Redirect
 
-from .db import get_db
 from .config import Config
 
-# from oic.oic import Client
-# from oic.utils.authn.client import CLIENT_AUTHN_METHOD
-# from oic.oic.message import AuthorizationResponse
-# from oic.oic.message import RegistrationResponse
-# from oic import rndstr
-# from oic.utils.http_util import Redirect
 #
 
 # bp = Blueprint('auth', __name__, url_prefix=Config.URL_PREFIX + '/auth')
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+
 # client = Client(client_authn_method=CLIENT_AUTHN_METHOD)
 # provider_info = client.provider_config(Config.ISSUER_URL)
 # info = {"client_id": Config.CLIENT_ID, "client_secret": Config.CLIENT_SECRET, "redirect_uris": Config.REDIRECT_URIS}
@@ -37,32 +34,6 @@ def register():
             error = 'Password is required.'
         flash(error)
     return render_template('auth/register.html')
-
-# @bp.route('/login', methods=('GET', 'POST'))
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         db = get_db()
-#         error = None
-#         user = db.execute(
-#             'SELECT * FROM user WHERE username = ?', (username,)
-#         ).fetchone()
-#
-#         if user is None:
-#             error = 'Incorrect username.'
-#         elif not check_password_hash(user['password'], password):
-#             error = 'Incorrect password.'
-#
-#         if error is None:
-#             session.clear()
-#             session['user_id'] = user['id']
-#             return redirect(url_for('index'))
-#
-#         flash(error)
-#
-#     return render_template('auth/login.html')
-
 
 
 def check_login(view):
@@ -91,85 +62,86 @@ def role_required(role):
                 else:
                     return redirect(url_for("auth.login"))
                 return view(**kwargs)
+
         return decorated_function
+
     return decorator
 
 
-
-def login_shibboleth():
-    session["state"] = rndstr()
-    session["nonce"] = rndstr()
-    args = {
-        "client_id": client.client_id,
-        "response_type": "code",
-        "scope": Config.SCOPES,
-        "nonce": session["nonce"],
-        "redirect_uri": client.registration_response["redirect_uris"][0],
-        "state": session["state"]
-    }
-    auth_req = client.construct_AuthorizationRequest(request_args=args)
-    login_url = auth_req.request(client.authorization_endpoint)
-    return Redirect(login_url)
-
-
-@bp.route('/login')
-@check_login
-def login():
-    if Config.LOGIN_MODE == "shibboleth":
-        return login_shi()
+# def login_shibboleth():
+#     session["state"] = rndstr()
+#     session["nonce"] = rndstr()
+#     args = {
+#         "client_id": client.client_id,
+#         "response_type": "code",
+#         "scope": Config.SCOPES,
+#         "nonce": session["nonce"],
+#         "redirect_uri": client.registration_response["redirect_uris"][0],
+#         "state": session["state"]
+#     }
+#     auth_req = client.construct_AuthorizationRequest(request_args=args)
+#     login_url = auth_req.request(client.authorization_endpoint)
+#     return Redirect(login_url)
 
 
-@bp.route('/callback')
-def callback():
-    if Config.LOGIN_MODE != "shibboleth":
-        return redirect(url_for("auth.login"))
-    response = request.environ["QUERY_STRING"]
-    authentication_response = client.parse_response(AuthorizationResponse, info=response, sformat="urlencoded")
-    code = authentication_response["code"]
-    assert authentication_response["state"] == session["state"]
-    args = {"code": code}
-    token_response = client.do_access_token_request(state=authentication_response["state"],
-                                                    request_args=args,
-                                                    authn_method="client_secret_basic")
-    user_info = client.do_user_info_request(state=authentication_response["state"])
+# @bp.route('/login')
+# @check_login
+# def login():
+#     if Config.LOGIN_MODE == "shibboleth":
+#         return login_shi()
 
-    rokwireAuth = list(filter(
-        lambda x: "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-" in x,
-        user_info.to_dict()["uiucedu_is_member_of"]
-    ))
-    # if user has no privilege
-    # TODO: add a warning bar
-    if len(rokwireAuth) == 0:
-        return redirect(url_for("auth.login"))
-    else:
-        # fill in user information
-        session["name"] = user_info.to_dict()["name"]
-        session["email"] = user_info.to_dict()["email"]
-        # check for corresponding privilege
-        isUserAdmin = False
-        isSourceAdmin = False
-        for tag in rokwireAuth:
-            if "rokwire em user events admins" in tag:
-                isUserAdmin = True
-            if "rokwire em calendar events admins" in tag:
-                isSourceAdmin = True
-        # TODO: we are storing cookie by our own but not by code, may change it later
-        if isUserAdmin and isSourceAdmin:
-            session["access"] = "both"
-            session.permanent = True
-            return redirect(url_for("auth.select_events"))
-        elif isUserAdmin:
-            session["access"] = "user"
-            session.permanent = True
-            return redirect(url_for("user_events.user_events"))
-        elif isSourceAdmin:
-            session["access"] = "source"
-            session.permanent = True
-            return redirect(url_for("event.source", sourceId=0))
-        else:
-            # TODO: add a warning bar
-            session.clear()
-            return redirect(url_for("auth.login"))
+
+# @bp.route('/callback')
+# def callback():
+#     if Config.LOGIN_MODE != "shibboleth":
+#         return redirect(url_for("auth.login"))
+#     response = request.environ["QUERY_STRING"]
+#     authentication_response = client.parse_response(AuthorizationResponse, info=response, sformat="urlencoded")
+#     code = authentication_response["code"]
+#     assert authentication_response["state"] == session["state"]
+#     args = {"code": code}
+#     token_response = client.do_access_token_request(state=authentication_response["state"],
+#                                                     request_args=args,
+#                                                     authn_method="client_secret_basic")
+#     user_info = client.do_user_info_request(state=authentication_response["state"])
+#
+#     rokwireAuth = list(filter(
+#         lambda x: "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-" in x,
+#         user_info.to_dict()["uiucedu_is_member_of"]
+#     ))
+#     # if user has no privilege
+#     # TODO: add a warning bar
+#     if len(rokwireAuth) == 0:
+#         return redirect(url_for("auth.login"))
+#     else:
+#         # fill in user information
+#         session["name"] = user_info.to_dict()["name"]
+#         session["email"] = user_info.to_dict()["email"]
+#         # check for corresponding privilege
+#         isUserAdmin = False
+#         isSourceAdmin = False
+#         for tag in rokwireAuth:
+#             if "rokwire em user events admins" in tag:
+#                 isUserAdmin = True
+#             if "rokwire em calendar events admins" in tag:
+#                 isSourceAdmin = True
+#         # TODO: we are storing cookie by our own but not by code, may change it later
+#         if isUserAdmin and isSourceAdmin:
+#             session["access"] = "both"
+#             session.permanent = True
+#             return redirect(url_for("auth.select_events"))
+#         elif isUserAdmin:
+#             session["access"] = "user"
+#             session.permanent = True
+#             return redirect(url_for("user_events.user_events"))
+#         elif isSourceAdmin:
+#             session["access"] = "source"
+#             session.permanent = True
+#             return redirect(url_for("event.source", sourceId=0))
+#         else:
+#             # TODO: add a warning bar
+#             session.clear()
+#             return redirect(url_for("auth.login"))
 
 
 @bp.before_app_request

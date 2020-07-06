@@ -97,6 +97,7 @@ def callback():
     token_response = client.do_access_token_request(state=authentication_response["state"], request_args=args,
                                                     authn_method="client_secret_basic")
 
+
     user_info = client.do_user_info_request(state=authentication_response["state"])
 
     # see if that user is in local database or not
@@ -108,14 +109,22 @@ def callback():
                            lname=user_info["family_name"], email=user_info["email"], uin=user_info["uiucedu_uin"],
                            phone="NA")
 
-    # login that user
-    login_user(user)
+    #checking user info - TODO
+    rokwireAuth = list(filter(
+        lambda x: "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-" in x,
+        user_info.to_dict()["uiucedu_is_member_of"]
+    ))
 
-    return redirect(url_for("homepage"))
+    if len(rokwireAuth) == 0:
+        return redirect(url_for("auth.login"))
+    else:
+        login_user(user)
+
+    return redirect(url_for("home"))
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("homepage"))
+    return redirect(url_for("home"))

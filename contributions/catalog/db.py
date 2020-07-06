@@ -1,10 +1,11 @@
-import pymongo
-from pymongo.errors import PyMongoError
-from pymongo import MongoClient
-from flask import current_app,g
 import click
+from flask import current_app, g
 from flask.cli import with_appcontext
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
+
 from .config import Config
+
 
 def get_db():
     if 'dbclient' not in g:
@@ -19,6 +20,7 @@ def get_db():
             g.db = g.dbclient[Config.DB_NAME]
     return g.db
 
+
 def close_db(e=None):
     if current_app.config['DBTYPE'] == 'mongoDB':
         g.pop('db', None)
@@ -26,10 +28,12 @@ def close_db(e=None):
         if dbclient is not None:
             dbclient.close()
 
+
 def init_db():
     db = get_db()
     # with current_app.open_resource('schema.sql') as f:
     #     db.executescript(f.read().decode('utf8'))
+
 
 def init_app(app):
     app.teardown_appcontext(close_db)
