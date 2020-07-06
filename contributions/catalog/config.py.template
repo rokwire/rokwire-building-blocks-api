@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 class Config(object):
+    CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL", "http://localhost:5000/")
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
     DB_COLLECTION= os.getenv("MONGO_DATABASE", "catalog")
