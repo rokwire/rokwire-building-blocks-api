@@ -26,9 +26,8 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         contribution = to_contribution(result)
         print(contribution)
-        myclient = pymongo.MongoClient(Config.MONGO_URL)
-        mydb = myclient[Config.DB_NAME]
-        mycol = mydb[Config.DB_COLLECTION]
+        db = get_db()
+        mycol = db[Config.DB_COLLECTION]
         x = mycol.insert_one(contribution)
     return render_template('contribute/contribute.html',)
 
