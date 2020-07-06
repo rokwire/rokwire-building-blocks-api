@@ -4,18 +4,19 @@ from pymongo import MongoClient
 from flask import current_app,g
 import click
 from flask.cli import with_appcontext
+from .config import Config
 
 def get_db():
     if 'dbclient' not in g:
         if current_app.config['DBTYPE'] == 'mongoDB':
             try:
-                g.dbclient = MongoClient(current_app.config['MONGO_URL'])
+                g.dbclient = MongoClient(Config['MONGO_URL'])
             except PyMongoError:
                 print("MongoDB connection failed.")
                 if 'dbclient' in g:
                     g.pop('dbclient', None)
                 return None
-            g.db = g.dbclient.get_database(name=current_app.config['MONGO_DATABASE'])
+            g.db = g.dbclient[Config.DB_NAME]
     return g.db
 
 def close_db(e=None):
