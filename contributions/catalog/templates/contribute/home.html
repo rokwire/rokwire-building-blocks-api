@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
 
 </head>
 <body>
-
 
 
 <style>
@@ -119,80 +118,81 @@ h1 {
   background-color: #666;
   color: white;
 }
+
 </style>
 
 <div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}" >Capability Catalog/Packager</a>
+    <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
     <a href="{{ url_for('contribute.create') }}">Contribute</a>
 </div>
 
 <!-- MAIN (Center website) -->
 <div class="main">
-  <h1></h1>
-  <h1>Contribution Catalog / Packager</h1>
-  <!--<hr>-->
+    <h1></h1>
+    <h1>Contribution Catalog / Packager</h1>
+    <!--<hr>-->
 
-  <div id="myBtnContainer">
-    <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-    <button class="btn" onclick="filterSelection('capability')"> Capability</button>
-    <button class="btn" onclick="filterSelection('talent')"> Talent</button>
-  </div>
-
-  <div class="row">
-    <div class="column capability">
-      <div class="content">
-        <img src=""  style="width:100%">
-        <h4>capability</h4>
-        <p>description..</p>
-        <span class="label label-default">App Config</span>
-      </div>
-    </div>
-    <div class="column capability">
-      <div class="content">
-      <img src="" style="width:100%">
-        <h4>capability</h4>
-        <p>description..</p>
-        <span class="label label-default">Profile</span>
-      </div>
-    </div>
-    <div class="column capability">
-      <div class="content">
-      <img src=""  style="width:100%">
-        <h4>capability</h4>
-        <p>description..</p>
-        <span class="label label-default">Login</span>
-      </div>
+    <div id="myBtnContainer">
+        <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+        <button class="btn" onclick="filterSelection('capability')"> Capability</button>
+        <button class="btn" onclick="filterSelection('talent')"> Talent</button>
     </div>
 
-    <div class="column talent">
-      <div class="content">
-        <img src=""  style="width:100%">
-        <h4>talent</h4>
-        <p>description..</p>
-        <span class="label label-default">Login</span>
-      </div>
-    </div>
-    <div class="column talent">
-      <div class="content">
-      <img src="" style="width:100%">
-        <h4>talent</h4>
-        <p>description..</p>
-        <span class="label label-default">Auth</span>
-      </div>
-    </div>
-    <div class="column talent">
-      <div class="content">
-      <img src=""  style="width:100%">
-        <h4>talent</h4>
-        <p>description..</p>
-        <span class="label label-default">Events</span>
-      </div>
+    <div class="row">
+        <div class="column capability">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>capability</h4>
+                <p>description..</p>
+                <span class="label label-default">App Config</span>
+            </div>
+        </div>
+        <div class="column capability">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>capability</h4>
+                <p>description..</p>
+                <span class="label label-default">Profile</span>
+            </div>
+        </div>
+        <div class="column capability">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>capability</h4>
+                <p>description..</p>
+                <span class="label label-default">Login</span>
+            </div>
+        </div>
+
+        <div class="column talent">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>talent</h4>
+                <p>description..</p>
+                <span class="label label-default">Login</span>
+            </div>
+        </div>
+        <div class="column talent">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>talent</h4>
+                <p>description..</p>
+                <span class="label label-default">Auth</span>
+            </div>
+        </div>
+        <div class="column talent">
+            <div class="content">
+                <img src="" style="width:100%">
+                <h4>talent</h4>
+                <p>description..</p>
+                <span class="label label-default">Events</span>
+            </div>
+        </div>
+
+        <!-- END GRID -->
     </div>
 
-  <!-- END GRID -->
-  </div>
-
-<!-- END MAIN -->
+    <!-- END MAIN -->
 </div>
 
 <script>
@@ -239,6 +239,7 @@ for (var i = 0; i < btns.length; i++) {
     this.className += " active";
   });
 }
+
 </script>
 
 </body>

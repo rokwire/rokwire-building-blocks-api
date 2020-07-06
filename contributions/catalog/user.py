@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+
 from .db import get_db
 
 
@@ -26,7 +27,6 @@ class User(UserMixin):
                     phone=user_record['phone'])
 
         return user
-
 
     @staticmethod
     def create(netid, fname, lname, email, uin, phone):

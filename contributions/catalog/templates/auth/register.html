@@ -1,28 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main role="main" class="container" >
-  <div class="container d-none d-md-block">
-    <form method="post" class="justify-content-center">
-      <legend class="h3 text-center mb-4">Register</legend>
-        <div class="form-group row justify-content-center">
-          <label for="username" class="h5 col-form-label" style="width:170px">Username</label>
-          <div style="width:400px">
-            <input type="text" class="form-control" id="username" name="username">
-          </div>
-        </div>
-        <div class="form-group row justify-content-center">
-          <label for="password" class="h5 col-form-label" style="width:170px">Password</label>
-          <div style="width:400px">
-            <input type="password" class="form-control" id="password" name="password">
-          </div>
-        </div>
-        <div class="form-group row justify-content-center">
-          <div class="offset-sm-2">
-            <button type="submit" value="Register" class="btn btn-primary btn-block" style="width:400px">Register</button>
-          </div>
-        </div>
-    </form>
-  </div>
+<main class="container" role="main">
+    <div class="container d-none d-md-block">
+        <form class="justify-content-center" method="post">
+            <legend class="h3 text-center mb-4">Register</legend>
+            <div class="form-group row justify-content-center">
+                <label class="h5 col-form-label" for="username" style="width:170px">Username</label>
+                <div style="width:400px">
+                    <input class="form-control" id="username" name="username" type="text">
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label class="h5 col-form-label" for="password" style="width:170px">Password</label>
+                <div style="width:400px">
+                    <input class="form-control" id="password" name="password" type="password">
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="offset-sm-2">
+                    <button class="btn btn-primary btn-block" style="width:400px" type="submit" value="Register">
+                        Register
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </main>
 {% endblock %}

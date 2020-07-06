@@ -3,360 +3,454 @@
 <head>
     <title>Capability Catalog/Packager</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--    <link rel="stylesheet" href="css/style.css">-->
-<!--    <link rel="stylesheet" href="css/bar.css">-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}">
-    <link rel="javascript"  href="{{ url_for('static', filename='js/modernizr.js') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--    <link rel="stylesheet" href="css/style.css">-->
+    <!--    <link rel="stylesheet" href="css/bar.css">-->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-
 
 
 </head>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="topnav" id="myTopnav">
-            <a href="{{ url_for('contribute.home') }}" >Capability Catalog/Packager</a>
-            <a href="{{ url_for('contribute.create') }}" class="active">Contribute</a>
-        </div>
-        <div>
-            <nav>
-                <ol class="cd-multi-steps text-top">
-                    <li class="current" ><a href="#contribute">Contribution information</a></li>
-                    <li  ><em><a href="#capability">Submit a capability or a talent </a></em></li>
-                    <li ><em><a href="#contact">Contact & self certification</a></em></li>
-                    <li><em>Finish</em></li>
-                </ol>
-            </nav>
-        </div>
+<div class="container-fluid">
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
+        <a class="active" href="{{ url_for('contribute.create') }}">Contribute</a>
+    </div>
+    <div>
+        <nav>
+            <ol class="cd-multi-steps text-top">
+                <li class="current"><a href="#contribute">Contribution information</a></li>
+                <li><em><a href="#capability">Submit a capability or a talent </a></em></li>
+                <li><em><a href="#contact">Contact & self certification</a></em></li>
+                <li><em>Finish</em></li>
+            </ol>
+        </nav>
+    </div>
 
-    <form class="form-horizontal"  method = "POST">
-        <div class="container" >
-            <h2 id = "contribute">Submit a contribution</h2>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contribution Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="contribution_name" placeholder="give a name of your contribution" name="contribution_name">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Short Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contribution_description" placeholder="give a short description" name="contribution_shortDescription"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Long Description</label>
-                    <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_longDescription" placeholder="give a detailed description" style="height:150px"></textarea></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor</label>
-    <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
-    <!--                    <label class="radio-inline"><input type="radio" name="optradio" onclick="show_org()"checked> Organization</label>-->
-                        <div><button id = "add-contributor-person">Add Contributor as Person</button></div>
-                        <div><button id = "add-contributor-org">Add Contributor as Organization</button></div>
-                </div>
-
-            <div id = "organization" style="display: none">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Organization Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_name" placeholder="" name="org_name"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Organization Address</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_address" placeholder="" name="org_address"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Organization Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_email" placeholder="" name="org_email"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Organization Phone</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="org_phone" placeholder="" name="org_phone"></div>
-                </div>
-
-            </div>
-
-            <div id = "contributor" style="display: none">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contributor's first name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_fname" placeholder="" name="person_firstName"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contributor's middle name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_mname" placeholder="" name="person_middleName"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contributor's last name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contributor_lname" placeholder="" name="person_lastName"></div>
-                </div>
-                                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contributor Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="person_email"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contributor Phone</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="" name="person_phone"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="affiliation_name"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Address</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="affiliation_address"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="affiliation_email"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Affiliation Phone</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="" name="affiliation_phone"></div>
-                </div>
-            </div>
-
-    <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
-
+    <form class="form-horizontal" method="POST">
         <div class="container">
-            <div>
-                <nav>
-                    <ol class="cd-multi-steps text-top">
-                        <li class="visited" ><em><a href="#contribute">Contribution information</a></em></li>
-                        <li  class="current"><em><a href="#capability">Submit a capability or a talent </a></em></li>
-                        <li ><em><a href="#contact">Contact & self certification</a></em></li>
-                        <li><em>Finish</em></li>
-                    </ol>
-                </nav>
-            </div>
+            <h2 id="contribute">Submit a contribution</h2>
 
-     <form class="form-horizontal" method = "POST">
-        <div id="capability-div">
-            <h3 id = "capability">Submit a capability</h3>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Capability Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_name" placeholder="give a name of your capability" name="capability_name"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Capability Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="capability_description" placeholder="give a short description" name="capability_description"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for capability</label>
-                    <input type="file" id="capability_icon" name="capability_icon" accept="image/*">
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Is the Code Open Sourced? </label>
-                    <label class = "form-check-label"><input class = "form-check-input" type="checkbox" id="open_source" name="capability_isOpenSource"> yes</label>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >API Doc URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="api_url" placeholder="API documentation URL" name="capability_apiDocUrl"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Source repo URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="source_url" placeholder="Source code repository URL (if open sourced)" name="capability_source_url"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Deployment location</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_internal" name="location_internal", value="internal">internal</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="deploy_external" name="location_external" value="external">external</label>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="api_base" placeholder="API base URL" name="capability_apiBaseUrl"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="docker_img" placeholder="Docker image name (If internally deployed)" name="deploymentDetails_dockerImageName"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Enviroment Variable(s)</label>
-                    <div class="col-sm-10" id ="key-val">
-                     <input class="form-inline" name="environmentVariables_key" type="text" placeholder="Key">
-                        <input class="form-inline" name="environmentVariables_value" type="text" placeholder="Value">
-                        <br>
-                    </div>
-                    <div class="row"><button type = "submit" id='add-user'>Add more fields</button></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Database Detail</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="db-detail" placeholder="Details of API endpoint to delete user info given the user UUID" name="deploymentDetails_databaseDetails"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Version</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="version" placeholder="latest version number" name="capability_version"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Version URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="version_url" placeholder="" name="capability_version_url"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Health Check URL</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="health" placeholder="health check url" name="capability_healthCheckUrl"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Status</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="submitted" name="capability_status", value="submitted">submitted</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="in review" name="capability_status", value="in review">in review</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="approved" name="capability_status", value="approved">approved</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="rejected" name="capability_status", value="rejected">rejected</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="published" name="capability_status", value="published">published</label>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Authentification Method</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="auth" placeholder="" name="deploymentDetails_authMethod"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Data Deletion</label>
-                    <div class="col-sm-10" >
-                        <input class="form-inline" name="dataDeletionEndpointDetails_endpoint" type="text" placeholder="Endpoint">
-                        <input class="form-inline" name="dataDeletionEndpointDetails_api" type="text" placeholder="Api Key">
-                        <br>
-                    </div>
-                </div>
-
-
-        </div>
-
-        <div><button id = "add-capability">Add another Capability</button></div>
-
-
-        <div class="container" id="talent-div">
-            <h3>Submit a Talent</h3>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Talent Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_name" placeholder="give a name of your Talent" name="talent_name"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Talent Description</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="talent_description" placeholder="" name="talent_shortDescription"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Required Building Block(s)</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="required_bb" placeholder="" name="talent_requiredBuildingBlocks"></div>
-                </div>
-              <div class="form-group">
-                    <label class="control-label col-sm-2" >Required Capabilit(y/ies)</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="required_capability" placeholder="" name="talent_requiredCapabilities"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >User Privacy Level</label>
-                    <div class="col-sm-10"><input name="talent_minUserPrivacyLevel" type="number" min="1" step="1" max="5" /></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">End User Role</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="student" name="talent_minEndUserRoles" value="student">student</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="visitor" name="talent_minEndUserRoles" value="visitor">visitor</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="alumni" name="talent_minEndUserRoles" value="alumni">alumni</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="employee" name="talent_minEndUserRoles" value="employee">employee</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="parent" name="talent_minEndUserRoles" value="parent">parent</label>
-                    <label class ="form-check-label"><input class ="form-check-input" type="checkbox" id="fan" name="talent_minEndUserRoles" value="fan">fan</label>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Select active date range</label>
-                    <label class ="form-check-label">start</label>
-                        <input class ="form-check-input" type="date" id="start_day" name="talent_startDate">
-                    <label class ="form-check-label">end</label>
-                    <input class ="form-check-input" type="date" id="end_day" name="talent_endDate">
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Data Description</label>
-                    <div class="col-sm-10"><input type="text" id="data_des" name="talent_dataDescription"
-                                                  placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level." style="height:150px"></div>
-                </div>
-
-        </div>
-            <div><button id = "add-talent">Add another Talent</button></div>
-
-        <div>
-            <nav>
-                <ol class="cd-multi-steps text-top">
-                    <li class="visited" ><a href="#contribute">Contribution information</a></li>
-                    <li  class="visited"><em><a href="#capability">Fill out capability or talent </a></em></li>
-                    <li class="current"><em><a href="#contact">Contact & self certification</a></em></li>
-                    <li><em>Finish</em></li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="container">
-            <h3 id="contact">Contact</h3>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contact Name</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_name" placeholder="" name="contact_name"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Contact Email</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_email" placeholder="" name="contact_email"></div>
-                </div>
             <div class="form-group">
-                    <label class="control-label col-sm-2" >Contact Phone</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_phone" placeholder="" name="contact_phone"></div>
+                <label class="control-label col-sm-2">Contribution Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="contribution_name" name="contribution_name"
+                           placeholder="give a name of your contribution" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Short Description</label>
+                <div class="col-sm-10"><input class="form-control" id="contribution_description" name="contribution_shortDescription"
+                                              placeholder="give a short description"
+                                              type="text"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Long Description</label>
+                <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_longDescription"
+                                                 placeholder="give a detailed description"
+                                                 style="height:150px"></textarea></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Contributor</label>
+                <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
+                <!--                    <label class="radio-inline"><input type="radio" name="optradio" onclick="show_org()"checked> Organization</label>-->
+                <div>
+                    <button id="add-contributor-person">Add Contributor as Person</button>
+                </div>
+                <div>
+                    <button id="add-contributor-org">Add Contributor as Organization</button>
+                </div>
+            </div>
+
+            <div id="organization" style="display: none">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Organization Name</label>
+                    <div class="col-sm-10"><input class="form-control" id="org_name" name="org_name" placeholder=""
+                                                  type="text"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Contact Organization</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_org" placeholder="" name="contact_organization"></div>
+                    <label class="control-label col-sm-2">Organization Address</label>
+                    <div class="col-sm-10"><input class="form-control" id="org_address" name="org_address" placeholder=""
+                                                  type="text"></div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" >Official Address</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" id="contact_address" placeholder="" name="contact_officialAddress"></div>
+                    <label class="control-label col-sm-2">Organization Email</label>
+                    <div class="col-sm-10"><input class="form-control" id="org_email" name="org_email" placeholder=""
+                                                  type="text"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Organization Phone</label>
+                    <div class="col-sm-10"><input class="form-control" id="org_phone" name="org_phone" placeholder=""
+                                                  type="text"></div>
                 </div>
 
-        </div>
+            </div>
+
+            <div id="contributor" style="display: none">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor's first name</label>
+                    <div class="col-sm-10"><input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
+                                                  type="text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor's middle name</label>
+                    <div class="col-sm-10"><input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
+                                                  type="text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor's last name</label>
+                    <div class="col-sm-10"><input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
+                                                  type="text"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor Email</label>
+                    <div class="col-sm-10"><input class="form-control" name="person_email" placeholder="" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor Phone</label>
+                    <div class="col-sm-10"><input class="form-control" name="person_phone" placeholder="" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Affiliation Name</label>
+                    <div class="col-sm-10"><input class="form-control" name="affiliation_name" placeholder=""
+                                                  type="text"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Affiliation Address</label>
+                    <div class="col-sm-10"><input class="form-control" name="affiliation_address" placeholder=""
+                                                  type="text"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Affiliation Email</label>
+                    <div class="col-sm-10"><input class="form-control" name="affiliation_email" placeholder=""
+                                                  type="text"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Affiliation Phone</label>
+                    <div class="col-sm-10"><input class="form-control" name="affiliation_phone" placeholder=""
+                                                  type="text"></div>
+                </div>
+            </div>
+
+            <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
 
             <div class="container">
-    <!--        <form class="form-horizontal" method = "POST">-->
-                <h3>Self Certification</h3>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Deleting data upon request</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Deleting data upon request" name="selfcertificate_dataDeletionUponRequest"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Respecting privacy setting</label>
-                    <div class="col-sm-10"><input type="text" class="form-control"  placeholder="Respecting privacy setting" name="selfcertificate_respectingUserPrivacySetting"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Disclose sponsors / ads</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose sponsors / ads" name="selfcertificate_discloseAds"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" >Disclose right to use images</label>
-                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="Disclose right to use images" name="selfcertificate_discloseImageRights"></div>
-                </div>
-                <div class="row">
-                    <input type="submit" href="{{ url_for('contribute.submitted') }}"value="Submit">
+                <div>
+                    <nav>
+                        <ol class="cd-multi-steps text-top">
+                            <li class="visited"><em><a href="#contribute">Contribution information</a></em></li>
+                            <li class="current"><em><a href="#capability">Submit a capability or a talent </a></em></li>
+                            <li><em><a href="#contact">Contact & self certification</a></em></li>
+                            <li><em>Finish</em></li>
+                        </ol>
+                    </nav>
                 </div>
 
+                <form class="form-horizontal" method="POST">
+                    <div id="capability-div">
+                        <h3 id="capability">Submit a capability</h3>
 
-        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Capability Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="capability_name" name="capability_name"
+                                                          placeholder="give a name of your capability"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Capability Description</label>
+                            <div class="col-sm-10"><input class="form-control" id="capability_description" name="capability_description"
+                                                          placeholder="give a short description"
+                                                          type="text"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
+                                capability</label>
+                            <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Is the Code Open Sourced? </label>
+                            <label class="form-check-label"><input class="form-check-input" id="open_source"
+                                                                   name="capability_isOpenSource" type="checkbox"> yes</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">API Doc URL</label>
+                            <div class="col-sm-10"><input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                                          placeholder="API documentation URL"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Source repo URL</label>
+                            <div class="col-sm-10"><input class="form-control" id="source_url" name="capability_source_url"
+                                                          placeholder="Source code repository URL (if open sourced)"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Deployment location</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="deploy_internal" name="location_internal" type="checkbox"
+                                                                   value="internal">internal</label>
+                            <label class="form-check-label"><input class="form-check-input" id="deploy_external"
+                                                                   name="location_external" type="checkbox"
+                                                                   value="external">external</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="api_base">API Base Location</label>
+                            <div class="col-sm-10"><input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                                          placeholder="API base URL" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                                          placeholder="Docker image name (If internally deployed)"
+                                                          type="text"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Enviroment Variable(s)</label>
+                            <div class="col-sm-10" id="key-val">
+                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                       type="text">
+                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                       type="text">
+                                <br>
+                            </div>
+                            <div class="row">
+                                <button id='add-user' type="submit">Add more fields</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Database Detail</label>
+                            <div class="col-sm-10"><input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                                          placeholder="Details of API endpoint to delete user info given the user UUID"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Version</label>
+                            <div class="col-sm-10"><input class="form-control" id="version" name="capability_version"
+                                                          placeholder="latest version number" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Version URL</label>
+                            <div class="col-sm-10"><input class="form-control" id="version_url" name="capability_version_url"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Health Check URL</label>
+                            <div class="col-sm-10"><input class="form-control" id="health" name="capability_healthCheckUrl"
+                                                          placeholder="health check url"
+                                                          type="text"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Status</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="submitted" name="capability_status" type="checkbox"
+                                                                   value="submitted">submitted</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="in review" name="capability_status" type="checkbox"
+                                                                   value="in review">in review</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="approved" name="capability_status" type="checkbox"
+                                                                   value="approved">approved</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="rejected" name="capability_status" type="checkbox"
+                                                                   value="rejected">rejected</label>
+                            <label class="form-check-label"><input , class="form-check-input"
+                                                                   id="published" name="capability_status" type="checkbox"
+                                                                   value="published">published</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Authentification Method</label>
+                            <div class="col-sm-10"><input class="form-control" id="auth" name="deploymentDetails_authMethod" placeholder=""
+                                                          type="text"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Data Deletion</label>
+                            <div class="col-sm-10">
+                                <input class="form-inline" name="dataDeletionEndpointDetails_endpoint" placeholder="Endpoint"
+                                       type="text">
+                                <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
+                                       type="text">
+                                <br>
+                            </div>
+                        </div>
 
 
+                    </div>
+
+                    <div>
+                        <button id="add-capability">Add another Capability</button>
+                    </div>
 
 
-       </form>
-    </div>
+                    <div class="container" id="talent-div">
+                        <h3>Submit a Talent</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Talent Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="talent_name" name="talent_name"
+                                                          placeholder="give a name of your Talent" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Talent Description</label>
+                            <div class="col-sm-10"><input class="form-control" id="talent_description" name="talent_shortDescription"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Required Building Block(s)</label>
+                            <div class="col-sm-10"><input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                            <div class="col-sm-10"><input class="form-control" id="required_capability" name="talent_requiredCapabilities"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">User Privacy Level</label>
+                            <div class="col-sm-10"><input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                                          step="1" type="number"/></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">End User Role</label>
+                            <label class="form-check-label"><input class="form-check-input" id="student" name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="student">student</label>
+                            <label class="form-check-label"><input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="visitor">visitor</label>
+                            <label class="form-check-label"><input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                                                                   type="checkbox"
+                                                                   value="alumni">alumni</label>
+                            <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                   name="talent_minEndUserRoles" type="checkbox"
+                                                                   value="employee">employee</label>
+                            <label class="form-check-label"><input class="form-check-input" id="parent" name="talent_minEndUserRoles"
+                                                                   type="checkbox"
+                                                                   value="parent">parent</label>
+                            <label class="form-check-label"><input class="form-check-input" id="fan" name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="fan">fan</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Select active date range</label>
+                            <label class="form-check-label">start</label>
+                            <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                            <label class="form-check-label">end</label>
+                            <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Data Description</label>
+                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription" placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                          style="height:150px"
+                                                          type="text"></div>
+                        </div>
+
+                    </div>
+                    <div>
+                        <button id="add-talent">Add another Talent</button>
+                    </div>
+
+                    <div>
+                        <nav>
+                            <ol class="cd-multi-steps text-top">
+                                <li class="visited"><a href="#contribute">Contribution information</a></li>
+                                <li class="visited"><em><a href="#capability">Fill out capability or talent </a></em>
+                                </li>
+                                <li class="current"><em><a href="#contact">Contact & self certification</a></em></li>
+                                <li><em>Finish</em></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div class="container">
+                        <h3 id="contact">Contact</h3>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Email</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Phone</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Organization</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_org" name="contact_organization"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Official Address</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_address" name="contact_officialAddress"
+                                                          placeholder="" type="text"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="container">
+                        <!--        <form class="form-horizontal" method = "POST">-->
+                        <h3>Self Certification</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Deleting data upon request</label>
+                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_dataDeletionUponRequest"
+                                                          placeholder="Deleting data upon request"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Respecting privacy setting</label>
+                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
+                                                          placeholder="Respecting privacy setting"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
+                                                          placeholder="Disclose sponsors / ads"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Disclose right to use images</label>
+                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseImageRights"
+                                                          placeholder="Disclose right to use images"
+                                                          type="text"></div>
+                        </div>
+                        <div class="row">
+                            <input href="{{ url_for('contribute.submitted') }}" type="submit" value="Submit">
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
 
 
 </body>
@@ -454,5 +548,6 @@
             }
         });
     });
+
 </script>
 </html>

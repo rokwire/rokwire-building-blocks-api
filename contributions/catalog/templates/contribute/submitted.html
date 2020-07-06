@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
 
 </head>
 <body>
-
 
 
 <style>
@@ -119,23 +118,24 @@ h1 {
   background-color: #666;
   color: white;
 }
+
 </style>
 
 <div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}" >Capability Catalog/Packager</a>
+    <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
     <a href="{{ url_for('contribute.create') }}">Contribute</a>
 </div>
 
 <!-- MAIN (Center website) -->
 <div class="main">
-  <h1></h1>
-  <h1>Contribution Catalog / Packager</h1>
-  <hr>
+    <h1></h1>
+    <h1>Contribution Catalog / Packager</h1>
+    <hr>
 
     Your submission has been saved. Thank you!
 
-  <!-- END GRID -->
-  </div>
+    <!-- END GRID -->
+</div>
 
 <!-- END MAIN -->
 </div>
@@ -184,6 +184,7 @@ for (var i = 0; i < btns.length; i++) {
     this.className += " active";
   });
 }
+
 </script>
 
 </body>
