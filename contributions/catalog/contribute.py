@@ -28,9 +28,10 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         contribution = to_contribution(result)
         print(contribution)
-        db = get_db()
-        mycol = db[Config.DB_COLLECTION]
-        x = mycol.insert_one(contribution)
+        # db = get_db()
+        # mycol = db[Config.DB_COLLECTION]
+        # x = mycol.insert_one(contribution)
+        post(contribution)
     return render_template('contribute/contribute.html', )
 
 
@@ -43,12 +44,12 @@ def submitted():
 def post(json_data):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + current_app.config['AUTHENTICATION_TOKEN']
+        'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
     }
 
     try:
         # Setting up post request
-        result = requests.post(current_app.config['CONTRIBUTION_BUILDING_BLOCK_URL'], headers=headers,
+        result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers,
                                data=json.dumps(json_data))
 
         # if event submission fails, print that out and change status back to pending
