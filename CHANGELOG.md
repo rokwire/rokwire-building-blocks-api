@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
+- Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
 - Add environment variable for on/off of printing logs out. [#459](https://github.com/rokwire/rokwire-building-blocks-api/issues/459)
 
 ## [1.4.0] - 2020-06-11
