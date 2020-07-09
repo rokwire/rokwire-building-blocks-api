@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Platform API
   description: Rokwire Platform API Documentation
-  version: 1.0.4
+  version: 1.3.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -209,7 +209,7 @@ paths:
         This creates a new PII entry.
         User's UUID must be provided as a string or as a list of string.
 
-        Auth: Requires a valid id_token for access. The PII entry is populated from the id_token contents.
+        Auth: Requires a valid id_token for access. The UIN / phone number in the PII entry is populated from the id_token contents. Remaining data is obtained from the request body.
       security:
         - UserAuth: []
       requestBody:
@@ -219,12 +219,34 @@ paths:
             schema:
               $ref: '#/components/schemas/Pii'
             examples:
-              uuidAsList:
+              UUID list:
                 value:
                   uuid: ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]
-              uuidAsString:
+              UUID string:
                 value:
                   uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              UUID string with more request body:
+                value:
+                  uuid: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  address: 79137 Kristina Lights
+                  birthYear: 1999
+                  country: USA
+                  email: Janie.Daniel33@hotmail.com
+                  firstname: Ben
+                  healthcareProviderIDs:
+                    - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                    - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                    - aeb55bab-ebe3-4066-9f1a-323502a58c12
+                  homeCounty: Josianeburgh
+                  lastname: Barrows
+                  middlename: Levin
+                  phone: +17972114377
+                  photoImageBase64: null
+                  state: Illinois
+                  testResultsConsent:
+                    consentProvided: true
+                  workCounty: Donnieberg
+                  zipCode: "61801"
       responses:
         200:
           description: Ok
@@ -232,6 +254,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pii'
+              examples:
+                UUID string with more request body:
+                  value:
+                    address: 79137 Kristina Lights
+                    birthYear: 1999
+                    country: USA
+                    creationDate: "2020-05-05T04:44:45.943Z"
+                    email: Janie.Daniel33@hotmail.com
+                    firstname: Ben
+                    healthcareProviderIDs:
+                      - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                      - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                      - aeb55bab-ebe3-4066-9f1a-323502a58c12
+                    homeCounty: Josianeburgh
+                    imageUrl: null
+                    lastModifiedDate: "2020-05-05T04:44:45.943Z"
+                    lastname: Barrows
+                    middlename: Levin
+                    netid: null
+                    phone: +17972114377
+                    photoImageBase64: null
+                    pid: c84bfd99-e40d-43d5-854f-33859de593d5
+                    state: Illinois
+                    testResultsConsent:
+                      consentProvided: true
+                      dateModified: "2020-05-05T04:44:45.943Z"
+                    uin: "100000001"
+                    username: null
+                    uuid:
+                      - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    workCounty: Donnieberg
+                    zipCode: "61801"
         400:
           description: Bad request
         401:
@@ -299,6 +353,35 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pii'
+            example:
+              address: 2000 Kristina Lights
+              birthYear: 1999
+              country: USA
+              creationDate: "2020-05-05T04:44:45.943Z"
+              email: Alice.Bob@hotmail.com
+              firstname: Ben
+              healthcareProviderIDs:
+                - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+              homeCounty: Josianeburgh
+              imageUrl: null
+              lastModifiedDate: "2020-05-05T04:44:45.943Z"
+              lastname: Barrows
+              middlename: Levin
+              netid: null
+              phone: "+17972114377"
+              photoImageBase64: null
+              pid: c84bfd99-e40d-43d5-854f-33859de593d5
+              state: Illinois
+              testResultsConsent:
+                consentProvided: false
+                dateModified: "2020-05-05T04:44:45.943Z"
+              uin: "100000001"
+              username: null
+              uuid:
+                - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+              workCounty: Donnieberg
+              zipCode: "61821"
         required: true
       responses:
         200:
@@ -307,6 +390,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pii'
+              example:
+                address: 2000 Kristina Lights
+                birthYear: 1999
+                country: USA
+                creationDate: 2020-05-05T04:44:45.943Z
+                email: Alice.Bob@hotmail.com
+                firstname: Ben
+                healthcareProviderIDs:
+                  - 5ca68256-6a9a-4cfe-9246-3ddd5ee9580a
+                  - aa6897cf-2c31-41a1-be2c-52ebaf4d50f5
+                homeCounty: Josianeburgh
+                imageUrl: null
+                lastModifiedDate: "2020-05-05T04:44:45.943Z"
+                lastname: Barrows
+                middlename: Levin
+                netid: null
+                phone: "+17972114377"
+                photoImageBase64: null
+                pid: c84bfd99-e40d-43d5-854f-33859de593d5
+                state: Illinois
+                testResultsConsent:
+                  consentProvided: false
+                  dateModified: "2020-05-05T04:44:45.943Z"
+                uin: "100000001"
+                username: null
+                uuid:
+                  - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                workCounty: Donnieberg
+                zipCode: "61821"
             application/xml:
               schema:
                 $ref: '#/components/schemas/Pii'
@@ -1321,7 +1433,7 @@ paths:
               $ref: '#/components/schemas/AuthPhoneVerifyCheckBody'
   /contributions:
     post:
-      summary: Create a new contribution
+      summary: Create a new Contribution
       tags: 
        - Contributions
       requestBody:
@@ -1348,7 +1460,7 @@ paths:
         500:
           description: Internal server error
     get:
-      summary: Return existing contributions based on search criteria
+      summary: Return existing Contributions based on search criteria
       tags: 
        - Contributions
       responses:
@@ -1368,9 +1480,9 @@ paths:
           description: Internal server error
   /contributions/talents:
     get:
-      summary: Return existing talents based on search criteria
+      summary: Return existing Talents based on search criteria
       tags: 
-       - Contributions
+       - Talents
       responses:
         200:
           description: Search results
@@ -1385,12 +1497,12 @@ paths:
         401:
           description: Unauthorized
         500:
-          description: Internal server error
+          description: Internal server error+
   /contributions/capabilities:
     get:
-      summary: Return existing capabilities based on search criteria
-      tags: 
-       - Contributions
+      summary: Return existing Capabilities based on search criteria
+      tags:
+        - Contribution
       responses:
         200:
           description: Search results
@@ -1406,9 +1518,38 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
+  /contributions/{id}/capabilities:
+    get:
+      summary: Get Capabilities that belong to a specific Contribution
+      tags:
+        - Contributions
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Capabilities in the given Contribution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capability'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
   /contributions/{id}:
     get:
-      summary: Get a specific contribution
+      summary: Get a specific Contribution
       tags:
        - Contributions
       parameters:
@@ -1488,7 +1629,7 @@ paths:
           description: Internal error
   /contributions/{id}/talents:
     get:
-      summary: Get the Talents in a specific contribution
+      summary: Get Talents that belong to a specific Contribution
       tags:
        - Contributions
       parameters:
@@ -1515,35 +1656,6 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
-  /contributions/{id}/capabilities:
-    get:
-      summary: Get the Capabilities in a specific contribution
-      tags:
-       - Contributions
-      parameters:
-      - name: id
-        in: path
-        description: Contribution ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      responses:
-        200:
-          description: Capabilities in the given Contribution
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Capability'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        500:
-          description: Internal server error
     
 components:
   schemas:
@@ -1555,6 +1667,7 @@ components:
           type: string
           format: uuid
         over13:
+          nullable: true
           type: boolean
         interests:
           type: array
@@ -1567,14 +1680,17 @@ components:
                 items:
                  type: string
         positiveInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         negativeInterestTags:
+          nullable: true
           type: array
           items:
             type: string
         favorites:
+          nullable: true
           type: object
           items:
             properties:
@@ -1599,6 +1715,7 @@ components:
                 items:
                   type: string
         privacySettings:
+          nullable: true
           type: object
           properties:
             level:
@@ -1629,20 +1746,70 @@ components:
                 type: string
                 format: uuid
         userName:
+          nullable: true
           type: string
         firstname:
+          nullable: true
           type: string
         lastname:
+          nullable: true
+          type: string
+        middlename:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
+        birthYear:
+          nullable: true
+          type: integer
+          format: int8
+        address:
+          nullable: true
+          type: string
+        zipCode:
+           nullable: true
+           type: string
+        homeCounty:
+          nullable: true
+          type: string
+        workCounty:
+          nullable: true
+          type: string
+        state:
+          nullable: true
+          type: string
+        country:
+          nullable: true
+          type: string
+        healthcareProviderIDs:
+          nullable: true
+          type: array
+          items:
+            type: string
+        testResultsConsent:
+          type: object
+          nullable: true
+          properties:
+            consentProvided :
+              type: boolean
+            dateModified:
+              type: string
+        photoImageBase64:
+          nullable: true
+          type: string
+          format: byte
         imageUrl:
+          nullable: true
           type: string
         creationDate:
+          description: creation date will not be modified once it get set.
           type: string
         lastModifiedDate:
+          description: last modified date will be updated in the endpoint not from the input request.
           type: string
     NonPIIDeviceData:
       type: object
@@ -1983,7 +2150,7 @@ components:
           nullable: true
           type: array
           items:
-           oneOf:
+           anyOf:
             - $ref: '#/components/schemas/Person'
             - $ref: '#/components/schemas/Organization'
         capabilities:
@@ -2008,7 +2175,7 @@ components:
         - name
         - description
         - isOpenSource
-        - deploymentLocation
+        - deploymentDetails
         - healthCheckUrl
         - version
         - dataDeletionEndpointDetails
@@ -2023,42 +2190,45 @@ components:
           nullable: true
           type: string
           description: API documentation URL
-        deploymentLocation:
-          type: string
-          enum:
-           - internal
-           - external
-          description: >
-            Deployment location:
-              * `internal` - Within Rokwire Platform
-              * `external` - Outside Rokwire Platform
+        deploymentDetails:
+          type: object
+          properties:
+            location:
+              type: string
+              enum:
+               - internal
+               - external
+              description: >
+                Deployment location:
+                  * `internal` - Within Rokwire Platform
+                  * `external` - Outside Rokwire Platform
+            dockerImageName:
+              description: Docker image name (if available).
+              nullable: true
+              type: string
+            environmentVariables:
+              nullable: true
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+            databaseDetails:
+              nullable: true
+              type: string
+            authMethod:
+              nullable: true
+              type: string
         apiBaseUrl:
           description: API base URL
-          nullable: true
-          type: string
-        dockerImageName:
-          description: Docker image name (if available).
-          nullable: true
-          type: string
-        environmentVariables:
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-        databaseDetails:
           nullable: true
           type: string
         version:
           type: string
         healthCheckUrl:
-          nullable: true
-          type: string
-        authMethod:
           nullable: true
           type: string
         status:
@@ -2179,16 +2349,22 @@ components:
       type: object
       properties:
         firstName:
+          nullable: true
           type: string
         middleName:
+          nullable: true
           type: string
         lastName:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
         affiliation:
+          nullable: true
           type: object
           allOf:
            - $ref: '#/components/schemas/Organization'
@@ -2196,12 +2372,16 @@ components:
       type: object
       properties:
         name:
+          nullable: true
           type: string
         address:
+          nullable: true
           type: string
         email:
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
   securitySchemes:
     ApiKeyAuth:

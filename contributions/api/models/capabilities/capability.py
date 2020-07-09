@@ -1,3 +1,17 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import utils.datasetutils as datasetutils
 
 class Capability():
@@ -6,18 +20,17 @@ class Capability():
         self.description = None
         self.isOpenSource = None
         self.apiDocUrl = None
-        self.deploymentLocation = None
+        self.deploymentDetails = None
         self.apiBaseUrl = None
-        self.dockerImageName = None
-        self.environmentVariables = None
-        self.databaseDetails = None
+        # self.dockerImageName = None
+        # self.environmentVariables = None
+        # self.databaseDetails = None
         self.version = None
         self.healthCheckUrl = None
-        self.authMethod = None
+        # self.authMethod = None
         self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None
-        self.contributorDetails = None
         # self.creationDate = None
         # self.lastModifiedDate = None
 
@@ -47,11 +60,11 @@ class Capability():
     def get_api_doc_url(self):
         return self.apiDocUrl
 
-    def set_deployment_location(self, deploymentLocation):
-        self.deploymentLocation = deploymentLocation
+    def set_deployment_details(self, deploymentDetails):
+        self.deploymentDetails = deploymentDetails
 
-    def get_deployment_location(self):
-        return self.deploymentLocation
+    def get_deployment_details(self):
+        return self.deploymentDetails
 
     def set_docker_image_name(self, dockerImageName):
         self.dockerImageName = dockerImageName

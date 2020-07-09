@@ -149,3 +149,9 @@ def update_coordinates(req_data, coordinates):
     if req_data.get('location.longitude'):
         coordinates[0] = req_data.get('location.longitude')
         req_data['coordinates'] = coordinates
+
+
+def format_datetime_response(obj):
+    # Example format: Fri, 27 Mar 2020 01:00:00 GMT
+    if isinstance(obj, datetime.datetime):
+        return obj.strftime('%a, %d %b %Y %H:%M:%S GMT')

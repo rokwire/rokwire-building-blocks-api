@@ -1,3 +1,5 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+
 import flask
 from flask import flash, redirect, jsonify, make_response, request
 
