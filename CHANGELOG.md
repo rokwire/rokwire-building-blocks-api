@@ -4,10 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+### Fixed
+- Docker image vulnerabilities in App Config Building Block. [#482](https://github.com/rokwire/rokwire-building-blocks-api/issues/482)
+
+## [1.5.0] - 2020-07-01
 ### Added
 - Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
 - Add environment variable for on/off of printing logs out. [#459](https://github.com/rokwire/rokwire-building-blocks-api/issues/459)
+- LICENSE file. [#466](https://github.com/rokwire/rokwire-building-blocks-api/issues/466)
+- Add documentType field in PII dataset. [#473](https://github.com/rokwire/rokwire-building-blocks-api/issues/473)
+- Add standard license header to code file [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
+- Add license header for app config building block [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
+- Add enum value to documentType field in PII. [#476](https://github.com/rokwire/rokwire-building-blocks-api/issues/476)
 
 ## [1.4.0] - 2020-06-11
 ### Added
@@ -203,7 +212,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.2.2...1.3.0
