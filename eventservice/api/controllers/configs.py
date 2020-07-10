@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Load .env file
 load_dotenv()
 
-API_LOC = os.getenv('API_LOC', '../../')
+API_LOC = os.getenv('API_LOC', '../')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 EVENT_MONGO_URL = os.getenv("EVENT_MONGO_URL", "mongodb://localhost:27017")

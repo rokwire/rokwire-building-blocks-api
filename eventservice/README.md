@@ -43,7 +43,7 @@ cd rokwire-building-blocks-api/eventservice
 python api/events_rest_service.py
 ```
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in events.yaml in the OpenAPI Spec 3.0 format.
 
 ## Run as Docker Container in Local
 ```
