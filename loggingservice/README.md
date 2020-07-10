@@ -36,7 +36,7 @@ export FLASK_ENV=development
 python logging_rest_service.py
 ```
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in logging.yaml in the OpenAPI Spec 3.0 format.
 ## Docker Instructions
 ```
 cd rokwire-building-blocks-api
