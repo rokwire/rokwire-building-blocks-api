@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Platform API
   description: Rokwire Platform API Documentation
-  version: 1.3.0
+  version: 1.5.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -1577,6 +1577,13 @@ components:
         imageUrl:
           nullable: true
           type: string
+        documentType:
+          description: The type of the user document that was scanned to populate certain PII fields like name, photoImage, birthYear, etc.
+          type: string
+          nullable: true
+          enum:
+            - passport
+            - drivingLicense
         creationDate:
           description: creation date will not be modified once it get set.
           type: string
