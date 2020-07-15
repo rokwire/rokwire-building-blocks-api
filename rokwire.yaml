@@ -1518,7 +1518,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
-  /contributions/{id}/capabilities:
+  /contributions/{id}/capabilities/:
     get:
       summary: Get Capabilities that belong to a specific Contribution
       tags:
