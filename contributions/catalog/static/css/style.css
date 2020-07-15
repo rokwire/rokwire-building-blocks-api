@@ -51,10 +51,16 @@ label {
     display: inline-block;
 }
 
+
+
+
 input[type=submit] {
     background-color: #84af9d;
     color: white;
     padding: 15px 25px;
+    text-align: center;
+    margin: 1px 1px;
+    transition-duration: 0.2s;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -63,6 +69,7 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #45a049;
+    color: white;
 }
 
 .container {

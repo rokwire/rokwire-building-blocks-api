@@ -45,15 +45,16 @@
                 <label class="control-label col-sm-2">Contribution Name</label>
                 <div class="col-sm-10">
                     <input class="form-control" id="contribution_name" name="contribution_name"
-                           placeholder="give a name of your contribution" type="text">
+                           placeholder="give a name of your contribution" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Short Description</label>
-                <div class="col-sm-10"><input class="form-control" id="contribution_description"
+                <div class="col-sm-10">
+                    <input class="form-control" id="contribution_description"
                                               name="contribution_shortDescription"
                                               placeholder="give a short description"
-                                              type="text"></div>
+                                              type="text" required></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Long Description</label>
@@ -175,14 +176,14 @@
                             <div class="col-sm-10"><input class="form-control" id="capability_name"
                                                           name="capability_name"
                                                           placeholder="give a name of your capability"
-                                                          type="text"></div>
+                                                          type="text" required></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Capability Description</label>
                             <div class="col-sm-10"><input class="form-control" id="capability_description"
                                                           name="capability_description"
                                                           placeholder="give a short description"
-                                                          type="text"></div>
+                                                          type="text" required></div>
                         </div>
 
                         <div class="form-group">
@@ -259,7 +260,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Version</label>
                             <div class="col-sm-10"><input class="form-control" id="version" name="capability_version"
-                                                          placeholder="latest version number" type="text">
+                                                          placeholder="latest version number" type="text" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -273,7 +274,7 @@
                             <div class="col-sm-10"><input class="form-control" id="health"
                                                           name="capability_healthCheckUrl"
                                                           placeholder="health check url"
-                                                          type="text"></div>
+                                                          type="text" required></div>
                         </div>
 
                         <div class="form-group">
@@ -312,9 +313,9 @@
                             <div class="col-sm-10">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_endpoint"
                                        placeholder="Endpoint"
-                                       type="text">
+                                       type="text" required>
                                 <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
-                                       type="text">
+                                       type="text" required>
                                 <br>
                             </div>
                         </div>
@@ -332,14 +333,14 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Name</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_name" name="talent_name"
-                                                          placeholder="give a name of your Talent" type="text">
+                                                          placeholder="give a name of your Talent" type="text" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Description</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_description"
                                                           name="talent_shortDescription"
-                                                          placeholder="" type="text"></div>
+                                                          placeholder="" type="text" required></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Required Building Block(s)</label>
