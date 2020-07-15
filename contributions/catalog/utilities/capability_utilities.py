@@ -2,7 +2,7 @@ def init_capability():
     d = {'name': '',
          'description': '',
          'apiDocUrl': '',
-         'isOpenSource': '',
+         'isOpenSource': False,
          'apiBaseUrl': '',
          'version': '',
          'healthCheckUrl': '',
