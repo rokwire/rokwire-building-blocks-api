@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2020-07-14
+### Added
+- Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
+- Code of Conduct. [#487](https://github.com/rokwire/rokwire-building-blocks-api/issues/487)
+
+### Changed
+- App Config database and collection names are now configurable via environment variables. [#492](https://github.com/rokwire/rokwire-building-blocks-api/issues/492)
+
+### Fixed
+- Docker image vulnerabilities in App Config Building Block. [#482](https://github.com/rokwire/rokwire-building-blocks-api/issues/482)
+
 ## [1.5.0] - 2020-07-01
 ### Added
 - Add environment variable for on/off of printing logs out. [#459](https://github.com/rokwire/rokwire-building-blocks-api/issues/459)
@@ -12,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add standard license header to code file [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
 - Add license header for app config building block [#470](https://github.com/rokwire/rokwire-building-blocks-api/issues/470)
 - Add enum value to documentType field in PII. [#476](https://github.com/rokwire/rokwire-building-blocks-api/issues/476)
+
 ## [1.4.0] - 2020-06-11
 ### Added
 - Index to PII and Non-PII database collections. [#428](https://github.com/rokwire/rokwire-building-blocks-api/issues/428)
@@ -206,7 +218,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.0...1.3.1
