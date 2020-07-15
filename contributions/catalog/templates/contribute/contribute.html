@@ -19,7 +19,6 @@
 </head>
 
 
-
 <body>
 
 <div class="container-fluid">
@@ -51,7 +50,8 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Short Description</label>
-                <div class="col-sm-10"><input class="form-control" id="contribution_description" name="contribution_shortDescription"
+                <div class="col-sm-10"><input class="form-control" id="contribution_description"
+                                              name="contribution_shortDescription"
                                               placeholder="give a short description"
                                               type="text"></div>
             </div>
@@ -67,10 +67,11 @@
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio" onclick="show_org()"checked> Organization</label>-->
                 <div>
                     <button class="button button1" id="add-contributor-person">Add Contributor as Person</button>
-                </div>
-                <div>
                     <button class="button button2" id="add-contributor-org">Add Contributor as Organization</button>
                 </div>
+<!--                <div>-->
+<!--                    <button class="button button2" id="add-contributor-org">Add Contributor as Organization</button>-->
+<!--                </div>-->
             </div>
 
             <div id="organization" style="display: none">
@@ -81,7 +82,8 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Organization Address</label>
-                    <div class="col-sm-10"><input class="form-control" id="org_address" name="org_address" placeholder=""
+                    <div class="col-sm-10"><input class="form-control" id="org_address" name="org_address"
+                                                  placeholder=""
                                                   type="text"></div>
                 </div>
                 <div class="form-group">
@@ -100,19 +102,22 @@
             <div id="contributor" style="display: none">
                 <div class="form-group">
                     <label class="control-label col-sm-2">Contributor's first name</label>
-                    <div class="col-sm-10"><input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
+                    <div class="col-sm-10"><input class="form-control" id="contributor_fname" name="person_firstName"
+                                                  placeholder=""
                                                   type="text"></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Contributor's middle name</label>
-                    <div class="col-sm-10"><input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
+                    <div class="col-sm-10"><input class="form-control" id="contributor_mname" name="person_middleName"
+                                                  placeholder=""
                                                   type="text"></div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Contributor's last name</label>
-                    <div class="col-sm-10"><input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
+                    <div class="col-sm-10"><input class="form-control" id="contributor_lname" name="person_lastName"
+                                                  placeholder=""
                                                   type="text"></div>
                 </div>
                 <div class="form-group">
@@ -167,13 +172,15 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Capability Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="capability_name" name="capability_name"
+                            <div class="col-sm-10"><input class="form-control" id="capability_name"
+                                                          name="capability_name"
                                                           placeholder="give a name of your capability"
                                                           type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Capability Description</label>
-                            <div class="col-sm-10"><input class="form-control" id="capability_description" name="capability_description"
+                            <div class="col-sm-10"><input class="form-control" id="capability_description"
+                                                          name="capability_description"
                                                           placeholder="give a short description"
                                                           type="text"></div>
                         </div>
@@ -185,9 +192,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Is the Code Open Sourced? </label>
+                            <label class="control-label col-sm-2">  Is the Code Open Sourced? </label>
                             <label class="form-check-label"><input class="form-check-input" id="open_source"
-                                                                   name="capability_isOpenSource" type="checkbox"> yes</label>
+                                                                   name="capability_isOpenSource" type="checkbox">
+                                yes</label>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">API Doc URL</label>
@@ -197,28 +205,32 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Source repo URL</label>
-                            <div class="col-sm-10"><input class="form-control" id="source_url" name="capability_source_url"
+                            <div class="col-sm-10"><input class="form-control" id="source_url"
+                                                          name="capability_source_url"
                                                           placeholder="Source code repository URL (if open sourced)"
                                                           type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Deployment location</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="deploy_internal" name="location_internal" type="checkbox"
-                                                                   value="internal">internal</label>
+                                                                   id="deploy_internal" name="location_internal"
+                                                                   type="checkbox"
+                                                                   value="internal">  internal</label>
                             <label class="form-check-label"><input class="form-check-input" id="deploy_external"
                                                                    name="location_external" type="checkbox"
-                                                                   value="external">external</label>
+                                                                   value="external">  external</label>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                            <div class="col-sm-10"><input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                            <div class="col-sm-10"><input class="form-control" id="api_base"
+                                                          name="capability_apiBaseUrl"
                                                           placeholder="API base URL" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                            <div class="col-sm-10"><input class="form-control" id="docker_img"
+                                                          name="deploymentDetails_dockerImageName"
                                                           placeholder="Docker image name (If internally deployed)"
                                                           type="text"></div>
                         </div>
@@ -233,13 +245,14 @@
                                 <br>
                             </div>
                             <div class="row">
-                                <button id='add-user' type="submit">Add more fields</button>
+                                <button class="button button3" id='add-user' type="submit">Add more fields</button>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Database Detail</label>
-                            <div class="col-sm-10"><input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                            <div class="col-sm-10"><input class="form-control" id="db-detail"
+                                                          name="deploymentDetails_databaseDetails"
                                                           placeholder="Details of API endpoint to delete user info given the user UUID"
                                                           type="text"></div>
                         </div>
@@ -251,12 +264,14 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Version URL</label>
-                            <div class="col-sm-10"><input class="form-control" id="version_url" name="capability_version_url"
+                            <div class="col-sm-10"><input class="form-control" id="version_url"
+                                                          name="capability_version_url"
                                                           placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Health Check URL</label>
-                            <div class="col-sm-10"><input class="form-control" id="health" name="capability_healthCheckUrl"
+                            <div class="col-sm-10"><input class="form-control" id="health"
+                                                          name="capability_healthCheckUrl"
                                                           placeholder="health check url"
                                                           type="text"></div>
                         </div>
@@ -264,32 +279,39 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Status</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="submitted" name="capability_status" type="checkbox"
-                                                                   value="submitted">submitted</label>
+                                                                   id="submitted" name="capability_status"
+                                                                   type="checkbox"
+                                                                   value="submitted"> submitted</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="in review" name="capability_status" type="checkbox"
-                                                                   value="in review">in review</label>
+                                                                   id="in review" name="capability_status"
+                                                                   type="checkbox"
+                                                                   value="in review"> in review</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="approved" name="capability_status" type="checkbox"
-                                                                   value="approved">approved</label>
+                                                                   id="approved" name="capability_status"
+                                                                   type="checkbox"
+                                                                   value="approved"> approved</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="rejected" name="capability_status" type="checkbox"
-                                                                   value="rejected">rejected</label>
+                                                                   id="rejected" name="capability_status"
+                                                                   type="checkbox"
+                                                                   value="rejected"> rejected</label>
                             <label class="form-check-label"><input , class="form-check-input"
-                                                                   id="published" name="capability_status" type="checkbox"
-                                                                   value="published">published</label>
+                                                                   id="published" name="capability_status"
+                                                                   type="checkbox"
+                                                                   value="published"> published</label>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Authentification Method</label>
-                            <div class="col-sm-10"><input class="form-control" id="auth" name="deploymentDetails_authMethod" placeholder=""
+                            <div class="col-sm-10"><input class="form-control" id="auth"
+                                                          name="deploymentDetails_authMethod" placeholder=""
                                                           type="text"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Data Deletion</label>
                             <div class="col-sm-10">
-                                <input class="form-inline" name="dataDeletionEndpointDetails_endpoint" placeholder="Endpoint"
+                                <input class="form-inline" name="dataDeletionEndpointDetails_endpoint"
+                                       placeholder="Endpoint"
                                        type="text">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
                                        type="text">
@@ -301,7 +323,7 @@
                     </div>
 
                     <div>
-                        <button id="add-capability">Add another Capability</button>
+                        <button class="button button2" id="add-capability">Add another Capability</button>
                     </div>
 
 
@@ -315,17 +337,20 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Description</label>
-                            <div class="col-sm-10"><input class="form-control" id="talent_description" name="talent_shortDescription"
+                            <div class="col-sm-10"><input class="form-control" id="talent_description"
+                                                          name="talent_shortDescription"
                                                           placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Required Building Block(s)</label>
-                            <div class="col-sm-10"><input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                            <div class="col-sm-10"><input class="form-control" id="required_bb"
+                                                          name="talent_requiredBuildingBlocks"
                                                           placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
-                            <div class="col-sm-10"><input class="form-control" id="required_capability" name="talent_requiredCapabilities"
+                            <div class="col-sm-10"><input class="form-control" id="required_capability"
+                                                          name="talent_requiredCapabilities"
                                                           placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
@@ -336,21 +361,26 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">End User Role</label>
-                            <label class="form-check-label"><input class="form-check-input" id="student" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="student">student</label>
-                            <label class="form-check-label"><input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="visitor">visitor</label>
-                            <label class="form-check-label"><input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                            <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="student"> student</label>
+                            <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="visitor"> visitor</label>
+                            <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                   name="talent_minEndUserRoles"
                                                                    type="checkbox"
-                                                                   value="alumni">alumni</label>
+                                                                   value="alumni"> alumni</label>
                             <label class="form-check-label"><input class="form-check-input" id="employee"
                                                                    name="talent_minEndUserRoles" type="checkbox"
-                                                                   value="employee">employee</label>
-                            <label class="form-check-label"><input class="form-check-input" id="parent" name="talent_minEndUserRoles"
+                                                                   value="employee"> employee</label>
+                            <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                   name="talent_minEndUserRoles"
                                                                    type="checkbox"
-                                                                   value="parent">parent</label>
-                            <label class="form-check-label"><input class="form-check-input" id="fan" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="fan">fan</label>
+                                                                   value="parent"> parent</label>
+                            <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="fan"> fan</label>
                         </div>
 
                         <div class="form-group">
@@ -363,14 +393,15 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Data Description</label>
-                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription" placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
                                                           style="height:150px"
                                                           type="text"></div>
                         </div>
 
                     </div>
                     <div>
-                        <button id="add-talent">Add another Talent</button>
+                        <button class="button button1"id="add-talent">Add another Talent</button>
                     </div>
 
                     <div>
@@ -405,12 +436,14 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org" name="contact_organization"
+                            <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                          name="contact_organization"
                                                           placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_address" name="contact_officialAddress"
+                            <div class="col-sm-10"><input class="form-control" id="contact_address"
+                                                          name="contact_officialAddress"
                                                           placeholder="" type="text"></div>
                         </div>
 
@@ -421,13 +454,15 @@
                         <h3>Self Certification</h3>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Deleting data upon request</label>
-                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_dataDeletionUponRequest"
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_dataDeletionUponRequest"
                                                           placeholder="Deleting data upon request"
                                                           type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Respecting privacy setting</label>
-                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_respectingUserPrivacySetting"
                                                           placeholder="Respecting privacy setting"
                                                           type="text"></div>
                         </div>
@@ -439,7 +474,8 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Disclose right to use images</label>
-                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseImageRights"
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_discloseImageRights"
                                                           placeholder="Disclose right to use images"
                                                           type="text"></div>
                         </div>
@@ -550,6 +586,7 @@
             }
         });
     });
+
 
 </script>
 </html>
