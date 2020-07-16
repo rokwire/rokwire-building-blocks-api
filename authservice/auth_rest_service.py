@@ -1,18 +1,32 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+import logging
 import os
-import jwt
-import schema
 import pprint
 import socket
-import logging
-import requests
-import connexion
-import auth_middleware
-
 from datetime import datetime
-from flask import request, abort
-from dateutil.relativedelta import relativedelta
 from time import gmtime
+
+import auth_middleware
+import connexion
+import jwt
+import requests
+import schema
+from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
+from flask import request, abort
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -120,20 +134,19 @@ def verification_check():
 
 def ping():
     return {
-        'message': "if you beat me at ping pong, I'll just play ping ponger",
+        "message": "success",
     }
 
 
-app = connexion.FlaskApp(__name__, debug=True)
+app = connexion.FlaskApp(__name__)
 
 # create the bindings, if you use demo2.yaml you will need to use ApiResolver
 app.add_api(
-    'openapi.yaml',
-    arguments={'title': 'rokwire-auth'},
+    'auth.yaml',
+    arguments={'title': 'Rokwire Auth'},
     # resolver=connexion.RestyResolver('auth_rest_service'),
     resolver_error=501,
 )
-
 
 # @app.app.before_request
 # def before_request():
@@ -148,4 +161,4 @@ app.add_api(
 
 if __name__ == '__main__':
     # start the application, in debug mode this will auto reload.
-    app.run(port=5000, host=None, server='flask', debug=True)
+    app.run(port=5000, host=None, server='flask')

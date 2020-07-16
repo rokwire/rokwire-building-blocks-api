@@ -33,7 +33,7 @@ else:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
 
 app = connexion.FlaskApp(__name__, debug=debug, specification_dir=cfg.API_LOC)
-app.add_api('rokwire.yaml', base_path=cfg.LOGGING_URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
+app.add_api('logging.yaml', base_path=cfg.LOGGING_URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
             resolver_error=501)
 
 if __name__ == '__main__':
