@@ -120,16 +120,16 @@ def verification_check():
 
 def ping():
     return {
-        'message': "if you beat me at ping pong, I'll just play ping ponger",
+        "message": "success",
     }
 
 
-app = connexion.FlaskApp(__name__, debug=True)
+app = connexion.FlaskApp(__name__)
 
 # create the bindings, if you use demo2.yaml you will need to use ApiResolver
 app.add_api(
-    'openapi.yaml',
-    arguments={'title': 'rokwire-auth'},
+    'auth.yaml',
+    arguments={'title': 'Rokwire Auth'},
     # resolver=connexion.RestyResolver('auth_rest_service'),
     resolver_error=501,
 )
@@ -148,4 +148,4 @@ app.add_api(
 
 if __name__ == '__main__':
     # start the application, in debug mode this will auto reload.
-    app.run(port=5000, host=None, server='flask', debug=True)
+    app.run(port=5000, host=None, server='flask')

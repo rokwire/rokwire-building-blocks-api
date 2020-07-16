@@ -22,7 +22,7 @@ debug = cfg.DEBUG
 init_db()
 
 app = connexion.FlaskApp(__name__, debug=debug, specification_dir=cfg.API_LOC)
-app.add_api('rokwire.yaml', base_path=cfg.URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
+app.add_api('events.yaml', base_path=cfg.URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
             resolver_error=501)
 
 if __name__ == '__main__':
