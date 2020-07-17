@@ -1,4 +1,4 @@
-FROM swaggerapi/swagger-ui:v3.23.5
+FROM swaggerapi/swagger-ui:v3.28.0
 
 COPY rokwire.yaml /usr/share/nginx/html/app/
 
