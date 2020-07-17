@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - OpenAPI specification file rokwire.yaml file split across different building blocks. [#485](https://github.com/rokwire/rokwire-building-blocks-api/issues/485)
 - Update Swagger-UI version. [#500](https://github.com/rokwire/rokwire-building-blocks-api/issues/500)
+- Rokwire API Doc Dockerfile to integrate multiple OpenAPI specifications file. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
+
+### Removed
+- rokwire.yaml file and deployment scripts that were not getting used. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
 
 ### Fixed
 - Docker image vulnerabilities in Authentication Building Block. [#499](https://github.com/rokwire/rokwire-building-blocks-api/issues/499)
