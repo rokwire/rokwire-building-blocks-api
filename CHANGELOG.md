@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docker image vulnerabilities in Authentication Building Block. [#499](https://github.com/rokwire/rokwire-building-blocks-api/issues/499)
 - Docker image vulnerabilities in Events Building Block. [#484](https://github.com/rokwire/rokwire-building-blocks-api/issues/484)
 
+### Security
+- Add Yelp's Secret Detector [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
+
 ## [1.6.0] - 2020-07-14
 - Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
 - Code of Conduct. [#487](https://github.com/rokwire/rokwire-building-blocks-api/issues/487)

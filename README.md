@@ -1,5 +1,14 @@
+![Detect Secrets](https://github.com/rokwire/rokwire-building-blocks-api/workflows/Detect%20Secrets/badge.svg)
+
 # Rokwire Platform Building Blocks API Documentation
 API definitions of the Rokwire Platform building blocks
+
+## Install commit hooks
+
+```
+$ pip install detect-secrets pre-commit
+$ pre-commit install
+```
 
 ## Setup and Run 
 
