@@ -25,7 +25,7 @@ load_dotenv(verbose=True)
 LOGGING_URL_PREFIX = os.getenv('LOGGING_URL_PREFIX', '')
 FLASK_APP = os.getenv('FLASK_APP', 'logging_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
-API_LOC = os.getenv('API_LOC', '../../')
+API_LOC = os.getenv('API_LOC', '../')
 PRINT_LOG = bool(os.getenv('PRINT_LOG', 'True') == 'True')
 
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')

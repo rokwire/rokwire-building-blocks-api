@@ -25,6 +25,6 @@ APP_CONFIG_MAX_POOLSIZE = 100,
 APP_CONFIG_URL_PREFIX = os.getenv('APP_CONFIG_URL_PREFIX', '')
 APP_CONFIGS_COLLECTION = os.getenv('APP_CONFIG_MONGO_COLLECTION_NAME','app_configs')
 
-API_LOC = os.getenv('API_LOC', '../../')
+API_LOC = os.getenv('API_LOC', '../')
 # APP_CONFIG_ENDPOINT = os.getenv('APPCONFIG_ENDPOINT', '/rest_service')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
