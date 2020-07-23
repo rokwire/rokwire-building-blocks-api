@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: Rokwire Contribution Building Block API
+  description: Contributino Building Block API Documentation
+  version: 1.3.0
+servers:
+- url: https://api.rokwire.illinois.edu
+  description: Production server
+- url: https://api-test.rokwire.illinois.edu
+  description: Test server
+- url: https://api-dev.rokwire.illinois.edu
+  description: Development server
+tags:
+- name: Contributions
+  description: API endpoints for managing contributions in the form of Talents and Capabilities.
+paths:
+  /contributions:
+    post:
+      summary: Create a new Contribution
+      tags:
+       - Contributions
+      requestBody:
+        description: Contribution data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contribution'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created contribution
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+    get:
+      summary: Return existing Contributions based on search criteria
+      tags:
+       - Contributions
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/talents:
+    get:
+      summary: Return existing Talents based on search criteria
+      operationId: controllers.contributions.alltalentssearch
+      tags:
+       - Talents
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Talent'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error+
+  /contributions/capabilities:
+    get:
+      summary: Return existing Capabilities based on search criteria
+      operationId: controllers.contributions.allcapabilitiessearch
+      tags:
+        - Contribution
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capability'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/{id}/talents:
+    get:
+      summary: Get Talents that belong to a specific Contribution
+      tags:
+        - Contributions
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Talents in this given Contribution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Talent'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/{id}/capabilities:
+    get:
+      summary: Get Capabilities that belong to a specific Contribution
+      tags:
+        - Contributions
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Capabilities in the given Contribution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capability'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/{id}:
+    get:
+      summary: Get a specific Contribution
+      tags:
+       - Contributions
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution that needs to be obtained
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Contribution details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+    put:
+      summary: Update a contribution
+      tags:
+       - Contributions
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Contribution object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contribution'
+        required: true
+      responses:
+        200:
+          description: Successfully updated contribution details
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
+    delete:
+      summary: Delete a contribution
+      tags:
+       - Contributions
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successfully deleted contribution details
+        401:
+          description: Unauthorized
+        405:
+          description: Invalid input
+        500:
+          description: Internal error
+components:
+  schemas:
+    Contribution:
+      type: object
+      description: A logical grouping of one or more Talents and Capabilities that adds a significant feature to the Rokwire platform.
+      required:
+        - name
+        - shortDescription
+      properties:
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          nullable: true
+          type: string
+        contributors:
+          nullable: true
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Person'
+              - $ref: '#/components/schemas/Organization'
+        capabilities:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+        talents:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Talent'
+        dateCreated:
+          type: string
+          format: date-time
+        dateModified:
+          type: string
+          format: date-time
+    Capability:
+      type: object
+      required:
+        - name
+        - description
+        - isOpenSource
+        - deploymentDetails
+        - healthCheckUrl
+        - version
+        - dataDeletionEndpointDetails
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        isOpenSource:
+          type: boolean
+        apiDocUrl:
+          nullable: true
+          type: string
+          description: API documentation URL
+        deploymentDetails:
+          type: object
+          properties:
+            location:
+              type: string
+              enum:
+               - internal
+               - external
+              description: >
+                Deployment location:
+                  * `internal` - Within Rokwire Platform
+                  * `external` - Outside Rokwire Platform
+            dockerImageName:
+              description: Docker image name (if available).
+              nullable: true
+              type: string
+            environmentVariables:
+              nullable: true
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+            databaseDetails:
+              nullable: true
+              type: string
+            authMethod:
+              nullable: true
+              type: string
+        apiBaseUrl:
+          description: API base URL
+          nullable: true
+          type: string
+        version:
+          type: string
+        healthCheckUrl:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+          enum:
+            - Submitted
+            - Reviewing
+            - Approved
+            - Disapproved
+            - Published
+        dataDeletionEndpointDetails:
+          description: Details of API endpoint to delete user info given the user UUID.
+          type: object
+          properties:
+            deletionEndpoint:
+              type: string
+              description: Deletion endpoint details. E.g. `DELETE /users/details/{UUID}`
+            apiKey:
+              type: string
+        contacts:
+          nullable: true
+          type: array
+          items:
+            properties:
+              name:
+                nullable: true
+                type: string
+              email:
+                nullable: true
+                type: string
+              phone:
+                nullable: true
+                type: string
+              organization:
+                nullable: true
+                type: string
+              officialAddress:
+                nullable: true
+                type: string
+    Talent:
+      type: object
+      description: A core feature in the app user interface.
+      required:
+        - name
+        - shortDescription
+      properties:
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        requiredCapabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+        requiredBuildingBlocks:
+          type: array
+          items:
+            type: string
+            enum:
+              - App Config
+              - Authentication
+              - Events
+              - Logging
+              - Profile
+              - Talent Chooser
+              - Transportation
+        minUserPrivacyLevel:
+          description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
+          type: integer
+          minimum: 1
+          maximum: 5
+        minEndUserRoles:
+          description: Minimum set of end user roles that needs to be selected by the user for this Talent to appear in the app interface
+          type: array
+          items:
+            type: string
+            enum:
+              - alumni
+              - employee
+              - fan
+              - parent
+              - student
+              - visitor
+          uniqueItems: true
+        startDate:
+          description: Start date at which this Talent can become active.
+          type: string
+          format: date-time
+        endDate:
+          description: End date at which this Talent should be deactivated.
+          type: string
+          format: date-time
+        dataDescription:
+          description: Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level.
+          type: string
+        selfCertification:
+          description: Detailed disclosure about some specific items related to the Rokwire platform.
+          type: object
+          properties:
+            dataDeletionUponRequest:
+              type: string
+              description: Self certification about deleting data upon request
+            respectingUserPrivacySetting:
+              type: string
+              description: Self certification about respecting privacy setting
+            discloseAds:
+              type: string
+              description: Self disclosure about any Ads shown in the Talent
+            discloseSponsors:
+              type: string
+            discloseImageRights:
+              type: string
+              description: Self disclosure about the rights to use images within the Talent
+    Person:
+      type: object
+      properties:
+        firstName:
+          nullable: true
+          type: string
+        middleName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        phone:
+          nullable: true
+          type: string
+        affiliation:
+          nullable: true
+          type: object
+          allOf:
+           - $ref: '#/components/schemas/Organization'
+    Organization:
+      type: object
+      properties:
+        name:
+          nullable: true
+          type: string
+        address:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        phone:
+          nullable: true
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: ROKWIRE-API-KEY
+      x-apikeyInfoFunc: auth_middleware.verify_apikey
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
+    UserAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
+      x-bearerInfoFunc: auth_middleware.verify_userauth
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.

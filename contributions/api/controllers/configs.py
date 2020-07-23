@@ -23,7 +23,7 @@ load_dotenv()
 MONGO_CONTRIBUTION_URL = os.getenv('MONGO_CONTRIBUTION_URL', 'localhost:27017')
 FLASK_APP = os.getenv('FLASK_APP', 'contribution_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
-API_LOC = os.getenv('API_LOC', '../../')
+API_LOC = os.getenv('API_LOC', '../')
 CONTRIBUTION_URL_PREFIX = os.getenv('CONTRIBUTION_URL_PREFIX', '')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
