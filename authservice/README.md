@@ -50,15 +50,16 @@ $ python auth_rest_service.py
 ```
 ### Run as a Docker Container
 
-#### Docker Compose
-
 You need to have Docker installed in your computer.
 
-##### Run command
+##### Build Docker Image and Run with Docker command
 
 ```
-$ docker-compose up
+docker build -f authservice/Dockerfile -t rokwire/authentication-building-block:latest .
+docker run --name auth --rm --env-file=authservice/.env -e -p AUTH_URL_PREFIX=<url_auth_starting_with_slash> 5000:5000 rokwire/authentication-building-block:latest
 ```
+
+Or update `docker-compose.yml` file and use `docker-compose up` to run
 
 ##### Docker Compose environment variable configuration
 
