@@ -61,7 +61,7 @@ python api/contributions_rest_service.py`
 If you want to use gunicorn, cd into api folder then, use ` gunicorn contributions_rest_service:app -c gunicorn.config.py` instead of `python api/contributions_rest_service.py` 
 
 The contributions building block should be running at http://localhost:5000
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in contribution.yaml in the OpenAPI Spec 3.0 format.
 
 ### Docker Instructions
 ```
