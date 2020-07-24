@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Index to PII and Non-PII database collections. [#428](https://github.com/rokwire/rokwire-building-blocks-api/issues/428)
 - Add search option in contribution and capability dataset. [#458](https://github.com/rokwire/rokwire-building-blocks-api/issues/458)
 - Add talent data to contribution dataset. [#407](https://github.com/rokwire/rokwire-building-blocks-api/issues/407)
+
+## Changed
+- Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
+
 ## [1.3.0] - 2020-05-15
 ## Added
 - Add more fields in PII and updated API design. [#411](https://github.com/rokwire/rokwire-building-blocks-api/issues/411)
