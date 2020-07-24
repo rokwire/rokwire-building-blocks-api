@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Talent Chooser Building Block APIs documentation. [#528](https://github.com/rokwire/rokwire-building-blocks-api/issues/528)
 
 ### Changed
+- Cut appconfigservice container to 98.9MB from 216MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Cut auth-middleware-test-svc container to 71.6MB from 935MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Cut authservice container to 91.8MB from 228MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Cut eventservice container to 141MB from 212MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Cut loggingservice container to 94MB from 211MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Cut profileservice container to 97.4MB from 215MB [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+- Reorginized Dockerfile lines to maximize shared layers between containers [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
 - OpenAPI specification file rokwire.yaml file split across different building blocks. [#485](https://github.com/rokwire/rokwire-building-blocks-api/issues/485)
 - Update Swagger-UI version. [#500](https://github.com/rokwire/rokwire-building-blocks-api/issues/500)
 - Rokwire API Doc Dockerfile to integrate multiple OpenAPI specifications file. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
@@ -32,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docker image vulnerabilities in Events Building Block. [#484](https://github.com/rokwire/rokwire-building-blocks-api/issues/484)
 
 ### Security
+- All containers now run as a non-root user [#524](https://github.com/rokwire/rokwire-building-blocks-api/pull/524)
+  - api-doc runs as nginx user instead of root
+  - the rest run as user nobody
 - Add Yelp's Secret Detector [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
 - Update secret baseline file [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
 
