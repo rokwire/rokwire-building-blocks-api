@@ -48,14 +48,14 @@ def post(json_data):
     try:
         # Setting up post request
         result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers,
-                               data=json.dumps(json_data))
+                               data=json_data)
 
-        # if event submission fails, print that out and change status back to pending
         if result.status_code != 200:
             print("post method fails".format(json_data))
+            print("with error code:", result.status_code)
             return False
-        # if successful, change status of event to approved.
         else:
+            print("posted ok.".format(json_data))
             return True
 
     except Exception:

@@ -43,18 +43,28 @@ The second one:
     - FLASK_ENV=development
     - FLASK_DEBUG=1
 
-## Setup Environment
+## Setup Environment and start the catalog application
 - (Linux or MAC):
 ```
+cd catalog
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
+cd .. 
+set FLASK_APP=catalog
+set FLASK_ENV=development
+flask run
 ```
 - (Windows):
 ```
+cd catalog
 py -m venv env
-.\venv\Scripts\activate
+.\env\Scripts\activate
 pip install -r requirements.txt
+cd .. 
+set FLASK_APP=catalog
+set FLASK_ENV=development
+flask run
 ```
 
 The following environment variables need to be set when running on development machine. 
