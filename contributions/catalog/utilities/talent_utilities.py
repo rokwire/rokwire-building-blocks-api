@@ -1,21 +1,22 @@
+from  datetime import  date
 def init_talent():
     d = {
-        "name": "",
-        "shortDescription": "",
-        "longDescription": "",
+        "name": '',
+        "shortDescription": '',
+        "longDescription": '',
         "requiredCapabilities": [],
         "requiredBuildingBlocks": [],
-        "minUserPrivacyLevel": 0,
+        "minUserPrivacyLevel": 1,
         "minEndUserRoles": [],
-        "startDate": "",
-        "endDate": "",
-        "dataDescription": "",
+        "startDate": date.today().strftime("%d/%m/%Y"),
+        "endDate": date.today().strftime("%d/%m/%Y"),
+        "dataDescription": '',
         "selfCertification": {
-            "dataDeletionUponRequest": "",
-            "respectingUserPrivacySetting": "",
-            "discloseAds": "",
-            "discloseSponsors": "",
-            "discloseImageRights": ""
+            "dataDeletionUponRequest": '',
+            "respectingUserPrivacySetting": '',
+            "discloseAds": '',
+            "discloseSponsors": '',
+            "discloseImageRights": ''
         }
     }
     return d

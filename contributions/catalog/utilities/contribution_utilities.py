@@ -4,9 +4,9 @@ from .talent_utilities import to_talent
 
 def init_contribution():
     d = {
-        "name": "",
-        "shortDescription": "",
-        "longDescription": "",
+        "name": '',
+        "shortDescription": '',
+        "longDescription": '',
         "contributors": [],
         "capabilities": [],
         "talents": []
