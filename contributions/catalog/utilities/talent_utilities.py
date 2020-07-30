@@ -33,11 +33,16 @@ def to_talent(d):
 
     for i, talent in enumerate(talent_list):
         for k, v in d.items():
+            print(k,v)
+
             if "minUserPrivacyLevel" in k:
                 if len(v[i]) > 0:
                     talent_list[i]["minUserPrivacyLevel"] = int(v[i])
                 d[k][i] = talent_list[i]["minUserPrivacyLevel"]
             if "talent_" in k:
                 name = k.split("talent_")[-1]
-                talent_list[i][name] = v[i]
+                if isinstance(talent_list[i][name], list) and len(v[i])>0:
+                    talent_list[i][name].append(v[i])
+                else:
+                    talent_list[i][name] = v[i]
     return talent_list

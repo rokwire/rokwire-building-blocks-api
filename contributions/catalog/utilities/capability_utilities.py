@@ -1,8 +1,10 @@
 def init_capability():
     d = {'name': '',
          'description': '',
+         'icon': None,
          'apiDocUrl': '',
          'isOpenSource': False,
+         'sourceUrl': '',
          'apiBaseUrl': '',
          'version': '',
          'healthCheckUrl': '',
@@ -50,7 +52,10 @@ def to_capability(d):
                 capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
             if "capability_" in k:
                 name = k.split("capability_")[-1]
-                capability_list[i][name] = v[i]
+                if isinstance(capability_list[i][name], list) and len(v[i])>0:
+                    capability_list[i][name].append(v[i])
+                else:
+                    capability_list[i][name] = v[i]
         capability_list[i]["contacts"] = to_contact(d)
     return capability_list
 
