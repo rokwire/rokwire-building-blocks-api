@@ -50,10 +50,19 @@ The configuration file configs.py should have the appropriate information
 
 To install and run the location-model service, do the following:
 
+- (Linux or MAC):
 ```
 cd contributions
 virtualenv -p python3 venv
 source venv/bin/activate
+pip install -r requirements.txt
+python api/contributions_rest_service.py
+```
+- (Windows):
+```
+cd contributions
+py -m venv venv
+.\venv\Scripts\activate
 pip install -r requirements.txt
 python api/contributions_rest_service.py
 ```
