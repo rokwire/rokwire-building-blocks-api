@@ -77,7 +77,7 @@ The detailed API information is in profile.yaml in the OpenAPI Spec 3.0 format.
 ```
 cd rokwire-building-blocks-api
 docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
-docker run --name profile --rm --env-file=profileservice/.env -e API_LOC=. -e PROFILE_ENDPOINT=<url_prefix_starting_with_slash> -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
+docker run --name profile --rm --env-file=profileservice/.env -e API_LOC=. -e PROFILE_URL_PREFIX=<url_prefix_starting_with_slash> -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
 ```
 You can edit config.py or environment variable to specify a URL prefix by modifying PROFILE_ENDPOINT variable.
 If you need to make just /profiles as endpoint, put the variable value to empty string or do not include this variable.
