@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3-alpine3.11
 
 LABEL maintainer="ywkim@illinois.edu"
 
