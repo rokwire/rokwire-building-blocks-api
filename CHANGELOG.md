@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Add Yelp's Secret Detector [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
+- Update secret baseline file [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
 
 ## [1.6.0] - 2020-07-14
 - Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
