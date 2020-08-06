@@ -6,14 +6,14 @@ def init_capability():
          'isOpenSource': False,
          'sourceUrl': '',
          'apiBaseUrl': None,
-         'version': None,
+         'version': '',
          'healthCheckUrl': None,
          'status': None,
          'deploymentDetails': {
              'location': '',
-             'dockerImageName': '',
-             'databaseDetails': '',
-             'authMethod': '',
+             'dockerImageName': None,
+             'databaseDetails': None,
+             'authMethod': None,
              'environmentVariables': []
          },
          'dataDeletionEndpointDetails': {

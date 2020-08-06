@@ -122,7 +122,7 @@ input[type=submit]:hover {
   margin: 5px 5px;
   transition-duration: 0.2s;
   cursor: pointer;
-  float: inherit;
+  float: none;
 }
 
 .button1 {
