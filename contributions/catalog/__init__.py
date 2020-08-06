@@ -1,12 +1,10 @@
 import os
-
-from flask import Flask, render_template
-
+import requests
+from flask import Flask, render_template, request, Blueprint
 from .auth import bp as auth_bp
 from .config import Config
 from .contribute import bp as contribute_bp
 from .db import init_app
-
 
 def create_app(config_class=Config):
     if Config and Config.URL_PREFIX:
@@ -29,7 +27,13 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def hello():
-        # return 'Hello, World!'
+        # print("..")
+        # if request.method == 'POST':
+        #     print("searching...")
+        #     print(request.form)
+        #     result = request.form.to_dict(flat=False)
+        #     print(result)
         return render_template('contribute/home.html')
 
     return app
+

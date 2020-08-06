@@ -170,7 +170,7 @@ h1 {
 <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
 <!--    <button id="myBtn" style="display:none">Button</button>-->
 <!--    <div class="search-container">-->
-        <form  action="http://localhost:5050/contribute/results" method="POST">
+        <form  method="POST">
           <input id="searchbar" type="text" placeholder="Search by id..." name="search">
           <input id ="myBtn" type="submit" value="Submit" style="display:none;">
         </form>
@@ -179,79 +179,18 @@ h1 {
 </div>
 
 <!-- MAIN (Center website) -->
+
+
 <div class="main">
     <h1></h1>
     <h1>Contribution Catalog / Packager</h1>
-    <!--<hr>-->
+    <hr>
 
+    some results is showing...
 
-<!--    <label for="site-search">Search the site:</label>-->
-<!--    <input type="search" id="site-search" name="q"-->
-<!--           aria-label="Search through site content">-->
-
-<!--    <button>Search</button>-->
-    <div id="myBtnContainer">
-        <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-        <button class="btn" onclick="filterSelection('capability')"> Capability</button>
-        <button class="btn" onclick="filterSelection('talent')"> Talent</button>
-    </div>
-
-    <div class="row">
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">App Config</span>
-            </div>
-        </div>
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">Profile</span>
-            </div>
-        </div>
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">Login</span>
-            </div>
-        </div>
-
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>description..</p>
-                <span class="label label-default">Login</span>
-            </div>
-        </div>
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>description..</p>
-                <span class="label label-default">Auth</span>
-            </div>
-        </div>
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>description..</p>
-                <span class="label label-default">Events</span>
-            </div>
-        </div>
-
-        <!-- END GRID -->
-    </div>
-
-    <!-- END MAIN -->
+    <!-- END GRID -->
 </div>
+    <!-- END MAIN -->
 
 <script>
 filterSelection("all")
