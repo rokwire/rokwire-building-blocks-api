@@ -1,8 +1,7 @@
 #  Copyright 2020 Board of Trustees of the University of Illinois.
 
 import flask
-from flask import flash, redirect, jsonify, make_response, request
-
+from flask import jsonify, make_response, request
 
 app = flask.Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -10,6 +9,7 @@ app.config['JSON_SORT_KEYS'] = False
 """
 make reponse for handling 202 entry deleted
 """
+
 
 def return_id(msg, idfield, id):
     message = {
@@ -21,6 +21,7 @@ def return_id(msg, idfield, id):
 
     return make_response(resp)
 
+
 def entry_deleted(id_type, id):
     message = {
         id_type: id
@@ -29,6 +30,7 @@ def entry_deleted(id_type, id):
     resp.status_code = 202
 
     return make_response(resp)
+
 
 @app.errorhandler(400)
 def bad_request(error=None):
@@ -41,6 +43,7 @@ def bad_request(error=None):
 
     return resp
 
+
 @app.errorhandler(403)
 def forbidden(error=None):
     if error is None:
@@ -52,6 +55,7 @@ def forbidden(error=None):
 
     return resp
 
+
 @app.errorhandler(404)
 def not_found(error=None):
     if error is None:
@@ -60,6 +64,7 @@ def not_found(error=None):
     resp.status_code = 404
 
     return resp
+
 
 @app.errorhandler(415)
 def unsupported_media_type(error=None):
@@ -72,6 +77,7 @@ def unsupported_media_type(error=None):
 
     return resp
 
+
 @app.errorhandler(500)
 def internal_server_error(error=None):
     if error is None:
@@ -82,6 +88,7 @@ def internal_server_error(error=None):
     resp.status_code = 500
 
     return resp
+
 
 @app.errorhandler(501)
 def not_implemented(error=None):

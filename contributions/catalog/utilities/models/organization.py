@@ -14,6 +14,7 @@
 
 import utils.datasetutils as datasetutils
 
+
 class Organization:
     def __init__(self, injson):
         self.name = None

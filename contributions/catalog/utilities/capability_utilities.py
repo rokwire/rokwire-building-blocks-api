@@ -10,7 +10,7 @@ def init_capability():
          'healthCheckUrl': None,
          'status': None,
          'deploymentDetails': {
-             'location':'',
+             'location': '',
              'dockerImageName': None,
              'databaseDetails': None,
              'authMethod': None,
@@ -53,7 +53,7 @@ def to_capability(d):
                 capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
             if "capability_" in k:
                 name = k.split("capability_")[-1]
-                if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i])>0:
+                if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) > 0:
                     capability_list[i][name].append(v[i])
                 else:
                     capability_list[i][name] = v[i]

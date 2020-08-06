@@ -14,6 +14,7 @@
 
 import utils.datasetutils as datasetutils
 
+
 class Contribution():
     def __init__(self, injson):
         self.name = None

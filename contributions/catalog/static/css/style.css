@@ -122,7 +122,7 @@ input[type=submit]:hover {
   margin: 5px 5px;
   transition-duration: 0.2s;
   cursor: pointer;
-  float: right;
+  float: left;
 }
 
 .button1 {
@@ -135,7 +135,7 @@ input[type=submit]:hover {
 .button1:hover {
   background-color: #4CAF50;
   color: white;
-    display: inline-block;
+  display: inline-block;
 }
 
 .button2 {
@@ -148,7 +148,7 @@ input[type=submit]:hover {
 .button2:hover {
   background-color: #008CBA;
   color: white;
-    display: inline-block;
+  display: inline-block;
 }
 
 .button3 {
@@ -161,7 +161,7 @@ input[type=submit]:hover {
 .button3:hover {
   background-color: #f44336;
   color: white;
-    display: inline-block;
+  display: inline-block;
 }
 
 .button4 {

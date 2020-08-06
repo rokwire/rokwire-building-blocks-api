@@ -14,13 +14,13 @@
 
 import json
 import logging
-import controllers.configs as cfg
 
+import controllers.configs as cfg
 from bson import ObjectId
-from flask import make_response, json
 from bson.json_util import dumps
-from pymongo import MongoClient, ASCENDING
+from flask import make_response, json
 from models.contribution import Contribution
+from pymongo import MongoClient, ASCENDING
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -32,6 +32,8 @@ coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
 """
 get query output json from query using search arguments
 """
+
+
 def get_result(db_collection, query):
     if not query:
         return None
@@ -41,7 +43,7 @@ def get_result(db_collection, query):
 
     if len(data_list) > 0:
         data_dump = dumps(data_list)
-        if len(data_list) == 1: # remove blacket in the first and last character location
+        if len(data_list) == 1:  # remove blacket in the first and last character location
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
@@ -50,9 +52,12 @@ def get_result(db_collection, query):
     else:
         return None
 
+
 """
 get query output json from field name and query string
 """
+
+
 def get_http_output_query_result_using_field_string(collection, fld, query_str):
     outjson = get_query_json_from_field(collection, fld, query_str)
     if (outjson is not None) and (len(outjson)) > 0:
@@ -70,9 +75,12 @@ def get_http_output_query_result_using_field_string(collection, fld, query_str):
 
         return None
 
+
 """
 query using field name and querystring and convert result to object
 """
+
+
 def get_contribution_dataset_from_field(collection, fld, query_str):
     db_data = query_dataset(collection, fld, query_str)
     data_list = list(db_data)
@@ -91,7 +99,7 @@ def get_contribution_dataset_from_field(collection, fld, query_str):
         return dataset
 
     elif len(data_list) > 1:
-        #TODO create a method to handle this
+        # TODO create a method to handle this
 
         return data_list
 
@@ -101,9 +109,12 @@ def get_contribution_dataset_from_field(collection, fld, query_str):
 
         return None
 
+
 """
 query using objectid and convert result to object
 """
+
+
 def get_contribution_dataset_from_objectid(collection, objectid):
     is_object_id = check_if_objectid(objectid)
     if is_object_id:
@@ -123,9 +134,12 @@ def get_contribution_dataset_from_objectid(collection, objectid):
     else:
         return None
 
+
 """
 convert mongodb query using field result to json
 """
+
+
 def get_query_json_from_field(collection, fld, query_str):
     db_data = query_dataset(collection, fld, query_str)
     data_list = list(db_data)
@@ -139,9 +153,12 @@ def get_query_json_from_field(collection, fld, query_str):
     else:
         return None
 
+
 """
 check if the query string is objectid
 """
+
+
 def check_if_objectid(query_str):
     is_objectid = True
     try:
@@ -151,21 +168,30 @@ def check_if_objectid(query_str):
 
     return is_objectid
 
+
 """
 query dataset using object id
 """
+
+
 def query_dataset_by_objectid(collection, objectid):
     return collection.find({'_id': objectid})
+
 
 """
 qyery dataset using field
 """
+
+
 def query_dataset(db_collection, fld, query_str):
     return db_collection.find({fld: query_str}, {'_id': False})
+
 
 """
 construct json from mongo query
 """
+
+
 def construct_json_from_query_list(data_list):
     data_dump = dumps(data_list)
     out_json = make_response(data_dump)
@@ -173,9 +199,12 @@ def construct_json_from_query_list(data_list):
 
     return out_json
 
+
 """
 insert dataset to mognodb
 """
+
+
 def insert_dataset_to_mongodb(db_collection, indataset):
     dataset = json.dumps(indataset, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
@@ -184,9 +213,12 @@ def insert_dataset_to_mongodb(db_collection, indataset):
 
     return dataset, id
 
+
 """
 update dataset in mongodb by objectid
 """
+
+
 def update_dataset_in_mongo_by_objectid(collection, objectid, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
@@ -195,9 +227,12 @@ def update_dataset_in_mongo_by_objectid(collection, objectid, datasetobj):
 
     return result.acknowledged, dataset
 
+
 """
 update dataset in mongodb by field
 """
+
+
 def update_dataset_in_mongo_by_field(collection, fld, query_str, datasetobj):
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
     dataset = json.loads(dataset)
@@ -205,9 +240,12 @@ def update_dataset_in_mongo_by_field(collection, fld, query_str, datasetobj):
 
     return result.acknowledged, dataset
 
+
 """
 update json that doesn't belong to data schema
 """
+
+
 def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson):
     dataset = collection.find({fld: query_str}, {'_id': False})
     dataset = json.dumps(datasetobj, default=lambda x: x.__dict__)
@@ -219,8 +257,11 @@ def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson)
 
     return result.acknowledged, dataset
 
+
 """
 index capability collection
 """
+
+
 def index_capability_data(collection):
     collection.create_index([('name', ASCENDING), ('version', ASCENDING), ('description', ASCENDING)])

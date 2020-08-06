@@ -97,7 +97,6 @@ def callback():
     token_response = client.do_access_token_request(state=authentication_response["state"], request_args=args,
                                                     authn_method="client_secret_basic")
 
-
     user_info = client.do_user_info_request(state=authentication_response["state"])
 
     # see if that user is in local database or not
@@ -109,7 +108,7 @@ def callback():
                            lname=user_info["family_name"], email=user_info["email"], uin=user_info["uiucedu_uin"],
                            phone="NA")
 
-    #checking user info - TODO
+    # checking user info - TODO
     rokwireAuth = list(filter(
         lambda x: "urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-" in x,
         user_info.to_dict()["uiucedu_is_member_of"]

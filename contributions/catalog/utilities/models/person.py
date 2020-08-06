@@ -14,6 +14,7 @@
 
 import utils.datasetutils as datasetutils
 
+
 class Person:
     def __init__(self, injson):
         self.firstname = None

@@ -28,6 +28,7 @@ def format_query(args, query):
 
     return query
 
+
 def format_query_contribution(args, query):
     query_parts = []
 
@@ -41,6 +42,7 @@ def format_query_contribution(args, query):
         query['$and'] = query_parts
 
     return query
+
 
 def format_query_capability(args, query):
     query_parts = []

@@ -3,9 +3,6 @@ import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from oic import rndstr
-from oic.oic.message import AuthorizationResponse
-from oic.utils.http_util import Redirect
 
 from .config import Config
 

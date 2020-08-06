@@ -22,6 +22,8 @@ from models.capabilities.environmentvariable import EnvironmentVariable
 """
 update contribution dataset
 """
+
+
 def update_contribution_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
@@ -66,9 +68,12 @@ def update_contribution_dataset_from_json(dataset, injson):
 
     return dataset, outjson
 
+
 """
 set capability dataset
 """
+
+
 def update_capability_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
@@ -237,9 +242,12 @@ def update_capability_dataset_from_json(dataset, injson):
 
     return dataset, outjson
 
+
 """
 update person dataset
 """
+
+
 def update_person_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
@@ -279,6 +287,8 @@ def update_person_dataset_from_json(dataset, injson):
 """
 update organization dataset
 """
+
+
 def update_organization_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:

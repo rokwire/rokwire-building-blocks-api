@@ -14,9 +14,8 @@
 
 def get_id_info_from_token(in_token):
     # in_token = convert_str_to_dict(in_token)
-    id_type = 0 # 0 for no pii, 1 for uin id, 2 phone id
+    id_type = 0  # 0 for no pii, 1 for uin id, 2 phone id
     id_string = ""
-
 
     # check if the pii token is from campus or from outside the campus
     # if there is uin, it is from campus
@@ -48,6 +47,7 @@ def convert_str_to_dict(in_token):
             in_token = in_token.replace(key, "'{}'".format(key))
         else:
             return converted_dict
+
 
 def get_data_from_token(in_token):
     tk_uin = in_token.get('uiucedu_uin')

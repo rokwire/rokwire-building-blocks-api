@@ -3,11 +3,10 @@ import traceback
 
 import requests
 from flask import (
-    Blueprint, render_template, request, current_app
+    Blueprint, render_template, request
 )
 
 from .config import Config
-from .db import get_db
 from .utilities.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
@@ -27,7 +26,7 @@ def create():
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
         contribution = to_contribution(result)
-        json_contribution = json.dumps(contribution, indent = 4)
+        json_contribution = json.dumps(contribution, indent=4)
         print(json_contribution)
         post(json_contribution)
     return render_template('contribute/contribute.html', )
