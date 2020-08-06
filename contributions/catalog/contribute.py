@@ -25,9 +25,11 @@ def create():
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
+
         contribution = to_contribution(result)
+        print(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        print(json_contribution)
+        # print(json_contribution)
         post(json_contribution)
     return render_template('contribute/contribute.html', )
 

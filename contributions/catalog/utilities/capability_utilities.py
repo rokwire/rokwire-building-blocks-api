@@ -11,9 +11,9 @@ def init_capability():
          'status': None,
          'deploymentDetails': {
              'location': '',
-             'dockerImageName': None,
-             'databaseDetails': None,
-             'authMethod': None,
+             'dockerImageName': '',
+             'databaseDetails': '',
+             'authMethod': '',
              'environmentVariables': []
          },
          'dataDeletionEndpointDetails': {
@@ -28,6 +28,7 @@ def to_capability(d):
     if not d: return {}
     capability_list = []
 
+#init capability
     if isinstance(d['capability_name'], str):
         capability_list.append(init_capability())
     else:
@@ -38,6 +39,7 @@ def to_capability(d):
         env_k, env_v = d['environmentVariables_key'], d['environmentVariables_value']
         for k, v in list(zip(env_k, env_v)):
             capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
+
         for k, v in d.items():
             if "isOpenSource" in k:
                 if v[i] == 'on':
@@ -45,19 +47,22 @@ def to_capability(d):
                 else:
                     capability_list[i]["isOpenSource"] = False
                 d[k][i] = capability_list[i]["isOpenSource"]
-            if "deploymentDetails_" in k:
+            elif "deploymentDetails_" in k:
                 name = k.split("deploymentDetails_")[-1]
-                capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
-            if "dataDeletionEndpointDetails_" in k:
+                capability_list[i]["deploymentDetails"][name] = v[i]
+            elif "dataDeletionEndpointDetails_" in k:
                 name = k.split("dataDeletionEndpointDetails_")[-1]
                 capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
-            if "capability_" in k:
+            elif "capability_" in k:
                 name = k.split("capability_")[-1]
                 if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) > 0:
                     capability_list[i][name].append(v[i])
+                elif name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i])==0:
+                    capability_list[i][name] = []
                 else:
                     capability_list[i][name] = v[i]
         capability_list[i]["contacts"] = to_contact(d)
+
     return capability_list
 
 

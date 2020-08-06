@@ -340,6 +340,7 @@ def capabilities__search(id):
 def construct_capability(in_json):
     is_required_field = True
     error_required = ""
+
     try:
         error_required = "name"
         name = in_json["name"]
@@ -355,6 +356,7 @@ def construct_capability(in_json):
         healthCheckUrl = in_json["healthCheckUrl"]
         error_required = "dataDeletionEndpointDetails"
         deploymentLocation = in_json["dataDeletionEndpointDetails"]
+
     except:
         msg = {
             "reason": "Some of the required field in capability is not provided: " + str(error_required),

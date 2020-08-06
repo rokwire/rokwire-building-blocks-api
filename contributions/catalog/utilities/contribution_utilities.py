@@ -85,6 +85,7 @@ def to_contribution(d):
     res = init_contribution()
     capability = to_capability(d)
     res["capabilities"] = capability
+    # print(res["capabilities"])
     talent = to_talent(d)
     res["talents"] = talent
     contributor = to_contributor(d)
