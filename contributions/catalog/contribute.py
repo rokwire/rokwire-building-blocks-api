@@ -46,7 +46,8 @@ def post(json_data):
 
     try:
         # Setting up post request
-        result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers,
+        result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL,
+                               headers=headers,
                                data=json_data)
 
         if result.status_code != 200:

@@ -64,7 +64,7 @@ pip install -r requirements.txt
 cd .. 
 set FLASK_APP=catalog
 set FLASK_ENV=development
-flask run
+flask run --port=5050
 ```
 
 The following environment variables need to be set when running on development machine. 
