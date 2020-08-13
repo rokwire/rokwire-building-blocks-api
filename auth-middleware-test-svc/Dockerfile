@@ -1,6 +1,6 @@
 FROM python:3
 
-LABEL maintainer="fhena2@illinois.edu"
+LABEL maintainer="ywkim@illinois.edu"
 
 WORKDIR /app
 COPY auth-middleware-test-svc /app/
