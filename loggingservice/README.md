@@ -19,7 +19,7 @@ Not all of these variables may be required for this building block.
 Example file format:
 
 ```
-ROKWIRE_API_KEY=<Rokwire API Key>	ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>
 ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
 
 # AWS environment variables to set when running on development machine. 
@@ -29,22 +29,22 @@ AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 ```
 
 ## Run in Development Mode
-
 ```
-cd loggingservice
 export FLASK_ENV=development	
-python logging_rest_service.py
+python api/logging_rest_service.py
 ```
 and the Logging Building Block should be running at localhost at port 5000 (http://localhost:5000/logs).
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in logging.yaml in the OpenAPI Spec 3.0 format.
+If you want to use gunicorn, cd into api folder then, use ` gunicorn logging_rest_service:app -c gunicorn.config.py` instead of `python api/logging_rest_service.py` 
+
 ## Docker Instructions
 ```
 cd rokwire-building-blocks-api
 docker build -f loggingservice/Dockerfile -t rokwire/logging-building-block .
-docker run --name logging --rm --env-file loggingservice/.env -e API_LOC=. -e DEBUG=False -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
+docker run --name logging --rm --env-file loggingservice/.env -e API_LOC=. -e PRINT_LOG=True -e DEBUG=False -e LOGGING_URL_PREFIX=<url_prefix_starting_with_slash> -p 5000:5000 rokwire/logging-building-block
 ```
 You can edit config.py or environment variable to specify a URL prefix by modifying LOGGIN_URL_PREFIX variable.
-If you need to make just /logs as endpoint, put the vaiable value to empty string or do not include this variable.
+If you need to make just /logs as endpoint, put the variable value to empty string or do not include this variable.
 ```
 LOGGING_URL_PREFIX="/logs"
 ```

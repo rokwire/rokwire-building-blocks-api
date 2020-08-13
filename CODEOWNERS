@@ -1,0 +1,24 @@
+# Default assignment
+*   @sandeep-ps
+
+# App Config Building Block
+/appconfigservice/  @wenjzhu
+
+# Authentication Building Block
+/authservice/  @wenjzhu
+
+# Authentication Middleware Library
+/lib/auth-middleware/   @ywkim312
+
+# API Doc
+/Dockerfile @sandeep-ps
+/README @sandeep-ps
+
+# Events Building Block
+/eventservice/  @bingzhang
+
+# Logging Building Block
+/loggingservice/    @ywkim312
+
+# Profile Building Block
+/profileservice/    @ywkim312
