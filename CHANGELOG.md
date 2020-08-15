@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Authentication Building Block README [#519](https://github.com/rokwire/rokwire-building-blocks-api/issues/519)
 - Changed docker base image for Profile and Logging Building Block. [#521](https://github.com/rokwire/rokwire-building-blocks-api/issues/521)
 - Changed README for auth-middleware-test-svc based on new change. [#523](https://github.com/rokwire/rokwire-building-blocks-api/issues/523)
+- Update issue template. [#537](https://github.com/rokwire/rokwire-building-blocks-api/issues/537)
 
 ### Removed
 - rokwire.yaml file and deployment scripts that were not getting used. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
