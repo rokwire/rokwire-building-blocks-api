@@ -28,3 +28,21 @@ docker build -t rokwire/api-doc .
 docker tag rokwire/api-doc:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/api-doc:latest
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/api-doc:latest
 ```
+
+# Other Modules in this Repository
+
+- [App Config Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/appconfigservice)
+  - Python Connexion-based RESTful web services for managing client application configurations.
+- [Authentication Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/authservice)
+  - Python Connexion-based RESTful web services for managing user authentication. Currently, this module provides API endpoints for phone-based user verification.
+- [Auth Middleware Library](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/lib/auth-middleware)
+  - Python Library that provides methods for managing authentication and authorization of incoming requests.
+- [Events Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/eventservice)
+  - Python Connexion-based RESTful web services for managing events.
+- [Example Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/auth-middleware-test-svc)
+  - An example building block that uses the Auth Middleware Library.
+- [Logging Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/loggingservice)
+  - Python Connexion-based RESTful web services for managing logs.
+- [Profile Building Block](https://github.com/rokwire/rokwire-building-blocks-api/tree/develop/profileservice)
+  - Python Connexion-based RESTful web services for managing user profiles.
+  
