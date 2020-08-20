@@ -31,13 +31,13 @@ Not all of these variables may be required for this building block.
 Example file format:
 
 ```
-ROKWIRE_API_KEY=<Rokwire API Key>
-ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+ROKWIRE_API_KEY=<Rokwire API Key>   # pragma: allowlist secret
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>   # pragma: allowlist secret
 
 # AWS environment variables to set when running on development machine. 
 # This is not required when running within AWS.
-AWS_ACCESS_KEY_ID=<AWS Access Key ID>
-AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>   # pragma: allowlist secret
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>   # pragma: allowlist secret
 ```
 
 ## Run application
@@ -987,7 +987,7 @@ API will return the information of the talents with given name
                 "name":"capability2 test",
                 "apiBaseUrl":null,
                 "dataDeletionEndpointDetails":{
-                   "apiKey":"apiKey",
+                   "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
                 },
