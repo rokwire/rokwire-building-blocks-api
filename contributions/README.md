@@ -110,7 +110,7 @@ curl -X POST -d `{
                          "name":"capability test",
                          "apiBaseUrl":null,
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -167,7 +167,7 @@ curl -X PUT -d `{
                                 "name":"capability test",
                                 "apiBaseUrl":null,
                                 "dataDeletionEndpointDetails":{
-                                   "apiKey":"apiKey",
+                                   "apiKey":"apiKey",   # pragma: allowlist secret
                                    "description":"description",
                                    "deletionEndpoint":"deletionEndpoint"
                                 },
@@ -188,7 +188,7 @@ curl -X PUT -d `{
                                 "name":"capability2 test",
                                 "apiBaseUrl":null,
                                 "dataDeletionEndpointDetails":{
-                                   "apiKey":"apiKey",
+                                   "apiKey":"apiKey",   # pragma: allowlist secret
                                    "description":"description",
                                    "deletionEndpoint":"deletionEndpoint"
                                 },
@@ -225,7 +225,7 @@ curl -X PUT -d `{
                          },
                          "name":"capability test1",
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -262,7 +262,7 @@ curl -X PUT -d `{
                          },
                          "name":"capability test2",
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -345,7 +345,7 @@ API will return updated contribution dataset
              "name":"capability test1",
              "isOpenSource":true,
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -383,7 +383,7 @@ API will return updated contribution dataset
              "name":"capability test2",
              "isOpenSource":true,
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -433,7 +433,7 @@ API will return updated contribution dataset
                     "name":"capability test",
                     "apiBaseUrl":null,
                     "dataDeletionEndpointDetails":{
-                       "apiKey":"apiKey",
+                       "apiKey":"apiKey",   # pragma: allowlist secret
                        "description":"description",
                        "deletionEndpoint":"deletionEndpoint"
                     },
@@ -454,7 +454,7 @@ API will return updated contribution dataset
                     "name":"capability2 test",
                     "apiBaseUrl":null,
                     "dataDeletionEndpointDetails":{
-                       "apiKey":"apiKey",
+                       "apiKey":"apiKey",   # pragma: allowlist secret
                        "description":"description",
                        "deletionEndpoint":"deletionEndpoint"
                     },
@@ -521,7 +521,7 @@ API will return the information of the contribution dataset
              "apiBaseUrl":null,
              "description":"capability description",
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -559,7 +559,7 @@ API will return the information of the contribution dataset
              "apiBaseUrl":null,
              "description":"capability description",
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -610,7 +610,7 @@ API will return the information of the contribution dataset
                     "name":"capability test",
                     "apiBaseUrl":null,
                     "dataDeletionEndpointDetails":{
-                       "apiKey":"apiKey",
+                       "apiKey":"apiKey",   # pragma: allowlist secret
                        "description":"description",
                        "deletionEndpoint":"deletionEndpoint"
                     },
@@ -631,7 +631,7 @@ API will return the information of the contribution dataset
                     "name":"capability2 test",
                     "apiBaseUrl":null,
                     "dataDeletionEndpointDetails":{
-                       "apiKey":"apiKey",
+                       "apiKey":"apiKey",   # pragma: allowlist secret
                        "description":"description",
                        "deletionEndpoint":"deletionEndpoint"
                     },
@@ -698,7 +698,7 @@ API will return the information of the capabilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -736,7 +736,7 @@ API will return the information of the capabilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -774,7 +774,7 @@ API will return the information of the capabilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -845,7 +845,7 @@ API will return the information of the capabilities with given name
         "apiDocUrl": null,
         "contacts": null,
         "dataDeletionEndpointDetails": {
-          "apiKey": "apiKey",
+          "apiKey": "apiKey",   # pragma: allowlist secret
           "deletionEndpoint": "deletionEndpoint",
           "description": "description"
         },
@@ -913,7 +913,7 @@ API will return the information of the talents in contribution dataset
                 "name":"capability2 test",
                 "apiBaseUrl":null,
                 "dataDeletionEndpointDetails":{
-                   "apiKey":"apiKey",
+                   "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
                 },
