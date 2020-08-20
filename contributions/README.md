@@ -822,7 +822,7 @@ API will return the information of the capabilities with given name
           }
         ],
         "dataDeletionEndpointDetails": {
-          "apiKey": "apiKey",
+          "apiKey": "apiKey",   # pragma: allowlist secret
           "deletionEndpoint": "deletionEndpoint",
           "description": "description"
         },
@@ -892,7 +892,7 @@ API will return the information of the talents in contribution dataset
                 "name":"capability test",
                 "apiBaseUrl":null,
                 "dataDeletionEndpointDetails":{
-                   "apiKey":"apiKey",
+                   "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
                 },
@@ -966,7 +966,7 @@ API will return the information of the talents with given name
                 "name":"capability test",
                 "apiBaseUrl":null,
                 "dataDeletionEndpointDetails":{
-                   "apiKey":"apiKey",
+                   "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
                 },
