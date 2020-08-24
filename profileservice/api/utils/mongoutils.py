@@ -1,3 +1,17 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+# 
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import json
 import logging
 import controllers.configs as cfg
@@ -14,9 +28,13 @@ import utils.jsonutils as jsonutils
 client_profile = MongoClient(cfg.MONGO_PROFILE_URL, connect=False)
 db_profile = client_profile[cfg.PROFILE_DB_NAME]
 db_profile.non_pii_collection = db_profile[cfg.PROFILE_DB_PROFILE_COLL_NAME]
+db_profile.non_pii_collection.create_index([("uuid", ASCENDING)], background=True)
 client_pii = MongoClient(cfg.MONGO_PII_URL, connect=False)
 db_pii = client_pii[cfg.PII_DB_NAME]
 db_pii.pii_collection = db_pii[cfg.PII_DB_PII_COLL_NAME]
+db_pii.pii_collection.create_index([("pid", ASCENDING)], background=True)
+db_pii.pii_collection.create_index([("uin", ASCENDING)], background=True)
+db_pii.pii_collection.create_index([("phone", ASCENDING)], background=True)
 
 """
 get query output json of PII from query using search arguments
@@ -149,10 +167,12 @@ def get_pii_dataset_from_field(fld, query_str):
             dataset.set_uuid(json_load[cfg.FIELD_PROFILE_UUID])
         except:
             pass
-        try:
-            dataset.set_pid(json_load[cfg.FIELD_PID])
-        except:
-            pass
+
+        # this will not be implemented to protect pid get updated from request body
+        # try:
+        #     dataset.set_pid(json_load[cfg.FIELD_PID])
+        # except:
+        #     pass
 
         return dataset
 
@@ -325,14 +345,12 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
 index non pii collection
 """
 def index_non_pii_data():
-    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)])
+    db_profile.non_pii_collection.create_index([('uuid', ASCENDING)], background=True)
 
 """
 index non pii collection
 """
 def index_pii_data():
-    db_pii.pii_collection.create_index([('pid', ASCENDING),
-                             ('firstname', ASCENDING),
-                             ('lastname', ASCENDING),
-                             ('email', ASCENDING),
-                             ('phone', ASCENDING)])
+    db_pii.pii_collection.create_index([('pid', ASCENDING)], background=True)
+    db_pii.pii_collection.create_index([('uin', ASCENDING)], background=True)
+    db_pii.pii_collection.create_index([('phone', ASCENDING)], background=True)

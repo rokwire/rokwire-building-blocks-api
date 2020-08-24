@@ -50,15 +50,16 @@ $ python auth_rest_service.py
 ```
 ### Run as a Docker Container
 
-#### Docker Compose
-
 You need to have Docker installed in your computer.
 
-##### Run command
+##### Build Docker Image and Run with Docker command
 
 ```
-$ docker-compose up
+docker build -f authservice/Dockerfile -t rokwire/authentication-building-block:latest .
+docker run --name auth --rm --env-file=authservice/.env -e -p AUTH_URL_PREFIX=<url_auth_starting_with_slash> 5000:5000 rokwire/authentication-building-block:latest
 ```
+
+Or update `docker-compose.yml` file and use `docker-compose up` to run
 
 ##### Docker Compose environment variable configuration
 
@@ -69,7 +70,7 @@ To run locally with Docker Compose, you will need to create a file called `.env`
 - `TWILIO_VERIFY_SERVICE_ID`
 - `PHONE_VERIFY_SECRET`
 - `PHONE_VERIFY_AUDIENCE`
-- `ROKWIRE_API_KEY`
+- `ROKWIRE_API_KEY` - This can be a comma separated list of API keys. E.g. `ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>`
 
 
 ## Deployment notes

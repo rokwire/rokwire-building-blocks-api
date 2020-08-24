@@ -21,7 +21,7 @@ Example file format:
 SHIBBOLETH_HOST=<Shibboleth Host Name>
 SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
 
-ROKWIRE_API_KEY=<Rokwire API Key>
+ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>
 ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
 
 # AWS environment variables to set when running on development machine. 
@@ -43,7 +43,7 @@ cd rokwire-building-blocks-api/eventservice
 python api/events_rest_service.py
 ```
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in events.yaml in the OpenAPI Spec 3.0 format.
 
 ## Run as Docker Container in Local
 ```

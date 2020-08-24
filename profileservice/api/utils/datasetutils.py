@@ -1,8 +1,23 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+# 
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import copy
 
 from models.interest import Interest
 from models.favorites import Favorites
 from models.privacysettings import PrivacySettings
+from models.testresultsconsent import TestResultsConsent
 
 """
 set non pii dataset
@@ -94,11 +109,19 @@ set pii dataset
 """
 def update_pii_dataset_from_json(dataset, injson):
     try:
+        dataset.set_pid(injson['pid'])
+    except Exception as e:
+        pass
+    try:
         dataset.set_lastname(injson['lastname'])
     except Exception as e:
         pass
     try:
         dataset.set_firstname(injson['firstname'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_middlename(injson['middlename'])
     except Exception as e:
         pass
     try:
@@ -119,6 +142,52 @@ def update_pii_dataset_from_json(dataset, injson):
         pass
     try:
         dataset.set_netid(injson['netid'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_birth_year(injson['birthYear'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_address(injson['address'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_zip_code(injson['zipCode'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_home_county(injson['homeCounty'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_work_county(injson['workCounty'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_state(injson['state'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_country(injson['country'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_healthcare_provider_ids(injson['healthcareProviderIDs'])
+    except Exception as e:
+        pass
+    try:
+        testresultsconsent = TestResultsConsent()
+        testresultsconsent.set_consent_provided(injson["testResultsConsent"]["consentProvided"])
+        dataset.set_test_results_consent(injson['testResultsConsent'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_document_type(injson['documentType'])
+    except Exception as e:
+        pass
+    try:
+        dataset.set_photo_image_base64(injson['photoImageBase64'])
     except Exception as e:
         pass
     try:

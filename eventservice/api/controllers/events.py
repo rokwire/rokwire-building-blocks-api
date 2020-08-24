@@ -1,3 +1,17 @@
+#  Copyright 2020 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import io
 import os
 import json
@@ -95,7 +109,7 @@ def _get_events_result(query, limit, skip):
                 events.append(subevent_detail)
         else:
             events.append(event)
-    return flask.json.dumps(events), len(events)
+    return flask.json.dumps(events, default=query_params.format_datetime_response), len(events)
 
 
 def tags_search():
@@ -292,7 +306,8 @@ def delete(event_id):
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-
+    if status.deleted_count == 0:
+        abort(404)
     return success_response(202, msg, str(event_id))
 
 
