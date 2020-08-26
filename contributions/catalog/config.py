@@ -17,23 +17,23 @@ class Config(object):
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
 
 
-    # ADMINS defines a list usernames that serve as administrators
-    ADMINS = []
-
-    # OIDC CONFIG FOR LOGIN
-    ISSUER_URL = os.getenv("ISSUER_URL", "https://shibboleth-test.techservices.illinois.edu")  # test instance
-    SCOPES = os.getenv("SCOPES",
-                       ["openid", "profile", "email", "offline_access"])  # Other OIDC scopes can be added as needed.
-    REDIRECT_URIS = os.getenv("REDIRECT_URIS", "")
-    CLIENT_ID = os.getenv("CLIENT_ID", "")
-    CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
-
-    # LOGIN_MODE SELECTED
-    LOGIN_MODE = os.getenv("LOGIN_MODE", "shibboleth")  # TODO: Add an option "local" for local login.
-
-    # ROLE OF USERS
-    ROLE = {
-    }
-
-    # SESSION EXPIRATION TIME
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=os.getenv("SESSION_LIFETIME_IN_HOURS", 1))
+    # # ADMINS defines a list usernames that serve as administrators
+    # ADMINS = []
+    #
+    # # OIDC CONFIG FOR LOGIN
+    # ISSUER_URL = os.getenv("ISSUER_URL", "https://shibboleth-test.techservices.illinois.edu")  # test instance
+    # SCOPES = os.getenv("SCOPES",
+    #                    ["openid", "profile", "email", "offline_access"])  # Other OIDC scopes can be added as needed.
+    # REDIRECT_URIS = os.getenv("REDIRECT_URIS", "")
+    # CLIENT_ID = os.getenv("CLIENT_ID", "")
+    # CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
+    #
+    # # LOGIN_MODE SELECTED
+    # LOGIN_MODE = os.getenv("LOGIN_MODE", "shibboleth")  # TODO: Add an option "local" for local login.
+    #
+    # # ROLE OF USERS
+    # ROLE = {
+    # }
+    #
+    # # SESSION EXPIRATION TIME
+    # PERMANENT_SESSION_LIFETIME = timedelta(hours=os.getenv("SESSION_LIFETIME_IN_HOURS", 1))
