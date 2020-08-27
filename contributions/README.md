@@ -31,13 +31,13 @@ Not all of these variables may be required for this building block.
 Example file format:
 
 ```
-ROKWIRE_API_KEY=<Rokwire API Key>
-ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
+ROKWIRE_API_KEY=<Rokwire API Key>   # pragma: allowlist secret
+ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>   # pragma: allowlist secret
 
 # AWS environment variables to set when running on development machine. 
 # This is not required when running within AWS.
-AWS_ACCESS_KEY_ID=<AWS Access Key ID>
-AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
+AWS_ACCESS_KEY_ID=<AWS Access Key ID>   # pragma: allowlist secret
+AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>   # pragma: allowlist secret
 ```
 
 ## Run application
@@ -50,27 +50,18 @@ The configuration file configs.py should have the appropriate information
 
 To install and run the location-model service, do the following:
 
-- (Linux or MAC):
 ```
 cd contributions
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-python api/contributions_rest_service.py
-```
-- (Windows):
-```
-cd contributions
-py -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-python api/contributions_rest_service.py
+python api/contributions_rest_service.py`
 ```
 
 If you want to use gunicorn, cd into api folder then, use ` gunicorn contributions_rest_service:app -c gunicorn.config.py` instead of `python api/contributions_rest_service.py` 
 
 The contributions building block should be running at http://localhost:5000
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in contribution.yaml in the OpenAPI Spec 3.0 format.
 
 ### Docker Instructions
 ```
@@ -119,7 +110,7 @@ curl -X POST -d `{
                          "name":"capability test",
                          "apiBaseUrl":null,
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -156,7 +147,72 @@ To update the information about the non-pii dataset, this method should be used
 curl -X PUT -d `{
                    "shortDescription":"Short description of the contribution",
                    "name":"test1",
-                   "talents":null,
+                   "talents":[
+                       {
+                          "name":"talent 1",
+                          "shortDescription":"short description",
+                          "requiredCapabilities":[
+                             {
+                                "apiDocUrl":null,
+                                "healthCheckUrl":"healthCheckUrl",
+                                "deploymentDetails":{
+                                   "authMethod":null,
+                                   "databaseDetails":null,
+                                   "environmentVariables":null,
+                                   "location":"internal"
+                                },
+                                "version":"version",
+                                "description":"capability description",
+                                "isOpenSource":true,
+                                "name":"capability test",
+                                "apiBaseUrl":null,
+                                "dataDeletionEndpointDetails":{
+                                   "apiKey":"apiKey",   # pragma: allowlist secret
+                                   "description":"description",
+                                   "deletionEndpoint":"deletionEndpoint"
+                                },
+                                "status":"Submitted"
+                             },
+                             {
+                                "apiDocUrl":null,
+                                "healthCheckUrl":"healthCheckUrl",
+                                "deploymentDetails":{
+                                   "authMethod":null,
+                                   "databaseDetails":null,
+                                   "environmentVariables":null,
+                                   "location":"internal"
+                                },
+                                "version":"version",
+                                "description":"capability2 description",
+                                "isOpenSource":true,
+                                "name":"capability2 test",
+                                "apiBaseUrl":null,
+                                "dataDeletionEndpointDetails":{
+                                   "apiKey":"apiKey",   # pragma: allowlist secret
+                                   "description":"description",
+                                   "deletionEndpoint":"deletionEndpoint"
+                                },
+                                "status":"Submitted"
+                             }
+                          ],
+                          "minUserPrivacyLevel":5,
+                          "requiredBuildingBlocks":[
+                             "App Config",
+                             "Talent Chooser"
+                          ],
+                          "minEndUserRoles":[
+                             "alumni",
+                             "employee"
+                          ],
+                          "startDate":"2020/06/15T12:06:55",
+                          "endDate":"2020/10/25T12:06:55",
+                          "dataDescription":"Data description",
+                          "selfCertification":{
+                             "dataDeletionUponRequest":"data deletion upon request",
+                             "discloseAds":"disclose ads"
+                          }
+                       }
+                    ],
                    "capabilities":[
                       {
                          "apiDocUrl":null,
@@ -169,7 +225,7 @@ curl -X PUT -d `{
                          },
                          "name":"capability test1",
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -206,7 +262,7 @@ curl -X PUT -d `{
                          },
                          "name":"capability test2",
                          "dataDeletionEndpointDetails":{
-                            "apiKey":"apiKey",
+                            "apiKey":"apiKey",  # pragma: allowlist secret
                             "description":"description",
                             "deletionEndpoint":"deletionEndpoint"
                          },
@@ -289,7 +345,7 @@ API will return updated contribution dataset
              "name":"capability test1",
              "isOpenSource":true,
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -327,7 +383,7 @@ API will return updated contribution dataset
              "name":"capability test2",
              "isOpenSource":true,
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -357,7 +413,72 @@ API will return updated contribution dataset
        "dateModified":"2020/06/04T14:02:49",
        "longDescription":null,
        "name":"test1",
-       "talents":null,
+       "talents":[
+           {
+              "name":"talent 1",
+              "shortDescription":"short description",
+              "requiredCapabilities":[
+                 {
+                    "apiDocUrl":null,
+                    "healthCheckUrl":"healthCheckUrl",
+                    "deploymentDetails":{
+                       "authMethod":null,
+                       "databaseDetails":null,
+                       "environmentVariables":null,
+                       "location":"internal"
+                    },
+                    "version":"version",
+                    "description":"capability description",
+                    "isOpenSource":true,
+                    "name":"capability test",
+                    "apiBaseUrl":null,
+                    "dataDeletionEndpointDetails":{
+                       "apiKey":"apiKey",   # pragma: allowlist secret
+                       "description":"description",
+                       "deletionEndpoint":"deletionEndpoint"
+                    },
+                    "status":"Submitted"
+                 },
+                 {
+                    "apiDocUrl":null,
+                    "healthCheckUrl":"healthCheckUrl",
+                    "deploymentDetails":{
+                       "authMethod":null,
+                       "databaseDetails":null,
+                       "environmentVariables":null,
+                       "location":"internal"
+                    },
+                    "version":"version",
+                    "description":"capability2 description",
+                    "isOpenSource":true,
+                    "name":"capability2 test",
+                    "apiBaseUrl":null,
+                    "dataDeletionEndpointDetails":{
+                       "apiKey":"apiKey",   # pragma: allowlist secret
+                       "description":"description",
+                       "deletionEndpoint":"deletionEndpoint"
+                    },
+                    "status":"Submitted"
+                 }
+              ],
+              "minUserPrivacyLevel":5,
+              "requiredBuildingBlocks":[
+                 "App Config",
+                 "Talent Chooser"
+              ],
+              "minEndUserRoles":[
+                 "alumni",
+                 "employee"
+              ],
+              "startDate":"2020/06/15T12:06:55",
+              "endDate":"2020/10/25T12:06:55",
+              "dataDescription":"Data description",
+              "selfCertification":{
+                 "dataDeletionUponRequest":"data deletion upon request",
+                 "discloseAds":"disclose ads"
+              }
+           }
+        ],
        "dateCreated":"2020/06/04T13:57:14"
     }
 ```
@@ -400,7 +521,7 @@ API will return the information of the contribution dataset
              "apiBaseUrl":null,
              "description":"capability description",
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -438,7 +559,7 @@ API will return the information of the contribution dataset
              "apiBaseUrl":null,
              "description":"capability description",
              "dataDeletionEndpointDetails":{
-                "apiKey":"apiKey",
+                "apiKey":"apiKey",  # pragma: allowlist secret
                 "deletionEndpoint":"deletionEndpoint",
                 "description":"description"
              },
@@ -469,7 +590,72 @@ API will return the information of the contribution dataset
        "dateModified":"2020/06/04T14:02:49",
        "longDescription":null,
        "name":"test1",
-       "talents":null,
+       "talents":[
+           {
+              "name":"talent 1",
+              "shortDescription":"short description",
+              "requiredCapabilities":[
+                 {
+                    "apiDocUrl":null,
+                    "healthCheckUrl":"healthCheckUrl",
+                    "deploymentDetails":{
+                       "authMethod":null,
+                       "databaseDetails":null,
+                       "environmentVariables":null,
+                       "location":"internal"
+                    },
+                    "version":"version",
+                    "description":"capability description",
+                    "isOpenSource":true,
+                    "name":"capability test",
+                    "apiBaseUrl":null,
+                    "dataDeletionEndpointDetails":{
+                       "apiKey":"apiKey",   # pragma: allowlist secret
+                       "description":"description",
+                       "deletionEndpoint":"deletionEndpoint"
+                    },
+                    "status":"Submitted"
+                 },
+                 {
+                    "apiDocUrl":null,
+                    "healthCheckUrl":"healthCheckUrl",
+                    "deploymentDetails":{
+                       "authMethod":null,
+                       "databaseDetails":null,
+                       "environmentVariables":null,
+                       "location":"internal"
+                    },
+                    "version":"version",
+                    "description":"capability2 description",
+                    "isOpenSource":true,
+                    "name":"capability2 test",
+                    "apiBaseUrl":null,
+                    "dataDeletionEndpointDetails":{
+                       "apiKey":"apiKey",   # pragma: allowlist secret
+                       "description":"description",
+                       "deletionEndpoint":"deletionEndpoint"
+                    },
+                    "status":"Submitted"
+                 }
+              ],
+              "minUserPrivacyLevel":5,
+              "requiredBuildingBlocks":[
+                 "App Config",
+                 "Talent Chooser"
+              ],
+              "minEndUserRoles":[
+                 "alumni",
+                 "employee"
+              ],
+              "startDate":"2020/06/15T12:06:55",
+              "endDate":"2020/10/25T12:06:55",
+              "dataDescription":"Data description",
+              "selfCertification":{
+                 "dataDeletionUponRequest":"data deletion upon request",
+                 "discloseAds":"disclose ads"
+              }
+           }
+        ],
        "dateCreated":"2020/06/04T13:57:14"
     }
 ```
@@ -485,11 +671,11 @@ API will return the message
     }
 ```
 ### GET capabilities in contribution data using contribution id
-To get the information about the existing non-pii dataset, this method should be used
+To get the information about capabilities in certain contribution dataset, this method should be used
 ```
 curl http://localhost:5000/contributions/5ed57231830d301a14974900/capabilities
 ```
-API will return the information of the capbilities in contribution dataset
+API will return the information of the capabilities in contribution dataset
 ```
     [
        {
@@ -512,7 +698,7 @@ API will return the information of the capbilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -550,7 +736,7 @@ API will return the information of the capbilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -588,7 +774,7 @@ API will return the information of the capbilities in contribution dataset
              }
           ],
           "dataDeletionEndpointDetails":{
-             "apiKey":"apiKey",
+             "apiKey":"apiKey", # pragma: allowlist secret
              "deletionEndpoint":"deletionEndpoint",
              "description":"description"
           },
@@ -609,7 +795,7 @@ API will return the information of the capbilities in contribution dataset
     ]
 ```
 ### GET capabilities in contribution data using capability name
-To get the information about the existing non-pii dataset, this method should be used
+To get the information about the capability dataset using capability name keyword, this method should be used
 ```
 http://localhost:5000/contributions/capabilities?name=test1
 ```
@@ -636,7 +822,7 @@ API will return the information of the capabilities with given name
           }
         ],
         "dataDeletionEndpointDetails": {
-          "apiKey": "apiKey",
+          "apiKey": "apiKey",   # pragma: allowlist secret
           "deletionEndpoint": "deletionEndpoint",
           "description": "description"
         },
@@ -659,7 +845,7 @@ API will return the information of the capabilities with given name
         "apiDocUrl": null,
         "contacts": null,
         "dataDeletionEndpointDetails": {
-          "apiKey": "apiKey",
+          "apiKey": "apiKey",   # pragma: allowlist secret
           "deletionEndpoint": "deletionEndpoint",
           "description": "description"
         },
@@ -677,5 +863,153 @@ API will return the information of the capabilities with given name
         "status": "Submitted",
         "version": "version"
       }
+    ]
+```
+### GET talents in contribution data using contribution id
+To get the information about talent in certain contribution dataset, this method should be used
+```
+curl http://localhost:5000/contributions/5ed57231830d301a14974900/talents
+```
+API will return the information of the talents in contribution dataset
+```
+    [
+       {
+          "name":"talent 1",
+          "shortDescription":"short description",
+          "requiredCapabilities":[
+             {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                   "authMethod":null,
+                   "databaseDetails":null,
+                   "environmentVariables":null,
+                   "location":"internal"
+                },
+                "version":"version",
+                "description":"capability description",
+                "isOpenSource":true,
+                "name":"capability test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                   "apiKey":"apiKey",   # pragma: allowlist secret
+                   "description":"description",
+                   "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+             },
+             {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                   "authMethod":null,
+                   "databaseDetails":null,
+                   "environmentVariables":null,
+                   "location":"internal"
+                },
+                "version":"version",
+                "description":"capability2 description",
+                "isOpenSource":true,
+                "name":"capability2 test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                   "apiKey":"apiKey",   # pragma: allowlist secret
+                   "description":"description",
+                   "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+             }
+          ],
+          "minUserPrivacyLevel":5,
+          "requiredBuildingBlocks":[
+             "App Config",
+             "Talent Chooser"
+          ],
+          "minEndUserRoles":[
+             "alumni",
+             "employee"
+          ],
+          "startDate":"2020/06/15T12:06:55",
+          "endDate":"2020/10/25T12:06:55",
+          "dataDescription":"Data description",
+          "selfCertification":{
+             "dataDeletionUponRequest":"data deletion upon request",
+             "discloseAds":"disclose ads"
+          }
+       }
+    ]
+```
+### GET talents in contribution data using talent name
+To get the information about the talent dataset using talent name keyword, this method should be used
+```
+http://localhost:5000/contributions/talents?name=talent 1
+```
+API will return the information of the talents with given name
+```
+    [
+       {
+          "name":"talent 1",
+          "shortDescription":"short description",
+          "requiredCapabilities":[
+             {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                   "authMethod":null,
+                   "databaseDetails":null,
+                   "environmentVariables":null,
+                   "location":"internal"
+                },
+                "version":"version",
+                "description":"capability description",
+                "isOpenSource":true,
+                "name":"capability test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                   "apiKey":"apiKey",   # pragma: allowlist secret
+                   "description":"description",
+                   "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+             },
+             {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                   "authMethod":null,
+                   "databaseDetails":null,
+                   "environmentVariables":null,
+                   "location":"internal"
+                },
+                "version":"version",
+                "description":"capability2 description",
+                "isOpenSource":true,
+                "name":"capability2 test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                   "apiKey":"apiKey",   # pragma: allowlist secret
+                   "description":"description",
+                   "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+             }
+          ],
+          "minUserPrivacyLevel":5,
+          "requiredBuildingBlocks":[
+             "App Config",
+             "Talent Chooser"
+          ],
+          "minEndUserRoles":[
+             "alumni",
+             "employee"
+          ],
+          "startDate":"2020/06/15T12:06:55",
+          "endDate":"2020/10/25T12:06:55",
+          "dataDescription":"Data description",
+          "selfCertification":{
+             "dataDeletionUponRequest":"data deletion upon request",
+             "discloseAds":"disclose ads"
+          }
+       }
     ]
 ```
