@@ -1,13 +1,13 @@
 import json
 import traceback
-
+from werkzeug.exceptions import HTTPException
+# from app import app
 import requests
 from flask import (
     Blueprint, render_template, request
 )
-
-from .config import Config
-from .utilities.contribution_utilities import to_contribution
+from config import Config
+from utilities.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -54,6 +54,14 @@ def submitted():
     return render_template('contribute/submitted.html')
 
 #
+
+# @app.errorhandler(Exception)
+# def handle_exception(e):
+#     # pass through HTTP errors
+#     if isinstance(e, HTTPException):
+#         return e
+#     # now you're handling non-HTTP exceptions only
+#     return render_template("500_error.html", e=e), 500
 
 @bp.route('/results')
 def search_results(search):

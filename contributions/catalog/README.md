@@ -41,10 +41,9 @@ cd catalog
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-cd .. 
 set FLASK_APP=catalog
 set FLASK_ENV=development
-flask run --port=5050
+python contribution_catalog.py
 ```
 - (Windows):
 ```
@@ -52,10 +51,9 @@ cd catalog
 py -m venv env
 .\env\Scripts\activate
 pip install -r requirements.txt
-cd .. 
 set FLASK_APP=catalog
 set FLASK_ENV=development
-flask run --port=5050
+python contribution_catalog.py
 ```
 
 

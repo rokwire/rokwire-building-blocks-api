@@ -15,6 +15,7 @@ class Config(object):
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
+    DEBUG = True
 
 
     # # ADMINS defines a list usernames that serve as administrators
