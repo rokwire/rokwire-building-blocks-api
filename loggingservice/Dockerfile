@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3-alpine3.11
 
 LABEL maintainer="ywkim@illinois.edu"
 
@@ -20,7 +20,7 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl && \
 
 WORKDIR /usr/src/app/loggingservice/api
 
-COPY rokwire.yaml .
+COPY loggingservice/logging.yaml .
 
 #ENV LOGGING_MONGO_URL=""
 ENV LOGGING_URL_PREFIX=""

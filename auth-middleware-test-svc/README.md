@@ -16,29 +16,43 @@ Pay attention to these things:
   - [docker build instructions here](#docker-build)
 - See the readme.md file for the `lib/auth-middleware` python package for environment variables that will need to be set in your building block instance.
 
-## run
+## Environment File
 
-- make present-working-directory this one (`rokwire-building-blocks-api/auth-middleware-test-svc/`)
-- execute run command
-  - docker compose
-    - `$ docker-compose up`
-  - standard python (need to pip install requirements, and recommend using a virtualenv)
-    - `$ python flaskapp.py`
+You need to have a `.env` file in this directory that contains credentials required for authentication. 
+Not all of these variables may be required for this test. 
 
-## docker build
+Example file format:
+```
+TWILIO_ACCT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_VERIFY_SERVICE_ID=<Twilio Verify Service ID>
 
-## Environment variables
-Please add the required environment variables to .env file. This will be imported into the docker container when running docker compose command. 
+PHONE_VERIFY_SECRET=<Phone Verify Secret> 
+PHONE_VERIFY_AUDIENCE=<Phone Verify Audience>
 
-### std docker
+SHIBBOLETH_HOST=<Shibboleth Host Name>
+SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
+```
 
-- make present-working-directory the parent directory
-  - eg.
-    - this project = `rokwire-building-blocks-api/auth-middleware-test-svc`
-    - parent directory = `rokwire-building-blocks-api` - build context
-- `$ docker build -f auth-middleware-test-svc/Dockerfile .`
+## Run application
 
-### docker compose
+### Run locally without Docker
+```
+cd rokwire-building-blocks-api/auth-middleware-test-svc
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+python flaskapp.py`
+```
 
-- make present-working-directory this one (`rokwire-building-blocks-api/auth-middleware-test-svc/`)
-- `$ docker-compose build`
+If you want to use gunicorn, cd into api folder then, use ` gunicorn flaskapp:app -c gunicorn.config.py` instead of `python flaskapp.py` 
+
+It should be running at http://localhost:5000
+
+### Docker Instructions
+
+```
+cd rokwire-building-blocks-api
+docker build -t rokwire/auth_middleware_test -f auth-middleware-test-svc/Dockerfile .
+docker run --rm --env-file=auth-middleware-test-svc/.env  -p 5000:5000 rokwire/auth_middleware_test
+```
