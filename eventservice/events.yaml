@@ -762,6 +762,12 @@ components:
           description: A list of objects containg some basic details about the sub events that are part of a super event. This property currently applies only to a super event. I.e. this assumes that `isSuperEvent` is set to `true`.
           items:
             $ref: "#/components/schemas/SubEventDetails"
+        displayOnlyWithSuperEvent:
+          type: boolean
+          description: If this flag is set to true, the app client will then display the event only under a super events screen.
+        isVirtual:
+          type: boolean
+          description: Setting this to true will indicate that the event is virtual. This flag can then be used to ignore geocoding calculation or displaying a physical location in the app.
     SubEventDetails:
       type: object
       properties:
