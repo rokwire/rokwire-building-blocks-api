@@ -6,7 +6,7 @@ import requests
 from flask import (
     Blueprint, render_template, request
 )
-from config import Config
+from controllers.config import Config
 from utilities.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')

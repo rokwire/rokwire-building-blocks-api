@@ -64,12 +64,19 @@ class RokwireResolver(Resolver):
                         name += '.' + path.replace('-', '_')
                     else:
                         name += '_' + path.replace('-', '_')
+                # TODO if there is a conflict in naming convention,
+                #  following lines could be helpful
+                # else:
+                #     if name.count('.') < 2:
+                #         name += '.var'
+                #     else:
+                #         name += '_var'
 
         # append method
         method = operation.method.lower()
         if method == 'get' and '{' not in elements[-1]:
             method = self.collection_endpoint_name
-        print(name)
+        print(name + "_" + method)
 
         if name.count('.') < 2:
             return name + '.' + method

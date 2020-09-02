@@ -2,9 +2,9 @@ import os
 import requests
 import logging
 from flask import Flask, render_template, request, Blueprint
-from auth import bp as auth_bp
-from config import Config as cfg
-from contribute import bp as contribute_bp
+from controllers.auth import bp as auth_bp
+from controllers.config import Config as cfg
+from controllers.contribute import bp as contribute_bp
 from db import init_app
 from time import gmtime
 
@@ -27,7 +27,9 @@ if cfg and cfg.URL_PREFIX:
 else:
     staticpath = '/static'
 
-app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath)
+template_dir = os.path.join(os.path.abspath('webapps'), 'templates')
+app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, template_folder=template_dir)
+# app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath)
 app.config.from_object(cfg)
 
 init_app(app)

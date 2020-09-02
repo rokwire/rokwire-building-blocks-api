@@ -4,7 +4,7 @@ from flask.cli import with_appcontext
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 
-from config import Config
+from controllers.config import Config
 
 
 def get_db():
