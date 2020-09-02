@@ -20,7 +20,7 @@ app = flask.Flask(__name__)
 
 ################################################
 # Call middleware here!
-# ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇
+################################################
 app.before_request(auth_middleware.authenticate)
 
 
