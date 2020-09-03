@@ -66,6 +66,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: startDateLimit
+        in: query
+        description: Another parameter for searching events based on a given start date, e.g., /events?startDateLimit=2019-04-25T13:00:00. This query will return all events whose start date is less than or equal to the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       - name: endDate
         in: query
         description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
