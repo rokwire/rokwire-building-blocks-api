@@ -43,7 +43,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 set FLASK_APP=catalog
 set FLASK_ENV=development
-python contribution_catalog.py
+python catalog_rest_service.py
 ```
 - (Windows):
 ```
@@ -53,8 +53,7 @@ py -m venv env
 pip install -r requirements.txt
 set FLASK_APP=catalog
 set FLASK_ENV=development
-python contribution_catalog.py
+python catalog_rest_service.py
 ```
 
-
-
+If you want to use gunicorn, cd into api folder then, use ` gunicorn catalog_rest_service:app -c gunicorn.config.py` instead of `python catalog_rest_service.py`

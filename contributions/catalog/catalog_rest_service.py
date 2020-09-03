@@ -40,7 +40,6 @@ app.register_blueprint(contribute_bp)
 def hello():
     return render_template('contribute/home.html')
 
-
 if __name__ == '__main__':
     app.run(port=5050, host=None, debug=True)
 
