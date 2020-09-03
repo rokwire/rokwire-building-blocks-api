@@ -29,7 +29,6 @@ else:
 
 template_dir = os.path.join(os.path.abspath('webapps'), 'templates')
 app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, template_folder=template_dir)
-# app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath)
 app.config.from_object(cfg)
 
 init_app(app)
