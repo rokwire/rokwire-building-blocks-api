@@ -4,9 +4,6 @@ LABEL maintainer="ywkim@illinois.edu"
 
 EXPOSE 5050
 
-WORKDIR /usr/src/app/lib
-
-COPY lib .
 
 WORKDIR /usr/src/app/catalog
 
@@ -19,7 +16,7 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl && \
   apk del build-dependencies
 
 WORKDIR /usr/src/app/contributions/api
-#COPY rokwire.yaml .
+
 
 ENV MONGO_CONTRIBUTION_URL="" \
     API_LOC="." \
