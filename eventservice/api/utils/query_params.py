@@ -82,6 +82,15 @@ def format_query(args, query):
             microsecond=0
         )
         query_parts.append({'startDate': {'$gte': value}})
+    if args.get('startDateLimit'):
+        value = datetime.datetime.strptime(args.get('startDateLimit'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$lte': value}})
     if args.get('endDate'):
         value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
         # Clamp values to the next highest 15min. This uses timedelta in case the
