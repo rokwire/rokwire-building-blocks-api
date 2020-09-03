@@ -28,7 +28,8 @@ else:
     staticpath = '/static'
 
 template_dir = os.path.join(os.path.abspath('webapps'), 'templates')
-app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, template_folder=template_dir)
+static_dir = os.path.join(os.path.abspath('webapps'), 'static')
+app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,  static_folder= static_dir, template_folder=template_dir)
 app.config.from_object(cfg)
 
 init_app(app)
