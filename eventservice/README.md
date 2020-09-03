@@ -281,6 +281,11 @@ This query will return back all events whose startdate and enddate between the r
 /events?startDate=2019-04-25T13:00:00&endDate=2019-04-25T17:00:00
 ```
 
+This query will return back all events whose startDate is between the provided range, including both the dates. This kind of query can be used to find events whose start date falls within a given date range.
+```
+/events?startDate=2019-04-20T00:00:00&startDateLimit=2019-04-25T23:59:59
+```
+
 ### Geolocation Radius Search
 
 This query will return back all events whose geolocation is within ``800`` meter centered at given geolocation point.
