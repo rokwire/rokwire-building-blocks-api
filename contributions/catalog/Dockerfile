@@ -9,7 +9,7 @@ WORKDIR /usr/src/app/catalog
 COPY catalog .
 
 RUN pip install --upgrade pip && \
-  pip install -r catalog/requirements.txt
+  pip install -r requirements.txt
 
 WORKDIR /usr/src/app/catalog
 
