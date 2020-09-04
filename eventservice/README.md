@@ -43,7 +43,7 @@ cd rokwire-building-blocks-api/eventservice
 python api/events_rest_service.py
 ```
 and the Events Building Block should be running at localhost at port 5000 (http://localhost:5000/events).
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in events.yaml in the OpenAPI Spec 3.0 format.
 
 ## Run as Docker Container in Local
 ```
@@ -279,6 +279,11 @@ This query will return all events whose target audience is either ``student`` or
 This query will return back all events whose startdate and enddate between the range.
 ```
 /events?startDate=2019-04-25T13:00:00&endDate=2019-04-25T17:00:00
+```
+
+This query will return back all events whose startDate is between the provided range, including both the dates. This kind of query can be used to find events whose start date falls within a given date range.
+```
+/events?startDate=2019-04-20T00:00:00&startDateLimit=2019-04-25T23:59:59
 ```
 
 ### Geolocation Radius Search

@@ -38,7 +38,7 @@ else:
 db.init_db()
 
 app = connexion.FlaskApp(__name__, specification_dir=API_LOC)
-app.add_api('rokwire.yaml', base_path=APP_CONFIG_URL_PREFIX, arguments={'title': 'Rokwire'},
+app.add_api('appconfig.yaml', base_path=APP_CONFIG_URL_PREFIX, arguments={'title': 'Rokwire'},
             resolver=RokwireResolver('controllers'),
             resolver_error=501)
 

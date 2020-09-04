@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3-alpine3.11
 
 LABEL maintainer="ywkim@illinois.edu"
 
@@ -20,7 +20,7 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl && \
 
 WORKDIR /usr/src/app/profileservice/api
 
-COPY rokwire.yaml .
+COPY profileservice/profile.yaml .
 
 ENV PROFILE_REST_STORAGE="/usr/src/app/rest" \
     MONGO_PROFILE_URL="" \

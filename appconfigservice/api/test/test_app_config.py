@@ -28,7 +28,7 @@ from ..utils import db as conn
 def app():
     """Create and configure a new api instance for each test."""
     app = connexion.FlaskApp(__name__, specification_dir=API_LOC)
-    app.add_api('rokwire.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
+    app.add_api('appconfig.yaml', arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
                 resolver_error=501)
     yield app
 

@@ -71,17 +71,18 @@ python api/profile_rest_service.py`
 If you want to use gunicorn, cd into api folder then, use ` gunicorn profile_rest_service:app -c gunicorn.config.py` instead of `python api/profile_rest_service.py` 
 
 The profile building block should be running at http://localhost:5000
-The detailed API information is in rokwire.yaml in the OpenAPI Spec 3.0 format.
+The detailed API information is in profile.yaml in the OpenAPI Spec 3.0 format.
 
 ### Docker Instructions
 ```
 cd rokwire-building-blocks-api
 docker build -f profileservice/Dockerfile -t rokwire/profile-building-block .
-docker run --name profile --rm --env-file=profileservice/.env -e PROFILE_URL_PREFIX=<url_prefix_starting_with_slash> -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
+docker run --name profile --rm --env-file=profileservice/.env -e API_LOC=. -e PROFILE_URL_PREFIX=<url_prefix_starting_with_slash> -e MONGO_PROFILE_URL=mongodb://<mongodb-url>:27017 -e MONGO_PII_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/profile-building-block
 ```
-You can edit config.py or environment variable to specify a URL prefix by modifying PROFILE_URL_PREFIX variable.
-If you need to make just /profiles as endpoint, put the vaiable value to empty string or do not include this variable.
-
+You can edit config.py or environment variable to specify a URL prefix by modifying PROFILE_ENDPOINT variable.
+If you need to make just /profiles as endpoint, put the variable value to empty string or do not include this variable.
+There is an optional environment variable named 'API_LOC' for setting api location for connexion. 
+This should be modified if the docker runs from different location than this instruction.
 
 ### AWS ECR Instructions
 

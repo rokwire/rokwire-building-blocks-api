@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3-alpine3.11
 
 LABEL maintainer="wzhu26@illinois.edu"
 
@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY appconfigservice ./appconfigservice
 COPY lib ../lib/
-COPY rokwire.yaml .
+COPY appconfigservice/appconfig.yaml .
 
 ENV APP_CONFIG_MONGO_URL=""
 ENV APP_CONFIG_URL_PREFIX=""
