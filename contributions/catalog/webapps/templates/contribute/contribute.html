@@ -520,9 +520,28 @@
         }
         var capability_name = document.getElementById('capability_name');
         var talent_name = document.getElementById('talent_name');
-        if (capability_name.value == "" && capability_name.value == ""){
-            window.alert("Please enter either capability or talent contribution.");
+        if (capability_name.value == "" && talent_name.value == ""){
+            window.alert("Please enter either a capability or a talent.");
             return false;
+        }
+        //use capability's validation setting
+        if (capability_name.value != "" ){
+            var capability_description  = document.getElementById('capability_description');
+            if (capability_description.value == ""){
+                window.alert("Please enter the capability description.");
+                capability_description.focus() ;
+                return false;
+            }
+            var capability_opensource  = document.getElementById('open_source');
+            if (capability_opensource.value == ""){
+                window.alert("Please enter if the capability has been open sourced.");
+                capability_opensource.focus() ;
+                return false;
+            }
+        }
+        //use talent's validation setting
+        else{
+
         }
 
     }
