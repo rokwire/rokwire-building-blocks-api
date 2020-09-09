@@ -45,7 +45,7 @@
                 <label class="control-label col-sm-2">Contribution Name</label>
                 <div class="col-sm-10">
                     <input class="form-control" id="contribution_name" name="contribution_name"
-                           placeholder="give a name of your contribution" required type="text">
+                           placeholder="give a name of your contribution" type="text">
                 </div>
             </div>
             <div class="form-group">
@@ -54,7 +54,7 @@
                     <input class="form-control" id="contribution_description"
                            name="contribution_shortDescription"
                            placeholder="give a short description"
-                           required type="text"></div>
+                            type="text"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Long Description</label>
@@ -154,7 +154,7 @@
             </div>
 
             <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
-
+<!-----------------------------------------capability block ------------------------------------>
             <div class="container">
                 <div>
                     <nav>
@@ -167,8 +167,17 @@
                     </nav>
                 </div>
 
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Select Contribution Type</label>
+                    <div>
+                        <button class="button button2" id="add-capability">Add Capability</button>
+                        <button class="button button1" id="add-talent">Add Talent</button>
+                    </div>
+                </div>
+
+
                 <form class="form-horizontal" method="POST">
-                    <div id="capability-div">
+                    <div id="capability-div" style="display: none">
                         <h3 id="capability">Submit a capability</h3>
 
                         <div class="form-group">
@@ -176,14 +185,14 @@
                             <div class="col-sm-10"><input class="form-control" id="capability_name"
                                                           name="capability_name"
                                                           placeholder="give a name of your capability"
-                                                          required type="text"></div>
+                                                           type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Capability Description</label>
                             <div class="col-sm-10"><input class="form-control" id="capability_description"
                                                           name="capability_description"
                                                           placeholder="give a short description"
-                                                          required type="text"></div>
+                                                           type="text"></div>
                         </div>
 
                         <div class="form-group">
@@ -217,7 +226,7 @@
                                                                    id="deploy_internal"
                                                                    name="deploymentDetails_location"
                                                                    type="radio"
-                                                                   value="internal" required> internal</label>
+                                                                   value="internal" > internal</label>
 
                             <label class="form-check-label"><input class="form-check-input" id="deploy_external"
                                                                    name="deploymentDetails_location" type="radio"
@@ -262,7 +271,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Version</label>
                             <div class="col-sm-10"><input class="form-control" id="version" name="capability_version"
-                                                          placeholder="latest version number" required type="text">
+                                                          placeholder="latest version number"  type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -276,7 +285,7 @@
                             <div class="col-sm-10"><input class="form-control" id="health"
                                                           name="capability_healthCheckUrl"
                                                           placeholder="health check url"
-                                                          required type="text"></div>
+                                                           type="text"></div>
                         </div>
 
                         <div class="form-group">
@@ -315,9 +324,9 @@
                             <div class="col-sm-10">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_endpoint"
                                        placeholder="Endpoint"
-                                       required type="text">
+                                        type="text">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
-                                       required type="text">
+                                        type="text">
                                 <br>
                             </div>
                         </div>
@@ -325,24 +334,22 @@
 
                     </div>
 
-                    <div>
-                        <button class="button button2" id="add-capability">Add another Capability</button>
-                    </div>
 
 
-                    <div class="container" id="talent-div">
+<!--------------------------------------------talent block ------------------------------------------>
+                    <div class="container" id="talent-div" style="display: none">
                         <h3>Submit a Talent</h3>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Name</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_name" name="talent_name"
-                                                          placeholder="give a name of your Talent" required type="text">
+                                                          placeholder="give a name of your Talent"  type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Description</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_description"
                                                           name="talent_shortDescription"
-                                                          placeholder="" required type="text"></div>
+                                                          placeholder=""  type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Required Building Block(s)</label>
@@ -403,10 +410,8 @@
                         </div>
 
                     </div>
-                    <div>
-                        <button class="button button1" id="add-talent">Add another Talent</button>
-                    </div>
 
+<!--------------------------------------------contact/privacy check ------------------------------------------>
                     <div>
                         <nav>
                             <ol class="cd-multi-steps text-top">
@@ -482,6 +487,8 @@
                                                           placeholder="Disclose right to use images"
                                                           type="text"></div>
                         </div>
+
+      <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
                             <input href="{{ url_for('contribute.submitted') }}" type="submit" value="Submit">
                         </div>
@@ -544,9 +551,15 @@
         $("#add-capability").click(function(e) {
             e.preventDefault();
             var original = document.getElementById('capability-div');
-            var clone = original.cloneNode(true); // "deep" clone
-            $("#capability-div").append(clone);
-            $("#capability-div").append("<br>");
+            if (original.style.display === "none") {
+                original.style.display = "block";
+            }
+            else{
+                var clone = original.cloneNode(true); // "deep" clone
+                $("#capability-div").append(clone);
+                $("#capability-div").append("<br>");   
+            }
+
         });
     });
 
@@ -554,9 +567,15 @@
         $("#add-talent").click(function(e) {
             e.preventDefault();
             var original = document.getElementById('talent-div');
-            var clone = original.cloneNode(true); // "deep" clone
-            $("#talent-div").append(clone);
-            $("#talent-div").append("<br>");
+            if (original.style.display === "none") {
+                original.style.display = "block";
+            }
+            else{
+                var clone = original.cloneNode(true); // "deep" clone
+                $("#talent-div").append(clone);
+                $("#talent-div").append("<br>");
+            }
+
         });
     });
 
