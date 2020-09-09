@@ -7,7 +7,7 @@ from flask import (
     Blueprint, render_template, request
 )
 from controllers.config import Config
-from utilities.contribution_utilities import to_contribution
+from models.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
