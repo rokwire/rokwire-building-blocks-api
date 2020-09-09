@@ -28,7 +28,7 @@ def to_capability(d):
     if not d: return {}
     capability_list = []
 
-#init capability
+    # init capability
     if isinstance(d['capability_name'], str):
         capability_list.append(init_capability())
     else:
@@ -57,7 +57,7 @@ def to_capability(d):
                 name = k.split("capability_")[-1]
                 if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) > 0:
                     capability_list[i][name].append(v[i])
-                elif name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i])==0:
+                elif name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) == 0:
                     capability_list[i][name] = []
                 else:
                     capability_list[i][name] = v[i]

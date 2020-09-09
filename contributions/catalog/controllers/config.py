@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 
 
 class Config(object):
@@ -16,7 +15,6 @@ class Config(object):
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
     DEBUG = True
-
 
     # # ADMINS defines a list usernames that serve as administrators
     # ADMINS = []

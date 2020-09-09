@@ -1,10 +1,9 @@
 import functools
 
+from controllers.config import Config
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-
-from controllers.config import Config
 
 #
 

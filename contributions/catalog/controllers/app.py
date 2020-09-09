@@ -12,7 +12,6 @@ from oic.oic import Client
 from oic.oic.message import AuthorizationResponse, RegistrationResponse, ClaimsRequest, Claims
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 from oic.utils.http_util import Redirect
-
 from user import User
 
 app = Flask(__name__)
