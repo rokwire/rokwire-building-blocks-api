@@ -14,6 +14,7 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 
 </head>
@@ -37,7 +38,7 @@
         </nav>
     </div>
 
-    <form class="form-horizontal" method="POST">
+    <form class="form-horizontal" method="POST" onsubmit = "return(data_validation());">
         <div class="container">
             <h2 id="contribute">Submit a contribution</h2>
 
@@ -504,6 +505,23 @@
 </body>
 
 <script>
+    function data_validation(){
+        var contribution_name  = document.getElementById('contribution_name');
+        if (contribution_name.value == ""){
+            window.alert("Please enter the contribution name.");
+            contribution_name.focus() ;
+            return false;
+        }
+        var contribution_des = document.getElementById('contribution_description');
+        if (contribution_des.value == ""){
+            window.alert("Please enter the contribution description.");
+            contribution_des.focus() ;
+            return false;
+        }
+        var capability_name = document.getElementById('capability_name');
+        var talent_name = document.getElementById('talent_name');
+
+    }
     function show_person() {
         var x = document.getElementById("contributor");
         if (x.style.display === "none") {
@@ -557,7 +575,7 @@
             else{
                 var clone = original.cloneNode(true); // "deep" clone
                 $("#capability-div").append(clone);
-                $("#capability-div").append("<br>");   
+                $("#capability-div").append("<br>");
             }
 
         });
