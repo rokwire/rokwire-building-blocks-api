@@ -596,7 +596,11 @@
                 original.style.display = "block";
             }
             else{
+
                 var clone = original.cloneNode(true); // "deep" clone
+                if (clone.style.display === "none") {
+                    clone.style.display = "block";
+                }
                 $("#capability-div").append(clone);
                 $("#capability-div").append("<br>");
             }
@@ -613,6 +617,9 @@
             }
             else{
                 var clone = original.cloneNode(true); // "deep" clone
+                if (clone.style.display === "none") {
+                    clone.style.display = "block";
+                }
                 $("#talent-div").append(clone);
                 $("#talent-div").append("<br>");
             }
