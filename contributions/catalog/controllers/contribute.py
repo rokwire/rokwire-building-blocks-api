@@ -1,12 +1,12 @@
 import json
 import traceback
-from werkzeug.exceptions import HTTPException
+
 # from app import app
 import requests
+from controllers.config import Config
 from flask import (
     Blueprint, render_template, request
 )
-from controllers.config import Config
 from models.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
@@ -23,16 +23,16 @@ def home():
     return render_template('contribute/home.html')
 
 
-@bp.route('/results',methods = ['POST', 'GET'])
+@bp.route('/results', methods=['POST', 'GET'])
 def result():
-   if request.method == 'POST':
-      # result = request.form
-      print("searching...")
-      result = request.form.to_dict()
-      print(result)
-      query = result['search']
-      search(query)
-      return render_template("contribute/results.html",result = result)
+    if request.method == 'POST':
+        # result = request.form
+        print("searching...")
+        result = request.form.to_dict()
+        print(result)
+        query = result['search']
+        search(query)
+        return render_template("contribute/results.html", result=result)
 
 
 @bp.route('/create', methods=['GET', "POST"])
@@ -53,6 +53,7 @@ def create():
 def submitted():
     return render_template('contribute/submitted.html')
 
+
 #
 
 # @app.errorhandler(Exception)
@@ -66,6 +67,7 @@ def submitted():
 @bp.route('/results')
 def search_results(search):
     return render_template('results.html', results=results)
+
 
 # post a json_data in a http request
 def post(json_data):
@@ -103,11 +105,11 @@ def search(input_data):
     try:
         # Setting up post request
         if not input_data or len(input_data) == 0:
-            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL+"/",
-                               headers=headers)
+            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL + "/",
+                                  headers=headers)
         else:
-            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL+"/"+str(input_data),
-                               headers=headers)
+            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(input_data),
+                                  headers=headers)
 
         if result.status_code != 200:
             print("post method fails".format(input_data))

@@ -38,7 +38,7 @@
         </nav>
     </div>
 
-    <form class="form-horizontal" method="POST" onsubmit = "return(data_validation());">
+    <form class="form-horizontal" method="POST" onsubmit="return(data_validation());">
         <div class="container">
             <h2 id="contribute">Submit a contribution</h2>
 
@@ -55,7 +55,7 @@
                     <input class="form-control" id="contribution_description"
                            name="contribution_shortDescription"
                            placeholder="give a short description"
-                            type="text"></div>
+                           type="text"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Long Description</label>
@@ -155,7 +155,7 @@
             </div>
 
             <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
-<!-----------------------------------------capability block ------------------------------------>
+            <!-----------------------------------------capability block ------------------------------------>
             <div class="container">
                 <div>
                     <nav>
@@ -186,14 +186,14 @@
                             <div class="col-sm-10"><input class="form-control" id="capability_name"
                                                           name="capability_name"
                                                           placeholder="give a name of your capability"
-                                                           type="text"></div>
+                                                          type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Capability Description</label>
                             <div class="col-sm-10"><input class="form-control" id="capability_description"
                                                           name="capability_description"
                                                           placeholder="give a short description"
-                                                           type="text"></div>
+                                                          type="text"></div>
                         </div>
 
                         <div class="form-group">
@@ -227,7 +227,7 @@
                                                                    id="deploy_internal"
                                                                    name="deploymentDetails_location"
                                                                    type="radio"
-                                                                   value="internal" > internal</label>
+                                                                   value="internal"> internal</label>
 
                             <label class="form-check-label"><input class="form-check-input" id="deploy_external"
                                                                    name="deploymentDetails_location" type="radio"
@@ -272,7 +272,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Version</label>
                             <div class="col-sm-10"><input class="form-control" id="version" name="capability_version"
-                                                          placeholder="latest version number"  type="text">
+                                                          placeholder="latest version number" type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -286,7 +286,7 @@
                             <div class="col-sm-10"><input class="form-control" id="health"
                                                           name="capability_healthCheckUrl"
                                                           placeholder="health check url"
-                                                           type="text"></div>
+                                                          type="text"></div>
                         </div>
 
                         <div class="form-group">
@@ -325,9 +325,9 @@
                             <div class="col-sm-10">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_endpoint"
                                        placeholder="Endpoint"
-                                        type="text">
+                                       type="text">
                                 <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
-                                        type="text">
+                                       type="text">
                                 <br>
                             </div>
                         </div>
@@ -336,21 +336,20 @@
                     </div>
 
 
-
-<!--------------------------------------------talent block ------------------------------------------>
+                    <!--------------------------------------------talent block ------------------------------------------>
                     <div class="container" id="talent-div" style="display: none">
                         <h3>Submit a Talent</h3>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Name</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_name" name="talent_name"
-                                                          placeholder="give a name of your Talent"  type="text">
+                                                          placeholder="give a name of your Talent" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Talent Description</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_description"
                                                           name="talent_shortDescription"
-                                                          placeholder=""  type="text"></div>
+                                                          placeholder="" type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Required Building Block(s)</label>
@@ -412,7 +411,7 @@
 
                     </div>
 
-<!--------------------------------------------contact/privacy check ------------------------------------------>
+                    <!--------------------------------------------contact/privacy check ------------------------------------------>
                     <div>
                         <nav>
                             <ol class="cd-multi-steps text-top">
@@ -489,7 +488,7 @@
                                                           type="text"></div>
                         </div>
 
-      <!-------------------------------------------- submit ------------------------------------------>
+                        <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
                             <input href="{{ url_for('contribute.submitted') }}" type="submit" value="Submit">
                         </div>
@@ -505,46 +504,47 @@
 </body>
 
 <script>
-    function data_validation(){
-        var contribution_name  = document.getElementById('contribution_name');
-        if (contribution_name.value == ""){
+    function data_validation() {
+        var contribution_name = document.getElementById('contribution_name');
+        if (contribution_name.value == "") {
             window.alert("Please enter the contribution name.");
-            contribution_name.focus() ;
+            contribution_name.focus();
             return false;
         }
         var contribution_des = document.getElementById('contribution_description');
-        if (contribution_des.value == ""){
+        if (contribution_des.value == "") {
             window.alert("Please enter the contribution description.");
-            contribution_des.focus() ;
+            contribution_des.focus();
             return false;
         }
         var capability_name = document.getElementById('capability_name');
         var talent_name = document.getElementById('talent_name');
-        if (capability_name.value == "" && talent_name.value == ""){
+        if (capability_name.value == "" && talent_name.value == "") {
             window.alert("Please enter either a capability or a talent.");
             return false;
         }
         //use capability's validation setting
-        if (capability_name.value != "" ){
-            var capability_description  = document.getElementById('capability_description');
-            if (capability_description.value == ""){
+        if (capability_name.value != "") {
+            var capability_description = document.getElementById('capability_description');
+            if (capability_description.value == "") {
                 window.alert("Please enter the capability description.");
-                capability_description.focus() ;
+                capability_description.focus();
                 return false;
             }
-            var capability_opensource  = document.getElementById('open_source');
-            if (capability_opensource.value == ""){
+            var capability_opensource = document.getElementById('open_source');
+            if (capability_opensource.value == "") {
                 window.alert("Please enter if the capability has been open sourced.");
-                capability_opensource.focus() ;
+                capability_opensource.focus();
                 return false;
             }
         }
         //use talent's validation setting
-        else{
+        else {
 
         }
 
     }
+
     function show_person() {
         var x = document.getElementById("contributor");
         if (x.style.display === "none") {
@@ -554,11 +554,11 @@
         var y = document.getElementById("add-contributor-person");
         if (y.style.display === "none") {
             y.style.display = "block";
-        }
-        else {
+        } else {
             y.style.display = "none";
         }
     }
+
     function show_org() {
         var x = document.getElementById("organization");
         if (x.style.display === "none") {
@@ -570,8 +570,8 @@
         }
     }
 
-    $(function() {
-        $("#add-user").click(function(e) {
+    $(function () {
+        $("#add-user").click(function (e) {
             e.preventDefault();
             $("#key-val").append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
             $("#key-val").append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
@@ -588,14 +588,13 @@
     }
 
 
-    $(function() {
-        $("#add-capability").click(function(e) {
+    $(function () {
+        $("#add-capability").click(function (e) {
             e.preventDefault();
             var original = document.getElementById('capability-div');
             if (original.style.display === "none") {
                 original.style.display = "block";
-            }
-            else{
+            } else {
 
                 var clone = original.cloneNode(true); // "deep" clone
                 if (clone.style.display === "none") {
@@ -608,14 +607,13 @@
         });
     });
 
-    $(function() {
-        $("#add-talent").click(function(e) {
+    $(function () {
+        $("#add-talent").click(function (e) {
             e.preventDefault();
             var original = document.getElementById('talent-div');
             if (original.style.display === "none") {
                 original.style.display = "block";
-            }
-            else{
+            } else {
                 var clone = original.cloneNode(true); // "deep" clone
                 if (clone.style.display === "none") {
                     clone.style.display = "block";
@@ -627,14 +625,13 @@
         });
     });
 
-    $(function() {
-        $("#add-contributor-person").click(function(e) {
+    $(function () {
+        $("#add-contributor-person").click(function (e) {
             e.preventDefault();
             var original = document.getElementById('contributor');
             if (original.style.display === "none") {
                 original.style.display = "block";
-            }
-            else{
+            } else {
                 var clone = original.cloneNode(true); // "deep" clone
                 $("#contributor").append(clone);
                 $("#contributor").append("<br>");
@@ -642,22 +639,19 @@
         });
     });
 
-    $(function() {
-        $("#add-contributor-org").click(function(e) {
+    $(function () {
+        $("#add-contributor-org").click(function (e) {
             e.preventDefault();
             var original = document.getElementById('organization');
             if (original.style.display === "none") {
                 original.style.display = "block";
-            }
-            else{
+            } else {
                 var clone = original.cloneNode(true); // "deep" clone
                 $("#organization").append(clone);
                 $("#organization").append("<br>");
             }
         });
     });
-
-
 
 
 </script>
