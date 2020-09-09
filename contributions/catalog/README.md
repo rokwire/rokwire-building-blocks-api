@@ -37,7 +37,7 @@ To install and run the location-model service, do the following:
 ## Setup Environment and start the catalog application
 - (Linux or MAC):
 ```
-cd catalog
+cd contributions/catalog
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -47,7 +47,7 @@ python catalog_rest_service.py
 ```
 - (Windows):
 ```
-cd catalog
+cd contributions/catalog
 py -m venv env
 .\env\Scripts\activate
 pip install -r requirements.txt
