@@ -169,10 +169,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Select Contribution Type</label>
+                    <label class="control-label col-sm-2">Select the Contribution Type</label>
                     <div>
-                        <button class="button button2" id="add-capability">Add Capability</button>
-                        <button class="button button1" id="add-talent">Add Talent</button>
+                        <button class="button button2" id="add-capability">Add a Capability</button>
+                        <button class="button button1" id="add-talent">Add a Talent</button>
                     </div>
                 </div>
 
@@ -520,6 +520,10 @@
         }
         var capability_name = document.getElementById('capability_name');
         var talent_name = document.getElementById('talent_name');
+        if (capability_name.value == "" && capability_name.value == ""){
+            window.alert("Please enter either capability or talent contribution.");
+            return false;
+        }
 
     }
     function show_person() {
