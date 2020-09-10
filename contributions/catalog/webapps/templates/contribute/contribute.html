@@ -168,7 +168,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Select the Contribution Type</label>
+                        <label id ="select-contribution" class="control-label col-sm-2">Select the Contribution Type</label>
                         <div>
                             <button class="button button2" id="add-capability">Add a Capability</button>
                             <button class="button button1" id="add-talent">Add a Talent</button>
@@ -505,25 +505,59 @@
 <script>
     function data_validation() {
         var contribution_name = document.getElementById('contribution_name');
-        if (capability_name.value != "") {
+        if (contribution_name.value == "") {
             window.alert("Please enter the contribution name.");
+            contribution_name.focus();
             return false;
         }
 
         var contribution_des = document.getElementById('contribution_description');
-        if (contribution_des.value != "") {
+        if (contribution_des.value == "") {
             window.alert("Please enter the contribution description.");
+            contribution_des.focus();
             return false;
         }
         var capability_name = document.getElementById('capability_name');
         var talent_name = document.getElementById('talent_name');
         if (capability_name.value == "" && talent_name.value == "") {
+            document.getElementById('select-contribution').focus();
             window.alert("Please enter either a capability or a talent.");
             return false;
         }
         //use capability's validation setting
         if (capability_name.value != "") {
-            check_capability();
+            var capability_description = document.getElementById('capability_description');
+            if (capability_description.value == "") {
+                window.alert("Please enter either a capability description.");
+                capability_description.focus();
+                return false;
+            }
+            var capability_opensource = document.getElementById('open_source');
+            if (capability_opensource.value == "") {
+                window.alert("Please enter if this capability is open-souced.");
+                capability_opensource.focus();
+                return false;
+            }
+            var deploy_location = document.getElementsByName('deploymentDetails_location')
+            if (!deploy_location[0].checked && !deploy_location[1].checked) {
+                window.alert("Please select deployed location.");
+                // deploy_location.focus();
+                return false;
+            }
+            var dockerimage = document.getElementById('docker_img');
+            if (dockerimage.value == "") {
+                window.alert("Please enter the docker image.");
+                dockerimage.focus();
+                return false;
+            }
+            var env_var = document.getElementById('env');
+            if (dockerimage.value == "") {
+                window.alert("Please enter the docker image.");
+                dockerimage.focus();
+                return false;
+            }
+
+
         }
         else{
             check_talent();
@@ -535,28 +569,32 @@
 
     }
     function check_capability(){
-            var capability_description = document.getElementById('capability_description');
-            if (capability_description.value == "") {
-            window.alert("Please enter either a capability description.");
-            return false;
-            }
-            var capability_opensource = document.getElementById('open_source');
-            if (capability_opensource.value == "") {
-            window.alert("Please enter if this capability is open-souced.");
-            return false;
-            }
+            // var capability_description = document.getElementById('capability_description');
+            // if (capability_description.value == "") {
+            //     window.alert("Please enter either a capability description.");
+            //     capability_description.focus();
+            //     return false;
+            // }
+            // var capability_opensource = document.getElementById('open_source');
+            // if (capability_opensource.value == "") {
+            //     window.alert("Please enter if this capability is open-souced.");
+            //     capability_opensource.focus();
+            //     return false;
+            // }
 
-            var location_external = document.getElementById('deploy_external');
-            var location_internal = document.getElementById('deploy_internal');
-            if (location_external.value == "" && location_internal.value == "") {
-                window.alert("Please select deployed location.");
-                return false;
-            }
-            var dockerimage = document.getElementById('docker_img');
-            input_alert(dockerimage, "Please enter the docker image.");
+            // var location_external = document.getElementById('deploy_external');
+            // var location_internal = document.getElementById('deploy_internal');
+            // if (location_external.value == "" && location_internal.value == "") {
+            //     window.alert("Please select deployed location.");
+            //     return false;
+            // }
+            // var dockerimage = document.getElementById('docker_img');
+            // input_alert(dockerimage, "Please enter the docker image.");
     }
+
     function input_alert(element, msg){
         window.alert(msg);
+        element.focus();
         return false;
     }
 
