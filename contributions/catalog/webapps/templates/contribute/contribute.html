@@ -601,7 +601,12 @@
 
         }
         else{
-            check_talent();
+            var talent_des = document.getElementById("talent_description");
+            if (talent_des.value == "") {
+                window.alert("Please enter the talent description. ");
+                talent_des.focus();
+                return false;
+            }
         }
 
     }
