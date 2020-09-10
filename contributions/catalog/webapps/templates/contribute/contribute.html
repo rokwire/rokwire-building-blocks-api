@@ -323,9 +323,12 @@
                                 <label class="control-label col-sm-2">Data Deletion</label>
                                 <div class="col-sm-10">
                                     <input class="form-inline" name="dataDeletionEndpointDetails_endpoint"
+                                           id="datadel_endpoint"
                                            placeholder="Endpoint"
                                            type="text">
-                                    <input class="form-inline" name="dataDeletionEndpointDetails_api" placeholder="Api Key"
+                                    <input class="form-inline" name="dataDeletionEndpointDetails_api" 
+                                            id="datadel_api"
+                                            placeholder="Api Key"
                                            type="text">
                                     <br>
                                 </div>
@@ -550,12 +553,50 @@
                 dockerimage.focus();
                 return false;
             }
-            var env_var = document.getElementById('env');
-            if (dockerimage.value == "") {
-                window.alert("Please enter the docker image.");
-                dockerimage.focus();
+            // var env_keys = document.getElementsByName('environmentVariables_key');
+            // var env_vars = document.getElementsByName('environmentVariables_value');
+            // console.log(env_keys.values())
+            // if (length(env_keys.values()) == 0 && length(env_vars.values()) == 0) {
+            //     window.alert("Please enter the env.");
+            //     return false;
+            // }
+            var db = document.getElementById('db-detail');
+            if (db.value == "") {
+                window.alert("Please enter the database details. ");
+                db.focus();
                 return false;
             }
+            var version = document.getElementById('version');
+            if (version.value == "") {
+                window.alert("Please enter the version. ");
+                version.focus();
+                return false;
+            }
+            var health_check = document.getElementById('health');
+            if (health_check.value == "") {
+                window.alert("Please enter the health check url. ");
+                health_check.focus();
+                return false;
+            }
+            var authmethod = document.getElementById('auth');
+            if (authmethod.value == "") {
+                window.alert("Please enter the auth method. ");
+                authmethod.focus();
+                return false;
+            }
+            var datadel_endpoint = document.getElementById("datadel_endpoint");
+            if (datadel_endpoint.value == "") {
+                window.alert("Please enter the data deletion endpoint. ");
+                datadel_endpoint.focus();
+                return false;
+            }
+            var datadel_api = document.getElementById("datadel_api");
+            if (datadel_api.value == "") {
+                window.alert("Please enter the data deletion api. ");
+                datadel_api.focus();
+                return false;
+            }
+
 
 
         }
