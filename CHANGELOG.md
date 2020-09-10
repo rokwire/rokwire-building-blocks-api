@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Add flags isVirtual and displayOnlyWithSuperEvent to events schema. [#542, #541](https://github.com/rokwire/rokwire-building-blocks-api/issues/542, https://github.com/rokwire/rokwire-building-blocks-api/issues/541)
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
 - Add Standard License Header for Authentication Building Block [#497](https://github.com/rokwire/rokwire-building-blocks-api/issues/497)
 - Add Standard License Header for Authentication Library. [#498](https://github.com/rokwire/rokwire-building-blocks-api/issues/498)
@@ -13,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Standard License Header for API Doc. [#501](https://github.com/rokwire/rokwire-building-blocks-api/issues/501)
 - Add bug report and feature request issue templates. [#510](https://github.com/rokwire/rokwire-building-blocks-api/issues/510)
 - Add Talent Chooser Building Block APIs documentation. [#528](https://github.com/rokwire/rokwire-building-blocks-api/issues/528)
+- Add `startDateLimit` query parameter to events search endpoint. [#545](https://github.com/rokwire/rokwire-building-blocks-api/issues/545)
 
 ### Changed
 - OpenAPI specification file rokwire.yaml file split across different building blocks. [#485](https://github.com/rokwire/rokwire-building-blocks-api/issues/485)
