@@ -242,6 +242,9 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
+            # in here, it is not very desirable using try except and pass.
+            # it will be better if the jwt.decode returns if the verification is authorized or not
+            # so it can use the actual return instead of catching the error
             if len(target_client_id_list) <= 1:
                 target_client_id = target_client_id_list[0].strip()
                 id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)

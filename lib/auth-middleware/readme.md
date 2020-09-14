@@ -9,3 +9,6 @@ They should match the ones that are set in the `authservice` flask app.
 - `SHIBBOLETH_HOST`
 - `SHIBBOLETH_CLIENT_ID`
 - `ROKWIRE_API_KEY`
+
+SHIBBOLETH_CLIENT_ID can be mulitple using comma separated value such as
+SHIBBOLETH_CLIENT_ID = abc,def,ghi
