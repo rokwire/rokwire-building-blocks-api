@@ -242,7 +242,7 @@ def put(event_id):
 
     try:
         db = get_db()
-        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
         __logger.exception(ex)
