@@ -243,20 +243,18 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
             if len(target_client_id_list) <= 1:
-                traget_client_id = target_client_id_list[0].strip()
+                target_client_id = target_client_id_list[0].strip()
                 id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
             else:
                 for target_client_id in target_client_id_list:
                     try:
-                        traget_client_id = target_client_id.strip()
+                        target_client_id = target_client_id.strip()
                         id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
                         break
-                    except jwt.exceptions.PyJWTError as jwte:
-                        print(jwt)
+                    except:
                         pass
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
-            print(jwte)
             raise OAuthProblem('Invalid token')
         if not id_info:
             logger.warning("id_info was not returned from decode")

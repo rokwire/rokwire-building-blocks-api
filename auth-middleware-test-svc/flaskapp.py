@@ -13,14 +13,15 @@
 #  limitations under the License.
 
 # TODO manage the import when commit and push
-# use this for deployed one
-# import flask
-# import auth_middleware
-
-# use this for development
-#TODO changed the name lib/auth-middleware to lib/auth_middleware. Change it back when push
+# use this for installed auth library
 import flask
-import lib.auth_middleware.auth_middleware as auth_middleware
+import auth_middleware
+
+# use this for development without installing auth library
+# changed the name lib/auth-middleware to lib/auth_middleware.
+# Change it back when push
+# import flask
+# import lib.auth_middleware.auth_middleware as auth_middleware
 
 app = flask.Flask(__name__)
 
