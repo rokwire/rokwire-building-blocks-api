@@ -223,7 +223,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
-            # target_client_id = os.getenv('SHIBBOLETH_CLIENT_ID')
             target_client_id_string = os.getenv('SHIBBOLETH_CLIENT_ID')
             target_client_id_list = re.split(',+', target_client_id_string)
 
