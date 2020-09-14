@@ -223,8 +223,11 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
-            target_client_id_string = os.getenv('SHIBBOLETH_CLIENT_ID')
-            target_client_id_list = re.split(',+', target_client_id_string)
+
+            target_client_ids = re.split(',+', os.getenv('SHIBBOLETH_CLIENT_ID'))
+            # remove white space from client id
+            for i in range(len(target_client_ids)):
+                target_client_ids[i] = target_client_ids[i].strip()
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
@@ -241,20 +244,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            # in here, it is not very desirable using try except and pass.
-            # it will be better if the jwt.decode returns if the verification is authorized or not
-            # so it can use the actual return instead of catching the error
-            if len(target_client_id_list) <= 1:
-                target_client_id = target_client_id_list[0].strip()
-                id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
-            else:
-                for target_client_id in target_client_id_list:
-                    try:
-                        target_client_id = target_client_id.strip()
-                        id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
-                        break
-                    except:
-                        pass
+            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             raise OAuthProblem('Invalid token')

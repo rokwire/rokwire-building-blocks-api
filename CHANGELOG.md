@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add multiple client id ability to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
 
 ## [1.7.0] - 2020-09-03
 ### Added
@@ -17,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Talent Chooser Building Block APIs documentation. [#528](https://github.com/rokwire/rokwire-building-blocks-api/issues/528)
 - Add flags isVirtual and displayOnlyWithSuperEvent to events schema. [#542](https://github.com/rokwire/rokwire-building-blocks-api/issues/542), [#541](https://github.com/rokwire/rokwire-building-blocks-api/issues/541)
 - Add `startDateLimit` query parameter to events search endpoint. [#545](https://github.com/rokwire/rokwire-building-blocks-api/issues/545)
-- Add multiple client id to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
+
 ### Changed
 - OpenAPI specification file rokwire.yaml file split across different building blocks. [#485](https://github.com/rokwire/rokwire-building-blocks-api/issues/485)
 - Update Swagger-UI version. [#500](https://github.com/rokwire/rokwire-building-blocks-api/issues/500)
