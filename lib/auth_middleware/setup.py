@@ -18,7 +18,7 @@ setup(
     name='auth-middleware',
     version='0.1.0',
     author='Frank Henard',
-    author_email='fhena2@illinois.edu',
+    author_email='fhena2@illinois.edu, ywkim@illinois.edu',
     packages=['auth_middleware'],
     # scripts=['bin/script1','bin/script2'],
     url='https://github.com/rokwire/rokwire-auth-middleware/',

@@ -16,6 +16,7 @@ import base64
 import json
 import logging
 import os
+import re
 
 import flask
 import jwt
@@ -142,6 +143,7 @@ def verify_apikey(key, required_scopes=None):
 
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
+    id_info = None
     if not id_token:
         logger.warning("Request missing id token")
         raise OAuthProblem('Missing id token')
@@ -210,6 +212,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             keyset = json.loads(lines)
             target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
 
+
         if issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
@@ -220,7 +223,9 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
-            target_client_id = os.getenv('SHIBBOLETH_CLIENT_ID')
+            # target_client_id = os.getenv('SHIBBOLETH_CLIENT_ID')
+            target_client_id_string = os.getenv('SHIBBOLETH_CLIENT_ID')
+            target_client_id_list = re.split(',+', target_client_id_string)
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
@@ -237,9 +242,21 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
+            if len(target_client_id_list) <= 1:
+                traget_client_id = target_client_id_list[0].strip()
+                id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
+            else:
+                for target_client_id in target_client_id_list:
+                    try:
+                        traget_client_id = target_client_id.strip()
+                        id_info = jwt.decode(id_token, key=pub_key, audience=target_client_id, verify=True)
+                        break
+                    except jwt.exceptions.PyJWTError as jwte:
+                        print(jwt)
+                        pass
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
+            print(jwte)
             raise OAuthProblem('Invalid token')
         if not id_info:
             logger.warning("id_info was not returned from decode")
