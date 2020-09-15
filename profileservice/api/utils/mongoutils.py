@@ -248,6 +248,12 @@ def query_non_pii_dataset(fld, query_str):
     return db_profile.non_pii_collection.find({fld: query_str}, {'_id': False})
 
 """
+query non pii dataset using object id
+"""
+def query_pii_dataset_by_objectid(objectid):
+    return db_pii.pii_collection.find({'_id': objectid})
+
+"""
 qyery pii dataset using field
 """
 def query_pii_dataset(fld, query_str):
