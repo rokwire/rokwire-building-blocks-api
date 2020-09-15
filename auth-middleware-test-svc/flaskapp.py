@@ -12,16 +12,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# TODO manage the import when commit and push
 # use this for installed auth library
-# import flask
-# import auth_middleware
+import flask
+import auth_middleware
+from dotenv import load_dotenv
 
 # use this for development without installing auth library
 # changed the name lib/auth-middleware to lib/auth_middleware.
 # Change it back when push
-import flask
-import lib.auth_middleware.auth_middleware as auth_middleware
+# import flask
+# import lib.auth_middleware.auth_middleware as auth_middleware
+# from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 app = flask.Flask(__name__)
 
