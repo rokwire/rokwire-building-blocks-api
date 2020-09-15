@@ -17,8 +17,8 @@ from setuptools import setup
 setup(
     name='auth-middleware',
     version='0.1.0',
-    author='Yong Wook Kim',
-    author_email='ywkim@illinois.edu',
+    maintainer ='Yong Wook Kim',
+    maintainter_email='ywkim@illinois.edu',
     packages=['auth_middleware'],
     # scripts=['bin/script1','bin/script2'],
     url='https://github.com/rokwire/rokwire-auth-middleware/',

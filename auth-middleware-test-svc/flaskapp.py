@@ -17,13 +17,6 @@ import flask
 import auth_middleware
 from dotenv import load_dotenv
 
-# use this for development without installing auth library
-# changed the name lib/auth-middleware to lib/auth_middleware.
-# Change it back when push
-# import flask
-# import lib.auth_middleware.auth_middleware as auth_middleware
-# from dotenv import load_dotenv
-
 # Load .env file
 load_dotenv()
 
