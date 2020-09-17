@@ -101,7 +101,7 @@ def format_query(args, query):
         )
         query_parts.append({'startDate': {'$lte': value}})
     if args.get('startDate.gte'):
-        value = datetime.datetime.strptime(args.get('startDate'), "%Y-%m-%dT%H:%M:%S")
+        value = datetime.datetime.strptime(args.get('startDate.gte'), "%Y-%m-%dT%H:%M:%S")
         # Clamp values to the previous lowest 15min.
         value = value.replace(
             minute=(value.minute - (value.minute % 15)),
