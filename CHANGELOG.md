@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
-
+### Added
+- Add query parameters to enhance events search. [#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
 ## [1.7.0] - 2020-09-03
 ### Added
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
