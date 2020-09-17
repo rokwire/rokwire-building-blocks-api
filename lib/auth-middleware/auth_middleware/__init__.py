@@ -224,10 +224,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
 
-            target_client_ids = re.split(',+', os.getenv('SHIBBOLETH_CLIENT_ID'))
-            # remove white space from client id
-            for i in range(len(target_client_ids)):
-                target_client_ids[i] = target_client_ids[i].strip()
+            target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
