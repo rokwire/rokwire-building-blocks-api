@@ -17,7 +17,8 @@ from setuptools import setup
 setup(
     name='auth-middleware',
     version='0.1.0',
-    maintainer ='Yong Wook Kim',
+    author='Frank Henard',
+    maintainer='Yong Wook Kim',
     maintainter_email='ywkim@illinois.edu',
     packages=['auth_middleware'],
     # scripts=['bin/script1','bin/script2'],
