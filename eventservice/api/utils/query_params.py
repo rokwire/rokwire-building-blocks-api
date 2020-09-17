@@ -120,7 +120,7 @@ def format_query(args, query):
         )
         query_parts.append({'endDate': {'$lte': value}})
     if args.get('endDate.lte'):
-        value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
+        value = datetime.datetime.strptime(args.get('endDate.lte'), "%Y-%m-%dT%H:%M:%S")
         # Clamp values to the next highest 15min. This uses timedelta in case the
         # minute calculation turns out to be 60
         value = value + datetime.timedelta(
