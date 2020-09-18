@@ -446,9 +446,9 @@ def pii_post():
 
         msg = "Pii data has been posted with : " + str(pid)
         msg_json = jsonutils.create_log_json("PII", "POST", jsonutils.remove_objectid_from_dataset(pii_dataset))
-        # to log all the pii info, use the following line
-        # logging.info("PII POST " + json.dumps(msg_json))
-        logging.info("PII POST new pii " + msg_json["pid"] + " posted.")
+        log_json = jsonutils.create_simple_pii_log_json(msg_json)
+        # to log all the pii info, use msg_json instead of log_json
+        logging.info("PII POST " + json.dumps(log_json))
         return rs_handlers.return_id(msg, 'pid', pid)
     else:
         msg = {
@@ -665,9 +665,9 @@ def pii_get(pid=None):
     data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
     out_json = mongoutils.construct_json_from_query_list(data_list[0])
     msg_json = jsonutils.create_log_json("PII", "GET", data_list[0])
-    # use the following line to log all the info
-    # logging.info("PII GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
-    logging.info("PII GET " + msg_json["pid"] + " info provided.")
+    log_json = jsonutils.create_simple_pii_log_json(msg_json)
+    # to log all the pii info, use the msg_json instead of log_json
+    logging.info("PII GET " + json.dumps(log_json))
     return out_json
 
 
@@ -808,9 +808,9 @@ def pii_put(pid=None):
     pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
     out_json = mongoutils.construct_json_from_query_list(pii_dataset)
     msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset))
-    # use following line to log all information
-    # logging.info("PII PUT " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
-    logging.info("PII PUT " + msg_json["pid"] + " has been updated.")
+    log_json = jsonutils.create_simple_pii_log_json(msg_json)
+    # to log all the pii info, use msg_json instead of log_json
+    logging.info("PII PUT " + json.dumps(log_json))
     return out_json
 
 

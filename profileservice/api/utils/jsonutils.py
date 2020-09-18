@@ -49,6 +49,16 @@ def create_log_json(ep_name, ep_method, in_json):
 
     return in_json
 
+def create_simple_pii_log_json(in_json):
+    out_json = {}
+    out_json['ep_building_block'] = in_json['ep_building_block']
+    out_json['ep_name'] = in_json['ep_name']
+    out_json['ep_method'] = in_json['ep_method']
+    out_json['pid'] = in_json["pid"]
+    out_json['uuid'] = in_json["uuid"]
+
+    return out_json
+
 def create_auth_fail_message():
     out_json = make_response("{\"Authorization Failed\": \"The user info in id token and db are not matching.\"}")
     out_json.mimetype = 'application/json'

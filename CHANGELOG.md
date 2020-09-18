@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
+
 ## [1.7.0] - 2020-09-03
 ### Added
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
