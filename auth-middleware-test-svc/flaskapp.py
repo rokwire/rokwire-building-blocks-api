@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# use this for installed auth library
 import flask
 import auth_middleware
 from dotenv import load_dotenv
