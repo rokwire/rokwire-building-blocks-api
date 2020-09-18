@@ -1,5 +1,6 @@
 Flask==1.1.1
 gunicorn==19.9.0
 connexion[swagger-ui]==2.4.0
+python-dotenv==0.10.3
 
 ../lib/auth-middleware
