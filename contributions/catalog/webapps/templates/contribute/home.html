@@ -91,12 +91,16 @@
 
     /* Content */
     .content {
+        height: 160px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         background-color: #fafafa;
         padding: 10px;
         transition-duration: 0.2s;
         border: none;
         border-radius: 4px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        /*overflow: scroll;*/
     }
 
     /* The "show" class is added to the filtered elements */
@@ -218,6 +222,18 @@
             </div>
           </script>
 
+                  <!-- Template for our posts -->
+          <script type="text/template" id="talent_template">
+            <div class="column talent">
+                <div class="content">
+                    <h4 class="talent_name"></h4>
+                    <p class="talent_description"></p>
+                    <p class="contributors"></p>
+    <!--                <span class="label label-default">App Config</span>-->
+                </div>
+            </div>
+          </script>
+
 
         <div class="column capability">
             <div class="content">
@@ -271,14 +287,15 @@
 <script>
     filterSelection("all");
     $("document").ready(function() {
-      append_json(get_capability_list(sample_contribution));
+      append_capability(sample_contribution.capabilities);
+       append_talent(sample_contribution.talents);
     });
 
     var sample_contribution = {
            "contributors": [
               {
-                 "firstName": "frist name",
-                 "email": null,
+                 "firstName": "contributors1",
+                 "email": "abc@ncsa.com",
                  "affiliation": {
                     "email": null,
                     "phone": null,
@@ -288,7 +305,7 @@
                  "phone": null
               },
               {
-                 "name": "name",
+                 "name": "NCSA",
                  "phone": null,
                  "address": null
               }
@@ -443,37 +460,40 @@
            ],
            "dateCreated": "2020/06/04T13:57:14"
         }
-    function get_title(sample_json){
-        var obj = JSON.parse(sample_json);
-        return obj.name;
-    }
-    function get_contribution_description(sample_contribution){
-        var obj = JSON.parse(sample_contribution);
-        return obj.shortDescription;
-    }
-    function get_capability_description(sample_json){
-        var obj = JSON.parse(sample_json);
-        return obj.description;
-    }
-    function get_talent_description(sample_json){
-        var obj = JSON.parse(sample_contribution);
-        return obj.shortDescription;
-    }
-    function get_capability_list(sample_contribution){
-        var obj = JSON.parse(sample_contribution);
-        return obj.capabilities;
-    }
-    function get_talent_list(sample_contribution){
-        var obj = JSON.parse(sample_contribution);
-        return obj.talents;
+    // function get_title(sample_json){
+    //     var obj = JSON.parse(sample_json);
+    //     return obj.name;
+    // }
+    // function get_contribution_description(sample_contribution){
+    //     var obj = JSON.parse(sample_contribution);
+    //     return obj.shortDescription;
+    // }
+    // function get_capability_description(sample_json){
+    //     var obj = JSON.parse(sample_json);
+    //     return obj.description;
+    // }
+    // function get_talent_description(sample_json){
+    //     var obj = JSON.parse(sample_contribution);
+    //     return obj.shortDescription;
+    // }
+    // function get_capability_list(sample_contribution){
+    //     var obj = JSON.parse(sample_contribution);
+    //     return obj.capabilities;
+    // }
+    // function get_talent_list(sample_contribution){
+    //     var obj = JSON.parse(sample_contribution);
+    //     return obj.talents;
+    // }
+    function get_contributors(data){
+        return "abc@abc.com" + " NCSA"
     }
 
-
-    function append_json(data) {
+    function append_capability(data) {
       //Set Up the template
       var s = $("#capability_template")[0].innerHTML.trim();
       var holder = document.createElement('div');
       holder.innerHTML = s;
+      console.log(s);
       var template = holder.childNodes;
 
       var member = document.getElementById('grid-view');
@@ -481,41 +501,72 @@
 
         //Clone Template
         var newItem = $(template).clone();
+        console.log(newItem)
 
         //Populate it
-        $(newItem).find(".capability_name").html(get_capability_name(object));
-        $(newItem).find(".capability_description").html(get_capability_description(object));
+        $(newItem).find(".capability_name").html(object.name);
+        $(newItem).find(".capability_description").html(object.description);
+        $(newItem).find(".contributors").html(get_contributors(data));
         // $(newItem).find(".memurl").attr("href", object.memurl);
         // var img = $(newItem).find(".thumb")
         // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
         //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-
+       console.log(newItem)
         //Append it
-        $(".newmembers").append(newItem);
+        $("#grid-view").append(newItem);
+
+      });
+    }
+
+     function append_talent(data) {
+      //Set Up the template
+      var s = $("#talent_template")[0].innerHTML.trim();
+      var holder = document.createElement('div');
+      holder.innerHTML = s;
+      console.log(s);
+      var template = holder.childNodes;
+
+      var member = document.getElementById('grid-view');
+      data.forEach(function(object) {
+
+        //Clone Template
+        var newItem = $(template).clone();
+        console.log(newItem)
+
+        //Populate it
+        $(newItem).find(".talent_name").html(object.name);
+        $(newItem).find(".talent_description").html(object.shortDescription);
+        $(newItem).find(".contributors").html(get_contributors(data));
+        // $(newItem).find(".memurl").attr("href", object.memurl);
+        // var img = $(newItem).find(".thumb")
+        // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
+        //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
+       console.log(newItem);
+        //Append it
+        $("#grid-view").append(newItem);
 
       });
     }
 
 
 
-    add_capability_grid(sample_contribution);
-    function add_capability_grid(capability_json){
-        var x = document.getElementById("grid-view");
-        var title = get_title(capability_json);
-        var des = get_capability_description(capability_json);
-        var base = `
-                <div class="column capability">
-                     <div class="content">
-                        <img src="" style="width:100%">
-                        <h4 class = "grid-title"></h4>
-                        <p class = "grid-des"></p>
-                        <span class="label label-default">Capability</span>
-                    </div>
-                </div>
-        `
-        x.append(base);
-
-    }
+    // add_capability_grid(sample_contribution);
+    // function add_capability_grid(capability_json){
+    //     var x = document.getElementById("grid-view");
+    //     var title = get_title(capability_json);
+    //     var des = get_capability_description(capability_json);
+    //     var base = `
+    //             <div class="column capability">
+    //                  <div class="content">
+    //                     <img src="" style="width:100%">
+    //                     <h4 class = "grid-title"></h4>
+    //                     <p class = "grid-des"></p>
+    //                     <span class="label label-default">Capability</span>
+    //                 </div>
+    //             </div>
+    //     `
+    //     x.append(base);
+    // }
 
     function filterSelection(c) {
         var x, i;
