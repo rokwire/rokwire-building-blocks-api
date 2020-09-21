@@ -91,8 +91,12 @@
 
     /* Content */
     .content {
-        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: #fafafa;
         padding: 10px;
+        transition-duration: 0.2s;
+        border: none;
+        border-radius: 4px;
     }
 
     /* The "show" class is added to the filtered elements */
@@ -198,15 +202,23 @@
         <button class="btn" onclick="filterSelection('talent')"> Talent</button>
     </div>
 
-    <div class="row">
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">App Config</span>
+    <div class="row" id="grid-view">
+
+
+          <!-- Template for our posts -->
+          <script type="text/template" id="capability_template">
+            <div class="column capability">
+                <div class="content">
+                    <img class="capability_icon" src="" style="width:100%">
+                    <h4 class="capability_name"></h4>
+                    <p class="capability_description"></p>
+                    <p class="contributors"></p>
+    <!--                <span class="label label-default">App Config</span>-->
+                </div>
             </div>
-        </div>
+          </script>
+
+
         <div class="column capability">
             <div class="content">
                 <img src="" style="width:100%">
@@ -228,10 +240,11 @@
             <div class="content">
                 <img src="" style="width:100%">
                 <h4>talent</h4>
-                <p>description..</p>
+                <p>...</p>
                 <span class="label label-default">Login</span>
             </div>
         </div>
+
         <div class="column talent">
             <div class="content">
                 <img src="" style="width:100%">
@@ -256,7 +269,253 @@
 </div>
 
 <script>
-    filterSelection("all")
+    filterSelection("all");
+    $("document").ready(function() {
+      append_json(get_capability_list(sample_contribution));
+    });
+
+    var sample_contribution = {
+           "contributors": [
+              {
+                 "firstName": "frist name",
+                 "email": null,
+                 "affiliation": {
+                    "email": null,
+                    "phone": null,
+                    "address": null,
+                    "name": "test affilication"
+                 },
+                 "phone": null
+              },
+              {
+                 "name": "name",
+                 "phone": null,
+                 "address": null
+              }
+           ],
+           "shortDescription": "Short description of the contribution",
+           "capabilities": [
+              {
+                 "deploymentDetails": {
+                    "databaseDetails": null,
+                    "authMethod": null,
+                    "dockerImageName": null,
+                    "location": null,
+                    "environmentVariables": null
+                 },
+                 "apiBaseUrl": null,
+                 "description": "capability description",
+                 "dataDeletionEndpointDetails": {
+                    "apiKey": "apiKey",
+                    "deletionEndpoint": "deletionEndpoint",
+                    "description": "description"
+                 },
+                 "contacts": [
+                    {
+                       "email": null,
+                       "organization": null,
+                       "phone": null,
+                       "name": null,
+                       "officialAddress": null
+                    },
+                    {
+                       "email": null,
+                       "organization": null,
+                       "phone": null,
+                       "name": null,
+                       "officialAddress": null
+                    }
+                 ],
+                 "name": "capability test1",
+                 "status": "Submitted",
+                 "apiDocUrl": null,
+                 "isOpenSource": true,
+                 "healthCheckUrl": "healthCheckUrl",
+                 "version": "version"
+              },
+              {
+                 "deploymentDetails": {
+                    "databaseDetails": null,
+                    "authMethod": null,
+                    "dockerImageName": null,
+                    "location": null,
+                    "environmentVariables": null
+                 },
+                 "apiBaseUrl": null,
+                 "description": "capability description",
+                 "dataDeletionEndpointDetails": {
+                    "apiKey": "apiKey",
+                    "deletionEndpoint": "deletionEndpoint",
+                    "description": "description"
+                 },
+                 "contacts": [
+                    {
+                       "email": null,
+                       "organization": null,
+                       "phone": null,
+                       "name": null,
+                       "officialAddress": null
+                    },
+                    {
+                       "email": null,
+                       "organization": null,
+                       "phone": null,
+                       "name": null,
+                       "officialAddress": null
+                    }
+                 ],
+                 "name": "capability test2",
+                 "status": "Submitted",
+                 "apiDocUrl": null,
+                 "isOpenSource": true,
+                 "healthCheckUrl": "healthCheckUrl",
+                 "version": "version"
+              }
+           ],
+           "dateModified": "2020/06/04T14:02:49",
+           "longDescription": null,
+           "name": "test1",
+           "talents": [
+              {
+                 "name": "talent 1",
+                 "shortDescription": "short description",
+                 "requiredCapabilities": [
+                    {
+                       "apiDocUrl": null,
+                       "healthCheckUrl": "healthCheckUrl",
+                       "deploymentDetails": {
+                          "authMethod": null,
+                          "databaseDetails": null,
+                          "environmentVariables": null,
+                          "location": "internal"
+                       },
+                       "version": "version",
+                       "description": "capability description",
+                       "isOpenSource": true,
+                       "name": "capability test",
+                       "apiBaseUrl": null,
+                       "dataDeletionEndpointDetails": {
+                          "apiKey": "apiKey",
+                          "description": "description",
+                          "deletionEndpoint": "deletionEndpoint"
+                       },
+                       "status": "Submitted"
+                    },
+                    {
+                       "apiDocUrl": null,
+                       "healthCheckUrl": "healthCheckUrl",
+                       "deploymentDetails": {
+                          "authMethod": null,
+                          "databaseDetails": null,
+                          "environmentVariables": null,
+                          "location": "internal"
+                       },
+                       "version": "version",
+                       "description": "capability2 description",
+                       "isOpenSource": true,
+                       "name": "capability2 test",
+                       "apiBaseUrl": null,
+                       "dataDeletionEndpointDetails": {
+                          "apiKey": "apiKey",
+                          "description": "description",
+                          "deletionEndpoint": "deletionEndpoint"
+                       },
+                       "status": "Submitted"
+                    }
+                 ],
+                 "minUserPrivacyLevel": 5,
+                 "requiredBuildingBlocks": [
+                    "App Config",
+                    "Talent Chooser"
+                 ],
+                 "minEndUserRoles": [
+                    "alumni",
+                    "employee"
+                 ],
+                 "startDate": "2020/06/15T12:06:55",
+                 "endDate": "2020/10/25T12:06:55",
+                 "dataDescription": "Data description",
+                 "selfCertification": {
+                    "dataDeletionUponRequest": "data deletion upon request",
+                    "discloseAds": "disclose ads"
+                 }
+              }
+           ],
+           "dateCreated": "2020/06/04T13:57:14"
+        }
+    function get_title(sample_json){
+        var obj = JSON.parse(sample_json);
+        return obj.name;
+    }
+    function get_contribution_description(sample_contribution){
+        var obj = JSON.parse(sample_contribution);
+        return obj.shortDescription;
+    }
+    function get_capability_description(sample_json){
+        var obj = JSON.parse(sample_json);
+        return obj.description;
+    }
+    function get_talent_description(sample_json){
+        var obj = JSON.parse(sample_contribution);
+        return obj.shortDescription;
+    }
+    function get_capability_list(sample_contribution){
+        var obj = JSON.parse(sample_contribution);
+        return obj.capabilities;
+    }
+    function get_talent_list(sample_contribution){
+        var obj = JSON.parse(sample_contribution);
+        return obj.talents;
+    }
+
+
+    function append_json(data) {
+      //Set Up the template
+      var s = $("#capability_template")[0].innerHTML.trim();
+      var holder = document.createElement('div');
+      holder.innerHTML = s;
+      var template = holder.childNodes;
+
+      var member = document.getElementById('grid-view');
+      data.forEach(function(object) {
+
+        //Clone Template
+        var newItem = $(template).clone();
+
+        //Populate it
+        $(newItem).find(".capability_name").html(get_capability_name(object));
+        $(newItem).find(".capability_description").html(get_capability_description(object));
+        // $(newItem).find(".memurl").attr("href", object.memurl);
+        // var img = $(newItem).find(".thumb")
+        // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
+        //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
+
+        //Append it
+        $(".newmembers").append(newItem);
+
+      });
+    }
+
+
+
+    add_capability_grid(sample_contribution);
+    function add_capability_grid(capability_json){
+        var x = document.getElementById("grid-view");
+        var title = get_title(capability_json);
+        var des = get_capability_description(capability_json);
+        var base = `
+                <div class="column capability">
+                     <div class="content">
+                        <img src="" style="width:100%">
+                        <h4 class = "grid-title"></h4>
+                        <p class = "grid-des"></p>
+                        <span class="label label-default">Capability</span>
+                    </div>
+                </div>
+        `
+        x.append(base);
+
+    }
 
     function filterSelection(c) {
         var x, i;
