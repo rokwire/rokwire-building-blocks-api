@@ -14,6 +14,10 @@
 
 import flask
 import auth_middleware
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 app = flask.Flask(__name__)
 

@@ -6,13 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Add multiple client id ability to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
+- Add more time range query parameters to events yml and Readme.[#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+- Add query parameters to enhance events search. [#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+
+### Fixed
+- Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
+
+## [1.7.0] - 2020-09-03
+### Added
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
-- Add Standard License Header for Authentication Building Block [#497](https://github.com/rokwire/rokwire-building-blocks-api/issues/497)
+- Add Standard License Header for Authentication Building Block. [#497](https://github.com/rokwire/rokwire-building-blocks-api/issues/497)
 - Add Standard License Header for Authentication Library. [#498](https://github.com/rokwire/rokwire-building-blocks-api/issues/498)
 - Add CODEOWNERS file. [#508](https://github.com/rokwire/rokwire-building-blocks-api/issues/508)
 - Add Standard License Header for API Doc. [#501](https://github.com/rokwire/rokwire-building-blocks-api/issues/501)
 - Add bug report and feature request issue templates. [#510](https://github.com/rokwire/rokwire-building-blocks-api/issues/510)
 - Add Talent Chooser Building Block APIs documentation. [#528](https://github.com/rokwire/rokwire-building-blocks-api/issues/528)
+- Add flags isVirtual and displayOnlyWithSuperEvent to events schema. [#542](https://github.com/rokwire/rokwire-building-blocks-api/issues/542), [#541](https://github.com/rokwire/rokwire-building-blocks-api/issues/541)
+- Add `startDateLimit` query parameter to events search endpoint. [#545](https://github.com/rokwire/rokwire-building-blocks-api/issues/545)
 
 ### Changed
 - OpenAPI specification file rokwire.yaml file split across different building blocks. [#485](https://github.com/rokwire/rokwire-building-blocks-api/issues/485)
@@ -20,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rokwire API Doc Dockerfile to integrate multiple OpenAPI specifications file. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
 - Update Appconfig Building Block docker base image. [#515](https://github.com/rokwire/rokwire-building-blocks-api/issues/515)
 - Update Authentication Building Block docker base image. [#517](https://github.com/rokwire/rokwire-building-blocks-api/issues/517)
-- Update Authentication Building Block README [#519](https://github.com/rokwire/rokwire-building-blocks-api/issues/519)
+- Update Authentication Building Block README. [#519](https://github.com/rokwire/rokwire-building-blocks-api/issues/519)
 - Changed docker base image for Profile and Logging Building Block. [#521](https://github.com/rokwire/rokwire-building-blocks-api/issues/521)
 - Changed README for auth-middleware-test-svc based on new change. [#523](https://github.com/rokwire/rokwire-building-blocks-api/issues/523)
 - Update issue template. [#537](https://github.com/rokwire/rokwire-building-blocks-api/issues/537)
@@ -35,8 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-fixed bug related to including .env files in docker images. [#419](https://github.com/rokwire/rokwire-building-blocks-api/issues/419)
 
 ### Security
-- Add Yelp's Secret Detector [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
-- Update secret baseline file [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
+- Add Yelp's Secret Detector. [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
+- Update secret baseline file. [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
 
 ## [1.6.0] - 2020-07-14
 - Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
@@ -258,7 +269,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...HEAD
+[1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.1...1.4.0
