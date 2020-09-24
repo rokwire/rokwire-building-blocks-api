@@ -95,37 +95,41 @@ def update_capability_dataset_from_json(dataset, injson):
     try:
         deployment_details = DeploymentDetails()
         try:
-            location = injson["deploymentLocation"]["location"]
+            location = injson["deploymentDetails"]["location"]
             deployment_details.set_location(location)
         except:
             pass
         try:
-            docker_image_name = injson["deploymentLocation"]["dockerImageName"]
+            docker_image_name = injson["deploymentDetails"]["dockerImageName"]
             deployment_details.set_docker_image_name(docker_image_name)
         except:
             pass
         try:
-            environment_variable = EnvironmentVariable()
-            key = injson["deploymentLocation"]["environmentVariable"]["key"]
-            value = injson["deploymentLocation"]["environmentVariable"]["value"]
-            environment_variable.set_key(key)
-            environment_variable.set_value(value)
-            deployment_details.set_environment_variable(environment_variable)
-            del outjson["environmentVariable"]
+            env_var_list = []
+            in_env_var_list = injson["deploymentDetails"]["environmentVariables"]
+            for env_var in in_env_var_list:
+                environment_variable = EnvironmentVariable()
+                key = env_var["key"]
+                value = env_var["value"]
+                environment_variable.set_key(key)
+                environment_variable.set_value(value)
+                env_var_list.append(environment_variable)
+            deployment_details.set_environment_variables(env_var_list)
+            del outjson["environmentVariables"]
         except Exception as e:
             pass
         try:
-            database_details = injson["deploymentLocation"]["databaseDetails"]
+            database_details = injson["deploymentDetails"]["databaseDetails"]
             deployment_details.set_database_details(database_details)
         except:
             pass
         try:
-            auth_method = injson["deploymentLocation"]["authMethod"]
+            auth_method = injson["deploymentDetails"]["authMethod"]
             deployment_details.set_auth_method(auth_method)
         except:
             pass
         dataset.set_deployment_details(deployment_details)
-        del outjson["deploymentLocation"]
+        del outjson["deploymentDetails"]
     except Exception as e:
         pass
     try:

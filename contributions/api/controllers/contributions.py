@@ -40,6 +40,7 @@ coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 
 def post():
     is_new_install = True
+    in_json = None
 
     # check if name is in there otherwise it is either a first installation
     try:
@@ -64,7 +65,7 @@ def post():
         currenttime = datetime.datetime.now()
         currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
         contribution_dataset = Contribution('')
-        contribution_dataset, restjson = datasetutils.update_capability_dataset_from_json(contribution_dataset, in_json)
+        contribution_dataset, restjson = datasetutils.update_contribution_dataset_from_json(contribution_dataset, in_json)
         contribution_dataset.set_date_created(currenttime)
         contribution_dataset.set_date_modified(currenttime)
 
@@ -435,32 +436,6 @@ def talents_search(id):
     return talent_dataset
 
 def construct_capability(in_json):
-    is_required_field = True
-    error_required = ""
-    try:
-        error_required = "name"
-        name = in_json["name"]
-        error_required = "description"
-        description = in_json["description"]
-        error_required = "isOpenSource"
-        isOpenSource = in_json["isOpenSource"]
-        error_required = "deploymentDetails"
-        deploymentLocation = in_json["deploymentDetails"]
-        error_required = "version"
-        version = in_json["version"]
-        error_required = "healthCheckUrl"
-        healthCheckUrl = in_json["healthCheckUrl"]
-        error_required = "dataDeletionEndpointDetails"
-        deploymentLocation = in_json["dataDeletionEndpointDetails"]
-    except:
-        msg = {
-            "reason": "Some of the required field in capability is not provided: " + str(error_required),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-        logging.error("POST " + json.dumps(msg_json))
-        return None, None, msg_json
-
     # new installation of the app
     capability_dataset = Capability('')
     capability_dataset, restjson = datasetutils.update_capability_dataset_from_json(capability_dataset, in_json)
