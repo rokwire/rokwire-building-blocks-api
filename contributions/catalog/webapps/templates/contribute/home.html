@@ -89,19 +89,40 @@
         clear: both;
     }
 
-    /* Content */
+    /* the card feature */
     .content {
+        background-color: #ffffff;
+        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
         height: 160px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        background-color: #fafafa;
         padding: 10px;
         transition-duration: 0.2s;
         border: none;
         border-radius: 4px;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        /*overflow: scroll;*/
+        img:hover {
+          opacity: 0.5;
+        }
+
     }
+
+    .content:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+  p{
+
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 100;
+    letter-spacing: -0.25px;
+    line-height: 1.25;
+    font-size: 16px;
+    word-break: break-all;
+    -webkit-animation-name: p-show; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
+    animation-name: p-show;
+    animation-duration: 1.5s;
+  }
 
     /* The "show" class is added to the filtered elements */
     .show {
@@ -110,6 +131,7 @@
 
     /* Style the buttons */
     .btn {
+        margin-top: 12px;
         border: none;
         outline: none;
         padding: 12px 16px;
@@ -130,8 +152,6 @@
     .navbar input[type=text] {
         float: right;
         padding: 6px;
-        margin-top: 8px;
-        margin-right: 16px;
         border: none;
         font-size: 17px;
     }
@@ -171,6 +191,54 @@
         }
     }
 
+    #header {
+        border: none;
+        /*padding: 30px;*/
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+        background-repeat: no-repeat;
+        height: 20%;
+        background-position: center;
+        background-size: auto;
+        /*position: fixed;*/
+    }
+
+    #title {
+        text-align: center;
+        position: relative;
+        top: 25%;
+        /*left: 50%;*/
+        transform: translate(-25%, -25%);
+        color: white;
+    }
+
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+    body {
+        background: #f2f2f2;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .search {
+        width: 100%;
+        position: relative;
+        display: flex;
+    }
+
+
+    /*Resize the wrap to see the search bar change!*/
+    .wrap {
+        width: 30%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    body {
+        padding: 20px 20px;
+    }
+
+
 
 </style>
 
@@ -180,449 +248,409 @@
     <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
     <!--    <button id="myBtn" style="display:none">Button</button>-->
     <!--    <div class="search-container">-->
-    <form action="http://localhost:5050/contribute/results" method="POST">
-        <input id="searchbar" name="search" placeholder="Search by id..." type="text">
-        <input id="myBtn" style="display:none;" type="submit" value="Submit">
-    </form>
 
     <!--  </div>-->
 </div>
 
 <!-- MAIN (Center website) -->
 <div class="main">
-    <h1></h1>
-    <h1>Contribution Catalog / Packager</h1>
-    <!--<hr>-->
+    <div id="header">
+        <h2 id="title">Contribution Catalog / Packager</h2>
+    </div>
 
-
-    <!--    <label for="site-search">Search the site:</label>-->
-    <!--    <input type="search" id="site-search" name="q"-->
-    <!--           aria-label="Search through site content">-->
-
-    <!--    <button>Search</button>-->
     <div id="myBtnContainer">
         <button class="btn active" onclick="filterSelection('all')"> Show all</button>
         <button class="btn" onclick="filterSelection('capability')"> Capability</button>
         <button class="btn" onclick="filterSelection('talent')"> Talent</button>
+        <div class="form-group pull-right">
+            <form action="http://localhost:5050/contribute/results" method="POST">
+                <input class="search form-control bar" name="search" placeholder="search by id" type="searchbar">
+                <!--            <input id="searchbar" name="search" placeholder="Search by id..." type="text">-->
+                <input id="myBtn" style="display:none;" type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div class="row" id="grid-view">
+            <!-- Template for cards -->
+            <script id="capability_template" type="text/template">
+                <div class="column capability">
+
+                    <div class="content">
+                        <!--                    <img class="capability_icon" src="" style="width:100%">-->
+                        <h4 class="capability_name"></h4>
+                        <p class="capability_description"></p>
+                        <p class="contributors"></p>
+                        <!--                    <span class="label label-default">App Config</span>-->
+                    </div>
+                </div>
+            </script>
+            <script id="talent_template" type="text/template">
+                <div class="column talent">
+                    <div class="content">
+                        <h4 class="talent_name"></h4>
+                        <p class="talent_description"></p>
+                        <p class="contributors"></p>
+                        <!--                <span class="label label-default">App Config</span>-->
+                    </div>
+                </div>
+            </script>
+            <!-- END GRID -->
+        </div>
+
+        <!-- END MAIN -->
     </div>
 
-    <div class="row" id="grid-view">
-
-
-          <!-- Template for our posts -->
-          <script type="text/template" id="capability_template">
-            <div class="column capability">
-                <div class="content">
-                    <img class="capability_icon" src="" style="width:100%">
-                    <h4 class="capability_name"></h4>
-                    <p class="capability_description"></p>
-                    <p class="contributors"></p>
-    <!--                <span class="label label-default">App Config</span>-->
-                </div>
-            </div>
-          </script>
-
-                  <!-- Template for our posts -->
-          <script type="text/template" id="talent_template">
-            <div class="column talent">
-                <div class="content">
-                    <h4 class="talent_name"></h4>
-                    <p class="talent_description"></p>
-                    <p class="contributors"></p>
-    <!--                <span class="label label-default">App Config</span>-->
-                </div>
-            </div>
-          </script>
-
-
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">Profile</span>
-            </div>
-        </div>
-        <div class="column capability">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>capability</h4>
-                <p>description..</p>
-                <span class="label label-default">Login</span>
-            </div>
-        </div>
-
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>...</p>
-                <span class="label label-default">Login</span>
-            </div>
-        </div>
-
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>description..</p>
-                <span class="label label-default">Auth</span>
-            </div>
-        </div>
-        <div class="column talent">
-            <div class="content">
-                <img src="" style="width:100%">
-                <h4>talent</h4>
-                <p>description..</p>
-                <span class="label label-default">Events</span>
-            </div>
-        </div>
-
-        <!-- END GRID -->
-    </div>
-
-    <!-- END MAIN -->
-</div>
-
-<script>
-    filterSelection("all");
-    $("document").ready(function() {
-      append_capability(sample_contribution.capabilities);
-       append_talent(sample_contribution.talents);
-    });
-
-    var sample_contribution = {
-           "contributors": [
-              {
-                 "firstName": "contributors1",
-                 "email": "abc@ncsa.com",
-                 "affiliation": {
-                    "email": null,
-                    "phone": null,
-                    "address": null,
-                    "name": "test affilication"
-                 },
-                 "phone": null
-              },
-              {
-                 "name": "NCSA",
-                 "phone": null,
-                 "address": null
-              }
-           ],
-           "shortDescription": "Short description of the contribution",
-           "capabilities": [
-              {
-                 "deploymentDetails": {
-                    "databaseDetails": null,
-                    "authMethod": null,
-                    "dockerImageName": null,
-                    "location": null,
-                    "environmentVariables": null
-                 },
-                 "apiBaseUrl": null,
-                 "description": "capability description",
-                 "dataDeletionEndpointDetails": {
-                    "apiKey": "apiKey",
-                    "deletionEndpoint": "deletionEndpoint",
-                    "description": "description"
-                 },
-                 "contacts": [
-                    {
-                       "email": null,
-                       "organization": null,
-                       "phone": null,
-                       "name": null,
-                       "officialAddress": null
-                    },
-                    {
-                       "email": null,
-                       "organization": null,
-                       "phone": null,
-                       "name": null,
-                       "officialAddress": null
-                    }
-                 ],
-                 "name": "capability test1",
-                 "status": "Submitted",
-                 "apiDocUrl": null,
-                 "isOpenSource": true,
-                 "healthCheckUrl": "healthCheckUrl",
-                 "version": "version"
-              },
-              {
-                 "deploymentDetails": {
-                    "databaseDetails": null,
-                    "authMethod": null,
-                    "dockerImageName": null,
-                    "location": null,
-                    "environmentVariables": null
-                 },
-                 "apiBaseUrl": null,
-                 "description": "capability description",
-                 "dataDeletionEndpointDetails": {
-                    "apiKey": "apiKey",
-                    "deletionEndpoint": "deletionEndpoint",
-                    "description": "description"
-                 },
-                 "contacts": [
-                    {
-                       "email": null,
-                       "organization": null,
-                       "phone": null,
-                       "name": null,
-                       "officialAddress": null
-                    },
-                    {
-                       "email": null,
-                       "organization": null,
-                       "phone": null,
-                       "name": null,
-                       "officialAddress": null
-                    }
-                 ],
-                 "name": "capability test2",
-                 "status": "Submitted",
-                 "apiDocUrl": null,
-                 "isOpenSource": true,
-                 "healthCheckUrl": "healthCheckUrl",
-                 "version": "version"
-              }
-           ],
-           "dateModified": "2020/06/04T14:02:49",
-           "longDescription": null,
-           "name": "test1",
-           "talents": [
-              {
-                 "name": "talent 1",
-                 "shortDescription": "short description",
-                 "requiredCapabilities": [
-                    {
-                       "apiDocUrl": null,
-                       "healthCheckUrl": "healthCheckUrl",
-                       "deploymentDetails": {
-                          "authMethod": null,
-                          "databaseDetails": null,
-                          "environmentVariables": null,
-                          "location": "internal"
-                       },
-                       "version": "version",
-                       "description": "capability description",
-                       "isOpenSource": true,
-                       "name": "capability test",
-                       "apiBaseUrl": null,
-                       "dataDeletionEndpointDetails": {
-                          "apiKey": "apiKey",
-                          "description": "description",
-                          "deletionEndpoint": "deletionEndpoint"
-                       },
-                       "status": "Submitted"
-                    },
-                    {
-                       "apiDocUrl": null,
-                       "healthCheckUrl": "healthCheckUrl",
-                       "deploymentDetails": {
-                          "authMethod": null,
-                          "databaseDetails": null,
-                          "environmentVariables": null,
-                          "location": "internal"
-                       },
-                       "version": "version",
-                       "description": "capability2 description",
-                       "isOpenSource": true,
-                       "name": "capability2 test",
-                       "apiBaseUrl": null,
-                       "dataDeletionEndpointDetails": {
-                          "apiKey": "apiKey",
-                          "description": "description",
-                          "deletionEndpoint": "deletionEndpoint"
-                       },
-                       "status": "Submitted"
-                    }
-                 ],
-                 "minUserPrivacyLevel": 5,
-                 "requiredBuildingBlocks": [
-                    "App Config",
-                    "Talent Chooser"
-                 ],
-                 "minEndUserRoles": [
-                    "alumni",
-                    "employee"
-                 ],
-                 "startDate": "2020/06/15T12:06:55",
-                 "endDate": "2020/10/25T12:06:55",
-                 "dataDescription": "Data description",
-                 "selfCertification": {
-                    "dataDeletionUponRequest": "data deletion upon request",
-                    "discloseAds": "disclose ads"
-                 }
-              }
-           ],
-           "dateCreated": "2020/06/04T13:57:14"
-        }
-    // function get_title(sample_json){
-    //     var obj = JSON.parse(sample_json);
-    //     return obj.name;
-    // }
-    // function get_contribution_description(sample_contribution){
-    //     var obj = JSON.parse(sample_contribution);
-    //     return obj.shortDescription;
-    // }
-    // function get_capability_description(sample_json){
-    //     var obj = JSON.parse(sample_json);
-    //     return obj.description;
-    // }
-    // function get_talent_description(sample_json){
-    //     var obj = JSON.parse(sample_contribution);
-    //     return obj.shortDescription;
-    // }
-    // function get_capability_list(sample_contribution){
-    //     var obj = JSON.parse(sample_contribution);
-    //     return obj.capabilities;
-    // }
-    // function get_talent_list(sample_contribution){
-    //     var obj = JSON.parse(sample_contribution);
-    //     return obj.talents;
-    // }
-    function get_contributors(data){
-        return "abc@abc.com" + " NCSA"
-    }
-
-    function append_capability(data) {
-      //Set Up the template
-      var s = $("#capability_template")[0].innerHTML.trim();
-      var holder = document.createElement('div');
-      holder.innerHTML = s;
-      console.log(s);
-      var template = holder.childNodes;
-
-      var member = document.getElementById('grid-view');
-      data.forEach(function(object) {
-
-        //Clone Template
-        var newItem = $(template).clone();
-        console.log(newItem)
-
-        //Populate it
-        $(newItem).find(".capability_name").html(object.name);
-        $(newItem).find(".capability_description").html(object.description);
-        $(newItem).find(".contributors").html(get_contributors(data));
-        // $(newItem).find(".memurl").attr("href", object.memurl);
-        // var img = $(newItem).find(".thumb")
-        // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-        //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-       console.log(newItem)
-        //Append it
-        $("#grid-view").append(newItem);
-
-      });
-    }
-
-     function append_talent(data) {
-      //Set Up the template
-      var s = $("#talent_template")[0].innerHTML.trim();
-      var holder = document.createElement('div');
-      holder.innerHTML = s;
-      console.log(s);
-      var template = holder.childNodes;
-
-      var member = document.getElementById('grid-view');
-      data.forEach(function(object) {
-
-        //Clone Template
-        var newItem = $(template).clone();
-        console.log(newItem)
-
-        //Populate it
-        $(newItem).find(".talent_name").html(object.name);
-        $(newItem).find(".talent_description").html(object.shortDescription);
-        $(newItem).find(".contributors").html(get_contributors(data));
-        // $(newItem).find(".memurl").attr("href", object.memurl);
-        // var img = $(newItem).find(".thumb")
-        // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-        //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-       console.log(newItem);
-        //Append it
-        $("#grid-view").append(newItem);
-
-      });
-    }
-
-
-
-    // add_capability_grid(sample_contribution);
-    // function add_capability_grid(capability_json){
-    //     var x = document.getElementById("grid-view");
-    //     var title = get_title(capability_json);
-    //     var des = get_capability_description(capability_json);
-    //     var base = `
-    //             <div class="column capability">
-    //                  <div class="content">
-    //                     <img src="" style="width:100%">
-    //                     <h4 class = "grid-title"></h4>
-    //                     <p class = "grid-des"></p>
-    //                     <span class="label label-default">Capability</span>
-    //                 </div>
-    //             </div>
-    //     `
-    //     x.append(base);
-    // }
-
-    function filterSelection(c) {
-        var x, i;
-        x = document.getElementsByClassName("column");
-        if (c == "all") c = "";
-        for (i = 0; i < x.length; i++) {
-            w3RemoveClass(x[i], "show");
-            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-        }
-    }
-
-    function w3AddClass(element, name) {
-        var i, arr1, arr2;
-        arr1 = element.className.split(" ");
-        arr2 = name.split(" ");
-        for (i = 0; i < arr2.length; i++) {
-            if (arr1.indexOf(arr2[i]) == -1) {
-                element.className += " " + arr2[i];
-            }
-        }
-    }
-
-    function w3RemoveClass(element, name) {
-        var i, arr1, arr2;
-        arr1 = element.className.split(" ");
-        arr2 = name.split(" ");
-        for (i = 0; i < arr2.length; i++) {
-            while (arr1.indexOf(arr2[i]) > -1) {
-                arr1.splice(arr1.indexOf(arr2[i]), 1);
-            }
-        }
-        element.className = arr1.join(" ");
-    }
-
-
-    // Add active class to the current button (highlight it)
-    var btnContainer = document.getElementById("myBtnContainer");
-    var btns = btnContainer.getElementsByClassName("btn");
-    for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            var current = document.getElementsByClassName("active");
-            current[0].className = current[0].className.replace(" active", "");
-            this.className += " active";
+    <script>
+        filterSelection("all");
+        // filterSelection('capability');
+        $("document").ready(function () {
+            append_capability(sample_contribution.capabilities);
+            append_talent(sample_contribution.talents);
         });
-    }
 
-    var input = document.getElementById("searchbar");
-    input.addEventListener("keyup", function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            document.getElementById("myBtn").click();
+        var sample_contribution = {
+            "contributors": [
+                {
+                    "firstName": "contributors1",
+                    "email": "abc@ncsa.com",
+                    "affiliation": {
+                        "email": null,
+                        "phone": null,
+                        "address": null,
+                        "name": "test affilication"
+                    },
+                    "phone": null
+                },
+                {
+                    "name": "NCSA",
+                    "phone": null,
+                    "address": null
+                }
+            ],
+            "shortDescription": "Short description of the contribution",
+            "capabilities": [
+                {
+                    "deploymentDetails": {
+                        "databaseDetails": null,
+                        "authMethod": null,
+                        "dockerImageName": null,
+                        "location": null,
+                        "environmentVariables": null
+                    },
+                    "apiBaseUrl": null,
+                    "description": "capability description",
+                    "dataDeletionEndpointDetails": {
+                        "apiKey": "apiKey",
+                        "deletionEndpoint": "deletionEndpoint",
+                        "description": "description"
+                    },
+                    "contacts": [
+                        {
+                            "email": null,
+                            "organization": null,
+                            "phone": null,
+                            "name": null,
+                            "officialAddress": null
+                        },
+                        {
+                            "email": null,
+                            "organization": null,
+                            "phone": null,
+                            "name": null,
+                            "officialAddress": null
+                        }
+                    ],
+                    "name": "capability test1",
+                    "status": "Submitted",
+                    "apiDocUrl": null,
+                    "isOpenSource": true,
+                    "healthCheckUrl": "healthCheckUrl",
+                    "version": "version"
+                },
+                {
+                    "deploymentDetails": {
+                        "databaseDetails": null,
+                        "authMethod": null,
+                        "dockerImageName": null,
+                        "location": null,
+                        "environmentVariables": null
+                    },
+                    "apiBaseUrl": null,
+                    "description": "capability description",
+                    "dataDeletionEndpointDetails": {
+                        "apiKey": "apiKey",
+                        "deletionEndpoint": "deletionEndpoint",
+                        "description": "description"
+                    },
+                    "contacts": [
+                        {
+                            "email": null,
+                            "organization": null,
+                            "phone": null,
+                            "name": null,
+                            "officialAddress": null
+                        },
+                        {
+                            "email": null,
+                            "organization": null,
+                            "phone": null,
+                            "name": null,
+                            "officialAddress": null
+                        }
+                    ],
+                    "name": "capability test2",
+                    "status": "Submitted",
+                    "apiDocUrl": null,
+                    "isOpenSource": true,
+                    "healthCheckUrl": "healthCheckUrl",
+                    "version": "version"
+                }
+            ],
+            "dateModified": "2020/06/04T14:02:49",
+            "longDescription": null,
+            "name": "test1",
+            "talents": [
+                {
+                    "name": "talent 1",
+                    "shortDescription": "short description",
+                    "requiredCapabilities": [
+                        {
+                            "apiDocUrl": null,
+                            "healthCheckUrl": "healthCheckUrl",
+                            "deploymentDetails": {
+                                "authMethod": null,
+                                "databaseDetails": null,
+                                "environmentVariables": null,
+                                "location": "internal"
+                            },
+                            "version": "version",
+                            "description": "capability description",
+                            "isOpenSource": true,
+                            "name": "capability test",
+                            "apiBaseUrl": null,
+                            "dataDeletionEndpointDetails": {
+                                "apiKey": "apiKey",
+                                "description": "description",
+                                "deletionEndpoint": "deletionEndpoint"
+                            },
+                            "status": "Submitted"
+                        },
+                        {
+                            "apiDocUrl": null,
+                            "healthCheckUrl": "healthCheckUrl",
+                            "deploymentDetails": {
+                                "authMethod": null,
+                                "databaseDetails": null,
+                                "environmentVariables": null,
+                                "location": "internal"
+                            },
+                            "version": "version",
+                            "description": "capability2 description",
+                            "isOpenSource": true,
+                            "name": "capability2 test",
+                            "apiBaseUrl": null,
+                            "dataDeletionEndpointDetails": {
+                                "apiKey": "apiKey",
+                                "description": "description",
+                                "deletionEndpoint": "deletionEndpoint"
+                            },
+                            "status": "Submitted"
+                        }
+                    ],
+                    "minUserPrivacyLevel": 5,
+                    "requiredBuildingBlocks": [
+                        "App Config",
+                        "Talent Chooser"
+                    ],
+                    "minEndUserRoles": [
+                        "alumni",
+                        "employee"
+                    ],
+                    "startDate": "2020/06/15T12:06:55",
+                    "endDate": "2020/10/25T12:06:55",
+                    "dataDescription": "Data description",
+                    "selfCertification": {
+                        "dataDeletionUponRequest": "data deletion upon request",
+                        "discloseAds": "disclose ads"
+                    }
+                }
+            ],
+            "dateCreated": "2020/06/04T13:57:14"
         }
-    });
+        // function get_title(sample_json){
+        //     var obj = JSON.parse(sample_json);
+        //     return obj.name;
+        // }
+        // function get_contribution_description(sample_contribution){
+        //     var obj = JSON.parse(sample_contribution);
+        //     return obj.shortDescription;
+        // }
+        // function get_capability_description(sample_json){
+        //     var obj = JSON.parse(sample_json);
+        //     return obj.description;
+        // }
+        // function get_talent_description(sample_json){
+        //     var obj = JSON.parse(sample_contribution);
+        //     return obj.shortDescription;
+        // }
+        // function get_capability_list(sample_contribution){
+        //     var obj = JSON.parse(sample_contribution);
+        //     return obj.capabilities;
+        // }
+        // function get_talent_list(sample_contribution){
+        //     var obj = JSON.parse(sample_contribution);
+        //     return obj.talents;
+        // }
+        function get_contributors(data) {
+            return "abc@abc.com" + " NCSA"
+        }
+
+        function append_capability(data) {
+            //Set Up the template
+            var s = $("#capability_template")[0].innerHTML.trim();
+            var holder = document.createElement('div');
+            holder.innerHTML = s;
+            console.log(s);
+            var template = holder.childNodes;
+
+            var member = document.getElementById('grid-view');
+            data.forEach(function (object) {
+
+                //Clone Template
+                var newItem = $(template).clone();
+                console.log(newItem)
+
+                //Populate it
+                $(newItem).find(".capability_name").html(object.name);
+                $(newItem).find(".capability_description").html(object.description);
+                $(newItem).find(".contributors").html(get_contributors(data));
+                // $(newItem).find(".memurl").attr("href", object.memurl);
+                // var img = $(newItem).find(".thumb")
+                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
+                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
+                console.log(newItem)
+                //Append it
+                $("#grid-view").append(newItem);
+
+            });
+        }
+
+        function append_talent(data) {
+            //Set Up the template
+            var s = $("#talent_template")[0].innerHTML.trim();
+            var holder = document.createElement('div');
+            holder.innerHTML = s;
+            console.log(s);
+            var template = holder.childNodes;
+
+            var member = document.getElementById('grid-view');
+            data.forEach(function (object) {
+
+                //Clone Template
+                var newItem = $(template).clone();
+                console.log(newItem)
+
+                //Populate it
+                $(newItem).find(".talent_name").html(object.name);
+                $(newItem).find(".talent_description").html(object.shortDescription);
+                $(newItem).find(".contributors").html(get_contributors(data));
+                // $(newItem).find(".memurl").attr("href", object.memurl);
+                // var img = $(newItem).find(".thumb")
+                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
+                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
+                console.log(newItem);
+                //Append it
+                $("#grid-view").append(newItem);
+
+            });
+        }
+
+        $(document).ready(function () {
+            $(".search").keyup(function () {
+                var searchTerm = $(".search").val();
+                var listItem = $('.results tbody').children('tr');
+                var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+
+                $.extend($.expr[':'], {
+                    'containsi': function (elem, i, match, array) {
+                        return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+                    }
+                });
+
+                $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function (e) {
+                    $(this).attr('visible', 'false');
+                });
+
+                $(".results tbody tr:containsi('" + searchSplit + "')").each(function (e) {
+                    $(this).attr('visible', 'true');
+                });
+
+                var jobCount = $('.results tbody tr[visible="true"]').length;
+                $('.counter').text(jobCount + ' item');
+
+                if (jobCount == '0') {
+                    $('.no-result').show();
+                } else {
+                    $('.no-result').hide();
+                }
+            });
+        });
+
+        function filterSelection(c) {
+            var x, i;
+            x = document.getElementsByClassName("column");
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], "show");
+                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+            }
+        }
+
+        function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {
+                    element.className += " " + arr2[i];
+                }
+            }
+        }
+
+        function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);
+                }
+            }
+            element.className = arr1.join(" ");
+        }
 
 
-</script>
+        // Add active class to the current button (highlight it)
+        var btnContainer = document.getElementById("myBtnContainer");
+        var btns = btnContainer.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+
+        var input = document.getElementById("searchbar");
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("myBtn").click();
+            }
+        });
+
+
+    </script>
 
 </body>
 </html>
