@@ -166,15 +166,15 @@ def delete(uuid=None):
         return resp
 
     if (is_objectid):
-        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-        msg = {"uuid": str(id)}
+        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: uuid})
+        msg = {"uuid": str(uuid)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('uuid', id)
+        return rs_handlers.entry_deleted('uuid', uuid)
 
     try:
         mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-        msg = {"uuid": str(id)}
+        msg = {"uuid": str(uuid)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
         return rs_handlers.entry_deleted('uuid', uuid)
