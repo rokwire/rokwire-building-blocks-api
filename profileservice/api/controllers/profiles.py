@@ -445,10 +445,8 @@ def pii_post():
             return rs_handlers.not_implemented(msg_json)
 
         msg = "Pii data has been posted with : " + str(pid)
-        msg_json = jsonutils.create_log_json("PII", "POST", jsonutils.remove_objectid_from_dataset(pii_dataset))
-        log_json = jsonutils.create_simple_pii_log_json(msg_json)
-        # to log all the pii info, use msg_json instead of log_json
-        logging.info("PII POST " + json.dumps(log_json))
+        msg_json = jsonutils.create_log_json("PII", "POST", jsonutils.remove_objectid_from_dataset(pii_dataset), 'pii')
+        logging.info("PII POST " + json.dumps(msg_json))
         return rs_handlers.return_id(msg, 'pid', pid)
     else:
         msg = {
@@ -664,10 +662,8 @@ def pii_get(pid=None):
     # remove fileDescriptors from db_data
     data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
     out_json = mongoutils.construct_json_from_query_list(data_list[0])
-    msg_json = jsonutils.create_log_json("PII", "GET", data_list[0])
-    log_json = jsonutils.create_simple_pii_log_json(msg_json)
-    # to log all the pii info, use the msg_json instead of log_json
-    logging.info("PII GET " + json.dumps(log_json))
+    msg_json = jsonutils.create_log_json("PII", "GET", data_list[0], 'pii')
+    logging.info("PII GET " + json.dumps(msg_json))
     return out_json
 
 
@@ -807,10 +803,8 @@ def pii_put(pid=None):
 
     pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
     out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-    msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset))
-    log_json = jsonutils.create_simple_pii_log_json(msg_json)
-    # to log all the pii info, use msg_json instead of log_json
-    logging.info("PII PUT " + json.dumps(log_json))
+    msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset), 'pii')
+    logging.info("PII PUT " + json.dumps(msg_json))
     return out_json
 
 
