@@ -55,7 +55,7 @@ def post():
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-            logging.error("POST " + json.dumps(msg_json))
+            logging.error("Contribution POST " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg)
     except:
         pass
@@ -117,8 +117,8 @@ def post():
         dataset = jsonutils.remove_objectid_from_dataset(dataset)
         # out_json = mongoutils.construct_json_from_query_list(dataset)
         msg = "new contribution has been created: " + str(contribution_name)
-        msg_json = jsonutils.create_log_json("Contribution", "POST", dataset)
-        logging.info("POST " + json.dumps(msg_json))
+        msg_json = jsonutils.create_log_json("Contribution", "POST", {"id": str(contribution_id)})
+        logging.info("Contribution POST " + json.dumps(msg_json))
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
@@ -151,8 +151,7 @@ def search():
         out_json = []
 
     msg = {
-        "search": "Contribution search performed with arguments of : " + str(args),
-        "result": out_json,
+        "search": "Contribution search performed with arguments of : " + str(args)
     }
     msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
     logging.info("Contribution SEARCH " + json.dumps(msg))
@@ -165,7 +164,7 @@ def get(id):
         return resp
     jsonutils.remove_objectid_from_dataset(data_list[0])
     out_json = mongoutils.construct_json_from_query_list(data_list[0])
-    msg_json = jsonutils.create_log_json("Contribution", "GET", data_list[0])
+    msg_json = jsonutils.create_log_json("Contribution", "GET", {"id": str(id)})
     logging.info("Contribution GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
 
     return out_json
@@ -179,7 +178,7 @@ def put(id):
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution", "PUT", msg)
-        logging.error("PUT " + json.dumps(msg_json))
+        logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
     # check if the given id exists
     contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
@@ -190,7 +189,7 @@ def put(id):
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution", "PUT", msg)
-        logging.error("PUT " + json.dumps(msg_json))
+        logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
     date_created = contribution_dataset.dateCreated
@@ -221,12 +220,12 @@ def put(id):
             "error": "Not Implemented: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution", "PUT", msg)
-        logging.error("PUT " + json.dumps(msg_json))
+        logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.not_implemented(msg_json)
 
     out_json = contribution_dataset
-    msg_json = jsonutils.create_log_json("Contribution", "PUT", copy.copy(out_json))
-    logging.info("PUT " + json.dumps(msg_json))
+    msg_json = jsonutils.create_log_json("Contribution", "PUT", {"id": str(id)})
+    logging.info("Contribution PUT " + json.dumps(msg_json))
     out_json = mongoutils.construct_json_from_query_list(out_json)
 
     return out_json
@@ -238,9 +237,9 @@ def delete(id):
 
     if (is_objectid):
         coll_contribution.delete_one({cfg.FIELD_OBJECTID: ObjectId(id)})
-        msg = {"name": str(id)}
+        msg = {"id": str(id)}
         msg_json = jsonutils.create_log_json("Contribution", "DELETE", msg)
-        logging.info("DELETE " + json.dumps(msg_json))
+        logging.info("Contribution DELETE " + json.dumps(msg_json))
         return rs_handlers.entry_deleted('ID', id)
 
     # ToDo: use following line to delete using the other field than ObjectId
@@ -308,8 +307,7 @@ def allcapabilitiessearch():
                     capability_json = tmp_capability_json
                     return_json.append(capability_json)
     msg = {
-        "search": "Capability search performed with arguments of : " + str(args),
-        "result": return_json,
+        "search": "Capability search performed with arguments of : " + str(args)
     }
     msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
     logging.info("Capability SEARCH " + json.dumps(msg_json))
@@ -339,11 +337,10 @@ def capabilities_search(id):
         return rs_handlers.not_found(msg_json)
 
     msg = {
-        "search": "Capability data in the contirubion dataset with given id : " + str(id),
-        "result": capability_dataset,
+        "search": "Capability data in the contirubion dataset with given id : " + str(id)
     }
-    msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-    logging.info("Capability SEARCH " + json.dumps(msg))
+    msg_json = jsonutils.create_log_json("Capability", "GET", msg)
+    logging.info("Capability GET " + json.dumps(msg))
 
     return capability_dataset
 
@@ -396,8 +393,7 @@ def alltalentssearch():
                     talent_json = tmp_talent_json
                     return_json.append(talent_json)
     msg = {
-        "search": "Talent search performed with arguments of : " + str(args),
-        "result": return_json,
+        "search": "Talent search performed with arguments of : " + str(args)
     }
     msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
     logging.info("Talent SEARCH " + json.dumps(msg_json))
@@ -427,11 +423,10 @@ def talents_search(id):
         return rs_handlers.not_found(msg_json)
 
     msg = {
-        "search": "Talent data in the contirubion dataset with given id : " + str(id),
-        "result": talent_dataset,
+        "search": "Talent data in the contirubion dataset with given id : " + str(id)
     }
-    msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-    logging.info("Talent SEARCH " + json.dumps(msg))
+    msg_json = jsonutils.create_log_json("Talent", "GET", msg)
+    logging.info("Talent GET " + json.dumps(msg))
 
     return talent_dataset
 
@@ -456,7 +451,7 @@ def construct_talent(in_json):
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-        logging.error("POST " + json.dumps(msg_json))
+        logging.error("Contribution POST " + json.dumps(msg_json))
         return None, None, msg_json
 
     # new installation of the app
@@ -522,7 +517,7 @@ def get_data_list(name):
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-            logging.error("GET " + json.dumps(msg_json))
+            logging.error("Contribution GET " + json.dumps(msg_json))
             is_error = True
             resp = rs_handlers.bad_request(msg_json)
         elif len(data_list) == 0:
@@ -531,7 +526,7 @@ def get_data_list(name):
                 "error": "Not Found: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-            logging.error("GET " + json.dumps(msg_json))
+            logging.error("Contribution GET " + json.dumps(msg_json))
             is_error = True
             resp = rs_handlers.not_found(msg_json)
 
@@ -543,7 +538,7 @@ def get_data_list(name):
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-        logging.error("GET " + json.dumps(msg_json))
+        logging.error("Contribution GET " + json.dumps(msg_json))
         resp = rs_handlers.not_found(msg_json)
 
     return None, None, True, resp
