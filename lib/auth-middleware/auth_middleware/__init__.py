@@ -210,7 +210,8 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             #            file1.close()
             lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
             keyset = json.loads(lines)
-            target_client_id = os.getenv('ROKWIRE_API_CLIENT_ID')
+
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
 
         if issuer == 'https://' + SHIB_HOST:
