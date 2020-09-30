@@ -46,6 +46,8 @@ def to_talent(d):
                 name = k.split("talent_")[-1]
                 if name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) > 0:
                     talent_list[i][name].append(v[i])
+                elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) == 0:
+                    talent_list[i][name] = []
                 else:
                     talent_list[i][name] = v[i]
     return talent_list
