@@ -196,7 +196,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         valid_issuer = False
         keyset = None
-        target_client_id = None
+        target_client_ids = None
 
         if issuer == ROKWIRE_ISSUER:
             valid_issuer = True
