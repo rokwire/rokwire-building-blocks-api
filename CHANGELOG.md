@@ -14,8 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
 - Runtime error in building blocks by updating gunicorn and gevent versions. [#560](https://github.com/rokwire/rokwire-building-blocks-api/issues/560)
 - Runtime error when Auth Library validates manually generated ID tokens. [#562](https://github.com/rokwire/rokwire-building-blocks-api/issues/562)
+
 ### Changed
 - Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
+- Update base docker image when doing release. [#564](https://github.com/rokwire/rokwire-building-blocks-api/issues/564)
 
 ## [1.7.0] - 2020-09-03
 ### Added
