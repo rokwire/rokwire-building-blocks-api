@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
+- Runtime error in building blocks by updating gunicorn and gevent versions. [#560](https://github.com/rokwire/rokwire-building-blocks-api/issues/560)
 
 ### Changed
 - Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
