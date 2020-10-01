@@ -477,30 +477,10 @@
             ],
             "dateCreated": "2020/06/04T13:57:14"
         }
-        // function get_title(sample_json){
-        //     var obj = JSON.parse(sample_json);
-        //     return obj.name;
-        // }
-        // function get_contribution_description(sample_contribution){
-        //     var obj = JSON.parse(sample_contribution);
-        //     return obj.shortDescription;
-        // }
-        // function get_capability_description(sample_json){
-        //     var obj = JSON.parse(sample_json);
-        //     return obj.description;
-        // }
-        // function get_talent_description(sample_json){
-        //     var obj = JSON.parse(sample_contribution);
-        //     return obj.shortDescription;
-        // }
-        // function get_capability_list(sample_contribution){
-        //     var obj = JSON.parse(sample_contribution);
-        //     return obj.capabilities;
-        // }
-        // function get_talent_list(sample_contribution){
-        //     var obj = JSON.parse(sample_contribution);
-        //     return obj.talents;
-        // }
+        function parse_data(data){
+            var cap_list = [];
+            var tal_list = [];
+        }
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
         }
@@ -565,36 +545,44 @@
             });
         }
 
-        $(document).ready(function () {
-            $(".search").keyup(function () {
-                var searchTerm = $(".search").val();
-                var listItem = $('.results tbody').children('tr');
-                var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-
-                $.extend($.expr[':'], {
-                    'containsi': function (elem, i, match, array) {
-                        return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+        function ajax(method, url, data, okcallback, errorcallback){
+                var xhr = new XMLHttpRequest();
+                xhr.open(method, url, true);
+                xhr.onload = function (){
+                    if (xhr.status == 200){
+                        okcallback(xhr.responseText);
                     }
-                });
-
-                $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function (e) {
-                    $(this).attr('visible', 'false');
-                });
-
-                $(".results tbody tr:containsi('" + searchSplit + "')").each(function (e) {
-                    $(this).attr('visible', 'true');
-                });
-
-                var jobCount = $('.results tbody tr[visible="true"]').length;
-                $('.counter').text(jobCount + ' item');
-
-                if (jobCount == '0') {
-                    $('.no-result').show();
-                } else {
-                    $('.no-result').hide();
+                    else{
+                        errorcallback();
+                    }
                 }
-            });
-        });
+
+                if (data==null){
+                    xhr.send();
+                }
+                else{
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+                    xhr.send(data);
+                }
+        }
+        function get_data(){
+            var url = "http://localhost:5000/contributions"
+            var req = JSON.stringify({})
+
+            ajax('GET', url, data,
+                function (res){
+                    var items = JSON.parse(res);
+                    if (!items || items.length == 0){
+                        console.log("no data");
+                    }
+                    else{
+
+                    }
+                },
+                function (){
+                    console.log("error occured");
+                });
+        }
 
         function filterSelection(c) {
             var x, i;
