@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2020-10-01
+### Added
+- Add multiple client id ability to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
+- Add more time range query parameters to events yml and Readme.[#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+- Add query parameters to enhance events search. [#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+
+### Fixed
+- Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
+- Runtime error in building blocks by updating gunicorn and gevent versions. [#560](https://github.com/rokwire/rokwire-building-blocks-api/issues/560)
+- Runtime error when Auth Library validates manually generated ID tokens. [#562](https://github.com/rokwire/rokwire-building-blocks-api/issues/562)
+
+### Changed
+- Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
+- Update base docker image when doing release. [#564](https://github.com/rokwire/rokwire-building-blocks-api/issues/564)
+
 ## [1.7.0] - 2020-09-03
 ### Added
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
@@ -255,7 +270,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
