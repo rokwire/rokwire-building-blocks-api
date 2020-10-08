@@ -70,6 +70,10 @@ input[type=submit]:hover {
     color: white;
 }
 
+input:hover {
+     color: white;
+}
+
 .container {
     border-radius: 5px;
     background-color: #ffffff;
@@ -184,5 +188,23 @@ input[type=submit]:hover {
 .button5:hover {
     background-color: #555555;
     color: white;
+}
+
+.required:after {
+  content:" *";
+  color: red;
+}
+
+input:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:focus {
+  box-shadow: 0 0 5px 1px red;
+  /*background-color: #e2dc8d;*/
+}
+/* Dotted border */
+hr.dotted {
+  border-top: 5px dotted #919590;
 }
 

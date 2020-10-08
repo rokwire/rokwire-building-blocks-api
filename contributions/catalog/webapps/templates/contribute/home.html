@@ -91,7 +91,7 @@
 
     /* the card feature */
     .content {
-        background-color: #ffffff;
+        background-color: #eaefee;
         /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
         height: 160px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -101,28 +101,30 @@
         border-radius: 4px;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        img:hover {
-          opacity: 0.5;
-        }
+
+    img:hover {
+        opacity: 0.5;
+    }
 
     }
 
     .content:hover {
-      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
-  p{
 
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 100;
-    letter-spacing: -0.25px;
-    line-height: 1.25;
-    font-size: 16px;
-    word-break: break-all;
-    -webkit-animation-name: p-show; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
-    animation-name: p-show;
-    animation-duration: 1.5s;
-  }
+    p {
+
+        font-family: 'Noto Sans KR', sans-serif;
+        font-weight: 100;
+        letter-spacing: -0.25px;
+        line-height: 1.25;
+        font-size: 16px;
+        word-break: break-all;
+        -webkit-animation-name: p-show; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
+        animation-name: p-show;
+        animation-duration: 1.5s;
+    }
 
     /* The "show" class is added to the filtered elements */
     .show {
@@ -239,7 +241,6 @@
     }
 
 
-
 </style>
 
 <div class="navbar" id="myTopnav">
@@ -255,7 +256,7 @@
 <!-- MAIN (Center website) -->
 <div class="main">
     <div id="header">
-        <h2 id="title">Contribution Catalog / Packager</h2>
+        <h2 id="title"> Contribution Catalog / Packager </h2>
     </div>
 
     <div id="myBtnContainer">
@@ -477,10 +478,12 @@
             ],
             "dateCreated": "2020/06/04T13:57:14"
         }
-        function parse_data(data){
+
+        function parse_data(data) {
             var cap_list = [];
             var tal_list = [];
         }
+
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
         }
@@ -545,41 +548,39 @@
             });
         }
 
-        function ajax(method, url, data, okcallback, errorcallback){
-                var xhr = new XMLHttpRequest();
-                xhr.open(method, url, true);
-                xhr.onload = function (){
-                    if (xhr.status == 200){
-                        okcallback(xhr.responseText);
-                    }
-                    else{
-                        errorcallback();
-                    }
+        function ajax(method, url, data, okcallback, errorcallback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    okcallback(xhr.responseText);
+                } else {
+                    errorcallback();
                 }
+            }
 
-                if (data==null){
-                    xhr.send();
-                }
-                else{
-                    xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
-                    xhr.send(data);
-                }
+            if (data == null) {
+                xhr.send();
+            } else {
+                xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+                xhr.send(data);
+            }
         }
-        function get_data(){
+
+        function get_data() {
             var url = "http://localhost:5000/contributions"
             var req = JSON.stringify({})
 
             ajax('GET', url, data,
-                function (res){
+                function (res) {
                     var items = JSON.parse(res);
-                    if (!items || items.length == 0){
+                    if (!items || items.length == 0) {
                         console.log("no data");
-                    }
-                    else{
+                    } else {
 
                     }
                 },
-                function (){
+                function () {
                     console.log("error occured");
                 });
         }
