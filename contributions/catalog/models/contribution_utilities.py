@@ -84,10 +84,12 @@ def to_contribution(d):
     if not d: return {}
     res = init_contribution()
     capability = to_capability(d)
-    res["capabilities"] = capability
+    if len(capability)>= 1 and capability[0]["name"]:
+        res["capabilities"] = capability
     # print(res["capabilities"])
     talent = to_talent(d)
-    res["talents"] = talent
+    if len(talent)>=1 and talent[0]["name"]:
+        res["talents"] = talent
     contributor = to_contributor(d)
     res["contributors"] = contributor
 
