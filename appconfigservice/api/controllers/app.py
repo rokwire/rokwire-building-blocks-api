@@ -149,6 +149,7 @@ def configs_put(id):
         add_version_numbers(req_data)
         status = db[cfg.APP_CONFIGS_COLLECTION].update_one({'_id': ObjectId(id)}, {"$set": req_data})
         msg = "[PUT]: api config id %s, nUpdate = %d " % (str(id), status.modified_count)
+        __logger.info(msg)
 
     except DuplicateKeyError as err:
         __logger.error(err)
