@@ -1,7 +1,6 @@
-# Contribution Building Block
+# Contributions Building Block
 
-**contribution rest service** is a Python project to provide rest service for rokwire building block contribution
-results.
+Contributions Building Block provides a set of RESTFul web services to manage Contributions in the Rokwire platform. This includes adding a new contribution (a combination of Talents and Capabilities), retrieving relevant contributions based on search query, updating and deleting existing contributions, etc.
                       
 
 ### Prerequisites
