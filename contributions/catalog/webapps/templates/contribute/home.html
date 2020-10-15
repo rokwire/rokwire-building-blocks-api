@@ -304,12 +304,52 @@
     <script>
         var all_capability = [];
         var all_talents = [];
-        
-        filterSelection("all");
-        // filterSelection('capability');
-        $("document").ready(function () {
-            append_capability(sample_contribution.capabilities);
-            append_talent(sample_contribution.talents);
+        var get_talent_url = "http://localhost:5000/contributions/talents";
+        var get_cap_url = "http://localhost:5000/contributions/capabilities";
+
+        $(document).ready(function(){
+            var settings = {
+                      'cache': false,
+                      'dataType': "jsonp",
+                      "async": true,
+                      "crossDomain": true,
+                      "url": get_cap_url,
+                      "method": "GET",
+                      "headers": {
+                          "accept": "application/json",
+                          "Access-Control-Allow-Origin":"*"
+                      }
+                  }
+
+              $.ajax(settings).done(function (response) {
+                  console.log(response);
+                  all_capability = response;
+              });
+
+            var settings = {
+                  'cache': false,
+                  'dataType': "jsonp",
+                  "async": true,
+                  "crossDomain": true,
+                  "url": get_talent_url,
+                  "method": "GET",
+                  "headers": {
+                      "accept": "application/json",
+                      "Access-Control-Allow-Origin":"*"
+                  }
+              }
+
+              $.ajax(settings).done(function (response) {
+                  console.log(response);
+                  all_talents = response
+              });
+
+
+            append_capability(all_capability);
+            append_talent(all_talents);
+            filterSelection("all");
+            // append_capability(sample_contribution.capabilities);
+            // append_talent(sample_contribution.talents);
         });
 
 
