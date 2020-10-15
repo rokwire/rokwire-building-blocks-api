@@ -5,7 +5,7 @@ import traceback
 import requests
 from controllers.config import Config
 from flask import (
-    Blueprint, render_template, request
+    abort, Blueprint, render_template, request, jsonify
 )
 from models.contribution_utilities import to_contribution
 
@@ -45,9 +45,17 @@ def create():
         # print(contribution)
         json_contribution = json.dumps(contribution, indent=4)
         print(json_contribution)
-        post(json_contribution)
-    return render_template('contribute/contribute.html', )
+        response,s = post(json_contribution)
+        if response:
+            return render_template('contribute/submitted.html')
+        elif not response:
+            return render_template('contribute/error.html', error_msg=s)
+    return render_template('contribute/contribute.html')
 
+@bp.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('contribute/submitted.html')
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
@@ -75,7 +83,6 @@ def post(json_data):
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
     }
-
     try:
         # Setting up post request
         result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL,
@@ -85,14 +92,15 @@ def post(json_data):
         if result.status_code != 200:
             print("post method fails".format(json_data))
             print("with error code:", result.status_code)
-            return False
+            return False, str("post method fails with error: ")+str(result.status_code)
         else:
             print("posted ok.".format(json_data))
-            return True
+            return True, str("post success!")
 
     except Exception:
         traceback.print_exc()
-        return False
+        var = traceback.format_exc()
+        return False, var
 
 
 # post a json_data in a http request

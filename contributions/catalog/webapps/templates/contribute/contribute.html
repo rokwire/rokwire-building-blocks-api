@@ -497,8 +497,11 @@
 
                         <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
-                            <input id="submit_button" href="{{ url_for('contribute.home') }}" onsubmit="return data_validation()"
-                                    type="submit" value="Submit">
+                            <input id="submit_button"
+                                   href="{{ url_for('contribute.home') }}"
+                                   onsubmit="return data_validation()"
+                                   type="submit"
+                                   value="Submit">
                         </div>
 
                             <!-- The Modal -->
@@ -507,9 +510,8 @@
                               <!-- Modal content -->
                               <div class="modal-content">
                                 <span class="close">&times;</span>
-                                <p>The contribution form has been submitted! </p>
+                                <p id="submit-pop">Please finish the form!</p>
                                 <br>
-                                <p>    	Back to home...</p>
                               </div>
 
                             </div>
@@ -671,6 +673,8 @@
         }
 
         //success
+        // window.location.href = "/contribute";
+        var x = document.getElementById('submit-pop').innerHTML = "The contribution form has been submitted!";
 
 
     }

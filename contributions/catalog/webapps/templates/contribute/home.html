@@ -302,12 +302,16 @@
     </div>
 
     <script>
+        var all_capability = [];
+        var all_talents = [];
+        
         filterSelection("all");
         // filterSelection('capability');
         $("document").ready(function () {
             append_capability(sample_contribution.capabilities);
             append_talent(sample_contribution.talents);
         });
+
 
         var sample_contribution = {
             "contributors": [
