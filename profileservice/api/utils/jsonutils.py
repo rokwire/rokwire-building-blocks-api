@@ -42,12 +42,26 @@ def remove_null_subcategory(injson):
 
     return injson
 
-def create_log_json(ep_name, ep_method, in_json):
-    in_json['ep_building_block'] = "profile_building_block"
-    in_json['ep_name'] = ep_name
-    in_json['ep_method'] = ep_method
-
-    return in_json
+def create_log_json(ep_name, ep_method, in_json, data_type=None):
+    if data_type is not None:
+        if data_type.lower() == 'pii':
+            out_json = {}
+            out_json['ep_building_block'] = "profile_building_block"
+            out_json['ep_name'] = ep_name
+            out_json['ep_method'] = ep_method
+            out_json['pid'] = in_json["pid"]
+            out_json['uuid'] = in_json["uuid"]
+            return out_json
+        else:
+            in_json['ep_building_block'] = "profile_building_block"
+            in_json['ep_name'] = ep_name
+            in_json['ep_method'] = ep_method
+            return in_json
+    else:
+        in_json['ep_building_block'] = "profile_building_block"
+        in_json['ep_name'] = ep_name
+        in_json['ep_method'] = ep_method
+        return in_json
 
 def create_auth_fail_message():
     out_json = make_response("{\"Authorization Failed\": \"The user info in id token and db are not matching.\"}")

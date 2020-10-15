@@ -1,7 +1,6 @@
-# Contribution Building Block
+# Contributions Building Block
 
-**contribution rest service** is a Python project to provide rest service for rokwire building block contribution
-results.
+Contributions Building Block provides a set of RESTFul web services to manage Contributions in the Rokwire platform. This includes adding a new contribution (a combination of Talents and Capabilities), retrieving relevant contributions based on search query, updating and deleting existing contributions, etc.
                       
 
 ### Prerequisites
@@ -49,7 +48,6 @@ This service uses the python Flask and PyMongo library.
 The configuration file configs.py should have the appropriate information
 
 To install and run the location-model service, do the following:
-- (Linux or MAC):
 ```
 cd contributions
 virtualenv -p python3 venv
@@ -66,6 +64,7 @@ py -m venv venv
 pip install -r requirements.txt
 python api/contributions_rest_service.py
 ```
+
 If you want to use gunicorn, cd into api folder then, use ` gunicorn contributions_rest_service:app -c gunicorn.config.py` instead of `python api/contributions_rest_service.py` 
 
 The contributions building block should be running at http://localhost:5000
@@ -1020,4 +1019,3 @@ API will return the information of the talents with given name
           }
        }
     ]
-```

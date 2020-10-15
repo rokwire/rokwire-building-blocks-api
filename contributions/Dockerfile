@@ -20,7 +20,8 @@ RUN apk --update add python py-pip openssl ca-certificates py-openssl && \
 
 WORKDIR /usr/src/app/contributions/api
 
-COPY rokwire.yaml .
+
+COPY contributions/contribution.yaml .
 
 ENV MONGO_CONTRIBUTION_URL="" \
     API_LOC="." \
