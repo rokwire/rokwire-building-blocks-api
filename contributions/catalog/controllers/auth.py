@@ -2,20 +2,23 @@ import functools
 
 from controllers.config import Config
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, session, url_for
 )
-
-#
+from flask import request
+from oic.oic import Client
+from oic.oic.message import RegistrationResponse
+from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 # bp = Blueprint('auth', __name__, url_prefix=Config.URL_PREFIX + '/auth')
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+client = Client(client_authn_method=CLIENT_AUTHN_METHOD)
+provider_info = client.provider_config(Config.ISSUER_URL)
+info = {"client_id": Config.CLIENT_ID, "client_secret": Config.CLIENT_SECRET, "redirect_uris": Config.REDIRECT_URIS}
+client_reg = RegistrationResponse(**info)
+client.store_registration_info(client_reg)
 
-# client = Client(client_authn_method=CLIENT_AUTHN_METHOD)
-# provider_info = client.provider_config(Config.ISSUER_URL)
-# info = {"client_id": Config.CLIENT_ID, "client_secret": Config.CLIENT_SECRET, "redirect_uris": Config.REDIRECT_URIS}
-# client_reg = RegistrationResponse(**info)
-# client.store_registration_info(client_reg)
+
 #
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
