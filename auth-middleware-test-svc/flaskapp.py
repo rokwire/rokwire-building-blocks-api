@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 import flask
-import auth_middleware
 from dotenv import load_dotenv
+from auth_middleware.auth_middleware import AuthMiddleware
 
 # Load .env file
 load_dotenv()
@@ -25,7 +25,7 @@ app = flask.Flask(__name__)
 ################################################
 # Call middleware here!
 ################################################
-app.before_request(auth_middleware.authenticate)
+app.before_request(AuthMiddleware.authenticate)
 
 
 @app.route('/')
