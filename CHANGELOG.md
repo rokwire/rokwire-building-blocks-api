@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Changed
 - Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
+- Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
 
 ## [1.8.0] - 2020-10-01
 ### Added
@@ -27,7 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
-- Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
 - Update base docker image when doing release. [#564](https://github.com/rokwire/rokwire-building-blocks-api/issues/564)
 
 ## [1.7.0] - 2020-09-03
