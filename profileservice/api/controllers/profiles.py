@@ -60,8 +60,7 @@ def post():
 
     if is_new_install:
         # new installation of the app
-        currenttime = datetime.datetime.now()
-        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        currenttime = otherutils.get_current_time_utc()
         non_pii_dataset = NonPiiData('')
         non_pii_uuid = str(uuidlib.uuid4())
         non_pii_dataset.set_uuid(non_pii_uuid)
@@ -129,8 +128,7 @@ def put(uuid=None):
         return rs_handlers.bad_request(msg_json)
 
     non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
-    currenttime = datetime.datetime.now()
-    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+    currenttime = otherutils.get_current_time_utc()
     non_pii_dataset.set_last_modified_date(currenttime)
 
     result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(
