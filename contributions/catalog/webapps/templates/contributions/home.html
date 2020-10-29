@@ -244,8 +244,8 @@
 </style>
 
 <div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
-    <a href="{{ url_for('contribute.create') }}">Submit</a>
+    <a href="{{ url_for('contributions.home') }}">Contribution Catalog</a>
+    <a href="{{ url_for('contributions.create') }}">Submit</a>
     <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
     <!--    <button id="myBtn" style="display:none">Button</button>-->
     <!--    <div class="search-container">-->
@@ -264,7 +264,7 @@
         <button class="btn" onclick="filterSelection('capability')"> Capability</button>
         <button class="btn" onclick="filterSelection('talent')"> Talent</button>
         <div class="form-group pull-right">
-            <form action="http://localhost:5050/contribute/results" method="POST">
+            <form action="http://localhost:5050/contributions/results" method="POST">
                 <input class="search form-control bar" name="search" placeholder="search by id" type="searchbar">
                 <!--            <input id="searchbar" name="search" placeholder="Search by id..." type="text">-->
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">

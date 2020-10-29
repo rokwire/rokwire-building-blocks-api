@@ -9,7 +9,7 @@ from flask import (
 )
 from models.contribution_utilities import to_contribution
 
-bp = Blueprint('contribute', __name__, url_prefix='/contribute')
+bp = Blueprint('contributions', __name__, url_prefix='/contributions')
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -20,7 +20,7 @@ def home():
         result = request.form.to_dict(flat=False)
         print(result)
         # search(result)
-    return render_template('contribute/home.html')
+    return render_template('contributions/home.html')
 
 
 @bp.route('/results', methods=['POST', 'GET'])
@@ -32,8 +32,23 @@ def result():
         print(result)
         query = result['search']
         search(query)
-        return render_template("contribute/results.html", result=result)
+        return render_template("contributions/results.html", result=result)
 
+@bp.route('/catalog/auth/callback', methods=['GET'])
+def callback():
+    if request.method == 'GET':
+        print(request)
+        code = None
+        state = None
+        try:
+            code = request.args['code']
+        except Exception:
+            pass
+        try:
+            state = request.args['state']
+        except Exception:
+            pass
+    print("test")
 
 @bp.route('/create', methods=['GET', "POST"])
 def create():
@@ -47,19 +62,19 @@ def create():
         print(json_contribution)
         response,s = post(json_contribution)
         if response:
-            return render_template('contribute/submitted.html')
+            return render_template('contributions/submitted.html')
         elif not response:
-            return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html')
+            return render_template('contributions/error.html', error_msg=s)
+    return render_template('contributions/contributions.html')
 
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('contribute/submitted.html')
+    return render_template('contributions/submitted.html')
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
-    return render_template('contribute/submitted.html')
+    return render_template('contributions/submitted.html')
 
 
 #

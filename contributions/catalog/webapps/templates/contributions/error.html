@@ -119,80 +119,27 @@
         color: white;
     }
 
-    .navbar input[type=text] {
-        float: right;
-        padding: 6px;
-        margin-top: 8px;
-        margin-right: 16px;
-        border: none;
-        font-size: 17px;
-    }
-
-    .navbar .search-container button {
-        float: right;
-        padding: 6px 10px;
-        margin-top: 8px;
-        margin-right: 16px;
-        background: #ddd;
-        font-size: 17px;
-        border: none;
-        cursor: pointer;
-        display: none;
-    }
-
-    .navbar .search-container button:hover {
-        background: #ccc;
-    }
-
-    @media screen and (max-width: 600px) {
-        .navbar .search-container {
-            float: none;
-        }
-
-        .navbar a, .navbar input[type=text], .navbar .search-container button {
-            float: none;
-            display: block;
-            text-align: left;
-            width: 100%;
-            margin: 0;
-            padding: 14px;
-        }
-
-        .navbar input[type=text] {
-            border: 1px solid #ccc;
-        }
-    }
-
 
 </style>
 
 <div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
-    <a href="{{ url_for('contribute.create') }}">Submit</a>
-    <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
-    <!--    <button id="myBtn" style="display:none">Button</button>-->
-    <!--    <div class="search-container">-->
-    <form method="POST">
-        <input id="searchbar" name="search" placeholder="Search by id..." type="text">
-        <input id="myBtn" style="display:none;" type="submit" value="Submit">
-    </form>
-
-    <!--  </div>-->
+    <a href="{{ url_for('contributions.home') }}">Capability Catalog/Packager</a>
+    <a href="{{ url_for('contributions.create') }}">contributions</a>
 </div>
 
 <!-- MAIN (Center website) -->
-
-
 <div class="main">
     <h1></h1>
     <h1>Contribution Catalog / Packager</h1>
     <hr>
 
-    some results is showing...
+    {{ error_msg }}
 
     <!-- END GRID -->
 </div>
+
 <!-- END MAIN -->
+</div>
 
 <script>
     filterSelection("all")
@@ -241,14 +188,6 @@
             this.className += " active";
         });
     }
-
-    var input = document.getElementById("searchbar");
-    input.addEventListener("keyup", function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            document.getElementById("myBtn").click();
-        }
-    });
 
 
 </script>

@@ -23,13 +23,13 @@
 <body>
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
-        <a class="active" href="{{ url_for('contribute.create') }}">Submit</a>
+        <a href="{{ url_for('contributions.home') }}">Contribution Catalog</a>
+        <a class="active" href="{{ url_for('contributions.create') }}">Submit</a>
     </div>
     <div>
         <nav>
             <ol class="cd-multi-steps text-top">
-                <li class="current"><a href="#contribute">Contribution information</a></li>
+                <li class="current"><a href="#contributions">Contribution information</a></li>
                 <li><em><a href="#capability">Submit capability or talent </a></em></li>
                 <li><em><a href="#contact">Contact & self certification</a></em></li>
                 <li><em>Finish</em></li>
@@ -39,7 +39,7 @@
 
     <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
         <div class="container">
-            <h2 id="contribute">Submit a contribution</h2>
+            <h2 id="contributions">Submit a contribution</h2>
 
             <div class="form-group">
                 <label class="required control-label col-sm-2">Contribution Name</label>
@@ -160,7 +160,7 @@
                 <div>
                     <nav>
                         <ol class="cd-multi-steps text-top">
-                            <li class="visited"><em><a href="#contribute">Contribution information</a></em></li>
+                            <li class="visited"><em><a href="#contributions">Contribution information</a></em></li>
                             <li class="current"><em><a href="#capability">Submit capability or talent </a></em></li>
                             <li><em><a href="#contact">Contact & self certification</a></em></li>
                             <li><em>Finish</em></li>
@@ -422,7 +422,7 @@
                     <div>
                         <nav>
                             <ol class="cd-multi-steps text-top">
-                                <li class="visited"><a href="#contribute">Contribution information</a></li>
+                                <li class="visited"><a href="#contributions">Contribution information</a></li>
                                 <li class="visited"><em><a href="#capability">Submit capability or talent </a></em>
                                 </li>
                                 <li class="current"><em><a href="#contact">Contact & self certification</a></em></li>
@@ -498,7 +498,7 @@
                         <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
                             <input id="submit_button"
-                                   href="{{ url_for('contribute.home') }}"
+                                   href="{{ url_for('contributions.home') }}"
                                    onsubmit="return data_validation()"
                                    type="submit"
                                    value="Submit">
@@ -673,7 +673,7 @@
         }
 
         //success
-        // window.location.href = "/contribute";
+        // window.location.href = "/contributions";
         var x = document.getElementById('submit-pop').innerHTML = "The contribution form has been submitted!";
 
 

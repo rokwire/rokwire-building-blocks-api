@@ -154,7 +154,7 @@ def load_logged_in_user_info():
 @role_required('either')
 def logout():
     session.clear()
-    return redirect(url_for('contribute.home'))
+    return redirect(url_for('contributions.home'))
 
 
 def login_required(view):

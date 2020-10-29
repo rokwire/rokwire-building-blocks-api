@@ -4,7 +4,7 @@ from time import gmtime
 
 from controllers.auth import bp as auth_bp
 from controllers.config import Config as cfg
-from controllers.contribute import bp as contribute_bp
+from controllers.contributions import bp as contributions_bp
 from db import init_app
 from flask import Flask, render_template
 
@@ -34,12 +34,12 @@ app.config.from_object(cfg)
 
 init_app(app)
 app.register_blueprint(auth_bp)
-app.register_blueprint(contribute_bp)
+app.register_blueprint(contributions_bp)
 
 
 @app.route('/')
 def hello():
-    return render_template('contribute/home.html')
+    return render_template('contributions/home.html')
 
 
 if __name__ == '__main__':

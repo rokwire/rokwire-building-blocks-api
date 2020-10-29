@@ -123,8 +123,8 @@
 </style>
 
 <div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
-    <a href="{{ url_for('contribute.create') }}">Contribute</a>
+    <a href="{{ url_for('contributions.home') }}">Capability Catalog/Packager</a>
+    <a href="{{ url_for('contributions.create') }}">contributions</a>
 </div>
 
 <!-- MAIN (Center website) -->
@@ -133,7 +133,9 @@
     <h1>Contribution Catalog / Packager</h1>
     <hr>
 
-    {{ error_msg }}
+    Your contribution data has been successfully saved. Thank you!
+
+    <a href="{{ url_for('contributions.home') }}"><button>home</button></a>
 
     <!-- END GRID -->
 </div>
