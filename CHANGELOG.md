@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Add capabilities dataset in contribution building block. [#401](https://github.com/rokwire/rokwire-building-blocks-api/issues/401)
+- Add contribution building block. [#406](https://github.com/rokwire/rokwire-building-blocks-api/issues/406)
+- Add talent data to contribution dataset. [#407](https://github.com/rokwire/rokwire-building-blocks-api/issues/407)
+- Add search option in contribution and capability dataset. [#458](https://github.com/rokwire/rokwire-building-blocks-api/issues/458)
+
+## Changed
+- Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
+
+## [1.8.0] - 2020-10-01
+### Added
 - Add multiple client id ability to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
 - Add more time range query parameters to events yml and Readme.[#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
 - Add query parameters to enhance events search. [#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
@@ -18,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
 - Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
+- Update base docker image when doing release. [#564](https://github.com/rokwire/rokwire-building-blocks-api/issues/564)
 
 ## [1.7.0] - 2020-09-03
 ### Added
@@ -268,7 +279,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
