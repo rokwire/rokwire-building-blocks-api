@@ -51,16 +51,8 @@ cd contributions/catalog
 py -m venv env
 .\env\Scripts\activate
 pip install -r requirements.txt
-<<<<<<< HEAD
 set FLASK_APP=catalog
 set FLASK_ENV=development
 python catalog_rest_service.py
 ```
-
-=======
-python catalog_rest_service.py
-```
-set FLASK_APP=catalog
-set FLASK_ENV=development
->>>>>>> task/580-contribution-catalog-auth
 If you want to use gunicorn, cd into api folder then, use ` gunicorn catalog_rest_service:app -c gunicorn.config.py` instead of `python catalog_rest_service.py`
