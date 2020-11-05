@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import logging
-import os
-from time import gmtime
-
-=======
 import json
 import logging
 import os
@@ -11,17 +5,12 @@ import random
 import string
 from time import gmtime
 import requests
->>>>>>> task/580-contribution-catalog-auth
 from controllers.auth import bp as auth_bp
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-<<<<<<< HEAD
-from flask import Flask, render_template
-=======
 from flask import Flask, jsonify, redirect, render_template, request, make_response
 from flask import session as login_session
->>>>>>> task/580-contribution-catalog-auth
 
 debug = cfg.DEBUG
 
@@ -52,12 +41,6 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(contribute_bp)
 
 
-<<<<<<< HEAD
-@app.route('/')
-def hello():
-    return render_template('contribute/home.html')
-
-=======
 # @app.route('/')
 # def hello():
 #     return render_template('contribute/home.html')
@@ -170,7 +153,6 @@ def index():
     except AttributeError:
         app.logger.debug('error getting username from github, oops')
         return "something is wrong...oof", 500
->>>>>>> task/580-contribution-catalog-auth
 
 if __name__ == '__main__':
     app.run(port=5050, host=None, debug=True)
