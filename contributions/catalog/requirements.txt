@@ -3,3 +3,4 @@ pymongo==3.7.2
 gunicorn==19.9.0
 oic==1.1.2
 flask_login>=0.4.1
+requests
