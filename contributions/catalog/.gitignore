@@ -93,6 +93,10 @@ venv.bak/
 
 # PyCharm project settings
 .idea/
+**.iml
+# IDEA - generated artifacts
+**/build/
+**/out/
 
 # Spyder project settings
 .spyderproject
@@ -110,4 +114,16 @@ venv.bak/
 # configuration
 .image/*
 
+# Apple metadata
+**/.DS_Store
 .DS_Store
+
+# Python builds
+*.pyc
+bin/
+/*/bin
+.cache/
+venv
+**/venv
+*.pyi
+*.pyd
