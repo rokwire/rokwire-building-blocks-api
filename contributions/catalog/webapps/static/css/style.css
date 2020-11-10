@@ -39,6 +39,7 @@
 }
 
 input[type=text], select, textarea {
+    color: #090000;
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -54,7 +55,7 @@ label {
 
 input[type=submit] {
     background-color: #84af9d;
-    color: white;
+    color: #090000;
     padding: 15px 25px;
     text-align: center;
     margin: 5px 5px;
@@ -67,12 +68,12 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #45a049;
-    color: white;
+    /*color: white;*/
 }
 
-input:hover {
-     color: white;
-}
+/*input:hover {*/
+/*     color: white;*/
+/*}*/
 
 .container {
     border-radius: 5px;
