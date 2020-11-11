@@ -5,13 +5,13 @@ import random
 import string
 from time import gmtime
 import requests
-from flask_github import GitHub
 from controllers.auth import bp as auth_bp
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-from flask import Flask, jsonify, redirect, render_template, request, make_response, render_template_string
+from flask import g, Flask, jsonify, redirect, url_for, render_template, request, make_response, render_template_string
 from flask import session as login_session
+from flask_dance.contrib.github import make_github_blueprint, github
 
 debug = cfg.DEBUG
 
@@ -38,124 +38,33 @@ app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,
 app.config.from_object(cfg)
 
 init_app(app)
-app.register_blueprint(auth_bp)
 app.register_blueprint(contribute_bp)
 
+app.config["GITHUB_CLIENT_ID"] = os.getenv("GITHUB_CLIENT_ID", "...")
+app.config["GITHUB_CLIENT_SECRET"] = os.getenv("GITHUB_CLIENT_SECRET", "...")
+app.secret_key = "supersekrit"
+blueprint = make_github_blueprint(
+    client_id=os.getenv("GITHUB_CLIENT_ID", "..."),
+    client_secret=os.getenv("GITHUB_CLIENT_SECRET", "..."),
+)
+app.register_blueprint(blueprint, url_prefix="/login")
 
-app.config['GITHUB_CLIENT_ID'] = 'XXX'
-app.config['GITHUB_CLIENT_SECRET'] = 'YYY'
 
-# For GitHub Enterprise
-app.config['GITHUB_BASE_URL'] = 'https://localhost:5050/'
-app.config['GITHUB_AUTH_URL'] = 'https://localhost:5050/login/oauth/'
-
-github = GitHub(app)
-
-authorization_base_url = 'https://github.com/login/oauth/authorize'
-token_url = 'https://github.com/login/oauth/access_token'
-request_url = 'https://api.github.com'
-client_id = os.getenv("CLIENT_ID", "SECRET_KEY")
-client_secret = os.getenv("CLIENT_SECRET", "SECRET_KEY")
-# 1. Shows login page with a random 'state' parameter to prevent CSRF
-
-@app.route('/')
+@app.route("/")
 def index():
-    if g.user:
-        t = 'Hello! %s <a href="{{ url_for("user") }}">Get user</a> ' \
-            '<a href="{{ url_for("repo") }}">Get repo</a> ' \
-            '<a href="{{ url_for("logout") }}">Logout</a>'
-        t %= g.user.github_login
-    else:
-        t = 'Hello! <a href="{{ url_for("login") }}">Login</a>'
-
-    return render_template_string(t)
+    if not github.authorized:
+        return redirect(url_for("github.login"))
+    resp = github.get("/user")
+    assert resp.ok
+    return render_template('contribute/home.html', user=resp.json()["login"])
 
 
-@app.route('/handleLogin', methods=["GET"])
-def handleLogin():
-    '''
-      This method makes initial request to get authorization
-      permissions from the user. It has the following parameters:
-      1. client_id: create one at - https://github.com/settings/applications/new
-      2. state: Random string used to prevent CSRF
-      3. scope: scope of permissions
-      You will setup a Authorization Callback URL when you create your new application on
-      Github. If the request is successfull Github redirects to that URL with a 'code'
-      parameter.
-      Requests temporary 'code' value from Github.
-    '''
-    # if login_session['state'] == request.args.get('state'):
-        # print login_session['state']
-    fetch_url = authorization_base_url + \
-                '?client_id=' + client_id + \
-                '&state=' + login_session['state'] + \
-                '&scope=user%20repo%20public_repo' + \
-                '&allow_signup=true'
-    # print fetch_url
-    return redirect(fetch_url)
-    # else:
-    #     print("login_session's state:", login_session['state'])
-    #     print("requests.arg:", request.args)
-    #     return jsonify(invalid_state_token="invalid_state_token")
-
-#2. Using the /callback route to handle authentication.
-@app.route('/callback', methods=['GET', 'POST'])
-def handle_callback():
-    '''
-        This function helps exchange temporary 'code' value with a permanent
-        access_token.
-    '''
-    if request.args.get('state') != login_session['state']:
-        response = make_response(json.dumps('Invalid state parameter!'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-
-    if 'code' in request.args:
-        #return jsonify(code=request.args.get('code'))
-        payload = {
-            'client_id': client_id,
-            'client_secret': client_secret,
-            'code': request.args['code']
-        }
-        headers = {'Accept': 'application/json'}
-        req = requests.post(token_url, params=payload, headers=headers)
-        resp = req.json()
-
-        if 'access_token' in resp:
-            login_session['access_token'] = resp['access_token']
-            return jsonify(access_token=resp['access_token'])
-            #return redirect(url_for('index'))
-        else:
-            return jsonify(error="Error retrieving access_token"), 404
-    else:
-        return jsonify(error="404_no_code"), 404
-
-# 3. Get user information from Github
-@app.route('/index')
-def index():
-    # Check for access_token in session
-    if 'access_token' not in login_session:
-        return 'Never trust strangers', 404
-    # Get user information from github api
-    access_token_url = 'https://api.github.com/user?access_token={}'
-    r = requests.get(access_token_url.format(login_session['access_token']))
-    try:
-        resp = r.json()
-        gh_profile = resp['html_url']
-        username = resp['login']
-        avatar_url = resp['avatar_url']
-        bio = resp['bio']
-        name = resp['name']
-        return jsonify(
-          gh_profile=gh_profile,
-          gh_username=username,
-          avatar_url=avatar_url,
-          gh_bio=bio,
-          name=name
-        )
-    except AttributeError:
-        app.logger.debug('error getting username from github, oops')
-        return "something is wrong...oof", 500
+# @app.route('/login')
+# def login():
+#     if session.get('user_id', None) is None:
+#         return github.authorize()
+#     else:
+#         return 'Already logged in'
 
 if __name__ == '__main__':
     app.run(port=5050, host=None, debug=True)

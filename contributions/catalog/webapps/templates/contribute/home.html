@@ -246,13 +246,8 @@
 <div class="navbar" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Submit</a>
-    <script>console.log(state)</script>
-    <a href="{{ url_for('handleLogin') }}" onsubmit="">login</a>
-    <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
-    <!--    <button id="myBtn" style="display:none">Button</button>-->
-    <!--    <div class="search-container">-->
+    <a >hello, @{{ user }}</a>
 
-    <!--  </div>-->
 </div>
 
 <!-- MAIN (Center website) -->
@@ -493,13 +488,7 @@
             element.className = arr1.join(" ");
         }
 
-<<<<<<< HEAD
-=======
-        function login() {
-            //call back to login
-            ajax('GET', )
-        }
->>>>>>> task/580-contribution-catalog-auth
+
 
         // Add active class to the current button (highlight it)
         var btnContainer = document.getElementById("myBtnContainer");
