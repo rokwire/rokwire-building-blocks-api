@@ -5,11 +5,12 @@ import random
 import string
 from time import gmtime
 import requests
+from flask_github import GitHub
 from controllers.auth import bp as auth_bp
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-from flask import Flask, jsonify, redirect, render_template, request, make_response
+from flask import Flask, jsonify, redirect, render_template, request, make_response, render_template_string
 from flask import session as login_session
 
 debug = cfg.DEBUG
@@ -41,9 +42,14 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(contribute_bp)
 
 
-# @app.route('/')
-# def hello():
-#     return render_template('contribute/home.html')
+app.config['GITHUB_CLIENT_ID'] = 'XXX'
+app.config['GITHUB_CLIENT_SECRET'] = 'YYY'
+
+# For GitHub Enterprise
+app.config['GITHUB_BASE_URL'] = 'https://localhost:5050/'
+app.config['GITHUB_AUTH_URL'] = 'https://localhost:5050/login/oauth/'
+
+github = GitHub(app)
 
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
@@ -53,19 +59,16 @@ client_secret = os.getenv("CLIENT_SECRET", "SECRET_KEY")
 # 1. Shows login page with a random 'state' parameter to prevent CSRF
 
 @app.route('/')
-def showLogin():
-  '''
-    Shows login page. Sends a random 'state' parameter to the page
-    to prevent csrf. 
-    The value of 'state' is also stored in session object for future use.
-    Returns a random string for 'state' and an optional template.
-  '''
-  state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
-  login_session['state'] = state
-  print(login_session)
-  # return jsonify(state=state) # to return state in a json response
-  return render_template('contribute/home.html', state=state)
-  # return redirect()
+def index():
+    if g.user:
+        t = 'Hello! %s <a href="{{ url_for("user") }}">Get user</a> ' \
+            '<a href="{{ url_for("repo") }}">Get repo</a> ' \
+            '<a href="{{ url_for("logout") }}">Logout</a>'
+        t %= g.user.github_login
+    else:
+        t = 'Hello! <a href="{{ url_for("login") }}">Login</a>'
+
+    return render_template_string(t)
 
 
 @app.route('/handleLogin', methods=["GET"])

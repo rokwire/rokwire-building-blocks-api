@@ -4,10 +4,10 @@ from controllers.config import Config
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, url_for
 )
-from flask import request
-from oic.oic import Client
-from oic.oic.message import RegistrationResponse
-from oic.utils.authn.client import CLIENT_AUTHN_METHOD
+# from flask import request
+# from oic.oic import Client
+# from oic.oic.message import RegistrationResponse
+# from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 # bp = Blueprint('auth', __name__, url_prefix=Config.URL_PREFIX + '/auth')
 bp = Blueprint('auth', __name__, url_prefix='/auth')
