@@ -47,7 +47,7 @@ def search():
         query = query_params.format_query(args, query)
     except Exception as ex:
         __logger.exception(ex)
-        abort(500)
+        abort(400)
     try:
         result, result_len = _get_events_result(
             query,
@@ -242,7 +242,7 @@ def put(event_id):
 
     try:
         db = get_db()
-        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
         __logger.exception(ex)

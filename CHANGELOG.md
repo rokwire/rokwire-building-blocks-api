@@ -5,15 +5,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
 ### Added
-- Add flags isVirtual and displayOnlyWithSuperEvent to events schema. [#542, #541](https://github.com/rokwire/rokwire-building-blocks-api/issues/542, https://github.com/rokwire/rokwire-building-blocks-api/issues/541)
+- Add capabilities dataset in contribution building block. [#401](https://github.com/rokwire/rokwire-building-blocks-api/issues/401)
+- Add contribution building block. [#406](https://github.com/rokwire/rokwire-building-blocks-api/issues/406)
+- Add talent data to contribution dataset. [#407](https://github.com/rokwire/rokwire-building-blocks-api/issues/407)
+- Add search option in contribution and capability dataset. [#458](https://github.com/rokwire/rokwire-building-blocks-api/issues/458)
+
+## Changed
+- Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
+- Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
+
+## [1.8.0] - 2020-10-01
+### Added
+- Add multiple client id ability to auth library. [#548](https://github.com/rokwire/rokwire-building-blocks-api/issues/548)
+- Add more time range query parameters to events yml and Readme.[#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+- Add query parameters to enhance events search. [#551](https://github.com/rokwire/rokwire-building-blocks-api/issues/551)
+
+### Fixed
+- Replace the record on put endpoint. [#550](https://github.com/rokwire/rokwire-building-blocks-api/issues/550)
+- Runtime error in building blocks by updating gunicorn and gevent versions. [#560](https://github.com/rokwire/rokwire-building-blocks-api/issues/560)
+- Runtime error when Auth Library validates manually generated ID tokens. [#562](https://github.com/rokwire/rokwire-building-blocks-api/issues/562)
+
+### Changed
+- Disabled logger to provide detailed PII information in profile BB. [#556](https://github.com/rokwire/rokwire-building-blocks-api/issues/556)
+- Update base docker image when doing release. [#564](https://github.com/rokwire/rokwire-building-blocks-api/issues/564)
+
+## [1.7.0] - 2020-09-03
+### Added
 - Add Standard License Header for Events Building Block. [#480](https://github.com/rokwire/rokwire-building-blocks-api/issues/480)
-- Add Standard License Header for Authentication Building Block [#497](https://github.com/rokwire/rokwire-building-blocks-api/issues/497)
+- Add Standard License Header for Authentication Building Block. [#497](https://github.com/rokwire/rokwire-building-blocks-api/issues/497)
 - Add Standard License Header for Authentication Library. [#498](https://github.com/rokwire/rokwire-building-blocks-api/issues/498)
 - Add CODEOWNERS file. [#508](https://github.com/rokwire/rokwire-building-blocks-api/issues/508)
 - Add Standard License Header for API Doc. [#501](https://github.com/rokwire/rokwire-building-blocks-api/issues/501)
 - Add bug report and feature request issue templates. [#510](https://github.com/rokwire/rokwire-building-blocks-api/issues/510)
 - Add Talent Chooser Building Block APIs documentation. [#528](https://github.com/rokwire/rokwire-building-blocks-api/issues/528)
+- Add flags isVirtual and displayOnlyWithSuperEvent to events schema. [#542](https://github.com/rokwire/rokwire-building-blocks-api/issues/542), [#541](https://github.com/rokwire/rokwire-building-blocks-api/issues/541)
 - Add `startDateLimit` query parameter to events search endpoint. [#545](https://github.com/rokwire/rokwire-building-blocks-api/issues/545)
 
 ### Changed
@@ -22,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rokwire API Doc Dockerfile to integrate multiple OpenAPI specifications file. [#486](https://github.com/rokwire/rokwire-building-blocks-api/issues/486)
 - Update Appconfig Building Block docker base image. [#515](https://github.com/rokwire/rokwire-building-blocks-api/issues/515)
 - Update Authentication Building Block docker base image. [#517](https://github.com/rokwire/rokwire-building-blocks-api/issues/517)
-- Update Authentication Building Block README [#519](https://github.com/rokwire/rokwire-building-blocks-api/issues/519)
+- Update Authentication Building Block README. [#519](https://github.com/rokwire/rokwire-building-blocks-api/issues/519)
 - Changed docker base image for Profile and Logging Building Block. [#521](https://github.com/rokwire/rokwire-building-blocks-api/issues/521)
 - Changed README for auth-middleware-test-svc based on new change. [#523](https://github.com/rokwire/rokwire-building-blocks-api/issues/523)
 - Update issue template. [#537](https://github.com/rokwire/rokwire-building-blocks-api/issues/537)
@@ -37,8 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-fixed bug related to including .env files in docker images. [#419](https://github.com/rokwire/rokwire-building-blocks-api/issues/419)
 
 ### Security
-- Add Yelp's Secret Detector [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
-- Update secret baseline file [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
+- Add Yelp's Secret Detector. [#530](https://github.com/rokwire/rokwire-building-blocks-api/issues/530)
+- Update secret baseline file. [#532](https://github.com/rokwire/rokwire-building-blocks-api/issues/532)
 
 ## [1.6.0] - 2020-07-14
 - Add Health Building Block APIs documentation. [#468](https://github.com/rokwire/rokwire-building-blocks-api/issues/468)
@@ -253,7 +281,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
+[1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.3.1...1.4.0

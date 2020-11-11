@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.5.0
+  version: 1.8.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -66,6 +66,22 @@ paths:
         explode: true
         schema:
           type: string
+      - name: startDate.lte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate.lte=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate.gte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate.gte=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       - name: startDateLimit
         in: query
         description: Another parameter for searching events based on a given start date, e.g., /events?startDateLimit=2019-04-25T13:00:00. This query will return all events whose start date is less than or equal to the given input date.
@@ -77,6 +93,22 @@ paths:
       - name: endDate
         in: query
         description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate.lte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?endDate.lte=2019-04-25T13:00:00. This query will return all events whose end date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate.gte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?endDate.gte=2019-04-25T13:00:00. This query will return all events whose end date is equal or after the given input date.
         required: false
         style: form
         explode: true

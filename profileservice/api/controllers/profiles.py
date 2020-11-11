@@ -60,8 +60,7 @@ def post():
 
     if is_new_install:
         # new installation of the app
-        currenttime = datetime.datetime.now()
-        currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+        currenttime = otherutils.get_current_time_utc()
         non_pii_dataset = NonPiiData('')
         non_pii_uuid = str(uuidlib.uuid4())
         non_pii_dataset.set_uuid(non_pii_uuid)
@@ -129,8 +128,7 @@ def put(uuid=None):
         return rs_handlers.bad_request(msg_json)
 
     non_pii_dataset, restjson = datasetutils.update_non_pii_dataset_from_json(non_pii_dataset, in_json)
-    currenttime = datetime.datetime.now()
-    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+    currenttime = otherutils.get_current_time_utc()
     non_pii_dataset.set_last_modified_date(currenttime)
 
     result, non_pii_dataset = mongoutils.update_non_pii_dataset_in_mongo_by_field(
@@ -166,15 +164,15 @@ def delete(uuid=None):
         return resp
 
     if (is_objectid):
-        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-        msg = {"uuid": str(id)}
+        mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_OBJECTID: uuid})
+        msg = {"uuid": str(uuid)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('uuid', id)
+        return rs_handlers.entry_deleted('uuid', uuid)
 
     try:
         mongoutils.db_profile.non_pii_collection.delete_one({cfg.FIELD_PROFILE_UUID: uuid})
-        msg = {"uuid": str(id)}
+        msg = {"uuid": str(uuid)}
         msg_json = jsonutils.create_log_json("Profile", "DELETE", msg)
         logging.info("DELETE " + json.dumps(msg_json))
         return rs_handlers.entry_deleted('uuid', uuid)
@@ -445,7 +443,7 @@ def pii_post():
             return rs_handlers.not_implemented(msg_json)
 
         msg = "Pii data has been posted with : " + str(pid)
-        msg_json = jsonutils.create_log_json("PII", "POST", jsonutils.remove_objectid_from_dataset(pii_dataset))
+        msg_json = jsonutils.create_log_json("PII", "POST", jsonutils.remove_objectid_from_dataset(pii_dataset), 'pii')
         logging.info("PII POST " + json.dumps(msg_json))
         return rs_handlers.return_id(msg, 'pid', pid)
     else:
@@ -662,9 +660,8 @@ def pii_get(pid=None):
     # remove fileDescriptors from db_data
     data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
     out_json = mongoutils.construct_json_from_query_list(data_list[0])
-    msg_json = jsonutils.create_log_json("PII", "GET", data_list[0])
-    logging.info("PII GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
-
+    msg_json = jsonutils.create_log_json("PII", "GET", data_list[0], 'pii')
+    logging.info("PII GET " + json.dumps(msg_json))
     return out_json
 
 
@@ -701,7 +698,6 @@ def pii_put(pid=None):
 
     # check if the pid is really existing in the database
     pii_dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PID, pid)
-    creation_date = pii_dataset.get_creation_date()
 
     if pii_dataset == None:
         msg = {
@@ -712,6 +708,7 @@ def pii_put(pid=None):
         logging.error("PII PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
+    creation_date = pii_dataset.get_creation_date()
     tmp_dataset = json.loads(json.dumps(pii_dataset.__dict__))
     auth_pass = check_id(auth_resp, tmp_dataset)
 
@@ -804,8 +801,8 @@ def pii_put(pid=None):
 
     pii_dataset = jsonutils.remove_file_descriptor_from_dataset(pii_dataset)
     out_json = mongoutils.construct_json_from_query_list(pii_dataset)
-    msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset))
-    logging.info("PII PUT " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
+    msg_json = jsonutils.create_log_json("PII", "PUT", jsonutils.remove_objectid_from_dataset(pii_dataset), 'pii')
+    logging.info("PII PUT " + json.dumps(msg_json))
     return out_json
 
 
@@ -828,19 +825,20 @@ def pii_delete(pid=None):
         logging.error("PII DELETE " + json.dumps(msg_json))
         return jsonutils.create_auth_fail_message()
 
-    if (is_objectid):
-        mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
-        msg = {"pid": str(pid)}
-        msg_json = jsonutils.create_log_json("PII", "DELETE", msg)
-        logging.info("PII DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('pid', id)
-
     try:
-        mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_PID: pid})
-        msg = {"pid": str(pid)}
-        msg_json = jsonutils.create_log_json("PII", "DELETE", msg)
-        logging.info("PII DELETE " + json.dumps(msg_json))
-        return rs_handlers.entry_deleted('pid', pid)
+        if (is_objectid):
+            id = ObjectId(pid)
+            mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_OBJECTID: id})
+            msg = {"pid": str(pid)}
+            msg_json = jsonutils.create_log_json("PII", "DELETE", msg)
+            logging.info("PII DELETE " + json.dumps(msg_json))
+            return rs_handlers.entry_deleted('ObjectID', pid)
+        else:
+            mongoutils.db_pii.pii_collection.delete_one({cfg.FIELD_PID: pid})
+            msg = {"pid": str(pid)}
+            msg_json = jsonutils.create_log_json("PII", "DELETE", msg)
+            logging.info("PII DELETE " + json.dumps(msg_json))
+            return rs_handlers.entry_deleted('pid', pid)
     except:
         msg = {
             "reason": "Failed to deleted pii. not found: " + str(pid),

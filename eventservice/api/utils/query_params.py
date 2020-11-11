@@ -91,6 +91,24 @@ def format_query(args, query):
             microsecond=0
         )
         query_parts.append({'startDate': {'$lte': value}})
+    if args.get('startDate.lte'):
+        value = datetime.datetime.strptime(args.get('startDate.lte'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$lte': value}})
+    if args.get('startDate.gte'):
+        value = datetime.datetime.strptime(args.get('startDate.gte'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the previous lowest 15min.
+        value = value.replace(
+            minute=(value.minute - (value.minute % 15)),
+            second=0,
+            microsecond=0
+        )
+        query_parts.append({'startDate': {'$gte': value}})
     if args.get('endDate'):
         value = datetime.datetime.strptime(args.get('endDate'), "%Y-%m-%dT%H:%M:%S")
         # Clamp values to the next highest 15min. This uses timedelta in case the
@@ -101,6 +119,26 @@ def format_query(args, query):
             microseconds=-value.microsecond
         )
         query_parts.append({'endDate': {'$lte': value}})
+    if args.get('endDate.lte'):
+        value = datetime.datetime.strptime(args.get('endDate.lte'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the next highest 15min. This uses timedelta in case the
+        # minute calculation turns out to be 60
+        value = value + datetime.timedelta(
+            minutes=((15 - value.minute) % 15),
+            seconds=-value.second,
+            microseconds=-value.microsecond
+        )
+        query_parts.append({'endDate': {'$lte': value}})
+    if args.get('endDate.gte'):
+        value = datetime.datetime.strptime(args.get('endDate.gte'), "%Y-%m-%dT%H:%M:%S")
+        # Clamp values to the next highest 15min. This uses timedelta in case the
+        # minute calculation turns out to be 60
+        value = value + datetime.timedelta(
+            minutes=((15 - value.minute) % 15),
+            seconds=-value.second,
+            microseconds=-value.microsecond
+        )
+        query_parts.append({'endDate': {'$gte': value}})
     # geolocation query
     if args.get('latitude') and args.get('longitude') and args.get('radius'):
         # Round to a 100m box to improve caching
