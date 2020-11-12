@@ -48,13 +48,21 @@ This service uses the python Flask and PyMongo library.
 The configuration file configs.py should have the appropriate information
 
 To install and run the location-model service, do the following:
-
 ```
 cd contributions
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-python api/contributions_rest_service.py`
+python api/contributions_rest_service.py
+```
+
+- (Windows):
+```
+cd contributions
+py -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+python api/contributions_rest_service.py
 ```
 
 If you want to use gunicorn, cd into api folder then, use ` gunicorn contributions_rest_service:app -c gunicorn.config.py` instead of `python api/contributions_rest_service.py` 
@@ -1011,4 +1019,3 @@ API will return the information of the talents with given name
           }
        }
     ]
-```
