@@ -125,5 +125,7 @@ bin/
 .cache/
 venv
 **/venv
+env
+**/env
 *.pyi
 *.pyd
