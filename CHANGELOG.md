@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
 ### Added
 - Add capabilities dataset in contribution building block. [#401](https://github.com/rokwire/rokwire-building-blocks-api/issues/401)
 - Add contribution building block. [#406](https://github.com/rokwire/rokwire-building-blocks-api/issues/406)
