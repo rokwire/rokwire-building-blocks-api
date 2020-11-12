@@ -123,7 +123,9 @@ venv.bak/
 bin/
 /*/bin
 .cache/
-venv
+**/env
+env
 **/venv
+venv
 *.pyi
 *.pyd
