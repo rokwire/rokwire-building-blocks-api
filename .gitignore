@@ -40,3 +40,7 @@ authservice/credentials.env
 *.egg-info/
 dist/
 /appconfigservice/.python-version
+contributions/catalog/env/Lib/site-packages/chardet-3.0.4.dist-info/RECORD
+*.pyd
+*.pyi
+contributions/catalog/env/Lib/site-packages/chardet-3.0.4.dist-info/INSTALLER

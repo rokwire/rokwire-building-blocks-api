@@ -2,7 +2,7 @@ Flask==1.1.1
 pymongo[tls,srv]==3.7.2
 requests==2.22.0
 pyjwt==1.7.1
-cryptography==2.7
+cryptography==3.2
 python-dotenv==0.10.3
 gunicorn==19.9.0
 gevent==1.4.0
