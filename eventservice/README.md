@@ -304,7 +304,7 @@ This query will return back all events whose enddate equal or before the datetim
 This query will return back all events whose enddate equal or after the datetime.
 ```    
 /events?endDate.gte=2019-04-25T13:00:00
-
+```
 ### Geolocation Radius Search
 
 This query will return back all events whose geolocation is within ``800`` meter centered at given geolocation point.
@@ -328,6 +328,7 @@ If there are other query parameters, then the endpoint will apply those query pa
 /events?superEventId=<ID of a super event>&startDate.lte=2020-03-21T07:32:43
 ```
 The endpoint will return back the subevents with the startdate less than or equal to the given date `2020-03-21T07:32:43`
+
 
 ## MongoDB
 
