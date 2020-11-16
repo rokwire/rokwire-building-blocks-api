@@ -327,7 +327,7 @@ If there are other query parameters, then the endpoint will apply those query pa
 ```
 /events?superEventId=<ID of a super event>&startDate.lte=2020-03-21T07:32:43
 ```
-The endpoint will return back the subevents with the startdate less than or equal to the given date `2020-03-21T07:32:43`
+In this example, the endpoint will return back the subevents with the startdate less than or equal to the given date `2020-03-21T07:32:43`
 
 
 ## MongoDB
