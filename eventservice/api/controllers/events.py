@@ -47,7 +47,7 @@ def search():
         query = query_params.format_query(args, query)
     except Exception as ex:
         __logger.exception(ex)
-        abort(500)
+        abort(400)
     try:
         result, result_len = _get_events_result(
             query,
