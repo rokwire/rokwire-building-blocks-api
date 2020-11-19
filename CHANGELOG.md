@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add contribution building block. [#406](https://github.com/rokwire/rokwire-building-blocks-api/issues/406)
 - Add talent data to contribution dataset. [#407](https://github.com/rokwire/rokwire-building-blocks-api/issues/407)
 - Add search option in contribution and capability dataset. [#458](https://github.com/rokwire/rokwire-building-blocks-api/issues/458)
+- Contributor guidelines. [#572](https://github.com/rokwire/rokwire-building-blocks-api/issues/572)
+- A pull request template. [#573](https://github.com/rokwire/rokwire-building-blocks-api/issues/573)
 
 ## Changed
 - Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
