@@ -56,26 +56,10 @@ app.register_blueprint(blueprint, url_prefix="/login")
 
 
 
-# client_id = os.getenv("GITHUB_CLIENT_ID", "...")
-# client_secret = os.getenv("GITHUB_CLIENT_SECRET", "...")
-# authorization_base_url = 'https://github.com/login/oauth/authorize'
-# token_url = 'https://github.com/login/oauth/access_token'
-
-
-
-# This information is obtained upon registration of a new GitHub OAuth
-# application here: https://github.com/settings/applications/new
-client_id = "73675deda5732fe96f62"
-client_secret = "842faa650c2d23aa31573e824a38c32cf1b4fb11"
+client_id = os.getenv("GITHUB_CLIENT_ID", "...")
+client_secret = os.getenv("GITHUB_CLIENT_SECRET", "...")
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
-
-
-API_BASE = "http://localhost:5050"
-CLIENT_ID = "deee5ee488009a044d7c"
-CLIENT_SECRET = "53c40f67771236250bb7a9ebebf76b893d1b7063"
-# REDIRECT_URI = "http://localhost:5050/contributions/catalog/auth/callback"
-REDIRECT_URI = "http://localhost:5050"
 
 @app.route("/")
 def demo():
