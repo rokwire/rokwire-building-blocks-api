@@ -97,8 +97,22 @@ def _get_events_result(query, limit, skip):
             subevents_ids = list()
             for subevent in event.get('subEvents'):
                 subevents_ids.append(ObjectId(subevent.get("id")))
+            # apply query to subevents
+            params = query.get('$and')
+            removed_params = list()
+            for param in params:
+                if param.get('_id'):
+                    # remvoe super id query param
+                    removed_params.append(param)
+                elif param.get('isSuperEvent'):
+                    # remove isSuperEvent query param
+                    removed_params.append(param)
+            for removed in removed_params:
+                params.remove(removed)
+            params.append({'_id': {'$in': subevents_ids}})
+
             subevents_cursor = db['events'].find(
-                {'_id': {'$in': subevents_ids}},
+                query,
                 {'coordinates': 0, 'categorymainsub': 0}
             ).sort([
                 ('startDate', pymongo.ASCENDING),
