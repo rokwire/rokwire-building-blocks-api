@@ -16,6 +16,11 @@ class Config(object):
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
     DEBUG = True
 
+    client_id = os.getenv("CLIENT_ID", "NO ID")
+    client_secret = os.getenv("CLIENT_SECRET", "NO SECRET")
+    authorization_base_url = 'https://github.com/login/oauth/authorize'
+    token_url = 'https://github.com/login/oauth/access_token'
+
     # # ADMINS defines a list usernames that serve as administrators
     # ADMINS = []
     #
