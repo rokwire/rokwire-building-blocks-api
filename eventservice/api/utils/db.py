@@ -14,6 +14,7 @@
 
 from flask import current_app, g
 import pymongo
+import json
 from pymongo.mongo_client import MongoClient
 import controllers.configs as cfg
 
@@ -40,3 +41,16 @@ def init_db():
     events.create_index([("category", pymongo.ASCENDING)])
     events.create_index([("categorymainsub", pymongo.ASCENDING)])
     events.create_index([("coordinates", pymongo.GEOSPHERE)])
+
+    # Add unique index on categories collection
+    categories = db['categories']
+    categories.create_index("category", unique=True)
+
+    # Insert categories collection data.
+    with open('api/categories.json') as file:
+        json_data = json.load(file)
+        for record in json_data:
+            try:
+                categories.insert(record)
+            except pymongo.errors.DuplicateKeyError:
+                continue

@@ -198,15 +198,9 @@ paths:
       description: |
         create an event record into the system
 
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       requestBody:
         description: Created event object
         content:
@@ -270,15 +264,9 @@ paths:
       description: |
         Update the event record matching the eventId.
 
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: event_id
         in: path
@@ -320,15 +308,9 @@ paths:
       description: |
         Delete the event record matching the eventId.
 
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: event_id
         in: path
@@ -354,15 +336,9 @@ paths:
       description: |
         Update the event record matching the eventId.
 
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: event_id
           in: path
@@ -497,15 +473,9 @@ paths:
         - Events
       summary: Upload an image to the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       requestBody:
         description: Image file to upload and associate with the requested event
         content:
@@ -580,15 +550,9 @@ paths:
       - Events
       summary: Update an image associated with the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       requestBody:
         description: Image file to add to the event
         content:
@@ -637,15 +601,9 @@ paths:
       - Events
       summary: Delete an image associated with the specified event
       description: |
-        Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
-          ```
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
-          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
-          ```
+        Auth: Requires a valid API Key for access.
       security:
-        - UserAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: event_id
         in: path
@@ -875,9 +833,3 @@ components:
       name: ROKWIRE-API-KEY
       x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
-    UserAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_userauth
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
