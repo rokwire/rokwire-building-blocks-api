@@ -53,8 +53,8 @@ def demo():
 
 
 # Step 2: User authorization, this happens on the provider.
-
-@app.route("/callback", methods=["GET"])
+# "http://localhost:5050/contributions/catalog/auth/callback"
+@app.route("/contributions/catalog/auth/callback", methods=["GET"])
 def callback():
     """ Step 3: Retrieving an access token.
     """
