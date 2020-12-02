@@ -16,10 +16,19 @@ tags:
 - name: PII
   description: API endpoints for managing PII user profile.
 paths:
-  /profiles:
+  /{clientId}/profiles:
     post:
       tags:
       - Profile
+      parameters:
+      - name: clientId
+        in: path
+        description: Client Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
@@ -48,7 +57,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/device-data:
+  /{clientId}/profiles/device-data:
     get:
       tags:
         - Profile
@@ -59,6 +68,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+        - name: clientId
+          in: path
+          description: Client Id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
         - name: favorites.eventId
           in: query
           description: The parameter for searching Non PII device data based on user's favorite Event's ID
@@ -82,7 +99,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/{uuid}:
+  /{clientId}/profiles/{uuid}:
     get:
       tags:
       - Profile
@@ -94,6 +111,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: Client Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: uuid
         in: path
         description: ID of profile to return
@@ -129,6 +154,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: Client Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: uuid
         in: path
         description: ID of profile that needs to be updated
@@ -171,6 +204,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: Client Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: uuid
         in: path
         description: Profile id to delete
@@ -190,10 +231,19 @@ paths:
           description: Profile not found
         500:
           description: Internal error
-  /profiles/pii:
+  /{clientId}/profiles/pii:
     post:
       tags:
       - PII
+      parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       summary: Create PII entry
       description: |
         This creates a new PII entry.
@@ -282,7 +332,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
-  /profiles/pii/{pid}:
+  /{clientId}/profiles/pii/{pid}:
     get:
       tags:
       - PII
@@ -294,6 +344,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: pid
         in: path
         description: ID of PII to return
@@ -329,6 +387,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: pid
         in: path
         description: ID of PII that needs to be updated
@@ -429,6 +495,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: pid
         in: path
         description: Pii id to delete

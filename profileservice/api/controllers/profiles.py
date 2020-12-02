@@ -36,7 +36,7 @@ from models.non_pii_data import NonPiiData
 from models.testresultsconsent import TestResultsConsent
 
 
-def post():
+def post(clientId=None):
     is_new_install = True
 
     # check if uuid is in there otherwise it is either a first installation
@@ -79,7 +79,7 @@ def post():
         return rs_handlers.return_id(msg, 'uuid', profile_uuid)
 
 
-def get(uuid=None):
+def get(clientId=None, uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
         return resp
@@ -92,7 +92,7 @@ def get(uuid=None):
     return out_json
 
 
-def put(uuid=None):
+def put(clientId=None, uuid=None):
     try:
         in_json = request.get_json()
     except Exception as ex:
@@ -158,7 +158,7 @@ def put(uuid=None):
     return out_json
 
 
-def delete(uuid=None):
+def delete(clientId=None, uuid=None):
     data_list, is_objectid, is_error, resp = get_data_list(uuid)
     if is_error:
         return resp
@@ -235,7 +235,7 @@ def get_data_list(uuid):
     return None, None, True, resp
 
 
-def pii_post():
+def pii_post(clientId=None):
     # msg = {'message': 'POST info for PII:'}
     # resp = jsonify(msg)
     # resp.status_code = 200
@@ -455,7 +455,7 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
-def device_data_search():
+def device_data_search(clientId=None):
     args = request.args
     query = dict()
     try:
@@ -638,7 +638,7 @@ def check_id(id_token, data_list):
     return auth_pass
 
 
-def pii_get(pid=None):
+def pii_get(clientId=None, pid=None):
     # Get ID Token data from global context variable.
     auth_resp = g.user_token_data
 
@@ -665,7 +665,7 @@ def pii_get(pid=None):
     return out_json
 
 
-def pii_put(pid=None):
+def pii_put(clientId=None, pid=None):
     # Get ID Token data from global context variable.
     auth_resp = g.user_token_data
     tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
@@ -806,7 +806,7 @@ def pii_put(pid=None):
     return out_json
 
 
-def pii_delete(pid=None):
+def pii_delete(clientId=None, pid=None):
     # Get ID Token data from global context variable.
     auth_resp = g.user_token_data
 

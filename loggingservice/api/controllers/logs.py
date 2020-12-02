@@ -22,7 +22,7 @@ from flask import request
 import controllers.config as cfg
 import utils.rest_handlers as rs_handlers
 
-def post():
+def post(client_id):
     in_json = None
     try:
         in_json = request.get_json(force=True)

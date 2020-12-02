@@ -13,8 +13,9 @@
 #  limitations under the License.
 
 import flask
-import auth_middleware
+# import auth_middleware
 from dotenv import load_dotenv
+import lib.auth_middleware.auth_middleware as auth_middleware
 
 # Load .env file
 load_dotenv()

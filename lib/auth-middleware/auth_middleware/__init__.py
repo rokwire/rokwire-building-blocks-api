@@ -40,6 +40,7 @@ rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
+CLIENT_ID = None
 
 
 def get_bearer_token(request):
@@ -82,6 +83,7 @@ def authenticate(group_name=None, internal_token_only=False):
     if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
         logger.warning("invalid auth header. expecting 'bearer' and token with space between")
         raise OAuthProblem('Invalid request header')
+
     _id_token = ah_split[1]
     id_info = verify_userauth(_id_token, group_name, internal_token_only)
 
@@ -144,9 +146,26 @@ def verify_apikey(key, required_scopes=None):
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
     id_info = None
+    client_id = None
+
+    try:
+        client_id = request.view_args['clientId']
+        print("got client id from request")
+    except:
+        # TODO it should always be the fourth element. Need to check if this is always true.
+        # parse client id from the given url
+        base_url = request.base_url
+        urls = base_url.split('/')
+        client_id = urls[3]
+        print("got client id from parsing")
+
     if not id_token:
         logger.warning("Request missing id token")
         raise OAuthProblem('Missing id token')
+    if not client_id:
+        logger.warning("Request missing client id")
+        raise OAuthProblem('Missing client id')
+    print(client_id)
     try:
         # We need to get both the header and the payload initially as unverified since we have to
         # check their issuer, key id and a few other items before we can figure out how to unpack them
@@ -196,7 +215,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         valid_issuer = False
         keyset = None
-        target_client_ids = None
+        # target_client_ids = None
 
         if issuer == ROKWIRE_ISSUER:
             valid_issuer = True
@@ -211,7 +230,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
             keyset = json.loads(lines)
 
-            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
+            # target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
 
         if issuer == 'https://' + SHIB_HOST:
@@ -225,7 +244,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
 
-            target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
+            # target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
@@ -242,7 +261,8 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
+            # id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
+            id_info = jwt.decode(id_token, key=pub_key, audience=client_id, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             raise OAuthProblem('Invalid token')

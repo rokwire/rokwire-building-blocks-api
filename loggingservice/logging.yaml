@@ -14,7 +14,7 @@ tags:
 - name: Logs
   description: API endpoints for managing logs
 paths:
-  /logs:
+  /{client_id}/logs:
     post:
       tags:
       - Logs
@@ -25,6 +25,15 @@ paths:
           Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          description: Client Id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: A JSON array of one or more log entries. The schema of the request body is only provided as a reference and by default all of its properties are optional.
         required: true
