@@ -1,15 +1,14 @@
 import logging
-from requests_oauthlib import OAuth2Session
-import logging
 import os
 from time import gmtime
 
-from flask import Flask, g, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
 
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
+
 debug = cfg.DEBUG
 
 log = logging.getLogger('werkzeug')
@@ -40,8 +39,8 @@ app.register_blueprint(contribute_bp)
 
 
 @app.route("/")
-def demo():
-    """Step 1: User Authorization.
+def index():
+    """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")
     github = OAuth2Session(cfg.client_id)
@@ -62,22 +61,19 @@ def callback():
     github = OAuth2Session(cfg.client_id, state=session['oauth_state'])
     token = github.fetch_token(cfg.token_url, client_secret=cfg.client_secret,
                                authorization_response=request.url)
-
     session['oauth_token'] = token
     return redirect(url_for('.profile'))
 
 @app.route("/profile", methods=["GET"])
 def profile():
     """Fetching a protected resource using an OAuth 2 token.
-    and parse the user name to the templates to display.
+    Parsing the username to the seesion dict, to the templates to display.
     """
-    print("Fetching a protected resource using an OAuth 2 token")
+    # print("Fetching a protected resource using an OAuth 2 token")
     github = OAuth2Session(cfg.client_id, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
-    g.user = {}
-    g.user["username"] = resp.json()["login"]
-    g.user["oauth_token"] = session["oauth_token"]
-    return render_template('contribute/home.html', user=resp.json()["login"])
+    session["username"] = resp.json()["login"]
+    return render_template('contribute/home.html', user=session["username"])
 
 
 if __name__ == '__main__':

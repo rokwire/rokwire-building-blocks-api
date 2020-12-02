@@ -24,7 +24,8 @@
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
-        <a class="active" href="{{ url_for('contribute.create') }}">Submit</a>
+        <a href="{{ url_for('contribute.create') }}">Submit</a>
+        <a>hello, @{{ user }}</a>
     </div>
     <div>
         <nav>
