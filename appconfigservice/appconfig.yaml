@@ -15,7 +15,7 @@ tags:
   description: API endpoints for managing mobile app configuration
 
 paths:
-  /app/configs:
+  /{clientId}/app/configs:
     post:
       tags:
       - App Configuration
@@ -92,6 +92,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+        - name: clientId
+          in: path
+          description: client id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
         - name: mobileAppVersion
           in: query
           description: query by mobile app version, results contain all app configurations if no paramer is given; If given mobileAppVersion, it will return the closest app config that is less than or equal to the given version.
@@ -116,7 +124,7 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
-  /app/configs/{id}:
+  /{clientId}/app/configs/{id}:
     get:
       tags:
       - App Configuration
@@ -126,6 +134,14 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: id
         in: path
         description: app config id to read
@@ -162,6 +178,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: id
         in: path
         description: app config id to update
@@ -201,6 +225,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
+      - name: clientId
+        in: path
+        description: client id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       - name: id
         in: path
         description: app config id to delete
