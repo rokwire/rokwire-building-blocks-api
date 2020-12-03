@@ -215,25 +215,10 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         valid_issuer = False
         keyset = None
-        # target_client_ids = None
+        target_client_ids = None
 
-        if issuer == ROKWIRE_ISSUER:
-            valid_issuer = True
-            # Path to the ROKWire public key for its id tokens
-            # This is kept in case we decide to revive it, but has been replaced with
-            # simply setting the single key (as a JWK blob) in the environment
-            # and decoding it here.
-            #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
-            #            file1 = open(LOCAL_KEY_PATH, "r")
-            #            lines = file1.readlines()
-            #            file1.close()
-            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
-            keyset = json.loads(lines)
-
-            # target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
-
-
-        if issuer == 'https://' + SHIB_HOST:
+        # check issuer and verify
+        try:
             if internal_token_only:
                 logger.warning("incorrect token type")
                 raise OAuthProblem('Invalid token')
@@ -244,31 +229,82 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
 
-            # target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
+            # Comment about the next bit. The Py JWT package's support for getting the keys
+            # and verifying against said key is (like the rest of it) undocumented.
+            # These calls may therefore change without warning without notification in future
+            # releases of that library. If this stops working, check the Py JWT libraries first.
+            if not valid_issuer:
+                logger.warning("invalid issuer = %s" % issuer)
+                raise OAuthProblem('Invalid token')
 
-        # Comment about the next bit. The Py JWT package's support for getting the keys
-        # and verifying against said key is (like the rest of it) undocumented.
-        # These calls may therefore change without warning without notification in future
-        # releases of that library. If this stops working, check the Py JWT libraries first.
-        if not valid_issuer:
-            logger.warning("invalid issuer = %s" % issuer)
-            raise OAuthProblem('Invalid token')
+            matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
+            if len(matching_jwks) != 1:
+                logger.warning("should have exactly one match for kid = %s" % kid)
+                raise OAuthProblem('Invalid token')
+            jwk = matching_jwks[0]
+            pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+            try:
+                id_info = jwt.decode(id_token, key=pub_key, audience=client_id, verify=True)
+            except jwt.exceptions.PyJWTError as jwte:
+                logger.warning("jwt error on decode. message = %s" % jwte)
+                raise OAuthProblem('Invalid token')
+            if not id_info:
+                logger.warning("id_info was not returned from decode")
+                raise OAuthProblem('Invalid token')
+        except:
+        # check the issuer from env variables
+            if issuer == ROKWIRE_ISSUER:
+                valid_issuer = True
+                # Path to the ROKWire public key for its id tokens
+                # This is kept in case we decide to revive it, but has been replaced with
+                # simply setting the single key (as a JWK blob) in the environment
+                # and decoding it here.
+                #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
+                #            file1 = open(LOCAL_KEY_PATH, "r")
+                #            lines = file1.readlines()
+                #            file1.close()
+                lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+                keyset = json.loads(lines)
 
-        matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
-        if len(matching_jwks) != 1:
-            logger.warning("should have exactly one match for kid = %s" % kid)
-            raise OAuthProblem('Invalid token')
-        jwk = matching_jwks[0]
-        pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
-        try:
-            # id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
-            id_info = jwt.decode(id_token, key=pub_key, audience=client_id, verify=True)
-        except jwt.exceptions.PyJWTError as jwte:
-            logger.warning("jwt error on decode. message = %s" % jwte)
-            raise OAuthProblem('Invalid token')
-        if not id_info:
-            logger.warning("id_info was not returned from decode")
-            raise OAuthProblem('Invalid token')
+                target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
+
+
+            if issuer == 'https://' + SHIB_HOST:
+                if internal_token_only:
+                    logger.warning("incorrect token type")
+                    raise OAuthProblem('Invalid token')
+                valid_issuer = True
+                keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+                if keyset_resp.status_code != 200:
+                    logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
+                    raise OAuthProblem('Invalid token')
+                keyset = keyset_resp.json()
+
+                target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
+
+            # Comment about the next bit. The Py JWT package's support for getting the keys
+            # and verifying against said key is (like the rest of it) undocumented.
+            # These calls may therefore change without warning without notification in future
+            # releases of that library. If this stops working, check the Py JWT libraries first.
+            if not valid_issuer:
+                logger.warning("invalid issuer = %s" % issuer)
+                raise OAuthProblem('Invalid token')
+
+            matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
+            if len(matching_jwks) != 1:
+                logger.warning("should have exactly one match for kid = %s" % kid)
+                raise OAuthProblem('Invalid token')
+            jwk = matching_jwks[0]
+            pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+            try:
+                id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
+                # id_info = jwt.decode(id_token, key=pub_key, audience=client_id, verify=True)
+            except jwt.exceptions.PyJWTError as jwte:
+                logger.warning("jwt error on decode. message = %s" % jwte)
+                raise OAuthProblem('Invalid token')
+            if not id_info:
+                logger.warning("id_info was not returned from decode")
+                raise OAuthProblem('Invalid token')
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
 
