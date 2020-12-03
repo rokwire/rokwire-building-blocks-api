@@ -34,7 +34,7 @@ __logger = logging.getLogger("app_config_building_block")
 app = flask.Flask(__name__)
 
 
-def configs_search(mobileAppVersion=None):
+def configs_search(mobileAppVersion=None, clientId=None):
     args = request.args
     version = args.get('mobileAppVersion')
     query = dict()
@@ -111,7 +111,7 @@ def _get_app_config_by_id_result(query):
     return [decode(c) for c in cursor]
 
 
-def configs_post():
+def configs_post(clientId=None):
     auth_middleware.authorize(auth_middleware.rokwire_app_config_manager_group)
 
     req_data = request.get_json(force=True)
@@ -179,7 +179,7 @@ def configs_delete(id):
     return success_response(202, msg, str(id))
 
 
-# =================================UTIL FUNCTIONS FOR REST SERVICES=====================================#
+# ===========================UTIL FUNCTIONS FOR REST SERVICES=====================================#
 def success_response(status_code, msg, app_config_id):
     message = {
         'status': status_code,
