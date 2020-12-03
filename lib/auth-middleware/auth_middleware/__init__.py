@@ -97,17 +97,30 @@ def authorize(group_name=None):
         id_info = g.user_token_data
 
         if group_name is not None:
-            # So we are to check is a group membership is required.
-            if uiucedu_is_member_of in id_info:
-                is_member_of = id_info[uiucedu_is_member_of]
-                print("is_member_of" + str(is_member_of))
-                if group_name not in is_member_of:
-                    logger.warning("user is not a member of the group " + group_name)
+            # check if the group_name is list or string
+            if isinstance(group_name, str):
+                # So we are to check is a group membership is required.
+                if uiucedu_is_member_of in id_info:
+                    is_member_of = id_info[uiucedu_is_member_of]
+                    logging.info("is_member_of" + str(is_member_of))
+                    if group_name not in is_member_of:
+                        logger.warning("user is not a member of the group " + group_name)
+                        raise OAuthProblem('Invalid token')
+                else:
+                    logger.warning(uiucedu_is_member_of + " field is not present in the ID Token")
                     raise OAuthProblem('Invalid token')
-            else:
-                logger.warning(uiucedu_is_member_of + " field is not present in the ID Token")
-                raise OAuthProblem('Invalid token')
-
+            if isinstance(group_name, list):
+                is_authorize = False
+                for name in group_name:
+                    if uiucedu_is_member_of in id_info:
+                        is_member_of = id_info[uiucedu_is_member_of]
+                        logging.info("is_member_of" + str(is_member_of))
+                        if name in is_member_of:
+                            is_authorize = True
+                            break
+                if is_authorize is False:
+                    logger.warning(uiucedu_is_member_of + " field is not present in the ID Token")
+                    raise OAuthProblem('Invalid token')
 
 # Checks that the request has the right secret for this. This call is used initially and assumes that
 # the header contains the x-api-key. This (trivially) returns true of the verification worked and
