@@ -106,17 +106,17 @@ def authorize(group_name=None):
                 # make group name as list
                 group_name = [group_name]
 
-            if isinstance(group_name, list):
-                is_authorize = False
-                for name in group_name:
-                    if uiucedu_is_member_of in id_info:
-                        is_member_of = id_info[uiucedu_is_member_of]
-                        if name in is_member_of:
-                            is_authorize = True
-                            break
-                if is_authorize is False:
-                    logger.warning("Given group member in the ID Token is not authorized")
-                    raise OAuthProblem('Invalid token')
+            is_authorize = False
+            for name in group_name:
+                if uiucedu_is_member_of in id_info:
+                    is_member_of = id_info[uiucedu_is_member_of]
+                    if name in is_member_of:
+                        is_authorize = True
+                        break
+
+            if is_authorize is False:
+                logger.warning("User not authorized.")
+                raise OAuthProblem('Invalid token')
 
 # Checks that the request has the right secret for this. This call is used initially and assumes that
 # the header contains the x-api-key. This (trivially) returns true of the verification worked and
