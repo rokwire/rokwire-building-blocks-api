@@ -14,7 +14,6 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 
 </head>
@@ -25,7 +24,9 @@
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
         <a href="{{ url_for('contribute.create') }}">Submit</a>
-        <a>hello, @{{ user }}</a>
+        <div style="float: right; margin-right: 25px;">
+            <a >hello, {{ user }}!</a>
+        </div>
     </div>
     <div>
         <nav>

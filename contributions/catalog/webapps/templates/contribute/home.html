@@ -41,6 +41,11 @@
         color: white;
     }
 
+    .navbar-right {
+        float: right;
+        margin-right: 25px;
+    }
+
     .main {
         padding: 30px;
         margin-top: 90px;
@@ -102,12 +107,11 @@
         overflow-wrap: break-word;
         word-wrap: break-word;
 
-    img:hover {
-        opacity: 0.5;
-    }
+        img:hover {
+            opacity: 0.5;
+        }
 
     }
-
     .content:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
@@ -246,7 +250,11 @@
 <div class="navbar" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Submit</a>
-    <a >hello, @{{ user }}</a>
+
+    <div class="navbar-right" id="nav_greeting">
+        <a >hello, {{ user }}!</a>
+    </div>
+
 
 </div>
 
