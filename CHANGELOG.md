@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add search option in contribution and capability dataset. [#458](https://github.com/rokwire/rokwire-building-blocks-api/issues/458)
 - Contributor guidelines. [#572](https://github.com/rokwire/rokwire-building-blocks-api/issues/572)
 - A pull request template. [#573](https://github.com/rokwire/rokwire-building-blocks-api/issues/573)
-- Add Contionbution Catalog Frontend[#462](https://github.com/rokwire/rokwire-building-blocks-api/issues/462)
+- Add Contributions Catalog Frontend. [#462](https://github.com/rokwire/rokwire-building-blocks-api/issues/462)
 - Add Github authentication for Contribution catalog[#580](https://github.com/rokwire/rokwire-building-blocks-api/issues/580)
 
 ## Changed
