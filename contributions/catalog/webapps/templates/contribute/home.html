@@ -41,6 +41,11 @@
         color: white;
     }
 
+    .navbar-right {
+        float: right;
+        margin-right: 25px;
+    }
+
     .main {
         padding: 30px;
         margin-top: 90px;
@@ -102,12 +107,11 @@
         overflow-wrap: break-word;
         word-wrap: break-word;
 
-    img:hover {
-        opacity: 0.5;
-    }
+        img:hover {
+            opacity: 0.5;
+        }
 
     }
-
     .content:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
@@ -246,13 +250,12 @@
 <div class="navbar" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Submit</a>
-    <script>console.log(state)</script>
-    <a href="{{ url_for('handleLogin') }}" onsubmit="">login</a>
-    <!--    <input id="searchbar" type="text" placeholder="Search by ID...">-->
-    <!--    <button id="myBtn" style="display:none">Button</button>-->
-    <!--    <div class="search-container">-->
 
-    <!--  </div>-->
+    <div class="navbar-right" id="nav_greeting">
+        <a >Hello, {{ user }}!</a>
+    </div>
+
+
 </div>
 
 <!-- MAIN (Center website) -->
@@ -493,13 +496,7 @@
             element.className = arr1.join(" ");
         }
 
-<<<<<<< HEAD
-=======
-        function login() {
-            //call back to login
-            ajax('GET', )
-        }
->>>>>>> task/580-contribution-catalog-auth
+
 
         // Add active class to the current button (highlight it)
         var btnContainer = document.getElementById("myBtnContainer");
@@ -512,13 +509,12 @@
             });
         }
 
-        var input = document.getElementById("searchbar");
-        input.addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.getElementById("myBtn").click();
-            }
-        });
+        // document.getElementById("searchbar").addEventListener("keyup", function (event) {
+        //     if (event.keyCode === 13) {
+        //         event.preventDefault();
+        //         document.getElementById("myBtn").click();
+        //     }}
+        // );
 
 
     </script>

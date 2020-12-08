@@ -34,6 +34,11 @@
     display: none;
 }
 
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -247,3 +252,4 @@ hr.dotted {
   text-decoration: none;
   cursor: pointer;
 }
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
