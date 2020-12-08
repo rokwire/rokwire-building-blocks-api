@@ -72,8 +72,10 @@ def profile():
     # print("Fetching a protected resource using an OAuth 2 token")
     github = OAuth2Session(cfg.client_id, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
+    print(resp.json())
     session["username"] = resp.json()["login"]
-    return render_template('contribute/home.html', user=session["username"])
+    session['name'] = resp.json()["name"]
+    return render_template('contribute/home.html', user=session["name"])
 
 
 if __name__ == '__main__':

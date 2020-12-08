@@ -21,7 +21,7 @@ def home():
         result = request.form.to_dict(flat=False)
         print(result)
         # search(result)
-    return render_template('contribute/home.html', user=session["username"])
+    return render_template('contribute/home.html', user=session["name"])
 
 
 @bp.route('/results', methods=['POST', 'GET'])
@@ -33,7 +33,7 @@ def result():
         print(result)
         query = result['search']
         search(query)
-        return render_template("contribute/results.html", user=session["username"], result=result)
+        return render_template("contribute/results.html", user=session["name"], result=result)
 
 
 @bp.route('/create', methods=['GET', "POST"])
@@ -48,24 +48,24 @@ def create():
         print(json_contribution)
         response, s = post(json_contribution)
         if response:
-            return render_template('contribute/submitted.html', user=session["username"])
+            return render_template('contribute/submitted.html', user=session["name"])
         elif not response:
-            return render_template('contribute/error.html', user=session["username"], error_msg=s)
-    return render_template('contribute/contribute.html', user=session["username"])
+            return render_template('contribute/error.html', user=session["name"], error_msg=s)
+    return render_template('contribute/contribute.html', user=session["name"])
 
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('contribute/submitted.html', user=session["username"])
+    return render_template('contribute/submitted.html', user=session["name"])
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
-    return render_template('contribute/submitted.html', user=session["username"], )
+    return render_template('contribute/submitted.html', user=session["name"], )
 
 
 @bp.route('/results')
 def search_results(search):
-    return render_template('results.html', results=results, user=session["username"], )
+    return render_template('results.html', results=results, user=session["name"], )
 
 
 # post a json_data in a http request
