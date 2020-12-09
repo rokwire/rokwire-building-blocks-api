@@ -32,13 +32,22 @@ logger = logging.getLogger(__name__)
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
-rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
-rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
-rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
-rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
+# rokwire_event_manager_group = 'urn:mace:' + org + \
+#     ':authman:app-rokwire-service-policy-rokwire events manager'
+# rokwire_events_uploader = 'urn:mace:' + org + \
+#     ':authman:app-rokwire-service-policy-rokwire ems events uploader'
+# rokwire_events_web_app = 'urn:mace:' + org + \
+#     ':authman:app-rokwire-service-policy-rokwire events web app'
+# rokwire_app_config_manager_group = 'urn:mace:' + org + \
+#     ':authman:app-rokwire-service-policy-rokwire app config manager'
+
+rokwire_event_manager_group = 'events_manager'
+rokwire_events_uploader = 'events_uploader'
+rokwire_events_web_app = 'events_web_app'
+rokwire_app_config_manager_group = 'app_config_manager'
 
 # This is the is member of claim name from the
-uiucedu_is_member_of = "uiucedu_is_member_of"
+is_member_of_claim = "groups"
 DEBUG_ON = False
 
 
@@ -98,14 +107,14 @@ def authorize(group_name=None):
 
         if group_name is not None:
             # So we are to check is a group membership is required.
-            if uiucedu_is_member_of in id_info:
-                is_member_of = id_info[uiucedu_is_member_of]
-                print("is_member_of" + str(is_member_of))
+            if is_member_of_claim in id_info:
+                is_member_of = id_info[is_member_of_claim]
+                print("groups: " + str(is_member_of))
                 if group_name not in is_member_of:
                     logger.warning("user is not a member of the group " + group_name)
                     raise OAuthProblem('Invalid token')
             else:
-                logger.warning(uiucedu_is_member_of + " field is not present in the ID Token")
+                logger.warning(is_member_of_claim + " field is not present in the ID Token")
                 raise OAuthProblem('Invalid token')
 
 
@@ -155,100 +164,56 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on get unverified header. message = %s" % jwte)
         raise OAuthProblem('Invalid token')
-    if unverified_header.get('phone', False):
-        # phone number verify -- reject if this should be another type of token.
-        if internal_token_only:
-            logger.warning('incorrect id token type.')
-            raise OAuthProblem('Invalid token')
-        phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
-        if not phone_verify_secret:
-            logger.warning("PHONE_VERIFY_SECRET environment variable not set")
-            raise OAuthProblem('Invalid token')
-        phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
-        if not phone_verify_audience:
-            logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
-            raise OAuthProblem('Invalid token')
-        try:
-            id_info = jwt.decode(
-                id_token,
-                phone_verify_secret,
-                audience=phone_verify_audience,
-                verify=True
-            )
-        except jwt.DecodeError as de:
-            logger.warning("error on id_token decode. Message = %s" % str(de))
-            raise OAuthProblem('Invalid token')
-        # import pprint; pprint.pprint(id_info)
-    else:
-        # Note there are two cases here that are closely related. Basically we can only differentiate them
-        # by which issuer is in the id token.
-        # shibboleth
-        SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
-        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
-        issuer = unverified_payload.get('iss')
-        if not issuer:
-            logger.warning("Issuer not found. Aborting.")
-            raise OAuthProblem('Invalid token')
-        kid = unverified_header.get('kid')
-        if not kid:
-            logger.warning("kid not found. Aborting.")
-            raise OAuthProblem('Invalid token')
-        valid_issuer = False
-        keyset = None
-        target_client_ids = None
+    issuer = unverified_payload.get('iss')
+    if not issuer:
+        logger.warning("Issuer not found. Aborting.")
+        raise OAuthProblem('Invalid token')
+    kid = unverified_header.get('kid')
+    if not kid:
+        logger.warning("kid not found. Aborting.")
+        raise OAuthProblem('Invalid token')
 
-        if issuer == ROKWIRE_ISSUER:
-            valid_issuer = True
-            # Path to the ROKWire public key for its id tokens
-            # This is kept in case we decide to revive it, but has been replaced with
-            # simply setting the single key (as a JWK blob) in the environment
-            # and decoding it here.
-            #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
-            #            file1 = open(LOCAL_KEY_PATH, "r")
-            #            lines = file1.readlines()
-            #            file1.close()
-            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
-            keyset = json.loads(lines)
+    # tokenClientID = unverified_payload.get('clientID')
+    # if not tokenClientID:
+    #     logger.warning("clientID not found. Aborting.")
+    #     raise OAuthProblem('Invalid token')
+    # clientID = request.view_args.get('clientID')
+    # if tokenClientID != clientID:
+    #     logger.warning("clientID does not match. Aborting.")
+    #     raise OAuthProblem('Invalid token to access clientID')
 
-            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
+    valid_issuer = False
+    keyset = None
 
+    AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', '').strip()
+    AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
+    if issuer == AUTH_ISSUER:
+        valid_issuer = True
+        keyset = AUTH_PUBKEYS
 
-        if issuer == 'https://' + SHIB_HOST:
-            if internal_token_only:
-                logger.warning("incorrect token type")
-                raise OAuthProblem('Invalid token')
-            valid_issuer = True
-            keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
-            if keyset_resp.status_code != 200:
-                logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
-                raise OAuthProblem('Invalid token')
-            keyset = keyset_resp.json()
+    # Comment about the next bit. The Py JWT package's support for getting the keys
+    # and verifying against said key is (like the rest of it) undocumented.
+    # These calls may therefore change without warning without notification in future
+    # releases of that library. If this stops working, check the Py JWT libraries first.
+    if not valid_issuer:
+        logger.warning("invalid issuer = %s" % issuer)
+        raise OAuthProblem('Invalid token')
 
-            target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
-
-        # Comment about the next bit. The Py JWT package's support for getting the keys
-        # and verifying against said key is (like the rest of it) undocumented.
-        # These calls may therefore change without warning without notification in future
-        # releases of that library. If this stops working, check the Py JWT libraries first.
-        if not valid_issuer:
-            logger.warning("invalid issuer = %s" % issuer)
-            raise OAuthProblem('Invalid token')
-
-        matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
-        if len(matching_jwks) != 1:
-            logger.warning("should have exactly one match for kid = %s" % kid)
-            raise OAuthProblem('Invalid token')
-        jwk = matching_jwks[0]
-        pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
-        try:
-            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
-        except jwt.exceptions.PyJWTError as jwte:
-            logger.warning("jwt error on decode. message = %s" % jwte)
-            raise OAuthProblem('Invalid token')
-        if not id_info:
-            logger.warning("id_info was not returned from decode")
-            raise OAuthProblem('Invalid token')
+    matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
+    if len(matching_jwks) != 1:
+        logger.warning("should have exactly one match for kid = %s" % kid)
+        raise OAuthProblem('Invalid token')
+    jwk = matching_jwks[0]
+    pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    try:
+        id_info = jwt.decode(id_token, key=pub_key, verify=True)
+    except jwt.exceptions.PyJWTError as jwte:
+        logger.warning("jwt error on decode. message = %s" % jwte)
+        raise OAuthProblem('Invalid token')
+    if not id_info:
+        logger.warning("id_info was not returned from decode")
+        raise OAuthProblem('Invalid token')
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
 

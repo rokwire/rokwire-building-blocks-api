@@ -21,6 +21,7 @@ import copy
 from flask import jsonify, request, g
 from bson import ObjectId
 
+import auth_middleware
 import controllers.configs as cfg
 import utils.mongoutils as mongoutils
 import utils.jsonutils as jsonutils
@@ -242,13 +243,12 @@ def pii_post():
     # logging.debug("POST " + json.dumps(msg))
     #
     # return resp
-
     # Get ID Token data from global context variable.
     auth_resp = g.user_token_data
-    tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
+    tk_uid, tk_name, tk_email, tk_phone, tk_auth = tokenutils.get_data_from_token(
         auth_resp)
 
-    is_new_entry = False
+    # is_new_entry = False
     # Todo following variable should be revived if the email or phone number can get updated
     # auth_pass = False
 
@@ -304,72 +304,22 @@ def pii_post():
         logging.error("PII POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg_json)
 
-    # check if it is a new record or existing record
     try:
-        pid = in_json[cfg.FIELD_PID]
-        dataset = mongoutils.get_pii_dataset_from_field(cfg.FIELD_PROFILE_UUID, pid)
-
-        # if it is an existing entry, then check if the information in db matches with the id token
-        auth_pass = check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
-    except:
-        dataset = None
-        is_new_entry = True
-
-    # check if the email already exists
-    if tk_is_uin:
-        try:
-            dataset = mongoutils.get_pii_dataset_from_field('uin', tk_uin)
-            # if there is a dataset, it means that the email is existing in the database
-            if dataset is not None:
-                # ToDo Following lines will be commented out due to the following assumption
-                # that the email in the database doesn't get updated so, no change in email.
-                # However, if there is email update available, the following part should be revived.
-                # # check if the id token and db info matches
-                # if not (auth_pass):
-                #     msg = {
-                #         "reason": "The user info in id token and db are not matching.",
-                #         "error": "Authorization Failed."
-                #     }
-                #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                #     self.logger.error("PII POST " + json.dumps(msg_json))
-                #     return jsonutils.create_auth_fail_message()
-                #
-                # if not (auth_pass):
-                #     msg = {
-                #         "reason": "The user info in id token and db are not matching.",
-                #         "error": "Authorization Failed."
-                #     }
-                #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                #     self.logger.error("PII POST " + json.dumps(msg_json))
-                #     return jsonutils.create_auth_fail_message()
-
-                pid = dataset.get_pid()
-                non_pii_uuid_from_dataset = dataset.uuid
-                dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                currenttime = otherutils.get_current_time_utc()
-                dataset.set_last_modified_date(currenttime)
-                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
-                msg = {
-                    "reason": "UIN already exists: " + str(pid),
-                    "warning": "UIN already exists: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                logging.warning("PII POST " + json.dumps(msg_json))
-                return rs_handlers.return_id('UIN already exists.', 'pid', pid)
-        except:
-            return rs_handlers.internal_server_error()
-
-    # check if the phonenumber already exists
-    if tk_is_phone:
-        try:
-            dataset = mongoutils.get_pii_dataset_from_field('phone', tk_phone)
-
+        dataset = mongoutils.get_pii_dataset_from_field('uid', tk_uid)
+        # if there is a dataset, it means that the email is existing in the database
+        if dataset is not None:
             # ToDo Following lines will be commented out due to the following assumption
             # that the email in the database doesn't get updated so, no change in email.
             # However, if there is email update available, the following part should be revived.
-            # check if the id token and db info matches
+            # # check if the id token and db info matches
             # if not (auth_pass):
-            #     auth_pass = self.check_auth(dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone)
+            #     msg = {
+            #         "reason": "The user info in id token and db are not matching.",
+            #         "error": "Authorization Failed."
+            #     }
+            #     msg_json = jsonutils.create_log_json("PII", "POST", msg)
+            #     self.logger.error("PII POST " + json.dumps(msg_json))
+            #     return jsonutils.create_auth_fail_message()
             #
             # if not (auth_pass):
             #     msg = {
@@ -380,33 +330,35 @@ def pii_post():
             #     self.logger.error("PII POST " + json.dumps(msg_json))
             #     return jsonutils.create_auth_fail_message()
 
-            if dataset is not None:
-                pid = dataset.get_pid()
-                non_pii_uuid_from_dataset = dataset.uuid
-                dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
-                currenttime = otherutils.get_current_time_utc()
-                dataset.set_last_modified_date(currenttime)
-                result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
-                msg = {
-                    "reason": "Phone number already exists: " + str(pid),
-                    "warning": "Phone number already exists: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("PII", "POST", msg)
-                logging.warning("PII POST " + json.dumps(msg_json))
-                return rs_handlers.return_id('Phone number already exists.', 'pid', pid)
-        except:
-            return rs_handlers.internal_server_error()
-
-    if dataset is not None:
-        is_new_entry = False
+            pid = dataset.get_pid()
+            non_pii_uuid_from_dataset = dataset.uuid
+            dataset = append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, dataset)
+            currenttime = otherutils.get_current_time_utc()
+            dataset.set_last_modified_date(currenttime)
+            result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid, dataset)
+            msg = {
+                "reason": "pid already exists: " + str(pid),
+                "warning": "pid already exists: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("PII", "POST", msg)
+            logging.warning("PII POST " + json.dumps(msg_json))
+            return rs_handlers.return_id('pid already exists.', 'pid', pid)
+    except:
+        return rs_handlers.internal_server_error()
 
     pii_dataset = PiiData(in_json)
 
-    if is_new_entry:
+    if dataset is None:
         # insert new pii_dataset
         currenttime = otherutils.get_current_time_utc()
         pid = str(uuidlib.uuid4())
         pii_dataset.set_pid(pid)
+        if tk_phone:
+            pii_dataset.set_phone(tk_phone)
+        if tk_email:
+            pii_dataset.set_email(tk_email)
+        if tk_auth == "oidc":
+            pii_dataset.set_uin(tk_uid)
         non_pii_uuid_from_dataset = []
         non_pii_uuid_from_dataset.append(non_pii_uuid)
         pii_dataset.set_uuid(non_pii_uuid_from_dataset)
@@ -427,10 +379,14 @@ def pii_post():
         #     pii_dataset.set_lastname(tk_lastname)
         # if tk_email is not None:
         #     pii_dataset.set_email(tk_email)
-        if tk_phone is not None:
-            pii_dataset.set_phone(tk_phone)
-        if tk_uin is not None:
-            pii_dataset.set_uin(tk_uin)
+
+        # if tk_auth == 'oidc':
+        #     pii_dataset.set_uin(tk_uid)
+        # elif tk_auth == 'firebase':
+        #     pii_dataset.set_phone(tk_phone)
+
+        pii_dataset.set_uid(tk_uid)
+
         pii_dataset = mongoutils.insert_pii_dataset_to_mongodb(pii_dataset)
 
         if pii_dataset is None:
@@ -553,15 +509,12 @@ def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     return pii_dataset
 
 
-def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
+def check_auth(self, dataset, tk_uid):
     auth_pass = False
+
     if dataset:
-        if tk_is_uin:
-            if dataset.get_uin() == tk_uin:
-                auth_pass = True
-        if tk_is_phone:
-            if dataset.get_phone() == tk_phone:
-                auth_pass = True
+        if dataset.get_uid() == tk_uid:
+            auth_pass = True
 
     return auth_pass
 
@@ -572,7 +525,7 @@ def get_data_list_pid(pid):
     if pid != None:
         is_objectid = mongoutils.check_if_objectid(pid)
 
-        # query using either non-pii ObjectId or uuid
+        # query using either pii ObjectId or pid
         if (is_objectid):
             id = ObjectId(pid)
             db_data = mongoutils.query_pii_dataset_by_objectid(id)
@@ -621,19 +574,12 @@ def get_data_list_pid(pid):
 
 
 def check_id(id_token, data_list):
-    id_type, id_string = tokenutils.get_id_info_from_token(id_token)
+    id_string = tokenutils.get_id_info_from_token(id_token)
     auth_pass = False
 
-    if id_type == 1:  # Shibboleth ID Token
-        # get id info from data_list
-        id_from_db = data_list['uin']
-        if id_from_db == id_string:
-            auth_pass = True
-    elif id_type == 2:  # Phone ID Token
-        # get phone number from data_list
-        id_from_db = data_list['phone']
-        if id_from_db == id_string:
-            auth_pass = True
+    id_from_db = data_list['uid']
+    if id_from_db == id_string:
+        auth_pass = True
 
     return auth_pass
 
@@ -668,7 +614,7 @@ def pii_get(pid=None):
 def pii_put(pid=None):
     # Get ID Token data from global context variable.
     auth_resp = g.user_token_data
-    tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone = tokenutils.get_data_from_token(
+    tk_uid, tk_name, tk_email, tk_phone, tk_auth = tokenutils.get_data_from_token(
         auth_resp)
 
     try:
@@ -775,11 +721,12 @@ def pii_put(pid=None):
     #     pii_dataset.set_lastname(tk_lastname)
     # if tk_email is not None:
     #     pii_dataset.set_email(tk_email)
-    if tk_phone is not None:
-        pii_dataset.set_phone(tk_phone)
-    if tk_uin is not None:
-        pii_dataset.set_uin(tk_uin)
 
+    # if tk_auth == 'oidc':
+    #     pii_dataset.set_uin(tk_uid)
+    # elif tk_auth == 'firebase':
+    #     pii_dataset.set_phone(tk_phone)
+    pii_dataset.set_uid(tk_uid)
     result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(cfg.FIELD_PID, pid,
                                                                           pii_dataset)
 

@@ -14,30 +14,7 @@
 
 def get_id_info_from_token(in_token):
     # in_token = convert_str_to_dict(in_token)
-    id_type = 0 # 0 for no pii, 1 for uin id, 2 phone id
-    id_string = ""
-
-
-    # check if the pii token is from campus or from outside the campus
-    # if there is uin, it is from campus
-    if 'uiucedu_uin' in in_token:
-        id_string = in_token['uiucedu_uin']
-        id_type = 1
-
-    # TODO following lines are modified to use email instead of uin in id checking
-    #  for GET, POST, and DELETE
-    # # if there is email, it is from campus
-    # if 'email' in in_token:
-    #     id_string = in_token['email']
-    #     id_type = 1
-
-    # if there is phone number, it is from outside the campus
-    if 'phoneNumber' in in_token:
-        id_string = in_token['phoneNumber']
-        id_type = 2
-
-    return id_type, id_string
-
+    return in_token['uid']
 
 def convert_str_to_dict(in_token):
     while True:
@@ -50,12 +27,10 @@ def convert_str_to_dict(in_token):
             return converted_dict
 
 def get_data_from_token(in_token):
-    tk_uin = in_token.get('uiucedu_uin')
-    tk_is_uin = tk_uin is not None
-    tk_firstname = in_token.get('given_name')
-    tk_lastname = in_token.get('family_name')
+    tk_uid = in_token.get('uid')
+    tk_name = in_token.get('name')
     tk_email = in_token.get('email')
-    tk_phone = in_token.get('phoneNumber')
-    tk_is_phone = tk_phone is not None
+    tk_phone = in_token.get('phone')
+    tk_auth = in_token.get('auth')
 
-    return tk_uin, tk_firstname, tk_lastname, tk_email, tk_phone, tk_is_uin, tk_is_phone
+    return tk_uid, tk_name, tk_email, tk_phone, tk_auth
