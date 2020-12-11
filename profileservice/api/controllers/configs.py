@@ -29,6 +29,7 @@ API_LOC = os.getenv('API_LOC', '../')
 PROFILE_URL_PREFIX = os.getenv('PROFILE_URL_PREFIX', '')
 SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
 ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
+AUTH_ISSUER = os.getenv('AUTH_ISSUER', '')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 PROFILE_DB_NAME = 'profiledb'
