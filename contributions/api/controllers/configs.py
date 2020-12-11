@@ -28,7 +28,7 @@ CONTRIBUTION_URL_PREFIX = os.getenv('CONTRIBUTION_URL_PREFIX', '')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 
-CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributions_db')
+CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributiondb')
 CONTRIBUTION_COLL_NAME = os.getenv('CONTRIBUTION_COLL_NAME', 'contributions')
 CAPABILITY_COLL_NAME = os.getenv('CAPABILITY_COLL_NAME', 'capabilities')
 
