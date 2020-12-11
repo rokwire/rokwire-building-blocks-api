@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A pull request template. [#573](https://github.com/rokwire/rokwire-building-blocks-api/issues/573)
 - Add Contributions Catalog Frontend. [#462](https://github.com/rokwire/rokwire-building-blocks-api/issues/462)
 - Add Github authentication for Contributions Catalog. [#580](https://github.com/rokwire/rokwire-building-blocks-api/issues/580)
+- Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
 
 ## Changed
 - Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
