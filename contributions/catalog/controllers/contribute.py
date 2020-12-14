@@ -10,7 +10,7 @@ from flask import (
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
 
-bp = Blueprint('contribute', __name__, url_prefix='/contribute')
+bp = Blueprint('contribute', __name__, url_prefix='/contributions')
 
 
 @bp.route('/', methods=['GET', 'POST'])
