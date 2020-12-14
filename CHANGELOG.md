@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
 - Apply query parameters to subevent search. [#581](https://github.com/rokwire/rokwire-building-blocks-api/issues/581)
 - Support multiple groups when doing authorization. [#447](https://github.com/rokwire/rokwire-building-blocks-api/issues/447)
+- Support events building block group authorization. [#596](https://github.com/rokwire/rokwire-building-blocks-api/issues/596)
 
 ## [1.8.0] - 2020-10-01
 ### Added
