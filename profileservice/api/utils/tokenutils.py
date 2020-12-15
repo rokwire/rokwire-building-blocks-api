@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import controllers.config as cfg
+import controllers.configs as cfg
 
 
 def get_id_info_from_token(in_token):
@@ -50,7 +50,8 @@ def get_data_from_token(in_token):
     # OIDC Auth or Shibboleth
     else:
         tk_uid = in_token.get('uiucedu_uin')
-        tk_name = in_token.get('given_name') + in_token.get('family_name')
+        tk_name = in_token.get('given_name', '') + ' ' + \
+            in_token.get('family_name', '')
         tk_email = in_token.get('email')
         tk_auth = "oidc"
 

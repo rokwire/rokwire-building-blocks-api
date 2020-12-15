@@ -97,7 +97,6 @@ def authenticate(group_name=None, internal_token_only=False):
         raise OAuthProblem('Invalid request header')
     _id_token = ah_split[1]
     id_info = verify_userauth(_id_token, group_name, internal_token_only)
-
     return id_info
 
 
@@ -111,7 +110,8 @@ def authorize(group_name=None):
         id_info = g.user_token_data
 
         if group_name is not None:
-            AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
+            AUTH_ISSUER = os.getenv(
+                'AUTH_ISSUER', '').strip()
             # So we are to check is a group membership is required.
             # Get the membership check keys based on issuer
             if id_info['iss'] == AUTH_ISSUER:
@@ -145,7 +145,9 @@ def verify_secret(request):
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
-    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    # keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    keys = os.getenv('ROKWIRE_API_KEY').strip()
+
     for test_key in keys:
         if key == test_key.strip():  # just in case there are embedded blanks
             return True
@@ -161,12 +163,21 @@ def verify_apikey(key, required_scopes=None):
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
-    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
-    for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
-            return {'token_valid': True}
-    else:
+    # keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    api_key = os.getenv('ROKWIRE_API_KEY',
+                        '')
+    # for test_key in keys:
+    #     if key == test_key.strip():  # just in case there are embedded blanks
+    #         return {'token_valid': True}
+    # else:
+    #     raise OAuthProblem('Invalid API Key')
+    if api_key is None:
+        logger.warning("No API Key found for clientID")
+        raise OAuthProblem('No API Key Found')
+    elif api_key != key:
         raise OAuthProblem('Invalid API Key')
+    else:
+        return {'token_valid': True}
 
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
@@ -233,9 +244,10 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         target_client_ids = None
         checkAud = True
 
-        AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', '').strip()
-        AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
-        SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
+        AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', 'auth","keys":"{\"keys\":[{\n  \"kty\": \"RSA\",\n  \"e\": \"AQAB\",\n  \"kid\": \"NuEGSp79pZRpYawrMEMT_UmP4R09iu5o7oJvTuLSxXs\",\n  \"n\": \"15Y2rOY08tkCN4ro5uRs8ms_wLIva6WIbql66PvdRmduZsqPQoevfD7LzWmkqPMMDzy8q8TR8VcEkSVF2pmpmkwfIkgFrdAM6P1hVRWlPyGqA1Rjtf5wHDuy762IdWPZ7MNFkr3G-dIuPJDTfhEzsYK6HVi0oHb6kqxWvHlFtcQEw2-ghItp9w_w6UpdoLS9XE0_SgR0CFHnchRZ1KGPNAst1aN7qCkp1NB_oKXmvsU3_6Bbh7MZ429rlOAbFDZBYvVEhAT3xw-I0ydlC5oe8N4L0u4hokBUOEfPegPqFG66ADCLMemrZmhRQK7mn4sKtN9KEMHlZX0woCwkF0-g3w\"\n}]}","issuer":"https://dev.auth.rokmetro.com"').strip()
+        AUTH_ISSUER = os.getenv(
+            'AUTH_ISSUER', '').strip()
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
         if issuer == ROKWIRE_ISSUER:
@@ -266,14 +278,15 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                     "bad status getting keyset. status code = %s" % keyset_resp.status_code)
                 raise OAuthProblem('Invalid token')
             keyset = keyset_resp.json()
-
             target_client_ids = re.split(
-                ',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
+                ',', (os.getenv('SHIBBOLETH_CLIENT_ID', '')).replace(" ", ""))
 
         elif issuer == AUTH_ISSUER:
             valid_issuer = True
             checkAud = False
             keyset = AUTH_PUBKEYS
+            keyset = json.loads(keyset)
+            print("AUTH_PUBKEYS:", keyset)
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
@@ -304,7 +317,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
-
     return id_info
 
 
