@@ -204,6 +204,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -276,6 +277,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -326,6 +328,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -360,6 +363,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -503,6 +507,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -586,6 +591,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
@@ -643,6 +649,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers
+          urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
         - UserAuth: []
