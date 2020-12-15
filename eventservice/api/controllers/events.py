@@ -356,7 +356,7 @@ def _get_imagefiles_result(query):
 
 
 def images_post(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     tmpfile = None
     try:
@@ -404,7 +404,7 @@ def images_get(event_id, image_id):
 
 
 def images_put(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     tmpfile = None
     try:
@@ -436,7 +436,7 @@ def images_put(event_id, image_id):
 
 
 def images_delete(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:
