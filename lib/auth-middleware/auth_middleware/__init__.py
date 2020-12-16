@@ -244,9 +244,10 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         target_client_ids = None
         checkAud = True
 
-        AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', 'auth","keys":"{\"keys\":[{\n  \"kty\": \"RSA\",\n  \"e\": \"AQAB\",\n  \"kid\": \"NuEGSp79pZRpYawrMEMT_UmP4R09iu5o7oJvTuLSxXs\",\n  \"n\": \"15Y2rOY08tkCN4ro5uRs8ms_wLIva6WIbql66PvdRmduZsqPQoevfD7LzWmkqPMMDzy8q8TR8VcEkSVF2pmpmkwfIkgFrdAM6P1hVRWlPyGqA1Rjtf5wHDuy762IdWPZ7MNFkr3G-dIuPJDTfhEzsYK6HVi0oHb6kqxWvHlFtcQEw2-ghItp9w_w6UpdoLS9XE0_SgR0CFHnchRZ1KGPNAst1aN7qCkp1NB_oKXmvsU3_6Bbh7MZ429rlOAbFDZBYvVEhAT3xw-I0ydlC5oe8N4L0u4hokBUOEfPegPqFG66ADCLMemrZmhRQK7mn4sKtN9KEMHlZX0woCwkF0-g3w\"\n}]}","issuer":"https://dev.auth.rokmetro.com"').strip()
+        AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', '').strip()
         AUTH_ISSUER = os.getenv(
             'AUTH_ISSUER', '').strip()
+        print("AUTH ISSUER: ", AUTH_ISSUER)
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
@@ -284,9 +285,10 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         elif issuer == AUTH_ISSUER:
             valid_issuer = True
             checkAud = False
+            # keyset = base64.b64decode(AUTH_PUBKEYS)
+            # print("AUTH_PUBKEYS after:", keyset)
             keyset = AUTH_PUBKEYS
             keyset = json.loads(keyset)
-            print("AUTH_PUBKEYS:", keyset)
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
