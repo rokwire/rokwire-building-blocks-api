@@ -36,10 +36,11 @@ rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-serv
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
 rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
 rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
+rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
 rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
 
 ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
-                              rokwire_events_approvers]
+                              rokwire_events_approvers, rokwire_group_admins]
 ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
 # This is the is member of claim name from the
 uiucedu_is_member_of = "uiucedu_is_member_of"
