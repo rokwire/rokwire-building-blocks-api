@@ -149,7 +149,6 @@ def verify_secret(request):
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
-    # keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
 
     for test_key in keys:
@@ -167,22 +166,12 @@ def verify_apikey(key, required_scopes=None):
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
-    # keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
-    api_key = os.getenv('ROKWIRE_API_KEY',
-                        '')
-    # for test_key in keys:
-    #     if key == test_key.strip():  # just in case there are embedded blanks
-    #         return {'token_valid': True}
-    # else:
-    #     raise OAuthProblem('Invalid API Key')
-    if api_key is None:
-        logger.warning("No API Key found for clientID")
-        raise OAuthProblem('No API Key Found')
-    elif api_key != key:
-        raise OAuthProblem('Invalid API Key')
+    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
+    for test_key in keys:
+        if key == test_key.strip():  # just in case there are embedded blanks
+            return {'token_valid': True}
     else:
-        return {'token_valid': True}
-
+        raise OAuthProblem('Invalid API Key')
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
     id_info = None
