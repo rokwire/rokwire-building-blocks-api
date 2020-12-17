@@ -46,6 +46,9 @@ rokwire_events_uploader = 'events_uploader'
 rokwire_events_web_app = 'events_web_app'
 rokwire_app_config_manager_group = 'app_config_manager'
 
+ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
+                              rokwire_events_approvers, rokwire_group_admins]
+ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
 # This is the is member of claim name from the
 is_member_of_claim = "groups"
 uiucedu_is_member_of = "uiucedu_is_member_of"
@@ -131,10 +134,11 @@ def authorize(group_name=None):
                                " field is not present in the ID Token")
                 raise OAuthProblem('Invalid token')
 
-
 # Checks that the request has the right secret for this. This call is used initially and assumes that
 # the header contains the x-api-key. This (trivially) returns true of the verification worked and
 # otherwise will return various other exit codes.
+
+
 def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:

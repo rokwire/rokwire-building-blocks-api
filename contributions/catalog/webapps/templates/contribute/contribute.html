@@ -22,8 +22,8 @@
 <body>
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('contribute.home') }}">Contribution Catalog</a>
-        <a href="{{ url_for('contribute.create') }}">Submit</a>
+        <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
+        <a href="{{ url_for('contribute.create') }}">Contribute</a>
         <div style="float: right; margin-right: 25px;">
             <a >Hello, {{ user }}!</a>
         </div>
@@ -31,23 +31,23 @@
     <div>
         <nav>
             <ol class="cd-multi-steps text-top">
-                <li class="current"><a href="#contribute">Contribution information</a></li>
-                <li><em><a href="#capability">Submit capability or talent </a></em></li>
-                <li><em><a href="#contact">Contact & self certification</a></em></li>
-                <li><em>Finish</em></li>
+                <li class="current"><a href="#contribute">Contribution Details</a></li>
+                <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                <li><em><a href="#contact">Contact & Self-certification</a></em></li>
+                <li><em>Submit</em></li>
             </ol>
         </nav>
     </div>
 
     <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
         <div class="container">
-            <h2 id="contribute">Submit a contribution</h2>
+            <h2 id="contribute">Contribution Details</h2>
 
             <div class="form-group">
                 <label class="required control-label col-sm-2">Contribution Name</label>
                 <div id="contribution_name_div" class="col-sm-10">
                     <input class="form-control" id="contribution_name" name="contribution_name"
-                           placeholder="give a name of your contribution" type="text">
+                           placeholder="Give a name for your contribution" type="text">
                     <p class="error_message"> </p>
                 </div>
             </div>
@@ -56,22 +56,22 @@
                 <div class="col-sm-10">
                     <input class="form-control" id="contribution_description"
                            name="contribution_shortDescription"
-                           placeholder="give a short description"
+                           placeholder="Give a short description"
                            type="text"></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Long Description</label>
                 <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_longDescription"
-                                                 placeholder="give a detailed description"
+                                                 placeholder="Give a detailed description"
                                                  style="height:150px"></textarea></div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Contributor</label>
+                <label class="control-label col-sm-2">Contributor Details</label>
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio" onclick="show_org()"checked> Organization</label>-->
                 <div>
-                    <button class="button button1" id="add-contributor-person">Add Contributor as Person</button>
-                    <button class="button button2" id="add-contributor-org">Add Contributor as Organization</button>
+                    <button class="button button1" id="add-contributor-person">Add Person</button>
+                    <button class="button button2" id="add-contributor-org">Add Organization</button>
                 </div>
                 <!--                <div>-->
                 <!--                    <button class="button button2" id="add-contributor-org">Add Contributor as Organization</button>-->
@@ -162,18 +162,20 @@
                 <div>
                     <nav>
                         <ol class="cd-multi-steps text-top">
-                            <li class="visited"><em><a href="#contribute">Contribution information</a></em></li>
-                            <li class="current"><em><a href="#capability">Submit capability or talent </a></em></li>
-                            <li><em><a href="#contact">Contact & self certification</a></em></li>
-                            <li><em>Finish</em></li>
+                            <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
+                            <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                            <li><em><a href="#contact">Contact & Self-certification</a></em></li>
+                            <li><em>Submit</em></li>
                         </ol>
                     </nav>
+
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
+                    <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type *</label>
                     <div>
                         <button class="button button2" id="add-capability">Add a Capability</button>
+                        OR
                         <button class="button button1" id="add-talent">Add a Talent</button>
                     </div>
                 </div>
@@ -182,20 +184,20 @@
                 <form class="form-horizontal" method="POST">
                     <div id="capability-div" style="display: none; background-color:white">
                         <hr class="dotted">
-                        <h3 id="capability">Add a capability for this contribution</h3>
+                        <h3 id="capability">Add a Capability to this Contribution</h3>
 
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Capability Name</label>
                             <div class="col-sm-10"><input class="form-control" id="capability_name"
                                                           name="capability_name"
-                                                          placeholder="give a name of your capability"
+                                                          placeholder="Give a name for your capability"
                                                           type="text"></div>
                         </div>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Capability Description</label>
                             <div class="col-sm-10"><input class="form-control" id="capability_description"
                                                           name="capability_description"
-                                                          placeholder="give a short description"
+                                                          placeholder="Give a short description"
                                                           type="text"></div>
                         </div>
 
@@ -351,11 +353,11 @@
                     <!--------------------------------------------talent block ------------------------------------------>
                     <div class="container" id="talent-div" style="display: none">
                         <hr class="dotted">
-                        <h3>Add a Talent for this contribution</h3>
+                        <h3>Add a Talent to this Contribution</h3>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Talent Name</label>
                             <div class="col-sm-10"><input class="form-control" id="talent_name" name="talent_name"
-                                                          placeholder="give a name of your Talent" type="text">
+                                                          placeholder="Give a name for your talent" type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -428,17 +430,18 @@
                     <div>
                         <nav>
                             <ol class="cd-multi-steps text-top">
-                                <li class="visited"><a href="#contribute">Contribution information</a></li>
-                                <li class="visited"><em><a href="#capability">Submit capability or talent </a></em>
+                                <li class="visited"><a href="#contribute">Contribution Details</a></li>
+                                <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
                                 </li>
-                                <li class="current"><em><a href="#contact">Contact & self certification</a></em></li>
-                                <li><em>Finish</em></li>
+                                <li class="current"><em><a href="#contact">Contact & Self-certification</a></em></li>
+                                <li><em>Submit</em></li>
                             </ol>
                         </nav>
+
                     </div>
 
                     <div class="container">
-                        <h3 id="contact">Contact</h3>
+                        <h3 id="contact">Contact Details</h3>
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Name</label>
@@ -472,7 +475,7 @@
 
                     <div class="container">
                         <!--        <form class="form-horizontal" method = "POST">-->
-                        <h3>Self Certification</h3>
+                        <h3>Self-certification</h3>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Deleting data upon request</label>
                             <div class="col-sm-10"><input class="form-control"

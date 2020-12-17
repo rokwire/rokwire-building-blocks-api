@@ -32,6 +32,17 @@ app.before_request(auth_middleware.authenticate)
 def hello_world():
     return "Hello world!"
 
+@app.route('/authorize')
+def authorize():
+    id_info = auth_middleware.authenticate()
+    group_list = None
+    try:
+        group_list = id_info["uiucedu_is_member_of"]
+    except Exception:
+        raise Exception('Token did not contain the group info')
+    auth_middleware.authorize(group_list)
+    auth_middleware.authorize(auth_middleware.rokwire_app_config_manager_group)
+    return "authorized"
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
