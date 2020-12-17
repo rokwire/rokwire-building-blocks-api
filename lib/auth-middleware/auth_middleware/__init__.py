@@ -150,7 +150,7 @@ def verify_secret(request):
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
     # keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
-    keys = os.getenv('ROKWIRE_API_KEY').strip()
+    keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
 
     for test_key in keys:
         if key == test_key.strip():  # just in case there are embedded blanks
