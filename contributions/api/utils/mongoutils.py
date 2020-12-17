@@ -85,9 +85,10 @@ def list_capabilities(db_collection):
 
 def get_result(db_collection, query):
     if not query:
-        return None
+        db_data = db_collection.find({}, {'_id': 0})
+    else:
+        db_data = db_collection.find(query, {'_id': 0})
 
-    db_data = db_collection.find(query, {'_id': 0})
     data_list = list(db_data)
 
     if len(data_list) > 0:
