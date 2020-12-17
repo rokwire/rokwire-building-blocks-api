@@ -32,23 +32,33 @@ logger = logging.getLogger(__name__)
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
-# rokwire_event_manager_group = 'urn:mace:' + org + \
-#     ':authman:app-rokwire-service-policy-rokwire events manager'
-# rokwire_events_uploader = 'urn:mace:' + org + \
-#     ':authman:app-rokwire-service-policy-rokwire ems events uploader'
-# rokwire_events_web_app = 'urn:mace:' + org + \
-#     ':authman:app-rokwire-service-policy-rokwire events web app'
-# rokwire_app_config_manager_group = 'urn:mace:' + org + \
-#     ':authman:app-rokwire-service-policy-rokwire app config manager'
+shib_rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
+shib_rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
+shib_rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+shib_rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
+shib_rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
+shib_rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
 
 rokwire_event_manager_group = 'events_manager'
 rokwire_events_uploader = 'events_uploader'
 rokwire_events_web_app = 'events_web_app'
+rokwire_events_approvers = 'event_approvers'
+rokwire_group_admins = 'groups_access'
 rokwire_app_config_manager_group = 'app_config_manager'
 
 ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
                               rokwire_events_approvers, rokwire_group_admins]
 ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
+
+ROKWIRE_GROUPS_MAP = {
+    rokwire_event_manager_group: shib_rokwire_event_manager_group,
+    rokwire_events_uploader: shib_rokwire_events_uploader,
+    rokwire_events_web_app: shib_rokwire_events_web_app,
+    rokwire_events_approvers: shib_rokwire_events_approvers,
+    rokwire_group_admins: shib_rokwire_group_admins,
+    rokwire_app_config_manager_group: shib_rokwire_app_config_manager_group
+}
+
 # This is the is member of claim name from the
 is_member_of_claim = "groups"
 uiucedu_is_member_of = "uiucedu_is_member_of"
@@ -113,8 +123,7 @@ def authorize(group_name=None):
         id_info = g.user_token_data
 
         if group_name is not None:
-            AUTH_ISSUER = os.getenv(
-                'AUTH_ISSUER', '').strip()
+            AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
             # So we are to check is a group membership is required.
             # Get the membership check keys based on issuer
             if id_info['iss'] == AUTH_ISSUER:
@@ -122,16 +131,24 @@ def authorize(group_name=None):
             else:
                 is_member_of_key = uiucedu_is_member_of
 
+            # check if the group_name is list or string
+            if isinstance(group_name, str):
+                # make group name as list
+                group_name = [group_name]
+
+            is_authorize = False
             if is_member_of_key in id_info:
                 is_member_of = id_info[is_member_of_key]
-                print("groups: " + str(is_member_of))
-                if is_member_of_key == is_member_of_claim and group_name not in is_member_of:
-                    logger.warning(
-                        "user is not a member of the group " + group_name)
-                    raise OAuthProblem('Invalid token')
-            else:
-                logger.warning(is_member_of_key +
-                               " field is not present in the ID Token")
+                for name in group_name:
+                    if id_info['iss'] != AUTH_ISSUER:
+                        name = ROKWIRE_GROUPS_MAP[name]
+
+                    if name in is_member_of:
+                        is_authorize = True
+                        break
+
+            if is_authorize is False:
+                logger.warning("User not authorized.")
                 raise OAuthProblem('Invalid token')
 
 # Checks that the request has the right secret for this. This call is used initially and assumes that
