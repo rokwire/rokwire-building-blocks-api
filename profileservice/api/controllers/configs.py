@@ -33,8 +33,8 @@ DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
 
 PROFILE_DB_NAME = os.getenv('PROFILE_DB_NAME', 'profiledb')
 PII_DB_NAME = os.getenv('PROFILE_DB_NAME', 'piidb')
-PROFILE_DB_PROFILE_COLL_NAME = 'non_pii'
-PII_DB_PII_COLL_NAME = 'pii'
+PROFILE_DB_PROFILE_COLL_NAME = 'NonPiiDataset'
+PII_DB_PII_COLL_NAME = 'PiiDataset'
 FIELD_OBJECTID = '_id'
 FIELD_PROFILE_UUID = 'uuid'
 FIELD_PID = 'pid'

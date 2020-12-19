@@ -255,9 +255,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         checkAud = True
 
         AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', '').strip()
-        AUTH_ISSUER = os.getenv(
-            'AUTH_ISSUER', '').strip()
-        print("AUTH ISSUER: ", AUTH_ISSUER)
+        AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
@@ -296,7 +294,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             valid_issuer = True
             checkAud = False
             # keyset = base64.b64decode(AUTH_PUBKEYS)
-            # print("AUTH_PUBKEYS after:", keyset)
             keyset = AUTH_PUBKEYS
             keyset = json.loads(keyset)
 
