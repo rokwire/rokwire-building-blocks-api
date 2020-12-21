@@ -256,7 +256,6 @@ def pii_post():
     auth_resp = g.user_token_data
     tk_uid, tk_name, tk_email, tk_phone, tk_auth = tokenutils.get_data_from_token(
         auth_resp)
-    print(tk_uid, tk_name, tk_email, tk_phone, tk_auth)
     # is_new_entry = False
     # Todo following variable should be revived if the email or phone number can get updated
     # auth_pass = False
