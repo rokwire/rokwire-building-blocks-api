@@ -14,7 +14,7 @@
 
 import connexion
 import logging
-import controllers.configs as cfg
+import controllers.config as cfg
 
 from time import gmtime
 from rokwireresolver import RokwireResolver
