@@ -19,7 +19,7 @@ import sys
 from connexion.exceptions import OAuthProblem
 from flask import request
 
-import controllers.configs as cfg
+import controllers.config as cfg
 import utils.rest_handlers as rs_handlers
 
 
