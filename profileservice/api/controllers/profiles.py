@@ -313,7 +313,14 @@ def pii_post():
         return rs_handlers.bad_request(msg_json)
 
     try:
-        dataset = mongoutils.get_pii_dataset_from_field('uid', tk_uid)
+        dataset = mongoutils.get_pii_dataset_from_field("uid", tk_uid)
+        if dataset is None:
+            if tk_auth == "oidc":
+                dataset = mongoutils.get_pii_dataset_from_field("uin", tk_uid)
+            elif tk_auth == "rokwire_phone":
+                dataset = mongoutils.get_pii_dataset_from_field("phone", tk_phone)
+            dataset.set_uid(tk_uid)
+
         # if there is a dataset, it means that the email is existing in the database
         if dataset is not None:
             # ToDo Following lines will be commented out due to the following assumption
@@ -347,12 +354,12 @@ def pii_post():
             result, pii_dataset = mongoutils.update_pii_dataset_in_mongo_by_field(
                 cfg.FIELD_PID, pid, dataset)
             msg = {
-                "reason": "pid already exists: " + str(pid),
-                "warning": "pid already exists: " + request.url,
+                "reason": "Account already exists: " + str(pid),
+                "warning": "Account already exists: " + request.url,
             }
             msg_json = jsonutils.create_log_json("PII", "POST", msg)
             logging.warning("PII POST " + json.dumps(msg_json))
-            return rs_handlers.return_id('pid already exists.', 'pid', pid)
+            return rs_handlers.return_id('Account already exists.', 'pid', pid)
     except:
         return rs_handlers.internal_server_error()
 
@@ -525,16 +532,6 @@ def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     return pii_dataset
 
 
-def check_auth(self, dataset, tk_uid):
-    auth_pass = False
-
-    if dataset:
-        if dataset.get_uid() == tk_uid:
-            auth_pass = True
-
-    return auth_pass
-
-
 def get_data_list_pid(pid):
     is_error = False
     resp = None
@@ -597,6 +594,17 @@ def check_id(id_token, data_list):
     id_from_db = data_list['uid']
     if id_from_db == id_string:
         auth_pass = True
+    else:
+        if 'uin' in data_list:  # Shibboleth ID Token
+            # get id info from data_list
+            id_from_db = data_list['uin']
+            if id_from_db == id_string:
+                auth_pass = True
+        elif 'phone' in data_list:  # Phone ID Token
+            # get phone number from data_list
+            id_from_db = data_list['phone']
+            if id_from_db == id_string:
+                auth_pass = True
 
     return auth_pass
 

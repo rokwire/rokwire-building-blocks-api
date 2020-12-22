@@ -16,7 +16,21 @@ import controllers.configs as cfg
 
 def get_id_info_from_token(in_token):
     # in_token = convert_str_to_dict(in_token)
-    return in_token['uid']
+    tk_id = None
+    issuer = in_token.get("iss")
+    phoneNumber = in_token.get('phoneNumber')
+    if issuer == cfg.AUTH_ISSUER:
+        tk_id = in_token.get('uid')
+
+    # Will be later replaced by issuer for rokwire phone auth
+    elif phoneNumber is not None:
+        tk_id = phoneNumber
+
+    # OIDC Auth or Shibboleth
+    else:
+        tk_id = in_token.get('uiucedu_uin')
+
+    return tk_id
 
 
 def convert_str_to_dict(in_token):
