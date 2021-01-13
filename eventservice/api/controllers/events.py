@@ -47,7 +47,7 @@ def search():
         query = query_params.format_query(args, query)
     except Exception as ex:
         __logger.exception(ex)
-        abort(500)
+        abort(400)
     try:
         result, result_len = _get_events_result(
             query,
@@ -97,8 +97,22 @@ def _get_events_result(query, limit, skip):
             subevents_ids = list()
             for subevent in event.get('subEvents'):
                 subevents_ids.append(ObjectId(subevent.get("id")))
+            # apply query to subevents
+            params = query.get('$and')
+            removed_params = list()
+            for param in params:
+                if param.get('_id'):
+                    # remvoe super id query param
+                    removed_params.append(param)
+                elif param.get('isSuperEvent'):
+                    # remove isSuperEvent query param
+                    removed_params.append(param)
+            for removed in removed_params:
+                params.remove(removed)
+            params.append({'_id': {'$in': subevents_ids}})
+
             subevents_cursor = db['events'].find(
-                {'_id': {'$in': subevents_ids}},
+                query,
                 {'coordinates': 0, 'categorymainsub': 0}
             ).sort([
                 ('startDate', pymongo.ASCENDING),
@@ -199,7 +213,7 @@ def _get_event_result(query):
 
 
 def post():
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
     req_data = request.get_json(force=True)
 
     if not query_params.required_check(req_data):
@@ -224,7 +238,7 @@ def post():
 
 
 def put(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -251,7 +265,7 @@ def put(event_id):
 
 
 def patch(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -294,7 +308,7 @@ def patch(event_id):
 
 
 def delete(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -342,7 +356,7 @@ def _get_imagefiles_result(query):
 
 
 def images_post(event_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     tmpfile = None
     try:
@@ -390,7 +404,7 @@ def images_get(event_id, image_id):
 
 
 def images_put(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     tmpfile = None
     try:
@@ -422,7 +436,7 @@ def images_put(event_id, image_id):
 
 
 def images_delete(event_id, image_id):
-    auth_middleware.authorize(auth_middleware.rokwire_event_manager_group)
+    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:

@@ -1,0 +1,255 @@
+/* Add a black background color to the top navigation */
+.topnav {
+    overflow: hidden;
+    background-color: #2a4b45;
+    width: 100%;
+    order: 1;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: #4c4c4c;
+}
+
+/* Add an active class to highlight the current page */
+.topnav a.active {
+    background-color: #88aeaf;
+    color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+    display: none;
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+    color: #090000;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+
+input[type=submit] {
+    background-color: #84af9d;
+    color: #090000;
+    padding: 15px 25px;
+    text-align: center;
+    margin: 5px 5px;
+    transition-duration: 0.2s;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+    /*color: white;*/
+}
+
+/*input:hover {*/
+/*     color: white;*/
+/*}*/
+
+.container {
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.key-val {
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+    margin: 5px 5px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    float: none;
+}
+
+.button1 {
+    background-color: white;
+    color: black;
+    border: 1px solid #4CAF50;
+    display: inline-block;
+}
+
+.button1:hover {
+    background-color: #4CAF50;
+    color: white;
+    display: inline-block;
+}
+
+.button2 {
+    background-color: white;
+    color: black;
+    border: 1px solid #008CBA;
+    display: inline-block;
+}
+
+.button2:hover {
+    background-color: #008CBA;
+    color: white;
+    display: inline-block;
+}
+
+.button3 {
+    background-color: white;
+    color: black;
+    border: 1px solid #f44336;
+    display: inline-block;
+}
+
+.button3:hover {
+    background-color: #f44336;
+    color: white;
+    display: inline-block;
+}
+
+.button4 {
+    background-color: white;
+    color: black;
+    border: 1px solid #e7e7e7;
+    display: inline-block;
+}
+
+.button4:hover {
+    background-color: #e7e7e7;
+}
+
+.button5 {
+    background-color: white;
+    color: black;
+    border: 1px solid #555555;
+    display: inline-block;
+}
+
+.button5:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.required:after {
+  content:" *";
+  color: red;
+}
+
+input:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:focus {
+  box-shadow: 0 0 5px 1px red;
+  /*background-color: #e2dc8d;*/
+}
+/* Dotted border */
+hr.dotted {
+  border-top: 5px dotted #919590;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
