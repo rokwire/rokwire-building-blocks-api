@@ -2,14 +2,13 @@ import logging
 import os
 from time import gmtime
 
+from dotenv import dotenv_values
 from flask import Flask, redirect, url_for, render_template, request, session
+from flask_cors import CORS
 from requests_oauthlib import OAuth2Session
 
-from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-from flask_cors import CORS, cross_origin
-from dotenv import dotenv_values,load_dotenv
 
 debug = os.getenv("DEBUG", "True")
 
@@ -34,19 +33,20 @@ template_dir = os.path.join(os.path.abspath('webapps'), 'templates')
 static_dir = os.path.join(os.path.abspath('webapps'), 'static')
 app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, static_folder=static_dir,
             template_folder=template_dir)
-app.config.from_object(cfg)
 
 init_app(app)
-CORS(app,  resources={r"/localhost:5050/*": {"origins": "*"}}, supports_credentials=True)
+CORS(app, resources={r"/localhost:5050/*": {"origins": "*"}}, supports_credentials=True)
 app.register_blueprint(contribute_bp)
 
-
+# read configs variable from .env file
 config = dotenv_values(".env")
-print(config)
+app.config.update(config)
+
 client_id = config["CLIENT_ID"]
 client_secret = config["CLIENT_SECRET"]
 authorization_base_url = config["authorization_base_url"]
 token_url = config["token_url"]
+
 
 @app.route("/")
 def index():
@@ -55,9 +55,10 @@ def index():
     print("Step 1: User Authorization")
     github = OAuth2Session(client_id)
     authorization_url, state = github.authorization_url(authorization_base_url)
-
+    print(authorization_url, state)
     # State is used to prevent CSRF.
     session['oauth_state'] = state
+    print(session)
     return redirect(authorization_url)
 
 
