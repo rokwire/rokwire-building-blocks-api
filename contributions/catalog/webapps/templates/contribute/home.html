@@ -308,54 +308,74 @@
 
     <script>
         var all_capability = [];
-        var all_talents = [];
-        var get_talent_url = "http://localhost:5000/contributions/talents";
-        var get_cap_url = "http://localhost:5000/contributions/capabilities";
+        var all_talents = []
+        var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
+        var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
 
-        $(document).ready(function(){
-            var settings = {
-                      'cache': false,
-                      'dataType': "jsonp",
-                      "async": true,
-                      "crossDomain": true,
-                      "url": get_cap_url,
-                      "method": "GET",
-                      "headers": {
-                          "accept": "application/json",
-                          "Access-Control-Allow-Origin":"*"
-                      }
-                  }
+        // $(document).ready(function(){
+        //
+        //     var settings = {
+        //           'cache': false,
+        //           'dataType': "json",
+        //           "async": true,
+        //           "crossDomain": true,
+        //           "url": get_cap_url,
+        //           "method": "GET",
+        //           "headers": {
+        //               "accept": 'application/json; charset=utf-8',
+        //               "Access-Control-Allow-Origin":"*",
+        //           },
+        //       }
+        //
+        //       ajax()
+        //
+        //       // $.ajax(settings).done(function (response) {
+        //       //
+        //       //     console.log(response);
+        //       //     all_capability = response;
+        //       // });
+        //
+        //     function logResults(json){
+        //       console.log(json);
+        //     }
+        //     var settings = {
+        //           'cache': false,
+        //           'dataType': "json",
+        //           "async": true,
+        //           "crossDomain": true,
+        //           "url": get_talent_url,
+        //           "method": "GET",
+        //           "headers": {
+        //               "accept": "application/json",
+        //               "Access-Control-Allow-Origin":"*"
+        //           },
+        //
+        //       }
+        //       $.ajax(settings).done(function (response) {
+        //           console.log(response);
+        //           all_talents = response
+        //       }).fail();
+        //
+        //     append_capability(all_capability);
+        //     append_talent(all_talents);
+        //     filterSelection("all");
+        //     // append_capability(sample_contribution.capabilities);
+        //     // append_talent(sample_contribution.talents);
+        // });
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_capability = response;
-              });
-
-            var settings = {
-                  'cache': false,
-                  'dataType': "jsonp",
-                  "async": true,
-                  "crossDomain": true,
-                  "url": get_talent_url,
-                  "method": "GET",
-                  "headers": {
-                      "accept": "application/json",
-                      "Access-Control-Allow-Origin":"*"
-                  }
-              }
-
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_talents = response
-              });
 
 
-            append_capability(all_capability);
-            append_talent(all_talents);
-            filterSelection("all");
-            // append_capability(sample_contribution.capabilities);
-            // append_talent(sample_contribution.talents);
-        });
+        ajax('GET', get_cap_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+                    console.log("we got some results: ")
+                    console.log(items)
+                    all_capability = items
+                    append_capability(all_capability);
+                },
+                function () {
+                    console.log("error occured");
+                });
 
         function parse_data(data) {
             var cap_list = [];

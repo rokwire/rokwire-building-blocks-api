@@ -8,8 +8,10 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
+from flask_cors import CORS, cross_origin
+from dotenv import dotenv_values,load_dotenv
 
-debug = cfg.DEBUG
+debug = os.getenv("DEBUG", "True")
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
@@ -21,9 +23,10 @@ if debug:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.DEBUG)
 else:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
-if cfg and cfg.URL_PREFIX:
-    prefix = cfg.URL_PREFIX
-    staticpath = prefix + '/static'
+
+URL_PREFIX = os.getenv("URL_PREFIX", "")
+if URL_PREFIX:
+    staticpath = URL_PREFIX + '/static'
 else:
     staticpath = '/static'
 
@@ -34,17 +37,24 @@ app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,
 app.config.from_object(cfg)
 
 init_app(app)
+CORS(app,  resources={r"/localhost:5050/*": {"origins": "*"}}, supports_credentials=True)
 app.register_blueprint(contribute_bp)
 
 
+config = dotenv_values(".env")
+print(config)
+client_id = config["CLIENT_ID"]
+client_secret = config["CLIENT_SECRET"]
+authorization_base_url = config["authorization_base_url"]
+token_url = config["token_url"]
 
 @app.route("/")
 def index():
     """Step 1: Get the user identify for authentication.
     """
-    # print("Step 1: User Authorization")
-    github = OAuth2Session(cfg.client_id)
-    authorization_url, state = github.authorization_url(cfg.authorization_base_url)
+    print("Step 1: User Authorization")
+    github = OAuth2Session(client_id)
+    authorization_url, state = github.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
@@ -58,9 +68,11 @@ def callback():
     """ Step 3: Retrieving an access token.
     """
     # print("Step 3: Retrieving an access token")
-    github = OAuth2Session(cfg.client_id, state=session['oauth_state'])
-    token = github.fetch_token(cfg.token_url, client_secret=cfg.client_secret,
+    github = OAuth2Session(client_id, state=session['oauth_state'])
+    token = github.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.url)
+
+    print(token)
     session['oauth_token'] = token
     return redirect(url_for('.profile'))
 
@@ -70,7 +82,7 @@ def profile():
     Parsing the username to the seesion dict, to the templates to display.
     """
     # print("Fetching a protected resource using an OAuth 2 token")
-    github = OAuth2Session(cfg.client_id, token=session['oauth_token'])
+    github = OAuth2Session(client_id, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
     print(resp.json())
     session["username"] = resp.json()["login"]
