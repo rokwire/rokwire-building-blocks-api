@@ -30,13 +30,65 @@ coll_contribution.create_index([("capabilities.name", ASCENDING)], background=Tr
 coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
 
 """
-get query output json from query using search arguments
+get json of all the contributions list
 """
-def get_result(db_collection, query):
-    if not query:
+def list_contributions(db_collection):
+    db_data = db_collection.find({}, {'_id': False})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
         return None
 
-    db_data = db_collection.find(query, {'_id': 0})
+"""
+get json of all the talent list
+"""
+def list_talents(db_collection):
+    db_data = db_collection.find({}, {'talents':1, '_id':0})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+"""
+get json of all the capabilities list
+"""
+def list_capabilities(db_collection):
+    db_data = db_collection.find({}, {'capabilities':1, '_id':0})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+def get_result(db_collection, query):
+    if not query:
+        db_data = db_collection.find({}, {'_id': 0})
+    else:
+        db_data = db_collection.find(query, {'_id': 0})
+
     data_list = list(db_data)
 
     if len(data_list) > 0:
