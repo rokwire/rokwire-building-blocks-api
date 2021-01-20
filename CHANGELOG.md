@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.9.0] - 2020-12-17
 ### Fixed
-- fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
+- Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
+- Text changes to Contributions Catalog. [#601](https://github.com/rokwire/rokwire-building-blocks-api/issues/601)
+
 ### Added
 - Add capabilities dataset in contribution building block. [#401](https://github.com/rokwire/rokwire-building-blocks-api/issues/401)
 - Add contribution building block. [#406](https://github.com/rokwire/rokwire-building-blocks-api/issues/406)
@@ -17,12 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Contributions Catalog Frontend. [#462](https://github.com/rokwire/rokwire-building-blocks-api/issues/462)
 - Add Github authentication for Contributions Catalog. [#580](https://github.com/rokwire/rokwire-building-blocks-api/issues/580)
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
+- Add Rokwire Group admins AD group to list of authorized event write groups. [#607](https://github.com/rokwire/rokwire-building-blocks-api/issues/607)
 
 ## Changed
 - Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
 - Timestamp format for non pii dataset has been changed. [#566](https://github.com/rokwire/rokwire-building-blocks-api/issues/566)
 - Apply query parameters to subevent search. [#581](https://github.com/rokwire/rokwire-building-blocks-api/issues/581)
 - Support multiple groups when doing authorization. [#447](https://github.com/rokwire/rokwire-building-blocks-api/issues/447)
+- Support events building block group authorization. [#596](https://github.com/rokwire/rokwire-building-blocks-api/issues/596)
 
 ## [1.8.0] - 2020-10-01
 ### Added
@@ -291,7 +297,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...HEAD
+[1.9.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.5.0...1.6.0
