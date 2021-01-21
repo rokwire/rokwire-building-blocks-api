@@ -87,7 +87,7 @@ paths:
       summary: Return existing Capabilities based on search criteria
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
-        - Contribution
+        - Capabilities
       responses:
         200:
           description: Search results
