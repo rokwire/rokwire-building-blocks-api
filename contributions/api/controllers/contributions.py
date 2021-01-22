@@ -122,45 +122,52 @@ def post():
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
-def search():
+def search(name=None):
     args = request.args
     query = dict()
-    # if len(args) > 0:   # it is search
-    try:
-        query = query_params.format_query_contribution(args, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-        logging.error("Contribution SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+    is_list = False
 
-    try:
-        if len(args) > 0 and len(query) == 0:
+    if len(args)  == 0:
+        is_list = True
+
+    if is_list:
+        out_json = mongoutils.get_result(coll_contribution, query)
+    else:
+        try:
+            query = query_params.format_query_contribution(name, query)
+        except Exception as ex:
             msg = {
-                "reason": "The query is wrong or bad argument " + str(args),
+                "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
             logging.error("Contribution SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
-        out_json = mongoutils.get_result(coll_contribution, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-        logging.error("Contribution SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+
+        try:
+            if len(name) > 0 and len(query) == 0:
+                msg = {
+                    "reason": "The query is wrong or bad argument",
+                    "error": "Bad Request: " + request.url,
+                }
+                msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+                logging.error("Contribution SEARCH " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg_json)
+            out_json = mongoutils.get_result(coll_contribution, query)
+        except Exception as ex:
+            msg = {
+                "reason": "The query is wrong or bad argument",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
     if out_json is None:
         out_json = []
 
     msg = {
-        "search": "Contribution search performed with arguments of : " + str(args)
+        "search": "Contribution search performed with : " + str(name)
     }
     msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
     logging.info("Contribution SEARCH " + json.dumps(msg))
@@ -267,7 +274,7 @@ def delete(id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
-def allcapabilitiessearch():
+def allcapabilitiessearch(name=None):
     args = request.args
     query = dict()
     is_list = False
@@ -275,35 +282,38 @@ def allcapabilitiessearch():
     if len(args) == 0:
         is_list = True
 
-    try:
-        query = query_params.format_query_capability(args, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-        logging.error("Capability SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
-
-    try:
-        if len(args) > 0 and len(query) == 0:
+    if is_list:
+        out_json = mongoutils.get_result(coll_contribution, query)
+    else:
+        try:
+            query = query_params.format_query_capability(name, query)
+        except Exception as ex:
             msg = {
-                "reason": "The query is wrong or bad argument " + str(args),
+                "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
             logging.error("Capability SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
-        out_json = mongoutils.get_result(coll_contribution, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-        logging.error("Capability SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+
+        try:
+            if len(name) > 0 and len(query) == 0:
+                msg = {
+                    "reason": "The query is wrong or bad argument",
+                    "error": "Bad Request: " + request.url,
+                }
+                msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+                logging.error("Capability SEARCH " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg_json)
+            out_json = mongoutils.get_result(coll_contribution, query)
+        except Exception as ex:
+            msg = {
+                "reason": "The query is wrong or bad argument",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
     return_json = []
     if out_json is None:
@@ -325,7 +335,7 @@ def allcapabilitiessearch():
                     #  If there are more args this should be updated
                     for tmp_capability_json in capabilities_json:
                         capability_json = None
-                        if tmp_capability_json["name"] == args["name"]:
+                        if tmp_capability_json["name"] == name:
                             capability_json = tmp_capability_json
                             return_json.append(capability_json)
             else:
@@ -334,7 +344,7 @@ def allcapabilitiessearch():
                 #  If there are more args this should be updated
                 for tmp_capability_json in capabilities_json:
                     capability_json = None
-                    if tmp_capability_json["name"] == args["name"]:
+                    if tmp_capability_json["name"] == name:
                         capability_json = tmp_capability_json
                         return_json.append(capability_json)
     if is_list:
@@ -345,7 +355,7 @@ def allcapabilitiessearch():
         logging.info("Capabilities GET " + json.dumps(msg_json))
     else:
         msg = {
-            "search": "Capability search performed with arguments of : " + str(args)
+            "search": "Capability search performed with " + str(name)
         }
         msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
         logging.info("Capability SEARCH " + json.dumps(msg_json))
@@ -382,7 +392,7 @@ def capabilities_search(id):
 
     return capability_dataset
 
-def alltalentssearch():
+def alltalentssearch(name=None):
     args = request.args
     query = dict()
     is_list = False
@@ -390,35 +400,38 @@ def alltalentssearch():
     if len(args) == 0:
         is_list = True
 
-    try:
-        query = query_params.format_query_talent(args, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-        logging.error("Talent SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
-
-    try:
-        if len(args) > 0 and len(query) == 0:
+    if is_list:
+        out_json = mongoutils.get_result(coll_contribution, query)
+    else:
+        try:
+            query = query_params.format_query_talent(name, query)
+        except Exception as ex:
             msg = {
-                "reason": "The query is wrong or bad argument " + str(args),
+                "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
             msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
             logging.error("Talent SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
-        out_json = mongoutils.get_result(coll_contribution, query)
-    except Exception as ex:
-        msg = {
-            "reason": "The query is wrong or bad argument " + str(args),
-            "error": "Bad Request: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-        logging.error("Talent SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+
+        try:
+            if len(args) > 0 and len(query) == 0:
+                msg = {
+                    "reason": "The query is wrong or bad argument",
+                    "error": "Bad Request: " + request.url,
+                }
+                msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+                logging.error("Talent SEARCH " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg_json)
+            out_json = mongoutils.get_result(coll_contribution, query)
+        except Exception as ex:
+            msg = {
+                "reason": "The query is wrong or bad argument",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
     return_json = []
     if out_json is None:
