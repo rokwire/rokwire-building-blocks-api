@@ -473,7 +473,7 @@ def alltalentssearch(name=None):
         logging.info("Talent GET " + json.dumps(msg_json))
     else:
         msg = {
-            "search": "Talent search performed with arguments of : " + str(args)
+            "search": "Talent search performed with " + str(name)
         }
         msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
         logging.info("Talent SEARCH " + json.dumps(msg_json))
