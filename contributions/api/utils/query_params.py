@@ -17,7 +17,7 @@ from bson import ObjectId
 def format_query_contribution(args, query):
     query_parts = []
 
-    if args.get('id'):
+    if args.get('eventId'):
         # make sure it has been changed to eventIds from eventid since the db field name is eventIds
         query_parts.append({'_id': {'$eq': ObjectId(args.get('id'))}})
     if args.get('name'):

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
+- Add query parameters to contribution building block's api spec and function arguments. [#616](https://github.com/rokwire/rokwire-building-blocks-api/issues/616)
 
 ## [1.9.0] - 2020-12-17
 ### Fixed
