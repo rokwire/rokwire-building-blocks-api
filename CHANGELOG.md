@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
 
+### Fixed
+- Fix cors error in contribution building block. [#617](https://github.com/rokwire/rokwire-building-blocks-api/pull/617)
+
 ## [1.9.0] - 2020-12-17
 ### Fixed
 - Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
