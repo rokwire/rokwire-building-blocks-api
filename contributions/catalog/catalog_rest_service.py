@@ -34,7 +34,6 @@ app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,
             template_folder=template_dir)
 
 init_app(app)
-# CORS(app, resources={r"/localhost:5050/*": {"origins": "*"}}, supports_credentials=True)
 app.register_blueprint(contribute_bp)
 
 # read configs variable from .env file
