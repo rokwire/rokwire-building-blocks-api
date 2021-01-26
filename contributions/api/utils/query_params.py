@@ -14,39 +14,48 @@
 
 from bson import ObjectId
 
-def format_query_contribution(args, query):
+def format_query_contribution(args, query, is_args=False):
     query_parts = []
 
-    if args.get('id'):
-        # make sure it has been changed to eventIds from eventid since the db field name is eventIds
-        query_parts.append({'_id': {'$eq': ObjectId(args.get('id'))}})
-    if args.get('name'):
-        query_parts.append({'name': {'$eq': args.get('name')}})
+    if is_args:
+        if args.get('name'):
+            query_parts.append({'name': {'$eq': args.get('name')}})
+    else:
+        if args is not None:
+            query_parts.append({'name': args})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
 
-def format_query_capability(args, query):
+
+def format_query_capability(args, query, is_args=False):
     query_parts = []
 
-    if args.get('name'):
-        query_parts.append({'capabilities.name': {'$eq': args.get('name')}})
+    if is_args:
+        if args.get('name'):
+            query_parts.append({'capabilities.name': {'$eq': args.get('name')}})
+    else:
+        if args is not None:
+            query_parts.append({'capabilities.name': args})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
 
-def format_query_talent(args, query):
+def format_query_talent(args, query, is_args=False):
     query_parts = []
 
-    if args.get('name'):
-        query_parts.append({'talents.name': {'$eq': args.get('name')}})
+    if is_args:
+        if args.get('name'):
+            query_parts.append({'talents.name': {'$eq': args.get('name')}})
+    else:
+        if args is not None:
+            query_parts.append({'talents.name': args})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
-
