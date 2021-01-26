@@ -4,7 +4,6 @@ from time import gmtime
 
 from dotenv import dotenv_values
 from flask import Flask, redirect, url_for, render_template, request, session
-from flask_cors import CORS
 from requests_oauthlib import OAuth2Session
 
 from controllers.contribute import bp as contribute_bp
@@ -56,10 +55,8 @@ def index():
     print("Step 1: User Authorization")
     github = OAuth2Session(client_id)
     authorization_url, state = github.authorization_url(authorization_base_url)
-    # print(authorization_url, state)
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    # print(session)
     return redirect(authorization_url)
 
 
@@ -73,8 +70,6 @@ def callback():
     github = OAuth2Session(client_id, state=session['oauth_state'])
     token = github.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.url)
-
-    # print(token)
     session['oauth_token'] = token
     return redirect(url_for('.profile'))
 
