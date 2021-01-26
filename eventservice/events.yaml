@@ -556,7 +556,7 @@ paths:
       - Events
       summary: Download an event image by providing the IDs of the event and the image.
       description: |
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
         - UserAuth: []
