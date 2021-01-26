@@ -237,7 +237,7 @@ paths:
       description: |
         Get the event record matching the eventId.
 
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
         - UserAuth: []
