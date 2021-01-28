@@ -125,6 +125,7 @@ def post():
 def search():
     args = request.args
     query = dict()
+    # if len(args) > 0:   # it is search
     try:
         query = query_params.format_query_contribution(args, query)
     except Exception as ex:
@@ -137,6 +138,14 @@ def search():
         return rs_handlers.bad_request(msg_json)
 
     try:
+        if len(args) > 0 and len(query) == 0:
+            msg = {
+                "reason": "The query is wrong or bad argument " + str(args),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
         out_json = mongoutils.get_result(coll_contribution, query)
     except Exception as ex:
         msg = {
@@ -261,6 +270,11 @@ def delete(id):
 def allcapabilitiessearch():
     args = request.args
     query = dict()
+    is_list = False
+
+    if len(args) == 0:
+        is_list = True
+
     try:
         query = query_params.format_query_capability(args, query)
     except Exception as ex:
@@ -273,6 +287,14 @@ def allcapabilitiessearch():
         return rs_handlers.bad_request(msg_json)
 
     try:
+        if len(args) > 0 and len(query) == 0:
+            msg = {
+                "reason": "The query is wrong or bad argument " + str(args),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
         out_json = mongoutils.get_result(coll_contribution, query)
     except Exception as ex:
         msg = {
@@ -286,10 +308,28 @@ def allcapabilitiessearch():
     return_json = []
     if out_json is None:
         return_json = []
-    else:   # extract out capabilities with the given name
-        if isinstance(out_json, list):
-            for tmp_json in out_json:
-                capabilities_json = tmp_json["capabilities"]
+    else:
+        if is_list:  # list all
+            if isinstance(out_json, list):
+                for in_json in out_json:
+                    if in_json['capabilities'] is not None:
+                        for talent in in_json['capabilities']:
+                            return_json.append(talent)
+            else:
+                return_json.append(out_json)
+        else:   # extract out capabilities with the given name
+            if isinstance(out_json, list):
+                for tmp_json in out_json:
+                    capabilities_json = tmp_json["capabilities"]
+                    # TODO this is the case of only 1 args that is name.
+                    #  If there are more args this should be updated
+                    for tmp_capability_json in capabilities_json:
+                        capability_json = None
+                        if tmp_capability_json["name"] == args["name"]:
+                            capability_json = tmp_capability_json
+                            return_json.append(capability_json)
+            else:
+                capabilities_json = out_json["capabilities"]
                 # TODO this is the case of only 1 args that is name.
                 #  If there are more args this should be updated
                 for tmp_capability_json in capabilities_json:
@@ -297,20 +337,18 @@ def allcapabilitiessearch():
                     if tmp_capability_json["name"] == args["name"]:
                         capability_json = tmp_capability_json
                         return_json.append(capability_json)
-        else:
-            capabilities_json = out_json["capabilities"]
-            # TODO this is the case of only 1 args that is name.
-            #  If there are more args this should be updated
-            for tmp_capability_json in capabilities_json:
-                capability_json = None
-                if tmp_capability_json["name"] == args["name"]:
-                    capability_json = tmp_capability_json
-                    return_json.append(capability_json)
-    msg = {
-        "search": "Capability search performed with arguments of : " + str(args)
-    }
-    msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-    logging.info("Capability SEARCH " + json.dumps(msg_json))
+    if is_list:
+        msg = {
+            "GET": "Capabilities list"
+        }
+        msg_json = jsonutils.create_log_json("Capabilities", "GET", msg)
+        logging.info("Capabilities GET " + json.dumps(msg_json))
+    else:
+        msg = {
+            "search": "Capability search performed with arguments of : " + str(args)
+        }
+        msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+        logging.info("Capability SEARCH " + json.dumps(msg_json))
 
     return return_json
 
@@ -347,6 +385,11 @@ def capabilities_search(id):
 def alltalentssearch():
     args = request.args
     query = dict()
+    is_list = False
+
+    if len(args) == 0:
+        is_list = True
+
     try:
         query = query_params.format_query_talent(args, query)
     except Exception as ex:
@@ -359,6 +402,14 @@ def alltalentssearch():
         return rs_handlers.bad_request(msg_json)
 
     try:
+        if len(args) > 0 and len(query) == 0:
+            msg = {
+                "reason": "The query is wrong or bad argument " + str(args),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
         out_json = mongoutils.get_result(coll_contribution, query)
     except Exception as ex:
         msg = {
@@ -372,10 +423,28 @@ def alltalentssearch():
     return_json = []
     if out_json is None:
         return_json = []
-    else:   # extract out talent with the given name
-        if isinstance(out_json, list):
-            for tmp_json in out_json:
-                talents_json = tmp_json["talents"]
+    else:
+        if len(query) == 0:  # list all
+            if isinstance(out_json, list):
+                for in_json in out_json:
+                    if in_json['talents'] is not None:
+                        for talent in in_json['talents']:
+                            return_json.append(talent)
+            else:
+                return_json.append(out_json)
+        else:   # extract out talent with the given name
+            if isinstance(out_json, list):
+                for tmp_json in out_json:
+                    talents_json = tmp_json["talents"]
+                    # TODO this is the case of only 1 args that is name.
+                    #  If there are more args this should be updated
+                    for tmp_talent_json in talents_json:
+                        talent_json = None
+                        if tmp_talent_json["name"] == args["name"]:
+                            talent_json = tmp_talent_json
+                            return_json.append(talent_json)
+            else:
+                talents_json = out_json["talents"]
                 # TODO this is the case of only 1 args that is name.
                 #  If there are more args this should be updated
                 for tmp_talent_json in talents_json:
@@ -383,20 +452,18 @@ def alltalentssearch():
                     if tmp_talent_json["name"] == args["name"]:
                         talent_json = tmp_talent_json
                         return_json.append(talent_json)
-        else:
-            talents_json = out_json["talents"]
-            # TODO this is the case of only 1 args that is name.
-            #  If there are more args this should be updated
-            for tmp_talent_json in talents_json:
-                talent_json = None
-                if tmp_talent_json["name"] == args["name"]:
-                    talent_json = tmp_talent_json
-                    return_json.append(talent_json)
-    msg = {
-        "search": "Talent search performed with arguments of : " + str(args)
-    }
-    msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-    logging.info("Talent SEARCH " + json.dumps(msg_json))
+    if is_list:
+        msg = {
+            "GET": "Talent list"
+        }
+        msg_json = jsonutils.create_log_json("Talent", "GET", msg)
+        logging.info("Talent GET " + json.dumps(msg_json))
+    else:
+        msg = {
+            "search": "Talent search performed with arguments of : " + str(args)
+        }
+        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+        logging.info("Talent SEARCH " + json.dumps(msg_json))
 
     return return_json
 
