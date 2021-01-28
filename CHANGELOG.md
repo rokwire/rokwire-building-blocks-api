@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
+- Add user auth to Events Building Block yml file. [#598](https://github.com/rokwire/rokwire-building-blocks-api/issues/598)
 
 ## [1.9.0] - 2020-12-17
 ### Fixed
@@ -23,7 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Contributions Catalog Frontend. [#462](https://github.com/rokwire/rokwire-building-blocks-api/issues/462)
 - Add Github authentication for Contributions Catalog. [#580](https://github.com/rokwire/rokwire-building-blocks-api/issues/580)
 - Add Rokwire Group admins AD group to list of authorized event write groups. [#607](https://github.com/rokwire/rokwire-building-blocks-api/issues/607)
-- Add user auth to Events Building Block yml file. [#598](https://github.com/rokwire/rokwire-building-blocks-api/issues/598)
 
 ## Changed
 - Separated contribution yaml from rokwire.yaml. [#514](https://github.com/rokwire/rokwire-building-blocks-api/issues/514)
