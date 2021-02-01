@@ -1,6 +1,6 @@
 import os
-
 from dotenv import load_dotenv
+
 
 # Load .env file
 load_dotenv()
@@ -20,6 +20,6 @@ class Config(object):
     CORS_ENABLE = True
     client_id = os.getenv("CLIENT_ID", "NO ID")
     client_secret = os.getenv("CLIENT_SECRET", "NO SECRET")
-    authorization_base_url = os.getenv("CLIENT_SECRET", 'https://github.com/login/oauth/authorize')
-    token_url = os.getenv("CLIENT_SECRET", 'https://github.com/login/oauth/access_token')
+    authorization_base_url = os.getenv("authorization_base_url", 'https://github.com/login/oauth/authorize')
+    token_url = os.getenv("token_url", 'https://github.com/login/oauth/access_token')
 
