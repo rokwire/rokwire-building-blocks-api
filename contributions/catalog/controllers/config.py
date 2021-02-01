@@ -17,7 +17,6 @@ class Config(object):
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
     DEBUG = True
-    CORS_ENABLE = True
     client_id = os.getenv("CLIENT_ID", "NO ID")
     client_secret = os.getenv("CLIENT_SECRET", "NO SECRET")
     authorization_base_url = os.getenv("authorization_base_url", 'https://github.com/login/oauth/authorize')
