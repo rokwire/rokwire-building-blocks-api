@@ -9,10 +9,8 @@ from flask import (
 
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
-from flask_cors import CORS, cross_origin
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
-CORS(bp)
 
 @bp.route('/', methods=['GET', 'POST'])
 

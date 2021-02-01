@@ -5,7 +5,7 @@ from time import gmtime
 from dotenv import dotenv_values
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
-
+from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
 
@@ -36,24 +36,16 @@ app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,
 init_app(app)
 app.register_blueprint(contribute_bp)
 
-# read configs variable from .env file
-config = dotenv_values(".env")
-app.config.update(config)
-
-client_id = config["CLIENT_ID"]
-client_secret = config["CLIENT_SECRET"]
-authorization_base_url = config["authorization_base_url"]
-token_url = config["token_url"]
-contribution_url = config["CONTRIBUTION_BUILDING_BLOCK_URL"]
-
-
+# # read configs variable from .env file
+# config = dotenv_values(".env")
+app.config.from_object(cfg)
 @app.route("/")
 def index():
     """Step 1: Get the user identify for authentication.
     """
     print("Step 1: User Authorization")
-    github = OAuth2Session(client_id)
-    authorization_url, state = github.authorization_url(authorization_base_url)
+    github = OAuth2Session(cfg.client_id)
+    authorization_url, state = github.authorization_url(cfg.authorization_base_url)
     # State is used to prevent CSRF.
     session['oauth_state'] = state
     return redirect(authorization_url)
@@ -66,8 +58,8 @@ def callback():
     """ Step 3: Retrieving an access token.
     """
     # print("Step 3: Retrieving an access token")
-    github = OAuth2Session(client_id, state=session['oauth_state'])
-    token = github.fetch_token(token_url, client_secret=client_secret,
+    github = OAuth2Session(cfg.client_id, state=session['oauth_state'])
+    token = github.fetch_token(cfg.token_url, client_secret=cfg.client_secret,
                                authorization_response=request.url)
     session['oauth_token'] = token
     return redirect(url_for('.profile'))
@@ -78,7 +70,7 @@ def profile():
     Parsing the username to the seesion dict, to the templates to display.
     """
     # print("Fetching a protected resource using an OAuth 2 token")
-    github = OAuth2Session(client_id, token=session['oauth_token'])
+    github = OAuth2Session(cfg.client_id, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
     # print(resp.json())
     session["username"] = resp.json()["login"]
