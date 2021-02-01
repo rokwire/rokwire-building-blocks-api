@@ -2,17 +2,17 @@ import logging
 import os
 from time import gmtime
 
-from dotenv import dotenv_values
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
+
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
 
-debug = os.getenv("DEBUG", "True")
+debug = cfg.DEBUG
 
 log = logging.getLogger('werkzeug')
-log.disabled = True
+log.disabled = False
 
 logging.Formatter.converter = gmtime
 log_format = '%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s'
@@ -21,10 +21,9 @@ if debug:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.DEBUG)
 else:
     logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
-
-URL_PREFIX = os.getenv("URL_PREFIX", "")
-if URL_PREFIX:
-    staticpath = URL_PREFIX + '/static'
+if cfg and cfg.URL_PREFIX:
+    prefix = cfg.URL_PREFIX
+    staticpath = prefix + '/static'
 else:
     staticpath = '/static'
 
@@ -32,22 +31,23 @@ template_dir = os.path.join(os.path.abspath('webapps'), 'templates')
 static_dir = os.path.join(os.path.abspath('webapps'), 'static')
 app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, static_folder=static_dir,
             template_folder=template_dir)
+app.config.from_object(cfg)
 
 init_app(app)
 app.register_blueprint(contribute_bp)
 
-# # read configs variable from .env file
-# config = dotenv_values(".env")
-app.config.from_object(cfg)
+
 @app.route("/")
 def index():
     """Step 1: Get the user identify for authentication.
     """
-    print("Step 1: User Authorization")
+    # print("Step 1: User Authorization")
     github = OAuth2Session(cfg.client_id)
     authorization_url, state = github.authorization_url(cfg.authorization_base_url)
+
     # State is used to prevent CSRF.
     session['oauth_state'] = state
+    print(session)
     return redirect(authorization_url)
 
 
@@ -72,7 +72,7 @@ def profile():
     # print("Fetching a protected resource using an OAuth 2 token")
     github = OAuth2Session(cfg.client_id, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
-    # print(resp.json())
+    print(resp.json())
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
     return render_template('contribute/home.html', user=session["name"])
