@@ -26,7 +26,7 @@ FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 API_LOC = os.getenv('API_LOC', '../')
 CONTRIBUTION_URL_PREFIX = os.getenv('CONTRIBUTION_URL_PREFIX', '')
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
-CORS_ENABLED = bool(os.getenv('CORS_ENABLE', 'False') == 'True')
+CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
 
 
 CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributions_db')
@@ -35,5 +35,4 @@ CAPABILITY_COLL_NAME = os.getenv('CAPABILITY_COLL_NAME', 'capabilities')
 
 FIELD_OBJECTID = '_id'
 FIELD_NAME = 'name'
-
 
