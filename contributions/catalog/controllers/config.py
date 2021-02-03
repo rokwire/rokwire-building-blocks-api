@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config(object):
-    OAUTHLIB_INSECURE_TRANSPORT = True
+    OAUTHLIB_INSECURE_TRANSPORT = bool(os.getenv('DEBUG', 'False') == 'True')
     CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL", "http://localhost:5000/contributions")
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
@@ -16,9 +16,9 @@ class Config(object):
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
-    DEBUG = True
-    client_id = os.getenv("CLIENT_ID", "NO ID")
-    client_secret = os.getenv("CLIENT_SECRET", "NO SECRET")
-    authorization_base_url = os.getenv("authorization_base_url", 'https://github.com/login/oauth/authorize')
-    token_url = os.getenv("token_url", 'https://github.com/login/oauth/access_token')
+    DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
+    CLENT_ID = os.getenv("CLIENT_ID", "NO ID")
+    CLIENT_SECRET = os.getenv("CLIENT_SECRET", "NO SECRET")
+    AUTHURIZATION_BASE_URL = os.getenv("AUTHURIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
+    TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
 
