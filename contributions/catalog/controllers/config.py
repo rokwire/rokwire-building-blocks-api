@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config(object):
-    OAUTHLIB_INSECURE_TRANSPORT = bool(os.getenv('DEBUG', 'False') == 'True')
+    OAUTHLIB_INSECURE_TRANSPORT = bool(os.getenv('OAUTHLIB_INSECURE_TRANSPORT', 'False') == 'True')
     CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL", "http://localhost:5000/contributions")
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
@@ -21,4 +21,3 @@ class Config(object):
     CLIENT_SECRET = os.getenv("CLIENT_SECRET", "NO SECRET")
     AUTHURIZATION_BASE_URL = os.getenv("AUTHURIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
     TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
-
