@@ -19,5 +19,5 @@ class Config(object):
     DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
     CLIENT_ID = os.getenv("CLIENT_ID", "NO ID")
     CLIENT_SECRET = os.getenv("CLIENT_SECRET", "NO SECRET")
-   AUTHORIZATION_BASE_URL = os.getenv("AUTHORIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
+    AUTHORIZATION_BASE_URL = os.getenv("AUTHORIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
     TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
