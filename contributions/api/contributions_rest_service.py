@@ -18,8 +18,10 @@ import controllers.configs as cfg
 
 from time import gmtime
 from rokwireresolver import RokwireResolver
+from flask_cors import CORS
 
 debug = cfg.DEBUG
+cors_enabled = cfg.CORS_ENABLED
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
@@ -35,6 +37,9 @@ else:
 app = connexion.FlaskApp(__name__, debug=debug, specification_dir=cfg.API_LOC)
 app.add_api('contribution.yaml', base_path=cfg.CONTRIBUTION_URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
             resolver_error=501)
+
+if cors_enabled:
+    CORS(app.app)
 
 if __name__ == '__main__':
     app.run(port=5000, host=None, server='flask', debug=debug)
