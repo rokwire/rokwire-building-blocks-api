@@ -308,54 +308,35 @@
 
     <script>
         var all_capability = [];
-        var all_talents = [];
-        var get_talent_url = "http://localhost:5000/contributions/talents";
-        var get_cap_url = "http://localhost:5000/contributions/capabilities";
+        var all_talents = []
+        var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
+        var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
 
-        $(document).ready(function(){
-            var settings = {
-                      'cache': false,
-                      'dataType': "jsonp",
-                      "async": true,
-                      "crossDomain": true,
-                      "url": get_cap_url,
-                      "method": "GET",
-                      "headers": {
-                          "accept": "application/json",
-                          "Access-Control-Allow-Origin":"*"
-                      }
-                  }
+        ajax('GET', get_cap_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+                    console.log("we got some results: ")
+                    console.log(items)
+                    all_capability = items
+                    append_capability(all_capability);
+                },
+                function () {
+                    console.log("error occured");
+                });
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_capability = response;
-              });
-
-            var settings = {
-                  'cache': false,
-                  'dataType': "jsonp",
-                  "async": true,
-                  "crossDomain": true,
-                  "url": get_talent_url,
-                  "method": "GET",
-                  "headers": {
-                      "accept": "application/json",
-                      "Access-Control-Allow-Origin":"*"
-                  }
-              }
-
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_talents = response
-              });
-
-
-            append_capability(all_capability);
-            append_talent(all_talents);
-            filterSelection("all");
-            // append_capability(sample_contribution.capabilities);
-            // append_talent(sample_contribution.talents);
+       ajax('GET', get_talent_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+                    console.log("we got some results: ")
+                    console.log(items)
+                    all_talents = items
+                    append_talent(all_talents);
+                },
+                function () {
+                    console.log("error occured");
         });
+
+       filterSelection("all");
 
         function parse_data(data) {
             var cap_list = [];
@@ -380,7 +361,6 @@
                 //Clone Template
                 var newItem = $(template).clone();
                 console.log(newItem)
-
                 //Populate it
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
@@ -496,8 +476,6 @@
             element.className = arr1.join(" ");
         }
 
-
-
         // Add active class to the current button (highlight it)
         var btnContainer = document.getElementById("myBtnContainer");
         var btns = btnContainer.getElementsByClassName("btn");
@@ -508,14 +486,6 @@
                 this.className += " active";
             });
         }
-
-        // document.getElementById("searchbar").addEventListener("keyup", function (event) {
-        //     if (event.keyCode === 13) {
-        //         event.preventDefault();
-        //         document.getElementById("myBtn").click();
-        //     }}
-        // );
-
 
     </script>
 

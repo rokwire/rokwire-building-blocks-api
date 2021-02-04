@@ -1,4 +1,5 @@
 Flask==1.1.1
+Flask-Cors==3.0.10
 pymongo[tls,srv]==3.7.2
 requests==2.22.0
 pyjwt==1.7.1
