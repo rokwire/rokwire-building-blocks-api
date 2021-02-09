@@ -8,7 +8,6 @@
     <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
 
 </head>
-<body>
 
 
 <style>
@@ -246,7 +245,7 @@
 
 
 </style>
-
+<body onload=start()>
 <div class="navbar" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Contribute</a>
@@ -265,9 +264,9 @@
     </div>
 
     <div id="myBtnContainer">
-        <button class="btn active" onclick="filterSelection('all')"> Show All </button>
-        <button class="btn" onclick="filterSelection('capability')"> Capabilities </button>
-        <button class="btn" onclick="filterSelection('talent')"> Talents </button>
+        <button class="btn active" id="all_btn" onclick="filterSelection('all')"> Show All </button>
+        <button class="btn" id="capability_btn" onclick="filterSelection('capability')"> Capabilities </button>
+        <button class="btn" id="talent_btn" onclick="filterSelection('talent')"> Talents </button>
         <div class="form-group pull-right">
             <form action="http://localhost:5050/contribute/results" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
@@ -290,6 +289,7 @@
                     </div>
                 </div>
             </script>
+
             <script id="talent_template" type="text/template">
                 <div class="column talent">
                     <div class="content">
@@ -307,41 +307,56 @@
     </div>
 
     <script>
+        function start(){
+            console.log("receiving data of capability...")
+            ajax('GET', get_cap_url, null,
+                    function (res) {
+                        var items = JSON.parse(res);
+                        console.log("we got a list of capabilities from api: ")
+                        console.log(items)
+                        all_capability = items
+                        append_capability(all_capability);
+                        filterSelection('all');
+                    },
+                    function () {
+                        console.log("error occured");
+                    });
+            console.log("receiving data of talent...")
+            ajax('GET', get_talent_url, null,
+                    function (res) {
+                        var items = JSON.parse(res);
+                        console.log("we got a list of talents from api: ")
+                        console.log(items)
+                        all_talents = items
+                        append_talent(all_talents);
+                        filterSelection('all');
+                    },
+                    function () {
+                        console.log("error occured");
+            });
+            console.log("appending cards... ")
+            window.onload = append_capability(all_capability);
+            window.onload = append_talent(all_talents);
+        }
+
         var all_capability = [];
         var all_talents = []
         var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
         var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
 
-        ajax('GET', get_cap_url, null,
-                function (res) {
-                    var items = JSON.parse(res);
-                    console.log("we got some results: ")
-                    console.log(items)
-                    all_capability = items
-                    append_capability(all_capability);
-                },
-                function () {
-                    console.log("error occured");
-                });
 
-       ajax('GET', get_talent_url, null,
-                function (res) {
-                    var items = JSON.parse(res);
-                    console.log("we got some results: ")
-                    console.log(items)
-                    all_talents = items
-                    append_talent(all_talents);
-                },
-                function () {
-                    console.log("error occured");
-        });
+        console.log("show all ")
+        // window.onload = document.getElementById('capability_btn').click()
+        // window.onload = document.getElementById('talent_btn').click()
+        // window.onload = document.getElementById('all_btn').click()
 
-       filterSelection("all");
-
-        function parse_data(data) {
-            var cap_list = [];
-            var tal_list = [];
-        }
+        // $(document).ready(function(){
+        //     $("#capability_btn").trigger("click");
+        //     $("#talent_btn").trigger("click");
+        //     // $("#all_btn").trigger("click");
+        // });
+        // window.onload = filterSelection("talent");
+        // window.onload = filterSelection("all");
 
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
@@ -446,7 +461,7 @@
         function filterSelection(c) {
             var x, i;
             x = document.getElementsByClassName("column");
-            if (c == "all") c = "";
+            if (c === "all") c = "";
             for (i = 0; i < x.length; i++) {
                 w3RemoveClass(x[i], "show");
                 if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
