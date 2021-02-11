@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
 - Add query parameters to contribution building block's api spec and function arguments. [#616](https://github.com/rokwire/rokwire-building-blocks-api/issues/616)
 - Add user auth to Events Building Block yml file. [#598](https://github.com/rokwire/rokwire-building-blocks-api/issues/598)
-- Use dovenv library for organizing enviroment variables.[#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
-- Add CORS support for Contribution Building Block.[#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
-
+- Use dovenv library for organizing enviroment variables. [#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
+- Add CORS support for Contribution Building Block. [#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
+- Add strict validation in Contribution Building Block. [#627](https://github.com/rokwire/rokwire-building-blocks-api/issues/627)
 ## [1.9.0] - 2020-12-17
 ### Fixed
 - Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
