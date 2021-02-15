@@ -308,7 +308,7 @@
 
     <script>
         function start(){
-            console.log("receiving data of capability...")
+            // console.log("receiving data of capability...")
             ajax('GET', get_cap_url, null,
                     function (res) {
                         var items = JSON.parse(res);
@@ -326,8 +326,8 @@
             ajax('GET', get_talent_url, null,
                     function (res) {
                         var items = JSON.parse(res);
-                        console.log("we got a list of talents from api: ")
-                        console.log(items)
+                        // console.log("we got a list of talents from api: ")
+                        // console.log(items)
                         all_talents = items
                         append_talent(all_talents);
                         filterSelection('all');
@@ -441,23 +441,6 @@
             }
         }
 
-        function get_data() {
-            var url = "http://localhost:5000/contributions"
-            var req = JSON.stringify({})
-
-            ajax('GET', url, data,
-                function (res) {
-                    var items = JSON.parse(res);
-                    if (!items || items.length == 0) {
-                        console.log("no data");
-                    } else {
-
-                    }
-                },
-                function () {
-                    console.log("error occured");
-                });
-        }
 
         function filterSelection(c) {
             var x, i;
