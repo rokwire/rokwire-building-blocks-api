@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use dovenv library for organizing enviroment variables.[#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
 - Add CORS support for Contribution Building Block.[#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
 
+### Changed
+- Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
+
 ## [1.9.0] - 2020-12-17
 ### Fixed
 - Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
