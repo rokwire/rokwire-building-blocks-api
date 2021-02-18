@@ -270,7 +270,6 @@
         <div class="form-group pull-right">
             <form action="http://localhost:5050/contribute/results" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
-                <!--            <input id="searchbar" name="search" placeholder="Search by id..." type="text">-->
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">
             </form>
         </div>
@@ -281,7 +280,6 @@
                 <div class="column capability">
 
                     <div class="content">
-                        <!--                    <img class="capability_icon" src="" style="width:100%">-->
                         <h4 class="capability_name"></h4>
                         <p class="capability_description"></p>
                         <p class="contributors"></p>
@@ -346,18 +344,6 @@
         var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
 
 
-        // console.log("show all ")
-        // window.onload = document.getElementById('capability_btn').click()
-        // window.onload = document.getElementById('talent_btn').click()
-        // window.onload = document.getElementById('all_btn').click()
-
-        // $(document).ready(function(){
-        //     $("#capability_btn").trigger("click");
-        //     $("#talent_btn").trigger("click");
-        //     // $("#all_btn").trigger("click");
-        // });
-        // window.onload = filterSelection("talent");
-        // window.onload = filterSelection("all");
 
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
@@ -381,12 +367,7 @@
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                // console.log(newItem)
-                //Append it
+
                 $("#grid-view").append(newItem);
 
             });
@@ -411,11 +392,7 @@
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                // console.log(newItem);
+
                 //Append it
                 $("#grid-view").append(newItem);
 
