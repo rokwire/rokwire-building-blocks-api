@@ -36,7 +36,7 @@ else:
 
 app = connexion.FlaskApp(__name__, debug=debug, specification_dir=cfg.API_LOC)
 app.add_api('contribution.yaml', base_path=cfg.CONTRIBUTION_URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
-            resolver_error=501)
+            resolver_error=501, strict_validation=True)
 
 if cors_enabled:
     CORS(app.app)

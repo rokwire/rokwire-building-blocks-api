@@ -14,15 +14,11 @@
 
 from bson import ObjectId
 
-def format_query_contribution(args, query, is_args=False):
+def format_query_contribution(name, query):
     query_parts = []
 
-    if is_args:
-        if args.get('name'):
-            query_parts.append({'name': {'$eq': args.get('name')}})
-    else:
-        if args is not None:
-            query_parts.append({'name': args})
+    if name is not None:
+        query_parts.append({'name': name})
 
     if query_parts:
         query['$and'] = query_parts
@@ -30,30 +26,22 @@ def format_query_contribution(args, query, is_args=False):
     return query
 
 
-def format_query_capability(args, query, is_args=False):
+def format_query_capability(name, query):
     query_parts = []
 
-    if is_args:
-        if args.get('name'):
-            query_parts.append({'capabilities.name': {'$eq': args.get('name')}})
-    else:
-        if args is not None:
-            query_parts.append({'capabilities.name': args})
+    if name is not None:
+        query_parts.append({'capabilities.name': name})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
 
-def format_query_talent(args, query, is_args=False):
+def format_query_talent(name, query):
     query_parts = []
 
-    if is_args:
-        if args.get('name'):
-            query_parts.append({'talents.name': {'$eq': args.get('name')}})
-    else:
-        if args is not None:
-            query_parts.append({'talents.name': args})
+    if name is not None:
+        query_parts.append({'talents.name': name})
 
     if query_parts:
         query['$and'] = query_parts
