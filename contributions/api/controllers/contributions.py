@@ -123,11 +123,11 @@ def post():
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
 def search(name=None):
-    args = request.args
+    # args = request.args
     query = dict()
     is_list = False
 
-    if len(args)  == 0:
+    if name is None:
         is_list = True
 
     if is_list:
@@ -145,14 +145,6 @@ def search(name=None):
             return rs_handlers.bad_request(msg_json)
 
         try:
-            if len(name) > 0 and len(query) == 0:
-                msg = {
-                    "reason": "The query is wrong or bad argument",
-                    "error": "Bad Request: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-                logging.error("Contribution SEARCH " + json.dumps(msg_json))
-                return rs_handlers.bad_request(msg_json)
             out_json = mongoutils.get_result(coll_contribution, query)
         except Exception as ex:
             msg = {
@@ -275,11 +267,10 @@ def delete(id):
     #     return rs_handlers.not_found(msg_json)
 
 def allcapabilitiessearch(name=None):
-    args = request.args
     query = dict()
     is_list = False
 
-    if len(args) == 0:
+    if name is None:
         is_list = True
 
     if is_list:
@@ -297,14 +288,6 @@ def allcapabilitiessearch(name=None):
             return rs_handlers.bad_request(msg_json)
 
         try:
-            if len(name) > 0 and len(query) == 0:
-                msg = {
-                    "reason": "The query is wrong or bad argument",
-                    "error": "Bad Request: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-                logging.error("Capability SEARCH " + json.dumps(msg_json))
-                return rs_handlers.bad_request(msg_json)
             out_json = mongoutils.get_result(coll_contribution, query)
         except Exception as ex:
             msg = {
@@ -393,11 +376,10 @@ def capabilities_search(id):
     return capability_dataset
 
 def alltalentssearch(name=None):
-    args = request.args
     query = dict()
     is_list = False
 
-    if len(args) == 0:
+    if name is None:
         is_list = True
 
     if is_list:
@@ -415,14 +397,6 @@ def alltalentssearch(name=None):
             return rs_handlers.bad_request(msg_json)
 
         try:
-            if len(args) > 0 and len(query) == 0:
-                msg = {
-                    "reason": "The query is wrong or bad argument",
-                    "error": "Bad Request: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-                logging.error("Talent SEARCH " + json.dumps(msg_json))
-                return rs_handlers.bad_request(msg_json)
             out_json = mongoutils.get_result(coll_contribution, query)
         except Exception as ex:
             msg = {
@@ -453,7 +427,7 @@ def alltalentssearch(name=None):
                     #  If there are more args this should be updated
                     for tmp_talent_json in talents_json:
                         talent_json = None
-                        if tmp_talent_json["name"] == args["name"]:
+                        if tmp_talent_json["name"] == name:
                             talent_json = tmp_talent_json
                             return_json.append(talent_json)
             else:
@@ -462,7 +436,7 @@ def alltalentssearch(name=None):
                 #  If there are more args this should be updated
                 for tmp_talent_json in talents_json:
                     talent_json = None
-                    if tmp_talent_json["name"] == args["name"]:
+                    if tmp_talent_json["name"] == name:
                         talent_json = tmp_talent_json
                         return_json.append(talent_json)
     if is_list:
