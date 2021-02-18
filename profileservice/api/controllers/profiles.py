@@ -591,7 +591,7 @@ def check_id(id_token, data_list):
     id_string = tokenutils.get_id_info_from_token(id_token)
     auth_pass = False
 
-    id_from_db = data_list['uid']
+    id_from_db = data_list.get('uid')
     if id_from_db == id_string:
         auth_pass = True
     else:
