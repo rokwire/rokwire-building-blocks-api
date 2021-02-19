@@ -19,15 +19,20 @@ import controllers.configs as cfg
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
-from pymongo import MongoClient, ASCENDING
+from pymongo import MongoClient, ASCENDING, TEXT
 from models.contribution import Contribution
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
-coll_contribution.create_index([("name", ASCENDING)], background=True)
-coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
-coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
+# coll_contribution.create_index([("name", ASCENDING)], background=True)
+# coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
+# coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
+# This has to be done for applying the following index being applied
+if len(coll_contribution.index_information()) > 3:
+    coll_contribution.drop_index('*')
+coll_contribution.create_index([("name" , TEXT),("capabilities.name", TEXT),("talents.name", TEXT)],name="name_index")
+
 
 """
 get json of all the contributions list
@@ -90,6 +95,28 @@ def get_result(db_collection, query):
         db_data = db_collection.find(query, {'_id': 0})
 
     data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+def get_result_text_meta_score(db_collection, search_field, search_word):
+    db_data = db_collection.find({'$text': {'$search': search_word}},
+                                 {'score': {'$meta': 'textScore'}})
+    db_data.sort([('score', {'$meta': 'textScore'})])
+    data_list = list(db_data)
+
+    # remove object id
+    for data in data_list:
+        del (data['_id'])
+        del (data['score'])
 
     if len(data_list) > 0:
         data_dump = dumps(data_list)
