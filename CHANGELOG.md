@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
+- Use dovenv library for organizing enviroment variables. [#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
+- Add CORS support for Contribution Building Block. [#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
+- Add strict validation in Contribution Building Block. [#627](https://github.com/rokwire/rokwire-building-blocks-api/issues/627)
 
 ## [1.9.0] - 2020-12-17
 ### Fixed
