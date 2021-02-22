@@ -306,12 +306,10 @@
 
     <script>
         function start(){
-            // console.log("receiving data of capability...")
+
             ajax('GET', get_cap_url, null,
                     function (res) {
                         var items = JSON.parse(res);
-                        // console.log("we got a list of capabilities from api: ")
-                        // console.log(items)
                         all_capability = items
                         append_capability(all_capability);
                         filterSelection('all');
@@ -320,12 +318,11 @@
                     function () {
                         console.log("error occured - capability");
                     });
-            // console.log("receiving data of talent...")
+
             ajax('GET', get_talent_url, null,
                     function (res) {
                         var items = JSON.parse(res);
-                        // console.log("we got a list of talents from api: ")
-                        // console.log(items)
+
                         all_talents = items
                         append_talent(all_talents);
                         filterSelection('all');
@@ -333,7 +330,7 @@
                     function () {
                         console.log("error occured talent" );
             });
-            // console.log("appending cards... ")
+
             window.onload = append_capability(all_capability);
             window.onload = append_talent(all_talents);
         }
@@ -354,7 +351,6 @@
             var s = $("#capability_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            // console.log(s);
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
@@ -362,7 +358,6 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
-                // console.log(newItem)
                 //Populate it
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
@@ -378,7 +373,7 @@
             var s = $("#talent_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            // console.log(s);
+
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
@@ -386,7 +381,6 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
-                // console.log(newItem)
 
                 //Populate it
                 $(newItem).find(".talent_name").html(object.name);
