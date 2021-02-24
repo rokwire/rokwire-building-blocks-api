@@ -36,9 +36,12 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
-
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
+    return render_template('contribute/home.html')
+
+@app.route("/login")
+def login():
     """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")

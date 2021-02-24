@@ -250,7 +250,11 @@
     <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Contribute</a>
 
-    <div class="navbar-right" id="nav_greeting">
+    <div class="navbar-right" id="nav_login">
+        <a href="{{ url_for('contribute.home') }}">Login</a>
+    </div>
+    <div class="navbar-right" id="nav_greeting" user="{{ user }}" style="display: none">
+        <meta id="nav-user-data" username="{{user}}">
         <a >Hello, {{ user }}!</a>
     </div>
 
@@ -306,7 +310,19 @@
 
     <script>
         function start(){
-
+            var user_name = "{{user}}";
+            // var user_name = $('#nav-user-data').data("user");
+            console.log(user_name)
+            // alert(user_name)
+            var nav_login = document.getElementById('nav_login');
+            var nav_user = document.getElementById('nav_greeting')
+            if (user_name.length > 0){
+                nav_login.style.display = 'none';
+                nav_user.style.display = 'block';
+            }else{
+                nav_login.style.display = 'block';
+                nav_user.style.display = 'none';
+            }
             ajax('GET', get_cap_url, null,
                     function (res) {
                         var items = JSON.parse(res);
