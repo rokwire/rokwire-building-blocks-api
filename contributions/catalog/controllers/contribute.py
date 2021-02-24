@@ -4,16 +4,17 @@ import traceback
 # from app import app
 import requests
 from flask import (
-    Blueprint, render_template, request, session
+    Blueprint, render_template, request, session, redirect, url_for
 )
+from requests_oauthlib import OAuth2Session
 
+from controllers.config import Config as cfg
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
-
 def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
@@ -21,7 +22,25 @@ def home():
         result = request.form.to_dict(flat=False)
         print(result)
         # search(result)
-    return render_template('contribute/home.html', user=session["name"])
+    if "name" in session:
+        return render_template('contribute/home.html', user=session["name"])
+    else:
+        return render_template('contribute/home.html')
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    print("login.")
+    """Step 1: Get the user identify for authentication.
+    """
+    # print("Step 1: User Authorization")
+    github = OAuth2Session(cfg.CLIENT_ID)
+    authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
+
+    # State is used to prevent CSRF.
+    session['oauth_state'] = state
+    print(session)
+    return redirect(authorization_url)
+
 
 
 @bp.route('/results', methods=['POST', 'GET'])
@@ -48,9 +67,16 @@ def create():
         print(json_contribution)
         response, s = post(json_contribution)
         if response:
-            return render_template('contribute/submitted.html', user=session["name"])
+            if "name" in session:
+                return render_template('contribute/submitted.html', user=session["name"])
+            else:
+                return render_template('contribute/submitted.html')
         elif not response:
-            return render_template('contribute/error.html', user=session["name"], error_msg=s)
+            if "name" in session:
+                return render_template('contribute/error.html', user=session["name"], error_msg=s)
+            else:
+                return render_template('contribute/error.html', error_msg=s)
+
     return render_template('contribute/contribute.html', user=session["name"])
 
 @bp.errorhandler(404)
