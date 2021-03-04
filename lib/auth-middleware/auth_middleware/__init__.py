@@ -23,6 +23,7 @@ import jwt
 import requests
 from connexion.exceptions import OAuthProblem
 from flask import request, g
+from requests_oauthlib import OAuth2Session
 
 logger = logging.getLogger(__name__)
 # First cut. This is a list of secrets (eventually this can come from a database and setting it is effectively caching it)
@@ -46,6 +47,8 @@ ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
 
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
 def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
@@ -309,3 +312,26 @@ def use_security_token_auth(func):
 #         abort(401)
 #     request.user_token_data = id_info
 #     return
+
+def verify_githubauth(token_str):
+    authorization_base_url = 'https://github.com/login/oauth/authorize'
+    token_url = 'https://github.com/login/oauth/access_token'
+
+    id_info = None
+    if not token_str:
+        logger.warning("Request missing id token")
+        raise OAuthProblem('Missing id token')
+    try:
+        access_token = {'access_token': token_str, 'token_type': 'bearer', 'scope': ['']}
+        github = OAuth2Session(CLIENT_ID, token=access_token)
+        resp = github.get('https://api.github.com/user')
+        if resp.status_code == 200:
+            id_info = resp.json()
+        else:
+            logger.warning("The token provides is invalid")
+            raise OAuthProblem('Invalid token')
+    except:
+        logger.warning("The token provides is invalid")
+        raise OAuthProblem('Invalid token')
+
+    return id_info
