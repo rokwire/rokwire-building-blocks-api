@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.1] - 2021-02-22
+### Fixed
+- Fix Docker build errors. [#633](https://github.com/rokwire/rokwire-building-blocks-api/issues/633)
+
 ## [1.9.0] - 2020-12-17
 ### Fixed
 - Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)

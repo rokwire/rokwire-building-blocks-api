@@ -1,4 +1,4 @@
-FROM python:3-alpine3.11
+FROM python:3-alpine3.12
 
 LABEL maintainer="bing@illinois.edu"
 
@@ -11,7 +11,7 @@ COPY lib /lib/
 
 
 RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
-  apk --update add --virtual build-dependencies libffi-dev openssl-dev python3-dev py3-pip build-base && \
+  apk --update add --virtual build-dependencies libffi-dev openssl-dev python3-dev py3-pip musl-dev cargo build-base && \
   pip install --upgrade pip && \
   pip install -r /app/eventservice/requirements.txt --no-cache-dir && \
   apk del build-dependencies
