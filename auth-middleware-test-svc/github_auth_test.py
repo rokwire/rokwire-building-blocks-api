@@ -39,12 +39,6 @@ def verify_githubauth(token_str):
 #     import subprocess
 #     import sys
 #
-#     OAUTHLIB_INSECURE_TRANSPORT = 1
-#     client_id = '2a69c1599c6781c0193c'
-#     client_secret = '1570427e38abf0d593288af886c8eabe7788d139'
-#     authorize_url = 'https://github.com/login/oauth/authorize'
-#     token_url = 'https://github.com/login/oauth/access_token'
-#
 #     # callback url specified when the application was defined
 #     callback_uri = "http://localhost:5050/contributions/catalog/auth/callback"
 #     test_api_url = "<<the URL of the API you want to call, along with any parameters, goes here>>"
