@@ -12,8 +12,8 @@ from models.contribution_utilities import to_contribution
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
-
 @bp.route('/', methods=['GET', 'POST'])
+
 def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():

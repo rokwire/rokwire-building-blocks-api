@@ -46,6 +46,12 @@ paths:
       summary: Return existing Contributions based on search criteria
       tags:
        - Contributions
+      parameters:
+        - name: name
+          in: query
+          description: Contribution Name
+          schema:
+            type: string
       responses:
         200:
           description: Search results
@@ -67,6 +73,12 @@ paths:
       operationId: controllers.contributions.alltalentssearch
       tags:
        - Talents
+      parameters:
+        - name: name
+          in: query
+          description: Talent Name
+          schema:
+            type: string
       responses:
         200:
           description: Search results
@@ -87,7 +99,13 @@ paths:
       summary: Return existing Capabilities based on search criteria
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
-        - Contribution
+        - Capabilities
+      parameters:
+        - name: name
+          in: query
+          description: Capability Name
+          schema:
+            type: string
       responses:
         200:
           description: Search results
