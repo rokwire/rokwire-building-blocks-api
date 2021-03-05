@@ -10,8 +10,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-CLIENT_ID = os.getenv('CLIENT_ID', '')
-CLIENT_SECRET = os.getenv('CLIENT_SECRET', '')
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID', '')
 
 def verify_githubauth(token_str):
     id_info = None
@@ -20,7 +19,7 @@ def verify_githubauth(token_str):
         raise OAuthProblem('Missing id token')
     try:
         access_token = {'access_token': token_str, 'token_type': 'bearer', 'scope': ['']}
-        github = OAuth2Session(CLIENT_ID, token=access_token)
+        github = OAuth2Session(GITHUB_CLIENT_ID, token=access_token)
         resp = github.get('https://api.github.com/user')
         if resp.status_code == 200:
             id_info = resp.json()

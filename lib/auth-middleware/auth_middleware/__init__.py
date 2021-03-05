@@ -47,8 +47,7 @@ ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
 
-CLIENT_ID = os.getenv('CLIENT_ID')
-CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
 
 def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
@@ -323,10 +322,12 @@ def verify_githubauth(token_str):
         raise OAuthProblem('Missing id token')
     try:
         access_token = {'access_token': token_str, 'token_type': 'bearer', 'scope': ['']}
-        github = OAuth2Session(CLIENT_ID, token=access_token)
+        github = OAuth2Session(GITHUB_CLIENT_ID, token=access_token)
         resp = github.get('https://api.github.com/user')
         if resp.status_code == 200:
             id_info = resp.json()
+            # Store ID info for future references in the current request context.
+            g.user_token_data = id_info
         else:
             logger.warning("The token provides is invalid")
             raise OAuthProblem('Invalid token')

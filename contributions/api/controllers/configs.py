@@ -35,5 +35,5 @@ CAPABILITY_COLL_NAME = os.getenv('CAPABILITY_COLL_NAME', 'capabilities')
 FIELD_OBJECTID = '_id'
 FIELD_NAME = 'name'
 
-CLIENT_ID = os.getenv('CLIENT_ID', '')
-CLIENT_SECRET = os.getenv('CLIENT_SECRET', '')
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID', '')
+GITHUB_CLIENT_SECRET = os.getenv('GITHUB_CLIENT_SECRET', '')
