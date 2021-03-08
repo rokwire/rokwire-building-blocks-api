@@ -318,8 +318,10 @@ def pii_post():
             if tk_auth == "oidc":
                 dataset = mongoutils.get_pii_dataset_from_field("uin", tk_uid)
             elif tk_auth == "rokwire_phone":
-                dataset = mongoutils.get_pii_dataset_from_field("phone", tk_phone)
-            dataset.set_uid(tk_uid)
+                dataset = mongoutils.get_pii_dataset_from_field(
+                    "phone", tk_phone)
+            if dataset:
+                dataset.set_uid(tk_uid)
 
         # if there is a dataset, it means that the email is existing in the database
         if dataset is not None:
