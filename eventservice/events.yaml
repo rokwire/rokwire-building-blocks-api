@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.8.0
+  version: 1.9.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -22,9 +22,10 @@ paths:
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
 
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
+        - UserAuth: []
       parameters:
       - name: title
         in: query
@@ -236,9 +237,10 @@ paths:
       description: |
         Get the event record matching the eventId.
 
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
+        - UserAuth: []
       parameters:
       - name: event_id
         in: path
@@ -474,9 +476,10 @@ paths:
       - Events
       summary: Get IDs of all images associated with the requested event.
       description: |
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
+        - UserAuth: []
       parameters:
         - name: event_id
           in: path
@@ -553,9 +556,10 @@ paths:
       - Events
       summary: Download an event image by providing the IDs of the event and the image.
       description: |
-        Auth: Requires a valid API Key for access.
+        Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
+        - UserAuth: []
       parameters:
       - name: event_id
         in: path
