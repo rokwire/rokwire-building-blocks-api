@@ -8,7 +8,6 @@
     <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
 
 </head>
-<body>
 
 
 <style>
@@ -246,7 +245,7 @@
 
 
 </style>
-
+<body onload=start()>
 <div class="navbar" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
     <a href="{{ url_for('contribute.create') }}">Contribute</a>
@@ -265,13 +264,12 @@
     </div>
 
     <div id="myBtnContainer">
-        <button class="btn active" onclick="filterSelection('all')"> Show All </button>
-        <button class="btn" onclick="filterSelection('capability')"> Capabilities </button>
-        <button class="btn" onclick="filterSelection('talent')"> Talents </button>
+        <button class="btn active" id="all_btn" onclick="filterSelection('all')"> Show All </button>
+        <button class="btn" id="capability_btn" onclick="filterSelection('capability')"> Capabilities </button>
+        <button class="btn" id="talent_btn" onclick="filterSelection('talent')"> Talents </button>
         <div class="form-group pull-right">
             <form action="http://localhost:5050/contribute/results" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
-                <!--            <input id="searchbar" name="search" placeholder="Search by id..." type="text">-->
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">
             </form>
         </div>
@@ -282,7 +280,6 @@
                 <div class="column capability">
 
                     <div class="content">
-                        <!--                    <img class="capability_icon" src="" style="width:100%">-->
                         <h4 class="capability_name"></h4>
                         <p class="capability_description"></p>
                         <p class="contributors"></p>
@@ -290,6 +287,7 @@
                     </div>
                 </div>
             </script>
+
             <script id="talent_template" type="text/template">
                 <div class="column talent">
                     <div class="content">
@@ -307,60 +305,41 @@
     </div>
 
     <script>
-        var all_capability = [];
-        var all_talents = [];
-        var get_talent_url = "http://localhost:5000/contributions/talents";
-        var get_cap_url = "http://localhost:5000/contributions/capabilities";
+        function start(){
 
-        $(document).ready(function(){
-            var settings = {
-                      'cache': false,
-                      'dataType': "jsonp",
-                      "async": true,
-                      "crossDomain": true,
-                      "url": get_cap_url,
-                      "method": "GET",
-                      "headers": {
-                          "accept": "application/json",
-                          "Access-Control-Allow-Origin":"*"
-                      }
-                  }
+            ajax('GET', get_cap_url, null,
+                    function (res) {
+                        var items = JSON.parse(res);
+                        all_capability = items
+                        append_capability(all_capability);
+                        filterSelection('all');
+                    },
+                    function () {
+                        console.log("error occured - capability");
+                    });
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_capability = response;
-              });
+            ajax('GET', get_talent_url, null,
+                    function (res) {
+                        var items = JSON.parse(res);
 
-            var settings = {
-                  'cache': false,
-                  'dataType': "jsonp",
-                  "async": true,
-                  "crossDomain": true,
-                  "url": get_talent_url,
-                  "method": "GET",
-                  "headers": {
-                      "accept": "application/json",
-                      "Access-Control-Allow-Origin":"*"
-                  }
-              }
+                        all_talents = items
+                        append_talent(all_talents);
+                        filterSelection('all');
+                    },
+                    function () {
+                        console.log("error occured talent" );
+            });
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_talents = response
-              });
-
-
-            append_capability(all_capability);
-            append_talent(all_talents);
-            filterSelection("all");
-            // append_capability(sample_contribution.capabilities);
-            // append_talent(sample_contribution.talents);
-        });
-
-        function parse_data(data) {
-            var cap_list = [];
-            var tal_list = [];
+            window.onload = append_capability(all_capability);
+            window.onload = append_talent(all_talents);
         }
+
+        var all_capability = [];
+        var all_talents = []
+        var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
+        var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
+
+
 
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
@@ -371,7 +350,6 @@
             var s = $("#capability_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            console.log(s);
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
@@ -379,18 +357,11 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
-                console.log(newItem)
-
                 //Populate it
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                console.log(newItem)
-                //Append it
+
                 $("#grid-view").append(newItem);
 
             });
@@ -401,7 +372,7 @@
             var s = $("#talent_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            console.log(s);
+
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
@@ -409,17 +380,12 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
-                console.log(newItem)
 
                 //Populate it
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                console.log(newItem);
+
                 //Append it
                 $("#grid-view").append(newItem);
 
@@ -445,28 +411,11 @@
             }
         }
 
-        function get_data() {
-            var url = "http://localhost:5000/contributions"
-            var req = JSON.stringify({})
-
-            ajax('GET', url, data,
-                function (res) {
-                    var items = JSON.parse(res);
-                    if (!items || items.length == 0) {
-                        console.log("no data");
-                    } else {
-
-                    }
-                },
-                function () {
-                    console.log("error occured");
-                });
-        }
 
         function filterSelection(c) {
             var x, i;
             x = document.getElementsByClassName("column");
-            if (c == "all") c = "";
+            if (c === "all") c = "";
             for (i = 0; i < x.length; i++) {
                 w3RemoveClass(x[i], "show");
                 if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
@@ -496,8 +445,6 @@
             element.className = arr1.join(" ");
         }
 
-
-
         // Add active class to the current button (highlight it)
         var btnContainer = document.getElementById("myBtnContainer");
         var btns = btnContainer.getElementsByClassName("btn");
@@ -508,14 +455,6 @@
                 this.className += " active";
             });
         }
-
-        // document.getElementById("searchbar").addEventListener("keyup", function (event) {
-        //     if (event.keyCode === 13) {
-        //         event.preventDefault();
-        //         document.getElementById("myBtn").click();
-        //     }}
-        // );
-
 
     </script>
 
