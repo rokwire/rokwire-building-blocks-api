@@ -819,6 +819,10 @@ components:
         isVirtual:
           type: boolean
           description: Setting this to true will indicate that the event is virtual. This flag can then be used to ignore geocoding calculation or displaying a physical location in the app.
+        createdByGroupId:
+          type: string
+          format: uuid
+          description: This field stores information about an entity that created this event.
     SubEventDetails:
       type: object
       properties:
