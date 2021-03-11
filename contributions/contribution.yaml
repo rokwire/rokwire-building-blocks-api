@@ -304,7 +304,7 @@ components:
           type: array
           items:
             type: string
-            minItems: 10
+            minItems: 1
         dateCreated:
           type: string
           format: date-time
