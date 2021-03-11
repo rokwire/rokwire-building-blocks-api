@@ -5,108 +5,23 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
-
+<!--    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">-->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
+    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-
 <style>
-
-    .navbar {
-        overflow: hidden;
-        background-color: #2a4b45;
-        position: fixed;
-        top: 0;
-        width: 100%;
-    }
-
-    .navbar a {
-        float: left;
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-
-    .navbar a:hover {
-        background: #4c4c4c;
-        color: white;
-    }
-
-    .navbar a.act {
-        background-color: #88aeaf;
-        color: white;
-    }
-
-    .navbar-right {
-        float: right;
-        margin-right: 25px;
-    }
-
-    /*.dropbtn {*/
-    /*  background-color: #3498DB;*/
-    /*  color: white;*/
-    /*  padding: 16px;*/
-    /*  font-size: 16px;*/
-    /*  border: none;*/
-    /*  cursor: pointer;*/
-    /*}*/
-
-    /*.dropbtn:hover, .dropbtn:focus {*/
-    /*  background-color: #2980B9;*/
-    /*}*/
-
-    /*.dropdown {*/
-    /*  position: relative;*/
-    /*  display: inline-block;*/
-    /*}*/
-
-    /*.dropdown-content {*/
-    /*  display: none;*/
-    /*  position: absolute;*/
-    /*  background-color: #f1f1f1;*/
-    /*  min-width: 160px;*/
-    /*  overflow: auto;*/
-    /*  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
-    /*  z-index: 1;*/
-    /*}*/
-
-    /*.dropdown-content a {*/
-    /*  color: black;*/
-    /*  padding: 12px 16px;*/
-    /*  text-decoration: none;*/
-    /*  display: block;*/
-    /*}*/
-
-    /*.dropdown a:hover {background-color: #ddd;}*/
-
+            /* Center website */
     .main {
-        padding: 30px;
-        margin-top: 90px;
-        height: 1500px;
-    }
-
-    /* Center website */
-    .main {
+        margin-top: 500px;
+        position: relative;
         max-width: 1000px;
         margin: auto;
     }
-
-
-    /* Center website */
-    .main {
-        max-width: 1000px;
-        margin: auto;
-    }
-
-    h1 {
-        font-size: 50px;
-        word-break: break-all;
-    }
-
-    .row {
+     .row {
         margin: 10px -16px;
     }
 
@@ -130,50 +45,10 @@
         clear: both;
     }
 
-    /* the card feature */
-    .content {
-        background-color: #eaefee;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-
-        img:hover {
-            opacity: 0.5;
-        }
-
-    }
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    p {
-
-        font-family: 'Noto Sans KR', sans-serif;
-        font-weight: 100;
-        letter-spacing: -0.25px;
-        line-height: 1.25;
-        font-size: 16px;
-        word-break: break-all;
-        -webkit-animation-name: p-show; /* Safari 4.0 - 8.0 */
-        -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
-        animation-name: p-show;
-        animation-duration: 1.5s;
-    }
-
-    /* The "show" class is added to the filtered elements */
-    .show {
-        display: block;
-    }
-
-    /* Style the buttons */
+        /* Style the buttons */
     .btn {
-        margin-top: 12px;
+        position: relative;
+        margin-top: 20px;
         border: none;
         outline: none;
         padding: 12px 16px;
@@ -191,46 +66,12 @@
         color: white;
     }
 
-    .navbar input[type=text] {
-        float: right;
-        padding: 6px;
-        border: none;
-        font-size: 17px;
-    }
 
-    .navbar .search-container button {
-        float: right;
-        padding: 6px 10px;
-        margin-top: 8px;
-        margin-right: 16px;
-        background: #ddd;
-        font-size: 17px;
-        border: none;
-        cursor: pointer;
-        display: none;
-    }
 
-    .navbar .search-container button:hover {
-        background: #ccc;
-    }
 
-    @media screen and (max-width: 600px) {
-        .navbar .search-container {
-            float: none;
-        }
-
-        .navbar a, .navbar input[type=text], .navbar .search-container button {
-            float: none;
-            display: block;
-            text-align: left;
-            width: 100%;
-            margin: 0;
-            padding: 14px;
-        }
-
-        .navbar input[type=text] {
-            border: 1px solid #ccc;
-        }
+    h1 {
+        font-size: 50px;
+        word-break: break-all;
     }
 
     #header {
@@ -238,73 +79,103 @@
         /*padding: 30px;*/
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
         background-repeat: no-repeat;
-        height: 20%;
+        /*height: 30%;*/
+        /*width: 52%;*/
+        height: 250px;
+        width: 1000px;
         background-position: center;
         background-size: auto;
-        /*position: fixed;*/
+        display: flex;
+        /*position: ;*/
     }
 
     #title {
         text-align: center;
         position: relative;
-        top: 25%;
-        /*left: 50%;*/
+        top: 50%;
+        left: 15%;
         transform: translate(-25%, -25%);
         color: white;
     }
 
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
-    body {
-        background: #f2f2f2;
-        font-family: 'Open Sans', sans-serif;
-    }
-
     .search {
         width: 100%;
         position: relative;
         display: flex;
     }
 
-
-    /*Resize the wrap to see the search bar change!*/
-    .wrap {
-        width: 30%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+        background-color: #2a4b45;
     }
 
-    body {
-        padding: 20px 20px;
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: #2a4b45;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  /*z-index: 1;*/
+}
+
+.dropdown-content a {
+  float: right;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+    padding-right: 50px;
+    padding-left: 50px;
+  text-align: right;
+}
+
+.dropdown-content a:hover {
+  background-color: #f4f7f5;
+    border: grey;
+    border-radius: 5%;
+}
+
+.show {
+  display: block;
+}
+
+    /* the card feature */
+    .content {
+        background-color: #eaefee;
+        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
+        height: 160px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        transition-duration: 0.2s;
+        border: none;
+        border-radius: 4px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+     }
+
+    .content:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
-
-
 </style>
+
 <body onload=start()>
-<div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
-    <a href="{{ url_for('contribute.create') }}">Contribute</a>
+<div class="topnav" id="myTopnav">
+    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+    <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
 
-    <div class="navbar-right" id="nav_login">
-        <a href="{{ url_for('contribute.login') }}">Login</a>
+    <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
+        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
     </div>
-    <div class="navbar-right" id="nav_greeting" user="{{ user }}" style="display: none">
+
+    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
         <meta id="nav-user-data" user="{{user}}">
-        <a >Hello, {{ user }}! </a>
+            <a id="user_profile" class="dropbtn"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
     </div>
-
-<!--    <div class="dropdown ">-->
-<!--      <button onclick="myFunction()" class="dropbtn">Dropdown</button>-->
-<!--      <div id="myDropdown" class="dropdown-content">-->
-<!--        <a href="#logout">Logout</a>-->
-
-<!--      </div>-->
-<!--    </div>-->
-
-
 </div>
+
+       <div id="myDropdown" class="dropdown-content" style="display: none">
+                <a href="{{ url_for('contribute.logout') }}">Logout</a>
+       </div>
 
 <!-- MAIN (Center website) -->
 <div class="main">
@@ -312,7 +183,8 @@
         <h2 id="title"> Contributions Catalog/Packager </h2>
     </div>
 
-    <div id="myBtnContainer">
+    <div id="myBtnContainer" >
+
         <button class="btn active" id="all_btn" onclick="filterSelection('all')"> Show All </button>
         <button class="btn" id="capability_btn" onclick="filterSelection('capability')"> Capabilities </button>
         <button class="btn" id="talent_btn" onclick="filterSelection('talent')"> Talents </button>
@@ -354,25 +226,6 @@
     </div>
 
     <script>
-        /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
-        function myFunction() {
-          document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
-          }
-        }
 
         function start(){
             var user_name = "{{user}}";
@@ -380,13 +233,16 @@
             console.log(user_name)
             // alert(user_name)
             var nav_login = document.getElementById('nav_login');
-            var nav_user = document.getElementById('nav_greeting')
+            var nav_greet = document.getElementById('nav_greeting')
+            var nav_user  = document.getElementById('user_profile')
             if (user_name.length > 0){
                 nav_login.style.display = 'none';
+                nav_greet.style.display = 'block';
                 nav_user.style.display = 'block';
             }else{
                 nav_login.style.display = 'block';
-                nav_user.style.display = 'none';
+                nav_greet.style.display = 'none';
+                nav_user.style.display = 'block';
             }
             ajax('GET', get_cap_url, null,
                     function (res) {
@@ -414,6 +270,25 @@
 
             window.onload = append_capability(all_capability);
             window.onload = append_talent(all_talents);
+        }
+        var user_icon = document.getElementById('user_profile');
+        user_icon.addEventListener('click', function (){
+            if (user_icon.style.display === 'block'){
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+        })
+
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
         }
 
         var all_capability = [];

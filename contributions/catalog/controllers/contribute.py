@@ -41,7 +41,10 @@ def login():
     print(session)
     return redirect(authorization_url)
 
-
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return render_template('contribute/home.html')
 
 @bp.route('/results', methods=['POST', 'GET'])
 def result():

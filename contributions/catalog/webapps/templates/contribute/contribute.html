@@ -8,8 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--    <link rel="stylesheet" href="css/style.css">-->
-    <!--    <link rel="stylesheet" href="css/bar.css">-->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
@@ -22,10 +20,10 @@
 <body>
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
-        <a href="{{ url_for('contribute.create') }}">Contribute</a>
+        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
         <div style="float: right; margin-right: 25px;">
-            <a >Hello, {{ user }}!</a>
+            <a ><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}!</a>
         </div>
     </div>
     <div>
