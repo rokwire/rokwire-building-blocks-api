@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
 
+## [1.9.1] - 2021-02-22
+### Fixed
+- Fix Docker build errors. [#633](https://github.com/rokwire/rokwire-building-blocks-api/issues/633)
+
 ## [1.9.0] - 2020-12-17
 ### Fixed
 - Fix the error code to 400 on events missing fields query. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
@@ -312,7 +316,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...HEAD
+[1.9.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0
