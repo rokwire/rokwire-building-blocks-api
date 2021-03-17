@@ -822,7 +822,7 @@ components:
         createdByGroupId:
           type: string
           format: uuid
-          description: This field stores information about an entity that created this event.
+          description: For an event created by a Rokwire group, this field stores the group ID.
     SubEventDetails:
       type: object
       properties:
