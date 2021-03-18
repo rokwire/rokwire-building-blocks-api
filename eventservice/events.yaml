@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.9.0
+  version: 1.9.1
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -819,6 +819,10 @@ components:
         isVirtual:
           type: boolean
           description: Setting this to true will indicate that the event is virtual. This flag can then be used to ignore geocoding calculation or displaying a physical location in the app.
+        createdByGroupId:
+          type: string
+          format: uuid
+          description: For an event created by a Rokwire group, this field stores the group ID.
     SubEventDetails:
       type: object
       properties:
