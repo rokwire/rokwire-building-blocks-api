@@ -209,7 +209,7 @@ def _get_event_result(query):
         {'_id': 0, 'coordinates': 0, 'categorymainsub': 0}
     )
 
-    return flask.json.dumps(event), (not event is None)
+    return flask.json.dumps(event, default=query_params.format_datetime_response), (not event is None)
 
 
 def post():
