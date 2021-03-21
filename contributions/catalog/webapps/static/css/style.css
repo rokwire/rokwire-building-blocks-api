@@ -328,3 +328,39 @@ hr.dotted {
 }
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+
+    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+        background-color: #2a4b45;
+    }
+
+.dropdown-content {
+    display: none;
+    position: relative;
+    background-color: #2a4b45;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    /*z-index: 1;*/
+    cursor: pointer;
+}
+
+.dropdown-content a {
+    float: right;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    padding-right: 50px;
+    padding-left: 50px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover {
+  background-color: #f4f7f5;
+    border: grey;
+    border-radius: 5%;
+}
+.show {
+  display: block;
+}
+

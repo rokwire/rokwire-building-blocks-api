@@ -13,7 +13,39 @@
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
 
+    <style>
+            .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+        background-color: #2a4b45;
+    }
 
+.dropdown-content {
+    display: none;
+    position: relative;
+    background-color: #2a4b45;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    /*z-index: 1;*/
+    cursor: pointer;
+}
+
+.dropdown-content a {
+    float: right;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    padding-right: 50px;
+    padding-left: 50px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover {
+  background-color: #f4f7f5;
+    border: grey;
+    border-radius: 5%;
+}
+    </style>
 </head>
 
 
@@ -22,9 +54,14 @@
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
         <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-        <div style="float: right; margin-right: 25px;">
-            <a ><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}!</a>
+        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
+            <meta id="nav-user-data">
+                <a id="user_profile" class="dropbtn"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
         </div>
+
+        <div id="myDropdown" class="dropdown-content" style="display: none">
+                <a href="{{ url_for('contribute.logout') }}">Logout</a>
+       </div>
     </div>
     <div>
         <nav>
@@ -660,8 +697,6 @@
                 datadel_api.required = true;
                 return false;
             }
-
-
         } else {
             var talent_des = document.getElementById("talent_description");
             if (talent_des.value == "") {
@@ -675,10 +710,7 @@
         //success
         // window.location.href = "/contribute";
         var x = document.getElementById('submit-pop').innerHTML = "The contribution form has been submitted!";
-
-
     }
-
 
     function show_person() {
         var x = document.getElementById("contributor");
@@ -788,6 +820,25 @@
         });
     });
 
+        var user_icon = document.getElementById('user_profile');
+        user_icon.addEventListener('click', function (){
+            if (user_icon.style.display === 'block'){
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+        })
+
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
 
 </script>
 </html>
