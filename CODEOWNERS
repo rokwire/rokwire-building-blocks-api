@@ -22,3 +22,10 @@
 
 # Profile Building Block
 /profileservice/    @ywkim312
+
+# Contributions Building Block
+/contributions/*    @ywkim312
+/contributions/api/    @ywkim312
+
+# Contributions Catalog
+/contributions/catalog/    @wenjzhu
