@@ -16,7 +16,6 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-    print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
         print("searching...")
         result = request.form.to_dict(flat=False)
@@ -29,7 +28,6 @@ def home():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    print("login.")
     """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")
