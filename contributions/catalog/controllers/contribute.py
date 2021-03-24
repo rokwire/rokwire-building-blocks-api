@@ -11,6 +11,7 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
+from utils import jsonutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -65,9 +66,11 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # print(contribution)
+
+        # add contributionAdmins to the json_contiubtion
+        contribution = jsonutil.add_contribution_admins(contribution)
+
         json_contribution = json.dumps(contribution, indent=4)
-        print(json_contribution)
         response, s = post(json_contribution)
         if response:
             if "name" in session:
@@ -101,7 +104,7 @@ def search_results(search):
 def post(json_data):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
     }
     try:
         # Setting up post request
