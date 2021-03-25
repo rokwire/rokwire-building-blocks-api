@@ -50,7 +50,7 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    print(session)
+    # print(session)
     return redirect(authorization_url)
 
 
@@ -75,7 +75,7 @@ def profile():
     # print("Fetching a protected resource using an OAuth 2 token")
     github = OAuth2Session(cfg.CLIENT_ID, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
-    print(resp.json())
+    # print(resp.json())
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
     return render_template('contribute/home.html', user=session["name"])
