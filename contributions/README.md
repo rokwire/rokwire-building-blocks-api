@@ -100,9 +100,6 @@ The app will post with given information to the endpoint
 curl -X POST -d `{
                    "shortDescription":"Short description of the contribution",
                    "name":"test",
-                   "contributionAdmins": [
-                       "adminuser"
-                   ],
                    "talents":null,
                    "capabilities":[
                       {
@@ -157,9 +154,6 @@ To update the information about the non-pii dataset, this method should be used
 curl -X PUT -d `{
                    "shortDescription":"Short description of the contribution",
                    "name":"test1",
-                   "contributionAdmins": [
-                       "adminuser"
-                   ],
                    "talents":[
                        {
                           "name":"talent 1",
@@ -426,9 +420,6 @@ API will return updated contribution dataset
        "dateModified":"2020/06/04T14:02:49",
        "longDescription":null,
        "name":"test1",
-       "contributionAdmins": [
-            "adminuser"
-        ],
        "talents":[
            {
               "name":"talent 1",
@@ -606,9 +597,6 @@ API will return the information of the contribution dataset
        "dateModified":"2020/06/04T14:02:49",
        "longDescription":null,
        "name":"test1",
-       "contributionAdmins": [
-            "adminuser"
-       ],
        "talents":[
            {
               "name":"talent 1",

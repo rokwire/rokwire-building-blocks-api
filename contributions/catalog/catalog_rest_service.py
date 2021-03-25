@@ -45,12 +45,12 @@ def login():
     """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID)
+    github = OAuth2Session(cfg.CLIENT_ID)
     authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
 
     # State is used to prevent CSRF.
-    session['oauth_state'] = state.strip()
-
+    session['oauth_state'] = state
+    print(session)
     return redirect(authorization_url)
 
 
@@ -61,11 +61,10 @@ def callback():
     """ Step 3: Retrieving an access token.
     """
     # print("Step 3: Retrieving an access token")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=session['oauth_state'])
-    token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
+    github = OAuth2Session(cfg.CLIENT_ID, state=session['oauth_state'])
+    token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
-    # print(session)
     return redirect(url_for('.profile'))
 
 @app.route("/profile", methods=["GET"])
@@ -74,11 +73,11 @@ def profile():
     Parsing the username to the seesion dict, to the templates to display.
     """
     # print("Fetching a protected resource using an OAuth 2 token")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID, token=session['oauth_token'])
+    github = OAuth2Session(cfg.CLIENT_ID, token=session['oauth_token'])
     resp = github.get('https://api.github.com/user')
+    print(resp.json())
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
-
     return render_template('contribute/home.html', user=session["name"])
 
 

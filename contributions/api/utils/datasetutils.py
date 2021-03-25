@@ -31,11 +31,6 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_contribution_admins(injson['contributionAdmins'])
-        del outjson['contributionAdmins']
-    except:
-        pass
-    try:
         dataset.set_short_description(injson['shortDescription'])
         del outjson['shortDescription']
     except:
