@@ -39,6 +39,7 @@ db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 
 def post():
+    auth_resp = g.user_token_data
     is_new_install = True
     in_json = None
 
@@ -68,6 +69,31 @@ def post():
         contribution_dataset, restjson = datasetutils.update_contribution_dataset_from_json(contribution_dataset, in_json)
         contribution_dataset.set_date_created(currenttime)
         contribution_dataset.set_date_modified(currenttime)
+
+        # get contribution admins, if failed it is a bad request
+        contribution_admins = in_json['contributionAdmins']
+
+        # get contribution_admins value from the list
+        # doing this because connexion's minItems doesn't work, otherwise this is not needed
+        if len(contribution_admins) == 0:
+            msg = {
+                "reason": "Contribution admin list is empty.",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
+
+        # check if the logged in user's login is included in contribution admin list
+        is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+        if not is_admin_user:
+            msg = {
+                "reason": "Contribution admin list must contain logged in user",
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
         # set contributors list
         contributors_list = []
@@ -124,6 +150,7 @@ def post():
 
 def search(name=None):
     # args = request.args
+    auth_resp = g.user_token_data
     query = dict()
     is_list = False
 
@@ -178,6 +205,7 @@ def get(id):
     return out_json
 
 def put(id):
+    auth_resp = g.user_token_data
     try:
         in_json = request.get_json()
     except Exception as ex:
@@ -199,6 +227,19 @@ def put(id):
         msg_json = jsonutils.create_log_json("Contribution", "PUT", msg)
         logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
+    contribution_admins = contribution_dataset.contributionAdmins
+
+    # check if the logged in user's login is included in contribution admin list
+    is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+    if not is_admin_user:
+        msg = {
+            "reason": "Contribution admin list must contain logged in user",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+        logging.error("Contribution POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
     date_created = contribution_dataset.dateCreated
     contribution_dataset, restjson = datasetutils.update_contribution_dataset_from_json(contribution_dataset, in_json)
@@ -239,9 +280,23 @@ def put(id):
     return out_json
 
 def delete(id):
+    auth_resp = g.user_token_data
+
     data_list, is_objectid, is_error, resp = get_data_list(id)
+    contribution_admins = data_list[0]['contributionAdmins']
     if is_error:
         return resp
+
+    # check if the logged in user's login is included in contribution admin list
+    is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+    if not is_admin_user:
+        msg = {
+            "reason": "Contribution admin list must contain logged in user",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+        logging.error("Contribution POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
     if (is_objectid):
         coll_contribution.delete_one({cfg.FIELD_OBJECTID: ObjectId(id)})
@@ -596,3 +651,11 @@ def get_data_list(name):
         resp = rs_handlers.not_found(msg_json)
 
     return None, None, True, resp
+
+def check_login_admin(login, inlist):
+    is_admin = False
+    for user in inlist:
+        if login == user:
+            is_admin = True
+
+    return is_admin
