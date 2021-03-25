@@ -38,8 +38,7 @@ client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 
-def post():
-    auth_resp = g.user_token_data
+def post(token_info):
     is_new_install = True
     in_json = None
 
@@ -85,7 +84,7 @@ def post():
             return rs_handlers.bad_request(msg_json)
 
         # check if the logged in user's login is included in contribution admin list
-        is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+        is_admin_user = check_login_admin(token_info["login"], contribution_admins)
         if not is_admin_user:
             msg = {
                 "reason": "Contribution admin list must contain logged in user",
@@ -150,7 +149,7 @@ def post():
 
 def search(name=None):
     # args = request.args
-    auth_resp = g.user_token_data
+
     query = dict()
     is_list = False
 
@@ -204,8 +203,7 @@ def get(id):
 
     return out_json
 
-def put(id):
-    auth_resp = g.user_token_data
+def put(token_info, id):
     try:
         in_json = request.get_json()
     except Exception as ex:
@@ -231,7 +229,7 @@ def put(id):
     contribution_admins = contribution_dataset.contributionAdmins
 
     # check if the logged in user's login is included in contribution admin list
-    is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+    is_admin_user = check_login_admin(token_info["login"], contribution_admins)
     if not is_admin_user:
         msg = {
             "reason": "Contribution admin list must contain logged in user",
@@ -279,16 +277,14 @@ def put(id):
 
     return out_json
 
-def delete(id):
-    auth_resp = g.user_token_data
-
+def delete(token_info, id):
     data_list, is_objectid, is_error, resp = get_data_list(id)
     contribution_admins = data_list[0]['contributionAdmins']
     if is_error:
         return resp
 
     # check if the logged in user's login is included in contribution admin list
-    is_admin_user = check_login_admin(auth_resp["login"], contribution_admins)
+    is_admin_user = check_login_admin(token_info["login"], contribution_admins)
     if not is_admin_user:
         msg = {
             "reason": "Contribution admin list must contain logged in user",

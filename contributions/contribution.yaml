@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.9.0
+  version: 1.9.1
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -20,7 +20,7 @@ paths:
       tags:
        - Contributions
       security:
-        - GithubAuth: []
+        - GitHubAuth: []
       requestBody:
         description: Contribution data
         content:
@@ -215,7 +215,7 @@ paths:
       tags:
        - Contributions
       security:
-        - GithubAuth: []
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -246,7 +246,7 @@ paths:
       tags:
        - Contributions
       security:
-        - GithubAuth: []
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -526,9 +526,12 @@ components:
           nullable: true
           type: string
   securitySchemes:
-    GithubAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_githubauth
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    GitHubAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://github.com/login/oauth/authorize
+          tokenUrl: https://github.com/login/oauth/access_token
+          scopes: {}
+      x-tokenInfoUrl: https://api.github.com/user
+      description: The client must send a unexpired GitHub OAuth2 access_token in the Authorization header when making requests to API endpoints that require GitHub authentication.
