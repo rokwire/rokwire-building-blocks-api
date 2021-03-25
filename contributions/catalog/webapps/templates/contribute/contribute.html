@@ -557,6 +557,7 @@
             modal.style.display = "none";
           }
         }
+
     function data_validation() {
         var contribution_name = document.getElementById('contribution_name');
         if (contribution_name.value == "") {
@@ -602,9 +603,9 @@
             var deploy_location = document.getElementsByName('deploymentDetails_location')
 
             var deploy_internal = document.getElementById('deploy_internal')
-            console.log(deploy_internal.value)
+            // console.log(deploy_internal.value)
             var deploy_external = document.getElementById('deploy_external')
-            console.log(deploy_external.value)
+            // console.log(deploy_external.value)
             if (!deploy_internal.checked && !deploy_external.checked) {
                 window.alert("Please select deployed location.");
                 deploy_internal.focus();
@@ -618,15 +619,7 @@
                 dockerimage.required = true;
                 return false;
             }
-            // var env_keys = document.getElementsByName('environmentVariables_key');
-            // if (environmentVariables_key.va)
-            // var env_vars = document.getElementsByName('environmentVariables_value');
-            // console.log(env_keys.values())
-            // if (length(env_keys.values()) == 0 || length(env_vars.values()) == 0) {
-            //     window.alert("Please enter the env.");
-            //     env_keys[0].focus();
-            //     return false;
-            // }
+
             var db = document.getElementById('db-detail');
             if (db.value == "") {
                 // window.alert("Please enter the database details. ");

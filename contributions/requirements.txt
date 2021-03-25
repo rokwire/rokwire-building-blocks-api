@@ -3,10 +3,10 @@ Flask-Cors==3.0.10
 pymongo[tls,srv]==3.7.2
 requests==2.22.0
 pyjwt==1.7.1
-cryptography==3.2
+cryptography==3.3.2
 python-dotenv==0.10.3
 gunicorn==19.9.0
-gevent==1.4.0
+gevent==20.9.0
 connexion[swagger-ui]==2.4.0
 
 ../lib/auth-middleware
