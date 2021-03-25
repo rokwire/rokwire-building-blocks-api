@@ -149,7 +149,7 @@ def post(token_info):
 
 def search(name=None):
     # args = request.args
-    auth_resp = g.user_token_data
+
     query = dict()
     is_list = False
 
