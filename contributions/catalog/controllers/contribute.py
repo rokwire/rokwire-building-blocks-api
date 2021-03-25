@@ -17,9 +17,11 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
+    print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
+        print("searching...")
         result = request.form.to_dict(flat=False)
-        # print(result)
+        print(result)
         # search(result)
     if "name" in session:
         return render_template('contribute/home.html', user=session["name"])
@@ -28,14 +30,16 @@ def home():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    print("login.")
     """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID)
+    github = OAuth2Session(cfg.CLIENT_ID)
     authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
-    # print(state)
+
     # State is used to prevent CSRF.
-    session['oauth_state'] = state.strip()
+    session['oauth_state'] = state
+    print(session)
     return redirect(authorization_url)
 
 @bp.route('/logout')
@@ -47,7 +51,9 @@ def logout():
 def result():
     if request.method == 'POST':
         # result = request.form
+        print("searching...")
         result = request.form.to_dict()
+        print(result)
         query = result['search']
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
@@ -107,11 +113,11 @@ def post(json_data):
                                data=json_data)
 
         if result.status_code != 200:
-            # print("post method fails".format(json_data))
-            # print("with error code:", result.status_code)
+            print("post method fails".format(json_data))
+            print("with error code:", result.status_code)
             return False, str("post method fails with error: ")+str(result.status_code)
         else:
-            # print("posted ok.".format(json_data))
+            print("posted ok.".format(json_data))
             return True, str("post success!")
 
     except Exception:
@@ -137,11 +143,11 @@ def search(input_data):
                                   headers=headers)
 
         if result.status_code != 200:
-            # print("post method fails".format(input_data))
-            # print("with error code:", result.status_code)
+            print("post method fails".format(input_data))
+            print("with error code:", result.status_code)
             return False
         else:
-            # print("posted ok.".format(input_data))
+            print("posted ok.".format(input_data))
             return True
 
     except Exception:
