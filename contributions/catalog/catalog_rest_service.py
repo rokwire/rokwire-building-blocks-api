@@ -49,7 +49,7 @@ def login():
     authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
 
     # State is used to prevent CSRF.
-    session['oauth_state'] = state
+    session['oauth_state'] = state.strip()
 
     return redirect(authorization_url)
 
@@ -65,7 +65,7 @@ def callback():
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
-
+    # print(session)
     return redirect(url_for('.profile'))
 
 @app.route("/profile", methods=["GET"])
