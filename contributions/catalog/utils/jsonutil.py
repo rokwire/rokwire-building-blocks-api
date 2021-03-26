@@ -11,3 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
+from flask import session
+
+'''
+add contributionAdmins element in the contribution json
+'''
+def add_contribution_admins(in_json):
+    login_user = session['username']
+    contribution_admins = {"contributionAdmins": [login_user]}
+    in_json.update(contribution_admins)
+
+    return in_json
