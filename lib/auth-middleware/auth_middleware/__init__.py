@@ -46,7 +46,6 @@ ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
 
-GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
 
 def get_bearer_token(request):
     auth_header = request.headers.get('Authorization')
