@@ -4,47 +4,34 @@ import traceback
 # from app import app
 import requests
 from flask import (
-    Blueprint, render_template, request, session, redirect, url_for
+    Blueprint, render_template, request, session
 )
-from requests_oauthlib import OAuth2Session
 
-from controllers.config import Config as cfg
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
+from utils import jsonutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
+
 def home():
+    print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
-        # print("searching...")
+        print("searching...")
         result = request.form.to_dict(flat=False)
-    if "name" in session:
-        return render_template('contribute/home.html', user=session["name"])
-    else:
-        return render_template('contribute/home.html')
+        print(result)
+        # search(result)
+    return render_template('contribute/home.html', user=session["name"])
 
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
-    """Step 1: Get the user identify for authentication.
-    """
-    # print("Step 1: User Authorization")
-    github = OAuth2Session(cfg.CLIENT_ID)
-    authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
-
-    # State is used to prevent CSRF.
-    session['oauth_state'] = state
-    return redirect(authorization_url)
-
-@bp.route('/logout')
-def logout():
-    session.clear()
-    return render_template('contribute/home.html')
 
 @bp.route('/results', methods=['POST', 'GET'])
 def result():
     if request.method == 'POST':
+        # result = request.form
+        print("searching...")
         result = request.form.to_dict()
+        print(result)
         query = result['search']
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
@@ -57,19 +44,16 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
+
+        # add contributionAdmins to the json_contiubtion
+        contribution = jsonutil.add_contribution_admins(contribution)
+
         json_contribution = json.dumps(contribution, indent=4)
         response, s = post(json_contribution)
         if response:
-            if "name" in session:
-                return render_template('contribute/submitted.html', user=session["name"])
-            else:
-                return render_template('contribute/submitted.html')
+            return render_template('contribute/submitted.html', user=session["name"])
         elif not response:
-            if "name" in session:
-                return render_template('contribute/error.html', user=session["name"], error_msg=s)
-            else:
-                return render_template('contribute/error.html', error_msg=s)
-
+            return render_template('contribute/error.html', user=session["name"], error_msg=s)
     return render_template('contribute/contribute.html', user=session["name"])
 
 @bp.errorhandler(404)
@@ -86,11 +70,12 @@ def submitted():
 def search_results(search):
     return render_template('results.html', results=results, user=session["name"], )
 
+
 # post a json_data in a http request
 def post(json_data):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
     }
     try:
         # Setting up post request
@@ -99,8 +84,11 @@ def post(json_data):
                                data=json_data)
 
         if result.status_code != 200:
+            print("post method fails".format(json_data))
+            print("with error code:", result.status_code)
             return False, str("post method fails with error: ")+str(result.status_code)
         else:
+            print("posted ok.".format(json_data))
             return True, str("post success!")
 
     except Exception:
@@ -126,8 +114,11 @@ def search(input_data):
                                   headers=headers)
 
         if result.status_code != 200:
+            print("post method fails".format(input_data))
+            print("with error code:", result.status_code)
             return False
         else:
+            print("posted ok.".format(input_data))
             return True
 
     except Exception:
