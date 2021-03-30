@@ -19,8 +19,6 @@ def home():
     if request.method == 'POST' and request.validate_on_submit():
         # print("searching...")
         result = request.form.to_dict(flat=False)
-        # print(result)
-        # search(result)
     if "name" in session:
         return render_template('contribute/home.html', user=session["name"])
     else:
@@ -36,7 +34,6 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    # print(session)
     return redirect(authorization_url)
 
 @bp.route('/logout')
@@ -47,10 +44,7 @@ def logout():
 @bp.route('/results', methods=['POST', 'GET'])
 def result():
     if request.method == 'POST':
-        # result = request.form
-        # print("searching...")
         result = request.form.to_dict()
-        # print(result)
         query = result['search']
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
@@ -63,9 +57,7 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # print(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        # print(json_contribution)
         response, s = post(json_contribution)
         if response:
             if "name" in session:
@@ -94,7 +86,6 @@ def submitted():
 def search_results(search):
     return render_template('results.html', results=results, user=session["name"], )
 
-
 # post a json_data in a http request
 def post(json_data):
     headers = {
@@ -108,11 +99,8 @@ def post(json_data):
                                data=json_data)
 
         if result.status_code != 200:
-            # print("post method fails".format(json_data))
-            # print("with error code:", result.status_code)
             return False, str("post method fails with error: ")+str(result.status_code)
         else:
-            # print("posted ok.".format(json_data))
             return True, str("post success!")
 
     except Exception:
@@ -138,11 +126,8 @@ def search(input_data):
                                   headers=headers)
 
         if result.status_code != 200:
-            # print("post method fails".format(input_data))
-            # print("with error code:", result.status_code)
             return False
         else:
-            # print("posted ok.".format(input_data))
             return True
 
     except Exception:
