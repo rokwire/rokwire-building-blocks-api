@@ -62,7 +62,6 @@ def callback():
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
-
     return redirect(url_for('.profile'))
 
 @app.route("/profile", methods=["GET"])

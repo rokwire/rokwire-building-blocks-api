@@ -18,10 +18,8 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
-        print("searching...")
         result = request.form.to_dict(flat=False)
-        print(result)
-        # search(result)
+
     return render_template('contribute/home.html', user=session["name"])
 
 
@@ -29,9 +27,7 @@ def home():
 def result():
     if request.method == 'POST':
         # result = request.form
-        print("searching...")
         result = request.form.to_dict()
-        print(result)
         query = result['search']
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
