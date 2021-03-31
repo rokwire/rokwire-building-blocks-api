@@ -27,7 +27,9 @@ setup(
     description='Rokwire Platform Auth Middleware',
     # long_description=open('README.txt').read(),
     install_requires=[
-
+        'PyJWT>=1.7.1,<2',
+        'requests>=2.22.0,<3',
+        'cryptography>=3,<4',
         # I would require flask here, but I want to use the version that the
         # "calling" app uses, and I don't see a way to guarantee that pip
         # installs the dependency in the correct order (eg. "calling app" first
