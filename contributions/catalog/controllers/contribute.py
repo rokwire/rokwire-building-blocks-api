@@ -4,9 +4,10 @@ import traceback
 # from app import app
 import requests
 from flask import (
-    Blueprint, render_template, request, session
+    Blueprint, render_template, request, session, redirect
 )
-
+from controllers.config import Config as cfg
+from requests_oauthlib import OAuth2Session
 from controllers.config import Config
 from models.contribution_utilities import to_contribution
 from utils import jsonutil
@@ -19,9 +20,28 @@ def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
         result = request.form.to_dict(flat=False)
+    if "name" in session:
+        return render_template('contribute/home.html', user=session["name"])
+    else:
+        return render_template('contribute/home.html')
 
-    return render_template('contribute/home.html', user=session["name"])
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    """Step 1: Get the user identify for authentication.
+    """
+    # print("Step 1: User Authorization")
+    github = OAuth2Session(cfg.GITHUB_CLIENT_ID)
+    authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
 
+    # State is used to prevent CSRF.
+    session['oauth_state'] = state
+    # print(session)
+    return redirect(authorization_url)
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return render_template('contribute/home.html')
 
 @bp.route('/results', methods=['POST', 'GET'])
 def result():
