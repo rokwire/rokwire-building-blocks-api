@@ -19,7 +19,11 @@ add contributionAdmins element in the contribution json
 '''
 def add_contribution_admins(in_json):
     login_user = session['username']
-    contribution_admins = in_json['contributionAdmins'].split(',')
+    admin_input = in_json['contributionAdmins']
+    contribution_admins = []
+    if admin_input:
+        contribution_admins = [x for x in admin_input.split(',') if x]
+
     updated_json = {"contributionAdmins": [login_user]+contribution_admins }
     in_json.update(updated_json)
     return in_json
