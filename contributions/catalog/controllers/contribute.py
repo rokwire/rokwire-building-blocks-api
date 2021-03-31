@@ -59,11 +59,9 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-
         # add contributionAdmins to the json_contiubtion
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        print(json_contribution)
         response, s = post(json_contribution)
         if response:
             if response:
