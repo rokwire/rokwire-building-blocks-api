@@ -13,7 +13,44 @@
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
 
+    <style>
+    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+        background-color: #2a4b45;
+    }
 
+    .dropdown-content {
+        display: none;
+        position: relative;
+        background-color: #2a4b45;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        /*z-index: 1;*/
+        cursor: pointer;
+    }
+
+    .dropdown-content a {
+        float: right;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        padding-right: 50px;
+        padding-left: 50px;
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f4f7f5;
+        border: grey;
+        border-radius: 5%;
+    }
+
+    .show {
+        display: block;
+    }
+
+    </style>
 </head>
 
 
@@ -22,10 +59,17 @@
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
         <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-        <div style="float: right; margin-right: 25px;">
-            <a ><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}!</a>
+        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
+            <meta id="nav-user-data">
+                <a id="user_profile" class="dropbtn"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
         </div>
+
+
     </div>
+    <div id="myDropdown" class="dropdown-content" style="display: none">
+                <a href="{{ url_for('contribute.logout') }}">Logout</a>
+       </div>
+
     <div>
         <nav>
             <ol class="cd-multi-steps text-top">
@@ -62,12 +106,6 @@
                 <div class="col-sm-10"><textarea id="contribution_detail" name="contribution_longDescription"
                                                  placeholder="Give a detailed description"
                                                  style="height:150px"></textarea></div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2">Contribution Admin/label>
-                <div class="col-sm-10"><input id="contributionAdmins" name="contributionAdmins"
-                                                 placeholder="Give a list of admin names, seperated by comma"
-                                                 style="height:150px"></input></div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Contributor Details</label>
@@ -607,9 +645,7 @@
             var deploy_location = document.getElementsByName('deploymentDetails_location')
 
             var deploy_internal = document.getElementById('deploy_internal')
-            // console.log(deploy_internal.value)
             var deploy_external = document.getElementById('deploy_external')
-            // console.log(deploy_external.value)
             if (!deploy_internal.checked && !deploy_external.checked) {
                 window.alert("Please select deployed location.");
                 deploy_internal.focus();
@@ -666,8 +702,6 @@
                 datadel_api.required = true;
                 return false;
             }
-
-
         } else {
             var talent_des = document.getElementById("talent_description");
             if (talent_des.value == "") {
@@ -681,10 +715,7 @@
         //success
         // window.location.href = "/contribute";
         var x = document.getElementById('submit-pop').innerHTML = "The contribution form has been submitted!";
-
-
     }
-
 
     function show_person() {
         var x = document.getElementById("contributor");
@@ -794,6 +825,22 @@
         });
     });
 
+        var user_icon = document.getElementById('user_profile');
+        user_icon.onclick = function (){
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
 
 </script>
 </html>
