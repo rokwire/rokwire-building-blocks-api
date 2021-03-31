@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add user auth to Events Building Block yml file. [#598](https://github.com/rokwire/rokwire-building-blocks-api/issues/598)
 - Use dovenv library for organizing enviroment variables.[#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
 - Add CORS support for Contribution Building Block.[#621](https://github.com/rokwire/rokwire-building-blocks-api/issues/621)
+- Add login option for Contribution Catalog.[#634](https://github.com/rokwire/rokwire-building-blocks-api/issues/634)
+- Add logout option for Contribution Catalog.[#636](https://github.com/rokwire/rokwire-building-blocks-api/issues/636)
 - Update event schema to add new field createdByGroupId.[#396](https://github.com/rokwire/rokwire-building-blocks-api/issues/396)
 
 ### Fixed
