@@ -7,6 +7,7 @@ def init_contribution():
         "name": '',
         "shortDescription": '',
         "longDescription": '',
+        'contributionAdmins': [],
         "contributors": [],
         "capabilities": [],
         "talents": []
