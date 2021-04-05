@@ -48,6 +48,9 @@ paths:
       summary: Return existing Contributions based on search criteria
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -75,6 +78,9 @@ paths:
       operationId: controllers.contributions.alltalentssearch
       tags:
        - Talents
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -102,6 +108,9 @@ paths:
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
         - Capabilities
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -128,6 +137,9 @@ paths:
       summary: Get Talents that belong to a specific Contribution
       tags:
         - Contributions
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -157,6 +169,9 @@ paths:
       summary: Get Capabilities that belong to a specific Contribution
       tags:
         - Contributions
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -186,6 +201,9 @@ paths:
       summary: Get a specific Contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
+          ApiKeyAuth: []
       parameters:
       - name: id
         in: path
@@ -305,6 +323,15 @@ components:
           items:
             type: string
             minItems: 1
+        status:
+          nullable: true
+          type: string
+          enum:
+            - Submitted
+            - Reviewing
+            - Approved
+            - Disapproved
+            - Published
         dateCreated:
           type: string
           format: date-time
@@ -373,15 +400,6 @@ components:
         healthCheckUrl:
           nullable: true
           type: string
-        status:
-          nullable: true
-          type: string
-          enum:
-            - Submitted
-            - Reviewing
-            - Approved
-            - Disapproved
-            - Published
         dataDeletionEndpointDetails:
           description: Details of API endpoint to delete user info given the user UUID.
           type: object
@@ -526,6 +544,12 @@ components:
           nullable: true
           type: string
   securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: ROKWIRE-API-KEY
+      x-apikeyInfoFunc: auth_middleware.verify_apikey
+      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
     GitHubAuth:
       type: oauth2
       flows:
