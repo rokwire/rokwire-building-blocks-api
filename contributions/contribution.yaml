@@ -19,6 +19,8 @@ paths:
       summary: Create a new Contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       requestBody:
         description: Contribution data
         content:
@@ -212,6 +214,8 @@ paths:
       summary: Update a contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -241,6 +245,8 @@ paths:
       summary: Delete a contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -267,6 +273,7 @@ components:
       required:
         - name
         - shortDescription
+        - contributionAdmins
       properties:
         name:
           type: string
@@ -292,6 +299,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Talent'
+        contributionAdmins:
+          description: List of GitHub usernames of Contribution admins
+          type: array
+          items:
+            type: string
+            minItems: 1
         dateCreated:
           type: string
           format: date-time
@@ -513,15 +526,12 @@ components:
           nullable: true
           type: string
   securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: ROKWIRE-API-KEY
-      x-apikeyInfoFunc: auth_middleware.verify_apikey
-      description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
-    UserAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_userauth
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    GitHubAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://github.com/login/oauth/authorize
+          tokenUrl: https://github.com/login/oauth/access_token
+          scopes: {}
+      x-tokenInfoUrl: https://api.github.com/user
+      description: The client must send a unexpired GitHub OAuth2 access_token in the Authorization header when making requests to API endpoints that require GitHub authentication.

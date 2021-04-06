@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use dovenv library for organizing enviroment variables. [#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
 - Add CORS support for Contribution Building Block. [#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
 - Add strict validation in Contribution Building Block. [#627](https://github.com/rokwire/rokwire-building-blocks-api/issues/627)
+- Add authentication and authorization using GitHub account in Contribution Building Block. [#635](https://github.com/rokwire/rokwire-building-blocks-api/issues/635)
+- Add github authorization in new contribution post via catalog. [#647](https://github.com/rokwire/rokwire-building-blocks-api/issues/647)
 - Fix date format issue in the events endpoint of GET /events/<id>. [#438](https://github.com/rokwire/rokwire-building-blocks-api/issues/438)
 
 ### Changed
