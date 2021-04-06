@@ -34,7 +34,6 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    # print(session)
     return redirect(authorization_url)
 
 @bp.route('/logout')
@@ -51,6 +50,18 @@ def result():
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
 
+@bp.route('/details/<contribution_id>', methods=['GET','POST'])
+def details(contribution_id):
+    #get the contribution results
+    the_json_res = get_contribution(contribution_id)
+    return render_template("contribute/details.html", contribution_json=the_json_res)
+
+
+@bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
+def edit(contribution_id):
+
+    #todo: need to implement the edit form page
+    return render_template("contribute/details.html", contribution_json=the_json_res)
 
 @bp.route('/create', methods=['GET', "POST"])
 def create():
@@ -118,6 +129,29 @@ def post(json_data):
         var = traceback.format_exc()
         return False, var
 
+
+def get_contribution(contribution_id):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+    }
+
+    try:
+        if contribution_id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(contribution_id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(contribution_id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result
 
 # post a json_data in a http request
 def search(input_data):

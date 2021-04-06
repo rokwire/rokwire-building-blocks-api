@@ -23,3 +23,6 @@ def add_contribution_admins(in_json):
     in_json.update(contribution_admins)
 
     return in_json
+
+def get_contribution(contribution_id):
+    return {}
