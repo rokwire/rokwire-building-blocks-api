@@ -309,6 +309,7 @@
         var all_talents = []
         var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
         var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
+        var get_contribution_url = "http://" +  "localhost:5000/contributions";
 
 
 
@@ -332,7 +333,8 @@
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-
+                //todo how do we go from a single capability/talent => a contribution? 
+                //$(newItem).attr('href', get_contribution_url + $(newItem).find(".contribution_name"))
                 $("#grid-view").append(newItem);
 
             });
