@@ -36,9 +36,11 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template('contribute/home.html')
+
 
 @app.route("/login")
 def login():
@@ -67,6 +69,7 @@ def callback():
     session['oauth_token'] = token
 
     return redirect(url_for('.profile'))
+
 
 @app.route("/profile", methods=["GET"])
 def profile():

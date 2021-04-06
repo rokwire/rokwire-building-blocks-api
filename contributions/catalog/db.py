@@ -1,9 +1,10 @@
 import click
-from controllers.config import Config
 from flask import current_app, g
 from flask.cli import with_appcontext
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
+
+from controllers.config import Config
 
 
 def get_db():

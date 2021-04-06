@@ -6,15 +6,16 @@ import requests
 from flask import (
     Blueprint, render_template, request, session, redirect
 )
-from controllers.config import Config as cfg
 from requests_oauthlib import OAuth2Session
+
+from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
 from utils import jsonutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
-@bp.route('/', methods=['GET', 'POST'])
 
+@bp.route('/', methods=['GET', 'POST'])
 def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
@@ -23,6 +24,7 @@ def home():
         return render_template('contribute/home.html', user=session["name"])
     else:
         return render_template('contribute/home.html')
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,10 +39,12 @@ def login():
     # print(session)
     return redirect(authorization_url)
 
+
 @bp.route('/logout')
 def logout():
     session.clear()
     return render_template('contribute/home.html')
+
 
 @bp.route('/results', methods=['POST', 'GET'])
 def result():
@@ -76,10 +80,12 @@ def create():
                     return render_template('contribute/error.html', error_msg=s)
     return render_template('contribute/contribute.html', user=session["name"])
 
+
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('contribute/submitted.html', user=session["name"])
+
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
@@ -106,7 +112,7 @@ def post(json_data):
         if result.status_code != 200:
             print("post method fails".format(json_data))
             print("with error code:", result.status_code)
-            return False, str("post method fails with error: ")+str(result.status_code)
+            return False, str("post method fails with error: ") + str(result.status_code)
         else:
             print("posted ok.".format(json_data))
             return True, str("post success!")
