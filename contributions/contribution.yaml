@@ -50,7 +50,7 @@ paths:
        - Contributions
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -80,7 +80,7 @@ paths:
        - Talents
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -110,7 +110,7 @@ paths:
         - Capabilities
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -139,7 +139,7 @@ paths:
         - Contributions
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -171,7 +171,7 @@ paths:
         - Contributions
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -203,7 +203,7 @@ paths:
        - Contributions
       security:
         - GitHubAuth: []
-          ApiKeyAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: id
         in: path
@@ -324,7 +324,6 @@ components:
             type: string
             minItems: 1
         status:
-          nullable: true
           type: string
           enum:
             - Submitted

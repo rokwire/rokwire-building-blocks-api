@@ -147,11 +147,14 @@ def post(token_info):
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
-def search(name=None):
+def search(token_info=None, name=None):
     # args = request.args
-
-    query = dict()
     is_list = False
+    query = dict()
+
+    login_id, is_login = get_login(token_info)
+
+    query = query_params.format_query_status_login(query, login_id, is_login)
 
     if name is None:
         is_list = True
@@ -192,8 +195,12 @@ def search(name=None):
 
     return out_json
 
-def get(id):
-    data_list, is_objectid, is_error, resp = get_data_list(id)
+def get(token_info=None, id=None):
+    query = dict()
+    login_id, is_login = get_login(token_info)
+
+    data_list, is_objectid, is_error, resp = get_data_list(id, login_id, is_login)
+
     if is_error:
         return resp
     jsonutils.remove_objectid_from_dataset(data_list[0])
@@ -600,7 +607,7 @@ def construct_contributors(in_json):
 
     return contributor_dataset, restjson, None
 
-def get_data_list(name):
+def get_data_list(name, login_id, is_login):
     resp = None
     is_error = False
 
@@ -610,9 +617,9 @@ def get_data_list(name):
         # query using either non-pii ObjectId or name
         if (is_objectid):
             id = ObjectId(name)
-            db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id)
+            db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id, login_id, is_login)
         else:
-            db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name)
+            db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name, login_id, is_login)
 
         data_list = list(db_data)
 
@@ -655,3 +662,15 @@ def check_login_admin(login, inlist):
             is_admin = True
 
     return is_admin
+
+def get_login(token_info):
+    is_login = False
+    login_id = ""
+
+    try:
+        login_id = token_info["login"]
+        is_login = True
+    except:
+        pass
+
+    return login_id, is_login

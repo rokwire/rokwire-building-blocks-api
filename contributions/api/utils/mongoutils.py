@@ -21,6 +21,7 @@ from flask import make_response, json
 from bson.json_util import dumps
 from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
+from utils import query_params
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -206,14 +207,25 @@ def check_if_objectid(query_str):
 """
 query dataset using object id
 """
-def query_dataset_by_objectid(collection, objectid):
-    return collection.find({'_id': objectid})
+def query_dataset_by_objectid(collection, objectid, login_id=None, is_login=False):
+    query = dict()
+    query = query_params.format_query_status_login(query, login_id, is_login)
+
+    query_parts = [{'_id': objectid}]
+    query['$and'] = query_parts
+
+    return collection.find(query, {'_id': False})
 
 """
 qyery dataset using field
 """
-def query_dataset(db_collection, fld, query_str):
-    return db_collection.find({fld: query_str}, {'_id': False})
+def query_dataset(db_collection, fld, query_str, login_id=None, is_login=False):
+    query = dict()
+    query = query_params.format_query_status_login(query, login_id, is_login)
+
+    query_parts = [{fld: query_str}]
+    query['$and'] = query_parts
+    return db_collection.find(query, {'_id': False})
 
 """
 construct json from mongo query
