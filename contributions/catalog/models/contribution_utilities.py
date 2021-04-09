@@ -7,6 +7,7 @@ def init_contribution():
         "name": '',
         "shortDescription": '',
         "longDescription": '',
+        'contributionAdmins': [],
         "contributors": [],
         "capabilities": [],
         "talents": []
@@ -84,11 +85,11 @@ def to_contribution(d):
     if not d: return {}
     res = init_contribution()
     capability = to_capability(d)
-    if len(capability)>= 1 and capability[0]["name"]:
+    if len(capability) >= 1 and capability[0]["name"]:
         res["capabilities"] = capability
     # print(res["capabilities"])
     talent = to_talent(d)
-    if len(talent)>=1 and talent[0]["name"]:
+    if len(talent) >= 1 and talent[0]["name"]:
         res["talents"] = talent
     contributor = to_contributor(d)
     res["contributors"] = contributor

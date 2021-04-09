@@ -37,8 +37,13 @@ init_app(app)
 app.register_blueprint(contribute_bp)
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
+    return render_template('contribute/home.html')
+
+
+@app.route("/login")
+def login():
     """Step 1: Get the user identify for authentication.
     """
     # print("Step 1: User Authorization")
@@ -62,7 +67,9 @@ def callback():
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
+
     return redirect(url_for('.profile'))
+
 
 @app.route("/profile", methods=["GET"])
 def profile():

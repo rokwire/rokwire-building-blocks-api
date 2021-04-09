@@ -1,13 +1,15 @@
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 
 # Load .env file
 load_dotenv()
 
+
 class Config(object):
     OAUTHLIB_INSECURE_TRANSPORT = bool(os.getenv('OAUTHLIB_INSECURE_TRANSPORT', 'False') == 'True')
-    CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL", "http://localhost:5000/contributions")
+    CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL",
+                                                "http://localhost:5000/contributions")
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
     DB_COLLECTION = os.getenv("MONGO_DATABASE", "catalog")
