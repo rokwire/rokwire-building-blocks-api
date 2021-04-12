@@ -1,10 +1,10 @@
 import json
 import traceback
 
-# from app import app
 import requests
+import functools
 from flask import (
-    Blueprint, render_template, request, session, redirect
+    Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
 
@@ -55,8 +55,17 @@ def result():
         search(query)
         return render_template("contribute/results.html", user=session["name"], result=result)
 
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if session.get('name') is None:
+            return redirect(url_for('contribute.login'))
+        return view(**kwargs)
+    return wrapped_view
+
 
 @bp.route('/create', methods=['GET', "POST"])
+@login_required
 def create():
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
