@@ -324,9 +324,13 @@ def delete(token_info, id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
-def allcapabilitiessearch(name=None):
+def allcapabilitiessearch(token_info=None, name=None):
     query = dict()
     is_list = False
+
+    login_id, is_login = get_login(token_info)
+
+    query = query_params.format_query_status_login(query, login_id, is_login)
 
     if name is None:
         is_list = True
@@ -403,18 +407,49 @@ def allcapabilitiessearch(name=None):
 
     return return_json
 
-def capabilities_search(id):
-    try:
-        contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
-        capability_dataset = contribution_dataset.get_capabilities()
-    except Exception as ex:
-        msg = {
-            "reason": "There is no contribution dataset with given id: " + str(id),
-            "error": "Not Found: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-        logging.error("Capability SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+def capabilities_search(token_info=None, id=None):
+    login_id, is_login = get_login(token_info)
+    contribution_dataset = None
+
+    contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid_with_status(
+        coll_contribution, id, login_id, is_login)
+    if status_code == '200':
+        if contribution_dataset is not None:
+            capability_dataset = contribution_dataset.get_capabilities()
+        else:
+            msg = {
+                "reason": "There is no contribution dataset with given id, "
+                          "or you don't have privilege to view this: " + str(id),
+                "error": "Not Authorized: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_authorized(msg_json)
+    else:
+        if status_code == "401":
+            msg = {
+                "reason": "Not authorized to view the contribution dataset with given id: " + str(id),
+                "error": "Not Authorized: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_authorized(msg_json)
+        elif status_code == '404':
+            msg = {
+                "reason": "There is no contribution dataset with given id: " + str(id),
+                "error": "Not Found: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_found(msg_json)
+        else:
+            msg = {
+                "reason": "The query was not successfully performed: " + str(id),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
     if capability_dataset is None:
         msg = {
@@ -433,9 +468,13 @@ def capabilities_search(id):
 
     return capability_dataset
 
-def alltalentssearch(name=None):
+def alltalentssearch(token_info=None, name=None):
     query = dict()
     is_list = False
+
+    login_id, is_login = get_login(token_info)
+
+    query = query_params.format_query_status_login(query, login_id, is_login)
 
     if name is None:
         is_list = True
@@ -469,7 +508,7 @@ def alltalentssearch(name=None):
     if out_json is None:
         return_json = []
     else:
-        if len(query) == 0:  # list all
+        if is_list:  # list all
             if isinstance(out_json, list):
                 for in_json in out_json:
                     if in_json['talents'] is not None:
@@ -512,18 +551,50 @@ def alltalentssearch(name=None):
 
     return return_json
 
-def talents_search(id):
-    try:
-        contribution_dataset = mongoutils.get_contribution_dataset_from_objectid(coll_contribution, id)
-        talent_dataset = contribution_dataset.get_talents()
-    except Exception as ex:
-        msg = {
-            "reason": "There is no contribution dataset with given id: " + str(id),
-            "error": "Not Found: " + request.url,
-        }
-        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-        logging.error("Talent SEARCH " + json.dumps(msg_json))
-        return rs_handlers.bad_request(msg_json)
+def talents_search(token_info=None, id=None):
+    login_id, is_login = get_login(token_info)
+    talent_dataset = None
+
+    contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid_with_status(
+        coll_contribution, id, login_id, is_login)
+
+    if status_code == '200':
+        if contribution_dataset is not None:
+            talent_dataset = contribution_dataset.get_talents()
+        else:
+            msg = {
+                "reason": "There is no contribution dataset with given id, "
+                          "or you don't have privilege to view this: " + str(id),
+                "error": "Not Authorized: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_authorized(msg_json)
+    else:
+        if status_code == "401":
+            msg = {
+                "reason": "Not authorized to view the contribution dataset with given id: " + str(id),
+                "error": "Not Authorized: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_authorized(msg_json)
+        elif status_code == '404':
+            msg = {
+                "reason": "There is no contribution dataset with given id: " + str(id),
+                "error": "Not Found: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.not_found(msg_json)
+        else:
+            msg = {
+                "reason": "The query was not successfully performed: " + str(id),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
+            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg_json)
 
     if talent_dataset is None:
         msg = {

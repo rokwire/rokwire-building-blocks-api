@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add login option for Contribution Catalog.[#634](https://github.com/rokwire/rokwire-building-blocks-api/issues/634)
 - Add logout option for Contribution Catalog.[#636](https://github.com/rokwire/rokwire-building-blocks-api/issues/636)
 - Update event schema to add new field createdByGroupId.[#396](https://github.com/rokwire/rokwire-building-blocks-api/issues/396)
+- Add ApiKeyAuth and status to contribution building block.[#654](https://github.com/rokwire/rokwire-building-blocks-api/issues/654)
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)

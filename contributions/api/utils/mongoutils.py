@@ -86,9 +86,11 @@ def list_capabilities(db_collection):
 
 def get_result(db_collection, query):
     if not query:
-        db_data = db_collection.find({}, {'_id': 0})
+        # db_data = db_collection.find({}, {'_id': 0})
+        db_data = db_collection.find({})
     else:
-        db_data = db_collection.find(query, {'_id': 0})
+        # db_data = db_collection.find(query, {'_id': 0})
+        db_data = db_collection.find(query)
 
     data_list = list(db_data)
 
@@ -157,11 +159,11 @@ def get_contribution_dataset_from_field(collection, fld, query_str):
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid(collection, objectid):
+def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
     is_object_id = check_if_objectid(objectid)
     if is_object_id:
         id = ObjectId(objectid)
-        db_data = query_dataset_by_objectid(collection, id)
+        db_data = query_dataset_by_objectid(collection, id, login_id, is_login)
         data_list = list(db_data)
         if len(data_list) > 0:
             data_dump = dumps(data_list)
@@ -175,6 +177,64 @@ def get_contribution_dataset_from_objectid(collection, objectid):
             return None
     else:
         return None
+
+"""
+query using objectid and convert result to object
+"""
+def get_contribution_dataset_from_objectid_with_status(collection, objectid, login_id=None, is_login=False):
+    is_object_id = check_if_objectid(objectid)
+    status_code = '200'
+
+    if is_object_id:
+        id = ObjectId(objectid)
+        # check the data first without status, if there is no result, it is 404
+        db_data = query_dataset_by_objectid_no_status(collection, id)
+        data_list = list(db_data)
+
+        # no result is only 404
+        if len(data_list) == 0:
+            status_code = '404'
+            return None, status_code
+
+        # multiple result is only 400
+        if len(data_list) > 1:
+            status_code = '400'
+            return None, status_code
+
+        # check the data status, if the status is not published, it is 401
+        tmp_dataset = data_list[0]
+        status = None
+        is_admin = False
+        if "status" in tmp_dataset:
+            status = tmp_dataset["status"]
+        if (is_login):
+            if "contributionAdmins" in tmp_dataset:
+                contribution_admins = tmp_dataset["contributionAdmins"]
+                if (login_id in contribution_admins):
+                    is_admin = True
+
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        dataset = Contribution(json_load)
+
+        if (is_login):
+            # check if the user is in contributionAdmin group
+            if (is_admin):
+                return dataset, status_code
+            else:
+                status_code = '401'
+                return None, status_code
+        else:
+            if status != "Published":
+                status_code = '401'
+                return None, status_code
+            else:
+                return dataset, status_code
+    else:
+        status_code = '400'
+        return None, status_code
 
 """
 convert mongodb query using field result to json
@@ -214,7 +274,13 @@ def query_dataset_by_objectid(collection, objectid, login_id=None, is_login=Fals
     query_parts = [{'_id': objectid}]
     query['$and'] = query_parts
 
-    return collection.find(query, {'_id': False})
+    return collection.find(query)
+
+"""
+query dataset using object id
+"""
+def query_dataset_by_objectid_no_status(collection, objectid):
+    return collection.find({'_id': objectid})
 
 """
 qyery dataset using field

@@ -53,6 +53,17 @@ def bad_request(error=None):
 
     return resp
 
+@app.errorhandler(401)
+def not_authorized(error=None):
+    if error is None:
+        error = {
+            'error': 'Not Authorized: ' + request.url,
+        }
+    resp = jsonify(error)
+    resp.status_code = 401
+
+    return resp
+
 @app.errorhandler(403)
 def forbidden(error=None):
     if error is None:
