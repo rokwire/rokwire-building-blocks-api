@@ -20,7 +20,7 @@ from flask import (
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if session.get('name'):
+        if not session.get('name'):
             return redirect(url_for('contribute.login'))
         return view(**kwargs)
     return wrapped_view
