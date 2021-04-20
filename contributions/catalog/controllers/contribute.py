@@ -47,6 +47,7 @@ def logout():
 
 
 @bp.route('/results', methods=['POST', 'GET'])
+@login_required
 def result():
     if request.method == 'POST':
         # result = request.form
@@ -91,11 +92,13 @@ def page_not_found(e):
 
 
 @bp.route('/submitted', methods=['GET', 'POST'])
+@login_required
 def submitted():
     return render_template('contribute/submitted.html', user=session["name"], )
 
 
 @bp.route('/results')
+@login_required
 def search_results(search):
     return render_template('results.html', results=results, user=session["name"], )
 
