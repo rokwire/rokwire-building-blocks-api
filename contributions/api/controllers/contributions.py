@@ -15,7 +15,7 @@
 import json
 import datetime
 import logging
-import copy
+import uuid as uuidlib
 
 from flask import jsonify, request, g
 from bson import ObjectId
@@ -47,7 +47,7 @@ def post(token_info):
         in_json = request.get_json()
         name = in_json[cfg.FIELD_NAME]
         # check if the dataset is existing with given name
-        dataset = mongoutils.get_contribution_dataset_from_field(coll_contribution, cfg.FIELD_NAME, name)
+        dataset = mongoutils.get_contribution_dataset_from_field_no_status(coll_contribution, cfg.FIELD_NAME, name)
         if dataset is not None:
             is_new_install = False
             msg = {
@@ -112,7 +112,9 @@ def post(token_info):
         try:
             capability_json = in_json["capabilities"]
             for i in range(len(capability_json)):
+                capability_id = str(uuidlib.uuid4())
                 capability, rest_capability_json, msg = construct_capability(capability_json[i])
+                capability.set_id(capability_id)
                 if capability is None:
                     return rs_handlers.bad_request(msg)
                 capability_list.append(capability)
@@ -125,7 +127,9 @@ def post(token_info):
         try:
             talent_json = in_json["talents"]
             for i in range(len(talent_json)):
+                talent_id = str(uuidlib.uuid4())
                 talent, rest_takebt_json, msg = construct_talent(talent_json[i])
+                talent.set_id(talent_id)
                 if talent is None:
                     return rs_handlers.bad_request(msg)
                 talent_list.append(talent)

@@ -348,6 +348,9 @@ components:
         - version
         - dataDeletionEndpointDetails
       properties:
+        id:
+          type: string
+          readOnly: True
         name:
           type: string
         description:
@@ -435,6 +438,9 @@ components:
         - name
         - shortDescription
       properties:
+        id:
+          type: string
+          readOnly: True
         name:
           type: string
         shortDescription:

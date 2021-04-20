@@ -20,6 +20,16 @@ def remove_objectid_from_dataset(dataset):
 
     return dataset
 
+def convert_obejctid_from_dataset_json_list(json_list):
+    out_json_list = []
+    for dataset in json_list:
+        if "_id" in dataset:
+            dataset["id"] = dataset["_id"]["$oid"]
+            dataset = remove_objectid_from_dataset(dataset)
+        out_json_list.append(dataset)
+
+    return out_json_list
+
 def create_log_json(ep_name, ep_method, in_json):
     in_json['ep_building_block'] = "contributions_building_block"
     in_json['ep_name'] = ep_name

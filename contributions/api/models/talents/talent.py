@@ -16,6 +16,7 @@ import utils.datasetutils as datasetutils
 
 class Talent():
     def __init__(self, injson):
+        self.id = None
         self.name = None
         self.shortDescription = None
         self.longDescription = None
@@ -29,6 +30,12 @@ class Talent():
         self.selfCertification = None
 
         self, restjson = datasetutils.update_talent_dataset_from_json(self, injson)
+
+    def set_id(self, id):
+        self.id = id
+
+    def get_id(self):
+        return self.id
 
     def set_name(self, name):
         self.name = name
