@@ -608,14 +608,28 @@
       })
       .autocomplete({
         source: function(request, response) {
-            $.get('https://api.github.com/search/users',
-                { q: extractLast(request.term) },
-                function(data) {
-                    var res = [];
-                    data.items.forEach((e) => res.push(e.login));
-                    // console.log(res);
-                    response(res);
-                });
+            $.ajax({
+                url: "https://api.github.com/search/users",
+                data: {
+                    q: extractLast(request.term)
+                },
+                type: "GET",
+                headers: {Authorization: 'token ' + '{{token}}'},
+                success: function(data) {
+                        var res = [];
+                        data.items.forEach((e) => res.push(e.login));
+                        console.log(res);
+                        response(res);
+                }
+            })
+            // $.get('https://api.github.com/search/users',
+            //     { q: extractLast(request.term) },
+            //         function(data) {
+            //             var res = [];
+            //             data.items.forEach((e) => res.push(e.login));
+            //             // console.log(res);
+            //             response(res);
+            //         });
         },
         search: function() {
           var term = extractLast( this.value );

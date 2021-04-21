@@ -82,7 +82,7 @@ def profile():
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
 
-    return render_template('contribute/home.html', user=session["name"])
+    return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
 
 
 if __name__ == '__main__':
