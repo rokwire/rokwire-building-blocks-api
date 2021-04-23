@@ -618,22 +618,12 @@
                 success: function(data) {
                         var res = [];
                         data.items.forEach((e) => res.push(e.login));
-                        console.log(res);
                         response(res);
                 }
             })
-            // $.get('https://api.github.com/search/users',
-            //     { q: extractLast(request.term) },
-            //         function(data) {
-            //             var res = [];
-            //             data.items.forEach((e) => res.push(e.login));
-            //             // console.log(res);
-            //             response(res);
-            //         });
         },
         search: function() {
           var term = extractLast( this.value );
-          console.log(term)
           if ( term.length < 2 ) {
             return false;
           }
