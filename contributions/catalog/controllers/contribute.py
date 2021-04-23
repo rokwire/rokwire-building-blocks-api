@@ -21,7 +21,7 @@ def home():
     if request.method == 'POST' and request.validate_on_submit():
         result = request.form.to_dict(flat=False)
     if "name" in session:
-        return render_template('contribute/home.html', user=session["name"])
+        return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
     else:
         return render_template('contribute/home.html')
 
@@ -53,7 +53,7 @@ def result():
         result = request.form.to_dict()
         query = result['search']
         search(query)
-        return render_template("contribute/results.html", user=session["name"], result=result)
+        return render_template("contribute/results.html", user=session["name"],  token=session['oauth_token']['access_token'], result=result)
 
 
 @bp.route('/create', methods=['GET', "POST"])
@@ -70,31 +70,31 @@ def create():
         if response:
             if response:
                 if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"])
+                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
                 else:
                     return render_template('contribute/submitted.html')
             elif not response:
                 if "name" in session:
-                    return render_template('contribute/error.html', user=session["name"], error_msg=s)
+                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
                 else:
                     return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"])
+    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('contribute/submitted.html', user=session["name"])
+    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 @bp.route('/submitted', methods=['GET', 'POST'])
 def submitted():
-    return render_template('contribute/submitted.html', user=session["name"], )
+    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 @bp.route('/results')
 def search_results(search):
-    return render_template('results.html', results=results, user=session["name"], )
+    return render_template('results.html', results=results, user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 # post a json_data in a http request
