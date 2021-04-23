@@ -71,7 +71,6 @@ def callback():
     return redirect(url_for('.profile'))
 
 @app.route("/contribute/profile", methods=["GET"])
-@login_required
 def profile():
     """Fetching a protected resource using an OAuth 2 token.
     Parsing the username to the seesion dict, to the templates to display.
