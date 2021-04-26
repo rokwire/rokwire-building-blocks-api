@@ -100,8 +100,11 @@ def get_result(db_collection, query):
         if len(data_list) == 1: # remove blacket in the first and last character location
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
-        json_load = json.loads(data_dump)
-        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+            json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
+        else:
+            json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
@@ -220,7 +223,7 @@ def get_contribution_dataset_from_objectid_with_status(collection, objectid, log
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
-        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+        json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
         dataset = Contribution(json_load)
 
         if (is_login):
@@ -296,13 +299,13 @@ def query_dataset(db_collection, fld, query_str, login_id=None, is_login=False):
 
     query_parts = [{fld: query_str}]
     query['$and'] = query_parts
-    return db_collection.find(query, {'_id': False})
+    return db_collection.find(query)
 
 """
 qyery dataset using field
 """
 def query_dataset_no_status(db_collection, fld, query_str):
-    return db_collection.find({fld: query_str}, {'_id': False})
+    return db_collection.find({fld: query_str})
 
 """
 construct json from mongo query

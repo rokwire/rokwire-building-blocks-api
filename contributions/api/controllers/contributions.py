@@ -112,9 +112,12 @@ def post(token_info):
         try:
             capability_json = in_json["capabilities"]
             for i in range(len(capability_json)):
-                capability_id = str(uuidlib.uuid4())
                 capability, rest_capability_json, msg = construct_capability(capability_json[i])
-                capability.set_id(capability_id)
+                # following two lines are for creating id. However, it might not needed for now
+                # because catalog will create it and send it to endpoint.
+                # If not, use following two lines that commented out
+                # capability_id = str(uuidlib.uuid4())
+                # capability.set_id(capability_id)
                 if capability is None:
                     return rs_handlers.bad_request(msg)
                 capability_list.append(capability)
@@ -127,9 +130,12 @@ def post(token_info):
         try:
             talent_json = in_json["talents"]
             for i in range(len(talent_json)):
-                talent_id = str(uuidlib.uuid4())
                 talent, rest_takebt_json, msg = construct_talent(talent_json[i])
-                talent.set_id(talent_id)
+                # following two lines are for creating id. However, it might not needed for now
+                # because catalog will create it and send it to endpoint.
+                # If not, use following two lines that commented out
+                # talent_id = str(uuidlib.uuid4())
+                # talent.set_id(talent_id)
                 if talent is None:
                     return rs_handlers.bad_request(msg)
                 talent_list.append(talent)
@@ -207,7 +213,7 @@ def get(token_info=None, id=None):
 
     if is_error:
         return resp
-    jsonutils.remove_objectid_from_dataset(data_list[0])
+    jsonutils.convert_obejctid_from_dataset_json(data_list[0])
     out_json = mongoutils.construct_json_from_query_list(data_list[0])
     msg_json = jsonutils.create_log_json("Contribution", "GET", {"id": str(id)})
     logging.info("Contribution GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
@@ -371,30 +377,39 @@ def allcapabilitiessearch(token_info=None, name=None):
         if is_list:  # list all
             if isinstance(out_json, list):
                 for in_json in out_json:
+                    contribution_id = in_json["id"]
                     if in_json['capabilities'] is not None:
-                        for talent in in_json['capabilities']:
-                            return_json.append(talent)
+                        for capability in in_json['capabilities']:
+                            capability["contributionId"] = contribution_id
+                            return_json.append(capability)
             else:
-                return_json.append(out_json)
+                contribution_id = out_json["id"]
+                capability = out_json['capabilities']
+                capability["contributionId"] = contribution_id
+                return_json.append(capability)
         else:   # extract out capabilities with the given name
             if isinstance(out_json, list):
                 for tmp_json in out_json:
                     capabilities_json = tmp_json["capabilities"]
+                    contribution_id = tmp_json["id"]
                     # TODO this is the case of only 1 args that is name.
                     #  If there are more args this should be updated
                     for tmp_capability_json in capabilities_json:
                         capability_json = None
                         if tmp_capability_json["name"] == name:
                             capability_json = tmp_capability_json
+                            capability_json["contributionId"] = contribution_id
                             return_json.append(capability_json)
             else:
                 capabilities_json = out_json["capabilities"]
+                contribution_id = out_json["id"]
                 # TODO this is the case of only 1 args that is name.
                 #  If there are more args this should be updated
                 for tmp_capability_json in capabilities_json:
                     capability_json = None
                     if tmp_capability_json["name"] == name:
                         capability_json = tmp_capability_json
+                        capability_json["contributionId"] = contribution_id
                         return_json.append(capability_json)
     if is_list:
         msg = {
@@ -515,14 +530,20 @@ def alltalentssearch(token_info=None, name=None):
         if is_list:  # list all
             if isinstance(out_json, list):
                 for in_json in out_json:
+                    contribution_id = in_json["id"]
                     if in_json['talents'] is not None:
                         for talent in in_json['talents']:
+                            talent["contributionId"] = contribution_id
                             return_json.append(talent)
             else:
-                return_json.append(out_json)
+                contribution_id = out_json["id"]
+                talent = out_json['talents']
+                talent["contributionId"] = contribution_id
+                return_json.append(talent)
         else:   # extract out talent with the given name
             if isinstance(out_json, list):
                 for tmp_json in out_json:
+                    contribution_id = tmp_json["id"]
                     talents_json = tmp_json["talents"]
                     # TODO this is the case of only 1 args that is name.
                     #  If there are more args this should be updated
@@ -530,15 +551,18 @@ def alltalentssearch(token_info=None, name=None):
                         talent_json = None
                         if tmp_talent_json["name"] == name:
                             talent_json = tmp_talent_json
+                            talent_json["contributionId"] = contribution_id
                             return_json.append(talent_json)
             else:
                 talents_json = out_json["talents"]
+                contribution_id = out_json["id"]
                 # TODO this is the case of only 1 args that is name.
                 #  If there are more args this should be updated
                 for tmp_talent_json in talents_json:
                     talent_json = None
                     if tmp_talent_json["name"] == name:
                         talent_json = tmp_talent_json
+                        talent_json["contributionId"] = contribution_id
                         return_json.append(talent_json)
     if is_list:
         msg = {
@@ -557,7 +581,6 @@ def alltalentssearch(token_info=None, name=None):
 
 def talents_search(token_info=None, id=None):
     login_id, is_login = get_login(token_info)
-    talent_dataset = None
 
     contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid_with_status(
         coll_contribution, id, login_id, is_login)
@@ -571,8 +594,8 @@ def talents_search(token_info=None, id=None):
                           "or you don't have privilege to view this: " + str(id),
                 "error": "Not Authorized: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
             return rs_handlers.not_authorized(msg_json)
     else:
         if status_code == "401":
@@ -580,24 +603,24 @@ def talents_search(token_info=None, id=None):
                 "reason": "Not authorized to view the contribution dataset with given id: " + str(id),
                 "error": "Not Authorized: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
             return rs_handlers.not_authorized(msg_json)
         elif status_code == '404':
             msg = {
                 "reason": "There is no contribution dataset with given id: " + str(id),
                 "error": "Not Found: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
             return rs_handlers.not_found(msg_json)
         else:
             msg = {
                 "reason": "The query was not successfully performed: " + str(id),
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
+            logging.error("Talent SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
     if talent_dataset is None:
@@ -692,9 +715,38 @@ def get_data_list(name, login_id, is_login):
         # query using either non-pii ObjectId or name
         if (is_objectid):
             id = ObjectId(name)
-            db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id, login_id, is_login)
+            if (is_login):
+                db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id, login_id, is_login)
+            else:
+                db_data = mongoutils.query_dataset_by_objectid_no_status(coll_contribution, id)
+                data_list = list(db_data)
+                status = data_list[0]["status"]
+                if status != "Published":
+                    msg = {
+                        "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
+                        "error": "Not Authorized: " + request.url,
+                    }
+                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
+                    logging.error("Contribution GET " + json.dumps(msg_json))
+                    resp = rs_handlers.not_authorized(msg_json)
+                    return data_list, is_objectid, True, resp
         else:
-            db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name, login_id, is_login)
+            if (is_login):
+                db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name, login_id, is_login)
+            else:
+                db_data = mongoutils.queary_dataset_no_status(coll_contribution,  cfg.FIELD_NAME, name)
+                data_list = list(db_data)
+                status = data_list[0]["status"]
+                if status != "Published":
+                    msg = {
+                        "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
+                        "error": "Not Authorized: " + request.url,
+                    }
+                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
+                    logging.error("Contribution GET " + json.dumps(msg_json))
+                    resp = rs_handlers.not_authorized(msg_json)
+                    return data_list, is_objectid, True, resp
+
 
         data_list = list(db_data)
 

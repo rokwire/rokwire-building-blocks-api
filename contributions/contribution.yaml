@@ -95,7 +95,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  allOf:
+                    - $ref: '#/components/schemas/Talent'
+                    - type: object
+                      properties:
+                        contributionId:
+                          type: string
+                          format: uuid
+                          description: UUID4 format string identifier of the Contribution that this Talent belongs to.
+#                  $ref: '#/components/schemas/Talent'
         400:
           description: Bad request
         401:
@@ -125,7 +133,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  allOf:
+                    - $ref: '#/components/schemas/Capability'
+                    - type: object
+                      properties:
+                        contributionId:
+                          type: string
+                          format: uuid
+                          description: UUID4 format string identifier of the Contribution that this Capability belongs to.
+#                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:
@@ -293,6 +309,10 @@ components:
         - shortDescription
         - contributionAdmins
       properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
         name:
           type: string
         shortDescription:
@@ -340,6 +360,7 @@ components:
     Capability:
       type: object
       required:
+        - id
         - name
         - description
         - isOpenSource
@@ -350,7 +371,8 @@ components:
       properties:
         id:
           type: string
-          readOnly: True
+          format: uuid
+          description: UUID4 format string identifier of the Capability
         name:
           type: string
         description:
@@ -435,12 +457,14 @@ components:
       type: object
       description: A core feature in the app user interface.
       required:
+        - id
         - name
         - shortDescription
       properties:
         id:
           type: string
-          readOnly: True
+          format: uuid
+          description: UUID4 format string identifier of the Talent
         name:
           type: string
         shortDescription:

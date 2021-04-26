@@ -20,12 +20,20 @@ def remove_objectid_from_dataset(dataset):
 
     return dataset
 
+def convert_obejctid_from_dataset_json(dataset):
+    if "_id" in dataset:
+        if "$oid" in dataset["_id"]:
+            dataset["id"] = dataset["_id"]["$oid"]
+        else:
+            dataset["id"] = str(dataset["_id"])
+        dataset = remove_objectid_from_dataset(dataset)
+
+    return dataset
+
 def convert_obejctid_from_dataset_json_list(json_list):
     out_json_list = []
     for dataset in json_list:
-        if "_id" in dataset:
-            dataset["id"] = dataset["_id"]["$oid"]
-            dataset = remove_objectid_from_dataset(dataset)
+        dataset = convert_obejctid_from_dataset_json(dataset)
         out_json_list.append(dataset)
 
     return out_json_list
