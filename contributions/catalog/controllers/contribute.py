@@ -1,13 +1,13 @@
 import json
 import traceback
 
-# from app import app
 import requests
+import functools
 from flask import (
-    Blueprint, render_template, request, session, redirect
+    Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
-
+from .auth import login_required
 from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
 from utils import jsonutil
@@ -47,6 +47,7 @@ def logout():
 
 
 @bp.route('/results', methods=['POST', 'GET'])
+@login_required
 def result():
     if request.method == 'POST':
         # result = request.form
@@ -56,7 +57,10 @@ def result():
         return render_template("contribute/results.html", user=session["name"],  token=session['oauth_token']['access_token'], result=result)
 
 
+
+
 @bp.route('/create', methods=['GET', "POST"])
+@login_required
 def create():
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
@@ -88,11 +92,13 @@ def page_not_found(e):
 
 
 @bp.route('/submitted', methods=['GET', 'POST'])
+@login_required
 def submitted():
     return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 @bp.route('/results')
+@login_required
 def search_results(search):
     return render_template('results.html', results=results, user=session["name"],  token=session['oauth_token']['access_token'])
 
