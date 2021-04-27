@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 from flask import make_response
+from bson import ObjectId
 
 def remove_objectid_from_dataset(dataset):
     if "_id" in dataset:
@@ -22,11 +23,16 @@ def remove_objectid_from_dataset(dataset):
 
 def convert_obejctid_from_dataset_json(dataset):
     if "_id" in dataset:
-        if "$oid" in dataset["_id"]:
-            dataset["id"] = dataset["_id"]["$oid"]
-        else:
+        # check if _id is object ID
+        if isinstance(dataset["_id"], ObjectId):
             dataset["id"] = str(dataset["_id"])
-        dataset = remove_objectid_from_dataset(dataset)
+            dataset = remove_objectid_from_dataset(dataset)
+        else:
+            if "$oid" in dataset["_id"]:
+                dataset["id"] = dataset["_id"]["$oid"]
+            else:
+                dataset["id"] = str(dataset["_id"])
+            dataset = remove_objectid_from_dataset(dataset)
 
     return dataset
 
