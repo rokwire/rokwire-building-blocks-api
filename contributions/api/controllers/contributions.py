@@ -113,11 +113,8 @@ def post(token_info):
             capability_json = in_json["capabilities"]
             for i in range(len(capability_json)):
                 capability, rest_capability_json, msg = construct_capability(capability_json[i])
-                # following two lines are for creating id. However, it might not needed for now
-                # because catalog will create it and send it to endpoint.
-                # If not, use following two lines that commented out
-                # capability_id = str(uuidlib.uuid4())
-                # capability.set_id(capability_id)
+                capability_id = str(uuidlib.uuid4())
+                capability.set_id(capability_id)
                 if capability is None:
                     return rs_handlers.bad_request(msg)
                 capability_list.append(capability)
@@ -131,11 +128,8 @@ def post(token_info):
             talent_json = in_json["talents"]
             for i in range(len(talent_json)):
                 talent, rest_takebt_json, msg = construct_talent(talent_json[i])
-                # following two lines are for creating id. However, it might not needed for now
-                # because catalog will create it and send it to endpoint.
-                # If not, use following two lines that commented out
-                # talent_id = str(uuidlib.uuid4())
-                # talent.set_id(talent_id)
+                talent_id = str(uuidlib.uuid4())
+                talent.set_id(talent_id)
                 if talent is None:
                     return rs_handlers.bad_request(msg)
                 talent_list.append(talent)
