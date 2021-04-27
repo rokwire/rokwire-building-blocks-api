@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add login option for Contribution Catalog.[#634](https://github.com/rokwire/rokwire-building-blocks-api/issues/634)
 - Add logout option for Contribution Catalog.[#636](https://github.com/rokwire/rokwire-building-blocks-api/issues/636)
 - Update event schema to add new field createdByGroupId.[#396](https://github.com/rokwire/rokwire-building-blocks-api/issues/396)
+- Add auth check for login required pages.[#657](https://github.com/rokwire/rokwire-building-blocks-api/issues/657)
+- Add /contribute as prefix for ./profile page. [#663](https://github.com/rokwire/rokwire-building-blocks-api/issues/663)
+- Add UUID for capability and talent in Contribution Catalog.[#666](https://github.com/rokwire/rokwire-building-blocks-api/issues/666)
+- Add autocomplete feature when inputting admin name for contribution catalog.[#665](https://github.com/rokwire/rokwire-building-blocks-api/issues/665)
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)

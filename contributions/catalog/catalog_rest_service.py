@@ -4,7 +4,7 @@ from time import gmtime
 
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
-
+from controllers.auth import login_required
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -36,9 +36,11 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template('contribute/home.html')
+
 
 @app.route("/login")
 def login():
@@ -50,6 +52,7 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
+
     return redirect(authorization_url)
 
 
@@ -64,9 +67,10 @@ def callback():
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
+
     return redirect(url_for('.profile'))
 
-@app.route("/profile", methods=["GET"])
+@app.route("/contribute/profile", methods=["GET"])
 def profile():
     """Fetching a protected resource using an OAuth 2 token.
     Parsing the username to the seesion dict, to the templates to display.
@@ -77,7 +81,7 @@ def profile():
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
 
-    return render_template('contribute/home.html', user=session["name"])
+    return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
 
 
 if __name__ == '__main__':

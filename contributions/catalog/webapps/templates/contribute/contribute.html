@@ -12,43 +12,47 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
-    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-        background-color: #2a4b45;
-    }
+        .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+            background-color: #2a4b45;
+        }
 
-    .dropdown-content {
-        display: none;
-        position: relative;
-        background-color: #2a4b45;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        /*z-index: 1;*/
-        cursor: pointer;
-    }
+        .dropdown-content {
+            display: none;
+            position: relative;
+            background-color: #2a4b45;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            /*z-index: 1;*/
+            cursor: pointer;
+        }
 
-    .dropdown-content a {
-        float: right;
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        padding-right: 50px;
-        padding-left: 50px;
-        text-align: right;
-        cursor: pointer;
-    }
+        .dropdown-content a {
+            float: right;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            padding-right: 50px;
+            padding-left: 50px;
+            text-align: right;
+            cursor: pointer;
+        }
 
-    .dropdown-content a:hover {
-        background-color: #f4f7f5;
-        border: grey;
-        border-radius: 5%;
-    }
+        .dropdown-content a:hover {
+            background-color: #f4f7f5;
+            border: grey;
+            border-radius: 5%;
+        }
 
-    .show {
-        display: block;
-    }
+        .show {
+            display: block;
+        }
 
     </style>
 </head>
@@ -61,14 +65,14 @@
         <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
         <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
             <meta id="nav-user-data">
-                <a id="user_profile" class="dropbtn"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
         </div>
 
 
     </div>
-    <div id="myDropdown" class="dropdown-content" style="display: none">
-                <a href="{{ url_for('contribute.logout') }}">Logout</a>
-       </div>
+    <div class="dropdown-content" id="myDropdown" style="display: none">
+        <a href="{{ url_for('contribute.logout') }}">Logout</a>
+    </div>
 
     <div>
         <nav>
@@ -87,10 +91,10 @@
 
             <div class="form-group">
                 <label class="required control-label col-sm-2">Contribution Name</label>
-                <div id="contribution_name_div" class="col-sm-10">
+                <div class="col-sm-10" id="contribution_name_div">
                     <input class="form-control" id="contribution_name" name="contribution_name"
                            placeholder="Give a name for your contribution" type="text">
-                    <p class="error_message"> </p>
+                    <p class="error_message"></p>
                 </div>
             </div>
             <div class="form-group">
@@ -107,6 +111,17 @@
                                                  placeholder="Give a detailed description"
                                                  style="height:150px"></textarea></div>
             </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Contribution Admins</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="contribution_Admins"
+                           name="contribution_contributionAdmins"
+                           placeholder="Give a list of admin names, seperated by comma"
+                           type="text"></div>
+            </div>
+
             <div class="form-group">
                 <label class="control-label col-sm-2">Contributor Details</label>
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
@@ -205,7 +220,8 @@
                     <nav>
                         <ol class="cd-multi-steps text-top">
                             <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
-                            <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                            <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                            </li>
                             <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                             <li><em>Submit</em></li>
                         </ol>
@@ -214,7 +230,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type *</label>
+                    <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type
+                        *</label>
                     <div>
                         <button class="button button2" id="add-capability">Add a Capability</button>
                         OR
@@ -283,8 +300,8 @@
 
                             <label class="form-check-label">
                                 <input class="form-check-input" id="deploy_external"
-                                                                   name="deploymentDetails_location" type="radio"
-                                                                   value="external"> external</label>
+                                       name="deploymentDetails_location" type="radio"
+                                       value="external"> external</label>
                         </div>
 
                         <div class="form-group">
@@ -548,24 +565,24 @@
 
                         <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
-                            <input id="submit_button"
-                                   href="{{ url_for('contribute.home') }}"
+                            <input href="{{ url_for('contribute.home') }}"
+                                   id="submit_button"
                                    onsubmit="return data_validation()"
                                    type="submit"
                                    value="Submit">
                         </div>
 
-                            <!-- The Modal -->
-                            <div id="myModal" class="modal">
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal">
 
-                              <!-- Modal content -->
-                              <div class="modal-content">
+                            <!-- Modal content -->
+                            <div class="modal-content">
                                 <span class="close">&times;</span>
                                 <p id="submit-pop">Please finish the form!</p>
                                 <br>
-                              </div>
-
                             </div>
+
+                        </div>
                     </div>
 
 
@@ -575,30 +592,85 @@
 
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-        var modal = document.getElementById("myModal");
-        // Get the button that opens the modal
-        var btn = document.getElementById("submit_button");
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+  $( function() {
+    function split( val ) {return val.split( /,\s*/ );}
+    function extractLast( term ) {return split( term ).pop();}
 
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
-          modal.style.display = "block";
+    $( "#contribution_Admins" )
+        .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
         }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
+      })
+      .autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "https://api.github.com/search/users",
+                data: {
+                    q: extractLast(request.term)
+                },
+                type: "GET",
+                headers: {Authorization: 'token ' + '{{token}}'},
+                success: function(data) {
+                        var res = [];
+                        data.items.forEach((e) => res.push(e.login));
+                        response(res);
+                }
+            })
+        },
+        search: function() {
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
           }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
         }
+      });
+  } );
+
+
+
+    var modal = document.getElementById("myModal");
+    // Get the button that opens the modal
+    var btn = document.getElementById("submit_button");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 
     function data_validation() {
         var contribution_name = document.getElementById('contribution_name');
@@ -825,22 +897,22 @@
         });
     });
 
-        var user_icon = document.getElementById('user_profile');
-        user_icon.onclick = function (){
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
+    var user_icon = document.getElementById('user_profile');
+    user_icon.onclick = function () {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
 
-        window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
             var dropdowns = document.getElementsByClassName("dropdown-content");
             for (let i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
             }
-          }
         }
+    }
 
 </script>
 </html>
