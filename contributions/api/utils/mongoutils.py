@@ -164,18 +164,18 @@ def get_contribution_dataset_from_field_no_status(collection, fld, query_str):
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
+def get_contribution_dataset_from_objectid_no_status(collection, objectid):
     is_object_id = check_if_objectid(objectid)
     if is_object_id:
         id = ObjectId(objectid)
-        db_data = query_dataset_by_objectid(collection, id, login_id, is_login)
+        db_data = query_dataset_by_objectid_no_status(collection, id)
         data_list = list(db_data)
-        if len(data_list) > 0:
+        if len(data_list) == 1:
             data_dump = dumps(data_list)
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
             json_load = json.loads(data_dump)
-            json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
             dataset = Contribution(json_load)
 
             return dataset
@@ -187,7 +187,7 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid_with_status(collection, objectid, login_id=None, is_login=False):
+def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
     is_object_id = check_if_objectid(objectid)
     status_code = '200'
 
