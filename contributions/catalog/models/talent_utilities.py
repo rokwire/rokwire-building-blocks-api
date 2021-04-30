@@ -1,8 +1,9 @@
 from datetime import date
-
+import uuid
 
 def init_talent():
     d = {
+        'id': '',
         "name": '',
         "shortDescription": '',
         "longDescription": '',
@@ -35,9 +36,11 @@ def to_talent(d):
             talent_list.append(init_talent())
 
     for i, talent in enumerate(talent_list):
+        tal_id = str(uuid.uuid4())
+        talent['id'] = tal_id
+
         for k, v in d.items():
             print(k, v)
-
             if "minUserPrivacyLevel" in k:
                 if len(v[i]) > 0:
                     talent_list[i]["minUserPrivacyLevel"] = int(v[i])

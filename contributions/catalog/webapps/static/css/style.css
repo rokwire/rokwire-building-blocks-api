@@ -36,8 +36,8 @@
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
-  float: right;
-  cursor: pointer;
+    float: right;
+    cursor: pointer;
 }
 
 * {
@@ -197,141 +197,143 @@ input[type=submit]:hover {
     color: white;
 }
 
-    /* Style the buttons */
-    .cardfilter {
-        margin-top: 12px;
-        border: none;
-        outline: none;
-        padding: 12px 16px;
-        background-color: white;
-        cursor: pointer;
-    }
+/* Style the buttons */
+.cardfilter {
+    margin-top: 12px;
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    background-color: white;
+    cursor: pointer;
+}
 
-    .cardfilter:hover {
-        background-color: #ddd;
-        color: white;
-    }
+.cardfilter:hover {
+    background-color: #ddd;
+    color: white;
+}
 
-    .cardfilter.active {
-        background-color: #666;
-        color: white;
-    }
+.cardfilter.active {
+    background-color: #666;
+    color: white;
+}
 
-    #header {
-        border: none;
-        padding: 30px;
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-        background-repeat: no-repeat;
-        height: 20%;
-        background-position: center;
-        background-size: auto;
-        position: fixed;
-    }
-    #title {
-        text-align: center;
-        position: relative;
-        top: 25%;
-        /*left: 50%;*/
-        transform: translate(-25%, -25%);
-        color: white;
-    }
+#header {
+    border: none;
+    padding: 30px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+    background-repeat: no-repeat;
+    height: 20%;
+    background-position: center;
+    background-size: auto;
+    position: fixed;
+}
 
-        .search {
-        width: 100%;
-        position: relative;
-        display: flex;
-    }
+#title {
+    text-align: center;
+    position: relative;
+    top: 25%;
+    /*left: 50%;*/
+    transform: translate(-25%, -25%);
+    color: white;
+}
+
+.search {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
 
 
-    /*Resize the wrap to see the search bar change!*/
-    .wrap {
-        width: 30%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+/*Resize the wrap to see the search bar change!*/
+.wrap {
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
-        /* the card feature */
-    .content {
-        background-color: #eaefee;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-     }
+/* the card feature */
+.content {
+    background-color: #eaefee;
+    /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
+    height: 160px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    transition-duration: 0.2s;
+    border: none;
+    border-radius: 4px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
+.content:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
 
 .required:after {
-  content:" *";
-  color: red;
+    content: " *";
+    color: red;
 }
 
 input:invalid {
-  box-shadow: 0 0 5px 1px red;
+    box-shadow: 0 0 5px 1px red;
 }
 
 input:focus {
-  box-shadow: 0 0 5px 1px red;
-  /*background-color: #e2dc8d;*/
+    box-shadow: 0 0 5px 1px red;
+    /*background-color: #e2dc8d;*/
 }
+
 /* Dotted border */
 hr.dotted {
-  border-top: 5px dotted #919590;
+    border-top: 5px dotted #919590;
 }
 
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
 
 /* The Close Button */
 .close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
+
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
-
-    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-        background-color: #2a4b45;
-    }
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    background-color: #2a4b45;
+}
 
 .dropdown-content {
     display: none;
@@ -356,11 +358,11 @@ hr.dotted {
 }
 
 .dropdown-content a:hover {
-  background-color: #f4f7f5;
+    background-color: #f4f7f5;
     border: grey;
     border-radius: 5%;
 }
-.show {
-  display: block;
-}
 
+.show {
+    display: block;
+}
