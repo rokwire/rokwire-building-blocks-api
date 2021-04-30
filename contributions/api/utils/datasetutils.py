@@ -78,6 +78,11 @@ set capability dataset
 def update_capability_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
+        dataset.set_id(injson['id'])
+        del outjson['id']
+    except:
+        pass
+    try:
         dataset.set_name(injson['name'])
         del outjson['name']
     except:
@@ -319,6 +324,11 @@ set talent dataset
 """
 def update_talent_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
+    try:
+        dataset.set_id(injson['id'])
+        del outjson['id']
+    except:
+        pass
     try:
         dataset.set_name(injson['name'])
         del outjson['name']

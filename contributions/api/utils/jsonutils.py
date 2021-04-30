@@ -13,12 +13,36 @@
 #  limitations under the License.
 
 from flask import make_response
+from bson import ObjectId
 
 def remove_objectid_from_dataset(dataset):
     if "_id" in dataset:
         del dataset["_id"]
 
     return dataset
+
+def convert_obejctid_from_dataset_json(dataset):
+    if "_id" in dataset:
+        # check if _id is object ID
+        if isinstance(dataset["_id"], ObjectId):
+            dataset["id"] = str(dataset["_id"])
+            dataset = remove_objectid_from_dataset(dataset)
+        else:
+            if "$oid" in dataset["_id"]:
+                dataset["id"] = dataset["_id"]["$oid"]
+            else:
+                dataset["id"] = str(dataset["_id"])
+            dataset = remove_objectid_from_dataset(dataset)
+
+    return dataset
+
+def convert_obejctid_from_dataset_json_list(json_list):
+    out_json_list = []
+    for dataset in json_list:
+        dataset = convert_obejctid_from_dataset_json(dataset)
+        out_json_list.append(dataset)
+
+    return out_json_list
 
 def create_log_json(ep_name, ep_method, in_json):
     in_json['ep_building_block'] = "contributions_building_block"
