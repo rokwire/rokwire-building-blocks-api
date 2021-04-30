@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import uuid
+
 from datetime import datetime
 
 """
@@ -23,3 +25,14 @@ def get_current_time_utc():
     formattedtime = "%s.%03dZ" % (formattedtime, int(micro) / 1000)
 
     return formattedtime
+
+def check_if_uuid(in_uuid):
+    is_uuid = False
+    try:
+        uuid.UUID(in_uuid)
+        is_uuid = True
+    except Exception:
+        is_uuid = False
+
+    return is_uuid
+

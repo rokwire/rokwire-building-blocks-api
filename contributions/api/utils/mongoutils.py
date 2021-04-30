@@ -22,6 +22,7 @@ from bson.json_util import dumps
 from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
 from utils import query_params
+from utils import jsonutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -99,7 +100,11 @@ def get_result(db_collection, query):
         if len(data_list) == 1: # remove blacket in the first and last character location
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
-        json_load = json.loads(data_dump)
+            json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
+        else:
+            json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
@@ -128,8 +133,8 @@ def get_http_output_query_result_using_field_string(collection, fld, query_str):
 """
 query using field name and querystring and convert result to object
 """
-def get_contribution_dataset_from_field(collection, fld, query_str):
-    db_data = query_dataset(collection, fld, query_str)
+def get_contribution_dataset_from_field_no_status(collection, fld, query_str):
+    db_data = query_dataset_no_status(collection, fld, query_str)
     data_list = list(db_data)
     if len(data_list) == 1:
         data_dump = dumps(data_list)
@@ -159,17 +164,18 @@ def get_contribution_dataset_from_field(collection, fld, query_str):
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
+def get_contribution_dataset_from_objectid_no_status(collection, objectid):
     is_object_id = check_if_objectid(objectid)
     if is_object_id:
         id = ObjectId(objectid)
-        db_data = query_dataset_by_objectid(collection, id, login_id, is_login)
+        db_data = query_dataset_by_objectid_no_status(collection, id)
         data_list = list(db_data)
-        if len(data_list) > 0:
+        if len(data_list) == 1:
             data_dump = dumps(data_list)
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
             json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
             dataset = Contribution(json_load)
 
             return dataset
@@ -181,7 +187,7 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid_with_status(collection, objectid, login_id=None, is_login=False):
+def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
     is_object_id = check_if_objectid(objectid)
     status_code = '200'
 
@@ -217,6 +223,7 @@ def get_contribution_dataset_from_objectid_with_status(collection, objectid, log
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
         dataset = Contribution(json_load)
 
         if (is_login):
@@ -247,6 +254,7 @@ def get_query_json_from_field(collection, fld, query_str):
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
@@ -291,7 +299,13 @@ def query_dataset(db_collection, fld, query_str, login_id=None, is_login=False):
 
     query_parts = [{fld: query_str}]
     query['$and'] = query_parts
-    return db_collection.find(query, {'_id': False})
+    return db_collection.find(query)
+
+"""
+qyery dataset using field
+"""
+def query_dataset_no_status(db_collection, fld, query_str):
+    return db_collection.find({fld: query_str})
 
 """
 construct json from mongo query
