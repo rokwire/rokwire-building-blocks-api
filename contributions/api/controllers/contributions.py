@@ -382,7 +382,8 @@ def put(token_info, id):
     return out_json
 
 def delete(token_info, id):
-    data_list, is_objectid, is_error, resp = get_data_list(id)
+    login_id, is_login = get_login(token_info)
+    data_list, is_objectid, is_error, resp = get_data_list(id, login_id, is_login)
     contribution_admins = data_list[0]['contributionAdmins']
     if is_error:
         return resp
