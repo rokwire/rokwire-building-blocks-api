@@ -60,6 +60,11 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_status(injson["status"])
+        del outjson["status"]
+    except Exception as e:
+        pass
+    try:
         dataset.set_date_created(injson["dateCreated"])
         del outjson["dateCreated"]
     except Exception as e:
@@ -171,11 +176,6 @@ def update_capability_dataset_from_json(dataset, injson):
         dataset.set_auth_method(injson['authMethod'])
         del outjson['authMethod']
     except:
-        pass
-    try:
-        dataset.set_status(injson["status"])
-        del outjson["status"]
-    except Exception as e:
         pass
     try:
         data_deletion_endpoint_detail = DataDeletionEndpointDetail()
