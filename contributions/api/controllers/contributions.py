@@ -810,25 +810,35 @@ def get_data_list(name, login_id, is_login):
             else:
                 db_data = mongoutils.query_dataset_by_objectid_no_status(coll_contribution, id)
                 data_list = list(db_data)
-                if "status" not in data_list[0]:
-                    msg = {
-                        "reason": "Status is not in the dataset " + str(name),
-                        "error": "Not Authorized: " + request.url,
-                    }
-                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                    logging.error("Contribution GET " + json.dumps(msg_json))
-                    resp = rs_handlers.not_authorized(msg_json)
-                    return data_list, is_objectid, True, resp
-                status = data_list[0]["status"]
-                if status != "Published":
-                    msg = {
-                        "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
-                        "error": "Not Authorized: " + request.url,
-                    }
-                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                    logging.error("Contribution GET " + json.dumps(msg_json))
-                    resp = rs_handlers.not_authorized(msg_json)
-                    return data_list, is_objectid, True, resp
+                # if len(data_list) == 0:
+                #     msg = {
+                #         "reason": "There is no dataset with the id: " + str(name),
+                #         "error": "Not Found: " + request.url,
+                #     }
+                #     msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
+                #     logging.error("Contribution GET " + json.dumps(msg_json))
+                #     resp = rs_handlers.not_found(msg_json)
+                #     return data_list, is_objectid, True, resp
+                if len(data_list) > 0:
+                    if "status" not in data_list[0]:
+                        msg = {
+                            "reason": "Status is not in the dataset " + str(name),
+                            "error": "Not Authorized: " + request.url,
+                        }
+                        msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
+                        logging.error("Contribution GET " + json.dumps(msg_json))
+                        resp = rs_handlers.not_authorized(msg_json)
+                        return data_list, is_objectid, True, resp
+                    status = data_list[0]["status"]
+                    if status != "Published":
+                        msg = {
+                            "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
+                            "error": "Not Authorized: " + request.url,
+                        }
+                        msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
+                        logging.error("Contribution GET " + json.dumps(msg_json))
+                        resp = rs_handlers.not_authorized(msg_json)
+                        return data_list, is_objectid, True, resp
             if len(data_list) > 1:
                 msg = {
                     "reason": "There are more than 1 contribution record: " + str(name),
