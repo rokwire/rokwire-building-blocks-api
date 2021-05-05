@@ -203,12 +203,15 @@ def search(token_info=None, name=None):
 
     login_id, is_login = get_login(token_info)
 
+    # building query parematers
     query = query_params.format_query_status_login(query, login_id, is_login)
 
+    # if there is no query word, it is simply requesting list of all records
     if name is None:
         is_list = True
 
     if is_list:
+        # return the list of all records
         out_json = mongoutils.get_result(coll_contribution, query)
     else:
         try:
@@ -223,6 +226,7 @@ def search(token_info=None, name=None):
             return rs_handlers.bad_request(msg_json)
 
         try:
+            # get result using query
             out_json = mongoutils.get_result(coll_contribution, query)
         except Exception as ex:
             msg = {
@@ -249,6 +253,7 @@ def get(token_info=None, id=None):
 
     data_list, is_objectid, is_error, resp = otherutils.get_data_list(id, login_id, is_login, coll_contribution)
 
+    # if getting data process failed, that is is_error is true, return error reponse
     if is_error:
         return resp
     jsonutils.convert_obejctid_from_dataset_json(data_list[0])
@@ -281,6 +286,7 @@ def put(token_info, id):
         logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
+    # check contribution admins
     contribution_admins = contribution_dataset.contributionAdmins
 
     # check if the logged in user's login is included in contribution admin list

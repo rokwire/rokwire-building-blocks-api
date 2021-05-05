@@ -55,16 +55,21 @@ def get_data_list(name, login_id, is_login, coll_contribution):
     if name != None:
         is_objectid = mongoutils.check_if_objectid(name)
 
-        # query using either non-pii ObjectId or name
-        if (is_objectid):
+        # query using ObjectId or name
+        if (is_objectid):   # when it the query is using object id
             id = ObjectId(name)
             if (is_login):
+                # when user token provided
                 db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id, login_id, is_login)
                 data_list = list(db_data)
             else:
+                # check when there is no user login that means apikey used
                 db_data = mongoutils.query_dataset_by_objectid_no_status(coll_contribution, id)
                 data_list = list(db_data)
+                # if there is a result, it must check the status
+                # because only published one will be provide to apikey
                 if len(data_list) > 0:
+                    # check if the status is in the record
                     if "status" not in data_list[0]:
                         msg = {
                             "reason": "Status is not in the dataset " + str(name),
@@ -74,6 +79,7 @@ def get_data_list(name, login_id, is_login, coll_contribution):
                         logging.error("Contribution GET " + json.dumps(msg_json))
                         resp = rs_handlers.not_authorized(msg_json)
                         return data_list, is_objectid, True, resp
+                    # if there is status in the record, check the value for status
                     status = data_list[0]["status"]
                     if status != "Published":
                         msg = {
@@ -84,6 +90,8 @@ def get_data_list(name, login_id, is_login, coll_contribution):
                         logging.error("Contribution GET " + json.dumps(msg_json))
                         resp = rs_handlers.not_authorized(msg_json)
                         return data_list, is_objectid, True, resp
+            # if there are more than one result it should be something wrong
+            # because there should be only one record with given objectid
             if len(data_list) > 1:
                 msg = {
                     "reason": "There are more than 1 contribution record: " + str(name),
@@ -93,14 +101,15 @@ def get_data_list(name, login_id, is_login, coll_contribution):
                 logging.error("Contribution GET " + json.dumps(msg_json))
                 is_error = True
                 resp = rs_handlers.bad_request(msg_json)
-        else:
-            if (is_login):
+        else:   # when the query is using the actual name not object id
+            if (is_login):  # when using github auth
                 db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name, login_id, is_login)
                 data_list = list(db_data)
-            else:
+            else:   # when using apikey auth
                 db_data = mongoutils.query_dataset_no_status(coll_contribution,  cfg.FIELD_NAME, name)
                 tmp_data_list = list(db_data)
                 data_list = []
+                # check only published ones to apikey. The result can be multiple unlike object id query
                 for data in tmp_data_list:
                     if "status" in data:
                         status = data["status"]
@@ -108,6 +117,7 @@ def get_data_list(name, login_id, is_login, coll_contribution):
                             data_list.append(data)
                         else:
                             is_unauthorized = True
+        # when there is no result
         if len(data_list) == 0:
             if is_unauthorized:
                 msg = {
