@@ -25,7 +25,6 @@ class Capability():
         self.apiBaseUrl = None
         self.version = None
         self.healthCheckUrl = None
-        self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None
         # self.creationDate = None
@@ -104,12 +103,6 @@ class Capability():
 
     def get_auth_method(self):
         return self.authMethod
-
-    def set_status(self, status):
-        self.status = status
-
-    def get_status(self):
-        return self.status
 
     def set_data_deletion_endpoint_details(self, dataDeletionEndpointDetails):
         self.dataDeletionEndpointDetails = dataDeletionEndpointDetails
