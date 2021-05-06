@@ -390,9 +390,11 @@ def put(token_info, id):
 def delete(token_info, id):
     login_id, is_login = get_login(token_info)
     data_list, is_objectid, is_error, resp = otherutils.get_data_list(id, login_id, is_login, coll_contribution)
-    contribution_admins = data_list[0]['contributionAdmins']
+
     if is_error:
         return resp
+
+    contribution_admins = data_list[0]['contributionAdmins']
 
     # check if the logged in user's login is included in contribution admin list
     is_admin_user = check_login_admin(token_info["login"], contribution_admins)
