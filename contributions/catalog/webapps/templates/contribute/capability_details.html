@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
+    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>detailed view</title>
+</head>
+<body>
+
+<div class="header">
+    <h1>Capability Details View</h1>
+
+</div>
+
+<hr class="divider"/>
+
+<div class="info">
+
+          <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Capability Name </h5>
+            </div>
+            <p class="col-sm-9">{{post.name}}</p>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Capability description </h5>
+            </div>
+            <p class="col-sm-9">{{post.discription}}</p>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Is code open source?</h5>
+            </div>
+            <p class="col-sm-9">{{post.Is code open source?}}</p>
+          </div>
+
+         {% if post.Source code repository URL %}
+              <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Source code repository URL</h5>
+            </div>
+            <p class="col-sm-9">{{post.Source code repository URL}}</p>
+          </div>
+         {% endif %}
+
+         {% if post.Api Documentation URL %}
+              <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Api Documentation URL, if the above data is "Yes" </h5>
+            </div>
+            <p class="col-sm-9">{{post.Api Documentation URL}}</p>
+          </div>
+         {% endif %}
+
+         {% if post.Deployment status%}
+              <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Deployment status (Internal vs External)</h5>
+            </div>
+            <p class="col-sm-9">{{post.Deployment status}}</p>
+          </div>
+         {% endif %}
+</div>
+
+
+<div class="action">
+
+</div>
+
+</body>
+</html>

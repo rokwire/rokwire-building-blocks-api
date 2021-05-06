@@ -36,7 +36,6 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    # print(session)
     return redirect(authorization_url)
 
 
@@ -58,6 +57,29 @@ def result():
 
 
 
+# @bp.route('/details/<contribution_id>', methods=['GET','POST'])
+# def details(contribution_id):
+#     #get the contribution results
+#     the_json_res = get_contribution(contribution_id)
+#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
+
+@bp.route('/details/<capability_id>', methods=['GET','POST'])
+def capability_details(contribution_id):
+    #get the contribution results
+    the_json_res = get_capability(contribution_id)
+    return render_template("contribute/capability_details.html", contribution_json=the_json_res)
+
+@bp.route('/details/<talent_id>', methods=['GET','POST'])
+def talent_details(talent_id):
+    #get the contribution results
+    the_json_res = get_capability(talent_id)
+    return render_template("contribute/talent_details.html", contribution_json=the_json_res)
+
+
+# @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
+# def edit(contribution_id):
+#     #todo: need to implement the edit form page
+#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
 @bp.route('/create', methods=['GET', "POST"])
 @login_required
@@ -70,7 +92,9 @@ def create():
         # add contributionAdmins to the json_contiubtion
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
+        print(json_contribution)
         response, s = post(json_contribution)
+
         if response:
             if response:
                 if "name" in session:
@@ -107,7 +131,8 @@ def search_results(search):
 def post(json_data):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+        # 'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+        'ROKWIRE_API_KEY': cfg.ROKWIRE_API_KEY
     }
     try:
         # Setting up post request
@@ -128,6 +153,75 @@ def post(json_data):
         var = traceback.format_exc()
         return False, var
 
+
+def get_contribution(contribution_id):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+    }
+
+    try:
+        if contribution_id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(contribution_id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(contribution_id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result
+
+def get_capability(id):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+    }
+
+    try:
+        if id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/capabilities/" + str(id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result
+
+def get_talent(id):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+    }
+
+    try:
+        if id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/talents/" + str(id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result
 
 # post a json_data in a http request
 def search(input_data):
