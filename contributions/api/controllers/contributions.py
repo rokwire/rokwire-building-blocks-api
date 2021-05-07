@@ -525,7 +525,6 @@ def allcapabilitiessearch(token_info=None, name=None):
 
 def capabilities_search(token_info=None, id=None):
     login_id, is_login = otherutils.get_login(token_info)
-    contribution_dataset = None
 
     contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid(
         coll_contribution, id, login_id, is_login)
@@ -750,7 +749,11 @@ def capabilities_get(token_info=None,id=None, capabilityid=None):
     capability_index = 0
     capability = None
 
+    # there shouldn't be empty list of capability_datasets
+    # since it has to be filtered in capabilities_search() already
     for capability_dataset in capability_datasets:
+        # this will make an error if there is no id field in capability dataset
+        # however, this shouldn't be happen because it is required in connexion
         if capability_dataset["id"] == capabilityid:
             capability = capability_dataset
             capability_index += 1
@@ -789,7 +792,11 @@ def talents_get(token_info=None,id=None, talentid=None):
     talent_index = 0
     talent = None
 
+    # there shouldn't be empty list of talent_datasets
+    # since it has to be filtered in talents_search() already
     for talent_dataset in talent_datasets:
+        # this will make an error if there is no id field in talent dataset
+        # however, this shouldn't be happen because it is required in connexion
         if talent_dataset["id"] == talentid:
             talent = talent_dataset
             talent_index += 1
