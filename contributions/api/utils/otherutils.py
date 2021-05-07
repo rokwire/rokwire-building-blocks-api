@@ -150,3 +150,24 @@ def get_data_list(name, login_id, is_login, coll_contribution):
         resp = rs_handlers.not_found(msg_json)
 
     return None, None, True, resp
+
+
+def check_login_admin(login, inlist):
+    is_admin = False
+    for user in inlist:
+        if login == user:
+            is_admin = True
+
+    return is_admin
+
+def get_login(token_info):
+    is_login = False
+    login_id = ""
+
+    try:
+        login_id = token_info["login"]
+        is_login = True
+    except:
+        pass
+
+    return login_id, is_login

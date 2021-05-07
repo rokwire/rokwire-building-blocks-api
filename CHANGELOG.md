@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add /contribute as prefix for ./profile page. [#663](https://github.com/rokwire/rokwire-building-blocks-api/issues/663)
 - Add UUID for capability and talent in Contribution Catalog.[#666](https://github.com/rokwire/rokwire-building-blocks-api/issues/666)
 - Add autocomplete feature when inputting admin name for contribution catalog.[#665](https://github.com/rokwire/rokwire-building-blocks-api/issues/665)
+- Add search endpoints using capability and talent id.[#662](https://github.com/rokwire/rokwire-building-blocks-api/issues/662)
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)

@@ -299,6 +299,86 @@ paths:
           description: Invalid input
         500:
           description: Internal error
+  /contributions/{id}/talents/{talentid}:
+    get:
+      summary: Get Talent that belong to a specific Contribution by id
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+        - ApiKeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: talentid
+          in: path
+          description: Talent ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Talents in this given Contribution by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Talent'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/{id}/capabilities/{capabilityid}:
+    get:
+      summary: Get Capability that belong to a specific Contribution by id
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+        - ApiKeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: capabilityid
+          in: path
+          description: Capability ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Capability by id in this given Contribution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capability'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
