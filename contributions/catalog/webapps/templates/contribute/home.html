@@ -215,6 +215,8 @@
                         <h4 class="capability_name"></h4>
                         <p class="capability_description"></p>
                         <p class="contributors"></p>
+
+                        <a>see deatils >>> </a>
                         <!--                    <span class="label label-default">App Config</span>-->
                     </div>
                 </div>
@@ -226,6 +228,7 @@
                         <h4 class="talent_name"></h4>
                         <p class="talent_description"></p>
                         <p class="contributors"></p>
+                        <a >see deatils >>> </a>
                         <!--                <span class="label label-default">App Config</span>-->
                     </div>
                 </div>
@@ -282,7 +285,12 @@
                         console.log("error occured talent" );
             });
 
-            window.onload = append_capability(all_capability);
+            if (all_capability.length > 0){
+                window.onload = append_capability(all_capability);
+            }
+            else{
+                window.onload = append_capability(test_capability);
+            }
             window.onload = append_talent(all_talents);
         }
 
@@ -307,10 +315,79 @@
 
         var all_capability = [];
         var all_talents = []
+        var test_capability = [
+                {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                    "authMethod":null,
+                    "databaseDetails":null,
+                    "environmentVariables":null,
+                    "location":"internal"
+                },
+                "id":"e7906119-5e65-49fe-b0fa-a85289a0b0ca",
+                "version":"version",
+                "description":"capability description",
+                "isOpenSource":true,
+                "name":"capability test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                    "apiKey":"apiKey",
+                    "description":"description",
+                    "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+                }
+                ];
         var get_talent_url = "http://"  + "localhost:5000/contributions/talents";
         var get_cap_url = "http://" +  "localhost:5000/contributions/capabilities";
         var get_contribution_url = "http://" +  "localhost:5000/contributions";
 
+        var test_contribution = {
+            "shortDescription":"Short description of the contribution",
+            "name":"test2222",
+            "talents":null,
+            "capabilities":[
+                {
+                "apiDocUrl":null,
+                "healthCheckUrl":"healthCheckUrl",
+                "deploymentDetails":{
+                    "authMethod":null,
+                    "databaseDetails":null,
+                    "environmentVariables":null,
+                    "location":"internal"
+                },
+                "id":"e7906119-5e65-49fe-b0fa-a85289a0b0ca",
+                "version":"version",
+                "description":"capability description",
+                "isOpenSource":true,
+                "name":"capability test",
+                "apiBaseUrl":null,
+                "dataDeletionEndpointDetails":{
+                    "apiKey":"apiKey",
+                    "description":"description",
+                    "deletionEndpoint":"deletionEndpoint"
+                },
+                "status":"Submitted"
+                }
+                ],
+                "longDescription":null,
+                "contributors": [
+                {
+                    "firstName": null,
+                    "lastName": null,
+                    "email": null,
+                    "phone": null,
+                    "affiliation":
+                        {
+                        "name": null,
+                        "address": null,
+                        "phone": null,
+                        "email": null
+                        }
+                }
+            ]
+        }
 
 
         function get_contributors(data) {
