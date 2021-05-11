@@ -344,6 +344,7 @@ API will return updated contribution dataset
              "address":null
           }
        ],
+       "id": "5ed9440f830d3038f4f8ffaa",
        "shortDescription":"Short description of the contribution",
        "capabilities":[
           {
@@ -524,6 +525,7 @@ API will return the information of the contribution dataset
              "address":null
           }
        ],
+       "id": "5ed9440f830d3038f4f8ffaa",
        "shortDescription":"Short description of the contribution",
        "capabilities":[
           {
@@ -535,6 +537,7 @@ API will return the information of the contribution dataset
                 "environmentVariables":null
              },
              "apiBaseUrl":null,
+             "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
              "description":"capability description",
              "dataDeletionEndpointDetails":{
                 "apiKey":"apiKey",  # pragma: allowlist secret
@@ -558,7 +561,6 @@ API will return the information of the contribution dataset
                 }
              ],
              "name":"capability test1",
-             "status":"Submitted",
              "apiDocUrl":null,
              "isOpenSource":true,
              "healthCheckUrl":"healthCheckUrl",
@@ -573,6 +575,7 @@ API will return the information of the contribution dataset
                 "environmentVariables":null
              },
              "apiBaseUrl":null,
+             "id":"6ac72942-a6af-4ac6-b540-33bb36afb342",
              "description":"capability description",
              "dataDeletionEndpointDetails":{
                 "apiKey":"apiKey",  # pragma: allowlist secret
@@ -596,13 +599,13 @@ API will return the information of the contribution dataset
                 }
              ],
              "name":"capability test2",
-             "status":"Submitted",
              "apiDocUrl":null,
              "isOpenSource":true,
              "healthCheckUrl":"healthCheckUrl",
              "version":"version"
           }
        ],
+       "status":"Submitted",
        "dateModified":"2020/06/04T14:02:49",
        "longDescription":null,
        "name":"test1",
@@ -613,10 +616,12 @@ API will return the information of the contribution dataset
            {
               "name":"talent 1",
               "shortDescription":"short description",
+              "id":"412a2942-a6af-4ac6-b540-33bb36afaf23",
               "requiredCapabilities":[
                  {
                     "apiDocUrl":null,
                     "healthCheckUrl":"healthCheckUrl",
+                    "id":"61da2942-a6af-4ac6-b540-33bb36af841a",
                     "deploymentDetails":{
                        "authMethod":null,
                        "databaseDetails":null,
@@ -638,6 +643,7 @@ API will return the information of the contribution dataset
                  {
                     "apiDocUrl":null,
                     "healthCheckUrl":"healthCheckUrl",
+                    "id":"6bc72942-a6af-4ac6-b540-33bb36afb132",
                     "deploymentDetails":{
                        "authMethod":null,
                        "databaseDetails":null,
@@ -653,8 +659,7 @@ API will return the information of the contribution dataset
                        "apiKey":"apiKey",   # pragma: allowlist secret
                        "description":"description",
                        "deletionEndpoint":"deletionEndpoint"
-                    },
-                    "status":"Submitted"
+                    }
                  }
               ],
               "minUserPrivacyLevel":5,
@@ -699,6 +704,7 @@ API will return the information of the capabilities in contribution dataset
     [
        {
           "apiBaseUrl":null,
+          "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
           "apiDocUrl":null,
           "contacts":[
              {
@@ -732,12 +738,12 @@ API will return the information of the capabilities in contribution dataset
           "healthCheckUrl":"healthCheckUrl",
           "isOpenSource":true,
           "name":"capability test1",
-          "status":"Submitted",
           "version":"version"
        },
        {
           "apiBaseUrl":null,
           "apiDocUrl":null,
+          "id":"12f72942-a6af-4ac6-b540-33bb36afb341",
           "contacts":[
              {
                 "email":null,
@@ -770,12 +776,12 @@ API will return the information of the capabilities in contribution dataset
           "healthCheckUrl":"healthCheckUrl",
           "isOpenSource":true,
           "name":"capability test3",
-          "status":"Submitted",
           "version":"version"
        },
        {
           "apiBaseUrl":null,
           "apiDocUrl":null,
+          "id":"461a2942-a6af-4ac6-b540-33bb36af35ac",
           "contacts":[
              {
                 "email":null,
@@ -808,7 +814,6 @@ API will return the information of the capabilities in contribution dataset
           "healthCheckUrl":"healthCheckUrl",
           "isOpenSource":true,
           "name":"capability test2",
-          "status":"Submitted",
           "version":"version"
        }
     ]
@@ -823,7 +828,9 @@ API will return the information of the capabilities with given name
     [
       {
         "apiBaseUrl": null,
+        "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
         "apiDocUrl": null,
+        "contributionId":"5ed57231830d301a14974900",
         "contacts": [
           {
             "email": null,
@@ -856,13 +863,14 @@ API will return the information of the capabilities with given name
         "healthCheckUrl": "healthCheckUrl",
         "isOpenSource": true,
         "name": "test1",
-        "status": "Submitted",
         "version": "version"
       },
       {
         "apiBaseUrl": null,
+        "id":"2af72942-a6af-4ac6-b540-33bb36afb621",
         "apiDocUrl": null,
         "contacts": null,
+        "contributionId":"62a57231830d301a149bc5a3",
         "dataDeletionEndpointDetails": {
           "apiKey": "apiKey",   # pragma: allowlist secret
           "deletionEndpoint": "deletionEndpoint",
@@ -879,7 +887,6 @@ API will return the information of the capabilities with given name
         "healthCheckUrl": "healthCheckUrl",
         "isOpenSource": true,
         "name": "test1",
-        "status": "Submitted",
         "version": "version"
       }
     ]
@@ -894,6 +901,7 @@ API will return the information of the talents in contribution dataset
     [
        {
           "name":"talent 1",
+          "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
           "shortDescription":"short description",
           "requiredCapabilities":[
              {
@@ -914,8 +922,7 @@ API will return the information of the talents in contribution dataset
                    "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
-                },
-                "status":"Submitted"
+                }
              },
              {
                 "apiDocUrl":null,
@@ -935,8 +942,7 @@ API will return the information of the talents in contribution dataset
                    "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
-                },
-                "status":"Submitted"
+                }
              }
           ],
           "minUserPrivacyLevel":5,
@@ -968,7 +974,9 @@ API will return the information of the talents with given name
     [
        {
           "name":"talent 1",
+          "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
           "shortDescription":"short description",
+          "contributionId":"5ed57231830d301a14974900",
           "requiredCapabilities":[
              {
                 "apiDocUrl":null,
@@ -988,8 +996,7 @@ API will return the information of the talents with given name
                    "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
-                },
-                "status":"Submitted"
+                }
              },
              {
                 "apiDocUrl":null,
@@ -1009,8 +1016,7 @@ API will return the information of the talents with given name
                    "apiKey":"apiKey",   # pragma: allowlist secret
                    "description":"description",
                    "deletionEndpoint":"deletionEndpoint"
-                },
-                "status":"Submitted"
+                }
              }
           ],
           "minUserPrivacyLevel":5,
@@ -1031,3 +1037,125 @@ API will return the information of the talents with given name
           }
        }
     ]
+```
+### GET capabilities in contribution data using contribution id and capability id
+To get the information about capabilities in certain contribution dataset 
+using contribution id and capability id, this method should be used
+```
+curl http://localhost:5000/contributions/5ed57231830d301a14974900/capabilities/3b372942-a6af-4ac6-b540-33bb36afb657
+```
+API will return the information of the capabilities in contribution dataset
+```
+   {
+      "apiBaseUrl":null,
+      "apiDocUrl":null,
+      "id":"3b372942-a6af-4ac6-b540-33bb36afb657",
+      "contacts":[
+         {
+            "email":null,
+            "name":null,
+            "officialAddress":null,
+            "organization":null,
+            "phone":null
+         },
+         {
+            "email":null,
+            "name":null,
+            "officialAddress":null,
+            "organization":null,
+            "phone":null
+         }
+      ],
+      "dataDeletionEndpointDetails":{
+         "apiKey":"apiKey", # pragma: allowlist secret
+         "deletionEndpoint":"deletionEndpoint",
+         "description":"description"
+      },
+      "deploymentDetails":{
+         "authMethod":null,
+         "databaseDetails":null,
+         "dockerImageName":null,
+         "environmentVariables":null,
+         "location":null
+      },
+      "description":"capability description",
+      "healthCheckUrl":"healthCheckUrl",
+      "isOpenSource":true,
+      "name":"capability test1",
+      "version":"version"
+   }
+```
+### GET talents in contribution data using contribution id and talent id
+To get the information about talent in certain contribution dataset
+using contribution id and talent id, this method should be used
+```
+curl http://localhost:5000/contributions/5ed57231830d301a14974900/talents/3b372942-a6af-4ac6-b540-33bb36afb659
+```
+API will return the information of the talents in contribution dataset
+```
+   {
+      "name":"talent 1",
+      "id":"3b372942-a6af-4ac6-b540-33bb36afb659",
+      "shortDescription":"short description",
+      "requiredCapabilities":[
+         {
+            "apiDocUrl":null,
+            "id":"1ac72942-a6af-4ac6-b540-33bb36afb23"
+            "healthCheckUrl":"healthCheckUrl",
+            "deploymentDetails":{
+               "authMethod":null,
+               "databaseDetails":null,
+               "environmentVariables":null,
+               "location":"internal"
+            },
+            "version":"version",
+            "description":"capability description",
+            "isOpenSource":true,
+            "name":"capability test",
+            "apiBaseUrl":null,
+            "dataDeletionEndpointDetails":{
+               "apiKey":"apiKey",   # pragma: allowlist secret
+               "description":"description",
+               "deletionEndpoint":"deletionEndpoint"
+            }
+         },
+         {
+            "apiDocUrl":null,
+            "id":"245b2942-a6af-4ac6-b540-33bb36afb612"
+            "healthCheckUrl":"healthCheckUrl",
+            "deploymentDetails":{
+               "authMethod":null,
+               "databaseDetails":null,
+               "environmentVariables":null,
+               "location":"internal"
+            },
+            "version":"version",
+            "description":"capability2 description",
+            "isOpenSource":true,
+            "name":"capability2 test",
+            "apiBaseUrl":null,
+            "dataDeletionEndpointDetails":{
+               "apiKey":"apiKey",   # pragma: allowlist secret
+               "description":"description",
+               "deletionEndpoint":"deletionEndpoint"
+            }
+         }
+      ],
+      "minUserPrivacyLevel":5,
+      "requiredBuildingBlocks":[
+         "App Config",
+         "Talent Chooser"
+      ],
+      "minEndUserRoles":[
+         "alumni",
+         "employee"
+      ],
+      "startDate":"2020/06/15T12:06:55",
+      "endDate":"2020/10/25T12:06:55",
+      "dataDescription":"Data description",
+      "selfCertification":{
+         "dataDeletionUponRequest":"data deletion upon request",
+         "discloseAds":"disclose ads"
+      }
+   }
+```
