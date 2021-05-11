@@ -736,7 +736,7 @@ def talents_search(token_info=None, id=None):
 
     return talent_dataset
 
-def capabilities_get(token_info=None,id=None, capabilityid=None):
+def capabilities_get(token_info=None, id=None, capability_id=None):
     capability_datasets = capabilities_search(token_info, id)
 
     # when the capablity_datasets is an error response
@@ -754,14 +754,14 @@ def capabilities_get(token_info=None,id=None, capabilityid=None):
     for capability_dataset in capability_datasets:
         # this will make an error if there is no id field in capability dataset
         # however, this shouldn't be happen because it is required in connexion
-        if capability_dataset["id"] == capabilityid:
+        if capability_dataset["id"] == capability_id:
             capability = capability_dataset
             capability_index += 1
 
     if capability_index > 1:
         msg = {
             "reason": "There is more than one Capabilities with given capability id: "
-                      + str(capabilityid),
+                      + str(capability_id),
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Capability", "GET", msg)
@@ -770,7 +770,7 @@ def capabilities_get(token_info=None,id=None, capabilityid=None):
     elif capability_index == 0:
         msg = {
             "reason": "There is no Capability with given capability id: "
-                      + str(capabilityid),
+                      + str(capability_id),
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Capability", "GET", msg)
@@ -779,7 +779,7 @@ def capabilities_get(token_info=None,id=None, capabilityid=None):
     else:
         return capability
 
-def talents_get(token_info=None,id=None, talentid=None):
+def talents_get(token_info=None, id=None, talent_id=None):
     talent_datasets = talents_search(token_info, id)
 
     # when the capablity_datasets is an error response
@@ -797,14 +797,14 @@ def talents_get(token_info=None,id=None, talentid=None):
     for talent_dataset in talent_datasets:
         # this will make an error if there is no id field in talent dataset
         # however, this shouldn't be happen because it is required in connexion
-        if talent_dataset["id"] == talentid:
+        if talent_dataset["id"] == talent_id:
             talent = talent_dataset
             talent_index += 1
 
     if talent_index > 1:
         msg = {
             "reason": "There is more than one Capabilities with given talent id: "
-                      + str(talentid),
+                      + str(talent_id),
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Talent", "GET", msg)
@@ -813,7 +813,7 @@ def talents_get(token_info=None,id=None, talentid=None):
     elif talent_index == 0:
         msg = {
             "reason": "There is no Capability with given capability id: "
-                      + str(talentid),
+                      + str(talent_id),
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Capability", "GET", msg)

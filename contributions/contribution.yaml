@@ -299,7 +299,7 @@ paths:
           description: Invalid input
         500:
           description: Internal error
-  /contributions/{id}/talents/{talentid}:
+  /contributions/{id}/talents/{talent_id}:
     get:
       summary: Get Talent that belong to a specific Contribution by id
       tags:
@@ -316,7 +316,7 @@ paths:
           explode: false
           schema:
             type: string
-        - name: talentid
+        - name: talent_id
           in: path
           description: Talent ID
           required: true
@@ -339,7 +339,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
-  /contributions/{id}/capabilities/{capabilityid}:
+  /contributions/{id}/capabilities/{capability_id}:
     get:
       summary: Get Capability that belong to a specific Contribution by id
       tags:
@@ -356,7 +356,7 @@ paths:
           explode: false
           schema:
             type: string
-        - name: capabilityid
+        - name: capability_id
           in: path
           description: Capability ID
           required: true
