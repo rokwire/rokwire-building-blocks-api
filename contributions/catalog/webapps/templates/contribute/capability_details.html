@@ -13,17 +13,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>detailed view</title>
 </head>
+
 <body>
 
 <div class="header">
-    <h1>Capability Details View</h1>
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
+        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
+            <meta id="nav-user-data">
+            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+        </div>
+
+
+    </div>
+    <div class="dropdown-content" id="myDropdown" style="display: none">
+        <a href="{{ url_for('contribute.logout') }}">Logout</a>
+    </div>
 
 </div>
 
 <hr class="divider"/>
 
-<div class="form-group">
-
+<div class="container">
+        <h2>Capability Details</h2>
           <div class="row">
             <div class="col-12 col-sm-2">
               <h5>Capability Name </h5>

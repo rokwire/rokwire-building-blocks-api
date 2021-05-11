@@ -285,12 +285,13 @@
                         console.log("error occured talent" );
             });
 
-            if (all_capability.length > 0){
-                window.onload = append_capability(all_capability);
-            }
-            else{
-                window.onload = append_capability(test_capability);
-            }
+            // if (all_capability.length > 0){
+            //     window.onload = append_capability(all_capability);
+            // }
+            // else{
+            //     window.onload = append_capability(test_capability);
+            // }
+            window.onload = append_capability(all_capability)
             window.onload = append_talent(all_talents);
         }
 
@@ -312,7 +313,7 @@
             }
           }
         }
-
+        console.log('{{token}}')
         var all_capability = [];
         var all_talents = []
         var test_capability = [
@@ -456,7 +457,9 @@
             if (data == null) {
                 xhr.send();
             } else {
+
                 xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+                xhr.setRequestHeader("Authorization", 'bearer '+'{{token}}');
                 xhr.send(data);
             }
         }

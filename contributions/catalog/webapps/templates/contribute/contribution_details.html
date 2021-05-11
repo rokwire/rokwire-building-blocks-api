@@ -16,19 +16,80 @@
 <body>
 
 <div class="header">
-<!--    <h1>{{ contribution['name'] }}</h1>-->
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
+        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
+            <meta id="nav-user-data">
+            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+        </div>
+
+
+    </div>
+    <div class="dropdown-content" id="myDropdown" style="display: none">
+        <a href="{{ url_for('contribute.logout') }}">Logout</a>
+    </div>
 </div>
 
+<div class="container">
+        <h2 id="contribute">Contribution Details</h2>
 
-<div class="info">
 
-  <ul>
-<!--    {% for item in capability %}-->
-<!--    <li>{{n}}</li>-->
-<!--    {% endfor %}-->
-  </ul>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Contribution Name</h5>
+            </div>
+            <p class="col-sm-9">{{post.name}}</p>
+          </div>
 
-</div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Contribution short description</h5>
+            </div>
+            <p class="col-sm-9">{{post.description}}</p>
+          </div>
+
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Contribution long description</h5>
+            </div>
+            <p class="col-sm-9">{{post.text}}</p>
+          </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Contributor details</h5>
+            </div>
+            <p class="col-sm-9">{{post.contributor}}</p>
+          </div>
+
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Contact details</h5>
+            </div>
+            <p class="col-sm-9">{{post.contacts}}</p>
+          </div>
+
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Capability details</h5>
+            </div>
+            <p class="col-sm-9">{{post.capability}}</p>
+          </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2">
+              <h5>Capability details</h5>
+            </div>
+            <p class="col-sm-9">{{post.talents}}</p>
+          </div>
+    </div>
+
+
 
 
 <div class="action">
