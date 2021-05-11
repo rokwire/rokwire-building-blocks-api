@@ -16,7 +16,7 @@ import json
 import datetime
 import logging
 
-from flask import jsonify, request, g
+from flask import wrappers, request
 from bson import ObjectId
 
 import controllers.configs as cfg
@@ -25,6 +25,7 @@ import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
 import utils.mongoutils as mongoutils
 import utils.otherutils as otherutils
+import utils.otherutils as modelutils
 
 from utils import query_params
 from models.contribution import Contribution
@@ -84,7 +85,7 @@ def post(token_info):
             return rs_handlers.bad_request(msg_json)
 
         # check if the logged in user's login is included in contribution admin list
-        is_admin_user = check_login_admin(token_info["login"], contribution_admins)
+        is_admin_user = otherutils.check_login_admin(token_info["login"], contribution_admins)
         if not is_admin_user:
             msg = {
                 "reason": "Contribution admin list must contain logged in user",
@@ -99,7 +100,7 @@ def post(token_info):
         try:
             contributors_json = in_json["contributors"]
             for i in range(len(contributors_json)):
-                contributor, rest_contributor_json, msg = construct_contributors(contributors_json[i])
+                contributor, rest_contributor_json, msg = modelutils.construct_contributors(contributors_json[i])
                 if contributor is None:
                     return rs_handlers.bad_request(msg)
                 contributors_list.append(contributor)
@@ -112,7 +113,7 @@ def post(token_info):
         try:
             capability_json = in_json["capabilities"]
             for i in range(len(capability_json)):
-                capability, rest_capability_json, msg = construct_capability(capability_json[i])
+                capability, rest_capability_json, msg = modelutils.construct_capability(capability_json[i])
                 if capability is None:
                     return rs_handlers.bad_request(msg)
 
@@ -142,7 +143,7 @@ def post(token_info):
         try:
             talent_json = in_json["talents"]
             for i in range(len(talent_json)):
-                talent, rest_talent_json, msg = construct_talent(talent_json[i])
+                talent, rest_talent_json, msg = modelutils.construct_talent(talent_json[i])
                 if talent is None:
                     return rs_handlers.bad_request(msg)
 
@@ -167,7 +168,7 @@ def post(token_info):
                 if talent.requiredCapabilities is not None:
                     required_cap_list = talent.requiredCapabilities
                     for capability_json in required_cap_list:
-                        capability, rest_capability_json, msg = construct_capability(capability_json)
+                        capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
                         is_uuid = otherutils.check_if_uuid(capability.id)
                         if not is_uuid:
                             msg = {
@@ -201,14 +202,17 @@ def search(token_info=None, name=None):
     is_list = False
     query = dict()
 
-    login_id, is_login = get_login(token_info)
+    login_id, is_login = otherutils.get_login(token_info)
 
+    # building query parematers
     query = query_params.format_query_status_login(query, login_id, is_login)
 
+    # if there is no query word, it is simply requesting list of all records
     if name is None:
         is_list = True
 
     if is_list:
+        # return the list of all records
         out_json = mongoutils.get_result(coll_contribution, query)
     else:
         try:
@@ -223,6 +227,7 @@ def search(token_info=None, name=None):
             return rs_handlers.bad_request(msg_json)
 
         try:
+            # get result using query
             out_json = mongoutils.get_result(coll_contribution, query)
         except Exception as ex:
             msg = {
@@ -245,10 +250,11 @@ def search(token_info=None, name=None):
     return out_json
 
 def get(token_info=None, id=None):
-    login_id, is_login = get_login(token_info)
+    login_id, is_login = otherutils.get_login(token_info)
 
-    data_list, is_objectid, is_error, resp = get_data_list(id, login_id, is_login)
+    data_list, is_objectid, is_error, resp = otherutils.get_data_list(id, login_id, is_login, coll_contribution)
 
+    # if getting data process failed, that is is_error is true, return error reponse
     if is_error:
         return resp
     jsonutils.convert_obejctid_from_dataset_json(data_list[0])
@@ -281,10 +287,11 @@ def put(token_info, id):
         logging.error("Contribution PUT " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
+    # check contribution admins
     contribution_admins = contribution_dataset.contributionAdmins
 
     # check if the logged in user's login is included in contribution admin list
-    is_admin_user = check_login_admin(token_info["login"], contribution_admins)
+    is_admin_user = otherutils.check_login_admin(token_info["login"], contribution_admins)
     if not is_admin_user:
         msg = {
             "reason": "Contribution admin list must contain logged in user",
@@ -306,7 +313,7 @@ def put(token_info, id):
     try:
         capability_json = in_json["capabilities"]
         for i in range(len(capability_json)):
-            capability, rest_capability_json, msg = construct_capability(capability_json[i])
+            capability, rest_capability_json, msg = modelutils.construct_capability(capability_json[i])
             if capability is None:
                 return rs_handlers.bad_request(msg)
             # check if the capability id is in uuid format
@@ -329,7 +336,7 @@ def put(token_info, id):
     try:
         talent_json = in_json["talents"]
         for i in range(len(talent_json)):
-            talent, rest_talent_json, msg = construct_talent(talent_json[i])
+            talent, rest_talent_json, msg = modelutils.construct_talent(talent_json[i])
             if talent is None:
                 return rs_handlers.bad_request(msg)
             # check if the talent id is in uuid format
@@ -347,7 +354,7 @@ def put(token_info, id):
             if talent.requiredCapabilities is not None:
                 required_cap_list = talent.requiredCapabilities
                 for capability_json in required_cap_list:
-                    capability, rest_capability_json, msg = construct_capability(capability_json)
+                    capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
                     is_uuid = otherutils.check_if_uuid(capability.id)
                     if not is_uuid:
                         msg = {
@@ -382,14 +389,16 @@ def put(token_info, id):
     return out_json
 
 def delete(token_info, id):
-    login_id, is_login = get_login(token_info)
-    data_list, is_objectid, is_error, resp = get_data_list(id, login_id, is_login)
-    contribution_admins = data_list[0]['contributionAdmins']
+    login_id, is_login = otherutils.get_login(token_info)
+    data_list, is_objectid, is_error, resp = otherutils.get_data_list(id, login_id, is_login, coll_contribution)
+
     if is_error:
         return resp
 
+    contribution_admins = data_list[0]['contributionAdmins']
+
     # check if the logged in user's login is included in contribution admin list
-    is_admin_user = check_login_admin(token_info["login"], contribution_admins)
+    is_admin_user = otherutils.check_login_admin(token_info["login"], contribution_admins)
     if not is_admin_user:
         msg = {
             "reason": "Contribution admin list must contain logged in user",
@@ -426,7 +435,7 @@ def allcapabilitiessearch(token_info=None, name=None):
     query = dict()
     is_list = False
 
-    login_id, is_login = get_login(token_info)
+    login_id, is_login = otherutils.get_login(token_info)
 
     query = query_params.format_query_status_login(query, login_id, is_login)
 
@@ -515,8 +524,7 @@ def allcapabilitiessearch(token_info=None, name=None):
     return return_json
 
 def capabilities_search(token_info=None, id=None):
-    login_id, is_login = get_login(token_info)
-    contribution_dataset = None
+    login_id, is_login = otherutils.get_login(token_info)
 
     contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid(
         coll_contribution, id, login_id, is_login)
@@ -579,7 +587,7 @@ def alltalentssearch(token_info=None, name=None):
     query = dict()
     is_list = False
 
-    login_id, is_login = get_login(token_info)
+    login_id, is_login = otherutils.get_login(token_info)
 
     query = query_params.format_query_status_login(query, login_id, is_login)
 
@@ -668,7 +676,7 @@ def alltalentssearch(token_info=None, name=None):
     return return_json
 
 def talents_search(token_info=None, id=None):
-    login_id, is_login = get_login(token_info)
+    login_id, is_login = otherutils.get_login(token_info)
 
     contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid(
         coll_contribution, id, login_id, is_login)
@@ -728,180 +736,88 @@ def talents_search(token_info=None, id=None):
 
     return talent_dataset
 
-def construct_capability(in_json):
-    # new installation of the app
-    capability_dataset = Capability('')
-    capability_dataset, restjson = datasetutils.update_capability_dataset_from_json(capability_dataset, in_json)
+def capabilities_get(token_info=None, id=None, capability_id=None):
+    capability_datasets = capabilities_search(token_info, id)
 
-    return capability_dataset, restjson, None
+    # when the capablity_datasets is an error response
+    if isinstance(capability_datasets, wrappers.Response):
+        return capability_datasets
 
-def construct_talent(in_json):
-    is_required_field = True
-    error_required = ""
-    try:
-        error_required = "name"
-        name = in_json["name"]
-        error_required = "shortDescription"
-        description = in_json["shortDescription"]
-    except:
+    # otherwise it means that the capability_datasets contains the correct content.
+
+    # search capability that is the correct id
+    capability_index = 0
+    capability = None
+
+    # there shouldn't be empty list of capability_datasets
+    # since it has to be filtered in capabilities_search() already
+    for capability_dataset in capability_datasets:
+        # this will make an error if there is no id field in capability dataset
+        # however, this shouldn't be happen because it is required in connexion
+        if capability_dataset["id"] == capability_id:
+            capability = capability_dataset
+            capability_index += 1
+
+    if capability_index > 1:
         msg = {
-            "reason": "Some of the required field in talent is not provided: " + str(error_required),
+            "reason": "There is more than one Capabilities with given capability id: "
+                      + str(capability_id),
             "error": "Bad Request: " + request.url,
         }
-        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-        logging.error("Contribution POST " + json.dumps(msg_json))
-        return None, None, msg_json
-
-    # new installation of the app
-    talent_dataset = Talent('')
-    talent_dataset, restjson = datasetutils.update_talent_dataset_from_json(talent_dataset, in_json)
-
-    return talent_dataset, restjson, None
-
-def construct_contributors(in_json):
-    # need to know if it is person or organization
-    # TODO make better algorithm for this, but for now use if there is firstname or lastname it is a Person, otherwise, organization
-
-    is_person = False
-    try:
-        firstname = in_json["firstName"]
-        is_person = True
-    except:
-        pass
-    try:
-        lastname = in_json["lastName"]
-        is_person = True
-    except:
-        pass
-
-    contributor_dataset = None
-    if is_person:
-        contributor_dataset = Person('')
-        contributor_dataset, restjson = datasetutils.update_person_dataset_from_json(contributor_dataset, in_json)
-        # set affilication
-        try:
-            affilication_json = in_json['affiliation']
-            affilication_dataset = Organization('')
-            affilication_dataset, restjson = datasetutils.update_organization_dataset_from_json(affilication_dataset, affilication_json)
-            contributor_dataset.set_affilication(affilication_dataset)
-            del restjson['affiliation']
-        except:
-            pass
-    else: # organization
-        contributor_dataset = Organization('')
-        contributor_dataset, restjson = datasetutils.update_organization_dataset_from_json(contributor_dataset, in_json)
-
-    return contributor_dataset, restjson, None
-
-def get_data_list(name, login_id, is_login):
-    resp = None
-    is_error = False
-    is_unauthorized = False
-
-    if name != None:
-        is_objectid = mongoutils.check_if_objectid(name)
-
-        # query using either non-pii ObjectId or name
-        if (is_objectid):
-            id = ObjectId(name)
-            if (is_login):
-                db_data = mongoutils.query_dataset_by_objectid(coll_contribution, id, login_id, is_login)
-                data_list = list(db_data)
-            else:
-                db_data = mongoutils.query_dataset_by_objectid_no_status(coll_contribution, id)
-                data_list = list(db_data)
-                if "status" not in data_list[0]:
-                    msg = {
-                        "reason": "Status is not in the dataset " + str(name),
-                        "error": "Not Authorized: " + request.url,
-                    }
-                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                    logging.error("Contribution GET " + json.dumps(msg_json))
-                    resp = rs_handlers.not_authorized(msg_json)
-                    return data_list, is_objectid, True, resp
-                status = data_list[0]["status"]
-                if status != "Published":
-                    msg = {
-                        "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
-                        "error": "Not Authorized: " + request.url,
-                    }
-                    msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                    logging.error("Contribution GET " + json.dumps(msg_json))
-                    resp = rs_handlers.not_authorized(msg_json)
-                    return data_list, is_objectid, True, resp
-            if len(data_list) > 1:
-                msg = {
-                    "reason": "There are more than 1 contribution record: " + str(name),
-                    "error": "Bad Request: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                logging.error("Contribution GET " + json.dumps(msg_json))
-                is_error = True
-                resp = rs_handlers.bad_request(msg_json)
-        else:
-            if (is_login):
-                db_data = mongoutils.query_dataset(coll_contribution, cfg.FIELD_NAME, name, login_id, is_login)
-                data_list = list(db_data)
-            else:
-                db_data = mongoutils.query_dataset_no_status(coll_contribution,  cfg.FIELD_NAME, name)
-                tmp_data_list = list(db_data)
-                data_list = []
-                for data in tmp_data_list:
-                    if "status" in data:
-                        status = data["status"]
-                        if status == "Published":
-                            data_list.append(data)
-                        else:
-                            is_unauthorized = True
-        if len(data_list) == 0:
-            if is_unauthorized:
-                msg = {
-                    "reason": "Not authorized to view the contribution dataset with given id:" + str(name),
-                    "error": "Not Authorized: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                logging.error("Contribution GET " + json.dumps(msg_json))
-                is_error = True
-                resp = rs_handlers.not_authorized(msg_json)
-            else:
-                msg = {
-                    "reason": "There is no contribution record: " + str(name),
-                    "error": "Not Found: " + request.url,
-                }
-                msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-                logging.error("Contribution GET " + json.dumps(msg_json))
-                is_error = True
-                resp = rs_handlers.not_found(msg_json)
-
-        return data_list, is_objectid, is_error, resp
-
-    else:
+        msg_json = jsonutils.create_log_json("Capability", "GET", msg)
+        logging.error("Capability GET " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+    elif capability_index == 0:
         msg = {
-            "reason": "The contribution does not exist: " + str(name),
+            "reason": "There is no Capability with given capability id: "
+                      + str(capability_id),
             "error": "Not Found: " + request.url,
         }
-        msg_json = jsonutils.create_log_json("Contribution", "GET", msg)
-        logging.error("Contribution GET " + json.dumps(msg_json))
-        resp = rs_handlers.not_found(msg_json)
+        msg_json = jsonutils.create_log_json("Capability", "GET", msg)
+        logging.error("Capability GET " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)
+    else:
+        return capability
 
-    return None, None, True, resp
+def talents_get(token_info=None, id=None, talent_id=None):
+    talent_datasets = talents_search(token_info, id)
 
-def check_login_admin(login, inlist):
-    is_admin = False
-    for user in inlist:
-        if login == user:
-            is_admin = True
+    # when the capablity_datasets is an error response
+    if isinstance(talent_datasets, wrappers.Response):
+        return talent_datasets
 
-    return is_admin
+    # otherwise it means that the talent_datasets contains the correct content.
 
-def get_login(token_info):
-    is_login = False
-    login_id = ""
+    # search talent that is the correct id
+    talent_index = 0
+    talent = None
 
-    try:
-        login_id = token_info["login"]
-        is_login = True
-    except:
-        pass
+    # there shouldn't be empty list of talent_datasets
+    # since it has to be filtered in talents_search() already
+    for talent_dataset in talent_datasets:
+        # this will make an error if there is no id field in talent dataset
+        # however, this shouldn't be happen because it is required in connexion
+        if talent_dataset["id"] == talent_id:
+            talent = talent_dataset
+            talent_index += 1
 
-    return login_id, is_login
+    if talent_index > 1:
+        msg = {
+            "reason": "There is more than one Capabilities with given talent id: "
+                      + str(talent_id),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Talent", "GET", msg)
+        logging.error("Talent GET " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+    elif talent_index == 0:
+        msg = {
+            "reason": "There is no Capability with given capability id: "
+                      + str(talent_id),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Capability", "GET", msg)
+        logging.error("Capability GET " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)
+    else:
+        return talent
