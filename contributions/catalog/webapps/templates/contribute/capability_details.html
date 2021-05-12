@@ -10,7 +10,7 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>detailed view</title>
 </head>
 
@@ -36,60 +36,64 @@
 <hr class="divider"/>
 
 <div class="container">
-        <h2>Capability Details</h2>
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Capability Name </h5>
-            </div>
-            <p class="col-sm-9">{{post.name}}</p>
-          </div>
+    <h2>Capability Details</h2>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Capability Name </h5>
+        </div>
+        <p class="col-sm-9">{{post.name}}</p>
+    </div>
 
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Capability description </h5>
-            </div>
-            <p class="col-sm-9">{{post.discription}}</p>
-          </div>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Capability description </h5>
+        </div>
+        <p class="col-sm-9">{{post.description}}</p>
+    </div>
 
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Is code open source?</h5>
-            </div>
-            <p class="col-sm-9">{{post.Is code open source?}}</p>
-          </div>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Is code open source?</h5>
+        </div>
+        <p class="col-sm-9">{{post.isOpenSource}}</p>
+    </div>
 
-         {% if post.Source code repository URL %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Source code repository URL</h5>
-            </div>
-            <p class="col-sm-9">{{post.Source code repository URL}}</p>
-          </div>
-         {% endif %}
+    {% if post.isOpenSource == true %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Api Documentation URL, if the above data is "Yes" </h5>
+        </div>
+        <p class="col-sm-9">{{post.apiDocUrl}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.Api Documentation URL %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Api Documentation URL, if the above data is "Yes" </h5>
-            </div>
-            <p class="col-sm-9">{{post.Api Documentation URL}}</p>
-          </div>
-         {% endif %}
+    {% if post.Source code repository URL %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Source code repository URL</h5>
+        </div>
+        <p class="col-sm-9">{{post.Source code repository URL}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.Deployment status%}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Deployment status (Internal vs External)</h5>
-            </div>
-            <p class="col-sm-9">{{post.Deployment status}}</p>
-          </div>
-         {% endif %}
+
+    {% if post.deploymentDetails%}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Deployment status (Internal vs External)</h5>
+        </div>
+        <p class="col-sm-9">{{post.deploymentDetails.location}}</p>
+    </div>
+    {% endif %}
 </div>
 
 
 <div class="action">
 
 </div>
-
+<script>
+    var post = JSON.parse('{{ post | tojson | safe}}');
+    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
+</script>
 </body>
 </html>

@@ -10,7 +10,7 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>detailed view</title>
 </head>
 <body>
@@ -32,69 +32,70 @@
 </div>
 
 <div class="container">
-        <h2 id="contribute">Contribution Details</h2>
+    <h2 id="contribute">Contribution Details</h2>
 
 
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Contribution Name</h5>
-            </div>
-            <p class="col-sm-9">{{post.name}}</p>
-          </div>
-
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Contribution short description</h5>
-            </div>
-            <p class="col-sm-9">{{post.description}}</p>
-          </div>
-
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Contribution long description</h5>
-            </div>
-            <p class="col-sm-9">{{post.text}}</p>
-          </div>
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Contributor details</h5>
-            </div>
-            <p class="col-sm-9">{{post.contributor}}</p>
-          </div>
-
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Contact details</h5>
-            </div>
-            <p class="col-sm-9">{{post.contacts}}</p>
-          </div>
-
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Capability details</h5>
-            </div>
-            <p class="col-sm-9">{{post.capability}}</p>
-          </div>
-
-        <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Capability details</h5>
-            </div>
-            <p class="col-sm-9">{{post.talents}}</p>
-          </div>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Contribution Name</h5>
+        </div>
+        <p class="col-sm-9">{{post.name}}</p>
     </div>
 
 
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Contribution short description</h5>
+        </div>
+        <p class="col-sm-9">{{post.shortDescription}}</p>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Contribution long description</h5>
+        </div>
+        <p class="col-sm-9">{{post.longDescription}}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Contributor details</h5>
+        </div>
+        <p class="col-sm-9">{{post.contributors}}</p>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Contact details</h5>
+        </div>
+        <p class="col-sm-9">{{post.contacts}}</p>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Capability details</h5>
+        </div>
+        <p class="col-sm-9">{{post.capabilities}}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Talents details</h5>
+        </div>
+        <p class="col-sm-9">{{post.talents}}</p>
+    </div>
+</div>
 
 
 <div class="action">
 
 </div>
-
+<script>
+    var post = JSON.parse('{{ post | tojson | safe}}');
+    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
+</script>
 </body>
 </html>

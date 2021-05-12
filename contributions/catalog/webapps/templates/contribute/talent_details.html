@@ -10,7 +10,7 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>detailed view</title>
 
 </head>
@@ -36,73 +36,66 @@
 <hr class="divider"/>
 
 <div class="container">
-        <h2>Talent Details</h2>
+    <h2>Talent Details</h2>
 
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Talent Name </h5>
-            </div>
-            <p class="col-sm-9">{{post.name}}</p>
-          </div>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Talent Name </h5>
+        </div>
+        <p class="col-sm-9">{{post.name}}</p>
+    </div>
 
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Talent description </h5>
-            </div>
-            <p class="col-sm-9">{{post.discription}}</p>
-          </div>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Talent description </h5>
+        </div>
+        <p class="col-sm-9">{{post.shortDescription}}</p>
+    </div>
 
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Icon</h5>
-            </div>
-            <p class="col-sm-9">{{post.icon}}</p>
-          </div>
+    {% if post.icon %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Icon</h5>
+        </div>
+        <p class="col-sm-9">{{post.icon}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.icon %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Icon</h5>
-            </div>
-            <p class="col-sm-9">{{post.icon}}</p>
-          </div>
-         {% endif %}
+    {% if post.requiredCapabilities %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Required Capabilities</h5>
+        </div>
+        <p class="col-sm-9">{{post.requiredCapabilities}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.Required Capabilities %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Required Capabilities</h5>
-            </div>
-            <p class="col-sm-9">{{post.Required Capabilities}}</p>
-          </div>
-         {% endif %}
+    {% if post.requiredBuildingBlocks %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Required Building Blocks</h5>
+        </div>
+        <p class="col-sm-9">{{post.requiredBuildingBlocks}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.Required Building Blocks %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Required Building Blocks</h5>
-            </div>
-            <p class="col-sm-9">{{post.Required Building Blocks}}</p>
-          </div>
-         {% endif %}
+    {% if post.minUserPrivacyLevel %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Minimum user privacy level</h5>
+        </div>
+        <p class="col-sm-9">{{post.minUserPrivacyLevel}}</p>
+    </div>
+    {% endif %}
 
-         {% if post.Minimum user privacy level %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Minimum user privacy level</h5>
-            </div>
-            <p class="col-sm-9">{{post.Minimum user privacy level}}</p>
-          </div>
-         {% endif %}
-
-         {% if post.Minimum set of end-user roles %}
-              <div class="row">
-            <div class="col-12 col-sm-2">
-              <h5>Minimum set of end-user roles</h5>
-            </div>
-            <p class="col-sm-9">{{post.Minimum set of end-user roles}}</p>
-          </div>
-         {% endif %}
+    {% if post.minEndUserRoles %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h5>Minimum set of end-user roles</h5>
+        </div>
+        <p class="col-sm-9">{{post.minEndUserRoles}}</p>
+    </div>
+    {% endif %}
 
 </div>
 
@@ -112,4 +105,8 @@
 </div>
 
 </body>
+<script>
+    var post = JSON.parse('{{ post | tojson | safe}}');
+    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
+</script>
 </html>
