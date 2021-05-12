@@ -218,8 +218,7 @@
                         <h4 class="capability_name"></h4>
                         <p class="capability_description"></p>
                         <p class="contributors"></p>
-
-                        <a>see deatils >>> </a>
+                        <a class="link"> see details >>> </a>
                         <!--                    <span class="label label-default">App Config</span>-->
                     </div>
                 </div>
@@ -231,7 +230,7 @@
                         <h4 class="talent_name"></h4>
                         <p class="talent_description"></p>
                         <p class="contributors"></p>
-                        <a>see deatils >>> </a>
+                        <a class="link"> see details >>> </a>
                         <!--                <span class="label label-default">App Config</span>-->
                     </div>
                 </div>
@@ -381,12 +380,16 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
+                var contributionid = object.contributionId;
+                var id = object.id;
+                console.log(contributionid, id)
                 //Populate it
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
+                $(newItem).find(".link").attr('href', "{{ url_for('contribute.capability_details',  contribution_id=contributionid, id=id) }}")
+                $(newItem).find(".link").attr('href', "{{ url_for('contribute.capability_details',  contribution_id=contributionid, id=id) }}")
                 //todo how do we go from a single capability/talent => a contribution?
-                //$(newItem).attr('href', get_contribution_url + $(newItem).find(".contribution_name"))
                 $("#grid-view").append(newItem);
 
             });
@@ -402,7 +405,9 @@
 
             var member = document.getElementById('grid-view');
             data.forEach(function (object) {
-
+                var contributionid = object.contributionId;
+                var id = object.id;
+                console.log(contributionid, id)
                 //Clone Template
                 var newItem = $(template).clone();
 
@@ -410,8 +415,8 @@
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
+                $(newItem).find(".link").attr('href', "{{ url_for('contribute.talent_details',  contribution_id= contributionid, id= id) }}")
 
-                //Append it
                 $("#grid-view").append(newItem);
 
             });

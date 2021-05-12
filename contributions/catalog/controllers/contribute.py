@@ -57,23 +57,20 @@ def result():
 
 
 
-# @bp.route('/details/<contribution_id>', methods=['GET','POST'])
-# def details(contribution_id):
-#     #get the contribution results
-#     the_json_res = get_contribution(contribution_id)
-#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
+@bp.route('details/<contribution_id>', methods=['GET','POST'])
+def contribution_details(contribution_id):
+    the_json_res = get_contribution(contribution_id)
+    return render_template("contribute/contribution_details.html", post=the_json_res)
 
-@bp.route('/details/<capability_id>', methods=['GET','POST'])
-def capability_details(contribution_id):
-    #get the contribution results
-    the_json_res = get_capability(contribution_id)
-    return render_template("contribute/capability_details.html", contribution_json=the_json_res)
+@bp.route('details/<contribution_id>/capability/<id>', methods=['GET','POST'])
+def capability_details(contribution_id, id):
+    the_json_res = get_capability(contribution_id, id)
+    return render_template("contribute/capability_details.html", post=the_json_res)
 
-@bp.route('/details/<talent_id>', methods=['GET','POST'])
-def talent_details(talent_id):
-    #get the contribution results
-    the_json_res = get_capability(talent_id)
-    return render_template("contribute/talent_details.html", contribution_json=the_json_res)
+@bp.route('details/<contribution_id>/talent/<id>', methods=['GET','POST'])
+def talent_details(contribution_id, id):
+    the_json_res = get_capability(contribution_id, id)
+    return render_template("contribute/talent_details.html", post=the_json_res)
 
 
 # @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
@@ -177,17 +174,16 @@ def get_contribution(contribution_id):
         return False
     return result
 
-def get_capability(id):
+def get_capability(contribution_id, cid):
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
     }
 
     try:
-        if id:
-            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/capabilities/" + str(id),
+        if contribution_id and cid:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/capabilities/" + str(cid),
                                   headers=headers)
-
         if result.status_code != 200:
             print("GET method fails".format(id))
             print("with error code:", result.status_code)
@@ -200,7 +196,7 @@ def get_capability(id):
         return False
     return result
 
-def get_talent(id):
+def get_talent(contribution_id, tid):
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
@@ -208,7 +204,7 @@ def get_talent(id):
 
     try:
         if id:
-            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/talents/" + str(id),
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/talents/" + str(tid),
                                   headers=headers)
 
         if result.status_code != 200:
