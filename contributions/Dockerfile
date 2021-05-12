@@ -23,10 +23,26 @@ WORKDIR /usr/src/app/contributions/api
 
 COPY contributions/contribution.yaml .
 
-ENV MONGO_CONTRIBUTION_URL="" \
-    API_LOC="." \
-    FLASK_APP="contributions_rest_service" \
-    FLASK_ENV="development" \
-    CONTRIBUTION_URL_PREFIX=""
+ENV MONGO_CONTRIBUTION_URL='' \
+    API_LOC='../' \
+    FLASK_APP='contributions_rest_service' \
+    FLASK_ENV='production' \
+    MONGO_CONTRIBUTION_URL='localhost:27017' \
+    CONTRIBUTION_URL_PREFIX='' \
+    CONTRIBUTION_URL_PREFIX='CONTRIBUTION_URL_PREFIX' \
+    CONTRIBUTION_DB_NAME='' \
+    CONTRIBUTION_COLL_NAME='' \
+    CAPABILITY_COLL_NAME='' \
+    CONTRIBUTION_BUILDING_BLOCK_URL='' \
+    FIELD_OBJECTID='' \
+    FIELD_NAME='' \
+    GITHUB_CLIENT_ID='' \
+    GITHUB_CLIENT_SECRET='' \
+    authorization_base_url='https://github.com/login/oauth/authorize' \
+    token_url='https://github.com/login/oauth/access_token' \
+    ROKWIRE_API_KEY='' \
+    URL_PREFIX='' \
+    DEBUG='False' \
+    CORS_ENABLED='False'
 
 CMD ["gunicorn", "contributions_rest_service:app", "--config", "/usr/src/app/contributions/api/gunicorn.config.py"]
