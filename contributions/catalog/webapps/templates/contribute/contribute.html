@@ -12,8 +12,8 @@
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <link href="/resources/demos/style.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -595,57 +595,61 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
 
-  $( function() {
-    function split( val ) {return val.split( /,\s*/ );}
-    function extractLast( term ) {return split( term ).pop();}
-
-    $( "#contribution_Admins" )
-        .on( "keydown", function( event ) {
-        if ( event.keyCode === $.ui.keyCode.TAB &&
-            $( this ).autocomplete( "instance" ).menu.active ) {
-          event.preventDefault();
+    $(function () {
+        function split(val) {
+            return val.split(/,\s*/);
         }
-      })
-      .autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "https://api.github.com/search/users",
-                data: {
-                    q: extractLast(request.term)
-                },
-                type: "GET",
-                headers: {Authorization: 'token ' + '{{token}}'},
-                success: function(data) {
-                        var res = [];
-                        data.items.forEach((e) => res.push(e.login));
-                        response(res);
+
+        function extractLast(term) {
+            return split(term).pop();
+        }
+
+        $("#contribution_Admins")
+            .on("keydown", function (event) {
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
                 }
             })
-        },
-        search: function() {
-          var term = extractLast( this.value );
-          if ( term.length < 2 ) {
-            return false;
-          }
-        },
-        focus: function() {
-          // prevent value inserted on focus
-          return false;
-        },
-        select: function( event, ui ) {
-          var terms = split( this.value );
-          // remove the current input
-          terms.pop();
-          // add the selected item
-          terms.push( ui.item.value );
-          // add placeholder to get the comma-and-space at the end
-          terms.push( "" );
-          this.value = terms.join( ", " );
-          return false;
-        }
-      });
-  } );
-
+            .autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "https://api.github.com/search/users",
+                        data: {
+                            q: extractLast(request.term)
+                        },
+                        type: "GET",
+                        headers: {Authorization: 'token ' + '{{token}}'},
+                        success: function (data) {
+                            var res = [];
+                            data.items.forEach((e) => res.push(e.login));
+                            response(res);
+                        }
+                    })
+                },
+                search: function () {
+                    var term = extractLast(this.value);
+                    if (term.length < 2) {
+                        return false;
+                    }
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push(ui.item.value);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            });
+    });
 
 
     var modal = document.getElementById("myModal");
