@@ -30,7 +30,6 @@ CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
 
 CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributions_db')
 CONTRIBUTION_COLL_NAME = os.getenv('CONTRIBUTION_COLL_NAME', 'contributions')
-CAPABILITY_COLL_NAME = os.getenv('CAPABILITY_COLL_NAME', 'capabilities')
 
 FIELD_OBJECTID = '_id'
 FIELD_NAME = 'name'
