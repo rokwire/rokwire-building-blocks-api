@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # this has to be have the file path to the folder for saving image files and other necessary files from rest service
+MONGO_CONTRIBUTION_URL = os.getenv('MONGO_CONTRIBUTION_URL', 'localhost:27017')
 FLASK_APP = os.getenv('FLASK_APP', 'contribution_rest_service')
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 API_LOC = os.getenv('API_LOC', '../')
