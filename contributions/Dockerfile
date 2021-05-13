@@ -23,24 +23,13 @@ WORKDIR /usr/src/app/contributions/api
 
 COPY contributions/contribution.yaml .
 
-ENV MONGO_CONTRIBUTION_URL='' \
-    API_LOC='../' \
+ENV API_LOC='../' \
+    MONGO_CONTRIBUTION_URL='localhost:27017' \
     FLASK_APP='contributions_rest_service' \
     FLASK_ENV='production' \
-    MONGO_CONTRIBUTION_URL='localhost:27017' \
     CONTRIBUTION_URL_PREFIX='' \
-    CONTRIBUTION_DB_NAME='' \
-    CONTRIBUTION_COLL_NAME='' \
-    CAPABILITY_COLL_NAME='' \
-    CONTRIBUTION_BUILDING_BLOCK_URL='' \
-    FIELD_OBJECTID='' \
-    FIELD_NAME='' \
-    GITHUB_CLIENT_ID='' \
-    GITHUB_CLIENT_SECRET='' \
-    AUTHORIZATION_BASE_URL='https://github.com/login/oauth/authorize' \
-    TOKEN_URL='https://github.com/login/oauth/access_token' \
-    ROKWIRE_API_KEY='' \
-    URL_PREFIX='' \
+    CONTRIBUTION_DB_NAME='contributions_db' \
+    CONTRIBUTION_COLL_NAME='contributions' \
     DEBUG='False' \
     CORS_ENABLED='False'
 
