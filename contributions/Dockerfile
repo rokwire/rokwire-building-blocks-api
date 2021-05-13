@@ -24,6 +24,7 @@ WORKDIR /usr/src/app/contributions/api
 COPY contributions/contribution.yaml .
 
 ENV API_LOC='../' \
+    MONGO_CONTRIBUTION_URL='localhost:27017' \
     FLASK_APP='contributions_rest_service' \
     FLASK_ENV='production' \
     CONTRIBUTION_URL_PREFIX='' \
