@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
+- Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
 
 ## [1.9.1] - 2021-02-22
 ### Fixed
