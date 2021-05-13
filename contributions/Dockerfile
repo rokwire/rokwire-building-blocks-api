@@ -28,8 +28,8 @@ ENV API_LOC='../' \
     FLASK_APP='contributions_rest_service' \
     FLASK_ENV='production' \
     CONTRIBUTION_URL_PREFIX='' \
-    CONTRIBUTION_DB_NAME='' \
-    CONTRIBUTION_COLL_NAME='' \
+    CONTRIBUTION_DB_NAME='contributions_db' \
+    CONTRIBUTION_COLL_NAME='contributions' \
     DEBUG='False' \
     CORS_ENABLED='False'
 
