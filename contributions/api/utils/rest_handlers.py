@@ -42,6 +42,18 @@ def entry_deleted(id_type, id):
 
     return make_response(resp)
 
+"""
+make response for 200
+"""
+def return_200(msg):
+    message = {
+        'message': msg,
+    }
+    resp = jsonify(message)
+    resp.status_code = 200
+
+    return make_response(resp)
+
 @app.errorhandler(400)
 def bad_request(error=None):
     if error is None:
