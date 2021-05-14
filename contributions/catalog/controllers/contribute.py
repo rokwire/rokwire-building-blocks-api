@@ -65,11 +65,13 @@ def contribution_details(contribution_id):
 @bp.route('details/<contribution_id>/capability/<id>', methods=['GET','POST'])
 def capability_details(contribution_id, id):
     the_json_res = get_capability(contribution_id, id)
+    print(the_json_res)
     return render_template("contribute/capability_details.html", post=the_json_res)
 
 @bp.route('details/<contribution_id>/talent/<id>', methods=['GET','POST'])
 def talent_details(contribution_id, id):
-    the_json_res = get_capability(contribution_id, id)
+    the_json_res = get_talent(contribution_id, id)
+    print(the_json_res)
     return render_template("contribute/talent_details.html", post=the_json_res)
 
 
@@ -154,7 +156,7 @@ def post(json_data):
 def get_contribution(contribution_id):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
     }
 
     try:
@@ -172,12 +174,12 @@ def get_contribution(contribution_id):
     except Exception:
         # traceback.print_exc()
         return False
-    return result
+    return result.json()
 
 def get_capability(contribution_id, cid):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
     }
 
     try:
@@ -194,12 +196,12 @@ def get_capability(contribution_id, cid):
     except Exception:
         # traceback.print_exc()
         return False
-    return result
+    return result.json()
 
 def get_talent(contribution_id, tid):
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
     }
 
     try:
@@ -217,7 +219,7 @@ def get_talent(contribution_id, tid):
     except Exception:
         # traceback.print_exc()
         return False
-    return result
+    return result.json()
 
 # post a json_data in a http request
 def search(input_data):

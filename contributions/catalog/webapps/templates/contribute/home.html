@@ -387,9 +387,7 @@
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                $(newItem).find(".link").attr('href', "{{ url_for('contribute.capability_details',  contribution_id=contributionid, id=id) }}")
-                $(newItem).find(".link").attr('href', "{{ url_for('contribute.capability_details',  contribution_id=contributionid, id=id) }}")
-                //todo how do we go from a single capability/talent => a contribution?
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capability/" + id)
                 $("#grid-view").append(newItem);
 
             });
@@ -415,7 +413,7 @@
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                $(newItem).find(".link").attr('href', "{{ url_for('contribute.talent_details',  contribution_id= contributionid, id= id) }}")
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talent/" + id)
 
                 $("#grid-view").append(newItem);
 
