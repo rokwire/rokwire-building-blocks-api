@@ -386,7 +386,7 @@ paths:
         - Contributions
       responses:
         200:
-          description: Building block is alive and reponse
+          description: The building block is alive and responding.
         400:
           description: Bad request
         500:
