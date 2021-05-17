@@ -32,61 +32,87 @@
 </div>
 
 <div class="container">
-    <h2 id="contribute">Contribution Details</h2>
+    <h1 id="contribute">Contribution Details</h1>
 
+    <hr class="divider"/>
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Contribution Name</h5>
+            <h4>Contribution Name</h4>
         </div>
-        <p class="col-sm-9">{{post.name}}</p>
+        <p class="col-sm-2" style="text-align: justify;">{{post.name}}</p>
     </div>
 
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Contribution short description</h5>
+            <h4>Contribution short description</h4>
         </div>
         <p class="col-sm-9">{{post.shortDescription}}</p>
     </div>
 
-
+    {% if post.longDescription %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Contribution long description</h5>
+            <h4>Contribution long description</h4>
         </div>
         <p class="col-sm-9">{{post.longDescription}}</p>
     </div>
+    {% endif %}
 
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h5>Contributor details</h5>
+
+    {% if post.contributors %}
+    <h4>Contributor details</h4>
+
+        {% for c in post.contributors %}
+            {% for k,v in c.items() %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    {{k}}
+                </div>
+                <p class="col-sm-2">{{v}}</p>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% if post.contacts %}
+    <h4>Contact details</h4>
+
+        {% for key,val in post.contacts.items() %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                {{key}}
+            </div>
+            <p class="col-sm-2">{{val}}</p>
         </div>
-        <p class="col-sm-9">{{post.contributors}}</p>
-    </div>
+        {% endfor %}
+    {% endif %}
 
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h5>Contact details</h5>
+    {% if post.capabilities %}
+        <h4>Capability details</h4>
+       {% for c in post.capabilities %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <ul>{{c.name}}</ul>
+            </div>
+            <p class="col-sm-9"></p>
         </div>
-        <p class="col-sm-9">{{post.contacts}}</p>
-    </div>
+        {% endfor %}
+    {% endif %}
 
 
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h5>Capability details</h5>
+    {% if post.talents %}
+        <h4>Talents details</h4>
+       {% for c in post.talents %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <ul>{{c.name}}</ul>
+            </div>
+            <p class="col-sm-9"></p>
         </div>
-        <p class="col-sm-9">{{post.capabilities}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h5>Talents details</h5>
-        </div>
-        <p class="col-sm-9">{{post.talents}}</p>
-    </div>
+        {% endfor %}
+    {% endif %}
 </div>
 
 
