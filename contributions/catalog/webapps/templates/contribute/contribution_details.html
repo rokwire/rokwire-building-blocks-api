@@ -13,6 +13,28 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>detailed view</title>
 </head>
+<style>
+        /* Style the buttons */
+    .btn {
+        position: relative;
+        margin-top: 20px;
+        border: none;
+        outline: none;
+        padding: 12px 16px;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #ddd;
+        color: white;
+    }
+
+    .btn.active {
+        background-color: #666;
+        color: white;
+    }
+</style>
 <body>
 
 <div class="header">
@@ -106,9 +128,9 @@
     {% for c in post.capabilities %}
         <div class="row">
             <div class="col-12 col-sm-2">
-                <ul>{{c.name}}</ul>
+                <ol><h4>{{c.name}}</h4></ol>
             </div>
-            <p class="col-sm-9"></p>
+            <button class="button button1" onclick="cap_url('{{c.id}}')" >  view  </button>
         </div>
         {% endfor %}
     {% endif %}
@@ -116,12 +138,12 @@
 
     {% if post.talents %}
     <h4>Talents in this contribution</h4>
-       {% for c in post.talents %}
+       {% for t in post.talents %}
         <div class="row">
             <div class="col-12 col-sm-2">
-                <ul>{{c.name}}</ul>
+                <ol><h4>{{t.name}}</h4></ol>
             </div>
-            <p class="col-sm-9"></p>
+            <button class="button button2" onclick="tal_url('{{t.id}}')" >  view  </button>
         </div>
         {% endfor %}
     {% endif %}
@@ -133,6 +155,16 @@
 </div>
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
+    var cid = "{{post.contributionid}}";
+
+    function cap_url(id){
+        window.location.href =  window.location.href +  "/capability/" + id;
+    }
+
+    function tal_url(id){
+        window.location.href = window.location.href + "/talent/" + id;
+    }
+
 </script>
 </body>
 </html>

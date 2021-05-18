@@ -60,19 +60,19 @@ def result():
 @bp.route('details/<contribution_id>', methods=['GET','POST'])
 def contribution_details(contribution_id):
     the_json_res = get_contribution(contribution_id)
-    return render_template("contribute/contribution_details.html", post=the_json_res)
+    return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
 
 @bp.route('details/<contribution_id>/capability/<id>', methods=['GET','POST'])
 def capability_details(contribution_id, id):
     the_json_res = get_capability(contribution_id, id)
     print(the_json_res)
-    return render_template("contribute/capability_details.html", post=the_json_res)
+    return render_template("contribute/capability_details.html", post=the_json_res, user=session["name"])
 
 @bp.route('details/<contribution_id>/talent/<id>', methods=['GET','POST'])
 def talent_details(contribution_id, id):
     the_json_res = get_talent(contribution_id, id)
     print(the_json_res)
-    return render_template("contribute/talent_details.html", post=the_json_res)
+    return render_template("contribute/talent_details.html", post=the_json_res, user=session["name"])
 
 
 # @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
@@ -130,8 +130,8 @@ def search_results(search):
 def post(json_data):
     headers = {
         'Content-Type': 'application/json',
-        # 'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-        'ROKWIRE_API_KEY': cfg.ROKWIRE_API_KEY
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+        # 'ROKWIRE_API_KEY': cfg.ROKWIRE_API_KEY
     }
     try:
         # Setting up post request

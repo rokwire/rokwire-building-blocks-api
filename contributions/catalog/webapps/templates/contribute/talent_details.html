@@ -99,15 +99,28 @@
     </div>
     {% endif %}
 
+    <button class="button button3" onclick="get_url()">View this contribution</button>
 </div>
 
 
 <div class="action">
-    <button>back to the contribution</button>
+
 </div>
 
 </body>
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
+    function get_url(){
+        var cur_url = window.location.href.split('/');
+        var res = '';
+        for (let i = 0; i < cur_url.length-1; i++){
+            res += cur_url[i];
+            if (cur_url[i+1] == 'talent' || cur_url[i+1] == 'capability'){
+                break;
+            }
+            res += '/';
+        }
+        window.location.href = res;
+    }
 </script>
 </html>
