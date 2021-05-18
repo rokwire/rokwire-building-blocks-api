@@ -221,7 +221,7 @@
                             <h4 class="capability_name"></h4>
                             <p class="capability_description"></p>
                             <p class="contributors"></p>
-                            <a class="link" style="text-align: right"> View The Capability >>> </a>
+                            <a class="link"> View The Contribution >>> </a>
                             <!--                    <span class="label label-default">App Config</span>-->
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                             <h4 class="talent_name"></h4>
                             <p class="talent_description"></p>
                             <p class="contributors"></p>
-                            <a class="link" style="text-align: right"> View The Talent >>> </a>
+                            <a class="link" > View The Contribution >>> </a>
                             <!--                <span class="label label-default">App Config</span>-->
                         </div>
                     </div>
@@ -276,7 +276,7 @@
                     // append_capability(all_capability);
                     all_capability.length > 0? append_capability(all_capability): append_capability(test_capability);
                     filterSelection('all');
-                    filterSelection('all');
+
                 },
                 function () {
                     console.log("error occured - capability");
@@ -390,11 +390,9 @@
                 var id = object.id;
 
 
-
-
                 console.log(contributionid, id)
                 //Populate it
-                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capability/" + id)
 
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
@@ -404,7 +402,7 @@
                 //     $(newItem).attr('href', "http://localhost:5050/contribute/details/" + contributionid )
                 //
                 // })
-                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capability/" + id)
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
                 $("#grid-view").append(newItem);
 
                 // newItem.onclick = function (){
@@ -431,12 +429,12 @@
                 var newItem = $(template).clone();
 
                 //Populate it
-                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talent/" + id)
 
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talent/" + id)
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
 
                 $("#grid-view").append(newItem);
 
