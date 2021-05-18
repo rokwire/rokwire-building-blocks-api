@@ -33,21 +33,23 @@
     </div>
 </div>
 
-<hr class="divider"/>
+
 
 <div class="container">
-    <h2>Talent Details</h2>
+    <h1>Talent Details</h1>
+
+    <hr class="divider"/>
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Talent Name </h5>
+            <h4>Talent Name </h4>
         </div>
         <p class="col-sm-9">{{post.name}}</p>
     </div>
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Talent description </h5>
+            <h4>Talent description </h4>
         </div>
         <p class="col-sm-9">{{post.shortDescription}}</p>
     </div>
@@ -55,7 +57,7 @@
     {% if post.icon %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Icon</h5>
+            <h4>Icon</h4>
         </div>
         <p class="col-sm-9">{{post.icon}}</p>
     </div>
@@ -64,7 +66,7 @@
     {% if post.requiredCapabilities %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Required Capabilities</h5>
+            <h4>Required Capabilities</h4>
         </div>
         <p class="col-sm-9">{{post.requiredCapabilities}}</p>
     </div>
@@ -73,7 +75,7 @@
     {% if post.requiredBuildingBlocks %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Required Building Blocks</h5>
+            <h4>Required Building Blocks</h4>
         </div>
         <p class="col-sm-9">{{post.requiredBuildingBlocks}}</p>
     </div>
@@ -82,7 +84,7 @@
     {% if post.minUserPrivacyLevel %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Minimum user privacy level</h5>
+            <h4>Minimum user privacy level</h4>
         </div>
         <p class="col-sm-9">{{post.minUserPrivacyLevel}}</p>
     </div>
@@ -91,7 +93,7 @@
     {% if post.minEndUserRoles %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Minimum set of end-user roles</h5>
+            <h4>Minimum set of end-user roles</h4>
         </div>
         <p class="col-sm-9">{{post.minEndUserRoles}}</p>
     </div>
@@ -101,12 +103,11 @@
 
 
 <div class="action">
-
+    <button>back to the contribution</button>
 </div>
 
 </body>
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
-    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
 </script>
 </html>

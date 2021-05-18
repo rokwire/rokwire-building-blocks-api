@@ -63,35 +63,47 @@
 
     {% if post.contributors %}
     <h4>Contributor details</h4>
-
-        {% for c in post.contributors %}
-            {% for k,v in c.items() %}
-            <div class="row">
-                <div class="col-12 col-sm-2">
-                    {{k}}
-                </div>
-                <p class="col-sm-2">{{v}}</p>
-            </div>
-            {% endfor %}
-        {% endfor %}
+    {% for c in post.contributors %}
+    {% for key,val in c.items() %}
+    {% if key == "affiliation" %}
+    {% for k,v in val.items() %}
+    {% if v %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            {{k}}
+        </div>
+        <p class="col-sm-2">{{v}}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% elif val %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            {{key}}
+        </div>
+        <p class="col-sm-2">{{val}}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
     {% endif %}
 
     {% if post.contacts %}
     <h4>Contact details</h4>
 
-        {% for key,val in post.contacts.items() %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                {{key}}
-            </div>
-            <p class="col-sm-2">{{val}}</p>
+    {% for key,val in post.contacts.items() %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            {{key}}
         </div>
-        {% endfor %}
+        <p class="col-sm-2">{{val}}</p>
+    </div>
+    {% endfor %}
     {% endif %}
 
     {% if post.capabilities %}
-        <h4>Capability details</h4>
-       {% for c in post.capabilities %}
+    <h4>Capabilities in this contribution</h4>
+    {% for c in post.capabilities %}
         <div class="row">
             <div class="col-12 col-sm-2">
                 <ul>{{c.name}}</ul>
@@ -103,7 +115,7 @@
 
 
     {% if post.talents %}
-        <h4>Talents details</h4>
+    <h4>Talents in this contribution</h4>
        {% for c in post.talents %}
         <div class="row">
             <div class="col-12 col-sm-2">
@@ -121,7 +133,6 @@
 </div>
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
-    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
 </script>
 </body>
 </html>

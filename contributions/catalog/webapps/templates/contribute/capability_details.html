@@ -33,27 +33,29 @@
 
 </div>
 
-<hr class="divider"/>
+
 
 <div class="container">
-    <h2>Capability Details</h2>
+    <h1>Capability Details</h1>
+
+    <hr class="divider"/>
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Capability Name </h5>
+            <h4>Capability Name </h4>
         </div>
         <p class="col-sm-9">{{post.name}}</p>
     </div>
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Capability description </h5>
+            <h4>Capability description </h4>
         </div>
         <p class="col-sm-9">{{post.description}}</p>
     </div>
 
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Is code open source?</h5>
+            <h4>Is code open source?</h4>
         </div>
         <p class="col-sm-9">{{post.isOpenSource}}</p>
     </div>
@@ -61,7 +63,7 @@
     {% if post.isOpenSource == true %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Api Documentation URL, if the above data is "Yes" </h5>
+            <h4>Api Documentation URL, if the above data is "Yes" </h4>
         </div>
         <p class="col-sm-9">{{post.apiDocUrl}}</p>
     </div>
@@ -70,7 +72,7 @@
     {% if post.sourceUrl %}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Source code repository URL</h5>
+            <h4>Source code repository URL</h4>
         </div>
         <p class="col-sm-9">{{post.sourceUrl}}</p>
     </div>
@@ -80,11 +82,13 @@
     {% if post.deploymentDetails%}
     <div class="row">
         <div class="col-12 col-sm-2">
-            <h5>Deployment status (Internal vs External)</h5>
+            <h4>Deployment status (Internal vs External)</h4>
         </div>
         <p class="col-sm-9">{{post.deploymentDetails.location}}</p>
     </div>
     {% endif %}
+
+    <button>back to the contribution</button>
 </div>
 
 
@@ -93,7 +97,6 @@
 </div>
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
-    // document.getElementById('username').innerHTML = user.firstname + " " +user.lastname;
 </script>
 </body>
 </html>
