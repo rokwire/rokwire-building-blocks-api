@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix date format issue in the events endpoint of GET /events/<id>. [#438](https://github.com/rokwire/rokwire-building-blocks-api/issues/438)
 - Fix error code in GET /contributions/{contributionID}. [#672](https://github.com/rokwire/rokwire-building-blocks-api/issues/672)
 - Fix status in contribution. [#668](https://github.com/rokwire/rokwire-building-blocks-api/issues/668)
+- Fix returning an object when there is only single result in GET /contributions. [#681](https://github.com/rokwire/rokwire-building-blocks-api/issues/681)
 
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
