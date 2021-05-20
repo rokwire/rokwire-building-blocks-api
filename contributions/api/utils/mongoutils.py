@@ -97,14 +97,8 @@ def get_result(db_collection, query):
 
     if len(data_list) > 0:
         data_dump = dumps(data_list)
-        if len(data_list) == 1: # remove blacket in the first and last character location
-            data_dump = data_dump[:-1]
-            data_dump = data_dump[1:]
-            json_load = json.loads(data_dump)
-            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
-        else:
-            json_load = json.loads(data_dump)
-            json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
