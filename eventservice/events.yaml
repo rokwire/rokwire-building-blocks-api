@@ -805,6 +805,9 @@ components:
           - rejected
           - incomplete
           - archived
+        isGroupPrivate:
+          type: boolean
+          description:  If this field's value is set to true, it means that this is a private group event. If it's set to false, it means that this is a public group event.
         isSuperEvent:
           type: boolean
           description: States whether an event is a super event (`true`) or not (`false`). A super event is defined as an event that contains one more sub events. E.g. conference, workshop, exhibition, etc. Each sub event can be a featured sub event and can contain a track that the sub event belongs to.
