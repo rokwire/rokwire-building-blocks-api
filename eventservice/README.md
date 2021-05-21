@@ -348,7 +348,6 @@ https://docs.mongodb.com/manual/geospatial-queries/
 db.events.createIndex({'title': "text"})
 db.events.createIndex({'startDate': -1})
 db.events.createIndex({'endDate': -1})
-db.events.createIndex({'sponsor': 1})
 db.events.createIndex({'categorymainsub': 1})
 db.events.createIndex({'coordinates': "2dsphere"})
 ```

@@ -36,7 +36,6 @@ def init_db():
     events.create_index([("title", pymongo.TEXT)])
     events.create_index([("startDate", pymongo.DESCENDING)])
     events.create_index([("endDate", pymongo.DESCENDING)])
-    events.create_index([("sponsor", pymongo.ASCENDING)])
     events.create_index([("category", pymongo.ASCENDING)])
     events.create_index([("categorymainsub", pymongo.ASCENDING)])
     events.create_index([("coordinates", pymongo.GEOSPHERE)])
