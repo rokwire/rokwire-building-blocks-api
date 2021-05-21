@@ -152,8 +152,22 @@ def format_query(args, query, include_private_events=False, group_ids=None):
     # public group query
     if not include_private_events:
         query_parts.append({'isGroupPrivate': {'$ne': True}})
-    if query_parts:
         query['$and'] = query_parts
+    else: # private group query
+        private_groups_query_parts = query_parts.copy()
+        query_parts.append({'createdByGroupId': {'$nin': group_ids}})
+        query_parts.append({'isGroupPrivate': {'$ne': True}})
+        query['$and'] = query_parts
+
+        private_groups_query_parts.append({'createdByGroupId': {'$in': group_ids}})
+        private_groups_query = dict()
+        private_groups_query['$and'] = private_groups_query_parts
+        query = {'$or': [
+            query,
+            private_groups_query]}
+    # if query_parts:
+    #     query['$and'] = query_parts
+
     return query
 
 

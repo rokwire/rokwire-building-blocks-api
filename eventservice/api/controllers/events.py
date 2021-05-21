@@ -92,9 +92,15 @@ def _get_events_result(query, limit, skip):
         return []
 
     is_super_event = False
-    for cond in query.get('$and'):
-        if cond.get('isSuperEvent'):
-            is_super_event = True
+    if query.get('or'):
+        for subquery in query:
+            for cond in subquery.get('$and'):
+                if cond.get('isSuperEvent'):
+                    is_super_event = True
+    else:
+        for cond in query.get('$and'):
+            if cond.get('isSuperEvent'):
+                is_super_event = True
 
     db = get_db()
     cursor = db['events'].find(
