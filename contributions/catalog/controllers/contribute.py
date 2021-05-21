@@ -57,7 +57,7 @@ def result():
 
 
 
-@bp.route('details/<contribution_id>', methods=['GET','POST'])
+@bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
     the_json_res = get_contribution(contribution_id)
     return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
