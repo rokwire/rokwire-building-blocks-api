@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add UUID for capability and talent in Contribution Catalog.[#666](https://github.com/rokwire/rokwire-building-blocks-api/issues/666)
 - Add autocomplete feature when inputting admin name for contribution catalog.[#665](https://github.com/rokwire/rokwire-building-blocks-api/issues/665)
 - Add search endpoints using capability and talent id.[#662](https://github.com/rokwire/rokwire-building-blocks-api/issues/662)
+- Add release script for Contributions Building Block.[#675](https://github.com/rokwire/rokwire-building-blocks-api/issues/675)
+- Add okay endpoint to Contributions Building Block.[#679](https://github.com/rokwire/rokwire-building-blocks-api/issues/679)
+- Add isGroupPrivate to Events schema.[#682](https://github.com/rokwire/rokwire-building-blocks-api/issues/682)
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
@@ -32,9 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix date format issue in the events endpoint of GET /events/<id>. [#438](https://github.com/rokwire/rokwire-building-blocks-api/issues/438)
 - Fix error code in GET /contributions/{contributionID}. [#672](https://github.com/rokwire/rokwire-building-blocks-api/issues/672)
 - Fix status in contribution. [#668](https://github.com/rokwire/rokwire-building-blocks-api/issues/668)
+- Fix returning an object when there is only single result in GET /contributions. [#681](https://github.com/rokwire/rokwire-building-blocks-api/issues/681)
 
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
+- Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
 
 ### Removed
 - Remove db index on sponsor field. [#686](https://github.com/rokwire/rokwire-building-blocks-api/issues/686)

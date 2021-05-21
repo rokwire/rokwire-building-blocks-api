@@ -379,6 +379,18 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
+  /contributions/ok:
+    get:
+      summary: Get status check
+      tags:
+        - Contributions
+      responses:
+        200:
+          description: The building block is alive and responding.
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:

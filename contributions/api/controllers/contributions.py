@@ -821,3 +821,6 @@ def talents_get(token_info=None, id=None, talent_id=None):
         return rs_handlers.not_found(msg_json)
     else:
         return talent
+
+def ok_search():
+    return rs_handlers.return_200("okay")
