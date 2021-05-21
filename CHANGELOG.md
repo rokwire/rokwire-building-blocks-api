@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
 - Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
 
+### Removed
+- Remove db index on sponsor field. [#686](https://github.com/rokwire/rokwire-building-blocks-api/issues/686)
+
 ## [1.9.1] - 2021-02-22
 ### Fixed
 - Fix Docker build errors. [#633](https://github.com/rokwire/rokwire-building-blocks-api/issues/633)
