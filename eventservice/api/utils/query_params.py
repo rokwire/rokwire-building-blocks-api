@@ -151,7 +151,6 @@ def format_query(args, query, include_private_events=False, group_ids=None):
 
     # public group query
     if not include_private_events:
-        # query_parts.append({'isGroupPrivate': {'$not': {'$eq': True}}})
         query_parts.append({'isGroupPrivate': {'$ne': True}})
     if query_parts:
         query['$and'] = query_parts
