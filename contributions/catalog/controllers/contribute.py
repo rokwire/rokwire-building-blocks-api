@@ -91,7 +91,6 @@ def create():
         # add contributionAdmins to the json_contiubtion
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        print(json_contribution)
         response, s = post(json_contribution)
 
         if response:
