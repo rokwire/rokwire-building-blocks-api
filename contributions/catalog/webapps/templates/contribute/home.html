@@ -384,7 +384,7 @@
                 var newItem = $(template).clone();
 
                 //Populate it
-                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talent/" + id)
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talents/" + id)
 
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
