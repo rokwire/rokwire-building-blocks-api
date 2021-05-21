@@ -252,7 +252,7 @@
         function start() {
             var user_name = "{{user}}";
             // var user_name = $('#nav-user-data').data("user");
-            console.log(user_name)
+            //console.log(user_name)
             // alert(user_name)
             var nav_login = document.getElementById('nav_login');
             var nav_greet = document.getElementById('nav_greeting')
@@ -273,8 +273,7 @@
                 function (res) {
                     var items = JSON.parse(res);
                     all_capability = items;
-                    // append_capability(all_capability);
-                    all_capability.length > 0? append_capability(all_capability): append_capability(test_capability);
+                    append_capability(all_capability)
                     filterSelection('all');
 
                 },
@@ -286,17 +285,16 @@
                 function (res) {
                     var items = JSON.parse(res);
 
-                    all_talents = items
-                    // append_talent(all_talents);
-                    all_talents.length > 0? append_talent(all_talents): append_talent(test_talent);
+                    all_talents = items;
+                    append_talent(all_talents)
                     filterSelection('all');
                 },
                 function () {
                     console.log("error occured talent");
                 });
 
-            window.onload = all_capability.length > 0? append_capability(all_capability): append_capability(test_capability);
-            window.onload = all_talents.length > 0? append_talent(all_talents): append_talent(test_talent);
+            window.onload = append_capability(all_capability);
+            window.onload = append_talent(all_talents);
         }
 
         var user_icon = document.getElementById('user_profile');
@@ -320,50 +318,7 @@
         console.log('{{token}}')
         var all_capability = [];
         var all_talents = []
-        var test_capability = [
-            {
-            "apiBaseUrl": null,
-            "apiDocUrl": "",
-            "contacts":[
-                {"email": null, "name": null, "officialAddress": null, "organization": null, "phone": null}
-            ],
-            "contributionId": "6092c1168fff61395d5ee47f",
-            "dataDeletionEndpointDetails":{
-            "apiKey": null,
-            "deletionEndpoint": null,
-            "description": null
-            },
-            "deploymentDetails":{
-                "authMethod": "apikey",
-                "databaseDetails": "mongo",
-                "dockerImageName": "na",
-                "environmentVariables":[{"key": "key"}],
-            },
-            "description": "this is a test description...",
-            "healthCheckUrl": "localhost",
-            "id": "20837a63-d498-4d8b-9713-0708ae81d6a8",
-            "isOpenSource": true,
-            "name": "test capability 1",
-            "status": null,
-            "version": "0.0.1",
-            }
-        ];
-        var test_talent = [
-            {
-                "contributionId": "6092c0518fff61395d5ee47e",
-                "dataDescription": "",
-                "endDate": "",
-                "id": "60121702-6acc-48f0-a4c3-e0890edafad5",
-                "longDescription": "",
-                "minEndUserRoles":[],
-                "minUserPrivacyLevel": 1,
-                "name": "test talent 1",
-                "requiredBuildingBlocks":[],
-                "requiredCapabilities":[],
-                "shortDescription": "this is a test for mock talent",
-                "startDate": ""
-                }
-        ]
+
         var get_talent_url = "http://" + "localhost:5000/contributions/talents";
         var get_cap_url = "http://" + "localhost:5000/contributions/capabilities";
         var get_contribution_url = "http://" + "localhost:5000/contributions";
