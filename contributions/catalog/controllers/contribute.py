@@ -71,7 +71,6 @@ def capability_details(contribution_id, id):
 @bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
     the_json_res = get_talent(contribution_id, id)
-    print(the_json_res)
     return render_template("contribute/talent_details.html", post=the_json_res, user=session["name"])
 
 
