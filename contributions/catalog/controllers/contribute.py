@@ -130,7 +130,6 @@ def post(json_data):
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-        # 'ROKWIRE_API_KEY': cfg.ROKWIRE_API_KEY
     }
     try:
         # Setting up post request
