@@ -27,6 +27,10 @@ EVENT_DB_NAME = os.getenv("EVENT_DB_NAME", "rokwire")
 # set default as empty, since connexion will set events as the root path defined by the yml file.
 URL_PREFIX = os.getenv("URL_PREFIX", "")
 
+GROUPS_BUILDING_BLOCK_ENDPOINT = os.getenv("GROUPS_BUILDING_BLOCK_ENDPOINT", "https://api-dev.rokwire.illinois.edu/gr/api/int/user/")
+
+ROKWIRE_GROUPS_API_KEY = os.getenv("ROKWIRE_GROUPS_API_KEY", "")
+
 IMAGE_COLLECTION = os.getenv("IMAGE_COLLECTION", "images")
 IMAGE_FILE_MOUNTPOINT = os.getenv("IMAGE_FILE_MOUNTPOINT", "events-images")
 IMAGE_URL = os.getenv("IMAGE_URL", "https://{bucket}.s3-{region}.amazonaws.com/{prefix}/{event_id}/{image_id}.jpg")
