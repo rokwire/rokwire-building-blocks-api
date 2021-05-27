@@ -2,7 +2,8 @@ import controllers.configs as cfg
 import requests
 from flask import g
 
-def get_group_ids(group_ids):
+def get_group_ids():
+    group_ids = list()
     include_private_events = False
     # user UserAuth request
     if 'user_token_data' in g:
@@ -18,4 +19,6 @@ def get_group_ids(group_ids):
             req_data = req.json()
             for item in req_data:
                 group_ids.append(item.get('id'))
-    return include_private_events
+        else:
+            raise Exception("failed to authorize with the groups building block %d" % req.status_code)
+    return include_private_events, group_ids
