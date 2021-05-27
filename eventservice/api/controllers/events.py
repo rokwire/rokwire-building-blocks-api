@@ -35,6 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
+from utils.group_auth import get_group_ids
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -44,22 +45,23 @@ __logger = logging.getLogger("events_building_block")
 
 def search():
     group_ids = list()
-    include_private_events = False
-    # user UserAuth request
-    if 'user_token_data' in g:
-        include_private_events = True
-        auth_resp = g.user_token_data
-        uin = auth_resp.get('uiucedu_uin')
-        url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
-        headers = {"Content-Type": "application/json",
-                  "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
+    # include_private_events = False
+    # # user UserAuth request
+    # if 'user_token_data' in g:
+    #     include_private_events = True
+    #     auth_resp = g.user_token_data
+    #     uin = auth_resp.get('uiucedu_uin')
+    #     url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
+    #     headers = {"Content-Type": "application/json",
+    #               "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
+    #
+    #     req = requests.get(url, headers=headers)
+    #     if req.status_code == 200:
+    #         req_data = req.json()
+    #         for item in req_data:
+    #             group_ids.append(item.get('id'))
 
-        req = requests.get(url, headers=headers)
-        if req.status_code == 200:
-            req_data = req.json()
-            for item in req_data:
-                group_ids.append(item.get('id'))
-
+    include_private_events = get_group_ids(group_ids)
 
     args = request.args
     query = dict()
@@ -92,11 +94,13 @@ def _get_events_result(query, limit, skip):
         return []
 
     is_super_event = False
-    if query.get('or'):
-        for subquery in query:
+    # public and private events query
+    if query.get('$or'):
+        for subquery in query.get('$or'):
             for cond in subquery.get('$and'):
                 if cond.get('isSuperEvent'):
                     is_super_event = True
+    # public events query
     else:
         for cond in query.get('$and'):
             if cond.get('isSuperEvent'):
