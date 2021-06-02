@@ -17,7 +17,7 @@ import re
 from bson import ObjectId
 
 
-def format_query(args, query):
+def format_query(args, query, include_private_events=False, group_ids=None):
     query_parts = []
     # superevent id
     super_event_id = args.get('superEventId')
@@ -149,8 +149,25 @@ def format_query(args, query):
         radius_meters = int(args.get('radius'))
         query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
 
-    if query_parts:
+    # public group query
+    if not include_private_events:
+        query_parts.append({'isGroupPrivate': {'$ne': True}})
         query['$and'] = query_parts
+    else: # private group query
+        private_groups_query_parts = query_parts.copy()
+        query_parts.append({'createdByGroupId': {'$nin': group_ids}})
+        query_parts.append({'isGroupPrivate': {'$ne': True}})
+        query['$and'] = query_parts
+
+        private_groups_query_parts.append({'createdByGroupId': {'$in': group_ids}})
+        private_groups_query = dict()
+        private_groups_query['$and'] = private_groups_query_parts
+        query = {'$or': [
+            query,
+            private_groups_query]}
+    # if query_parts:
+    #     query['$and'] = query_parts
+
     return query
 
 
