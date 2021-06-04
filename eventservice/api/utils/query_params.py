@@ -19,6 +19,10 @@ from bson import ObjectId
 
 def format_query(args, query, include_private_events=False, group_ids=None):
     query_parts = []
+    # group id
+    group_id = args.get('groupId')
+    if group_id:
+        query_parts.append({'createdByGroupId': ObjectId(group_id)})
     # superevent id
     super_event_id = args.get('superEventId')
     if super_event_id and ObjectId.is_valid(super_event_id):

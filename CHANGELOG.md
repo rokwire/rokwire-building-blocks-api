@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add okay endpoint to Contributions Building Block.[#679](https://github.com/rokwire/rokwire-building-blocks-api/issues/679)
 - Add isGroupPrivate to Events schema.[#682](https://github.com/rokwire/rokwire-building-blocks-api/issues/682)
 - Add group authorization to GET /events endpoint. [#683](https://github.com/rokwire/rokwire-building-blocks-api/issues/683), [#684](https://github.com/rokwire/rokwire-building-blocks-api/issues/684)
+- Add get group event by groupid parameter.[#685](https://github.com/rokwire/rokwire-building-blocks-api/issues/685)
+
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
 - Use dovenv library for organizing enviroment variables. [#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
