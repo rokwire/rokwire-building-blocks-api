@@ -376,6 +376,37 @@ def list_reviewers():
         return None
 
 """
+query using query field and querystring and convert result to object
+"""
+def get_dataset_from_field(collection, fld, query_str):
+    db_data = query_dataset_no_status(collection, fld, query_str)
+    data_list = list(db_data)
+    if len(data_list) == 1:
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        dataset = Contribution(json_load)
+
+        try:
+            dataset.set_name(json_load[cfg.FIELD_NAME])
+        except:
+            pass
+
+        return dataset
+
+    elif len(data_list) > 1:
+        #TODO create a method to handle this
+
+        return data_list
+
+    else:
+        msg = 'there is no output query result or multiple query result'
+        logging.debug(msg)
+
+        return None
+
+"""
 index capability collection
 """
 def index_capability_data(collection):

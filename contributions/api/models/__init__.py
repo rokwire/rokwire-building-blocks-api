@@ -15,3 +15,4 @@
 from contributions.api.models import contribution
 from contributions.api.models import organization
 from contributions.api.models import person
+from contributions.api.models import reviewer

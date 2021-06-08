@@ -1,4 +1,4 @@
-#  Copyright 2020 Board of Trustees of the University of Illinois.
+#  Copyright 2021 Board of Trustees of the University of Illinois.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
 
 import contributions.api.utils.datasetutils as datasetutils
 
-class Organization:
+class Reviewer:
     def __init__(self, injson):
         self.name = None
-        self.address = None
-        self.email = None
-        self.phone = None
+        self.githubUsername = None
+        self.dateCreated = None
 
-        self, restjson = datasetutils.update_organization_dataset_from_json(self, injson)
+        self, restjson = datasetutils.update_reviwer_dataset_from_json(self, injson)
 
     def set_name(self, name):
         self.name = name
@@ -29,20 +28,14 @@ class Organization:
     def get_name(self):
         return self.name
 
-    def set_address(self, address):
-        self.address = address
+    def set_github_username(self, githubUsername):
+        self.githubUsername = githubUsername
 
-    def get_address(self):
-        return self.address
+    def get_github_username(self):
+        return self.githubUsername
 
-    def set_email(self, email):
-        self.email = email
+    def set_date_created(self, dateCreated):
+        self.dateCreated = dateCreated
 
-    def get_email(self):
-        return self.email
-
-    def set_phone(self, phone):
-        self.phone = phone
-
-    def get_phone(self):
-        return self.phone
+    def get_date_created(self):
+        return self.dateCreated

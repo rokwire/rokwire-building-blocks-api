@@ -19,8 +19,14 @@ def check_if_superuser(login_id):
     return "test"
 
 def check_if_reviewer(login_id):
+    is_reviewer = False
     # check if the logged in id is in reviewers database
-    list_reviewers = mongoutils.coll_reviewer
+    list_reviewers = mongoutils.list_reviewers()
+
+    if list_reviewers is not None:
+        is_reviewer = True
+
+        return is_reviewer
 
     # check if the logged in id is super user
     is_superuser = check_if_superuser(login_id)
@@ -28,6 +34,7 @@ def check_if_reviewer(login_id):
 
     if login_id in sp_list:
         return True
-    # else:
+    else:
+        return False
 
     return False
