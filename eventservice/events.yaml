@@ -805,6 +805,9 @@ components:
           - rejected
           - incomplete
           - archived
+        isEventFree:
+          type: boolean
+          description: This boolean field will indicate whether the event is free or not.
         isGroupPrivate:
           type: boolean
           description:  If this field's value is set to true, it means that this is a private group event. If it's set to false, it means that this is a public group event.
