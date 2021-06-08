@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add okay endpoint to Contributions Building Block.[#679](https://github.com/rokwire/rokwire-building-blocks-api/issues/679)
 - Add isGroupPrivate to Events schema.[#682](https://github.com/rokwire/rokwire-building-blocks-api/issues/682)
 - Add group authorization to GET /events endpoint. [#683](https://github.com/rokwire/rokwire-building-blocks-api/issues/683), [#684](https://github.com/rokwire/rokwire-building-blocks-api/issues/684)
+- Add get group event by groupid parameter.[#685](https://github.com/rokwire/rokwire-building-blocks-api/issues/685)
 - Add isEventFree field to Events Building Block yaml file.[#695](https://github.com/rokwire/rokwire-building-blocks-api/issues/695)
 
 ### Fixed
