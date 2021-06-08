@@ -176,6 +176,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: groupId
+        in: query
+        description: The parameter for searching group events based on the group IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
