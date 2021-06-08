@@ -184,6 +184,7 @@ paths:
         explode: true
         schema:
           type: string
+          format: uuid
       responses:
         200:
           description: search results matching criteria
