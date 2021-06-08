@@ -20,10 +20,10 @@ import logging
 from flask import jsonify, request, g
 from bson import ObjectId
 
-import controllers.configs as cfg
-import utils.jsonutils as jsonutils
-import utils.rest_handlers as rs_handlers
-import utils.mongoutils as mongoutils
+import contributions.api.controllers.configs as cfg
+import contributions.api.utils.jsonutils as jsonutils
+import contributions.api.utils.rest_handlers as rs_handlers
+import contributions.api.utils.mongoutils as mongoutils
 
 from datetime import datetime
 

@@ -391,6 +391,57 @@ paths:
           description: Bad request
         500:
           description: Internal server error
+  /contributions/admin/reviewers:
+    post:
+      summary: Create a new reviwer
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+      requestBody:
+        description: Reviewer data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reviewer'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created reviewer
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+    get:
+      summary: Return the list of existing reviewers
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+      responses:
+        200:
+          description: Reviewers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reviewer'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
@@ -663,6 +714,15 @@ components:
           type: string
         phone:
           nullable: true
+          type: string
+    Reviewer:
+      type: object
+      properties:
+        name:
+          nullable: false
+          type: string
+        githubUseranem:
+          nullable: false
           type: string
   securitySchemes:
     ApiKeyAuth:

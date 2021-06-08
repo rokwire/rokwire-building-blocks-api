@@ -14,15 +14,15 @@
 
 import json
 import logging
-import controllers.configs as cfg
+import contributions.api.controllers.configs as cfg
 
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
 from pymongo import MongoClient, ASCENDING
-from models.contribution import Contribution
-from utils import query_params
-from utils import jsonutils
+from contributions.api.models.contribution import Contribution
+from contributions.api.utils import query_params
+from contributions.api.utils import jsonutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -30,6 +30,9 @@ coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 coll_contribution.create_index([("name", ASCENDING)], background=True)
 coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
 coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
+
+coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
+coll_reviewer.create_index([("name", ASCENDING)], background=True)
 
 """
 get json of all the contributions list
@@ -356,6 +359,21 @@ def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson)
         result = collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
 
     return result.acknowledged, dataset
+
+"""
+get json of all the reviewers list
+"""
+def list_reviewers():
+    db_data = coll_reviewer.find({}, {'_id': False})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
 
 """
 index capability collection

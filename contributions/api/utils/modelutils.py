@@ -17,13 +17,13 @@ import logging
 
 from flask import request
 
-import utils.jsonutils as jsonutils
-import utils.datasetutils as datasetutils
+import contributions.api.utils.jsonutils as jsonutils
+import contributions.api.utils.datasetutils as datasetutils
 
-from models.person import Person
-from models.organization import Organization
-from models.capabilities.capability import Capability
-from models.talents.talent import Talent
+from contributions.api.models.person import Person
+from contributions.api.models.organization import Organization
+from contributions.api.models.capabilities.capability import Capability
+from contributions.api.models.talents.talent import Talent
 
 
 def construct_capability(in_json):

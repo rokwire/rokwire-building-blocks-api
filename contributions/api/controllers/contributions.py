@@ -19,20 +19,17 @@ import logging
 from flask import wrappers, request
 from bson import ObjectId
 
-import controllers.configs as cfg
-import utils.jsonutils as jsonutils
-import utils.datasetutils as datasetutils
-import utils.rest_handlers as rs_handlers
-import utils.mongoutils as mongoutils
-import utils.otherutils as otherutils
-import utils.otherutils as modelutils
+import contributions.api.controllers.configs as cfg
+import contributions.api.utils.jsonutils as jsonutils
+import contributions.api.utils.datasetutils as datasetutils
+import contributions.api.utils.rest_handlers as rs_handlers
+import contributions.api.utils.mongoutils as mongoutils
+import contributions.api.utils.otherutils as otherutils
+import contributions.api.utils.otherutils as modelutils
+import contributions.api.utils.adminutils as adminutils
 
-from utils import query_params
-from models.contribution import Contribution
-from models.person import Person
-from models.organization import Organization
-from models.capabilities.capability import Capability
-from models.talents.talent import Talent
+from contributions.api.utils import query_params
+from contributions.api.models.contribution import Contribution
 from pymongo import MongoClient
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
@@ -824,3 +821,25 @@ def talents_get(token_info=None, id=None, talent_id=None):
 
 def ok_search():
     return rs_handlers.return_200("okay")
+
+def admin_reviewers_post(token_info):
+    # check if the logged in user is in the reviewers db
+    adminutils.check_if_reviewer(token_info["login"])
+
+    return "test"
+
+def admin_reviewers_search(token_info):
+    # check if the logged in user is in the reviewers db
+    is_admin = adminutils.check_if_reviewer(token_info["login"])
+
+    is_admin_user = otherutils.check_login_admin(token_info["login"], contribution_admins)
+    if not is_admin_user:
+        msg = {
+            "reason": "Contribution admin list must contain logged in user",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+        logging.error("Contribution POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    return "test2"
