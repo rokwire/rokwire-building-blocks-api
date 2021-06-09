@@ -20,13 +20,13 @@ from flask import wrappers, request
 from bson import ObjectId
 
 import contributions.api.controllers.configs as cfg
-import utils.jsonutils as jsonutils
 import contributions.api.utils.datasetutils as datasetutils
 import contributions.api.utils.rest_handlers as rs_handlers
 import contributions.api.utils.mongoutils as mongoutils
 import contributions.api.utils.otherutils as otherutils
 import contributions.api.utils.otherutils as modelutils
 import contributions.api.utils.adminutils as adminutils
+import contributions.api.utils.jsonutils as jsonutils
 
 from contributions.api.utils import query_params
 from contributions.api.models.contribution import Contribution
@@ -911,9 +911,9 @@ def admin_reviewers_delete(token_info, id):
         return rs_handlers.entry_deleted('ID', id)
     else:
         msg = {
-            "id": str(id),
+            "reason": "There is no reviewer with given id: " + str(id),
             "error": "Not Found: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution Admin ", "DELETE", msg)
         logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
-        return rs_handlers.bad_request()
+        return rs_handlers.not_found(msg_json)
