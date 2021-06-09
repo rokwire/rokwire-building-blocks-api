@@ -364,12 +364,13 @@ def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson)
 get json of all the reviewers list
 """
 def list_reviewers():
-    db_data = coll_reviewer.find({}, {'_id': False})
+    db_data = coll_reviewer.find({})
     data_list = list(db_data)
 
     if len(data_list) > 0:
         data_dump = dumps(data_list)
         json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
