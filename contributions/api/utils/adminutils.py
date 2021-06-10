@@ -13,24 +13,27 @@
 #  limitations under the License.
 
 import contributions.api.controllers.configs as cfg
-import contributions.api.utils.mongoutils as mongoutils
+# import contributions.api.utils.mongoutils as mongoutils
 
 def check_if_superuser(login_id):
     return "test"
 
 def check_if_reviewer(login_id):
     is_reviewer = False
+
+    # TODO if you want to allow the reviewers to do the reviewer admin,
+    #  activate following code block
     # check if the logged in id is in reviewers database
-    list_reviewers = mongoutils.list_reviewers()
+    # list_reviewers = mongoutils.list_reviewers()
+    #
+    # if list_reviewers is not None:
+    #     is_reviewer = True
+    #
+    #     return is_reviewer
 
-    if list_reviewers is not None:
-        is_reviewer = True
-
-        return is_reviewer
-
-    # check if the logged in id is super user
+    # check if the logged in id is admin user
     is_superuser = check_if_superuser(login_id)
-    sp_list = cfg.ADMIN_SUPERUSER.split(",")
+    sp_list = cfg.ADMIN_USERS.split(",")
 
     if login_id in sp_list:
         return True
