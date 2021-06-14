@@ -202,6 +202,14 @@ def get(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
 
+    group_ids = list()
+    include_private_events = False
+    try:
+        include_private_events, group_ids = get_group_ids()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
     try:
         result, result_found = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
@@ -210,6 +218,15 @@ def get(event_id):
 
     if not result_found:
         abort(404)
+
+    if include_private_events:
+        # check the group id
+        if result and result.get('createdByGroupId') not in group_ids:
+            abort(401)
+    else:
+        # check public group
+        if result and result.get('isGroupPrivate') == True:
+            abort(401)
 
     __logger.debug("[Get Event]: event id %s", event_id)
     return current_app.response_class(result, mimetype='application/json')
