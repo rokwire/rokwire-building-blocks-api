@@ -36,7 +36,6 @@ def login():
 
     # State is used to prevent CSRF.
     session['oauth_state'] = state
-    # print(session)
     return redirect(authorization_url)
 
 
@@ -58,6 +57,26 @@ def result():
 
 
 
+@bp.route('details/<contribution_id>', methods=['GET'])
+def contribution_details(contribution_id):
+    the_json_res = get_contribution(contribution_id)
+    return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
+
+@bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
+def capability_details(contribution_id, id):
+    the_json_res = get_capability(contribution_id, id)
+    return render_template("contribute/capability_details.html", post=the_json_res, user=session["name"])
+
+@bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
+def talent_details(contribution_id, id):
+    the_json_res = get_talent(contribution_id, id)
+    return render_template("contribute/talent_details.html", post=the_json_res, user=session["name"])
+
+
+# @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
+# def edit(contribution_id):
+#     #todo: need to implement the edit form page
+#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
 @bp.route('/create', methods=['GET', "POST"])
 @login_required
@@ -71,6 +90,7 @@ def create():
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
         response, s = post(json_contribution)
+
         if response:
             if response:
                 if "name" in session:
@@ -128,6 +148,74 @@ def post(json_data):
         var = traceback.format_exc()
         return False, var
 
+
+def get_contribution(contribution_id):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+    }
+
+    try:
+        if contribution_id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(contribution_id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(contribution_id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_capability(contribution_id, cid):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+    }
+
+    try:
+        if contribution_id and cid:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/capabilities/" + str(cid),
+                                  headers=headers)
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_talent(contribution_id, tid):
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
+    }
+
+    try:
+        if id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/talents/" + str(tid),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
 
 # post a json_data in a http request
 def search(input_data):
