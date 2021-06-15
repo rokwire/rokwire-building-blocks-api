@@ -291,35 +291,35 @@ def put(event_id):
         abort(400)
 
     group_memberships = list()
-    include_private_events = False
     try:
-        include_private_events, group_memberships = get_group_memberships()
+        _, group_memberships = get_group_memberships()
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
     db = None
+    event = None
     try:
         db = get_db()
-        event = db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'categorymainsub': 1})
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
 
-    if include_private_events:
+    if not group_memberships:
+        # check public group
+        if event and event.get('isGroupPrivate') is True:
+            abort(401)
+    else:
         # get event and check the group id
         if event:
             found = False
             for group_member in group_memberships:
                 if event.get('createdByGroupId') == group_member.get('id'):
-                    if group_member.get('membership_status') is 'admin':
+                    if group_member.get('role') == 'admin':
                         found = True
                         break
             if not found:
                 abort(401)
-    else:
-        # check public group
-        if event and event.get('isGroupPrivate') is True:
-            abort(401)
 
     try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
