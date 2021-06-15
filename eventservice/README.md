@@ -329,6 +329,18 @@ If there are other query parameters, then the endpoint will apply those query pa
 ```
 In this example, the endpoint will return back the subevents with the startdate less than or equal to the given date `2020-03-21T07:32:43`
 
+### Search Group Events by Group ID
+When this query parameter is set to the ID of a group, the endpoint will return all group events as a list.
+```
+/events?groupId=<ID of a group>
+```
+For example,
+````
+/events?groupId=a567618a-b4eb-11eb-9129-0a58a9feac02
+
+```
+The endpoint will return back the group events with `createdByGroupId` equal to the given group id `a567618a-b4eb-11eb-9129-0a58a9feac02`
+
 
 ## MongoDB
 

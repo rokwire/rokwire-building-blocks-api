@@ -21,8 +21,10 @@ import flask.json
 import auth_middleware
 import pymongo
 
+import requests
+
 from bson import ObjectId
-from flask import request, make_response, redirect, abort, current_app
+from flask import request, make_response, redirect, abort, current_app, g
 from werkzeug.utils import secure_filename
 from time import gmtime
 
@@ -33,6 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
+from utils.group_auth import get_group_ids
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -41,10 +44,18 @@ __logger = logging.getLogger("events_building_block")
 
 
 def search():
+    group_ids = list()
+    include_private_events = False
+    try:
+        include_private_events, group_ids = get_group_ids()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
     args = request.args
     query = dict()
     try:
-        query = query_params.format_query(args, query)
+        query = query_params.format_query(args, query, include_private_events, group_ids)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
@@ -72,9 +83,17 @@ def _get_events_result(query, limit, skip):
         return []
 
     is_super_event = False
-    for cond in query.get('$and'):
-        if cond.get('isSuperEvent'):
-            is_super_event = True
+    # public and private events query
+    if query.get('$or'):
+        for subquery in query.get('$or'):
+            for cond in subquery.get('$and'):
+                if cond.get('isSuperEvent'):
+                    is_super_event = True
+    # public events query
+    else:
+        for cond in query.get('$and'):
+            if cond.get('isSuperEvent'):
+                is_super_event = True
 
     db = get_db()
     cursor = db['events'].find(
