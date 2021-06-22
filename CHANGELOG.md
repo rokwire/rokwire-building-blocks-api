@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add group authorization to GET /events endpoint. [#683](https://github.com/rokwire/rokwire-building-blocks-api/issues/683), [#684](https://github.com/rokwire/rokwire-building-blocks-api/issues/684)
 - Add get group event by groupid parameter.[#685](https://github.com/rokwire/rokwire-building-blocks-api/issues/685)
 - Add isEventFree field to Events Building Block yaml file.[#695](https://github.com/rokwire/rokwire-building-blocks-api/issues/695)
+- Add group authroziation on get event endpoint.[#693](https://github.com/rokwire/rokwire-building-blocks-api/issues/693)
 - Add basic detailed views for Contributions, Talents, and Capabilities. [#638](https://github.com/rokwire/rokwire-building-blocks-api/issues/638), [#669](https://github.com/rokwire/rokwire-building-blocks-api/issues/669), [#670](https://github.com/rokwire/rokwire-building-blocks-api/issues/670)
 
 ### Fixed
@@ -45,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
 - Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
 - Updated pre-commit config and corresponding GitHub Action to use `Yelp/detect-secrets` version 1.0.3. [#649](https://github.com/rokwire/rokwire-building-blocks-api/issues/649) 
+- Updated location description in Events Building Block. [#706](https://github.com/rokwire/rokwire-building-blocks-api/issues/706)
 
 ### Removed
 - Remove db index on sponsor field. [#686](https://github.com/rokwire/rokwire-building-blocks-api/issues/686)
