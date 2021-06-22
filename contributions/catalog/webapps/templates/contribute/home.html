@@ -150,20 +150,23 @@
 
     /* the card feature */
     .content {
-        background-color: #eaefee;
+        background-color: #f7f3f3;
         /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
         height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px 0 rgba(98, 66, 66, 0.2);
         padding: 10px;
         transition-duration: 0.2s;
         border: none;
         border-radius: 4px;
         overflow-wrap: break-word;
         word-wrap: break-word;
+
     }
 
     .content:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        text-decoration: #8fd19e;
     }
 
 </style>
@@ -212,26 +215,31 @@
         <div class="row" id="grid-view">
             <!-- Template for cards -->
             <script id="capability_template" type="text/template">
-                <div class="column capability">
-
-                    <div class="content">
-                        <h4 class="capability_name"></h4>
-                        <p class="capability_description"></p>
-                        <p class="contributors"></p>
-                        <!--                    <span class="label label-default">App Config</span>-->
+                <a href="" class="card-link">
+                    <div class="column capability">
+                        <div class="content">
+                            <h4 class="capability_name"></h4>
+                            <p class="capability_description"></p>
+                            <p class="contributors"></p>
+                            <a class="link"> View Contribution >>> </a>
+                            <!--                    <span class="label label-default">App Config</span>-->
+                        </div>
                     </div>
-                </div>
+                </a>
             </script>
 
             <script id="talent_template" type="text/template">
-                <div class="column talent">
-                    <div class="content">
-                        <h4 class="talent_name"></h4>
-                        <p class="talent_description"></p>
-                        <p class="contributors"></p>
-                        <!--                <span class="label label-default">App Config</span>-->
+                <a href="" class="card-link">
+                    <div class="column talent">
+                        <div class="content">
+                            <h4 class="talent_name"></h4>
+                            <p class="talent_description"></p>
+                            <p class="contributors"></p>
+                            <a class="link" > View Contribution >>> </a>
+                            <!--                <span class="label label-default">App Config</span>-->
+                        </div>
                     </div>
-                </div>
+                </a>
             </script>
             <!-- END GRID -->
         </div>
@@ -244,7 +252,7 @@
         function start() {
             var user_name = "{{user}}";
             // var user_name = $('#nav-user-data').data("user");
-            console.log(user_name)
+            //console.log(user_name)
             // alert(user_name)
             var nav_login = document.getElementById('nav_login');
             var nav_greet = document.getElementById('nav_greeting')
@@ -264,10 +272,10 @@
             ajax('GET', get_cap_url, null,
                 function (res) {
                     var items = JSON.parse(res);
-                    all_capability = items
-                    append_capability(all_capability);
+                    all_capability = items;
+                    append_capability(all_capability)
                     filterSelection('all');
-                    filterSelection('all');
+
                 },
                 function () {
                     console.log("error occured - capability");
@@ -277,8 +285,8 @@
                 function (res) {
                     var items = JSON.parse(res);
 
-                    all_talents = items
-                    append_talent(all_talents);
+                    all_talents = items;
+                    append_talent(all_talents)
                     filterSelection('all');
                 },
                 function () {
@@ -307,11 +315,13 @@
                 }
             }
         }
-
         var all_capability = [];
         var all_talents = []
+
         var get_talent_url = "http://" + "localhost:5000/contributions/talents";
         var get_cap_url = "http://" + "localhost:5000/contributions/capabilities";
+        var get_contribution_url = "http://" + "localhost:5000/contributions";
+
 
 
         function get_contributors(data) {
@@ -330,12 +340,28 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
+                var contributionid = object.contributionId;
+                var id = object.id;
+
+
+                console.log(contributionid, id)
                 //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capabilities/" + id)
+
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-
+                // $(newItem).click(function(){
+                //     // $(newItem).load("http://localhost:5050/contribute/details/" + contributionid)
+                //     $(newItem).attr('href', "http://localhost:5050/contribute/details/" + contributionid )
+                //
+                // })
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
                 $("#grid-view").append(newItem);
+
+                // newItem.onclick = function (){
+                //     console.log('haha')
+                // }
 
             });
         }
@@ -350,16 +376,20 @@
 
             var member = document.getElementById('grid-view');
             data.forEach(function (object) {
-
+                var contributionid = object.contributionId;
+                var id = object.id;
+                console.log(contributionid, id)
                 //Clone Template
                 var newItem = $(template).clone();
 
                 //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talents/" + id)
+
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
 
-                //Append it
                 $("#grid-view").append(newItem);
 
             });
@@ -367,7 +397,9 @@
 
         function ajax(method, url, data, okcallback, errorcallback) {
             var xhr = new XMLHttpRequest();
+
             xhr.open(method, url, true);
+            xhr.setRequestHeader("Authorization", 'bearer ' + '{{token}}');
             xhr.onload = function () {
                 if (xhr.status == 200) {
                     okcallback(xhr.responseText);
@@ -379,6 +411,7 @@
             if (data == null) {
                 xhr.send();
             } else {
+
                 xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
                 xhr.send(data);
             }
