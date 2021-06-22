@@ -1,16 +1,32 @@
+#  Copyright 2021 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import json
 import traceback
-
 import requests
-import functools
+
+import contributions.api.utils.mongoutils as mongoutils
+
 from flask import (
-    Blueprint, render_template, request, session, redirect, url_for
+    Blueprint, render_template, request, session, redirect
 )
 from requests_oauthlib import OAuth2Session
 from .auth import login_required
-from controllers.config import Config as cfg
-from models.contribution_utilities import to_contribution
-from utils import jsonutil
+from contributions.catalog.controllers.config import Config as cfg
+from contributions.catalog.models.contribution_utilities import to_contribution
+from contributions.catalog.utils import jsonutil
+
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -70,7 +86,10 @@ def capability_details(contribution_id, id):
 @bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
     the_json_res = get_talent(contribution_id, id)
-    return render_template("contribute/talent_details.html", post=the_json_res, user=session["name"])
+    # check if the user is revieer
+    is_reviewer = False
+    username = session["username"]
+    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
 
 # @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))

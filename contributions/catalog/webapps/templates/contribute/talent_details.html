@@ -68,7 +68,96 @@
         <div class="col-12 col-sm-2">
             <h4>Required Capabilities</h4>
         </div>
-        <p class="col-sm-9">{{post.requiredCapabilities}}</p>
+        {% for x in post.requiredCapabilities %}
+            <p class="col-sm-9">
+                <table>
+                    <tr>
+                        <td><b>Capability Name&nbsp;&nbsp;</b></td>
+                        <td>{{x['name']}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Capability description&nbsp;&nbsp;</b></td>
+                        <td>{{x['description']}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Is code open source?&nbsp;&nbsp;</b></td>
+                        <td>{{x['isOpenSource']}}</td>
+                    </tr>
+            {% if x['isOpenSource'] %}
+                    <tr>
+                        <td><b>Source code repository URL&nbsp;&nbsp;</b></td>
+                        <td>{{x['apiBaseUrl']}}</td>
+                    </tr>
+            {% endif %}
+                    <tr>
+                        <td><b>API Documentation URL&nbsp;&nbsp;</b></td>
+                        <td>{{x['apiDocUrl']}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Deployment Status&nbsp;&nbsp;</b></td>
+                        <td>{{x['deploymentDetails']['location']}}</td>
+                    </tr>
+                    <!-- follow should be hidden. Only for reviewers-->
+            {% if reviewer %}
+                    <tr>
+                        <td><b>Version&nbsp;&nbsp;</b></td>
+                        <td>{{x['version']}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Health Check URL&nbsp;&nbsp;</b></td>
+                        <td>{{x['healthCheckUrl']}}</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Data Deletion Endpoint Details&nbsp;&nbsp;</b></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><b>Api Key&nbsp;&nbsp;</b></td>
+                                    <td>{{x['dataDeletionEndpointDetails']['apiKey']}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
+                                    <td>{{x['dataDeletionEndpointDetails']['deletionEndpoint']}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Description&nbsp;&nbsp;</b></td>
+                                    <td>{{x['dataDeletionEndpointDetails']['description']}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Deployment Details&nbsp;&nbsp;</b></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><b>Auth Method&nbsp;&nbsp;</b></td>
+                                    <td>{{x['deploymentDetails']['authMethod']}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Database Details&nbsp;&nbsp;</b></td>
+                                    <td>{{x['deploymentDetails']['databaseDetails']}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Environment Variables&nbsp;&nbsp;</b></td>
+                                    <td>{{x['deploymentDetails']['environmentVariables']}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Location&nbsp;&nbsp;</b></td>
+                                    <td>{{x['deploymentDetails']['location']}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+            {% endif %}
+                    <!-- extra line for the separation for the iteration -->
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </p>
+        {% endfor %}
     </div>
     {% endif %}
 
