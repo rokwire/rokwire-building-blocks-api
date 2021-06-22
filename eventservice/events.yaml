@@ -880,7 +880,7 @@ components:
           description: Longitude component of location.
         description:
           type: string
-          description: Description of the building from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
+          description: Description/address of the event location from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana. For a virtual event (`isVirtual` is `true`), this field will contain the virtual event URL.
         floor:
           type: integer
     Contact:
