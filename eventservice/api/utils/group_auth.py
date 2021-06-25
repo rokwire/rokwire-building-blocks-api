@@ -47,6 +47,8 @@ def get_group_memberships():
             raise Exception("failed to authorize with the groups building block %d" % req.status_code)
     return include_private_events, group_memberships
 
+
+# This util method checks if a user has admin permissions in a group event
 def check_group_event_admin_access(event, group_memberships):
     if event and event.get('createdByGroupId'):
         found = False
