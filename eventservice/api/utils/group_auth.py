@@ -46,3 +46,14 @@ def get_group_memberships():
         else:
             raise Exception("failed to authorize with the groups building block %d" % req.status_code)
     return include_private_events, group_memberships
+
+def check_group_event_admin_access(event, group_memberships):
+    if event and event.get('createdByGroupId'):
+        found = False
+        for group_member in group_memberships:
+            if event.get('createdByGroupId') == group_member.get('id') and group_member.get('role') == 'admin':
+                found = True
+                break
+        if not found:
+            return False
+    return True
