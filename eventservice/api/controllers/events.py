@@ -35,7 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-from utils.group_auth import get_group_ids, get_group_memberships
+from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -305,21 +305,9 @@ def put(event_id):
         __logger.exception(ex)
         abort(500)
 
-    if not group_memberships:
-        # check public group
-        if event and event.get('isGroupPrivate') is True:
-            abort(401)
-    else:
-        # get event and check the group id
-        if event:
-            found = False
-            for group_member in group_memberships:
-                if event.get('createdByGroupId') == group_member.get('id'):
-                    if group_member.get('role') == 'admin':
-                        found = True
-                        break
-            if not found:
-                abort(401)
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
 
     try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
