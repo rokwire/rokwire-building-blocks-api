@@ -24,12 +24,16 @@ import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
 import utils.mongoutils as mongoutils
 import utils.otherutils as otherutils
-import utils.otherutils as modelutils
+import utils.modelutils as modelutils
 import utils.adminutils as adminutils
 import utils.jsonutils as jsonutils
 
 from utils import query_params
 from models.contribution import Contribution
+from models.person import Person
+from models.organization import Organization
+from models.capabilities.capability import Capability
+from models.talents.talent import Talent
 from models.reviewer import Reviewer
 from pymongo import MongoClient
 
