@@ -305,20 +305,15 @@ def put(event_id):
         __logger.exception(ex)
         abort(500)
 
-    if not group_memberships:
-        # check public group
-        if event and event.get('isGroupPrivate') is True:
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if event and event.get('createdByGroupId'):
+        found = False
+        for group_member in group_memberships:
+            if event.get('createdByGroupId') == group_member.get('id') and group_member.get('role') == 'admin':
+                found = True
+                break
+        if not found:
             abort(401)
-    else:
-        # get event and check the group id
-        if event:
-            found = False
-            for group_member in group_memberships:
-                if event.get('createdByGroupId') == group_member.get('id') and group_member.get('role') == 'admin':
-                    found = True
-                    break
-            if not found:
-                abort(401)
 
     try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
