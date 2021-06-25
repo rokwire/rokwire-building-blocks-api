@@ -314,10 +314,9 @@ def put(event_id):
         if event:
             found = False
             for group_member in group_memberships:
-                if event.get('createdByGroupId') == group_member.get('id'):
-                    if group_member.get('role') == 'admin':
-                        found = True
-                        break
+                if event.get('createdByGroupId') == group_member.get('id') and group_member.get('role') == 'admin':
+                    found = True
+                    break
             if not found:
                 abort(401)
 
