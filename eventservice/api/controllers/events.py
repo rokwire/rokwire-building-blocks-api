@@ -35,7 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-from utils.group_auth import get_group_ids
+from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -290,8 +290,26 @@ def put(event_id):
         __logger.exception(ex)
         abort(400)
 
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    db = None
+    event = None
     try:
         db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
+    try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
