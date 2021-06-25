@@ -88,6 +88,88 @@
     </div>
     {% endif %}
 
+    {% if reviewer %}
+        {% if post.version %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Version</h4>
+            </div>
+            <p class="col-sm-9">{{post.version}}</p>
+        </div>
+        {% endif %}
+        {% if post.healthCheckUrl %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Health Check URL</h4>
+            </div>
+            <p class="col-sm-9">{{post.healthCheckUrl}}</p>
+        </div>
+        {% if post.dataDeletionEndpointDetails %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Data Deletion Endpoint Details</h4>
+            </div>
+            <p class="col-sm-9">
+                <table>
+                    {% if x['dataDeletionEndpointDetails']['apiKey'] %}
+                    <tr>
+                        <td><b>Api Key&nbsp;&nbsp;</b></td>
+                        <td>{{x['dataDeletionEndpointDetails']['apiKey']}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if x['dataDeletionEndpointDetails']['deletionEndpoint'] %}
+                    <tr>
+                        <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
+                        <td>{{x['dataDeletionEndpointDetails']['deletionEndpoint']}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if x['dataDeletionEndpointDetails']['description'] %}
+                    <tr>
+                        <td><b>Description&nbsp;&nbsp;</b></td>
+                        <td>{{x['dataDeletionEndpointDetails']['description']}}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </p>
+        </div>
+        {% end if %}
+        {% if post.deploymentDetails %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Deployment Details</h4>
+            </div>
+            <p class="col-sm-9">
+                <table>
+                    {% if x['deploymentDetails']['authMethod'] %}
+                    <tr>
+                        <td><b>Auth Method&nbsp;&nbsp;</b></td>
+                        <td>{{x['deploymentDetails']['authMethod']}}</td>
+                    </tr>
+                    {% end if %}
+                    {% if x['deploymentDetails']['databaseDetails'] %}
+                    <tr>
+                        <td><b>Database Details&nbsp;&nbsp;</b></td>
+                        <td>{{x['deploymentDetails']['databaseDetails']}}</td>
+                    </tr>
+                    {% end if %}
+                    {% if x['deploymentDetails']['environmentVariables'] %}
+                    <tr>
+                        <td><b>Environment Variables&nbsp;&nbsp;</b></td>
+                        <td>{{x['deploymentDetails']['environmentVariables']}}</td>
+                    </tr>
+                    {% end if %}
+                    {% if x['deploymentDetails']['location'] %}
+                    <tr>
+                        <td><b>Location&nbsp;&nbsp;</b></td>
+                        <td>{{x['deploymentDetails']['location']}}</td>
+                    </tr>
+                    {% end if %}
+                </table>
+            </p>
+        </div>
+        {% end if %}
+    {% end if %}
+
     <button class="button button3" onclick="get_url()">View Contribution</button>
 </div>
 
