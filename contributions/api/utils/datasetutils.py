@@ -15,10 +15,10 @@
 import copy
 
 from models.capabilities.contact import Contact
-from api.models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
-from api.models.capabilities.deploymentdetails import DeploymentDetails
-from api.models.capabilities.environmentvariable import EnvironmentVariable
-from api.models.talents.selfcertification import SelfCertification
+from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
+from models.capabilities.deploymentdetails import DeploymentDetails
+from models.capabilities.environmentvariable import EnvironmentVariable
+from models.talents.selfcertification import SelfCertification
 
 """
 update contribution dataset
