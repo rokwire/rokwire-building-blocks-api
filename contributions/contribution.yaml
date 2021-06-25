@@ -401,7 +401,6 @@ paths:
     post:
       summary: Create a new reviwer
       tags:
-        - Contributions
         - Admin
       security:
         - GitHubAuth: [ ]
@@ -431,7 +430,6 @@ paths:
     get:
       summary: Return the list of existing reviewers
       tags:
-        - Contributions
         - Admin
       security:
         - GitHubAuth: [ ]
@@ -454,7 +452,6 @@ paths:
     delete:
       summary: Delete a reviewer
       tags:
-        - Contributions
         - Admin
       security:
         - GitHubAuth: [ ]
