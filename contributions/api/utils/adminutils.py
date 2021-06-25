@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import contributions.api.controllers.configs as cfg
+import controllers.configs as cfg
 # import contributions.api.utils.mongoutils as mongoutils
 
 def check_if_superuser(login_id):

@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import contributions.api.utils.datasetutils as datasetutils
+import utils.datasetutils as datasetutils
 
 class Capability():
     def __init__(self, injson):

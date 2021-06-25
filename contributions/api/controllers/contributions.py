@@ -19,18 +19,18 @@ import logging
 from flask import wrappers, request
 from bson import ObjectId
 
-import contributions.api.controllers.configs as cfg
-import contributions.api.utils.datasetutils as datasetutils
-import contributions.api.utils.rest_handlers as rs_handlers
-import contributions.api.utils.mongoutils as mongoutils
-import contributions.api.utils.otherutils as otherutils
-import contributions.api.utils.otherutils as modelutils
-import contributions.api.utils.adminutils as adminutils
-import contributions.api.utils.jsonutils as jsonutils
+import controllers.configs as cfg
+import utils.datasetutils as datasetutils
+import utils.rest_handlers as rs_handlers
+import utils.mongoutils as mongoutils
+import utils.otherutils as otherutils
+import utils.otherutils as modelutils
+import utils.adminutils as adminutils
+import utils.jsonutils as jsonutils
 
-from contributions.api.utils import query_params
-from contributions.api.models.contribution import Contribution
-from contributions.api.models.reviewer import Reviewer
+from utils import query_params
+from models.contribution import Contribution
+from models.reviewer import Reviewer
 from pymongo import MongoClient
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)

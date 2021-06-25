@@ -14,15 +14,15 @@
 
 import json
 import logging
-import contributions.api.controllers.configs as cfg
+import controllers.configs as cfg
 
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
 from pymongo import MongoClient, ASCENDING
-from contributions.api.models.contribution import Contribution
-from contributions.api.utils import query_params
-from contributions.api.utils import jsonutils
+from models.contribution import Contribution
+from utils import query_params
+from utils import jsonutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]

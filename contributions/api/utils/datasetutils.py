@@ -14,11 +14,11 @@
 
 import copy
 
-from contributions.api.models.capabilities.contact import Contact
-from contributions.api.models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
-from contributions.api.models.capabilities.deploymentdetails import DeploymentDetails
-from contributions.api.models.capabilities.environmentvariable import EnvironmentVariable
-from contributions.api.models.talents.selfcertification import SelfCertification
+from models.capabilities.contact import Contact
+from api.models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
+from api.models.capabilities.deploymentdetails import DeploymentDetails
+from api.models.capabilities.environmentvariable import EnvironmentVariable
+from api.models.talents.selfcertification import SelfCertification
 
 """
 update contribution dataset
