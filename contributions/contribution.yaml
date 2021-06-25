@@ -12,7 +12,13 @@ servers:
   description: Development server
 tags:
 - name: Contributions
-  description: API endpoints for managing contributions in the form of Talents and Capabilities.
+  description: API endpoints for managing Contributions.
+- name: Talents
+  description: API endpoints for managing Talents.
+- name: Capabilities
+  description: API endpoints for managing Capabilities.
+- name: Admin
+  description: Admin endpoints for the Contributions Building Block.
 paths:
   /contributions:
     post:
@@ -396,6 +402,7 @@ paths:
       summary: Create a new reviwer
       tags:
         - Contributions
+        - Admin
       security:
         - GitHubAuth: [ ]
       requestBody:
@@ -425,6 +432,7 @@ paths:
       summary: Return the list of existing reviewers
       tags:
         - Contributions
+        - Admin
       security:
         - GitHubAuth: [ ]
       responses:
@@ -447,6 +455,7 @@ paths:
       summary: Delete a reviewer
       tags:
         - Contributions
+        - Admin
       security:
         - GitHubAuth: [ ]
       parameters:

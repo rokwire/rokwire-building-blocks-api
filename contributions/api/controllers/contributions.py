@@ -825,12 +825,15 @@ def ok_search():
     return rs_handlers.return_200("okay")
 
 def admin_reviewers_post(token_info):
-    # check if the logged in user is in the reviewers db
-    is_reviewer = adminutils.check_if_reviewer(token_info["login"])
+    # this is for adding reviewers to the database
+    # only superuser can add the reviewer
+    
+    # check if the logged in user is in the administrator
+    is_admin = adminutils.check_if_reviewer(token_info["login"])
 
-    if not is_reviewer:
+    if not is_admin:
         msg = {
-            "reason": "The logged in user should be a reviewer",
+            "reason": "The logged in user should be a superuser",
             "error": "Not Authorized: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
@@ -871,12 +874,12 @@ def admin_reviewers_post(token_info):
 def admin_reviewers_search(token_info):
     reviewers = []
 
-    # check if the logged in user is in the reviewers db
-    is_reviewer = adminutils.check_if_reviewer(token_info["login"])
+    # check if the logged in user is a administrator
+    is_admin = adminutils.check_if_reviewer(token_info["login"])
 
-    if not is_reviewer:
+    if not is_admin:
         msg = {
-            "reason": "The logged in user should be a reviewer",
+            "reason": "The logged-in user should be an administrator",
             "error": "Not Authorized: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
@@ -896,7 +899,7 @@ def admin_reviewers_delete(token_info, id):
 
     if not is_reviewer:
         msg = {
-            "reason": "The logged in user should be a reviewer",
+            "reason": "The logged0in user should be an administrator",
             "error": "Not Authorized: " + request.url,
         }
         msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
