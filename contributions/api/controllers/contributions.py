@@ -20,12 +20,13 @@ from flask import wrappers, request
 from bson import ObjectId
 
 import controllers.configs as cfg
-import utils.jsonutils as jsonutils
 import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
 import utils.mongoutils as mongoutils
 import utils.otherutils as otherutils
-import utils.otherutils as modelutils
+import utils.modelutils as modelutils
+import utils.adminutils as adminutils
+import utils.jsonutils as jsonutils
 
 from utils import query_params
 from models.contribution import Contribution
@@ -33,11 +34,13 @@ from models.person import Person
 from models.organization import Organization
 from models.capabilities.capability import Capability
 from models.talents.talent import Talent
+from models.reviewer import Reviewer
 from pymongo import MongoClient
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
+coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
 
 def post(token_info):
     is_new_install = True
@@ -824,3 +827,100 @@ def talents_get(token_info=None, id=None, talent_id=None):
 
 def ok_search():
     return rs_handlers.return_200("okay")
+
+def admin_reviewers_post(token_info):
+    # this is for adding reviewers to the database
+    # only superuser can add the reviewer
+    
+    # check if the logged in user is in the administrator
+    is_admin = adminutils.check_if_reviewer(token_info["login"])
+
+    if not is_admin:
+        msg = {
+            "reason": "The logged in user should be a superuser",
+            "error": "Not Authorized: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
+        logging.error("Contribution Admin GET " + json.dumps(msg_json))
+        return rs_handlers.not_authorized(msg_json)
+
+    in_json = request.get_json()
+    name = in_json["name"]
+    username = in_json["githubUsername"]
+
+    # check if the dataset is existing with given github username
+    dataset = mongoutils.get_dataset_from_field(coll_reviewer, "githubUsername", username)
+    if dataset is not None:
+        msg = {
+            "reason": "Github Username in input json already exists in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+    currenttime = datetime.datetime.now()
+    currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+    reviewer_dataset = Reviewer('')
+    reviewer_dataset, restjson = datasetutils.update_reviwer_dataset_from_json(reviewer_dataset, in_json)
+    reviewer_dataset.set_date_created(currenttime)
+
+    dataset, id = mongoutils.insert_dataset_to_mongodb(coll_reviewer, reviewer_dataset)
+
+    msg = "new reviewer has been added: " + str(username)
+    msg_json = jsonutils.create_log_json("Contribution Admin ", "POST", {"id": str(id)})
+    logging.info("Contribution Admin POST " + json.dumps(msg_json))
+
+    reviewer_id = str(dataset['_id'])
+
+    return rs_handlers.return_id(msg, 'id', reviewer_id)
+
+def admin_reviewers_search(token_info):
+    reviewers = []
+
+    # check if the logged in user is a administrator
+    is_admin = adminutils.check_if_reviewer(token_info["login"])
+
+    if not is_admin:
+        msg = {
+            "reason": "The logged-in user should be an administrator",
+            "error": "Not Authorized: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
+        logging.error("Contribution Admin GET " + json.dumps(msg_json))
+        return rs_handlers.not_authorized(msg_json)
+
+    list_reviewers = mongoutils.list_reviewers()
+
+    if list_reviewers is not None:
+        reviewers = list_reviewers
+
+    return reviewers
+
+def admin_reviewers_delete(token_info, id):
+    # check if the logged in user is in the reviewers db
+    is_reviewer = adminutils.check_if_reviewer(token_info["login"])
+
+    if not is_reviewer:
+        msg = {
+            "reason": "The logged0in user should be an administrator",
+            "error": "Not Authorized: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin ", "GET", msg)
+        logging.error("Contribution Admin GET " + json.dumps(msg_json))
+        return rs_handlers.not_authorized(msg_json)
+
+    resp = coll_reviewer.delete_one({cfg.FIELD_OBJECTID: ObjectId(id)})
+    if resp.deleted_count > 0:
+        msg = {"id": str(id)}
+        msg_json = jsonutils.create_log_json("Contribution Admin ", "DELETE", msg)
+        logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
+        return rs_handlers.entry_deleted('ID', id)
+    else:
+        msg = {
+            "reason": "There is no reviewer with given id: " + str(id),
+            "error": "Not Found: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin ", "DELETE", msg)
+        logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
+        return rs_handlers.not_found(msg_json)

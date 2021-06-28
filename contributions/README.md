@@ -1159,3 +1159,46 @@ API will return the information of the talents in contribution dataset
       }
    }
 ```
+
+### POST reviewer for creating contribution reviewer:
+The app will post with given information to the endpoint
+```
+curl -X POST -d `{
+                   "name":"John Doe",
+                   "githubUsername":"jdoe",
+                }' -H "Content-Type: application/json" http://localhost:5000/contributions/admin/reviewers
+```
+API will return newly created ID
+```
+    {
+    "id": "60c0f0ec830d3024040fad31",
+    "message": "new reviewer has been added: test"
+    }
+```
+### GET the list of existing reviewers:
+To get the list of the existing reviewers
+```
+curl http://localhost:5000/contributions/admin/reviewers
+```
+API will return the message
+```
+    [
+        {
+            "dateCreated": "2021/06/09T11:48:44",
+            "githubUsername": "jdoe",
+            "id": "60c0f0ec830d3024040fad31",
+            "name": "John Doe"
+        }
+    ]
+```
+### DELETE existing contribution dataset
+Deletion of the existing reviewer
+```
+curl -X DELETE http://localhost:5000/contributions/admin/reviewers/60c0f0ec830d3024040fad31
+```
+API will return the message
+```
+    {
+       "ID":"60c0f0ec830d3024040fad31"
+    }
+```

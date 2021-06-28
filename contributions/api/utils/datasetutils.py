@@ -290,7 +290,6 @@ def update_person_dataset_from_json(dataset, injson):
 
     return dataset, outjson
 
-
 """
 update organization dataset
 """
@@ -419,6 +418,24 @@ def update_talent_dataset_from_json(dataset, injson):
         except:
             pass
     except Exception as e:
+        pass
+
+    return dataset, outjson
+
+"""
+update reviewer dataset
+"""
+def update_reviwer_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_name(injson['name'])
+        del outjson['name']
+    except:
+        pass
+    try:
+        dataset.set_github_username(injson['githubUsername'])
+        del outjson['githubUsername']
+    except:
         pass
 
     return dataset, outjson
