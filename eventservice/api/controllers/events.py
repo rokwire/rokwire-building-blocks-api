@@ -366,22 +366,8 @@ def patch(event_id):
         __logger.exception(ex)
         abort(500)
 
-    if not group_memberships:
-        # check public group
-        if event and event.get('isGroupPrivate') is True:
-            abort(401)
-    else:
-        # get event and check the group id
-        if event:
-            found = False
-            for group_member in group_memberships:
-                if event.get('createdByGroupId') == group_member.get('id'):
-                    if group_member.get('role') == 'admin':
-                        found = True
-                        break
-            if not found:
-                abort(401)
-
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
 
     try:
         db = get_db()
