@@ -16,17 +16,15 @@ import json
 import traceback
 import requests
 
-import contributions.api.utils.mongoutils as mongoutils
-
 from flask import (
     Blueprint, render_template, request, session, redirect
 )
 from requests_oauthlib import OAuth2Session
 from .auth import login_required
-from contributions.catalog.controllers.config import Config as cfg
-from contributions.catalog.models.contribution_utilities import to_contribution
-from contributions.catalog.utils import jsonutil
-
+from controllers.config import Config as cfg
+from models.contribution_utilities import to_contribution
+from utils import jsonutil
+from utils import mongoutils
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
