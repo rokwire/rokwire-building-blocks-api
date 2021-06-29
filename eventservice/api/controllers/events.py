@@ -385,6 +385,26 @@ def delete(event_id):
 
     if not ObjectId.is_valid(event_id):
         abort(400)
+
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    db = None
+    event = None
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
     try:
         db = get_db()
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
