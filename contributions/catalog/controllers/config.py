@@ -1,43 +1,26 @@
 import os
 
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
+
 
 class Config(object):
+    OAUTHLIB_INSECURE_TRANSPORT = bool(os.getenv('OAUTHLIB_INSECURE_TRANSPORT', 'False') == 'True')
     CONTRIBUTION_BUILDING_BLOCK_URL = os.getenv("CONTRIBUTION_BUILDING_BLOCK_URL",
                                                 "http://localhost:5000/contributions")
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
     DB_COLLECTION = os.getenv("MONGO_DATABASE", "catalog")
-
     URL_PREFIX = os.getenv("URL_PREFIX", "")
-
     DBTYPE = 'mongoDB'
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
     ROKWIRE_API_KEY = os.getenv("ROKWIRE_API_KEY", "...")
-    DEBUG = True
-
-    client_id = os.getenv("CLIENT_ID", "NO ID")
-    client_secret = os.getenv("CLIENT_SECRET", "NO SECRET")
-    authorization_base_url = 'https://github.com/login/oauth/authorize'
-    token_url = 'https://github.com/login/oauth/access_token'
-
-    # # ADMINS defines a list usernames that serve as administrators
-    # ADMINS = []
-    #
-    # # OIDC CONFIG FOR LOGIN
-    # ISSUER_URL = os.getenv("ISSUER_URL", "https://shibboleth-test.techservices.illinois.edu")  # test instance
-    # SCOPES = os.getenv("SCOPES",
-    #                    ["openid", "profile", "email", "offline_access"])  # Other OIDC scopes can be added as needed.
-    # REDIRECT_URIS = os.getenv("REDIRECT_URIS", "")
-    # CLIENT_ID = os.getenv("CLIENT_ID", "")
-    # CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
-    #
-    # # LOGIN_MODE SELECTED
-    # LOGIN_MODE = os.getenv("LOGIN_MODE", "shibboleth")  # TODO: Add an option "local" for local login.
-    #
-    # # ROLE OF USERS
-    # ROLE = {
-    # }
-    #
-    # # SESSION EXPIRATION TIME
-    # PERMANENT_SESSION_LIFETIME = timedelta(hours=os.getenv("SESSION_LIFETIME_IN_HOURS", 1))
+    DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
+    GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "NO ID")
+    GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "NO SECRET")
+    AUTHORIZATION_BASE_URL = os.getenv("AUTHORIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
+    TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
+    CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')

@@ -5,69 +5,20 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
-
+    <!--    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">-->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
+    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body>
-
 
 <style>
-
-    .navbar {
-        overflow: hidden;
-        background-color: #2a4b45;
-        position: fixed;
-        top: 0;
-        width: 100%;
-    }
-
-    .navbar a {
-        float: left;
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-
-    .navbar a:hover {
-        background: #4c4c4c;
-        color: white;
-    }
-
-    .navbar a.act {
-        background-color: #88aeaf;
-        color: white;
-    }
-
-    .navbar-right {
-        float: right;
-        margin-right: 25px;
-    }
-
-    .main {
-        padding: 30px;
-        margin-top: 90px;
-        height: 1500px;
-    }
-
     /* Center website */
     .main {
-        max-width: 1000px;
         margin: auto;
-    }
-
-
-    /* Center website */
-    .main {
+        position: relative;
         max-width: 1000px;
-        margin: auto;
-    }
-
-    h1 {
-        font-size: 50px;
-        word-break: break-all;
     }
 
     .row {
@@ -94,50 +45,10 @@
         clear: both;
     }
 
-    /* the card feature */
-    .content {
-        background-color: #eaefee;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-
-        img:hover {
-            opacity: 0.5;
-        }
-
-    }
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    p {
-
-        font-family: 'Noto Sans KR', sans-serif;
-        font-weight: 100;
-        letter-spacing: -0.25px;
-        line-height: 1.25;
-        font-size: 16px;
-        word-break: break-all;
-        -webkit-animation-name: p-show; /* Safari 4.0 - 8.0 */
-        -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
-        animation-name: p-show;
-        animation-duration: 1.5s;
-    }
-
-    /* The "show" class is added to the filtered elements */
-    .show {
-        display: block;
-    }
-
     /* Style the buttons */
     .btn {
-        margin-top: 12px;
+        position: relative;
+        margin-top: 20px;
         border: none;
         outline: none;
         padding: 12px 16px;
@@ -155,123 +66,148 @@
         color: white;
     }
 
-    .navbar input[type=text] {
-        float: right;
-        padding: 6px;
-        border: none;
-        font-size: 17px;
-    }
-
-    .navbar .search-container button {
-        float: right;
-        padding: 6px 10px;
-        margin-top: 8px;
-        margin-right: 16px;
-        background: #ddd;
-        font-size: 17px;
-        border: none;
+    .i {
         cursor: pointer;
-        display: none;
     }
 
-    .navbar .search-container button:hover {
-        background: #ccc;
-    }
 
-    @media screen and (max-width: 600px) {
-        .navbar .search-container {
-            float: none;
-        }
-
-        .navbar a, .navbar input[type=text], .navbar .search-container button {
-            float: none;
-            display: block;
-            text-align: left;
-            width: 100%;
-            margin: 0;
-            padding: 14px;
-        }
-
-        .navbar input[type=text] {
-            border: 1px solid #ccc;
-        }
+    h1 {
+        font-size: 50px;
+        word-break: break-all;
     }
 
     #header {
+        margin: auto;
+        position: relative;
+        max-width: 1000px;
+
+        left: auto;
+        right: auto;
         border: none;
         /*padding: 30px;*/
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
         background-repeat: no-repeat;
-        height: 20%;
+        /*height: 30%;*/
+        /*width: 52%;*/
+        height: 250px;
+        width: 1000px;
         background-position: center;
         background-size: auto;
-        /*position: fixed;*/
     }
 
     #title {
+        margin: auto;
         text-align: center;
         position: relative;
-        top: 25%;
-        /*left: 50%;*/
+        top: 50%;
+        left: 15%;
         transform: translate(-25%, -25%);
         color: white;
     }
 
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
-    body {
-        background: #f2f2f2;
-        font-family: 'Open Sans', sans-serif;
-    }
-
     .search {
         width: 100%;
         position: relative;
         display: flex;
     }
 
-
-    /*Resize the wrap to see the search bar change!*/
-    .wrap {
-        width: 30%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+        background-color: #2a4b45;
     }
 
-    body {
-        padding: 20px 20px;
+    .dropdown-content {
+        display: none;
+        position: relative;
+        background-color: #2a4b45;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        /*z-index: 1;*/
+        cursor: pointer;
     }
 
+    .dropdown-content a {
+        float: right;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        padding-right: 50px;
+        padding-left: 50px;
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f4f7f5;
+        border: grey;
+        border-radius: 5%;
+    }
+
+    .show {
+        display: block;
+    }
+
+    /* the card feature */
+    .content {
+        background-color: #f7f3f3;
+        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
+        height: 160px;
+        box-shadow: 0 4px 8px 0 rgba(98, 66, 66, 0.2);
+        padding: 10px;
+        transition-duration: 0.2s;
+        border: none;
+        border-radius: 4px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+    }
+
+    .content:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        text-decoration: #8fd19e;
+    }
 
 </style>
 
-<div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Contributions Catalog</a>
-    <a href="{{ url_for('contribute.create') }}">Contribute</a>
-
-    <div class="navbar-right" id="nav_greeting">
-        <a >Hello, {{ user }}!</a>
+<body onload=start()>
+<div class="topnav" id="myTopnav">
+    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+    <div id="submit_contribution" style="display: none;">
+        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
     </div>
 
 
+    <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
+        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
+    </div>
+
+    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
+        <meta id="nav-user-data" user="{{user}}">
+        <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+    </div>
 </div>
 
+<div class="dropdown-content" id="myDropdown" style="display: none">
+    <a href="{{ url_for('contribute.logout') }}">Logout</a>
+</div>
+
+<div id="header">
+    <h2 id="title"> Contributions Catalog/Packager </h2>
+</div>
 <!-- MAIN (Center website) -->
 <div class="main">
-    <div id="header">
-        <h2 id="title"> Contributions Catalog/Packager </h2>
-    </div>
+
 
     <div id="myBtnContainer">
-        <button class="btn active" onclick="filterSelection('all')"> Show All </button>
-        <button class="btn" onclick="filterSelection('capability')"> Capabilities </button>
-        <button class="btn" onclick="filterSelection('talent')"> Talents </button>
+
+        <button class="btn active" id="all_btn" onclick="filterSelection('all')"> Show All</button>
+        <button class="btn" id="capability_btn" onclick="filterSelection('capability')"> Capabilities</button>
+        <button class="btn" id="talent_btn" onclick="filterSelection('talent')"> Talents</button>
         <div class="form-group pull-right">
             <form action="http://localhost:5050/contribute/results" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
-                <!--            <input id="searchbar" name="search" placeholder="Search by id..." type="text">-->
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">
             </form>
         </div>
@@ -279,26 +215,31 @@
         <div class="row" id="grid-view">
             <!-- Template for cards -->
             <script id="capability_template" type="text/template">
-                <div class="column capability">
-
-                    <div class="content">
-                        <!--                    <img class="capability_icon" src="" style="width:100%">-->
-                        <h4 class="capability_name"></h4>
-                        <p class="capability_description"></p>
-                        <p class="contributors"></p>
-                        <!--                    <span class="label label-default">App Config</span>-->
+                <a href="" class="card-link">
+                    <div class="column capability">
+                        <div class="content">
+                            <h4 class="capability_name"></h4>
+                            <p class="capability_description"></p>
+                            <p class="contributors"></p>
+                            <a class="link"> View Contribution >>> </a>
+                            <!--                    <span class="label label-default">App Config</span>-->
+                        </div>
                     </div>
-                </div>
+                </a>
             </script>
+
             <script id="talent_template" type="text/template">
-                <div class="column talent">
-                    <div class="content">
-                        <h4 class="talent_name"></h4>
-                        <p class="talent_description"></p>
-                        <p class="contributors"></p>
-                        <!--                <span class="label label-default">App Config</span>-->
+                <a href="" class="card-link">
+                    <div class="column talent">
+                        <div class="content">
+                            <h4 class="talent_name"></h4>
+                            <p class="talent_description"></p>
+                            <p class="contributors"></p>
+                            <a class="link" > View Contribution >>> </a>
+                            <!--                <span class="label label-default">App Config</span>-->
+                        </div>
                     </div>
-                </div>
+                </a>
             </script>
             <!-- END GRID -->
         </div>
@@ -307,60 +248,81 @@
     </div>
 
     <script>
-        var all_capability = [];
-        var all_talents = [];
-        var get_talent_url = "http://localhost:5000/contributions/talents";
-        var get_cap_url = "http://localhost:5000/contributions/capabilities";
 
-        $(document).ready(function(){
-            var settings = {
-                      'cache': false,
-                      'dataType': "jsonp",
-                      "async": true,
-                      "crossDomain": true,
-                      "url": get_cap_url,
-                      "method": "GET",
-                      "headers": {
-                          "accept": "application/json",
-                          "Access-Control-Allow-Origin":"*"
-                      }
-                  }
+        function start() {
+            var user_name = "{{user}}";
+            // var user_name = $('#nav-user-data').data("user");
+            //console.log(user_name)
+            // alert(user_name)
+            var nav_login = document.getElementById('nav_login');
+            var nav_greet = document.getElementById('nav_greeting')
+            var nav_user = document.getElementById('user_profile')
+            var submit_btn = document.getElementById('submit_contribution')
+            if (user_name.length > 0) {
+                nav_login.style.display = 'none';
+                nav_greet.style.display = 'block';
+                nav_user.style.display = 'block';
+                submit_btn.style.display = 'block';
+            } else {
+                nav_login.style.display = 'block';
+                nav_greet.style.display = 'none';
+                nav_user.style.display = 'block';
+                submit_btn.style.display = 'none';
+            }
+            ajax('GET', get_cap_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+                    all_capability = items;
+                    append_capability(all_capability)
+                    filterSelection('all');
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_capability = response;
-              });
+                },
+                function () {
+                    console.log("error occured - capability");
+                });
 
-            var settings = {
-                  'cache': false,
-                  'dataType': "jsonp",
-                  "async": true,
-                  "crossDomain": true,
-                  "url": get_talent_url,
-                  "method": "GET",
-                  "headers": {
-                      "accept": "application/json",
-                      "Access-Control-Allow-Origin":"*"
-                  }
-              }
+            ajax('GET', get_talent_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
 
-              $.ajax(settings).done(function (response) {
-                  console.log(response);
-                  all_talents = response
-              });
+                    all_talents = items;
+                    append_talent(all_talents)
+                    filterSelection('all');
+                },
+                function () {
+                    console.log("error occured talent");
+                });
 
-
-            append_capability(all_capability);
-            append_talent(all_talents);
-            filterSelection("all");
-            // append_capability(sample_contribution.capabilities);
-            // append_talent(sample_contribution.talents);
-        });
-
-        function parse_data(data) {
-            var cap_list = [];
-            var tal_list = [];
+            window.onload = append_capability(all_capability);
+            window.onload = append_talent(all_talents);
         }
+
+        var user_icon = document.getElementById('user_profile');
+        user_icon.addEventListener('click', function () {
+            if (user_icon.style.display === 'block') {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+        })
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        var all_capability = [];
+        var all_talents = []
+
+        var get_talent_url = "http://" + "localhost:5000/contributions/talents";
+        var get_cap_url = "http://" + "localhost:5000/contributions/capabilities";
+        var get_contribution_url = "http://" + "localhost:5000/contributions";
+
+
 
         function get_contributors(data) {
             return "abc@abc.com" + " NCSA"
@@ -371,7 +333,6 @@
             var s = $("#capability_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            console.log(s);
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
@@ -379,19 +340,28 @@
 
                 //Clone Template
                 var newItem = $(template).clone();
-                console.log(newItem)
+                var contributionid = object.contributionId;
+                var id = object.id;
 
+
+                console.log(contributionid, id)
                 //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capabilities/" + id)
+
                 $(newItem).find(".capability_name").html(object.name);
                 $(newItem).find(".capability_description").html(object.description);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                console.log(newItem)
-                //Append it
+                // $(newItem).click(function(){
+                //     // $(newItem).load("http://localhost:5050/contribute/details/" + contributionid)
+                //     $(newItem).attr('href', "http://localhost:5050/contribute/details/" + contributionid )
+                //
+                // })
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
                 $("#grid-view").append(newItem);
+
+                // newItem.onclick = function (){
+                //     console.log('haha')
+                // }
 
             });
         }
@@ -401,26 +371,25 @@
             var s = $("#talent_template")[0].innerHTML.trim();
             var holder = document.createElement('div');
             holder.innerHTML = s;
-            console.log(s);
+
             var template = holder.childNodes;
 
             var member = document.getElementById('grid-view');
             data.forEach(function (object) {
-
+                var contributionid = object.contributionId;
+                var id = object.id;
+                console.log(contributionid, id)
                 //Clone Template
                 var newItem = $(template).clone();
-                console.log(newItem)
 
                 //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talents/" + id)
+
                 $(newItem).find(".talent_name").html(object.name);
                 $(newItem).find(".talent_description").html(object.shortDescription);
                 $(newItem).find(".contributors").html(get_contributors(data));
-                // $(newItem).find(".memurl").attr("href", object.memurl);
-                // var img = $(newItem).find(".thumb")
-                // $(img).attr("src", object.memimgsrc).attr("alt", $(img).attr("alt") + object.membername + " " + "etc")
-                //   .attr("title", $(img).attr("title") + object.membername + " finish this off");
-                console.log(newItem);
-                //Append it
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
+
                 $("#grid-view").append(newItem);
 
             });
@@ -428,7 +397,9 @@
 
         function ajax(method, url, data, okcallback, errorcallback) {
             var xhr = new XMLHttpRequest();
+
             xhr.open(method, url, true);
+            xhr.setRequestHeader("Authorization", 'bearer ' + '{{token}}');
             xhr.onload = function () {
                 if (xhr.status == 200) {
                     okcallback(xhr.responseText);
@@ -440,33 +411,17 @@
             if (data == null) {
                 xhr.send();
             } else {
+
                 xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
                 xhr.send(data);
             }
         }
 
-        function get_data() {
-            var url = "http://localhost:5000/contributions"
-            var req = JSON.stringify({})
-
-            ajax('GET', url, data,
-                function (res) {
-                    var items = JSON.parse(res);
-                    if (!items || items.length == 0) {
-                        console.log("no data");
-                    } else {
-
-                    }
-                },
-                function () {
-                    console.log("error occured");
-                });
-        }
 
         function filterSelection(c) {
             var x, i;
             x = document.getElementsByClassName("column");
-            if (c == "all") c = "";
+            if (c === "all") c = "";
             for (i = 0; i < x.length; i++) {
                 w3RemoveClass(x[i], "show");
                 if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
@@ -496,8 +451,6 @@
             element.className = arr1.join(" ");
         }
 
-
-
         // Add active class to the current button (highlight it)
         var btnContainer = document.getElementById("myBtnContainer");
         var btns = btnContainer.getElementsByClassName("btn");
@@ -508,14 +461,6 @@
                 this.className += " active";
             });
         }
-
-        // document.getElementById("searchbar").addEventListener("keyup", function (event) {
-        //     if (event.keyCode === 13) {
-        //         event.preventDefault();
-        //         document.getElementById("myBtn").click();
-        //     }}
-        // );
-
 
     </script>
 

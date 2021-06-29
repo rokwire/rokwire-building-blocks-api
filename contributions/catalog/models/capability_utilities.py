@@ -1,5 +1,8 @@
+import uuid
+
 def init_capability():
-    d = {'name': '',
+    d = {'id': '',
+         'name': '',
          'description': '',
          'icon': None,
          'apiDocUrl': None,
@@ -36,6 +39,8 @@ def to_capability(d):
             capability_list.append(init_capability())
 
     for i, capability in enumerate(capability_list):
+        cap_id = str(uuid.uuid4())
+        capability['id'] = cap_id
         env_k, env_v = d['environmentVariables_key'], d['environmentVariables_value']
         for k, v in list(zip(env_k, env_v)):
             capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})

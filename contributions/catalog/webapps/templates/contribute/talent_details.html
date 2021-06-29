@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
+    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Talent Details</title>
+
+</head>
+
+<body>
+
+<div class="header">
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
+        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
+            <meta id="nav-user-data">
+            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+        </div>
+
+
+    </div>
+    <div class="dropdown-content" id="myDropdown" style="display: none">
+        <a href="{{ url_for('contribute.logout') }}">Logout</a>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <h1>Talent Details</h1>
+
+    <hr class="divider"/>
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Talent Name </h4>
+        </div>
+        <p class="col-sm-9">{{post.name}}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Talent description </h4>
+        </div>
+        <p class="col-sm-9">{{post.shortDescription}}</p>
+    </div>
+
+    {% if post.icon %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Icon</h4>
+        </div>
+        <p class="col-sm-9">{{post.icon}}</p>
+    </div>
+    {% endif %}
+
+    {% if post.requiredCapabilities %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Required Capabilities</h4>
+        </div>
+        <p class="col-sm-9">{{post.requiredCapabilities}}</p>
+    </div>
+    {% endif %}
+
+    {% if post.requiredBuildingBlocks %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Required Building Blocks</h4>
+        </div>
+        <p class="col-sm-9">{{post.requiredBuildingBlocks}}</p>
+    </div>
+    {% endif %}
+
+    {% if post.minUserPrivacyLevel %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Minimum user privacy level</h4>
+        </div>
+        <p class="col-sm-9">{{post.minUserPrivacyLevel}}</p>
+    </div>
+    {% endif %}
+
+    {% if post.minEndUserRoles %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Minimum set of end-user roles</h4>
+        </div>
+        <p class="col-sm-9">{{post.minEndUserRoles}}</p>
+    </div>
+    {% endif %}
+
+    <button class="button button3" onclick="get_url()">View Contribution</button>
+</div>
+
+
+<div class="action">
+
+</div>
+
+</body>
+<script>
+    var post = JSON.parse('{{ post | tojson | safe}}');
+    function get_url(){
+        var cur_url = window.location.href.split('/');
+        var res = '';
+        for (let i = 0; i < cur_url.length-1; i++){
+            res += cur_url[i];
+            if (cur_url[i+1] == 'talents' || cur_url[i+1] == 'capabilities'){
+                break;
+            }
+            res += '/';
+        }
+        window.location.href = res;
+    }
+</script>
+</html>

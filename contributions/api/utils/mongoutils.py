@@ -21,6 +21,8 @@ from flask import make_response, json
 from bson.json_util import dumps
 from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
+from utils import query_params
+from utils import jsonutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -29,14 +31,14 @@ coll_contribution.create_index([("name", ASCENDING)], background=True)
 coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
 coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
 
-"""
-get query output json from query using search arguments
-"""
-def get_result(db_collection, query):
-    if not query:
-        return None
+coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
+coll_reviewer.create_index([("name", ASCENDING)], background=True)
 
-    db_data = db_collection.find(query, {'_id': 0})
+"""
+get json of all the contributions list
+"""
+def list_contributions(db_collection):
+    db_data = db_collection.find({}, {'_id': False})
     data_list = list(db_data)
 
     if len(data_list) > 0:
@@ -45,6 +47,61 @@ def get_result(db_collection, query):
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+"""
+get json of all the talent list
+"""
+def list_talents(db_collection):
+    db_data = db_collection.find({}, {'talents':1, '_id':0})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+"""
+get json of all the capabilities list
+"""
+def list_capabilities(db_collection):
+    db_data = db_collection.find({}, {'capabilities':1, '_id':0})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        if len(data_list) == 1: # remove blacket in the first and last character location
+            data_dump = data_dump[:-1]
+            data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+
+        return json_load
+    else:
+        return None
+
+def get_result(db_collection, query):
+    if not query:
+        # db_data = db_collection.find({}, {'_id': 0})
+        db_data = db_collection.find({})
+    else:
+        # db_data = db_collection.find(query, {'_id': 0})
+        db_data = db_collection.find(query)
+
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
@@ -73,8 +130,8 @@ def get_http_output_query_result_using_field_string(collection, fld, query_str):
 """
 query using field name and querystring and convert result to object
 """
-def get_contribution_dataset_from_field(collection, fld, query_str):
-    db_data = query_dataset(collection, fld, query_str)
+def get_contribution_dataset_from_field_no_status(collection, fld, query_str):
+    db_data = query_dataset_no_status(collection, fld, query_str)
     data_list = list(db_data)
     if len(data_list) == 1:
         data_dump = dumps(data_list)
@@ -104,17 +161,18 @@ def get_contribution_dataset_from_field(collection, fld, query_str):
 """
 query using objectid and convert result to object
 """
-def get_contribution_dataset_from_objectid(collection, objectid):
+def get_contribution_dataset_from_objectid_no_status(collection, objectid):
     is_object_id = check_if_objectid(objectid)
     if is_object_id:
         id = ObjectId(objectid)
-        db_data = query_dataset_by_objectid(collection, id)
+        db_data = query_dataset_by_objectid_no_status(collection, id)
         data_list = list(db_data)
-        if len(data_list) > 0:
+        if len(data_list) == 1:
             data_dump = dumps(data_list)
             data_dump = data_dump[:-1]
             data_dump = data_dump[1:]
             json_load = json.loads(data_dump)
+            json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
             dataset = Contribution(json_load)
 
             return dataset
@@ -122,6 +180,65 @@ def get_contribution_dataset_from_objectid(collection, objectid):
             return None
     else:
         return None
+
+"""
+query using objectid and convert result to object
+"""
+def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, is_login=False):
+    is_object_id = check_if_objectid(objectid)
+    status_code = '200'
+
+    if is_object_id:
+        id = ObjectId(objectid)
+        # check the data first without status, if there is no result, it is 404
+        db_data = query_dataset_by_objectid_no_status(collection, id)
+        data_list = list(db_data)
+
+        # no result is only 404
+        if len(data_list) == 0:
+            status_code = '404'
+            return None, status_code
+
+        # multiple result is only 400
+        if len(data_list) > 1:
+            status_code = '400'
+            return None, status_code
+
+        # check the data status, if the status is not published, it is 401
+        tmp_dataset = data_list[0]
+        status = None
+        is_admin = False
+        if "status" in tmp_dataset:
+            status = tmp_dataset["status"]
+        if (is_login):
+            if "contributionAdmins" in tmp_dataset:
+                contribution_admins = tmp_dataset["contributionAdmins"]
+                if (login_id in contribution_admins):
+                    is_admin = True
+
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
+        dataset = Contribution(json_load)
+
+        if (is_login):
+            # check if the user is in contributionAdmin group
+            if (is_admin):
+                return dataset, status_code
+            else:
+                status_code = '401'
+                return None, status_code
+        else:
+            if status != "Published":
+                status_code = '401'
+                return None, status_code
+            else:
+                return dataset, status_code
+    else:
+        status_code = '400'
+        return None, status_code
 
 """
 convert mongodb query using field result to json
@@ -134,6 +251,7 @@ def get_query_json_from_field(collection, fld, query_str):
         data_dump = data_dump[:-1]
         data_dump = data_dump[1:]
         json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
 
         return json_load
     else:
@@ -154,14 +272,37 @@ def check_if_objectid(query_str):
 """
 query dataset using object id
 """
-def query_dataset_by_objectid(collection, objectid):
+def query_dataset_by_objectid(collection, objectid, login_id=None, is_login=False):
+    query = dict()
+    query = query_params.format_query_status_login(query, login_id, is_login)
+
+    query_parts = [{'_id': objectid}]
+    query['$and'] = query_parts
+
+    return collection.find(query)
+
+"""
+query dataset using object id
+"""
+def query_dataset_by_objectid_no_status(collection, objectid):
     return collection.find({'_id': objectid})
 
 """
 qyery dataset using field
 """
-def query_dataset(db_collection, fld, query_str):
-    return db_collection.find({fld: query_str}, {'_id': False})
+def query_dataset(db_collection, fld, query_str, login_id=None, is_login=False):
+    query = dict()
+    query = query_params.format_query_status_login(query, login_id, is_login)
+
+    query_parts = [{fld: query_str}]
+    query['$and'] = query_parts
+    return db_collection.find(query)
+
+"""
+qyery dataset using field
+"""
+def query_dataset_no_status(db_collection, fld, query_str):
+    return db_collection.find({fld: query_str})
 
 """
 construct json from mongo query
@@ -218,6 +359,53 @@ def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson)
         result = collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
 
     return result.acknowledged, dataset
+
+"""
+get json of all the reviewers list
+"""
+def list_reviewers():
+    db_data = coll_reviewer.find({})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+
+        return json_load
+    else:
+        return None
+
+"""
+query using query field and querystring and convert result to object
+"""
+def get_dataset_from_field(collection, fld, query_str):
+    db_data = query_dataset_no_status(collection, fld, query_str)
+    data_list = list(db_data)
+    if len(data_list) == 1:
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        dataset = Contribution(json_load)
+
+        try:
+            dataset.set_name(json_load[cfg.FIELD_NAME])
+        except:
+            pass
+
+        return dataset
+
+    elif len(data_list) > 1:
+        #TODO create a method to handle this
+
+        return data_list
+
+    else:
+        msg = 'there is no output query result or multiple query result'
+        logging.debug(msg)
+
+        return None
 
 """
 index capability collection

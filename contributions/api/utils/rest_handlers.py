@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 import flask
-from flask import flash, redirect, jsonify, make_response, request
+from flask import jsonify, make_response, request
 
 
 app = flask.Flask(__name__)
@@ -42,6 +42,18 @@ def entry_deleted(id_type, id):
 
     return make_response(resp)
 
+"""
+make response for 200
+"""
+def return_200(msg):
+    message = {
+        'message': msg,
+    }
+    resp = jsonify(message)
+    resp.status_code = 200
+
+    return make_response(resp)
+
 @app.errorhandler(400)
 def bad_request(error=None):
     if error is None:
@@ -50,6 +62,17 @@ def bad_request(error=None):
         }
     resp = jsonify(error)
     resp.status_code = 400
+
+    return resp
+
+@app.errorhandler(401)
+def not_authorized(error=None):
+    if error is None:
+        error = {
+            'error': 'Not Authorized: ' + request.url,
+        }
+    resp = jsonify(error)
+    resp.status_code = 401
 
     return resp
 

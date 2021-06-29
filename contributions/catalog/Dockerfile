@@ -16,10 +16,14 @@ RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
 
 WORKDIR /usr/src/app/catalog
 
-ENV MONGO_CONTRIBUTION_URL="" \
-    API_LOC="." \
-    FLASK_APP="catalog_rest_service" \
-    FLASK_ENV="development" \
-    CATALOG_URL_PREFIX=""
+ENV CONTRIBUTION_BUILDING_BLOCK_URL='' \
+    DB_NAME='' \
+    GITHUB_CLIENT_ID='' \
+    GITHUB_CLIENT_SECRET='' \
+    AUTHORIZATION_BASE_URL='https://github.com/login/oauth/authorize' \
+    TOKEN_URL='https://github.com/login/oauth/access_token' \
+    AUTHENTICATION_TOKEN='' \
+    URL_PREFIX='' \
+    DEBUG='False'
 
 CMD ["gunicorn", "catalog_rest_service:app", "--config", "/usr/src/app/catalog/gunicorn.config.py"]

@@ -12,41 +12,46 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from bson import ObjectId
 
-def format_query_contribution(args, query):
+def format_query_status_login(query, login, is_login):
+    if (is_login):
+        query_parts = [{'status': 'Published'}, {"contributionAdmins": login}]
+        query['$or'] = query_parts
+    else:
+        query = {'status': 'Published'}
+
+    return query
+
+def format_query_contribution(name, query):
     query_parts = []
 
-    if args.get('id'):
-        # make sure it has been changed to eventIds from eventid since the db field name is eventIds
-        query_parts.append({'_id': {'$eq': ObjectId(args.get('id'))}})
-    if args.get('name'):
-        query_parts.append({'name': {'$eq': args.get('name')}})
+    if name is not None:
+        query_parts.append({'name': name})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
 
-def format_query_capability(args, query):
+
+def format_query_capability(name, query):
     query_parts = []
 
-    if args.get('name'):
-        query_parts.append({'capabilities.name': {'$eq': args.get('name')}})
+    if name is not None:
+        query_parts.append({'capabilities.name': name})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
 
-def format_query_talent(args, query):
+def format_query_talent(name, query):
     query_parts = []
 
-    if args.get('name'):
-        query_parts.append({'talents.name': {'$eq': args.get('name')}})
+    if name is not None:
+        query_parts.append({'talents.name': name})
 
     if query_parts:
         query['$and'] = query_parts
 
     return query
-

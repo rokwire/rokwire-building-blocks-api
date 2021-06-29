@@ -16,6 +16,7 @@ import utils.datasetutils as datasetutils
 
 class Capability():
     def __init__(self, injson):
+        self.id = None
         self.name = None
         self.description = None
         self.isOpenSource = None
@@ -24,13 +25,18 @@ class Capability():
         self.apiBaseUrl = None
         self.version = None
         self.healthCheckUrl = None
-        self.status = None
         self.dataDeletionEndpointDetails = None
         self.contacts = None
         # self.creationDate = None
         # self.lastModifiedDate = None
 
         self, restjson = datasetutils.update_capability_dataset_from_json(self, injson)
+
+    def set_id(self, id):
+        self.id = id
+
+    def get_id(self):
+        return self.id
 
     def set_name(self, name):
         self.name = name
@@ -97,12 +103,6 @@ class Capability():
 
     def get_auth_method(self):
         return self.authMethod
-
-    def set_status(self, status):
-        self.status = status
-
-    def get_status(self):
-        return self.status
 
     def set_data_deletion_endpoint_details(self, dataDeletionEndpointDetails):
         self.dataDeletionEndpointDetails = dataDeletionEndpointDetails
