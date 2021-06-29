@@ -35,7 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-from utils.group_auth import get_group_ids
+from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -202,6 +202,14 @@ def get(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
 
+    group_ids = list()
+    include_private_events = False
+    try:
+        include_private_events, group_ids = get_group_ids()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
     try:
         result, result_found = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
@@ -210,6 +218,15 @@ def get(event_id):
 
     if not result_found:
         abort(404)
+    json_result = json.loads(result)
+    if include_private_events:
+        # check the group id
+        if result and json_result.get('createdByGroupId') not in group_ids:
+            abort(401)
+    else:
+        # check public group
+        if result and json_result.get('isGroupPrivate') is True:
+            abort(401)
 
     __logger.debug("[Get Event]: event id %s", event_id)
     return current_app.response_class(result, mimetype='application/json')
@@ -273,8 +290,26 @@ def put(event_id):
         __logger.exception(ex)
         abort(400)
 
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    db = None
+    event = None
     try:
         db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
+    try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
@@ -315,6 +350,25 @@ def patch(event_id):
         __logger.exception(ex)
         abort(405)
 
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    db = None
+    event = None
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
     try:
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
@@ -331,6 +385,26 @@ def delete(event_id):
 
     if not ObjectId.is_valid(event_id):
         abort(400)
+
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    db = None
+    event = None
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
     try:
         db = get_db()
         status = db['events'].delete_one({'_id': ObjectId(event_id)})

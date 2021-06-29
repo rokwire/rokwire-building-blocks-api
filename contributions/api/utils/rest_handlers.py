@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 import flask
-from flask import flash, redirect, jsonify, make_response, request
+from flask import jsonify, make_response, request
 
 
 app = flask.Flask(__name__)

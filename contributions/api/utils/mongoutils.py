@@ -31,6 +31,9 @@ coll_contribution.create_index([("name", ASCENDING)], background=True)
 coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
 coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
 
+coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
+coll_reviewer.create_index([("name", ASCENDING)], background=True)
+
 """
 get json of all the contributions list
 """
@@ -356,6 +359,53 @@ def update_json_with_no_schema(collection, fld, query_str, datasetobj, restjson)
         result = collection.update_one({fld: query_str}, {"$set": tmpDict}, upsert=False)
 
     return result.acknowledged, dataset
+
+"""
+get json of all the reviewers list
+"""
+def list_reviewers():
+    db_data = coll_reviewer.find({})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+
+        return json_load
+    else:
+        return None
+
+"""
+query using query field and querystring and convert result to object
+"""
+def get_dataset_from_field(collection, fld, query_str):
+    db_data = query_dataset_no_status(collection, fld, query_str)
+    data_list = list(db_data)
+    if len(data_list) == 1:
+        data_dump = dumps(data_list)
+        data_dump = data_dump[:-1]
+        data_dump = data_dump[1:]
+        json_load = json.loads(data_dump)
+        dataset = Contribution(json_load)
+
+        try:
+            dataset.set_name(json_load[cfg.FIELD_NAME])
+        except:
+            pass
+
+        return dataset
+
+    elif len(data_list) > 1:
+        #TODO create a method to handle this
+
+        return data_list
+
+    else:
+        msg = 'there is no output query result or multiple query result'
+        logging.debug(msg)
+
+        return None
 
 """
 index capability collection
