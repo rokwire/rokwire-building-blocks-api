@@ -45,6 +45,7 @@ def get_group_memberships():
                 group_memberships.append(membership)
         else:
             raise Exception("failed to authorize with the groups building block %d" % req.status_code)
+
     return include_private_events, group_memberships
 
 
