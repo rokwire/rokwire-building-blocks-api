@@ -35,7 +35,7 @@ from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access
+from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access, check_permission_access_event
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -421,6 +421,27 @@ def delete(event_id):
 def images_search(event_id):
     if not ObjectId.is_valid(event_id):
         abort(400)
+
+    group_ids = list()
+    include_private_events = False
+    try:
+        include_private_events, group_ids = get_group_ids()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    try:
+        result, result_found = _get_event_result({'_id': ObjectId(event_id)})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not result_found:
+        abort(404)
+
+    event = json.loads(result)
+    if not check_permission_access_event(event, include_private_events, group_ids):
+        abort(401)
 
     try:
         result = _get_imagefiles_result({'eventId': event_id})
