@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Show different components in catalog based on the user. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
+- Added copyright to the catalog codes. [#708](https://github.com/rokwire/rokwire-building-blocks-api/issues/708)
+
+### Fixed
+- Fixed talent page to show decoded capaiblities. [#703](https://github.com/rokwire/rokwire-building-blocks-api/issues/703)
+
 
 ## [1.10.0] - 2021-06-29
 ### Added
