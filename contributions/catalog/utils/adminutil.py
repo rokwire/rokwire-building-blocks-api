@@ -1,4 +1,4 @@
-#  Copyright 2021 Board of Trustees of the University of Illinois.
+#  Copyright 2020 Board of Trustees of the University of Illinois.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import controllers.configs as cfg
-import utils.mongoutils as mongoutils
+from utils import mongoutil
+from controllers.config import Config as cfg
 
 """
 check if the logged in user is a superuser
@@ -37,7 +37,7 @@ def check_if_reviewer(login_id):
         return True
 
     # check if the logged in id is in reviewers database
-    list_reviewers = mongoutils.list_reviewers()
+    list_reviewers = mongoutil.list_reviewers()
 
     if list_reviewers is not None:
         # extract out the usernames from the list
@@ -49,3 +49,5 @@ def check_if_reviewer(login_id):
             return True
 
     return False
+
+

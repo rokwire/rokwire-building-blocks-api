@@ -104,6 +104,7 @@
             </div>
             <p class="col-sm-9">{{post.healthCheckUrl}}</p>
         </div>
+        {% endif %}
         {% if post.dataDeletionEndpointDetails %}
         <div class="row">
             <div class="col-12 col-sm-2">
@@ -111,28 +112,28 @@
             </div>
             <p class="col-sm-9">
                 <table>
-                    {% if x['dataDeletionEndpointDetails']['apiKey'] %}
+                    {% if post.dataDeletionEndpointDetails.apiKey %}
                     <tr>
                         <td><b>Api Key&nbsp;&nbsp;</b></td>
-                        <td>{{x['dataDeletionEndpointDetails']['apiKey']}}</td>
+                        <td>{{post.dataDeletionEndpointDetails.apiKey}}</td>
                     </tr>
                     {% endif %}
-                    {% if x['dataDeletionEndpointDetails']['deletionEndpoint'] %}
+                    {% if post.dataDeletionEndpointDetails.deletionEndpoint %}
                     <tr>
                         <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
-                        <td>{{x['dataDeletionEndpointDetails']['deletionEndpoint']}}</td>
+                        <td>{{post.dataDeletionEndpointDetails.deletionEndpoint}}</td>
                     </tr>
                     {% endif %}
-                    {% if x['dataDeletionEndpointDetails']['description'] %}
+                    {% if post.dataDeletionEndpointDetails.description %}
                     <tr>
                         <td><b>Description&nbsp;&nbsp;</b></td>
-                        <td>{{x['dataDeletionEndpointDetails']['description']}}</td>
+                        <td>{{post.dataDeletionEndpointDetails.description}}</td>
                     </tr>
                     {% endif %}
                 </table>
             </p>
         </div>
-        {% end if %}
+        {% endif %}
         {% if post.deploymentDetails %}
         <div class="row">
             <div class="col-12 col-sm-2">
@@ -140,35 +141,35 @@
             </div>
             <p class="col-sm-9">
                 <table>
-                    {% if x['deploymentDetails']['authMethod'] %}
+                    {% if post.deploymentDetails.authMethod %}
                     <tr>
                         <td><b>Auth Method&nbsp;&nbsp;</b></td>
-                        <td>{{x['deploymentDetails']['authMethod']}}</td>
+                        <td>{{post.deploymentDetails.authMethod}}</td>
                     </tr>
-                    {% end if %}
-                    {% if x['deploymentDetails']['databaseDetails'] %}
+                    {% endif %}
+                    {% if post.deploymentDetails.databaseDetails %}
                     <tr>
                         <td><b>Database Details&nbsp;&nbsp;</b></td>
-                        <td>{{x['deploymentDetails']['databaseDetails']}}</td>
+                        <td>{{post.deploymentDetails.databaseDetails}}</td>
                     </tr>
-                    {% end if %}
-                    {% if x['deploymentDetails']['environmentVariables'] %}
+                    {% endif %}
+                    {% if post.deploymentDetails.environmentVariables %}
                     <tr>
                         <td><b>Environment Variables&nbsp;&nbsp;</b></td>
-                        <td>{{x['deploymentDetails']['environmentVariables']}}</td>
+                        <td>{{post.deploymentDetails.environmentVariables}}</td>
                     </tr>
-                    {% end if %}
-                    {% if x['deploymentDetails']['location'] %}
+                    {% endif %}
+                    {% if post.deploymentDetails.location %}
                     <tr>
                         <td><b>Location&nbsp;&nbsp;</b></td>
-                        <td>{{x['deploymentDetails']['location']}}</td>
+                        <td>{{post.deploymentDetails.location}}</td>
                     </tr>
-                    {% end if %}
+                    {% endif %}
                 </table>
             </p>
         </div>
-        {% end if %}
-    {% end if %}
+        {% endif %}
+    {% endif %}
 
     <button class="button button3" onclick="get_url()">View Contribution</button>
 </div>
