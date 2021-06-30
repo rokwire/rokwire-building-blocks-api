@@ -440,7 +440,7 @@ def images_search(event_id):
         abort(404)
 
     event = json.loads(result)
-    if check_permission_access_event(event, include_private_events, group_ids):
+    if not check_permission_access_event(event, include_private_events, group_ids):
         abort(401)
 
     try:
