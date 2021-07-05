@@ -520,6 +520,25 @@ def images_get(event_id, image_id):
 def images_put(event_id, image_id):
     auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    db = None
+    event = None
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
+
     tmpfile = None
     try:
         db = get_db()
