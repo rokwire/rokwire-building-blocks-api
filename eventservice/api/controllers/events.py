@@ -506,6 +506,32 @@ def images_get(event_id, image_id):
     if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
         abort(400)
 
+    group_ids = list()
+    include_private_events = False
+    try:
+        include_private_events, group_ids = get_group_ids()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    try:
+        result, result_found = _get_event_result({'_id': ObjectId(event_id)})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    if not result_found:
+        abort(404)
+    json_result = json.loads(result)
+    if include_private_events:
+        # check the group id
+        if result and json_result.get('createdByGroupId') not in group_ids:
+            abort(401)
+    else:
+        # check public group
+        if result and json_result.get('isGroupPrivate') is True:
+            abort(401)
+
     url = cfg.IMAGE_URL.format(
         bucket=cfg.BUCKET,
         region=os.getenv('AWS_DEFAULT_REGION'),
@@ -519,6 +545,25 @@ def images_get(event_id, image_id):
 
 def images_put(event_id, image_id):
     auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+
+    group_memberships = list()
+    try:
+        _, group_memberships = get_group_memberships()
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+    db = None
+    event = None
+    try:
+        db = get_db()
+        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+    except Exception as ex:
+        __logger.exception(ex)
+        abort(500)
+
+    # If this is a group event, apply group authorization. Regular events can proceed like before.
+    if not check_group_event_admin_access(event, group_memberships):
+        abort(401)
 
     tmpfile = None
     try:
