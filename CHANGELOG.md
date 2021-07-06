@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add group authorization to GET /events/{event_id}/images endpoint.[#716](https://github.com/rokwire/rokwire-building-blocks-api/issues/716)
+- Add group authorization to GET/events/{event_id}/images/{image_id} endpoint.[#718](https://github.com/rokwire/rokwire-building-blocks-api/issues/718)
 
 ## [1.10.0] - 2021-06-29
 ### Added
