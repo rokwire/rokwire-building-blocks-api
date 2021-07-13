@@ -36,7 +36,8 @@ def check_if_reviewer(login_id, headers):
     if is_superuser:
         return True
 
-    # check if the logged in id is in reviewers database otherwise it will give 401
+    # check if the logged in id is in reviewers database
+    # otherwise it will give 401
     result = requestutil.request_reviewers(headers)
 
     # if you can get this result, the user is a reviewer
