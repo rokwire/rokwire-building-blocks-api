@@ -27,9 +27,9 @@ class Config(object):
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
     DB_COLLECTION = os.getenv("MONGO_DATABASE", "catalog")
-    CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributions_db')
-    CONTRIBUTION_COLL_NAME = os.getenv('CONTRIBUTION_COLL_NAME', 'contributions')
-    REVIEWER_COLL_NAME = os.getenv('REVIEWER_COLL_NAME', 'reviewers')
+    # CONTRIBUTION_DB_NAME = os.getenv('CONTRIBUTION_DB_NAME', 'contributions_db')
+    # CONTRIBUTION_COLL_NAME = os.getenv('CONTRIBUTION_COLL_NAME', 'contributions')
+    # REVIEWER_COLL_NAME = os.getenv('REVIEWER_COLL_NAME', 'reviewers')
     URL_PREFIX = os.getenv("URL_PREFIX", "")
     DBTYPE = 'mongoDB'
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")

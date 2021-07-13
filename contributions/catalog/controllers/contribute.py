@@ -25,8 +25,8 @@ from .auth import login_required
 from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
 from utils import jsonutil
-from utils import mongoutil
 from utils import adminutil
+from utils import requestutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
@@ -81,7 +81,8 @@ def capability_details(contribution_id, id):
     the_json_res = get_capability(contribution_id, id)
     # check if the user is reviewer
     username = session["username"]
-    is_reviewer = adminutil.check_if_reviewer(username)
+    headers = requestutil.get_header_using_session(session)
+    is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
@@ -91,7 +92,8 @@ def talent_details(contribution_id, id):
 
     # check if the user is reviewer
     username = session["username"]
-    is_reviewer = adminutil.check_if_reviewer(username)
+    headers = requestutil.get_header_using_session(session)
+    is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
@@ -147,10 +149,7 @@ def search_results(search):
 
 # post a json_data in a http request
 def post(json_data):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-    }
+    headers = requestutil.get_header_using_session(session)
     try:
         # Setting up post request
         result = requests.post(cfg.CONTRIBUTION_BUILDING_BLOCK_URL,
@@ -172,10 +171,7 @@ def post(json_data):
 
 
 def get_contribution(contribution_id):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-    }
+    headers = requestutil.get_header_using_session(session)
 
     try:
         if contribution_id:
@@ -195,15 +191,11 @@ def get_contribution(contribution_id):
     return result.json()
 
 def get_capability(contribution_id, cid):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-    }
+    headers = requestutil.get_header_using_session(session)
 
     try:
         if contribution_id and cid:
-            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/capabilities/" + str(cid),
-                                  headers=headers)
+            result = requestutil.request_capability(headers, contribution_id, cid)
         if result.status_code != 200:
             print("GET method fails".format(id))
             print("with error code:", result.status_code)
@@ -217,15 +209,11 @@ def get_capability(contribution_id, cid):
     return result.json()
 
 def get_talent(contribution_id, tid):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session['oauth_token']['access_token']
-    }
+    headers = requestutil.get_header_using_session(session)
 
     try:
         if id:
-            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/' + str(contribution_id) + "/talents/" + str(tid),
-                                  headers=headers)
+            result = requestutil.request_talent(headers, contribution_id, tid)
 
         if result.status_code != 200:
             print("GET method fails".format(id))
@@ -241,10 +229,7 @@ def get_talent(contribution_id, tid):
 
 # post a json_data in a http request
 def search(input_data):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + cfg.AUTHENTICATION_TOKEN
-    }
+    headers = requestutil.get_header_using_auth_token(cfg.AUTHENTICATION_TOKEN)
 
     try:
         # Setting up post request
