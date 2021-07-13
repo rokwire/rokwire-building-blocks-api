@@ -33,8 +33,8 @@ def check_if_reviewer(login_id, headers):
     # check if the logged in id is admin user
     is_superuser = check_if_superuser(login_id)
 
-    # if is_superuser:
-    #     return True
+    if is_superuser:
+        return True
 
     # check if the logged in id is in reviewers database
     result = requestutil.request_reviewers(headers)
