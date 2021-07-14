@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add group authorization to GET /events/{event_id}/images endpoint.[#716](https://github.com/rokwire/rokwire-building-blocks-api/issues/716)
+- Add group authorization to GET/events/{event_id}/images/{image_id} endpoint.[#718](https://github.com/rokwire/rokwire-building-blocks-api/issues/718)
+- Add group authorization to PUT/events/{event_id}/images/{image_id} endpoint.[#719](https://github.com/rokwire/rokwire-building-blocks-api/issues/719)
+- Add group authorization to DELETE /events/{event_id}/images/{image_id} endpoint.[#720](https://github.com/rokwire/rokwire-building-blocks-api/issues/720)
 
 ## [1.10.0] - 2021-06-29
 ### Added
