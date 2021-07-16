@@ -73,28 +73,76 @@ def result():
 
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
+    username = session["username"]
+    is_reviewer = False
+
+    # request contribution to get the contribution admin info
     the_json_res = get_contribution(contribution_id)
-    return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
+
+    # check if the user is a contribution admins member
+    contribution_admins = the_json_res['contributionAdmins']
+    is_contribution_admin = False
+    if username in contribution_admins:
+        is_contribution_admin = True
+
+    if is_contribution_admin:
+        is_reviewer = True
+    else:
+        # check if the user is reviewer by requesting to endpoint
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
+    username = session["username"]
+    is_reviewer = False
+
+    # request contribution to get the contribution admin info
+    contribution_json = get_contribution(contribution_id)
+
+    # check if the user is a contribution admins member
+    contribution_admins = contribution_json['contributionAdmins']
+    is_contribution_admin = False
+    if username in contribution_admins:
+        is_contribution_admin = True
+
+    # request capability json
     the_json_res = get_capability(contribution_id, id)
 
-    # check if the user is reviewer by requesting to endpoint
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_reviewer = adminutil.check_if_reviewer(username, headers)
+    if is_contribution_admin:
+        is_reviewer = True
+    else:
+        # check if the user is reviewer by requesting to endpoint
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
 @bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
+    username = session["username"]
+    is_reviewer = False
+
+    # request contribution to get the contribution admin info
+    contribution_json = get_contribution(contribution_id)
+
+    # check if the user is a contribution admins member
+    contribution_admins = contribution_json['contributionAdmins']
+    is_contribution_admin = False
+    if username in contribution_admins:
+        is_contribution_admin = True
+
+    # request talent json
     the_json_res = get_talent(contribution_id, id)
 
-    # check if the user is reviewer by requesting to endpoint
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_reviewer = adminutil.check_if_reviewer(username, headers)
+    if is_contribution_admin:
+        is_reviewer = True
+    else:
+        # check if the user is reviewer by requesting to endpoint
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
