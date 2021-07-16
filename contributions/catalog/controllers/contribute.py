@@ -79,6 +79,7 @@ def contribution_details(contribution_id):
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
     the_json_res = get_capability(contribution_id, id)
+
     # check if the user is reviewer by requesting to endpoint
     username = session["username"]
     headers = requestutil.get_header_using_session(session)
