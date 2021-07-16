@@ -98,7 +98,9 @@ def contribution_details(contribution_id):
 def capability_details(contribution_id, id):
     username = session["username"]
     is_reviewer = False
-
+    # TODO it is requstring two operations, one for contribution the other for talent.
+    #  It should be better if it can be reduced for just one request.
+    
     # request contribution to get the contribution admin info
     contribution_json = get_contribution(contribution_id)
 
@@ -124,7 +126,8 @@ def capability_details(contribution_id, id):
 def talent_details(contribution_id, id):
     username = session["username"]
     is_reviewer = False
-
+    # TODO it is requstring two operations, one for contribution the other for talent.
+    #  It should be better if it can be reduced for just one request.
     # request contribution to get the contribution admin info
     contribution_json = get_contribution(contribution_id)
 
