@@ -532,9 +532,12 @@ def capabilities_search(token_info=None, id=None):
 
     contribution_dataset, status_code = mongoutils.get_contribution_dataset_from_objectid(
         coll_contribution, id, login_id, is_login)
+
     if status_code == '200':
         if contribution_dataset is not None:
             capability_dataset = contribution_dataset.get_capabilities()
+            for capability in capability_dataset:
+                capability["contributionAdmins"] = contribution_dataset.contributionAdmins
         else:
             msg = {
                 "reason": "There is no contribution dataset with given id, "
@@ -580,7 +583,7 @@ def capabilities_search(token_info=None, id=None):
         return rs_handlers.not_found(msg_json)
 
     msg = {
-        "search": "Capability data in the contirubion dataset with given id : " + str(id)
+        "search": "Capability data in the contribution dataset with given id : " + str(id)
     }
     msg_json = jsonutils.create_log_json("Capability", "GET", msg)
     logging.info("Capability GET " + json.dumps(msg))
@@ -688,6 +691,8 @@ def talents_search(token_info=None, id=None):
     if status_code == '200':
         if contribution_dataset is not None:
             talent_dataset = contribution_dataset.get_talents()
+            for talent in talent_dataset:
+                talent["contributionAdmins"] = contribution_dataset.contributionAdmins
         else:
             msg = {
                 "reason": "There is no contribution dataset with given id, "
@@ -733,7 +738,7 @@ def talents_search(token_info=None, id=None):
         return rs_handlers.not_found(msg_json)
 
     msg = {
-        "search": "Talent data in the contirubion dataset with given id : " + str(id)
+        "search": "Talent data in the contribution dataset with given id : " + str(id)
     }
     msg_json = jsonutils.create_log_json("Talent", "GET", msg)
     logging.info("Talent GET " + json.dumps(msg))
@@ -786,7 +791,7 @@ def capabilities_get(token_info=None, id=None, capability_id=None):
 def talents_get(token_info=None, id=None, talent_id=None):
     talent_datasets = talents_search(token_info, id)
 
-    # when the capablity_datasets is an error response
+    # when the talent_datasets is an error response
     if isinstance(talent_datasets, wrappers.Response):
         return talent_datasets
 

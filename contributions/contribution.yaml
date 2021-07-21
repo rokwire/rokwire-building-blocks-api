@@ -338,7 +338,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  allOf:
+                  - $ref: '#/components/schemas/Talent'
+                  - type: object
+                    properties:
+                      contributionAdmins:
+                        description: List of GitHub usernames of Contribution admins
+                        type: array
         400:
           description: Bad request
         401:
@@ -378,7 +384,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  allOf:
+                    - $ref: '#/components/schemas/Capability'
+                    - type: object
+                      properties:
+                        contributionAdmins:
+                          description: List of GitHub usernames of Contribution admins
+                          type: array
         400:
           description: Bad request
         401:

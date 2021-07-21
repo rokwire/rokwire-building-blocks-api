@@ -98,20 +98,14 @@ def contribution_details(contribution_id):
 def capability_details(contribution_id, id):
     username = session["username"]
     is_reviewer = False
-    # TODO it is requstring two operations, one for contribution the other for talent.
-    #  It should be better if it can be reduced for just one request.
-    
-    # request contribution to get the contribution admin info
-    contribution_json = get_contribution(contribution_id)
-
-    # check if the user is a contribution admins member
-    contribution_admins = contribution_json['contributionAdmins']
     is_contribution_admin = False
-    if username in contribution_admins:
-        is_contribution_admin = True
 
     # request capability json
     the_json_res = get_capability(contribution_id, id)
+
+    contribution_admins = the_json_res["contributionAdmins"]
+    if username in contribution_admins:
+        is_contribution_admin = True
 
     if is_contribution_admin:
         is_reviewer = True
@@ -126,19 +120,14 @@ def capability_details(contribution_id, id):
 def talent_details(contribution_id, id):
     username = session["username"]
     is_reviewer = False
-    # TODO it is requstring two operations, one for contribution the other for talent.
-    #  It should be better if it can be reduced for just one request.
-    # request contribution to get the contribution admin info
-    contribution_json = get_contribution(contribution_id)
-
-    # check if the user is a contribution admins member
-    contribution_admins = contribution_json['contributionAdmins']
     is_contribution_admin = False
-    if username in contribution_admins:
-        is_contribution_admin = True
 
     # request talent json
     the_json_res = get_talent(contribution_id, id)
+
+    contribution_admins = the_json_res["contributionAdmins"]
+    if username in contribution_admins:
+        is_contribution_admin = True
 
     if is_contribution_admin:
         is_reviewer = True
