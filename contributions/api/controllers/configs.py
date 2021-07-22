@@ -35,4 +35,4 @@ REVIEWER_COLL_NAME = os.getenv('REVIEWER_COLL_NAME', 'reviewers')
 FIELD_OBJECTID = '_id'
 FIELD_NAME = 'name'
 
-ADMIN_USERS = os.getenv('ADMIN_USERS', [])
+ADMIN_USERS = os.getenv('ADMIN_USERS', '')
