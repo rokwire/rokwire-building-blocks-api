@@ -38,4 +38,4 @@ class Config(object):
     AUTHORIZATION_BASE_URL = os.getenv("AUTHORIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
     TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
     CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
-    ADMIN_USERS = os.getenv('ADMIN_USERS', [])
+    ADMIN_USERS = os.getenv('ADMIN_USERS', '')
