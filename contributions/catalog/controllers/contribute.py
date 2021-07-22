@@ -75,13 +75,13 @@ def result():
 def contribution_details(contribution_id):
     username = session["username"]
     is_reviewer = False
+    is_contribution_admin = False
 
     # request contribution to get the contribution admin info
     the_json_res = get_contribution(contribution_id)
 
     # check if the user is a contribution admins member
     contribution_admins = the_json_res['contributionAdmins']
-    is_contribution_admin = False
     if username in contribution_admins:
         is_contribution_admin = True
 
