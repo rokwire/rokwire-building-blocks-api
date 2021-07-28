@@ -153,39 +153,17 @@ def format_query(args, query, include_private_events=False, group_ids=None):
         radius_meters = int(args.get('radius'))
         query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
 
-    # public group query
+    # ApiKeyAuth query
     if not include_private_events:
         query_parts.append({'isGroupPrivate': {'$ne': True}})
         query['$and'] = query_parts
-    else: # private group query
-        private_groups_access_parts = []
-        private_groups_access_parts.append({'createdByGroupId': {'$in': group_ids}})
-        private_groups_access_query = dict()
-        private_groups_access_query['and'] = private_groups_access_parts
-        # private_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
-        public_groups_access_parts = []
-        public_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
-        public_groups_access_parts.append({'createdByGroupId': {'$nin': group_ids}})
-        public_groups_access_query = dict()
-        public_groups_access_query['and'] = public_groups_access_parts
-        # private_groups_query_parts = query_parts.copy()
-        # query_parts.append({'createdByGroupId': {'$nin': group_ids}})
-        # query_parts.append({'isGroupPrivate': {'$ne': True}})
+    # UserAuth query
+    else:
         pubic_private_groups_access_parts = {'$or': [
-            public_groups_access_parts,
-            private_groups_access_parts]}
+            {'isGroupPrivate': {'$ne': True}},  # Includes both group public and regular public events
+            {'createdByGroupId': {'$in': group_ids}}]}  # Check for group membership. Also include group private events.
         query_parts.append(pubic_private_groups_access_parts)
         query['$and'] = query_parts
-        # query['$and'] = pubic_private_groups_access_parts
-        # private_groups_query_parts.append({'createdByGroupId': {'$in': group_ids}})
-        # private_groups_query = dict()
-        # private_groups_query['$and'] = private_groups_query_parts
-        # query = {'$or': [
-        #     query,
-        #     private_groups_query]}
-    # if query_parts:
-    #     query['$and'] = query_parts
-
     return query
 
 
