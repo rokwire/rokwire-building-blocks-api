@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed talent page to show decoded capaiblities. [#703](https://github.com/rokwire/rokwire-building-blocks-api/issues/703)
+- Fix title search with user auth key. [#732](https://github.com/rokwire/rokwire-building-blocks-api/issues/732)
 
 ## [1.10.0] - 2021-06-29
 ### Added
