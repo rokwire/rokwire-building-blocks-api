@@ -158,17 +158,28 @@ def format_query(args, query, include_private_events=False, group_ids=None):
         query_parts.append({'isGroupPrivate': {'$ne': True}})
         query['$and'] = query_parts
     else: # private group query
-        private_groups_query_parts = query_parts.copy()
-        query_parts.append({'createdByGroupId': {'$nin': group_ids}})
-        query_parts.append({'isGroupPrivate': {'$ne': True}})
-        query['$and'] = query_parts
+        private_groups_access_parts = []
+        private_groups_access_parts.append({'createdByGroupId': {'$in': group_ids}})
+        # private_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
+        public_groups_access_parts = []
+        public_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
+        public_groups_access_parts.append({'createdByGroupId': {'$nin': group_ids}})
 
-        private_groups_query_parts.append({'createdByGroupId': {'$in': group_ids}})
-        private_groups_query = dict()
-        private_groups_query['$and'] = private_groups_query_parts
-        query = {'$or': [
-            query,
-            private_groups_query]}
+        # private_groups_query_parts = query_parts.copy()
+        # query_parts.append({'createdByGroupId': {'$nin': group_ids}})
+        # query_parts.append({'isGroupPrivate': {'$ne': True}})
+        pubic_private_groups_access_parts = {'$or': [
+            public_groups_access_parts,
+            private_groups_access_parts]}
+        query_parts.append(pubic_private_groups_access_parts)
+        query['$and'] = query_parts
+        # query['$and'] = pubic_private_groups_access_parts
+        # private_groups_query_parts.append({'createdByGroupId': {'$in': group_ids}})
+        # private_groups_query = dict()
+        # private_groups_query['$and'] = private_groups_query_parts
+        # query = {'$or': [
+        #     query,
+        #     private_groups_query]}
     # if query_parts:
     #     query['$and'] = query_parts
 
