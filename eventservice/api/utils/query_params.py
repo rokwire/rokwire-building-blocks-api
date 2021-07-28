@@ -160,11 +160,14 @@ def format_query(args, query, include_private_events=False, group_ids=None):
     else: # private group query
         private_groups_access_parts = []
         private_groups_access_parts.append({'createdByGroupId': {'$in': group_ids}})
+        private_groups_access_query = dict()
+        private_groups_access_query['and'] = private_groups_access_parts
         # private_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
         public_groups_access_parts = []
         public_groups_access_parts.append({'isGroupPrivate': {'$ne': True}})
         public_groups_access_parts.append({'createdByGroupId': {'$nin': group_ids}})
-
+        public_groups_access_query = dict()
+        public_groups_access_query['and'] = public_groups_access_parts
         # private_groups_query_parts = query_parts.copy()
         # query_parts.append({'createdByGroupId': {'$nin': group_ids}})
         # query_parts.append({'isGroupPrivate': {'$ne': True}})
