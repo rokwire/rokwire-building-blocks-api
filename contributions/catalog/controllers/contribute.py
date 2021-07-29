@@ -123,6 +123,8 @@ def create():
             else:
                 return render_template('contribute/submitted.html')
         elif not response:
+            logging.error(s)
+            s = "There was a problem in POST process."
             if "name" in session:
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
             else:
