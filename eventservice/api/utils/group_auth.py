@@ -60,3 +60,15 @@ def check_group_event_admin_access(event, group_memberships):
         if not found:
             return False
     return True
+
+
+def check_permission_access_event(event, include_private_events, group_ids):
+    if include_private_events:
+        # check the group id
+        if event and event.get('createdByGroupId') not in group_ids:
+            return False
+    else:
+        # check public group
+        if event and event.get('isGroupPrivate') is True:
+            return False
+    return True
