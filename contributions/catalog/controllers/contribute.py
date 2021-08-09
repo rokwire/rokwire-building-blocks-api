@@ -21,6 +21,7 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
+from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
@@ -76,6 +77,21 @@ def contribution_details(contribution_id):
     the_json_res = get_contribution(contribution_id)
     return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
 
+@bp.route('create/<contribution_id>/edit', methods=['GET'])
+def contribution_edit(contribution_id):
+    the_json_res = get_contribution(contribution_id)
+    # TODO need to check if the user is editable then set the is_editable
+    is_editable = False
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+    is_editable = adminutil.check_if_reviewer(username, headers)
+
+    if is_editable:
+        return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+    else:
+        s = "You don't have a permission to edit the contribution."
+        return render_template('contribute/error.html', error_msg=s)
+
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
     the_json_res = get_capability(contribution_id, id)
@@ -106,7 +122,18 @@ def talent_details(contribution_id, id):
 @bp.route('/create', methods=['GET', "POST"])
 @login_required
 def create():
+    # if id:
+    #     print("id presented")
+    # # teammembers looks like this, roughly:
+    # teammembers = [{"id": 55555, "name": "Ben", "share": 0},
+    #  {"id": 66666, "name": "Amy", "share": 1},
+    #  {"id": 77777, "name": "Ted", "share": 1}]
+
     if request.method == 'POST':
+        # postvars = variabledecode.variable_decode(request.form, dict_char='_')
+        # for k, v in postvars.iteritems():
+        #     member = [m for m in teammembers if m["id"] == int(k)][0]
+        #     member['share'] = v["share"]
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
@@ -127,8 +154,8 @@ def create():
                     return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
                 else:
                     return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
-
+    # return render_template('contribute/contribute.html', user=session["name"], token=session['oauth_token']['access_token'], teammembers=teammembers)
+    return render_template('contribute/contribute.html', user=session["name"], token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):

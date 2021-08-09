@@ -54,8 +54,12 @@
     </style>
 </head>
 
-
 <body>
+{#TODO: Must check the edit availability. Must be admin or superuser#}
+{% if is_editable %}
+    {{ is_editable }}
+{% endif %}
+
 <div class="container-fluid">
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
@@ -83,14 +87,26 @@
     </div>
 
     <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
+        <div>
+            {% for member in teammembers %}
+                {{ member['name'] }}
+            {% endfor %}
+        </div>
+
+
         <div class="container">
             <h2 id="contribute">Contribution Details</h2>
 
             <div class="form-group">
                 <label class="required control-label col-sm-2">Contribution Name</label>
                 <div class="col-sm-10" id="contribution_name_div">
-                    <input class="form-control" id="contribution_name" name="contribution_name"
-                           placeholder="Give a name for your contribution" type="text">
+                    {% if is_editable %}
+                        <input class="form-control" id="contribution_name" name="contribution_name"
+                               value={{ post.name }} type="text">
+                    {% else %}
+                        <input class="form-control" id="contribution_name" name="contribution_name"
+                               placeholder="Give a name for your contribution" type="text">
+                    {% endif %}
                     <p class="error_message"></p>
                 </div>
             </div>
@@ -401,8 +417,6 @@
                                 <br>
                             </div>
                         </div>
-
-
                     </div>
 
 
@@ -581,12 +595,11 @@
 
                         </div>
                     </div>
-
-
                 </form>
             </div>
-
-
+        </div>
+    </form>
+</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
