@@ -506,31 +506,31 @@ def images_get(event_id, image_id):
     if not ObjectId.is_valid(event_id) or not ObjectId.is_valid(image_id):
         abort(400)
 
-    group_ids = list()
-    include_private_events = False
-    try:
-        include_private_events, group_ids = get_group_ids()
-    except Exception as ex:
-        __logger.exception(ex)
-        abort(500)
-
-    try:
-        result, result_found = _get_event_result({'_id': ObjectId(event_id)})
-    except Exception as ex:
-        __logger.exception(ex)
-        abort(500)
-
-    if not result_found:
-        abort(404)
-    json_result = json.loads(result)
-    if include_private_events:
-        # check the group id
-        if result and json_result.get('createdByGroupId') not in group_ids:
-            abort(401)
-    else:
-        # check public group
-        if result and json_result.get('isGroupPrivate') is True:
-            abort(401)
+    # group_ids = list()
+    # include_private_events = False
+    # try:
+    #     include_private_events, group_ids = get_group_ids()
+    # except Exception as ex:
+    #     __logger.exception(ex)
+    #     abort(500)
+    #
+    # try:
+    #     result, result_found = _get_event_result({'_id': ObjectId(event_id)})
+    # except Exception as ex:
+    #     __logger.exception(ex)
+    #     abort(500)
+    #
+    # if not result_found:
+    #     abort(404)
+    # json_result = json.loads(result)
+    # if include_private_events:
+    #     # check the group id
+    #     if result and json_result.get('createdByGroupId') not in group_ids:
+    #         abort(401)
+    # else:
+    #     # check public group
+    #     if result and json_result.get('isGroupPrivate') is True:
+    #         abort(401)
 
     url = cfg.IMAGE_URL.format(
         bucket=cfg.BUCKET,
