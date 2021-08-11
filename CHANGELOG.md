@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.1] - 2021-08-11
 ### Changed
 - Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
 
@@ -367,7 +368,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...HEAD
+[1.11.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...1.10.0
 [1.9.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...1.9.1
