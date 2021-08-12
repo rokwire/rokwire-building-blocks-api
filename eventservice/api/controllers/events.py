@@ -219,13 +219,10 @@ def get(event_id):
     if not result_found:
         abort(404)
     json_result = json.loads(result)
-    if include_private_events:
-        # check the group id
-        if result and json_result.get('createdByGroupId') not in group_ids:
-            abort(401)
-    else:
-        # check public group
-        if result and json_result.get('isGroupPrivate') is True:
+
+    if result and json_result.get('isGroupPrivate') is True:
+        # private group event
+        if json_result.get('createdByGroupId') not in group_ids:
             abort(401)
 
     __logger.debug("[Get Event]: event id %s", event_id)
