@@ -1,4 +1,4 @@
-#  Copyright 2020 Board of Trustees of the University of Illinois.
+#  Copyright 2021 Board of Trustees of the University of Illinois.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -11,16 +11,28 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-from flask import make_response
 from bson import ObjectId
+from flask import session
 
-def remove_objectid_from_dataset(dataset):
-    if "_id" in dataset:
-        del dataset["_id"]
+'''
+add contributionAdmins element in the contribution json
+'''
+def add_contribution_admins(in_json):
+    login_user = session['username']
+    admin_input = in_json['contributionAdmins']
 
-    return dataset
+    contribution_admins = []
+    # if the form input is not empty, then we want to filter out those names from there
+    if admin_input:
+        contribution_admins = [admin_name for admin_name in admin_input.split(',') if admin_name]
 
+    updated_json = {"contributionAdmins": [login_user] + contribution_admins}
+    in_json.update(updated_json)
+    return in_json
+
+"""
+convert object id from json to regular json element
+"""
 def convert_obejctid_from_dataset_json(dataset):
     if "_id" in dataset:
         # check if _id is object ID
@@ -36,6 +48,9 @@ def convert_obejctid_from_dataset_json(dataset):
 
     return dataset
 
+"""
+convert object id from json list to regular json element
+"""
 def convert_obejctid_from_dataset_json_list(json_list):
     out_json_list = []
     for dataset in json_list:
@@ -44,16 +59,12 @@ def convert_obejctid_from_dataset_json_list(json_list):
 
     return out_json_list
 
-def create_log_json(ep_name, ep_method, in_json):
-    in_json['ep_building_block'] = "contributions_building_block"
-    in_json['ep_name'] = ep_name
-    in_json['ep_method'] = ep_method
+"""
+remove object id from dataset json
+"""
+def remove_objectid_from_dataset(dataset):
+    if "_id" in dataset:
+        del dataset["_id"]
 
-    return in_json
+    return dataset
 
-def create_auth_fail_message():
-    out_json = make_response("{\"Authorization Failed\": \"The user info in id token and db are not matching.\"}")
-    out_json.mimetype = 'application/json'
-    out_json.status_code = 403
-
-    return out_json

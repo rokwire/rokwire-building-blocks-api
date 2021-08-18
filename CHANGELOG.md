@@ -5,21 +5,81 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
+
+## [1.11.1] - 2021-08-11
+### Changed
+- Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
+
+## [1.11.0] - 2021-07-29
+### Added
+- Show different components in catalog based on the user. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
+- Add copyright to the catalog codes. [#708](https://github.com/rokwire/rokwire-building-blocks-api/issues/708)
+- Add group authorization to GET /events/{event_id}/images endpoint.[#716](https://github.com/rokwire/rokwire-building-blocks-api/issues/716)
+- Add group authorization to GET/events/{event_id}/images/{image_id} endpoint.[#718](https://github.com/rokwire/rokwire-building-blocks-api/issues/718)
+- Add group authorization to PUT/events/{event_id}/images/{image_id} endpoint.[#719](https://github.com/rokwire/rokwire-building-blocks-api/issues/719)
+- Add group authorization to DELETE /events/{event_id}/images/{image_id} endpoint.[#720](https://github.com/rokwire/rokwire-building-blocks-api/issues/720)
+- Make catalog pages to show different items for reviewers and non reviewers. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
+
+### Fixed
+- Fixed talent page to show decoded capaiblities. [#703](https://github.com/rokwire/rokwire-building-blocks-api/issues/703)
+- Fix title search with user auth key. [#732](https://github.com/rokwire/rokwire-building-blocks-api/issues/732)
+
+## [1.10.0] - 2021-06-29
 ### Added
 - Add endpoints for listing contributions, capabilities, and talents. [#602](https://github.com/rokwire/rokwire-building-blocks-api/issues/602)
 - Add query parameters to contribution building block's api spec and function arguments. [#616](https://github.com/rokwire/rokwire-building-blocks-api/issues/616)
 - Add user auth to Events Building Block yml file. [#598](https://github.com/rokwire/rokwire-building-blocks-api/issues/598)
 - Use dovenv library for organizing enviroment variables.[#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
 - Add CORS support for Contribution Building Block.[#621](https://github.com/rokwire/rokwire-building-blocks-api/issues/621)
+- Add login option for Contribution Catalog.[#634](https://github.com/rokwire/rokwire-building-blocks-api/issues/634)
+- Add logout option for Contribution Catalog.[#636](https://github.com/rokwire/rokwire-building-blocks-api/issues/636)
+- Update event schema to add new field createdByGroupId.[#396](https://github.com/rokwire/rokwire-building-blocks-api/issues/396)
+- Add ApiKeyAuth and status to contribution building block.[#654](https://github.com/rokwire/rokwire-building-blocks-api/issues/654)
+- Add ids to capability and talent.[#661](https://github.com/rokwire/rokwire-building-blocks-api/issues/661)
+- Add auth check for login required pages.[#657](https://github.com/rokwire/rokwire-building-blocks-api/issues/657)
+- Add /contribute as prefix for ./profile page. [#663](https://github.com/rokwire/rokwire-building-blocks-api/issues/663)
+- Add UUID for capability and talent in Contribution Catalog.[#666](https://github.com/rokwire/rokwire-building-blocks-api/issues/666)
+- Add autocomplete feature when inputting admin name for contribution catalog.[#665](https://github.com/rokwire/rokwire-building-blocks-api/issues/665)
+- Add search endpoints using capability and talent id.[#662](https://github.com/rokwire/rokwire-building-blocks-api/issues/662)
+- Add release script for Contributions Building Block.[#675](https://github.com/rokwire/rokwire-building-blocks-api/issues/675)
+- Add okay endpoint to Contributions Building Block.[#679](https://github.com/rokwire/rokwire-building-blocks-api/issues/679)
+- Add isGroupPrivate to Events schema.[#682](https://github.com/rokwire/rokwire-building-blocks-api/issues/682)
+- Add group authorization to GET /events endpoint. [#683](https://github.com/rokwire/rokwire-building-blocks-api/issues/683), [#684](https://github.com/rokwire/rokwire-building-blocks-api/issues/684)
+- Add reviewers management endpoints. [#692](https://github.com/rokwire/rokwire-building-blocks-api/issues/692)
+- Add get group event by groupid parameter.[#685](https://github.com/rokwire/rokwire-building-blocks-api/issues/685)
+- Add isEventFree field to Events Building Block yaml file.[#695](https://github.com/rokwire/rokwire-building-blocks-api/issues/695)
+- Add group authroziation on get event endpoint.[#693](https://github.com/rokwire/rokwire-building-blocks-api/issues/693)
+- Add basic detailed views for Contributions, Talents, and Capabilities. [#638](https://github.com/rokwire/rokwire-building-blocks-api/issues/638), [#669](https://github.com/rokwire/rokwire-building-blocks-api/issues/669), [#670](https://github.com/rokwire/rokwire-building-blocks-api/issues/670)
+- Add group authroziation on put event endpoint.[#699](https://github.com/rokwire/rokwire-building-blocks-api/issues/699)
+- Add group authroziation on patch event endpoint.[#701](https://github.com/rokwire/rokwire-building-blocks-api/issues/701)
+- Add group authroziation on deletion event endpoint[#700](https://github.com/rokwire/rokwire-building-blocks-api/issues/700)
 
 ### Fixed
 - Fix Contribution catalog's home page display issue. [#448](https://github.com/rokwire/rokwire-building-blocks-api/pull/448)
 - Use dovenv library for organizing enviroment variables. [#614](https://github.com/rokwire/rokwire-building-blocks-api/issues/614)
 - Add CORS support for Contribution Building Block. [#617](https://github.com/rokwire/rokwire-building-blocks-api/issues/617)
 - Add strict validation in Contribution Building Block. [#627](https://github.com/rokwire/rokwire-building-blocks-api/issues/627)
+- Add authentication and authorization using GitHub account in Contribution Building Block. [#635](https://github.com/rokwire/rokwire-building-blocks-api/issues/635)
+- Add github authorization in new contribution post via catalog. [#647](https://github.com/rokwire/rokwire-building-blocks-api/issues/647)
+- Fix date format issue in the events endpoint of GET /events/<id>. [#438](https://github.com/rokwire/rokwire-building-blocks-api/issues/438)
+- Fix error code in GET /contributions/{contributionID}. [#672](https://github.com/rokwire/rokwire-building-blocks-api/issues/672)
+- Fix status in contribution. [#668](https://github.com/rokwire/rokwire-building-blocks-api/issues/668)
+- Fix returning an object when there is only single result in GET /contributions. [#681](https://github.com/rokwire/rokwire-building-blocks-api/issues/681)
 
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
+- Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
+- Updated pre-commit config and corresponding GitHub Action to use `Yelp/detect-secrets` version 1.0.3. [#649](https://github.com/rokwire/rokwire-building-blocks-api/issues/649) 
+- Updated location description in Events Building Block. [#706](https://github.com/rokwire/rokwire-building-blocks-api/issues/706)
+
+### Removed
+- Remove db index on sponsor field. [#686](https://github.com/rokwire/rokwire-building-blocks-api/issues/686)
+
+## [1.9.1] - 2021-02-22
+### Fixed
+- Fix Docker build errors. [#633](https://github.com/rokwire/rokwire-building-blocks-api/issues/633)
 
 ## [1.9.0] - 2020-12-17
 ### Fixed
@@ -311,7 +371,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...HEAD
+[1.11.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...1.11.1
+[1.11.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...1.11.0
+[1.10.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...1.10.0
+[1.9.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.6.0...1.7.0

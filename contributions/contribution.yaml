@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.9.0
+  version: 1.11.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -12,13 +12,21 @@ servers:
   description: Development server
 tags:
 - name: Contributions
-  description: API endpoints for managing contributions in the form of Talents and Capabilities.
+  description: API endpoints for managing Contributions.
+- name: Talents
+  description: API endpoints for managing Talents.
+- name: Capabilities
+  description: API endpoints for managing Capabilities.
+- name: Admin
+  description: Admin endpoints for the Contributions Building Block.
 paths:
   /contributions:
     post:
       summary: Create a new Contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       requestBody:
         description: Contribution data
         content:
@@ -46,6 +54,9 @@ paths:
       summary: Return existing Contributions based on search criteria
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -73,6 +84,9 @@ paths:
       operationId: controllers.contributions.alltalentssearch
       tags:
        - Talents
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -87,7 +101,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  allOf:
+                    - $ref: '#/components/schemas/Talent'
+                    - type: object
+                      properties:
+                        contributionId:
+                          type: string
+                          format: uuid
+                          description: UUID4 format string identifier of the Contribution that this Talent belongs to.
+#                  $ref: '#/components/schemas/Talent'
         400:
           description: Bad request
         401:
@@ -100,6 +122,9 @@ paths:
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
         - Capabilities
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: name
           in: query
@@ -114,7 +139,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  allOf:
+                    - $ref: '#/components/schemas/Capability'
+                    - type: object
+                      properties:
+                        contributionId:
+                          type: string
+                          format: uuid
+                          description: UUID4 format string identifier of the Contribution that this Capability belongs to.
+#                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:
@@ -126,6 +159,9 @@ paths:
       summary: Get Talents that belong to a specific Contribution
       tags:
         - Contributions
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -155,6 +191,9 @@ paths:
       summary: Get Capabilities that belong to a specific Contribution
       tags:
         - Contributions
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -184,6 +223,9 @@ paths:
       summary: Get a specific Contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
+        - ApiKeyAuth: []
       parameters:
       - name: id
         in: path
@@ -212,6 +254,8 @@ paths:
       summary: Update a contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -241,6 +285,8 @@ paths:
       summary: Delete a contribution
       tags:
        - Contributions
+      security:
+        - GitHubAuth: []
       parameters:
       - name: id
         in: path
@@ -259,6 +305,172 @@ paths:
           description: Invalid input
         500:
           description: Internal error
+  /contributions/{id}/talents/{talent_id}:
+    get:
+      summary: Get Talent that belong to a specific Contribution by id
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+        - ApiKeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: talent_id
+          in: path
+          description: Talent ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Talents in this given Contribution by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Talent'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/{id}/capabilities/{capability_id}:
+    get:
+      summary: Get Capability that belong to a specific Contribution by id
+      tags:
+        - Contributions
+      security:
+        - GitHubAuth: [ ]
+        - ApiKeyAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Contribution ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: capability_id
+          in: path
+          description: Capability ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Capability by id in this given Contribution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Capability'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/ok:
+    get:
+      summary: Get status check
+      tags:
+        - Contributions
+      responses:
+        200:
+          description: The building block is alive and responding.
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+  /contributions/admin/reviewers:
+    post:
+      summary: Create a new reviwer
+      tags:
+        - Admin
+      security:
+        - GitHubAuth: [ ]
+      requestBody:
+        description: Reviewer data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reviewer'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created reviewer
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+    get:
+      summary: Return the list of existing reviewers
+      tags:
+        - Admin
+      security:
+        - GitHubAuth: [ ]
+      responses:
+        200:
+          description: Reviewers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reviewer'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+  /contributions/admin/reviewers/{id}:
+    delete:
+      summary: Delete a reviewer
+      tags:
+        - Admin
+      security:
+        - GitHubAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reviewer that needs to be deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully deleted contribution details
+        401:
+          description: Unauthorized
+        500:
+          description: Internal error
 components:
   schemas:
     Contribution:
@@ -267,7 +479,12 @@ components:
       required:
         - name
         - shortDescription
+        - contributionAdmins
       properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
         name:
           type: string
         shortDescription:
@@ -292,6 +509,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Talent'
+        contributionAdmins:
+          description: List of GitHub usernames of Contribution admins
+          type: array
+          items:
+            type: string
+            minItems: 1
+        status:
+          type: string
+          enum:
+            - Submitted
+            - Reviewing
+            - Approved
+            - Disapproved
+            - Published
         dateCreated:
           type: string
           format: date-time
@@ -301,6 +532,7 @@ components:
     Capability:
       type: object
       required:
+        - id
         - name
         - description
         - isOpenSource
@@ -309,6 +541,10 @@ components:
         - version
         - dataDeletionEndpointDetails
       properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID4 format string identifier of the Capability
         name:
           type: string
         description:
@@ -360,15 +596,6 @@ components:
         healthCheckUrl:
           nullable: true
           type: string
-        status:
-          nullable: true
-          type: string
-          enum:
-            - Submitted
-            - Reviewing
-            - Approved
-            - Disapproved
-            - Published
         dataDeletionEndpointDetails:
           description: Details of API endpoint to delete user info given the user UUID.
           type: object
@@ -402,9 +629,14 @@ components:
       type: object
       description: A core feature in the app user interface.
       required:
+        - id
         - name
         - shortDescription
       properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID4 format string identifier of the Talent
         name:
           type: string
         shortDescription:
@@ -512,6 +744,17 @@ components:
         phone:
           nullable: true
           type: string
+    Reviewer:
+      type: object
+      description: reviewer for reviewing uploaded contributions
+      required:
+        - name
+        - githubUsername
+      properties:
+        name:
+          type: string
+        githubUsername:
+          type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
@@ -519,9 +762,12 @@ components:
       name: ROKWIRE-API-KEY
       x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
-    UserAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_userauth
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    GitHubAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://github.com/login/oauth/authorize
+          tokenUrl: https://github.com/login/oauth/access_token
+          scopes: {}
+      x-tokenInfoUrl: https://api.github.com/user
+      description: The client must send a unexpired GitHub OAuth2 access_token in the Authorization header when making requests to API endpoints that require GitHub authentication.

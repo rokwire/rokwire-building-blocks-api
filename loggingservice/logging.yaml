@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Logging Building Block API
   description: Logging Building Block API Documentation
-  version: 1.9.0
+  version: 1.11.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server

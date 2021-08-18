@@ -11,3 +11,16 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
+import functools
+from flask import (
+    redirect, session, url_for
+)
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if not session.get('name'):
+            return redirect(url_for('contribute.login'))
+        return view(**kwargs)
+    return wrapped_view

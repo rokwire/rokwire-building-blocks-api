@@ -1,89 +1,166 @@
+#  Copyright 2021 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import json
 import traceback
 
-# from app import app
 import requests
+import functools
 from flask import (
-    Blueprint, render_template, request, session
+    Blueprint, render_template, request, session, redirect, url_for
 )
-
-from controllers.config import Config
+from requests_oauthlib import OAuth2Session
+from .auth import login_required
+from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
+from utils import jsonutil
+from utils import adminutil
+from utils import requestutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
-@bp.route('/', methods=['GET', 'POST'])
 
+@bp.route('/', methods=['GET', 'POST'])
 def home():
     print("homepage.")
     if request.method == 'POST' and request.validate_on_submit():
-        print("searching...")
         result = request.form.to_dict(flat=False)
-        print(result)
-        # search(result)
-    return render_template('contribute/home.html', user=session["name"])
+    if "name" in session:
+        return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    else:
+        return render_template('contribute/home.html')
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    """Step 1: Get the user identify for authentication.
+    """
+    # print("Step 1: User Authorization")
+    github = OAuth2Session(cfg.GITHUB_CLIENT_ID)
+    authorization_url, state = github.authorization_url(cfg.AUTHORIZATION_BASE_URL)
+
+    # State is used to prevent CSRF.
+    session['oauth_state'] = state
+    return redirect(authorization_url)
+
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return render_template('contribute/home.html')
 
 
 @bp.route('/results', methods=['POST', 'GET'])
+@login_required
 def result():
     if request.method == 'POST':
         # result = request.form
-        print("searching...")
         result = request.form.to_dict()
-        print(result)
         query = result['search']
         search(query)
-        return render_template("contribute/results.html", user=session["name"], result=result)
+        return render_template("contribute/results.html", user=session["name"],  token=session['oauth_token']['access_token'], result=result)
 
+@bp.route('details/<contribution_id>', methods=['GET'])
+def contribution_details(contribution_id):
+    the_json_res = get_contribution(contribution_id)
+    return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
+
+@bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
+def capability_details(contribution_id, id):
+    the_json_res = get_capability(contribution_id, id)
+
+    # check if the user is reviewer by requesting to endpoint
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+    is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+    return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
+
+@bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
+def talent_details(contribution_id, id):
+    the_json_res = get_talent(contribution_id, id)
+
+    # check if the user is reviewer by requesting to endpoint
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+    is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
+
+# @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
+# def edit(contribution_id):
+#     #todo: need to implement the edit form page
+#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
 @bp.route('/create', methods=['GET', "POST"])
+@login_required
 def create():
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # print(contribution)
+        # add contributionAdmins to the json_contiubtion
+        contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        print(json_contribution)
         response, s = post(json_contribution)
+
         if response:
-            return render_template('contribute/submitted.html', user=session["name"])
-        elif not response:
-            return render_template('contribute/error.html', user=session["name"], error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"])
+            if response:
+                if "name" in session:
+                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                else:
+                    return render_template('contribute/submitted.html')
+            elif not response:
+                if "name" in session:
+                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                else:
+                    return render_template('contribute/error.html', error_msg=s)
+    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
+
 
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('contribute/submitted.html', user=session["name"])
+    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+
 
 @bp.route('/submitted', methods=['GET', 'POST'])
+@login_required
 def submitted():
-    return render_template('contribute/submitted.html', user=session["name"], )
+    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 @bp.route('/results')
+@login_required
 def search_results(search):
-    return render_template('results.html', results=results, user=session["name"], )
+    return render_template('results.html', results=results, user=session["name"],  token=session['oauth_token']['access_token'])
 
 
 # post a json_data in a http request
 def post(json_data):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
-    }
+    headers = requestutil.get_header_using_session(session)
     try:
         # Setting up post request
-        result = requests.post(Config.CONTRIBUTION_BUILDING_BLOCK_URL,
+        result = requests.post(cfg.CONTRIBUTION_BUILDING_BLOCK_URL,
                                headers=headers,
                                data=json_data)
 
         if result.status_code != 200:
             print("post method fails".format(json_data))
             print("with error code:", result.status_code)
-            return False, str("post method fails with error: ")+str(result.status_code)
+            return False, str("post method fails with error: ") + str(result.status_code)
         else:
             print("posted ok.".format(json_data))
             return True, str("post success!")
@@ -94,20 +171,74 @@ def post(json_data):
         return False, var
 
 
+def get_contribution(contribution_id):
+    headers = requestutil.get_header_using_session(session)
+
+    try:
+        if contribution_id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(contribution_id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(contribution_id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_capability(contribution_id, cid):
+    headers = requestutil.get_header_using_session(session)
+
+    try:
+        if contribution_id and cid:
+            result = requestutil.request_capability(headers, contribution_id, cid)
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_talent(contribution_id, tid):
+    headers = requestutil.get_header_using_session(session)
+
+    try:
+        if id:
+            result = requestutil.request_talent(headers, contribution_id, tid)
+
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
 # post a json_data in a http request
 def search(input_data):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Config.AUTHENTICATION_TOKEN
-    }
+    headers = requestutil.get_header_using_auth_token(cfg.AUTHENTICATION_TOKEN)
 
     try:
         # Setting up post request
         if not input_data or len(input_data) == 0:
-            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL + "/",
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/",
                                   headers=headers)
         else:
-            result = requests.get(Config.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(input_data),
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(input_data),
                                   headers=headers)
 
         if result.status_code != 200:

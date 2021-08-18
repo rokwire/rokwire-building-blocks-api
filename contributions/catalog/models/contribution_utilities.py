@@ -1,3 +1,17 @@
+#  Copyright 2021 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 from .capability_utilities import to_capability
 from .talent_utilities import to_talent
 
@@ -7,6 +21,7 @@ def init_contribution():
         "name": '',
         "shortDescription": '',
         "longDescription": '',
+        'contributionAdmins': [],
         "contributors": [],
         "capabilities": [],
         "talents": []
@@ -84,11 +99,11 @@ def to_contribution(d):
     if not d: return {}
     res = init_contribution()
     capability = to_capability(d)
-    if len(capability)>= 1 and capability[0]["name"]:
+    if len(capability) >= 1 and capability[0]["name"]:
         res["capabilities"] = capability
     # print(res["capabilities"])
     talent = to_talent(d)
-    if len(talent)>=1 and talent[0]["name"]:
+    if len(talent) >= 1 and talent[0]["name"]:
         res["talents"] = talent
     contributor = to_contributor(d)
     res["contributors"] = contributor

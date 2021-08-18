@@ -12,7 +12,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from bson import ObjectId
+
+def format_query_status_login(query, login, is_login):
+    if (is_login):
+        query_parts = [{'status': 'Published'}, {"contributionAdmins": login}]
+        query['$or'] = query_parts
+    else:
+        query = {'status': 'Published'}
+
+    return query
 
 def format_query_contribution(name, query):
     query_parts = []

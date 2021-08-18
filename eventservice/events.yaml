@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.9.0
+  version: 1.11.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -176,6 +176,15 @@ paths:
         explode: true
         schema:
           type: string
+      - name: groupId
+        in: query
+        description: The parameter for searching group events based on the group IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
       responses:
         200:
           description: search results matching criteria
@@ -805,6 +814,12 @@ components:
           - rejected
           - incomplete
           - archived
+        isEventFree:
+          type: boolean
+          description: This boolean field will indicate whether the event is free or not.
+        isGroupPrivate:
+          type: boolean
+          description:  If this field's value is set to true, it means that this is a private group event. If it's set to false, it means that this is a public group event.
         isSuperEvent:
           type: boolean
           description: States whether an event is a super event (`true`) or not (`false`). A super event is defined as an event that contains one more sub events. E.g. conference, workshop, exhibition, etc. Each sub event can be a featured sub event and can contain a track that the sub event belongs to.
@@ -819,6 +834,10 @@ components:
         isVirtual:
           type: boolean
           description: Setting this to true will indicate that the event is virtual. This flag can then be used to ignore geocoding calculation or displaying a physical location in the app.
+        createdByGroupId:
+          type: string
+          format: uuid
+          description: For an event created by a Rokwire group, this field stores the group ID.
     SubEventDetails:
       type: object
       properties:
@@ -861,7 +880,7 @@ components:
           description: Longitude component of location.
         description:
           type: string
-          description: Description of the building from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana.
+          description: Description/address of the event location from WebTools, e.g., Krannert Center for the Performing Arts, 500 S Goodwin Ave, Urbana. For a virtual event (`isVirtual` is `true`), this field will contain the virtual event URL.
         floor:
           type: integer
     Contact:

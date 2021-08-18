@@ -31,6 +31,11 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_contribution_admins(injson['contributionAdmins'])
+        del outjson['contributionAdmins']
+    except:
+        pass
+    try:
         dataset.set_short_description(injson['shortDescription'])
         del outjson['shortDescription']
     except:
@@ -55,6 +60,11 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_status(injson["status"])
+        del outjson["status"]
+    except Exception as e:
+        pass
+    try:
         dataset.set_date_created(injson["dateCreated"])
         del outjson["dateCreated"]
     except Exception as e:
@@ -72,6 +82,11 @@ set capability dataset
 """
 def update_capability_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
+    try:
+        dataset.set_id(injson['id'])
+        del outjson['id']
+    except:
+        pass
     try:
         dataset.set_name(injson['name'])
         del outjson['name']
@@ -161,11 +176,6 @@ def update_capability_dataset_from_json(dataset, injson):
         dataset.set_auth_method(injson['authMethod'])
         del outjson['authMethod']
     except:
-        pass
-    try:
-        dataset.set_status(injson["status"])
-        del outjson["status"]
-    except Exception as e:
         pass
     try:
         data_deletion_endpoint_detail = DataDeletionEndpointDetail()
@@ -280,7 +290,6 @@ def update_person_dataset_from_json(dataset, injson):
 
     return dataset, outjson
 
-
 """
 update organization dataset
 """
@@ -314,6 +323,11 @@ set talent dataset
 """
 def update_talent_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
+    try:
+        dataset.set_id(injson['id'])
+        del outjson['id']
+    except:
+        pass
     try:
         dataset.set_name(injson['name'])
         del outjson['name']
@@ -404,6 +418,24 @@ def update_talent_dataset_from_json(dataset, injson):
         except:
             pass
     except Exception as e:
+        pass
+
+    return dataset, outjson
+
+"""
+update reviewer dataset
+"""
+def update_reviwer_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_name(injson['name'])
+        del outjson['name']
+    except:
+        pass
+    try:
+        dataset.set_github_username(injson['githubUsername'])
+        del outjson['githubUsername']
+    except:
         pass
 
     return dataset, outjson

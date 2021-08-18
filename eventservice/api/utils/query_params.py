@@ -17,8 +17,12 @@ import re
 from bson import ObjectId
 
 
-def format_query(args, query):
+def format_query(args, query, include_private_events=False, group_ids=None):
     query_parts = []
+    # group id
+    group_id = args.get('groupId')
+    if group_id:
+        query_parts.append({'createdByGroupId': group_id})
     # superevent id
     super_event_id = args.get('superEventId')
     if super_event_id and ObjectId.is_valid(super_event_id):
@@ -149,7 +153,16 @@ def format_query(args, query):
         radius_meters = int(args.get('radius'))
         query_parts.append({'coordinates': {'$geoWithin': {'$centerSphere': [coordinates, radius_meters * 0.000621371 / 3963.2]}}})
 
-    if query_parts:
+    # ApiKeyAuth query
+    if not include_private_events:
+        query_parts.append({'isGroupPrivate': {'$ne': True}})
+        query['$and'] = query_parts
+    # UserAuth query
+    else:
+        pubic_private_groups_access_parts = {'$or': [
+            {'isGroupPrivate': {'$ne': True}},  # Includes both group public and regular public events
+            {'createdByGroupId': {'$in': group_ids}}]}  # Check for group membership. Also include group private events.
+        query_parts.append(pubic_private_groups_access_parts)
         query['$and'] = query_parts
     return query
 
