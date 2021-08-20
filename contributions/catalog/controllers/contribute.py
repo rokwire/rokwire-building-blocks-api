@@ -31,6 +31,10 @@ from utils import requestutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
+# FILTERS["reverse_by_word"] = do_reverse_by_word
+# print(Template("{{ name | reverse_by_word }}").render({"name": "Stack Overflow"}))
+# print(Template("{{ names | reverse_by_word(attribute='name') }}").render({"names": [{"name": "Stack Overflow"}, {"name": "Stack Exchange"}]}))
+
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
@@ -77,20 +81,55 @@ def contribution_details(contribution_id):
     the_json_res = get_contribution(contribution_id)
     return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
 
-@bp.route('create/<contribution_id>/edit', methods=['GET'])
+@bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
+@login_required
 def contribution_edit(contribution_id):
-    the_json_res = get_contribution(contribution_id)
-    # TODO need to check if the user is editable then set the is_editable
-    is_editable = False
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_editable = adminutil.check_if_reviewer(username, headers)
+    if request.method == 'POST':
+        is_put = False
+        contribution_id = None
+        result = request.form.to_dict(flat=False)
 
-    if is_editable:
-        return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        # check if it is PUT
+        try:
+            contribution_id = result["contribution_id"][0]
+            is_put = True
+        except:
+            s = "There is a error in edit. The method is not an edit."
+            return render_template('contribute/error.html', error_msg=s)
+
+        if is_put:
+            contribution = to_contribution(result)
+            contribution = jsonutil.add_contribution_admins(contribution, is_edit=True)
+            # remove id from json_data
+            del contribution["id"]
+            json_contribution = json.dumps(contribution, indent=4)
+            response, s = put_contribution(json_contribution, contribution_id)
+
+            if response:
+                if response:
+                    if "name" in session:
+                        return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                    else:
+                        return render_template('contribute/submitted.html')
+                elif not response:
+                    if "name" in session:
+                        return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                    else:
+                        return render_template('contribute/error.html', error_msg=s)
     else:
-        s = "You don't have a permission to edit the contribution."
-        return render_template('contribute/error.html', error_msg=s)
+        the_json_res = get_contribution(contribution_id)
+        # TODO need to check if the user is editable then set the is_editable
+        is_editable = False
+        username = session["username"]
+        headers = requestutil.get_header_using_session(session)
+        is_editable = adminutil.check_if_reviewer(username, headers)
+
+        if is_editable:
+            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        else:
+            s = "You don't have a permission to edit the contribution."
+            return render_template('contribute/error.html', error_msg=s)
+
 
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
@@ -119,7 +158,7 @@ def talent_details(contribution_id, id):
 #     #todo: need to implement the edit form page
 #     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
-@bp.route('/create', methods=['GET', "POST"])
+@bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
     # if id:
@@ -138,10 +177,10 @@ def create():
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # add contributionAdmins to the json_contiubtion
+        # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        response, s = post(json_contribution)
+        response, s = post_contribution(json_contribution)
 
         if response:
             if response:
@@ -176,11 +215,39 @@ def search_results(search):
 
 
 # post a json_data in a http request
-def post(json_data):
+def post_contribution(json_data):
     headers = requestutil.get_header_using_session(session)
     try:
         # Setting up post request
         result = requests.post(cfg.CONTRIBUTION_BUILDING_BLOCK_URL,
+                               headers=headers,
+                               data=json_data)
+
+        if result.status_code != 200:
+            print("post method fails".format(json_data))
+            print("with error code:", result.status_code)
+            return False, str("post method fails with error: ") + str(result.status_code)
+        else:
+            print("posted ok.".format(json_data))
+            return True, str("post success!")
+
+    except Exception:
+        traceback.print_exc()
+        var = traceback.format_exc()
+        return False, var
+
+# post a json_data in a http request
+def put_contribution(json_data, contribution_id):
+    headers = requestutil.get_header_using_session(session)
+    try:
+        # set PUT url
+        put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+        print(put_url)
+        print(json_data)
+
+        # fix contributionAdmins
+        # Setting up post request
+        result = requests.put(put_url,
                                headers=headers,
                                data=json_data)
 

@@ -36,6 +36,39 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+from jinja2 import Template, environment
+from jinja2.filters import FILTERS, environmentfilter
+
+
+@environmentfilter
+def do_reverse_by_word(environment, value, attribute=None):
+    """
+    custom max calculation logic
+    """
+    if attribute:
+        return [list(reversed(i.get(attribute).split())) for i in value]
+
+    return list(reversed(value.split()))
+
+@app.template_filter('my_multiplier')
+def my_multiplier(n):
+    return n*10
+
+@app.template_filter('filter_nested_dict')
+def filter_nested_dict(parent_dict, item_list):
+    dict = parent_dict
+    try:
+        for item in item_list:
+            dict = parent_dict[item]
+        value = dict
+    except KeyError:
+        return ''
+
+    print(value)
+    return value
+
+environment.DEFAULT_FILTERS['my_multiplier'] = my_multiplier
+environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
 
 @app.route("/", methods=["GET"])
 def index():
