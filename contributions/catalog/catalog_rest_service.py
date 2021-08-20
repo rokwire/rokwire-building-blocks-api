@@ -55,17 +55,14 @@ def my_multiplier(n):
     return n*10
 
 @app.template_filter('filter_nested_dict')
-def filter_nested_dict(parent_dict, item_list):
-    dict = parent_dict
+def filter_nested_dict(dict, item_list):
     try:
         for item in item_list:
-            dict = parent_dict[item]
-        value = dict
-    except KeyError:
+            dict = dict[item]
+    except:
         return ''
 
-    print(value)
-    return value
+    return dict
 
 environment.DEFAULT_FILTERS['my_multiplier'] = my_multiplier
 environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict

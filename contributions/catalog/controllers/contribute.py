@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import json
+import logging
 import traceback
 
 import requests
@@ -236,7 +237,7 @@ def post_contribution(json_data):
         var = traceback.format_exc()
         return False, var
 
-# post a json_data in a http request
+# PUT a json_data in a http request
 def put_contribution(json_data, contribution_id):
     headers = requestutil.get_header_using_session(session)
     try:
@@ -252,12 +253,12 @@ def put_contribution(json_data, contribution_id):
                                data=json_data)
 
         if result.status_code != 200:
-            print("post method fails".format(json_data))
-            print("with error code:", result.status_code)
-            return False, str("post method fails with error: ") + str(result.status_code)
+            logging.ERROR("PUT method fails".format(json_data))
+            logging.ERROR("with error code:", result.status_code)
+            return False, str("PUT method fails with error: ") + str(result.status_code)
         else:
-            print("posted ok.".format(json_data))
-            return True, str("post success!")
+            print("PUT ok.".format(json_data))
+            return True, str("PUT success!")
 
     except Exception:
         traceback.print_exc()
