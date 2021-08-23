@@ -80,7 +80,14 @@ def result():
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
     the_json_res = get_contribution(contribution_id)
-    return render_template("contribute/contribution_details.html", post=the_json_res, user=session["name"])
+
+    # check to see if the logged in user is an editable user for creating edit button
+    is_editable = False
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+    is_editable = adminutil.check_if_reviewer(username, headers)
+
+    return render_template("contribute/contribution_details.html", is_editable=is_editable, post=the_json_res, user=session["name"])
 
 @bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -119,7 +126,7 @@ def contribution_edit(contribution_id):
                         return render_template('contribute/error.html', error_msg=s)
     else:
         the_json_res = get_contribution(contribution_id)
-        # TODO need to check if the user is editable then set the is_editable
+        # check if the user is editable then set the is_editable
         is_editable = False
         username = session["username"]
         headers = requestutil.get_header_using_session(session)

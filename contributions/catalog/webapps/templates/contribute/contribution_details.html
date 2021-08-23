@@ -148,7 +148,9 @@
         {% endfor %}
     {% endif %}
 
-    <button class="button button3" onclick="get_url('{{post.id}}')">Edit Contribution</button>
+    {% if is_editable %}
+        <button class="button button3" onclick="get_url('{{post.id}}')">Edit Contribution</button>
+    {% endif %}
 </div>
 
 

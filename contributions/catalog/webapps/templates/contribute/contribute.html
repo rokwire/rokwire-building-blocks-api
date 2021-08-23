@@ -234,10 +234,10 @@
                     <label class="control-label col-sm-2">Contributor's middle name</label>
                     <div class="col-sm-10">
                         {% if is_editable %}
-                            <input class="form-control" id="contributor_mname" name="person_middleNmae" placeholder=""
+                            <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
                                    type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
                         {% else %}
-                            <input class="form-control" id="contributor_mname" name="person_middleNmae" placeholder="" type="text">
+                            <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
                         {% endif %}
                     </div>
                 </div>
@@ -613,19 +613,19 @@
                                     <label class="required control-label col-sm-2">Data Deletion</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_endpoint"
+                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                                    placeholder="Endpoint"
                                                    type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                         {% else %}
-                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_endpoint"
+                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                                    placeholder="Endpoint" type="text">
                                         {% endif %}
                                         {% if is_editable %}
-                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_api"
+                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                                    placeholder="Api Key"
                                                    type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
                                         {% else %}
-                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_api"
+                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                                    placeholder="Api Key" type="text">
                                         {% endif %}
                                         <br>
@@ -792,9 +792,9 @@
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Data Deletion</label>
                                 <div class="col-sm-10">
-                                    <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_endpoint"
+                                    <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                            placeholder="Endpoint" type="text">
-                                    <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_api"
+                                    <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                            placeholder="Api Key" type="text">
                                     <br>
                                 </div>
