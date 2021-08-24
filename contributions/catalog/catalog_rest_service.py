@@ -50,10 +50,6 @@ def do_reverse_by_word(environment, value, attribute=None):
 
     return list(reversed(value.split()))
 
-@app.template_filter('my_multiplier')
-def my_multiplier(n):
-    return n*10
-
 @app.template_filter('filter_nested_dict')
 def filter_nested_dict(dict, item_list):
     try:
@@ -64,7 +60,6 @@ def filter_nested_dict(dict, item_list):
 
     return dict
 
-environment.DEFAULT_FILTERS['my_multiplier'] = my_multiplier
 environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
 
 @app.route("/", methods=["GET"])
