@@ -1,10 +1,9 @@
 import logging
 import os
 from time import gmtime
-
+from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
-from controllers.auth import login_required
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -36,20 +35,6 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
-from jinja2 import Template, environment
-from jinja2.filters import FILTERS, environmentfilter
-
-
-@environmentfilter
-def do_reverse_by_word(environment, value, attribute=None):
-    """
-    custom max calculation logic
-    """
-    if attribute:
-        return [list(reversed(i.get(attribute).split())) for i in value]
-
-    return list(reversed(value.split()))
-
 @app.template_filter('filter_nested_dict')
 def filter_nested_dict(dict, item_list):
     try:
@@ -61,6 +46,7 @@ def filter_nested_dict(dict, item_list):
     return dict
 
 environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
+
 
 @app.route("/", methods=["GET"])
 def index():
