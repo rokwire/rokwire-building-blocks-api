@@ -32,10 +32,6 @@ from utils import requestutil
 
 bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
-# FILTERS["reverse_by_word"] = do_reverse_by_word
-# print(Template("{{ name | reverse_by_word }}").render({"name": "Stack Overflow"}))
-# print(Template("{{ names | reverse_by_word(attribute='name') }}").render({"names": [{"name": "Stack Overflow"}, {"name": "Stack Exchange"}]}))
-
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
@@ -169,18 +165,7 @@ def talent_details(contribution_id, id):
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    # if id:
-    #     print("id presented")
-    # # teammembers looks like this, roughly:
-    # teammembers = [{"id": 55555, "name": "Ben", "share": 0},
-    #  {"id": 66666, "name": "Amy", "share": 1},
-    #  {"id": 77777, "name": "Ted", "share": 1}]
-
     if request.method == 'POST':
-        # postvars = variabledecode.variable_decode(request.form, dict_char='_')
-        # for k, v in postvars.iteritems():
-        #     member = [m for m in teammembers if m["id"] == int(k)][0]
-        #     member['share'] = v["share"]
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
@@ -201,7 +186,6 @@ def create():
                     return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
                 else:
                     return render_template('contribute/error.html', error_msg=s)
-    # return render_template('contribute/contribute.html', user=session["name"], token=session['oauth_token']['access_token'], teammembers=teammembers)
     return render_template('contribute/contribute.html', user=session["name"], token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
@@ -250,10 +234,7 @@ def put_contribution(json_data, contribution_id):
     try:
         # set PUT url
         put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
-        print(put_url)
-        print(json_data)
 
-        # fix contributionAdmins
         # Setting up post request
         result = requests.put(put_url,
                                headers=headers,
