@@ -42,6 +42,8 @@ app.register_blueprint(contribute_bp)
 @app.route("/", methods=["GET"])
 def index():
     is_logged_in = False
+    cap_json = []
+    tal_json = []
     try:
         # create error to see if the use is logged in or now
         if (session["name"] == ""):
