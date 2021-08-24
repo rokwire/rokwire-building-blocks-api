@@ -16,7 +16,6 @@ import json
 import traceback
 
 import requests
-import functools
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )

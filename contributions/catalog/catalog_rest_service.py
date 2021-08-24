@@ -1,16 +1,15 @@
 import logging
 import os
-import utils.requestutil as requestutil
-import utils.jsonutil as jsonutil
-
 from time import gmtime
+from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
+
+import utils.requestutil as requestutil
+import utils.jsonutil as jsonutil
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-from jinja2 import environment
-from jinja2.filters import environmentfilter
 
 debug = cfg.DEBUG
 
@@ -50,6 +49,7 @@ def filter_nested_dict(dict, item_list):
     return dict
 
 environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
+
 
 @app.route("/", methods=["GET"])
 def index():
