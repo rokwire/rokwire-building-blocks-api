@@ -1,7 +1,9 @@
 import logging
 import os
-from time import gmtime
+import utils.requestutil as requestutil
+import utils.jsonutil as jsonutil
 
+from time import gmtime
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
 from controllers.auth import login_required
@@ -39,7 +41,33 @@ app.register_blueprint(contribute_bp)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template('contribute/home.html')
+    is_logged_in = False
+    try:
+        # create error to see if the use is logged in or now
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+        user=session["name"]
+        token=session['oauth_token']['access_token']
+    except:
+        is_logged_in = False
+
+    if (is_logged_in):
+        # query with auth
+        headers = requestutil.get_header_using_session(session)
+        result = requestutil.request_contributions(headers)
+        print("Test")
+    else:
+        # query only published ones
+        headers = requestutil.get_header_using_api_key()
+        result = requestutil.request_contributions(headers)
+
+    # create the json for only capability and talent
+    cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+    tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json)
 
 
 @app.route("/login")

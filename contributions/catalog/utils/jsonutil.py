@@ -11,6 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import logging
+
 from bson import ObjectId
 from flask import session
 
@@ -68,3 +70,34 @@ def remove_objectid_from_dataset(dataset):
 
     return dataset
 
+"""
+create json for capabilities for home page
+"""
+def create_capability_json_from_contribution_json(injson):
+    out_json_list = []
+
+    # add capability first
+    for contribution in injson:
+        try:
+            for capability in contribution["capabilities"]:
+                out_json_list.append(capability)
+        except:
+            logging.warning("There is no capability in the contribution")
+
+    return out_json_list
+
+"""
+create json for talents for home page
+"""
+def create_talent_json_from_contribution_json(injson):
+    out_json_list = []
+
+    # add talents
+    for contribution in injson:
+        try:
+            for talent in contribution["talents"]:
+                out_json_list.append(talent)
+        except:
+            logging.warning("There is no talent in the contribution")
+
+    return out_json_list
