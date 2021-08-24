@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
+- Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Make contribution details pages to show all items for reviewers and admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 
 ## [1.11.1] - 2021-08-11
 ### Changed
@@ -21,9 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add group authorization to PUT/events/{event_id}/images/{image_id} endpoint.[#719](https://github.com/rokwire/rokwire-building-blocks-api/issues/719)
 - Add group authorization to DELETE /events/{event_id}/images/{image_id} endpoint.[#720](https://github.com/rokwire/rokwire-building-blocks-api/issues/720)
 - Make catalog pages to show different items for reviewers and non reviewers. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
-- Make catalog pages to show all the items for contribution admins. [#721](https://github.com/rokwire/rokwire-building-blocks-api/issues/721)
-- Make contribution details pages to show all items for reviewers and admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
-- Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 
 ### Fixed
 - Fixed talent page to show decoded capaiblities. [#703](https://github.com/rokwire/rokwire-building-blocks-api/issues/703)
