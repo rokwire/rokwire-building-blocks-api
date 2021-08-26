@@ -80,6 +80,8 @@ def create_capability_json_from_contribution_json(injson):
     for contribution in injson:
         try:
             for capability in contribution["capabilities"]:
+                # need to add contribution id in capability as well
+                capability["cont_id"] = contribution["id"]
                 out_json_list.append(capability)
         except:
             logging.warning("There is no capability in the contribution")
@@ -96,6 +98,8 @@ def create_talent_json_from_contribution_json(injson):
     for contribution in injson:
         try:
             for talent in contribution["talents"]:
+                # need to add contribution id in capability as well
+                talent["cont_id"] = contribution["id"]
                 out_json_list.append(talent)
         except:
             logging.warning("There is no talent in the contribution")

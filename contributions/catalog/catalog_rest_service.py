@@ -53,11 +53,13 @@ environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
 
 @app.route("/", methods=["GET"])
 def index():
+    show_sel = request.args.get('show')
     is_logged_in = False
     cap_json = []
     tal_json = []
     try:
-        # create error to see if the use is logged in or now
+        # create error to see if the user is logged in or now
+        # TODO this should be changed to better way
         if (session["name"] == ""):
             is_logged_in = True
         else:
@@ -71,17 +73,32 @@ def index():
         # query with auth
         headers = requestutil.get_header_using_session(session)
         result = requestutil.request_contributions(headers)
-        print("Test")
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
     else:
         # query only published ones
         headers = requestutil.get_header_using_api_key()
         result = requestutil.request_contributions(headers)
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    # create the json for only capability and talent
-    cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
-    tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
-
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json)
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
 
 @app.route("/login")
@@ -123,7 +140,25 @@ def profile():
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
 
-    return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    show_sel = request.args.get('show')
+    cap_json = []
+    tal_json = []
+
+    # query with auth
+    headers = requestutil.get_header_using_session(session)
+    result = requestutil.request_contributions(headers)
+    if show_sel == "capability":
+        # create the json for only capability
+        cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+    elif show_sel == "talent":
+        # create the json for only talent
+        tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+    else:
+        # create the json for only capability and talent
+        cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=session["name"], token=session['oauth_token']['access_token'])
 
 
 if __name__ == '__main__':

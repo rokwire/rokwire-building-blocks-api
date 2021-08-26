@@ -35,6 +35,7 @@
     .column {
         float: left;
         width: 33.33%;
+        display: none; /* Hide all elements by default */
     }
 
     /* Clear floats after rows */
@@ -170,8 +171,7 @@
 
 </style>
 
-<body>
-{#<body onload=start()>#}
+<body onload=start()>
 <div class="topnav" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
     <div id="submit_contribution" style="display: none;">
@@ -214,12 +214,11 @@
 
         <div class="row" id="grid-view">
             <!-- Template for cards -->
-            {% if cap_json|length > 0 %}
-                {% for capability in cap_json %}
+            <script id="capability_template" type="text/template">
                 <a href="" class="card-link">
                     <div class="column capability">
                         <div class="content">
-                            <h4 class="capability_name">{{ capability["name"] }}</h4>
+                            <h4 class="capability_name"></h4>
                             <p class="capability_description"></p>
                             <p class="contributors"></p>
                             <a class="link"> View Contribution >>> </a>
@@ -227,274 +226,243 @@
                         </div>
                     </div>
                 </a>
-                {% endfor %}
-            {% endif %}
+            </script>
 
-            <div class="column talent">
-                <div class="content">
-                    <a href="" class="card-link">
-                        <h4 class="talent_name"></h4>
-                        <p class="talent_description"></p>
-                        <p class="contributors"></p>
-                        <a class="link" > View Contribution >>> </a>
-                        <!--                <span class="label label-default">App Config</span>-->
-                    </a>
-                </div>
-            </div>
-        </div><!-- END GRID -->
+            <script id="talent_template" type="text/template">
+                <a href="" class="card-link">
+                    <div class="column talent">
+                        <div class="content">
+                            <h4 class="talent_name"></h4>
+                            <p class="talent_description"></p>
+                            <p class="contributors"></p>
+                            <a class="link" > View Contribution >>> </a>
+                            <!--                <span class="label label-default">App Config</span>-->
+                        </div>
+                    </div>
+                </a>
+            </script>
+            <!-- END GRID -->
+        </div>
 
-{#        <div class="row" id="grid-view">#}
-{#            <!-- Template for cards -->#}
-{#            <script id="capability_template" type="text/template">#}
-{#                <a href="" class="card-link">#}
-{#                    <div class="column capability">#}
-{#                        <div class="content">#}
-{#                            <h4 class="capability_name"></h4>#}
-{#                            <p class="capability_description"></p>#}
-{#                            <p class="contributors"></p>#}
-{#                            <a class="link"> View Contribution >>> </a>#}
-{#                            <!--                    <span class="label label-default">App Config</span>-->#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </a>#}
-{#            </script>#}
-{##}
-{#            <script id="talent_template" type="text/template">#}
-{#                <a href="" class="card-link">#}
-{#                    <div class="column talent">#}
-{#                        <div class="content">#}
-{#                            <h4 class="talent_name"></h4>#}
-{#                            <p class="talent_description"></p>#}
-{#                            <p class="contributors"></p>#}
-{#                            <a class="link" > View Contribution >>> </a>#}
-{#                            <!--                <span class="label label-default">App Config</span>-->#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </a>#}
-{#            </script>#}
-{#            <!-- END GRID -->#}
-{#        </div>#}
-{##}
-{#        <!-- END MAIN -->#}
-{#    </div>#}
-{##}
-{#    <script>#}
-{##}
-{#        function start() {#}
-{#            var user_name = "{{user}}";#}
-{#            // var user_name = $('#nav-user-data').data("user");#}
-{#            //console.log(user_name)#}
-{#            // alert(user_name)#}
-{#            var nav_login = document.getElementById('nav_login');#}
-{#            var nav_greet = document.getElementById('nav_greeting')#}
-{#            var nav_user = document.getElementById('user_profile')#}
-{#            var submit_btn = document.getElementById('submit_contribution')#}
-{#            if (user_name.length > 0) {#}
-{#                nav_login.style.display = 'none';#}
-{#                nav_greet.style.display = 'block';#}
-{#                nav_user.style.display = 'block';#}
-{#                submit_btn.style.display = 'block';#}
-{#            } else {#}
-{#                nav_login.style.display = 'block';#}
-{#                nav_greet.style.display = 'none';#}
-{#                nav_user.style.display = 'block';#}
-{#                submit_btn.style.display = 'none';#}
-{#            }#}
-{#            ajax('GET', get_cap_url, null,#}
-{#                function (res) {#}
-{#                    var items = JSON.parse(res);#}
-{#                    all_capability = items;#}
-{#                    append_capability(all_capability)#}
-{#                    filterSelection('all');#}
-{##}
-{#                },#}
-{#                function () {#}
-{#                    console.log("error occured - capability");#}
-{#                });#}
-{##}
-{#            ajax('GET', get_talent_url, null,#}
-{#                function (res) {#}
-{#                    var items = JSON.parse(res);#}
-{##}
-{#                    all_talents = items;#}
-{#                    append_talent(all_talents)#}
-{#                    filterSelection('all');#}
-{#                },#}
-{#                function () {#}
-{#                    console.log("error occured talent");#}
-{#                });#}
-{##}
-{#            window.onload = append_capability(all_capability);#}
-{#            window.onload = append_talent(all_talents);#}
-{#        }#}
-{##}
-{#        var user_icon = document.getElementById('user_profile');#}
-{#        user_icon.addEventListener('click', function () {#}
-{#            if (user_icon.style.display === 'block') {#}
-{#                document.getElementById("myDropdown").classList.toggle("show");#}
-{#            }#}
-{#        })#}
-{##}
-{#        window.onclick = function (event) {#}
-{#            if (!event.target.matches('.dropbtn')) {#}
-{#                var dropdowns = document.getElementsByClassName("dropdown-content");#}
-{#                for (let i = 0; i < dropdowns.length; i++) {#}
-{#                    var openDropdown = dropdowns[i];#}
-{#                    if (openDropdown.classList.contains('show')) {#}
-{#                        openDropdown.classList.remove('show');#}
-{#                    }#}
-{#                }#}
-{#            }#}
-{#        }#}
-{#        var all_capability = [];#}
-{#        var all_talents = []#}
-{##}
-{#        var get_talent_url = "http://" + "localhost:5000/contributions/talents";#}
-{#        var get_cap_url = "http://" + "localhost:5000/contributions/capabilities";#}
-{#        var get_contribution_url = "http://" + "localhost:5000/contributions";#}
-{##}
-{##}
-{##}
-{#        function get_contributors(data) {#}
-{#            return "abc@abc.com" + " NCSA"#}
-{#        }#}
-{##}
-{#        function append_capability(data) {#}
-{#            //Set Up the template#}
-{#            var s = $("#capability_template")[0].innerHTML.trim();#}
-{#            var holder = document.createElement('div');#}
-{#            holder.innerHTML = s;#}
-{#            var template = holder.childNodes;#}
-{##}
-{#            var member = document.getElementById('grid-view');#}
-{#            data.forEach(function (object) {#}
-{##}
-{#                //Clone Template#}
-{#                var newItem = $(template).clone();#}
-{#                var contributionid = object.contributionId;#}
-{#                var id = object.id;#}
-{##}
-{##}
-{#                console.log(contributionid, id)#}
-{#                //Populate it#}
-{#                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capabilities/" + id)#}
-{##}
-{#                $(newItem).find(".capability_name").html(object.name);#}
-{#                $(newItem).find(".capability_description").html(object.description);#}
-{#                $(newItem).find(".contributors").html(get_contributors(data));#}
-{#                // $(newItem).click(function(){#}
-{#                //     // $(newItem).load("http://localhost:5050/contribute/details/" + contributionid)#}
-{#                //     $(newItem).attr('href', "http://localhost:5050/contribute/details/" + contributionid )#}
-{#                //#}
-{#                // })#}
-{#                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)#}
-{#                $("#grid-view").append(newItem);#}
-{##}
-{#                // newItem.onclick = function (){#}
-{#                //     console.log('haha')#}
-{#                // }#}
-{##}
-{#            });#}
-{#        }#}
-{##}
-{#        function append_talent(data) {#}
-{#            //Set Up the template#}
-{#            var s = $("#talent_template")[0].innerHTML.trim();#}
-{#            var holder = document.createElement('div');#}
-{#            holder.innerHTML = s;#}
-{##}
-{#            var template = holder.childNodes;#}
-{##}
-{#            var member = document.getElementById('grid-view');#}
-{#            data.forEach(function (object) {#}
-{#                var contributionid = object.contributionId;#}
-{#                var id = object.id;#}
-{#                console.log(contributionid, id)#}
-{#                //Clone Template#}
-{#                var newItem = $(template).clone();#}
-{##}
-{#                //Populate it#}
-{#                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talents/" + id)#}
-{##}
-{#                $(newItem).find(".talent_name").html(object.name);#}
-{#                $(newItem).find(".talent_description").html(object.shortDescription);#}
-{#                $(newItem).find(".contributors").html(get_contributors(data));#}
-{#                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)#}
-{##}
-{#                $("#grid-view").append(newItem);#}
-{##}
-{#            });#}
-{#        }#}
-{##}
-{#        function ajax(method, url, data, okcallback, errorcallback) {#}
-{#            var xhr = new XMLHttpRequest();#}
-{##}
-{#            xhr.open(method, url, true);#}
-{#            xhr.setRequestHeader("Authorization", 'bearer ' + '{{token}}');#}
-{#            xhr.onload = function () {#}
-{#                if (xhr.status == 200) {#}
-{#                    okcallback(xhr.responseText);#}
-{#                } else {#}
-{#                    errorcallback();#}
-{#                }#}
-{#            }#}
-{##}
-{#            if (data == null) {#}
-{#                xhr.send();#}
-{#            } else {#}
-{##}
-{#                xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");#}
-{#                xhr.send(data);#}
-{#            }#}
-{#        }#}
-{##}
-{##}
-{#        function filterSelection(c) {#}
-{#            var x, i;#}
-{#            x = document.getElementsByClassName("column");#}
-{#            if (c === "all") c = "";#}
-{#            for (i = 0; i < x.length; i++) {#}
-{#                w3RemoveClass(x[i], "show");#}
-{#                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");#}
-{#            }#}
-{#        }#}
-{##}
-{#        function w3AddClass(element, name) {#}
-{#            var i, arr1, arr2;#}
-{#            arr1 = element.className.split(" ");#}
-{#            arr2 = name.split(" ");#}
-{#            for (i = 0; i < arr2.length; i++) {#}
-{#                if (arr1.indexOf(arr2[i]) == -1) {#}
-{#                    element.className += " " + arr2[i];#}
-{#                }#}
-{#            }#}
-{#        }#}
-{##}
-{#        function w3RemoveClass(element, name) {#}
-{#            var i, arr1, arr2;#}
-{#            arr1 = element.className.split(" ");#}
-{#            arr2 = name.split(" ");#}
-{#            for (i = 0; i < arr2.length; i++) {#}
-{#                while (arr1.indexOf(arr2[i]) > -1) {#}
-{#                    arr1.splice(arr1.indexOf(arr2[i]), 1);#}
-{#                }#}
-{#            }#}
-{#            element.className = arr1.join(" ");#}
-{#        }#}
-{##}
-{#        // Add active class to the current button (highlight it)#}
-{#        var btnContainer = document.getElementById("myBtnContainer");#}
-{#        var btns = btnContainer.getElementsByClassName("btn");#}
-{#        for (var i = 0; i < btns.length; i++) {#}
-{#            btns[i].addEventListener("click", function () {#}
-{#                var current = document.getElementsByClassName("active");#}
-{#                current[0].className = current[0].className.replace(" active", "");#}
-{#                this.className += " active";#}
-{#            });#}
-{#        }#}
-{##}
-{#    </script>#}
+        <!-- END MAIN -->
     </div>
-</div>
+
+    <script>
+
+        function start() {
+            var user_name = "{{user}}";
+            // var user_name = $('#nav-user-data').data("user");
+            //console.log(user_name)
+            // alert(user_name)
+            var nav_login = document.getElementById('nav_login');
+            var nav_greet = document.getElementById('nav_greeting')
+            var nav_user = document.getElementById('user_profile')
+            var submit_btn = document.getElementById('submit_contribution')
+            if (user_name.length > 0) {
+                nav_login.style.display = 'none';
+                nav_greet.style.display = 'block';
+                nav_user.style.display = 'block';
+                submit_btn.style.display = 'block';
+            } else {
+                nav_login.style.display = 'block';
+                nav_greet.style.display = 'none';
+                nav_user.style.display = 'block';
+                submit_btn.style.display = 'none';
+            }
+            ajax('GET', get_cap_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+                    all_capability = items;
+                    append_capability(all_capability)
+                    filterSelection('all');
+
+                },
+                function () {
+                    console.log("error occured - capability");
+                });
+
+            ajax('GET', get_talent_url, null,
+                function (res) {
+                    var items = JSON.parse(res);
+
+                    all_talents = items;
+                    append_talent(all_talents)
+                    filterSelection('all');
+                },
+                function () {
+                    console.log("error occured talent");
+                });
+
+            window.onload = append_capability(all_capability);
+            window.onload = append_talent(all_talents);
+        }
+
+        var user_icon = document.getElementById('user_profile');
+        user_icon.addEventListener('click', function () {
+            if (user_icon.style.display === 'block') {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+        })
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        var all_capability = [];
+        var all_talents = []
+
+        var get_talent_url = "http://" + "localhost:5000/contributions/talents";
+        var get_cap_url = "http://" + "localhost:5000/contributions/capabilities";
+        var get_contribution_url = "http://" + "localhost:5000/contributions";
+
+
+
+        function get_contributors(data) {
+            return "abc@abc.com" + " NCSA"
+        }
+
+        function append_capability(data) {
+            //Set Up the template
+            var s = $("#capability_template")[0].innerHTML.trim();
+            var holder = document.createElement('div');
+            holder.innerHTML = s;
+            var template = holder.childNodes;
+
+            var member = document.getElementById('grid-view');
+            data.forEach(function (object) {
+
+                //Clone Template
+                var newItem = $(template).clone();
+                var contributionid = object.contributionId;
+                var id = object.id;
+
+
+                console.log(contributionid, id)
+                //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/capabilities/" + id)
+
+                $(newItem).find(".capability_name").html(object.name);
+                $(newItem).find(".capability_description").html(object.description);
+                $(newItem).find(".contributors").html(get_contributors(data));
+                // $(newItem).click(function(){
+                //     // $(newItem).load("http://localhost:5050/contribute/details/" + contributionid)
+                //     $(newItem).attr('href', "http://localhost:5050/contribute/details/" + contributionid )
+                //
+                // })
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
+                $("#grid-view").append(newItem);
+
+                // newItem.onclick = function (){
+                //     console.log('haha')
+                // }
+
+            });
+        }
+
+        function append_talent(data) {
+            //Set Up the template
+            var s = $("#talent_template")[0].innerHTML.trim();
+            var holder = document.createElement('div');
+            holder.innerHTML = s;
+
+            var template = holder.childNodes;
+
+            var member = document.getElementById('grid-view');
+            data.forEach(function (object) {
+                var contributionid = object.contributionId;
+                var id = object.id;
+                console.log(contributionid, id)
+                //Clone Template
+                var newItem = $(template).clone();
+
+                //Populate it
+                $(newItem).find(".card-link").attr('href', "http://localhost:5050/contribute/details/" + contributionid + "/talents/" + id)
+
+                $(newItem).find(".talent_name").html(object.name);
+                $(newItem).find(".talent_description").html(object.shortDescription);
+                $(newItem).find(".contributors").html(get_contributors(data));
+                $(newItem).find(".link").attr('href', "http://localhost:5050/contribute/details/" + contributionid)
+
+                $("#grid-view").append(newItem);
+
+            });
+        }
+
+        function ajax(method, url, data, okcallback, errorcallback) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open(method, url, true);
+            xhr.setRequestHeader("Authorization", 'bearer ' + '{{token}}');
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    okcallback(xhr.responseText);
+                } else {
+                    errorcallback();
+                }
+            }
+
+            if (data == null) {
+                xhr.send();
+            } else {
+
+                xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+                xhr.send(data);
+            }
+        }
+
+
+        function filterSelection(c) {
+            var x, i;
+            x = document.getElementsByClassName("column");
+            if (c === "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], "show");
+                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+            }
+        }
+
+        function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {
+                    element.className += " " + arr2[i];
+                }
+            }
+        }
+
+        function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // Add active class to the current button (highlight it)
+        var btnContainer = document.getElementById("myBtnContainer");
+        var btns = btnContainer.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+
+    </script>
+
 </body>
 </html>
