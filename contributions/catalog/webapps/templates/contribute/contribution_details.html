@@ -147,6 +147,38 @@
         </div>
         {% endfor %}
     {% endif %}
+
+    {% if reviewer %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Contribution admins</h4>
+            </div>
+            <p class="col-sm-9">
+                {% for x in post.contributionAdmins %}
+                    {{x}}
+                {% endfor %}
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Status</h4>
+            </div>
+            <p class="col-sm-9">{{post.status}}</p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Date created</h4>
+            </div>
+            <p class="col-sm-9">{{post.dateCreated}}</p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Date modified</h4>
+            </div>
+            <p class="col-sm-9">{{post.dateModified}}</p>
+        </div>
+    {% endif %}
+
 </div>
 
 
