@@ -75,11 +75,6 @@ def result():
 
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
-    username = session["username"]
-    is_reviewer = False
-    is_contribution_admin = False
-
-    # request contribution to get the contribution admin info
     the_json_res = get_contribution(contribution_id)
 
     # check to see if the logged in user is an editable user for creating edit button
@@ -88,7 +83,7 @@ def contribution_details(contribution_id):
     headers = requestutil.get_header_using_session(session)
     is_editable = adminutil.check_if_reviewer(username, headers)
 
-    return render_template("contribute/contribution_details.html", is_editable=is_editable, post=the_json_res, user=session["name"])
+    return render_template("contribute/contribution_details.html", reviewer=is_editable, is_editable=is_editable, post=the_json_res, user=session["name"])
 
 @bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -191,6 +186,7 @@ def talent_details(contribution_id, id):
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    json_contribute = None
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
@@ -213,7 +209,7 @@ def create():
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
             else:
                 return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
+    return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
