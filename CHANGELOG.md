@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
+- Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Make contribution details pages to show all items for reviewers and admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
+- Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
+
+## [1.11.1] - 2021-08-11
+### Changed
+- Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
+
+## [1.11.0] - 2021-07-29
 ### Added
 - Show different components in catalog based on the user. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
 - Add copyright to the catalog codes. [#708](https://github.com/rokwire/rokwire-building-blocks-api/issues/708)
@@ -65,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated CODEOWNERS file. [#631](https://github.com/rokwire/rokwire-building-blocks-api/issues/631)
 - Modified environmental variables in Dockerfile. [#677](https://github.com/rokwire/rokwire-building-blocks-api/issues/677)
+- Updated pre-commit config and corresponding GitHub Action to use `Yelp/detect-secrets` version 1.0.3. [#649](https://github.com/rokwire/rokwire-building-blocks-api/issues/649) 
 - Updated location description in Events Building Block. [#706](https://github.com/rokwire/rokwire-building-blocks-api/issues/706)
 
 ### Removed
@@ -364,7 +377,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...HEAD
+[1.11.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...1.11.1
+[1.11.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...1.10.0
 [1.9.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.8.0...1.9.0

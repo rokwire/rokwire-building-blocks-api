@@ -70,4 +70,3 @@ def remove_objectid_from_dataset(dataset):
         del dataset["_id"]
 
     return dataset
-

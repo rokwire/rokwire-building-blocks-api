@@ -75,6 +75,11 @@ def result():
 
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
+    username = session["username"]
+    is_reviewer = False
+    is_contribution_admin = False
+
+    # request contribution to get the contribution admin info
     the_json_res = get_contribution(contribution_id)
 
     # check to see if the logged in user is an editable user for creating edit button
@@ -134,26 +139,47 @@ def contribution_edit(contribution_id):
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
 
-
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
+    username = session["username"]
+    is_reviewer = False
+    is_contribution_admin = False
+
+    # request capability json
     the_json_res = get_capability(contribution_id, id)
 
-    # check if the user is reviewer by requesting to endpoint
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_reviewer = adminutil.check_if_reviewer(username, headers)
+    contribution_admins = the_json_res["contributionAdmins"]
+    if username in contribution_admins:
+        is_contribution_admin = True
+
+    if is_contribution_admin:
+        is_reviewer = True
+    else:
+        # check if the user is reviewer by requesting to endpoint
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
 @bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
+    username = session["username"]
+    is_reviewer = False
+    is_contribution_admin = False
+
+    # request talent json
     the_json_res = get_talent(contribution_id, id)
 
-    # check if the user is reviewer by requesting to endpoint
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_reviewer = adminutil.check_if_reviewer(username, headers)
+    contribution_admins = the_json_res["contributionAdmins"]
+    if username in contribution_admins:
+        is_contribution_admin = True
+
+    if is_contribution_admin:
+        is_reviewer = True
+    else:
+        # check if the user is reviewer by requesting to endpoint
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
 
     return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
 
@@ -176,17 +202,18 @@ def create():
         response, s = post_contribution(json_contribution)
 
         if response:
-            if response:
-                if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
-                else:
-                    return render_template('contribute/submitted.html')
-            elif not response:
-                if "name" in session:
-                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
-                else:
-                    return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"], token=session['oauth_token']['access_token'])
+            if "name" in session:
+                return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+            else:
+                return render_template('contribute/submitted.html')
+        elif not response:
+            logging.error(s)
+            s = "Contribution submission failed. Please try again after some time!"
+            if "name" in session:
+                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+            else:
+                return render_template('contribute/error.html', error_msg=s)
+    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -216,11 +243,12 @@ def post_contribution(json_data):
                                data=json_data)
 
         if result.status_code != 200:
-            print("post method fails".format(json_data))
-            print("with error code:", result.status_code)
-            return False, str("post method fails with error: ") + str(result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Contribution POST " + json.dumps(err_json))
+            return False, str("post method fails with error: ") + str(result.status_code) \
+                   + ": " + str(err_json['reason'])
         else:
-            print("posted ok.".format(json_data))
+            logging.info("posted ok.".format(json_data))
             return True, str("post success!")
 
     except Exception:
@@ -263,8 +291,8 @@ def get_contribution(contribution_id):
                                   headers=headers)
 
         if result.status_code != 200:
-            print("GET method fails".format(contribution_id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Contribution GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(contribution_id))
@@ -281,8 +309,8 @@ def get_capability(contribution_id, cid):
         if contribution_id and cid:
             result = requestutil.request_capability(headers, contribution_id, cid)
         if result.status_code != 200:
-            print("GET method fails".format(id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Capability GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(id))
@@ -300,8 +328,8 @@ def get_talent(contribution_id, tid):
             result = requestutil.request_talent(headers, contribution_id, tid)
 
         if result.status_code != 200:
-            print("GET method fails".format(id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Talent GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(id))
@@ -325,8 +353,8 @@ def search(input_data):
                                   headers=headers)
 
         if result.status_code != 200:
-            print("post method fails".format(input_data))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Search " + json.dumps(err_json))
             return False
         else:
             print("posted ok.".format(input_data))
@@ -335,3 +363,12 @@ def search(input_data):
     except Exception:
         # traceback.print_exc()
         return False
+
+"""
+parse error response and convert to json object
+"""
+def parse_response_error(response):
+    err_content = response.content.decode("utf-8").replace('\n', '')
+    err_json = json.loads(err_content)
+
+    return err_json

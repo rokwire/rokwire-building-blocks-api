@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.10.0
+  version: 1.11.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -338,7 +338,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  allOf:
+                  - $ref: '#/components/schemas/Talent'
+                  - type: object
+                    properties:
+                      contributionAdmins:
+                        description: List of GitHub usernames of Contribution admins
+                        type: array
         400:
           description: Bad request
         401:
@@ -378,7 +384,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  allOf:
+                    - $ref: '#/components/schemas/Capability'
+                    - type: object
+                      properties:
+                        contributionAdmins:
+                          description: List of GitHub usernames of Contribution admins
+                          type: array
         400:
           description: Bad request
         401:
