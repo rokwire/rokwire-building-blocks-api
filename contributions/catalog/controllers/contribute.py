@@ -22,6 +22,7 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
+from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
@@ -74,26 +75,64 @@ def result():
 
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
-    username = session["username"]
-    is_reviewer = False
-    is_contribution_admin = False
-
-    # request contribution to get the contribution admin info
     the_json_res = get_contribution(contribution_id)
 
-    # check if the user is a contribution admins member
-    contribution_admins = the_json_res['contributionAdmins']
-    if username in contribution_admins:
-        is_contribution_admin = True
+    # check to see if the logged in user is an editable user for creating edit button
+    is_editable = False
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+    is_editable = adminutil.check_if_reviewer(username, headers)
 
-    if is_contribution_admin:
-        is_reviewer = True
+    return render_template("contribute/contribution_details.html", reviewer=is_editable, is_editable=is_editable, post=the_json_res, user=session["name"])
+
+@bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
+@login_required
+def contribution_edit(contribution_id):
+    if request.method == 'POST':
+        is_put = False
+        contribution_id = None
+        result = request.form.to_dict(flat=False)
+
+        # check if it is PUT
+        try:
+            contribution_id = result["contribution_id"][0]
+            is_put = True
+        except:
+            s = "There is a error in edit. The method is not an edit."
+            return render_template('contribute/error.html', error_msg=s)
+
+        if is_put:
+            contribution = to_contribution(result)
+            contribution = jsonutil.add_contribution_admins(contribution, is_edit=True)
+            # remove id from json_data
+            del contribution["id"]
+            json_contribution = json.dumps(contribution, indent=4)
+            response, s = put_contribution(json_contribution, contribution_id)
+
+            if response:
+                if response:
+                    if "name" in session:
+                        return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                    else:
+                        return render_template('contribute/submitted.html')
+                elif not response:
+                    if "name" in session:
+                        return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                    else:
+                        return render_template('contribute/error.html', error_msg=s)
     else:
-        # check if the user is reviewer by requesting to endpoint
+        the_json_res = get_contribution(contribution_id)
+        # check if the user is editable then set the is_editable
+        is_editable = False
+        username = session["username"]
         headers = requestutil.get_header_using_session(session)
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        is_editable = adminutil.check_if_reviewer(username, headers)
 
-    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
+        if is_editable:
+            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        else:
+            s = "You don't have a permission to edit the contribution."
+            return render_template('contribute/error.html', error_msg=s)
 
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
@@ -144,18 +183,19 @@ def talent_details(contribution_id, id):
 #     #todo: need to implement the edit form page
 #     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
-@bp.route('/create', methods=['GET', "POST"])
+@bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    json_contribute = None
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # add contributionAdmins to the json_contiubtion
+        # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        response, s = post(json_contribution)
+        response, s = post_contribution(json_contribution)
 
         if response:
             if "name" in session:
@@ -169,8 +209,7 @@ def create():
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
             else:
                 return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
-
+    return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -191,7 +230,7 @@ def search_results(search):
 
 
 # post a json_data in a http request
-def post(json_data):
+def post_contribution(json_data):
     headers = requestutil.get_header_using_session(session)
     try:
         # Setting up post request
@@ -207,6 +246,31 @@ def post(json_data):
         else:
             logging.info("posted ok.".format(json_data))
             return True, str("post success!")
+
+    except Exception:
+        traceback.print_exc()
+        var = traceback.format_exc()
+        return False, var
+
+# PUT a json_data in a http request
+def put_contribution(json_data, contribution_id):
+    headers = requestutil.get_header_using_session(session)
+    try:
+        # set PUT url
+        put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+
+        # Setting up post request
+        result = requests.put(put_url,
+                               headers=headers,
+                               data=json_data)
+
+        if result.status_code != 200:
+            logging.ERROR("PUT method fails".format(json_data))
+            logging.ERROR("with error code:", result.status_code)
+            return False, str("PUT method fails with error: ") + str(result.status_code)
+        else:
+            print("PUT ok.".format(json_data))
+            return True, str("PUT success!")
 
     except Exception:
         traceback.print_exc()

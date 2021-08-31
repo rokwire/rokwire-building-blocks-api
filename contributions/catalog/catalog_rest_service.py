@@ -1,10 +1,9 @@
 import logging
 import os
 from time import gmtime
-
+from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
-from controllers.auth import login_required
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -35,6 +34,18 @@ app.config.from_object(cfg)
 
 init_app(app)
 app.register_blueprint(contribute_bp)
+
+@app.template_filter('filter_nested_dict')
+def filter_nested_dict(dict, item_list):
+    try:
+        for item in item_list:
+            dict = dict[item]
+    except:
+        return ''
+
+    return dict
+
+environment.DEFAULT_FILTERS['filter_nested_dict'] = filter_nested_dict
 
 
 @app.route("/", methods=["GET"])

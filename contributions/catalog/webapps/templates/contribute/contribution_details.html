@@ -179,6 +179,9 @@
         </div>
     {% endif %}
 
+    {% if is_editable %}
+        <button class="button button3" onclick="get_url('{{post.id}}')">Edit Contribution</button>
+    {% endif %}
 </div>
 
 
@@ -195,6 +198,11 @@
 
     function tal_url(id){
         window.location.href = window.location.href + "/talents/" + id;
+    }
+
+    function get_url(id){
+        var cur_url = window.location.href.split('/');
+        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit"
     }
 
 </script>
