@@ -217,7 +217,7 @@
 
 
         <div class="form-group pull-right">
-            <form action="http://localhost:5050/contribute/results" method="POST">
+            <form action="{{ url_for('contribute.result')}}" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">
             </form>
