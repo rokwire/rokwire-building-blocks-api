@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
 - Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
 - Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
+- Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
 
 ## [1.11.1] - 2021-08-11
 ### Changed
