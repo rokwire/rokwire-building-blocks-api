@@ -71,6 +71,7 @@ def index():
     is_logged_in = False
     cap_json = []
     tal_json = []
+    user = None
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -112,7 +113,7 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
 def login():
@@ -140,38 +141,13 @@ def callback():
                                authorization_response=request.url)
     session['oauth_token'] = token
 
-    return redirect(url_for('.profile'))
-
-@app.route("/contribute/profile", methods=["GET"])
-def profile():
-    """Fetching a protected resource using an OAuth 2 token.
-    Parsing the username to the seesion dict, to the templates to display.
-    """
-    # print("Fetching a protected resource using an OAuth 2 token")
+    # Retrieve basic user info
     github = OAuth2Session(cfg.GITHUB_CLIENT_ID, token=session['oauth_token'])
-    resp = github.get('https://api.github.com/user')
+    resp = github.get(cfg.USER_INFO_URL)
     session["username"] = resp.json()["login"]
     session['name'] = resp.json()["name"]
 
-    show_sel = request.args.get('show')
-    cap_json = []
-    tal_json = []
-
-    # query with auth
-    headers = requestutil.get_header_using_session(session)
-    result = requestutil.request_contributions(headers)
-    if show_sel == "capability":
-        # create the json for only capability
-        cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
-    elif show_sel == "talent":
-        # create the json for only talent
-        tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
-    else:
-        # create the json for only capability and talent
-        cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
-        tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
-
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=session["name"], token=session['oauth_token']['access_token'])
+    return redirect(url_for('contribute.home'))
 
 
 if __name__ == '__main__':
