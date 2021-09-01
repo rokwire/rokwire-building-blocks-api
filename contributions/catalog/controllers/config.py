@@ -27,7 +27,7 @@ class Config(object):
     MONGO_URL = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
     DB_NAME = os.getenv("MONGO_DATABASE", "contribution")
     DB_COLLECTION = os.getenv("MONGO_DATABASE", "catalog")
-    URL_PREFIX = os.getenv("URL_PREFIX", "")
+    URL_PREFIX = os.getenv("URL_PREFIX", "/catalog")
     DBTYPE = 'mongoDB'
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
     AUTHENTICATION_TOKEN = os.getenv("AUTHENTICATION_TOKEN", "...")
