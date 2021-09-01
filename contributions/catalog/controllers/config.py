@@ -37,5 +37,6 @@ class Config(object):
     GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "NO SECRET")
     AUTHORIZATION_BASE_URL = os.getenv("AUTHORIZATION_BASE_URL", 'https://github.com/login/oauth/authorize')
     TOKEN_URL = os.getenv("TOKEN_URL", 'https://github.com/login/oauth/access_token')
+    USER_INFO_URL = os.getenv("USER_INFO_URL", 'https://api.github.com/user')
     CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
     ADMIN_USERS = os.getenv('ADMIN_USERS', '')
