@@ -19,7 +19,7 @@ from flask import session
 '''
 add contributionAdmins element in the contribution json
 '''
-def add_contribution_admins(in_json):
+def add_contribution_admins(in_json, is_edit=False):
     login_user = session['username']
     admin_input = in_json['contributionAdmins']
 
@@ -28,7 +28,10 @@ def add_contribution_admins(in_json):
     if admin_input:
         contribution_admins = [admin_name for admin_name in admin_input.split(',') if admin_name]
 
-    updated_json = {"contributionAdmins": [login_user] + contribution_admins}
+    if is_edit:
+        updated_json = {"contributionAdmins": contribution_admins}
+    else:
+        updated_json = {"contributionAdmins": [login_user] + contribution_admins}
     in_json.update(updated_json)
     return in_json
 

@@ -147,6 +147,41 @@
         </div>
         {% endfor %}
     {% endif %}
+
+    {% if reviewer %}
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Contribution admins</h4>
+            </div>
+            <p class="col-sm-9">
+                {% for x in post.contributionAdmins %}
+                    {{x}}
+                {% endfor %}
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Status</h4>
+            </div>
+            <p class="col-sm-9">{{post.status}}</p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Date created</h4>
+            </div>
+            <p class="col-sm-9">{{post.dateCreated}}</p>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Date modified</h4>
+            </div>
+            <p class="col-sm-9">{{post.dateModified}}</p>
+        </div>
+    {% endif %}
+
+    {% if reviewer %}
+        <button class="button button3" onclick="get_url('{{post.id}}')">Edit Contribution</button>
+    {% endif %}
 </div>
 
 
@@ -163,6 +198,11 @@
 
     function tal_url(id){
         window.location.href = window.location.href + "/talents/" + id;
+    }
+
+    function get_url(id){
+        var cur_url = window.location.href.split('/');
+        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit"
     }
 
 </script>

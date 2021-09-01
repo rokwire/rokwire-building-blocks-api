@@ -1,12 +1,26 @@
+#  Copyright 2021 Board of Trustees of the University of Illinois.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import logging
 import os
+import utils.requestutil as requestutil
+import utils.jsonutil as jsonutil
+
 from time import gmtime
 from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
-
-import utils.requestutil as requestutil
-import utils.jsonutil as jsonutil
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -99,7 +113,6 @@ def index():
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
     return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
-
 
 @app.route("/login")
 def login():

@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import json
+import logging
 import traceback
 
 import requests
@@ -20,6 +21,7 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
+from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from models.contribution_utilities import to_contribution
@@ -32,13 +34,60 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-    print("homepage.")
-    if request.method == 'POST' and request.validate_on_submit():
-        result = request.form.to_dict(flat=False)
-    if "name" in session:
-        return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    show_sel = request.args.get('show')
+    is_logged_in = False
+    cap_json = []
+    tal_json = []
+    try:
+        # create error to see if the user is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+        user=session["name"]
+        token=session['oauth_token']['access_token']
+    except:
+        is_logged_in = False
+
+    if (is_logged_in):
+        # query with auth
+        headers = requestutil.get_header_using_session(session)
+        result = requestutil.request_contributions(headers)
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
     else:
-        return render_template('contribute/home.html')
+        # query only published ones
+        headers = requestutil.get_header_using_api_key()
+        result = requestutil.request_contributions(headers)
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+
+    # print("homepage.")
+    # if request.method == 'POST' and request.validate_on_submit():
+    #     result = request.form.to_dict(flat=False)
+    # if "name" in session:
+    #     return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    # else:
+    #     return render_template('contribute/home.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -89,6 +138,12 @@ def contribution_details(contribution_id):
     name = ""
 
     if (is_logged_in):
+        # check to see if the logged in user is an editable user for creating edit button
+        is_editable = False
+        username = session["username"]
+        headers = requestutil.get_header_using_session(session)
+        is_editable = adminutil.check_if_reviewer(username, headers)
+
         the_json_res = get_contribution(contribution_id)
         # check if the user is reviewer by requesting to endpoint
         username = session["username"]
@@ -98,14 +153,62 @@ def contribution_details(contribution_id):
     else:
         the_json_res = get_contribution_with_api_key(contribution_id)
 
-    return render_template("contribute/contribution_details.html", post=the_json_res, user=name)
+    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
+
+@bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
+@login_required
+def contribution_edit(contribution_id):
+    if request.method == 'POST':
+        is_put = False
+        contribution_id = None
+        result = request.form.to_dict(flat=False)
+
+        # check if it is PUT
+        try:
+            contribution_id = result["contribution_id"][0]
+            is_put = True
+        except:
+            s = "There is a error in edit. The method is not an edit."
+            return render_template('contribute/error.html', error_msg=s)
+
+        if is_put:
+            contribution = to_contribution(result)
+            contribution = jsonutil.add_contribution_admins(contribution, is_edit=True)
+            # remove id from json_data
+            del contribution["id"]
+            json_contribution = json.dumps(contribution, indent=4)
+            response, s = put_contribution(json_contribution, contribution_id)
+
+            if response:
+                if response:
+                    if "name" in session:
+                        return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                    else:
+                        return render_template('contribute/submitted.html')
+                elif not response:
+                    if "name" in session:
+                        return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                    else:
+                        return render_template('contribute/error.html', error_msg=s)
+    else:
+        the_json_res = get_contribution(contribution_id)
+        # check if the user is editable then set the is_editable
+        is_editable = False
+        username = session["username"]
+        headers = requestutil.get_header_using_session(session)
+        is_editable = adminutil.check_if_reviewer(username, headers)
+
+        if is_editable:
+            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        else:
+            s = "You don't have a permission to edit the contribution."
+            return render_template('contribute/error.html', error_msg=s)
 
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
     # check if the user is logged in
     is_logged_in = False
-    cap_json = []
-    tal_json = []
+
     try:
         # create error to see if the use is logged in or now
         # TODO this should be changed to better way
@@ -121,11 +224,17 @@ def capability_details(contribution_id, id):
 
     if (is_logged_in):
         the_json_res = get_capability(contribution_id, id)
-        # check if the user is reviewer by requesting to endpoint
         username = session["username"]
-        name = session["name"]
-        headers = requestutil.get_header_using_session(session)
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        contribution_admins = the_json_res["contributionAdmins"]
+        if username in contribution_admins:
+            is_contribution_admin = True
+        if is_contribution_admin:
+            is_reviewer = True
+        else:
+            # check if the user is reviewer by requesting to endpoint
+            name = session["name"]
+            headers = requestutil.get_header_using_session(session)
+            is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
         the_json_res = get_capability_with_api_key(contribution_id, id)
 
@@ -135,8 +244,7 @@ def capability_details(contribution_id, id):
 def talent_details(contribution_id, id):
     # check if the user is logged in
     is_logged_in = False
-    cap_json = []
-    tal_json = []
+
     try:
         # create error to see if the use is logged in or now
         # TODO this should be changed to better way
@@ -152,11 +260,19 @@ def talent_details(contribution_id, id):
 
     if (is_logged_in):
         the_json_res = get_talent(contribution_id, id)
-        # check if the user is reviewer by requesting to endpoint
         username = session["username"]
-        name = session["name"]
-        headers = requestutil.get_header_using_session(session)
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        contribution_admins = the_json_res["contributionAdmins"]
+        if username in contribution_admins:
+            is_contribution_admin = True
+
+        if is_contribution_admin:
+            is_reviewer = True
+        else:
+            # check if the user is reviewer by requesting to endpoint
+            username = session["username"]
+            name = session["name"]
+            headers = requestutil.get_header_using_session(session)
+            is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
         the_json_res = get_talent_with_api_key(contribution_id, id)
 
@@ -167,32 +283,33 @@ def talent_details(contribution_id, id):
 #     #todo: need to implement the edit form page
 #     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
-@bp.route('/create', methods=['GET', "POST"])
+@bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    json_contribute = None
     if request.method == 'POST':
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
         contribution = to_contribution(result)
-        # add contributionAdmins to the json_contiubtion
+        # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
         json_contribution = json.dumps(contribution, indent=4)
-        response, s = post(json_contribution)
+        response, s = post_contribution(json_contribution)
 
         if response:
-            if response:
-                if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
-                else:
-                    return render_template('contribute/submitted.html')
-            elif not response:
-                if "name" in session:
-                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
-                else:
-                    return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', user=session["name"],  token=session['oauth_token']['access_token'])
-
+            if "name" in session:
+                return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+            else:
+                return render_template('contribute/submitted.html')
+        elif not response:
+            logging.error(s)
+            s = "Contribution submission failed. Please try again after some time!"
+            if "name" in session:
+                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+            else:
+                return render_template('contribute/error.html', error_msg=s)
+    return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -213,7 +330,7 @@ def search_results(search):
 
 
 # post a json_data in a http request
-def post(json_data):
+def post_contribution(json_data):
     headers = requestutil.get_header_using_session(session)
     try:
         # Setting up post request
@@ -222,12 +339,38 @@ def post(json_data):
                                data=json_data)
 
         if result.status_code != 200:
-            print("post method fails".format(json_data))
-            print("with error code:", result.status_code)
-            return False, str("post method fails with error: ") + str(result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Contribution POST " + json.dumps(err_json))
+            return False, str("post method fails with error: ") + str(result.status_code) \
+                   + ": " + str(err_json['reason'])
         else:
-            print("posted ok.".format(json_data))
+            logging.info("posted ok.".format(json_data))
             return True, str("post success!")
+
+    except Exception:
+        traceback.print_exc()
+        var = traceback.format_exc()
+        return False, var
+
+# PUT a json_data in a http request
+def put_contribution(json_data, contribution_id):
+    headers = requestutil.get_header_using_session(session)
+    try:
+        # set PUT url
+        put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+
+        # Setting up post request
+        result = requests.put(put_url,
+                               headers=headers,
+                               data=json_data)
+
+        if result.status_code != 200:
+            logging.ERROR("PUT method fails".format(json_data))
+            logging.ERROR("with error code:", result.status_code)
+            return False, str("PUT method fails with error: ") + str(result.status_code)
+        else:
+            print("PUT ok.".format(json_data))
+            return True, str("PUT success!")
 
     except Exception:
         traceback.print_exc()
@@ -243,8 +386,8 @@ def get_contribution(contribution_id):
                                   headers=headers)
 
         if result.status_code != 200:
-            print("GET method fails".format(contribution_id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Contribution GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(contribution_id))
@@ -281,8 +424,8 @@ def get_capability(contribution_id, cid):
         if contribution_id and cid:
             result = requestutil.request_capability(headers, contribution_id, cid)
         if result.status_code != 200:
-            print("GET method fails".format(id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Capability GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(id))
@@ -318,8 +461,8 @@ def get_talent(contribution_id, tid):
             result = requestutil.request_talent(headers, contribution_id, tid)
 
         if result.status_code != 200:
-            print("GET method fails".format(id))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Talent GET " + json.dumps(err_json))
             return {}
         else:
             print("GET ok.".format(id))
@@ -361,8 +504,8 @@ def search(input_data):
                                   headers=headers)
 
         if result.status_code != 200:
-            print("post method fails".format(input_data))
-            print("with error code:", result.status_code)
+            err_json = parse_response_error(result)
+            logging.error("Search " + json.dumps(err_json))
             return False
         else:
             print("posted ok.".format(input_data))
@@ -371,3 +514,12 @@ def search(input_data):
     except Exception:
         # traceback.print_exc()
         return False
+
+"""
+parse error response and convert to json object
+"""
+def parse_response_error(response):
+    err_content = response.content.decode("utf-8").replace('\n', '')
+    err_json = json.loads(err_content)
+
+    return err_json
