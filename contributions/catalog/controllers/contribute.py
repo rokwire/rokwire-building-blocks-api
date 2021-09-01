@@ -17,7 +17,6 @@ import logging
 import traceback
 
 import requests
-import functools
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
@@ -35,13 +34,60 @@ bp = Blueprint('contribute', __name__, url_prefix='/contribute')
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-    print("homepage.")
-    if request.method == 'POST' and request.validate_on_submit():
-        result = request.form.to_dict(flat=False)
-    if "name" in session:
-        return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    show_sel = request.args.get('show')
+    is_logged_in = False
+    cap_json = []
+    tal_json = []
+    try:
+        # create error to see if the user is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+        user=session["name"]
+        token=session['oauth_token']['access_token']
+    except:
+        is_logged_in = False
+
+    if (is_logged_in):
+        # query with auth
+        headers = requestutil.get_header_using_session(session)
+        result = requestutil.request_contributions(headers)
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
     else:
-        return render_template('contribute/home.html')
+        # query only published ones
+        headers = requestutil.get_header_using_api_key()
+        result = requestutil.request_contributions(headers)
+        if show_sel == "capability":
+            # create the json for only capability
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+        elif show_sel == "talent":
+            # create the json for only talent
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+        else:
+            # create the json for only capability and talent
+            cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
+            tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+
+    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+
+    # print("homepage.")
+    # if request.method == 'POST' and request.validate_on_submit():
+    #     result = request.form.to_dict(flat=False)
+    # if "name" in session:
+    #     return render_template('contribute/home.html', user=session["name"], token=session['oauth_token']['access_token'])
+    # else:
+    #     return render_template('contribute/home.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -75,15 +121,39 @@ def result():
 
 @bp.route('details/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
-    the_json_res = get_contribution(contribution_id)
+    # check if the user is logged in
+    is_logged_in = False
 
-    # check to see if the logged in user is an editable user for creating edit button
-    is_editable = False
-    username = session["username"]
-    headers = requestutil.get_header_using_session(session)
-    is_editable = adminutil.check_if_reviewer(username, headers)
+    try:
+        # create error to see if the use is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+    except:
+        is_logged_in = False
 
-    return render_template("contribute/contribution_details.html", reviewer=is_editable, is_editable=is_editable, post=the_json_res, user=session["name"])
+    is_reviewer = False
+    name = ""
+
+    if (is_logged_in):
+        # check to see if the logged in user is an editable user for creating edit button
+        is_editable = False
+        username = session["username"]
+        headers = requestutil.get_header_using_session(session)
+        is_editable = adminutil.check_if_reviewer(username, headers)
+
+        the_json_res = get_contribution(contribution_id)
+        # check if the user is reviewer by requesting to endpoint
+        username = session["username"]
+        name = session["name"]
+        headers = requestutil.get_header_using_session(session)
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
+    else:
+        the_json_res = get_contribution_with_api_key(contribution_id)
+
+    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
 @bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -136,47 +206,79 @@ def contribution_edit(contribution_id):
 
 @bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
-    username = session["username"]
+    # check if the user is logged in
+    is_logged_in = False
+
+    try:
+        # create error to see if the use is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+    except:
+        is_logged_in = False
+
     is_reviewer = False
-    is_contribution_admin = False
+    name = ""
 
-    # request capability json
-    the_json_res = get_capability(contribution_id, id)
-
-    contribution_admins = the_json_res["contributionAdmins"]
-    if username in contribution_admins:
-        is_contribution_admin = True
-
-    if is_contribution_admin:
-        is_reviewer = True
+    if (is_logged_in):
+        the_json_res = get_capability(contribution_id, id)
+        is_contribution_admin = False
+        username = session["username"]
+        contribution_admins = the_json_res["contributionAdmins"]
+        if username in contribution_admins:
+            is_contribution_admin = True
+        if is_contribution_admin:
+            is_reviewer = True
+        else:
+            # check if the user is reviewer by requesting to endpoint
+            name = session["name"]
+            headers = requestutil.get_header_using_session(session)
+            is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
-        # check if the user is reviewer by requesting to endpoint
-        headers = requestutil.get_header_using_session(session)
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        the_json_res = get_capability_with_api_key(contribution_id, id)
 
-    return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
+    return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
 @bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
-    username = session["username"]
+    # check if the user is logged in
+    is_logged_in = False
+
+    try:
+        # create error to see if the use is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+    except:
+        is_logged_in = False
+
     is_reviewer = False
-    is_contribution_admin = False
+    name = ""
 
-    # request talent json
-    the_json_res = get_talent(contribution_id, id)
+    if (is_logged_in):
+        is_contribution_admin = False
+        the_json_res = get_talent(contribution_id, id)
+        username = session["username"]
+        contribution_admins = the_json_res["contributionAdmins"]
+        if username in contribution_admins:
+            is_contribution_admin = True
 
-    contribution_admins = the_json_res["contributionAdmins"]
-    if username in contribution_admins:
-        is_contribution_admin = True
-
-    if is_contribution_admin:
-        is_reviewer = True
+        if is_contribution_admin:
+            is_reviewer = True
+        else:
+            # check if the user is reviewer by requesting to endpoint
+            username = session["username"]
+            name = session["name"]
+            headers = requestutil.get_header_using_session(session)
+            is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
-        # check if the user is reviewer by requesting to endpoint
-        headers = requestutil.get_header_using_session(session)
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        the_json_res = get_talent_with_api_key(contribution_id, id)
 
-    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=session["name"])
+    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
 # @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
 # def edit(contribution_id):
@@ -277,7 +379,6 @@ def put_contribution(json_data, contribution_id):
         var = traceback.format_exc()
         return False, var
 
-
 def get_contribution(contribution_id):
     headers = requestutil.get_header_using_session(session)
 
@@ -289,6 +390,26 @@ def get_contribution(contribution_id):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution GET " + json.dumps(err_json))
+            return {}
+        else:
+            print("GET ok.".format(contribution_id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_contribution_with_api_key(contribution_id):
+    headers = requestutil.get_header_using_api_key()
+
+    try:
+        if contribution_id:
+            result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                                  headers=headers)
+
+        if result.status_code != 200:
+            print("GET method fails".format(contribution_id))
+            print("with error code:", result.status_code)
             return {}
         else:
             print("GET ok.".format(contribution_id))
@@ -316,6 +437,24 @@ def get_capability(contribution_id, cid):
         return False
     return result.json()
 
+def get_capability_with_api_key(contribution_id, cid):
+    headers = requestutil.get_header_using_api_key()
+
+    try:
+        if contribution_id and cid:
+            result = requestutil.request_capability(headers, contribution_id, cid)
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
 def get_talent(contribution_id, tid):
     headers = requestutil.get_header_using_session(session)
 
@@ -326,6 +465,24 @@ def get_talent(contribution_id, tid):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Talent GET " + json.dumps(err_json))
+            return {}
+        else:
+            print("GET ok.".format(id))
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
+
+def get_talent_with_api_key(contribution_id, tid):
+    headers = requestutil.get_header_using_api_key()
+
+    try:
+        if contribution_id and tid:
+            result = requestutil.request_talent(headers, contribution_id, tid)
+        if result.status_code != 200:
+            print("GET method fails".format(id))
+            print("with error code:", result.status_code)
             return {}
         else:
             print("GET ok.".format(id))
