@@ -35,6 +35,8 @@ bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 @bp.route('/', methods=['GET', 'POST'])
 def home():
     show_sel = request.args.get('show')
+    user = None
+    token = None
     is_logged_in = False
     cap_json = []
     tal_json = []
@@ -45,8 +47,8 @@ def home():
             is_logged_in = True
         else:
             is_logged_in = True
-        user=session["name"]
-        token=session['oauth_token']['access_token']
+        user = session["name"]
+        token = session['oauth_token']['access_token']
     except:
         is_logged_in = False
 
@@ -64,6 +66,9 @@ def home():
             # create the json for only capability and talent
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
+
+        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel,
+                               user=user)
     else:
         # query only published ones
         headers = requestutil.get_header_using_api_key()
@@ -79,7 +84,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
     # print("homepage.")
     # if request.method == 'POST' and request.validate_on_submit():
@@ -106,7 +111,7 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return render_template('contribute/home.html')
+    return redirect(url_for('.home'))
 
 
 @bp.route('/results', methods=['POST', 'GET'])
@@ -155,7 +160,7 @@ def contribution_details(contribution_id):
 
     return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
-@bp.route('/create/<contribution_id>/edit', methods=['GET', 'POST'])
+@bp.route('/contributions/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
 def contribution_edit(contribution_id):
     if request.method == 'POST':
@@ -180,16 +185,15 @@ def contribution_edit(contribution_id):
             response, s = put_contribution(json_contribution, contribution_id)
 
             if response:
-                if response:
-                    if "name" in session:
-                        return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
-                    else:
-                        return render_template('contribute/submitted.html')
-                elif not response:
-                    if "name" in session:
-                        return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
-                    else:
-                        return render_template('contribute/error.html', error_msg=s)
+                if "name" in session:
+                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                else:
+                    return render_template('contribute/submitted.html')
+            elif not response:
+                if "name" in session:
+                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                else:
+                    return render_template('contribute/error.html', error_msg=s)
     else:
         the_json_res = get_contribution(contribution_id)
         # check if the user is editable then set the is_editable
@@ -226,6 +230,7 @@ def capability_details(contribution_id, id):
         the_json_res = get_capability(contribution_id, id)
         is_contribution_admin = False
         username = session["username"]
+        name = session["name"]
         contribution_admins = the_json_res["contributionAdmins"]
         if username in contribution_admins:
             is_contribution_admin = True
@@ -233,13 +238,14 @@ def capability_details(contribution_id, id):
             is_reviewer = True
         else:
             # check if the user is reviewer by requesting to endpoint
-            name = session["name"]
             headers = requestutil.get_header_using_session(session)
             is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+        return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
     else:
         the_json_res = get_capability_with_api_key(contribution_id, id)
+        return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res)
 
-    return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
 @bp.route('/contributions/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
@@ -263,6 +269,7 @@ def talent_details(contribution_id, id):
         is_contribution_admin = False
         the_json_res = get_talent(contribution_id, id)
         username = session["username"]
+        name = session["name"]
         contribution_admins = the_json_res["contributionAdmins"]
         if username in contribution_admins:
             is_contribution_admin = True
@@ -272,20 +279,21 @@ def talent_details(contribution_id, id):
         else:
             # check if the user is reviewer by requesting to endpoint
             username = session["username"]
-            name = session["name"]
             headers = requestutil.get_header_using_session(session)
             is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+        return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
     else:
         the_json_res = get_talent_with_api_key(contribution_id, id)
 
-    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
+    return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res)
 
 # @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
 # def edit(contribution_id):
 #     #todo: need to implement the edit form page
 #     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
 
-@bp.route('/create', methods=['GET', 'POST'])
+@bp.route('/contributions/create', methods=['GET', 'POST'])
 @login_required
 def create():
     json_contribute = None
@@ -367,16 +375,16 @@ def put_contribution(json_data, contribution_id):
                                data=json_data)
 
         if result.status_code != 200:
-            logging.ERROR("PUT method fails".format(json_data))
-            logging.ERROR("with error code:", result.status_code)
-            return False, str("PUT method fails with error: ") + str(result.status_code)
+            logging.error("PUT method failed. " + str(result.text))
+            return False, str("Error Code: " + str(result.status_code) +
+                              ". There was an error when editing your Contribution. Please try again later!")
         else:
-            print("PUT ok.".format(json_data))
-            return True, str("PUT success!")
+            logging.info("PUT OK.".format(contribution_id))
+            return True, str("Your Contribution has been successfully updated.")
 
     except Exception:
         traceback.print_exc()
-        var = traceback.format_exc()
+        var = "There was an error when updating your Contribution. Please try again later!"
         return False, var
 
 def get_contribution(contribution_id):
