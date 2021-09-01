@@ -224,6 +224,7 @@ def capability_details(contribution_id, id):
 
     if (is_logged_in):
         the_json_res = get_capability(contribution_id, id)
+        is_contribution_admin = False
         username = session["username"]
         contribution_admins = the_json_res["contributionAdmins"]
         if username in contribution_admins:
@@ -259,6 +260,7 @@ def talent_details(contribution_id, id):
     name = ""
 
     if (is_logged_in):
+        is_contribution_admin = False
         the_json_res = get_talent(contribution_id, id)
         username = session["username"]
         contribution_admins = the_json_res["contributionAdmins"]
