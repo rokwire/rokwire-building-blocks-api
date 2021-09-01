@@ -217,7 +217,7 @@
 
 
         <div class="form-group pull-right">
-            <form action="http://localhost:5050/contribute/results" method="POST">
+            <form action="{{ url_for('contribute.result')}}" method="POST">
                 <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
                 <input id="myBtn" style="display:none;" type="submit" value="Submit">
             </form>
@@ -226,17 +226,14 @@
         <div class="row" id="grid-view">
             {% if cap_json|length > 0 %}
                 {% for capability in cap_json %}
-                    {% set cont_url = '/contribute/details/' + capability["cont_id"] %}
-                    {% set cap_url = cont_url + '/capabilities/' + capability["id"] %}
                     <div class="column capability">
                         <div class="content">
-                            <a class="card=link" href="{{ cap_url }}">
+                            <a class="card=link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
                             <h4 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h4>
                             <p class="capability_description">{{ capability|filter_nested_dict(["description"]) }}</p>
                             <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
                             </a>
-                            <a class="link" href="{{ cont_url }}"> View Contribution >>> </a>
-                            <!--                    <span class="label label-default">App Config</span>-->
+                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution >>> </a>
                         </div>
                     </div>
                 {% endfor %}
@@ -244,17 +241,14 @@
 
             {% if tal_json|length > 0 %}
                 {% for talent in tal_json %}
-                    {% set cont_url = '/contribute/details/' + talent["cont_id"] %}
-                    {% set tal_url = cont_url + '/talents/' + talent["id"] %}
                     <div class="column talent">
                         <div class="content">
-                            <a class="card-link" href="{{ tal_url }}">
+                            <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
                             <h4 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h4>
                             <p class="talent_description">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
                             <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
                             </a>
-                            <a class="link" href="{{ cont_url }}"> View Contribution >>> </a>
-                            <!--                <span class="label label-default">App Config</span>-->
+                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution >>> </a>
                         </div>
                     </div>
                 {% endfor %}
