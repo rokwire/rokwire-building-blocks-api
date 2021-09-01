@@ -180,7 +180,7 @@
     {% endif %}
 
     {% if reviewer %}
-        <button class="button button3" onclick="get_url('{{post.id}}')">Edit Contribution</button>
+        <a class="button button3" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
     {% endif %}
 </div>
 

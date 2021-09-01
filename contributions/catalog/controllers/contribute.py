@@ -29,7 +29,7 @@ from utils import jsonutil
 from utils import adminutil
 from utils import requestutil
 
-bp = Blueprint('contribute', __name__, url_prefix='/contribute')
+bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -119,7 +119,7 @@ def result():
         search(query)
         return render_template("contribute/results.html", user=session["name"],  token=session['oauth_token']['access_token'], result=result)
 
-@bp.route('details/<contribution_id>', methods=['GET'])
+@bp.route('/contributions/<contribution_id>', methods=['GET'])
 def contribution_details(contribution_id):
     # check if the user is logged in
     is_logged_in = False
@@ -155,7 +155,7 @@ def contribution_details(contribution_id):
 
     return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
-@bp.route('create/<contribution_id>/edit', methods=['GET', 'POST'])
+@bp.route('/create/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
 def contribution_edit(contribution_id):
     if request.method == 'POST':
@@ -204,7 +204,7 @@ def contribution_edit(contribution_id):
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
 
-@bp.route('details/<contribution_id>/capabilities/<id>', methods=['GET'])
+@bp.route('/contributions/<contribution_id>/capabilities/<id>', methods=['GET'])
 def capability_details(contribution_id, id):
     # check if the user is logged in
     is_logged_in = False
@@ -241,7 +241,7 @@ def capability_details(contribution_id, id):
 
     return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
 
-@bp.route('details/<contribution_id>/talents/<id>', methods=['GET'])
+@bp.route('/contributions/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
     # check if the user is logged in
     is_logged_in = False
