@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
+- /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
 
 ### Changed
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
@@ -16,14 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
-
-### Added
 - Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
 - Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
 - Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
 - Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
 - Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
-- /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
+
 
 ## [1.11.1] - 2021-08-11
 ### Changed
