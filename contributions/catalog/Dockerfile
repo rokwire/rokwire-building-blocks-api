@@ -23,7 +23,7 @@ ENV CONTRIBUTION_BUILDING_BLOCK_URL='' \
     AUTHORIZATION_BASE_URL='https://github.com/login/oauth/authorize' \
     TOKEN_URL='https://github.com/login/oauth/access_token' \
     AUTHENTICATION_TOKEN='' \
-    URL_PREFIX='' \
+    URL_PREFIX='/catalog' \
     DEBUG='False'
 
 CMD ["gunicorn", "catalog_rest_service:app", "--config", "/usr/src/app/catalog/gunicorn.config.py"]
