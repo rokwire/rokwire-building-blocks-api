@@ -34,6 +34,15 @@ __logger = logging.getLogger("app_config_building_block")
 app = flask.Flask(__name__)
 
 
+def configs_ok_search():
+    """
+    Function for healthcheck public endpoint
+    Return : {'success':'true'}
+    """
+    msg = {"success": "true"}
+    return msg
+
+
 def configs_search(mobileAppVersion=None):
     args = request.args
     version = args.get('mobileAppVersion')
