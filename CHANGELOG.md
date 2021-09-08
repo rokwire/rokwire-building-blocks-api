@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
 - Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
 
+
 ## [1.11.1] - 2021-08-11
 ### Changed
 - Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
