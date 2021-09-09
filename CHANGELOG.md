@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <<<<<<< HEAD
 =======
 
+
 ## [1.11.1] - 2021-08-11
 ### Changed
 - Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
