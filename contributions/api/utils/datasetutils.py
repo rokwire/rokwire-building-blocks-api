@@ -19,6 +19,7 @@ from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointD
 from models.capabilities.deploymentdetails import DeploymentDetails
 from models.capabilities.environmentvariable import EnvironmentVariable
 from models.talents.selfcertification import SelfCertification
+from models.talents.requiredcapability import RequiredCapability
 
 """
 update contribution dataset
@@ -344,13 +345,13 @@ def update_talent_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        capabilities_json = injson['requiredCapabilities']
-        capablities_list = []
-        for capability_json in capabilities_json:
-            capability_dataset = None
-            capability_dataset = update_capability_dataset_from_json(capability_dataset, capability_json)
-            if capability_dataset is not None:
-                capablities_list.append(capability_dataset)
+        required_capabilities_json = injson['requiredCapabilities']
+        required_capabilities_list = []
+        for required_capability_json in required_capabilities_json:
+            required_capability_dataset = None
+            required_capability_dataset = update_required_capability_dataset_from_json(required_capability_dataset, required_capability_json)
+            if required_capability_dataset is not None:
+                required_capabilities_list.append(required_capability_dataset)
         dataset.set_required_capabilities(injson['requiredCapabilities'])
         del outjson['requiredCapabilities']
     except:
@@ -418,6 +419,29 @@ def update_talent_dataset_from_json(dataset, injson):
         except:
             pass
     except Exception as e:
+        pass
+
+    return dataset, outjson
+
+"""
+update required capability dataset
+"""
+def update_required_capability_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_contribution_id(injson['contributionId'])
+        del outjson['contributionId']
+    except:
+        pass
+    try:
+        dataset.set_capability_id(injson['capabilityId'])
+        del outjson['capabilityId']
+    except:
+        pass
+    try:
+        dataset.set_capability_name(injson['capabilityName'])
+        del outjson['capabilityName']
+    except:
         pass
 
     return dataset, outjson

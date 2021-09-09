@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title> Capability Catalog </title>
     <meta charset="utf-8">
@@ -514,26 +514,37 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
-                                        <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                                    {% if capability["deploymentDetails"]["environmentVariables"] %}
+                                        {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
+                                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                            <div class="col-sm-10" id="key-val">
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text">
+                                                {% endif %}
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text">
+                                                {% endif %}
+                                                <br>
+                                            </div>
+                                        {% endfor %}
+                                    {%  else %}
+                                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                         <div class="col-sm-10" id="key-val">
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text">
-                                            {% endif %}
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text">
-                                            {% endif %}
+                                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                   type="text">
+                                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                   type="text">
                                             <br>
                                         </div>
-                                    {% endfor %}
+                                    {% endif %}
                                     <div class="row">
                                         <button class="button button3" id='add-user' type="submit">Add more fields</button>
                                     </div>
@@ -807,111 +818,189 @@
                     <div class="container" id="talent-div" style="display: none">
                         <hr class="dotted">
                         <h3>Add a Talent to this Contribution</h3>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Talent Name</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="talent_name" name="talent_name"
-                                           placeholder="Give a name for your talent"
-                                           type="text" value="{{ post|filter_nested_dict(["talents", 0, "name"]) }}">
-                                {% else %}
+                        {% if is_editable %}
+                            {% for talent in post["talents"] %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Talent Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="talent_name" name="talent_name"
+                                               placeholder="Give a name for your talent"
+                                               type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Talent Description</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="talent_description" name="talent_shortDescription"
+                                               placeholder=""
+                                               type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Required Building Block(s)</label>
+                                    <div class="col-sm-10">
+                                        {# TODO what is required building blocks #}
+                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                               placeholder=""
+                                               type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                                    <div class="col-sm-10">
+                                        <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
+                                            <option value = "0">Capability in this contribution</option>
+                                            {% if talent["requiredCapabilities"] %}
+                                                {% set required_capabilities_from_talent = talent["requiredCapabilities"] %}
+                                                    {% for capability in required_capabilities %}
+                                                        {% set re_cap_ns = namespace(is_existing=false) %}
+                                                        {% for recap in required_capabilities_from_talent %}
+                                                            {% if capability["capabilityId"] == recap["capabilityId"] %}
+                                                                {% set re_cap_ns.is_existing = True %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% if re_cap_ns.is_existing %}
+                                                            <option value="{{ capability["capabilityId"] }}" selected>{{ capability["capabilityName"] }}</option>
+                                                        {% else %}
+                                                            <option value="{{ capability["capabilityId"] }}">{{ capability["capabilityName"] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                            {% else %}
+                                                {% for capability in required_capabilities %}
+                                                    <option value="{{ capability["capabilityId"] }}">{{ capability["capabilityName"] }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">User Privacy Level</label>
+                                    <div class="col-sm-10">
+                                        <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                               step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">End User Role</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="student"> student</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="visitor"> visitor</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox"
+                                                                           value="alumni"> alumni</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                           name="talent_minEndUserRoles" type="checkbox"
+                                                                           value="employee"> employee</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox"
+                                                                           value="parent"> parent</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="fan"> fan</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Select active date range</label>
+                                    <label class="form-check-label">start</label>
+                                    <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                                    <label class="form-check-label"> end</label>
+                                    <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Data Description</label>
+                                    <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                                  placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                                  style="height:150px"
+                                                                  type="text"></div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Talent Name</label>
+                                <div class="col-sm-10">
                                     <input class="form-control" id="talent_name" name="talent_name"
                                            placeholder="Give a name for your talent" type="text">
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Talent Description</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"shortDescription"]) }}">
-                                {% else %}
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Talent Description</label>
+                                <div class="col-sm-10">
                                     <input class="form-control" id="talent_description" name="talent_shortDescription"
                                            placeholder="" type="text">
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Required Building Block(s)</label>
-                            <div class="col-sm-10">
-                            {# TODO what is required building blocks #}
-                                {% if is_editable %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"requiredBuildingBlocks"]) }}">
-                                {% else %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Required Building Block(s)</label>
+                                <div class="col-sm-10">
+                                    {# TODO what is required building blocks #}
                                     <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
                                            placeholder="" type="text">
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="required_capability" name="talent_requiredCapabilities"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"requiredCapabilities"]) }}">
-                                {% else %}
-                                    <input class="form-control" id="required_capability" name="talent_requiredCapabilities"
-                                           placeholder="" type="text">
-                                {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
+                                        <option value = "0" selected>Capability in this contribution</option>
+                                        {% for capability in required_capabilities %}
+                                            <option value="{{ capability["capabilityId"] }}">{{ capability["capabilityName"] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">User Privacy Level</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                           step="1" type="number" value="{{ post|filter_nested_dict(["talents",0,"minUserPrivacyLevel"]) }}"/>
-                                {% else %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">User Privacy Level</label>
+                                <div class="col-sm-10">
                                     <input max="5" min="1" name="talent_minUserPrivacyLevel"
                                            step="1" type="number"/>
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">End User Role</label>
-                            <label class="form-check-label"><input class="form-check-input" id="student"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="student"> student</label>
-                            <label class="form-check-label"><input class="form-check-input" id="visitor"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="visitor"> visitor</label>
-                            <label class="form-check-label"><input class="form-check-input" id="alumni"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox"
-                                                                   value="alumni"> alumni</label>
-                            <label class="form-check-label"><input class="form-check-input" id="employee"
-                                                                   name="talent_minEndUserRoles" type="checkbox"
-                                                                   value="employee"> employee</label>
-                            <label class="form-check-label"><input class="form-check-input" id="parent"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox"
-                                                                   value="parent"> parent</label>
-                            <label class="form-check-label"><input class="form-check-input" id="fan"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="fan"> fan</label>
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">End User Role</label>
+                                <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="student"> student</label>
+                                <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="visitor"> visitor</label>
+                                <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox"
+                                                                       value="alumni"> alumni</label>
+                                <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                       name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="employee"> employee</label>
+                                <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox"
+                                                                       value="parent"> parent</label>
+                                <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="fan"> fan</label>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Select active date range</label>
-                            <label class="form-check-label">start</label>
-                            <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
-                            <label class="form-check-label"> end</label>
-                            <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Select active date range</label>
+                                <label class="form-check-label">start</label>
+                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                                <label class="form-check-label"> end</label>
+                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                            </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Data Description</label>
-                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                          style="height:150px"
-                                                          type="text"></div>
-                        </div>
-
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Data Description</label>
+                                <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                              placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                              style="height:150px"
+                                                              type="text"></div>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!--------------------------------------------contact/privacy check ------------------------------------------>

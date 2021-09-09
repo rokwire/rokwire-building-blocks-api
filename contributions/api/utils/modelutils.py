@@ -24,6 +24,7 @@ from models.person import Person
 from models.organization import Organization
 from models.capabilities.capability import Capability
 from models.talents.talent import Talent
+from models.talents.requiredcapability import RequiredCapability
 
 
 def construct_capability(in_json):
@@ -55,6 +56,13 @@ def construct_talent(in_json):
     talent_dataset, restjson = datasetutils.update_talent_dataset_from_json(talent_dataset, in_json)
 
     return talent_dataset, restjson, None
+
+def construct_required_capability(in_json):
+    # new installation of the app
+    required_capability_dataset = RequiredCapability('')
+    required_capability_dataset, restjson = datasetutils.update_required_capability_dataset_from_json(required_capability_dataset, in_json)
+
+    return required_capability_dataset, restjson, None
 
 def construct_contributors(in_json):
     # need to know if it is person or organization

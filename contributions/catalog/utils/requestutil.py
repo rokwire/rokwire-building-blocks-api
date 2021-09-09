@@ -13,6 +13,8 @@
 #  limitations under the License.
 
 import requests
+import json
+
 from controllers.config import Config as cfg
 
 """"
@@ -82,3 +84,28 @@ def request_reviewers(headers):
     result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL +'/admin/reviewers', headers=headers)
 
     return result
+
+"""
+request capability list
+"""
+def request_required_capability_list(headers):
+    result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/capabilities", headers=headers)
+
+    # create the list of required capabilities
+    if result.status_code == 200:
+        # check if the login id is in reviewer list
+        result_str = result.content.decode('utf-8').replace('\n', '')
+        capability_json_list = json.loads(result_str)
+        required_capability_list = []
+
+        # create the list with only the items for required capability
+        for capability_json in capability_json_list:
+            contribution_id = capability_json["contributionId"]
+            capability_name = capability_json["name"]
+            capability_id = capability_json["id"]
+            tmp_required_capability = {"contribtuionId": contribution_id,
+                                       "capabilityName": capability_name,
+                                       "capabilityId": capability_id}
+            required_capability_list.append(tmp_required_capability)
+
+    return required_capability_list
