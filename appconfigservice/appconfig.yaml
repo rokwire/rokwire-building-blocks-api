@@ -140,6 +140,10 @@ paths:
       responses:
         200:
           description: version returned ok
+          content:
+            text/plain:
+              schema:
+                type: string
         400:
           description: Bad request.
         404:
