@@ -50,7 +50,7 @@ def configs_version_search():
     Reads yaml file and returns version number
     Return : plain text - version number
     """
-    appconfig_yaml = open("appconfig.yaml")
+    appconfig_yaml = open('/../../appconfig.yaml')
     parsed_appconfig_yaml = yaml.load(appconfig_yaml, Loader=yaml.FullLoader)
     return parsed_appconfig_yaml['info']['version']
 
