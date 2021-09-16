@@ -723,7 +723,6 @@ components:
       description: A required capabiity object that recorded in talent
       required:
         - contributionId
-        - contributionName
         - capabilityId
         - capabilityName
       properties:

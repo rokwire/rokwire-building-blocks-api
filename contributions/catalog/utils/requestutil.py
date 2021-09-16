@@ -103,7 +103,7 @@ def request_required_capability_list(headers):
             contribution_id = capability_json["contributionId"]
             capability_name = capability_json["name"]
             capability_id = capability_json["id"]
-            tmp_required_capability = {"contribtuionId": contribution_id,
+            tmp_required_capability = {"contributionId": contribution_id,
                                        "capabilityName": capability_name,
                                        "capabilityId": capability_id}
             required_capability_list.append(tmp_required_capability)
