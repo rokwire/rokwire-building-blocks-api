@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
+- footer for contributions catalog home.html. [#770](https://github.com/rokwire/rokwire-building-blocks-api/issues/770)
 
 ### Changed
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
