@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import sys
+
 import logging
 import os
 import utils.requestutil as requestutil
@@ -24,6 +26,8 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
+
+from git import Repo
 
 debug = cfg.DEBUG
 
@@ -52,6 +56,7 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+
 @app.template_filter('filter_nested_dict')
 def filter_nested_dict(dict, item_list):
     try:
@@ -72,6 +77,10 @@ def index():
     cap_json = []
     tal_json = []
     user = None
+    repo = Repo(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
+    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
+    gittag = str(tags[-1])
+
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -113,7 +122,8 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
+    return render_template('contribute/home.html', gittag=gittag,
+                           cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
 def login():

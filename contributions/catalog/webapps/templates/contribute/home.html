@@ -168,6 +168,17 @@
         text-decoration: #8fd19e;
     }
 
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        background-color: #2a4b45;
+        color: #ffffff;
+
+}
+
 </style>
 
 {#<body>#}
@@ -215,6 +226,11 @@
             <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
         {% endif %}
 
+        <div class="footer">
+            <p>{{ gittag }}</p>
+            <p>Catalog version {{ gittag }} &#124; &copy; University of Illinois Board of Trustees &#124; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Privacy Policy</a> </p>
+        </div>
+        <!--<script>document.getElementById("gittag").innerHTML = {{ gittag }}</script>-->
 
         <div class="form-group pull-right">
             <form action="{{ url_for('contribute.result')}}" method="POST">
@@ -320,6 +336,7 @@
 
     </script>
     </div>
+
 </div>
 </body>
 </html>
