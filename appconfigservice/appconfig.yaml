@@ -131,6 +131,25 @@ paths:
           description: AppConfig not found
         500:
           description: Internal error
+  /app/configs/version:
+    get:
+      tags:
+        - App Configuration
+      summary: version endpoint
+      description: Public endpoint which returns the latest version of appconfig BB
+      responses:
+        200:
+          description: version returned as text
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request.
+        404:
+          description: AppConfig not found
+        500:
+          description: Internal error
   /app/configs/{id}:
     get:
       tags:

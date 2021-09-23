@@ -15,6 +15,7 @@
 import logging
 import re
 from time import gmtime
+import yaml
 
 import auth_middleware
 import controllers.config as cfg
@@ -41,6 +42,17 @@ def configs_ok_search():
     """
     msg = {"success": "true"}
     return msg
+
+
+def configs_version_search():
+    """
+    Method to return AppConfig BB version number
+    Reads yaml file and returns version number
+    Return : plain text - version number
+    """
+    appconfig_yaml = open('appconfig.yaml')
+    parsed_appconfig_yaml = yaml.load(appconfig_yaml, Loader=yaml.FullLoader)
+    return parsed_appconfig_yaml['info']['version']
 
 
 def configs_search(mobileAppVersion=None):
