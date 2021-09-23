@@ -223,19 +223,16 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
         json_load = jsonutils.convert_obejctid_from_dataset_json(json_load)
         dataset = Contribution(json_load)
 
-        if (is_login):
-            # check if the user is in contributionAdmin group
-            if (is_admin):
-                return dataset, status_code
-            else:
-                status_code = '401'
-                return None, status_code
+        if status == "Published":
+            return dataset, status_code
         else:
-            if status != "Published":
-                status_code = '401'
-                return None, status_code
-            else:
-                return dataset, status_code
+            if (is_login):
+                # check if the user is in contributionAdmin group
+                if (is_admin):
+                    return dataset, status_code
+                else:
+                    status_code = '401'
+                    return None, status_code
     else:
         status_code = '400'
         return None, status_code
