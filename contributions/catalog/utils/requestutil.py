@@ -16,6 +16,17 @@ import requests
 from controllers.config import Config as cfg
 
 """"
+create a request header for endpoint using apikey
+"""
+def get_header_using_api_key():
+    header = {
+        'Content-Type': 'application/json',
+        'rokwire-api-key': cfg.ROKWIRE_API_KEY
+    }
+
+    return header
+
+""""
 create a request header for endpoint using session
 """
 def get_header_using_session(session):
@@ -34,6 +45,17 @@ def get_header_using_auth_token(auth_token):
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + auth_token
     }
+
+"""
+request contribution list
+"""
+"""
+request reviewer
+"""
+def request_contributions(headers):
+    result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers)
+
+    return result
 
 """"
 reuqest capability using capability id
