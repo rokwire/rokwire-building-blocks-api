@@ -60,7 +60,7 @@ ROKWIRE_GROUPS_MAP = {
 }
 
 # This is the is member of claim name from the
-is_member_of_claim = "groups"
+is_member_of_claim = "permissions"
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
 
@@ -123,10 +123,11 @@ def authorize(group_name=None):
         id_info = g.user_token_data
 
         if group_name is not None:
-            AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
+            ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+
             # So we are to check is a group membership is required.
             # Get the membership check keys based on issuer
-            if id_info['iss'] == AUTH_ISSUER:
+            if id_info['iss'] == ROKWIRE_AUTH_HOST:
                 is_member_of_key = is_member_of_claim
             else:
                 is_member_of_key = uiucedu_is_member_of
@@ -140,7 +141,8 @@ def authorize(group_name=None):
             if is_member_of_key in id_info:
                 is_member_of = id_info[is_member_of_key]
                 for name in group_name:
-                    if id_info['iss'] != AUTH_ISSUER:
+                    if id_info['iss'] != ROKWIRE_AUTH_HOST:
+                        is_member_of = is_member_of.split(',')
                         name = ROKWIRE_GROUPS_MAP[name]
 
                     if name in is_member_of:
@@ -257,8 +259,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         target_client_ids = None
         checkAud = True
 
-        AUTH_PUBKEYS = os.getenv('AUTH_PUBKEYS', '').strip()
-        AUTH_ISSUER = os.getenv('AUTH_ISSUER', '').strip()
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
@@ -306,13 +306,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             keyset = keyset_resp.json()
             target_client_ids = re.split(
                 ',', (os.getenv('SHIBBOLETH_CLIENT_ID', '')).replace(" ", ""))
-
-        elif issuer == AUTH_ISSUER:
-            valid_issuer = True
-            checkAud = False
-            # keyset = base64.b64decode(AUTH_PUBKEYS)
-            keyset = AUTH_PUBKEYS
-            keyset = json.loads(keyset)
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
