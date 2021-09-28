@@ -234,6 +234,9 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
+def core_search(firstname, lastname, email, phone):
+    #TODO: search PII docs by input args and get non PII by uuid in matching PII doc
+    pass
 
 def pii_post():
     # msg = {'message': 'POST info for PII:'}
