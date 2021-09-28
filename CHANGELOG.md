@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
 - Make contribution details pages to show all items for reviewers and admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
 - Catalog default port and default URL prefix. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
+- Default Contributions Catalog port to 5000 and made it configurable. [#788](https://github.com/rokwire/rokwire-building-blocks-api/issues/788) 
 
 ### Fixed
 - Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)

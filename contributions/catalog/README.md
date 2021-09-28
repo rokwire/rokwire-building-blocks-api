@@ -63,7 +63,7 @@ If you want to use gunicorn, cd into api folder then, use ` gunicorn catalog_res
 ```
 cd rokwire-building-blocks-api
 docker build --pull -f contributions/catalog/Dockerfile -t rokwire/contributions-catalog .
-docker run --name catalog --rm --env-file=contributions/catalog/.env -e MONGO_URL=mongodb://<mongodb-url>:27017 -p 5000:5000 rokwire/contributions-catalog
+docker run --name catalog --rm --env-file=contributions/catalog/.env -e MONGO_URL=mongodb://<mongodb-url>:27017 -p 5050:5000 rokwire/contributions-catalog
 ```
 
 For a list of available configurations, please see `controllers/config.py`.
