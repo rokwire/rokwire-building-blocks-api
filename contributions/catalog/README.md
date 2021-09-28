@@ -17,12 +17,25 @@
 
 **Configuration**
 
-The necessary configuration should be configured in configure file (configs.py) that is located under profileservice folder. This contains the MongoDB url, database name, collection name and so on. Modify the information in the file appropriately.
+All configurations can be found in the configuration file (configs.py) that is located under the `controllers` folder.
 
 ## Environment File
 
 You need to have a `.env` file in this directory that contains credentials required for authentication. 
-Not all of these variables may be required for this building block.
+Other configuration items can also be added to the `.env` file.
+
+Example .env file:
+
+```shell
+ROKWIRE_API_KEY=<ROKWIRE_API_KEY> # Rokwire API key.
+FLASK_ENV=<development> # Flask runtime environment.
+DEBUG=True # Boolean to enable/disable debug mode.
+GITHUB_CLIENT_ID=<GitHub Client ID> # GitHub OAuth App client ID.
+GITHUB_CLIENT_SECRET=<GitHub Client Secret>  # pragma: allowlist secret
+SECRET_KEY=<SECRET_KEY> # A secret key that will be used for securely signing the session cookies
+ADMIN_USERS=<GitHub username1, GitHub username2>
+CATALOG_PORT=<Port> # Port to run the Contributions Catalog (default: 5000).
+```
 
 ## Run application
 
