@@ -32,7 +32,7 @@ FLASK_ENV=<development> # Flask runtime environment.
 DEBUG=True # Boolean to enable/disable debug mode.
 GITHUB_CLIENT_ID=<GitHub Client ID> # GitHub OAuth App client ID.
 GITHUB_CLIENT_SECRET=<GitHub Client Secret> # pragma: allowlist secret. GitHub OAuth App client secret.
-SECRET_KEY=<SECRET_KEY> # A secret key that will be used for securely signing the session cookies
+SECRET_KEY=<SECRET_KEY> # A secret key that will be used for securely signing the session cookies.
 ADMIN_USERS=<GitHub username1, GitHub username2>
 CATALOG_PORT=<Port> # Port to run the Contributions Catalog (default: 5000).
 ```
