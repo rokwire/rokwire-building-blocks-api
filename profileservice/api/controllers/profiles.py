@@ -234,9 +234,71 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(firstname, lastname, email, phone):
-    #TODO: search PII docs by input args and get non PII by uuid in matching PII doc
-    pass
+def core_search(netid=None):
+    fields = {}
+    if netid:
+        fields['netid'] = netid
+    if len(fields) == 0:
+        msg = {
+            "reason": "Must provide firstname and lastname or netid or clientID and externalID",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    is_error = False
+    resp = None
+
+    if fields != None:
+        data_list = mongoutils.get_pii_result(fields)
+        if not isinstance(data_list, list):
+            data_list = [data_list]
+        if len(data_list) > 1:
+            msg = {
+                "reason": "There is more than 1 pii record: " + str(fields),
+                "error": "Bad Request: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+            logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+            is_error = True
+            resp = rs_handlers.bad_request(msg_json)
+        if len(data_list) == 0:
+            msg = {
+                "reason": "There is no pii record for the query: " + str(fields),
+                "error": "Not Found: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+            logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+            is_error = True
+            resp = rs_handlers.not_found(msg_json)
+    else:
+        msg = {
+            "reason": "Invalid search: " + str(fields),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        is_error = True
+        resp = rs_handlers.bad_request(msg_json)
+
+    if is_error:
+        return resp
+
+    data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+    uuid_list = data_list[0]['uuid']
+    return_data = {"pii": jsonutils.remove_null_fields(data_list[0])}
+    
+    if len(uuid_list) > 0:
+        non_pii_data = mongoutils.get_non_pii_query_json_from_field(cfg.FIELD_PROFILE_UUID, uuid_list[0])
+        non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_data)
+        non_pii_data = jsonutils.remove_null_subcategory(non_pii_data)
+        return_data["non_pii"] = jsonutils.remove_null_fields(non_pii_data)
+        
+    out_json = mongoutils.construct_json_from_query_list(return_data)
+    msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", return_data)
+    logging.info("CORE PROFILE GET " + json.dumps(msg_json))
+    return out_json
 
 def pii_post():
     # msg = {'message': 'POST info for PII:'}

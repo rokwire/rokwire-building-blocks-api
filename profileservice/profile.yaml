@@ -199,36 +199,12 @@ paths:
         Returns a single PII entry with associated Non PII information.
 
         Auth: Requires a valid id_token for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-      security:
-        - UserAuth: []
+      # security:
+      #   - UserAuth: []
       parameters:
-      - name: firstname
+      - name: netid
         in: query
-        description: The parameter for searching PII data by firstname
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: lastname
-        in: query
-        description: The parameter for searching PII data by lastname
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: email
-        in: query
-        description: The parameter for searching PII data by email
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: phone
-        in: query
-        description: The parameter for searching PII data by email
+        description: The parameter for searching PII data by netid
         required: false
         style: form
         explode: true
@@ -675,9 +651,9 @@ components:
       nullable: true
       properties:
         pii:
-          $ref: Pii
+          $ref: '#/components/schemas/Pii'
         non_pii:
-          $ref: Non-pii
+          $ref: '#/components/schemas/Non-pii'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
