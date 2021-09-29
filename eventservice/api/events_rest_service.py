@@ -13,11 +13,25 @@
 #  limitations under the License.
 
 import connexion
+import logging
 import controllers.configs as cfg
+
+from time import gmtime
 from utils.db import init_db
 from rokwireresolver import RokwireResolver
 
 debug = cfg.DEBUG
+
+log = logging.getLogger('werkzeug')
+log.disabled = True
+
+logging.Formatter.converter = gmtime
+log_format = '%(asctime)-15s.%(msecs)03dZ %(levelname)-7s [%(threadName)-10s] : %(name)s - %(message)s'
+
+if debug:
+    logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.DEBUG)
+else:
+    logging.basicConfig(datefmt='%Y-%m-%dT%H:%M:%S', format=log_format, level=logging.INFO)
 
 init_db()
 

@@ -5,10 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.11.2] - 2021-09-17
+### Changed
+- Update Events Building Block logs and related configuration. [#793](https://github.com/rokwire/rokwire-building-blocks-api/issues/793)
+
+## [1.11.1] - 2021-08-11
+### Changed
+- Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
+
+## [1.11.0] - 2021-07-29
 ### Added
 - Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
+- /version endpoint in AppConfig.[#760](https://github.com/rokwire/rokwire-building-blocks-api/issues/760)
 
 ### Changed
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
@@ -392,7 +403,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...HEAD
+[1.11.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...1.11.2
 [1.11.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...1.10.0
