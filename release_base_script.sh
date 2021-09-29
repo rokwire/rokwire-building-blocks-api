@@ -2,6 +2,9 @@
 
 set -e
 
+# Authenticate to ECR
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 779619664536.dkr.ecr.us-east-2.amazonaws.com
+
 PROJECT_NAME="rokwire"
 GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
