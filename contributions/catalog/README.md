@@ -75,7 +75,7 @@ Make sure that a repository called rokwire/contributions-catalog exists in ECR. 
 
 ```
 cd rokwire-building-blocks-api
-$(aws ecr get-login --no-include-email --region us-east-2)
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 779619664536.dkr.ecr.us-east-2.amazonaws.com
 docker build --pull -f contributions/catalog/Dockerfile -t rokwire/contributions-catalog .
 docker tag rokwire/contributions-catalog:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/contributions-catalog:latest
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/contributions-catalog:latest
