@@ -181,7 +181,38 @@ def verify_apikey(key, required_scopes=None):
     if not key:
         logger.warning("API key is missing the " +
                        rokwire_api_key_header + " header")
-        raise OAuthProblem('Missing API Key')
+        # Check if request has valid token
+        auth_header = request.headers.get('Authorization')
+        if not auth_header:
+            logger.warning("Request missing Authorization header")
+            raise OAuthProblem('Missing authorization header')
+        ah_split = auth_header.split()
+        if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
+            logger.warning(
+                "invalid auth header. expecting 'bearer' and token with space between")
+            raise OAuthProblem('Invalid request header')
+        id_token = ah_split[1]
+
+        if not id_token:
+            raise OAuthProblem('Missing id token')
+
+        # Only validate if internal rokwire tokens
+        try:
+            unverified_header = jwt.get_unverified_header(id_token)
+            unverified_payload = jwt.decode(id_token, verify=False)
+        except jwt.exceptions.PyJWTError as jwte:
+            logger.warning(
+                "jwt error on get unverified header. message = %s" % jwte)
+            raise OAuthProblem('Invalid token')
+
+        ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+        issuer = unverified_payload.get('iss')
+        if not unverified_header.get('phone', False) and issuer == ROKWIRE_AUTH_HOST:
+            id_info = verify_userauth(id_token)
+            return {'id_token_valid': True}
+        else:
+            raise OAuthProblem('invalid token and missing API Key')
+
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
