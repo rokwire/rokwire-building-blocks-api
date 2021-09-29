@@ -20,6 +20,7 @@ import flask
 import flask.json
 import auth_middleware
 import pymongo
+import yaml
 
 import requests
 
@@ -636,3 +637,13 @@ def success_response(status_code, msg, event_id):
     resp.status_code = status_code
 
     return make_response(resp)
+
+def version_search():
+    """
+    Method to return Events BB version number
+    Reads yaml file and returns version number
+    Return : plain text - version number
+    """
+    yaml_file = open('events.yaml')
+    parsed_appconfig_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
+    return parsed_appconfig_yaml['info']['version']
