@@ -15,8 +15,8 @@
 import json
 import logging
 import traceback
-
 import requests
+
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
@@ -304,21 +304,19 @@ def create():
         contribution = to_contribution(result)
         # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
+        contribution["status"] = "Submitted"
         json_contribution = json.dumps(contribution, indent=4)
-        response, s = post_contribution(json_contribution)
+        response, s, post_json = post_contribution(json_contribution)
 
         if response:
-            if "name" in session:
-                return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
-            else:
-                return render_template('contribute/submitted.html')
+            return redirect(url_for('contribute.contribution_details', contribution_id=s))
         elif not response:
             logging.error(s)
-            s = "Contribution submission failed. Please try again after some time!"
+            msg = "Contribution submission failed. Please try again after some time!"
             if "name" in session:
-                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg, error_detail=s)
             else:
-                return render_template('contribute/error.html', error_msg=s)
+                return render_template('contribute/error.html', error_msg=msg, error_detail=3)
     return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
@@ -352,15 +350,18 @@ def post_contribution(json_data):
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
             return False, str("post method fails with error: ") + str(result.status_code) \
-                   + ": " + str(err_json['reason'])
+                   + ": " + str(err_json['reason']), None
         else:
+            # parse contribution id from response
+            result_str = result.content.decode("utf-8").replace("\n", "")
+            contribution_id = json.loads(result_str)["id"]
             logging.info("posted ok.".format(json_data))
-            return True, str("post success!")
+            return True, contribution_id, json.loads(json_data.replace("\n",""))
 
     except Exception:
         traceback.print_exc()
         var = traceback.format_exc()
-        return False, var
+        return False, var, None
 
 # PUT a json_data in a http request
 def put_contribution(json_data, contribution_id):
