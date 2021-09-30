@@ -210,6 +210,38 @@ paths:
         explode: true
         schema:
           type: string
+      - name: clientID
+        in: query
+        description: The parameter for searching PII data by clientID
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: externalID
+        in: query
+        description: The parameter for searching PII data by externalID
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: firstname
+        in: query
+        description: The parameter for searching PII data by firstname
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: lastname
+        in: query
+        description: The parameter for searching PII data by lastname
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: successful operation

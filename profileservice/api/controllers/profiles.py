@@ -234,10 +234,16 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(netid=None):
+def core_search(netid=None, clientID=None, externalID=None, firstname=None, lastname=None):
     fields = {}
     if netid:
         fields['netid'] = netid
+    if clientID and externalID:
+        fields['clientID'] = clientID
+        fields['externalID'] = externalID
+    if firstname and lastname:
+        fields['firstname'] = firstname
+        fields['lastname'] = lastname
     if len(fields) == 0:
         msg = {
             "reason": "Must provide firstname and lastname or netid or clientID and externalID",
@@ -252,7 +258,7 @@ def core_search(netid=None):
 
     if fields != None:
         data_list = mongoutils.get_pii_result(fields)
-        if not isinstance(data_list, list):
+        if not isinstance(data_list, list) and data_list != None:
             data_list = [data_list]
         if len(data_list) > 1:
             msg = {
