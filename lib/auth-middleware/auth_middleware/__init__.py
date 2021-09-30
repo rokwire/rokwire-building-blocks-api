@@ -140,9 +140,11 @@ def authorize(group_name=None):
             is_authorize = False
             if is_member_of_key in id_info:
                 is_member_of = id_info[is_member_of_key]
+                if is_member_of_key == is_member_of_claim:
+                    is_member_of = is_member_of.split(',')
+
                 for name in group_name:
                     if id_info['iss'] != ROKWIRE_AUTH_HOST:
-                        is_member_of = is_member_of.split(',')
                         name = ROKWIRE_GROUPS_MAP[name]
 
                     if name in is_member_of:
@@ -185,12 +187,13 @@ def verify_apikey(key, required_scopes=None):
         auth_header = request.headers.get('Authorization')
         if not auth_header:
             logger.warning("Request missing Authorization header")
-            raise OAuthProblem('Missing authorization header')
+            raise OAuthProblem('Missing API key and authorization header')
         ah_split = auth_header.split()
         if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
             logger.warning(
                 "invalid auth header. expecting 'bearer' and token with space between")
-            raise OAuthProblem('Invalid request header')
+            raise OAuthProblem(
+                "invalid auth header. expecting 'bearer' and token with space between")
         id_token = ah_split[1]
 
         if not id_token:
@@ -207,7 +210,7 @@ def verify_apikey(key, required_scopes=None):
 
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
         issuer = unverified_payload.get('iss')
-        if not unverified_header.get('phone', False) and issuer == ROKWIRE_AUTH_HOST:
+        if issuer == ROKWIRE_AUTH_HOST:
             id_info = verify_userauth(id_token)
             return {'id_token_valid': True}
         else:
@@ -275,15 +278,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         if not kid:
             logger.warning("kid not found. Aborting.")
             raise OAuthProblem('Invalid token')
-
-        # tokenClientID = unverified_payload.get('clientID')
-        # if not tokenClientID:
-        #     logger.warning("clientID not found. Aborting.")
-        #     raise OAuthProblem('Invalid token')
-        # clientID = request.view_args.get('clientID')
-        # if tokenClientID != clientID:
-        #     logger.warning("clientID does not match. Aborting.")
-        #     raise OAuthProblem('Invalid token to access clientID')
 
         valid_issuer = False
         keyset = None
@@ -354,13 +348,9 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         jwk = matching_jwks[0]
         pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
         try:
-            if checkAud:
-                logger.info("checkaud Decode")
-                id_info = jwt.decode(id_token, key=pub_key,
-                                     audience=target_client_ids, verify=True)
-            else:
-                logger.info("decoding with pub key")
-                id_info = jwt.decode(id_token, key=pub_key, verify=True)
+            logger.info("checkaud Decode")
+            id_info = jwt.decode(id_token, key=pub_key,
+                                 audience=target_client_ids, verify=True)
         except jwt.exceptions.PyJWTError as jwte:
             logger.warning("jwt error on decode. message = %s" % jwte)
             raise OAuthProblem('Invalid token')
