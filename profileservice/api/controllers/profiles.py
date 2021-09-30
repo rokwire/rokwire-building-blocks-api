@@ -234,7 +234,16 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(netid=None, clientID=None, externalID=None, firstname=None, lastname=None):
+def core_search(netid=None, clientID=None, externalID=None, firstname=None, lastname=None): 
+    if request.headers.get("ROKWIRE-CBB-API-KEY") != cfg.CORE_BB_API_KEY:
+        msg = {
+            "reason": "Unauthorized",
+            "error": "Unauthorized: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        return rs_handlers.unauthorized(msg_json) 
+
     fields = {}
     if netid:
         fields['netid'] = netid
