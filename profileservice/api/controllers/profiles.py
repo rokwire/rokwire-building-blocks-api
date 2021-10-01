@@ -234,7 +234,7 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(netid=None, clientID=None, externalID=None, firstname=None, lastname=None): 
+def core_search(netid=None, firstname=None, lastname=None): 
     if request.headers.get("ROKWIRE-CBB-API-KEY") != cfg.CORE_BB_API_KEY:
         msg = {
             "reason": "Unauthorized",
@@ -247,9 +247,6 @@ def core_search(netid=None, clientID=None, externalID=None, firstname=None, last
     fields = {}
     if netid:
         fields['netid'] = netid
-    if clientID and externalID:
-        fields['clientID'] = clientID
-        fields['externalID'] = externalID
     if firstname and lastname:
         fields['firstname'] = firstname
         fields['lastname'] = lastname
