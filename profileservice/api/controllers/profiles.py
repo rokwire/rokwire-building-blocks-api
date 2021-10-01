@@ -252,7 +252,7 @@ def core_search(netid=None, firstname=None, lastname=None):
         fields['lastname'] = lastname
     if len(fields) == 0:
         msg = {
-            "reason": "Must provide firstname and lastname or netid or clientID and externalID",
+            "reason": "Must provide firstname and lastname or netid",
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
@@ -264,17 +264,15 @@ def core_search(netid=None, firstname=None, lastname=None):
 
     if fields != None:
         data_list = mongoutils.get_pii_result(fields)
-        if not isinstance(data_list, list) and data_list != None:
-            data_list = [data_list]
         if len(data_list) > 1:
             msg = {
                 "reason": "There is more than 1 pii record: " + str(fields),
-                "error": "Bad Request: " + request.url,
+                "error": "Not Found: " + request.url,
             }
             msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
             logging.error("CORE PROFILE GET " + json.dumps(msg_json))
             is_error = True
-            resp = rs_handlers.bad_request(msg_json)
+            resp = rs_handlers.not_found(msg_json)
         if len(data_list) == 0:
             msg = {
                 "reason": "There is no pii record for the query: " + str(fields),
