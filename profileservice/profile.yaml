@@ -198,9 +198,7 @@ paths:
       description: |
         Returns a single PII entry with associated Non PII information.
 
-        Auth: Requires a valid id_token for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
-      # security:
-      #   - UserAuth: []
+        Auth: Requires a valid API Key for access. The API Key must match the value of environment variable CORE_BB_API_KEY.
       parameters:
       - name: netid
         in: query

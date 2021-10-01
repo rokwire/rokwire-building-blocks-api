@@ -265,23 +265,21 @@ def core_search(netid=None, firstname=None, lastname=None):
     if fields != None:
         data_list = mongoutils.get_pii_result(fields)
         if len(data_list) > 1:
+            is_error = True
             msg = {
                 "reason": "There is more than 1 pii record: " + str(fields),
                 "error": "Not Found: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
-            logging.error("CORE PROFILE GET " + json.dumps(msg_json))
-            is_error = True
-            resp = rs_handlers.not_found(msg_json)
         if len(data_list) == 0:
+            is_error = True
             msg = {
                 "reason": "There is no pii record for the query: " + str(fields),
                 "error": "Not Found: " + request.url,
             }
+        if is_error:
             msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
-            logging.error("CORE PROFILE GET " + json.dumps(msg_json))
-            is_error = True
-            resp = rs_handlers.not_found(msg_json)
+            logging.info("CORE PROFILE GET " + json.dumps(msg_json))
+            
     else:
         msg = {
             "reason": "Invalid search: " + str(fields),
@@ -289,17 +287,16 @@ def core_search(netid=None, firstname=None, lastname=None):
         }
         msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
         logging.error("CORE PROFILE GET " + json.dumps(msg_json))
-        is_error = True
-        resp = rs_handlers.bad_request(msg_json)
+        return rs_handlers.bad_request(msg_json)
 
     if is_error:
-        return resp
+        return mongoutils.construct_json_from_query_list([])
 
     data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
-    uuid_list = data_list[0]['uuid']
+    uuid_list = data_list[0].get('uuid')
     return_data = {"pii": jsonutils.remove_null_fields(data_list[0])}
     
-    if len(uuid_list) > 0:
+    if uuid_list != None and len(uuid_list) > 0:
         non_pii_data = mongoutils.get_non_pii_query_json_from_field(cfg.FIELD_PROFILE_UUID, uuid_list[0])
         non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_data)
         non_pii_data = jsonutils.remove_null_subcategory(non_pii_data)
