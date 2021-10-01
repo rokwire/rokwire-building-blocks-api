@@ -4,22 +4,22 @@ info:
   description: Profile Building Block API Documentation
   version: 1.11.0
 servers:
-- url: https://api.rokwire.illinois.edu
-  description: Production server
-- url: https://api-test.rokwire.illinois.edu
-  description: Test server
-- url: https://api-dev.rokwire.illinois.edu
-  description: Development server
+  - url: https://api.rokwire.illinois.edu
+    description: Production server
+  - url: https://api-test.rokwire.illinois.edu
+    description: Test server
+  - url: https://api-dev.rokwire.illinois.edu
+    description: Development server
 tags:
-- name: Profile
-  description: API endpoints for managing non-PII user profile.
-- name: PII
-  description: API endpoints for managing PII user profile.
+  - name: Profile
+    description: API endpoints for managing non-PII user profile.
+  - name: PII
+    description: API endpoints for managing PII user profile.
 paths:
   /profiles:
     post:
       tags:
-      - Profile
+        - Profile
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
@@ -27,13 +27,14 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       requestBody:
         description: Created profile object
         content:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/Non-pii'
+                - $ref: "#/components/schemas/Non-pii"
         required: false
       responses:
         200:
@@ -41,7 +42,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Non-pii'
+                $ref: "#/components/schemas/Non-pii"
         400:
           description: Bad request
         401:
@@ -58,6 +59,8 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
+
       parameters:
         - name: favorites.eventId
           in: query
@@ -75,7 +78,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NonPIIDeviceData'
+                  $ref: "#/components/schemas/NonPIIDeviceData"
         400:
           description: Bad request
         401:
@@ -85,7 +88,7 @@ paths:
   /profiles/{uuid}:
     get:
       tags:
-      - Profile
+        - Profile
       summary: Find profile by ID
       description: |
         Returns a single profile
@@ -93,25 +96,26 @@ paths:
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
-      - name: uuid
-        in: path
-        description: ID of profile to return
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uuid
+          in: path
+          description: ID of profile to return
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Non-pii'
+                $ref: "#/components/schemas/Non-pii"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Non-pii'
+                $ref: "#/components/schemas/Non-pii"
         400:
           description: Invalid ID supplied
         401:
@@ -122,27 +126,29 @@ paths:
           description: Internal error
     put:
       tags:
-      - Profile
+        - Profile
       summary: Updates a profile with form data
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
+
       parameters:
-      - name: uuid
-        in: path
-        description: ID of profile that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uuid
+          in: path
+          description: ID of profile that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: update profile object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Non-pii'
+              $ref: "#/components/schemas/Non-pii"
         required: true
       responses:
         200:
@@ -150,10 +156,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Non-pii'
+                $ref: "#/components/schemas/Non-pii"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Non-pii'
+                $ref: "#/components/schemas/Non-pii"
         400:
           description: Invalid ID supplied
         401:
@@ -164,21 +170,23 @@ paths:
           description: Internal error
     delete:
       tags:
-      - Profile
+        - Profile
       summary: Deletes a profile
       description: |
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
+
       parameters:
-      - name: uuid
-        in: path
-        description: Profile id to delete
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: uuid
+          in: path
+          description: Profile id to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         202:
           description: Profile is deleted
@@ -193,7 +201,7 @@ paths:
   /profiles/pii:
     post:
       tags:
-      - PII
+        - PII
       summary: Create PII entry
       description: |
         This creates a new PII entry.
@@ -207,7 +215,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pii'
+              $ref: "#/components/schemas/Pii"
             examples:
               UUID list:
                 value:
@@ -243,7 +251,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pii'
+                $ref: "#/components/schemas/Pii"
               examples:
                 UUID string with more request body:
                   value:
@@ -285,7 +293,7 @@ paths:
   /profiles/pii/{pid}:
     get:
       tags:
-      - PII
+        - PII
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
@@ -294,24 +302,24 @@ paths:
       security:
         - UserAuth: []
       parameters:
-      - name: pid
-        in: path
-        description: ID of PII to return
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: pid
+          in: path
+          description: ID of PII to return
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pii'
+                $ref: "#/components/schemas/Pii"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pii'
+                $ref: "#/components/schemas/Pii"
         400:
           description: Invalid ID supplied
         401:
@@ -322,27 +330,27 @@ paths:
           description: Internal error
     put:
       tags:
-      - PII
+        - PII
       summary: Updates a PII with form data
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the old and new PII entry contents (i.e., phone number and uin can't be changed).
       security:
         - UserAuth: []
       parameters:
-      - name: pid
-        in: path
-        description: ID of PII that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: pid
+          in: path
+          description: ID of PII that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: update profile object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pii'
+              $ref: "#/components/schemas/Pii"
             example:
               address: 2000 Kristina Lights
               birthYear: 1999
@@ -379,7 +387,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pii'
+                $ref: "#/components/schemas/Pii"
               example:
                 address: 2000 Kristina Lights
                 birthYear: 1999
@@ -411,7 +419,7 @@ paths:
                 zipCode: "61821"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pii'
+                $ref: "#/components/schemas/Pii"
         400:
           description: Invalid ID supplied
         401:
@@ -422,21 +430,21 @@ paths:
           description: Internal error
     delete:
       tags:
-      - PII
+        - PII
       summary: Deletes a PII
       description: |
         Auth: Requires a valid id_token and PID For access. The contents of the id_token (phone number, uin) must match the contents of the PII entry to be deleted.
       security:
         - UserAuth: []
       parameters:
-      - name: pid
-        in: path
-        description: Pii id to delete
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: pid
+          in: path
+          description: Pii id to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         202:
           description: Profile is deleted
@@ -469,7 +477,7 @@ components:
               subcategories:
                 type: array
                 items:
-                 type: string
+                  type: string
         positiveInterestTags:
           nullable: true
           type: array
@@ -562,8 +570,8 @@ components:
           nullable: true
           type: string
         zipCode:
-           nullable: true
-           type: string
+          nullable: true
+          type: string
         homeCounty:
           nullable: true
           type: string
@@ -585,7 +593,7 @@ components:
           type: object
           nullable: true
           properties:
-            consentProvided :
+            consentProvided:
               type: boolean
             dateModified:
               type: string
@@ -624,3 +632,9 @@ components:
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
       x-bearerInfoFunc: auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens

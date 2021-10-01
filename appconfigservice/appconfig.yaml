@@ -4,21 +4,21 @@ info:
   description: App Config Building Block API Documentation
   version: 1.11.0
 servers:
-- url: https://api.rokwire.illinois.edu
-  description: Production server
-- url: https://api-test.rokwire.illinois.edu
-  description: Test server
-- url: https://api-dev.rokwire.illinois.edu
-  description: Development server
+  - url: https://api.rokwire.illinois.edu
+    description: Production server
+  - url: https://api-test.rokwire.illinois.edu
+    description: Test server
+  - url: https://api-dev.rokwire.illinois.edu
+    description: Development server
 tags:
-- name: App Configuration
-  description: API endpoints for managing mobile app configuration
+  - name: App Configuration
+    description: API endpoints for managing mobile app configuration
 
 paths:
   /app/configs:
     post:
       tags:
-      - App Configuration
+        - App Configuration
       summary: Creates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
@@ -31,7 +31,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AppConfig'
+              $ref: "#/components/schemas/AppConfig"
             examples:
               withoutSecretKeys:
                 value:
@@ -76,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppConfig'
+                $ref: "#/components/schemas/AppConfig"
         400:
           description: Bad request
         401:
@@ -85,7 +85,7 @@ paths:
           description: Internal error
     get:
       tags:
-      - App Configuration
+        - App Configuration
       summary: Reads mobile app configuration
       description: |
         Auth: Requires a valid API Key for access.
@@ -107,7 +107,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AppConfig'
+                  $ref: "#/components/schemas/AppConfig"
         400:
           description: Bad request.
         401:
@@ -153,21 +153,21 @@ paths:
   /app/configs/{id}:
     get:
       tags:
-      - App Configuration
+        - App Configuration
       summary: Reads mobile app configuration by given id
       description: |
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
       parameters:
-      - name: id
-        in: path
-        description: app config id to read
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: app config id to read
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: successfully read mobile app configuration
@@ -176,7 +176,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AppConfig'
+                  $ref: "#/components/schemas/AppConfig"
         400:
           description: Bad request.
         401:
@@ -187,7 +187,7 @@ paths:
           description: Internal error
     put:
       tags:
-      - App Configuration
+        - App Configuration
       summary: Updates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
@@ -196,20 +196,20 @@ paths:
       security:
         - UserAuth: []
       parameters:
-      - name: id
-        in: path
-        description: app config id to update
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: app config id to update
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: update AppConfig object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AppConfig'
+              $ref: "#/components/schemas/AppConfig"
         required: true
       responses:
         200:
@@ -217,7 +217,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppConfig'
+                $ref: "#/components/schemas/AppConfig"
         401:
           description: Unauthorized
         405:
@@ -226,7 +226,7 @@ paths:
           description: Internal error
     delete:
       tags:
-      - App Configuration
+        - App Configuration
       summary: Deletes mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
@@ -235,14 +235,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
-      - name: id
-        in: path
-        description: app config id to delete
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: app config id to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         202:
           description: AppConfig deleted
