@@ -290,7 +290,7 @@ def core_search(netid=None, firstname=None, lastname=None):
         return rs_handlers.bad_request(msg_json)
 
     if is_error:
-        return mongoutils.construct_json_from_query_list([])
+        return ""
 
     data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
     uuid_list = data_list[0].get('uuid')
