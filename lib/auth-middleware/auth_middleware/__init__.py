@@ -199,7 +199,6 @@ def verify_core_token(group_name=None):
 
 def verify_apikey(key, required_scopes=None):
     if not key:
-        # TODO: migrate to verify core token auth
         logger.warning("API key is missing the " +
                        rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')
@@ -271,9 +270,10 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         logger.info("checking issuer")
 
         if issuer == ROKWIRE_AUTH_HOST:
-            if not unverified_payload.get('anonymous'):
+            isAnonymous = unverified_payload.get('anonymous')
+            if isAnonymous is None or isAnonymous:
                 logger.warning(
-                    "anonymous flag is not set")
+                    "anonymous flag must be set to False")
                 raise OAuthProblem('Invalid token')
             valid_issuer = True
             logger.info("iss is rokwire auth host")
