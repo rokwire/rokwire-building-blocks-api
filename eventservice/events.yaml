@@ -26,6 +26,7 @@ paths:
       security:
         - ApiKeyAuth: []
         - UserAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: title
           in: query
@@ -250,6 +251,7 @@ paths:
       security:
         - ApiKeyAuth: []
         - UserAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: event_id
           in: path
@@ -423,6 +425,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: search results matching criteria
@@ -448,6 +451,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: Getting event tags successful
@@ -468,6 +472,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: Getting super event tags successful
@@ -489,6 +494,7 @@ paths:
       security:
         - ApiKeyAuth: []
         - UserAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: event_id
           in: path
@@ -569,6 +575,7 @@ paths:
       security:
         - ApiKeyAuth: []
         - UserAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: event_id
           in: path
@@ -911,3 +918,9 @@ components:
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
       x-bearerInfoFunc: auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens

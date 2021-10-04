@@ -4,27 +4,27 @@ info:
   description: Contributions Building Block API Documentation
   version: 1.11.0
 servers:
-- url: https://api.rokwire.illinois.edu
-  description: Production server
-- url: https://api-test.rokwire.illinois.edu
-  description: Test server
-- url: https://api-dev.rokwire.illinois.edu
-  description: Development server
+  - url: https://api.rokwire.illinois.edu
+    description: Production server
+  - url: https://api-test.rokwire.illinois.edu
+    description: Test server
+  - url: https://api-dev.rokwire.illinois.edu
+    description: Development server
 tags:
-- name: Contributions
-  description: API endpoints for managing Contributions.
-- name: Talents
-  description: API endpoints for managing Talents.
-- name: Capabilities
-  description: API endpoints for managing Capabilities.
-- name: Admin
-  description: Admin endpoints for the Contributions Building Block.
+  - name: Contributions
+    description: API endpoints for managing Contributions.
+  - name: Talents
+    description: API endpoints for managing Talents.
+  - name: Capabilities
+    description: API endpoints for managing Capabilities.
+  - name: Admin
+    description: Admin endpoints for the Contributions Building Block.
 paths:
   /contributions:
     post:
       summary: Create a new Contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       requestBody:
@@ -32,7 +32,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Contribution'
+              $ref: "#/components/schemas/Contribution"
       responses:
         201:
           description: Created
@@ -53,10 +53,11 @@ paths:
     get:
       summary: Return existing Contributions based on search criteria
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -71,7 +72,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contribution'
+                  $ref: "#/components/schemas/Contribution"
         400:
           description: Bad request
         401:
@@ -83,10 +84,11 @@ paths:
       summary: Return existing Talents based on search criteria
       operationId: controllers.contributions.alltalentssearch
       tags:
-       - Talents
+        - Talents
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -102,14 +104,14 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/Talent'
+                    - $ref: "#/components/schemas/Talent"
                     - type: object
                       properties:
                         contributionId:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Talent belongs to.
-#                  $ref: '#/components/schemas/Talent'
+        #                  $ref: '#/components/schemas/Talent'
         400:
           description: Bad request
         401:
@@ -125,6 +127,7 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -140,14 +143,14 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/Capability'
+                    - $ref: "#/components/schemas/Capability"
                     - type: object
                       properties:
                         contributionId:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Capability belongs to.
-#                  $ref: '#/components/schemas/Capability'
+        #                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:
@@ -162,6 +165,7 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -179,7 +183,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  $ref: "#/components/schemas/Talent"
         400:
           description: Bad request
         401:
@@ -194,6 +198,7 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -211,7 +216,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  $ref: "#/components/schemas/Capability"
         400:
           description: Bad request
         401:
@@ -222,26 +227,27 @@ paths:
     get:
       summary: Get a specific Contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be obtained
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be obtained
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Contribution details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contribution'
+                $ref: "#/components/schemas/Contribution"
         400:
           description: Bad request
         401:
@@ -253,24 +259,24 @@ paths:
     put:
       summary: Update a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: Contribution object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Contribution'
+              $ref: "#/components/schemas/Contribution"
         required: true
       responses:
         200:
@@ -284,18 +290,18 @@ paths:
     delete:
       summary: Delete a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Successfully deleted contribution details
@@ -311,8 +317,9 @@ paths:
       tags:
         - Contributions
       security:
-        - GitHubAuth: [ ]
-        - ApiKeyAuth: [ ]
+        - GitHubAuth: []
+        - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -339,12 +346,12 @@ paths:
                 type: array
                 items:
                   allOf:
-                  - $ref: '#/components/schemas/Talent'
-                  - type: object
-                    properties:
-                      contributionAdmins:
-                        description: List of GitHub usernames of Contribution admins
-                        type: array
+                    - $ref: "#/components/schemas/Talent"
+                    - type: object
+                      properties:
+                        contributionAdmins:
+                          description: List of GitHub usernames of Contribution admins
+                          type: array
         400:
           description: Bad request
         401:
@@ -357,8 +364,9 @@ paths:
       tags:
         - Contributions
       security:
-        - GitHubAuth: [ ]
-        - ApiKeyAuth: [ ]
+        - GitHubAuth: []
+        - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -385,7 +393,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/Capability'
+                    - $ref: "#/components/schemas/Capability"
                     - type: object
                       properties:
                         contributionAdmins:
@@ -415,13 +423,13 @@ paths:
       tags:
         - Admin
       security:
-        - GitHubAuth: [ ]
+        - GitHubAuth: []
       requestBody:
         description: Reviewer data
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Reviewer'
+              $ref: "#/components/schemas/Reviewer"
       responses:
         201:
           description: Created
@@ -444,7 +452,7 @@ paths:
       tags:
         - Admin
       security:
-        - GitHubAuth: [ ]
+        - GitHubAuth: []
       responses:
         200:
           description: Reviewers list
@@ -453,7 +461,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Reviewer'
+                  $ref: "#/components/schemas/Reviewer"
         400:
           description: Bad request
         401:
@@ -466,7 +474,7 @@ paths:
       tags:
         - Admin
       security:
-        - GitHubAuth: [ ]
+        - GitHubAuth: []
       parameters:
         - name: id
           in: path
@@ -509,18 +517,18 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/Person'
-              - $ref: '#/components/schemas/Organization'
+              - $ref: "#/components/schemas/Person"
+              - $ref: "#/components/schemas/Organization"
         capabilities:
           nullable: true
           type: array
           items:
-            $ref: '#/components/schemas/Capability'
+            $ref: "#/components/schemas/Capability"
         talents:
           nullable: true
           type: array
           items:
-            $ref: '#/components/schemas/Talent'
+            $ref: "#/components/schemas/Talent"
         contributionAdmins:
           description: List of GitHub usernames of Contribution admins
           type: array
@@ -573,8 +581,8 @@ components:
             location:
               type: string
               enum:
-               - internal
-               - external
+                - internal
+                - external
               description: >
                 Deployment location:
                   * `internal` - Within Rokwire Platform
@@ -658,7 +666,7 @@ components:
         requiredCapabilities:
           type: array
           items:
-            $ref: '#/components/schemas/Capability'
+            $ref: "#/components/schemas/Capability"
         requiredBuildingBlocks:
           type: array
           items:
@@ -740,7 +748,7 @@ components:
           nullable: true
           type: object
           allOf:
-           - $ref: '#/components/schemas/Organization'
+            - $ref: "#/components/schemas/Organization"
     Organization:
       type: object
       properties:
@@ -783,3 +791,9 @@ components:
           scopes: {}
       x-tokenInfoUrl: https://api.github.com/user
       description: The client must send a unexpired GitHub OAuth2 access_token in the Authorization header when making requests to API endpoints that require GitHub authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens

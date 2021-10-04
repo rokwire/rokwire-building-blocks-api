@@ -25,6 +25,7 @@ paths:
           Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       requestBody:
         description: A JSON array of one or more log entries. The schema of the request body is only provided as a reference and by default all of its properties are optional.
         required: true

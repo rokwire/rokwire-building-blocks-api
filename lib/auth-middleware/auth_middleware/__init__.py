@@ -133,6 +133,7 @@ def authorize(group_name=None):
                 is_member_of = id_info[is_member_of_key]
                 if is_member_of_key == is_member_of_claim:
                     is_member_of = is_member_of.split(',')
+                    logger.info("The permissions are", is_member_of)
 
                 for name in group_name:
                     if id_info['iss'] != ROKWIRE_AUTH_HOST:
@@ -268,7 +269,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
         logger.info("checking issuer")
-
+        logger.info("ROKWIRE_AUTH_HOST is: ", ROKWIRE_AUTH_HOST)
         if issuer == ROKWIRE_AUTH_HOST:
             isAnonymous = unverified_payload.get('anonymous')
             if isAnonymous is None or isAnonymous:
