@@ -133,12 +133,9 @@ def authorize(group_name=None):
                 is_member_of = id_info[is_member_of_key]
                 if is_member_of_key == is_member_of_claim:
                     is_member_of = is_member_of.split(',')
-                    logger.info("The permissions are", is_member_of)
-
                 for name in group_name:
                     if id_info['iss'] != ROKWIRE_AUTH_HOST:
                         name = ROKWIRE_GROUPS_MAP[name]
-
                     if name in is_member_of:
                         is_authorize = True
                         break
@@ -188,7 +185,6 @@ def verify_core_token(group_name=None):
         raise OAuthProblem('Invalid token')
 
     if issuer == ROKWIRE_AUTH_HOST:
-        logger.info("iss is rokwire auth host")
         keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
         target_client_ids = re.split(
             ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
@@ -268,8 +264,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
-        logger.info("checking issuer")
-        logger.info("ROKWIRE_AUTH_HOST is: ", ROKWIRE_AUTH_HOST)
         if issuer == ROKWIRE_AUTH_HOST:
             isAnonymous = unverified_payload.get('anonymous')
             if isAnonymous is None or isAnonymous:
@@ -277,7 +271,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                     "anonymous flag must be set to False")
                 raise OAuthProblem('Invalid token')
             valid_issuer = True
-            logger.info("iss is rokwire auth host")
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
                 ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
@@ -313,7 +306,6 @@ def use_security_token_auth(func):
 
 def get_keyset(request_url):
     keyset_resp = requests.get(request_url)
-    logger.info(keyset_resp)
     if keyset_resp.status_code != 200:
         logger.warning(
             "bad status getting keyset. status code = %s" % keyset_resp.status_code)
@@ -344,7 +336,6 @@ def decode_id_token(id_token, keyset, target_client_ids, kid):
     jwk = matching_jwks[0]
     pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
     try:
-        logger.info("checkaud Decode")
         id_info = jwt.decode(id_token, key=pub_key,
                              audience=target_client_ids, verify=True)
     except jwt.exceptions.PyJWTError as jwte:
@@ -353,7 +344,6 @@ def decode_id_token(id_token, keyset, target_client_ids, kid):
     if not id_info:
         logger.warning("id_info was not returned from decode")
         raise OAuthProblem('Invalid token')
-    logger.info("id info is fine")
     return id_info
 
 # def authenticate_google():
