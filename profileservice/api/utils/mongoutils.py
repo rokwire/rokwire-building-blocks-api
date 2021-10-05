@@ -338,6 +338,16 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     return result.acknowledged, dataset
 
 """
+update pii core migrate date
+"""
+def update_pii_core_migrate_date(query, core_migrate_date):
+    if not query:
+        return None
+
+    result = db_pii.pii_collection.update_one(query, {"$set": {"coreMigrateDate": core_migrate_date}}, upsert=False)
+    return result.acknowledged
+
+"""
 index non pii collection
 """
 def index_non_pii_data():

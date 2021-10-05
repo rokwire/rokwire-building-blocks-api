@@ -234,7 +234,7 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(netid=None, firstname=None, lastname=None): 
+def core_search(uin=None, firstname=None, lastname=None): 
     if request.headers.get("ROKWIRE-CBB-API-KEY") != cfg.CORE_BB_API_KEY:
         msg = {
             "reason": "Unauthorized",
@@ -245,8 +245,8 @@ def core_search(netid=None, firstname=None, lastname=None):
         return rs_handlers.forbidden(msg_json) 
 
     fields = {}
-    if netid:
-        fields['netid'] = netid
+    if uin:
+        fields['uin'] = uin
     if firstname and lastname:
         fields['firstname'] = firstname
         fields['lastname'] = lastname
@@ -299,6 +299,10 @@ def core_search(netid=None, firstname=None, lastname=None):
     out_json = mongoutils.construct_json_from_query_list(return_data)
     msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", return_data)
     logging.info("CORE PROFILE GET " + json.dumps(msg_json))
+
+    currenttime = otherutils.get_current_time_utc()
+    mongoutils.update_pii_core_migrate_date(fields, currenttime)
+
     return out_json
 
 def pii_post():

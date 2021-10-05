@@ -200,9 +200,9 @@ paths:
 
         Auth: Requires a valid API Key for access. The API Key must match the value of environment variable CORE_BB_API_KEY.
       parameters:
-      - name: netid
+      - name: uin
         in: query
-        description: The parameter for searching PII data by netid
+        description: The parameter for searching PII data by uin
         required: false
         style: form
         explode: true
