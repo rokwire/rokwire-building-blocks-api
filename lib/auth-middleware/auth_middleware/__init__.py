@@ -72,8 +72,7 @@ def get_bearer_token(request):
         raise OAuthProblem('Missing authorization header')
     ah_split = auth_header.split()
     if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
-        logger.warning(
-            "invalid auth header. expecting 'bearer' and token with space between")
+        logger.warning("invalid auth header. expecting 'bearer' and token with space between")
         raise OAuthProblem('Invalid request header')
     _id_token = ah_split[1]
     return _id_token
@@ -95,8 +94,7 @@ def authenticate(group_name=None, internal_token_only=False):
     app = flask.current_app
     if request.endpoint in app.view_functions:
         view_func = app.view_functions[request.endpoint]
-        should_use_security_token_auth = getattr(
-            view_func, '_use_security_token_auth', False)
+        should_use_security_token_auth = getattr(view_func, '_use_security_token_auth', False)
     # print("should use security token auth = %s" % should_use_security_token_auth)
 
     _id_token = get_bearer_token(request)
@@ -108,8 +106,7 @@ def authenticate(group_name=None, internal_token_only=False):
 def authorize(group_name=None):
 
     if 'user_token_data' not in g:
-        raise OAuthProblem(
-            'Token data not available for authorization. Most likely an authentication error.')
+        raise OAuthProblem('Token data not available for authorization. Most likely an authentication error.')
     else:
         id_info = g.user_token_data
 
@@ -152,15 +149,12 @@ def authorize(group_name=None):
 def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:
-        logger.warning("Request missing the " +
-                       rokwire_api_key_header + " header")
-        # missing header means bad request
-        raise OAuthProblem('Missing API Key')
+        logger.warning("Request missing the " + rokwire_api_key_header + " header")
+        raise OAuthProblem('Missing API Key') 
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
-
     for test_key in keys:
         if key == test_key.strip():  # just in case there are embedded blanks
             return True
@@ -196,8 +190,7 @@ def verify_core_token(group_name=None):
 
 def verify_apikey(key, required_scopes=None):
     if not key:
-        logger.warning("API key is missing the " +
-                       rokwire_api_key_header + " header")
+        logger.warning("API key is missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')
 
     # Assumption is that the key is a comma separated list of uuid's
@@ -257,7 +250,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         valid_issuer = False
         keyset = None
         target_client_ids = None
-        checkAud = True
 
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
