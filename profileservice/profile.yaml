@@ -23,6 +23,7 @@ paths:
       summary: Create profile
       description: |
         Create non-PII profile with profile id.
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -90,6 +91,7 @@ paths:
       summary: Find profile by ID
       description: |
         Returns a single profile
+
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
@@ -201,6 +203,7 @@ paths:
       description: |
         This creates a new PII entry.
         User's UUID must be provided as a string or as a list of string.
+
         Auth: Requires a valid id_token for access. The UIN / phone number in the PII entry is populated from the id_token contents. Remaining data is obtained from the request body.
       security:
         - UserAuth: []
@@ -291,6 +294,7 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
+        
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
       security:
         - UserAuth: []

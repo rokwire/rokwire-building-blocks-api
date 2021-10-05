@@ -150,7 +150,7 @@ def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:
         logger.warning("Request missing the " + rokwire_api_key_header + " header")
-        raise OAuthProblem('Missing API Key') 
+        raise OAuthProblem('Missing API Key')  # missing header means bad request
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
@@ -223,8 +223,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
         if not phone_verify_audience:
-            logger.warning(
-                "PHONE_VERIFY_AUDIENCE environnment variable not set")
+            logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
             raise OAuthProblem('Invalid token')
         try:
             id_info = jwt.decode(
@@ -246,7 +245,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         if not kid:
             logger.warning("kid not found. Aborting.")
             raise OAuthProblem('Invalid token')
-
         valid_issuer = False
         keyset = None
         target_client_ids = None
