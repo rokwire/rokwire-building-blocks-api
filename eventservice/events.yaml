@@ -21,6 +21,7 @@ paths:
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
+
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
@@ -207,6 +208,7 @@ paths:
       summary: create an event
       description: |
         create an event record into the system
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -244,6 +246,7 @@ paths:
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
+
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
@@ -280,6 +283,7 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -330,6 +334,7 @@ paths:
       summary: Deletes an event by the given event id
       description: |
         Delete the event record matching the eventId.
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -364,6 +369,7 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
+
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -415,6 +421,7 @@ paths:
       summary: Get events categories
       description: |
         return back a list of categories and subcategories
+
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []

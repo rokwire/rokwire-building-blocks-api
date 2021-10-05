@@ -22,6 +22,7 @@ paths:
       summary: Creates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -192,6 +193,7 @@ paths:
       summary: Updates mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
+
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
@@ -230,6 +232,7 @@ paths:
       summary: Deletes mobile app configuration
       description: |
         Auth: Requires a valid id_token that indicates membership in the following group\:
+
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
         - UserAuth: []
