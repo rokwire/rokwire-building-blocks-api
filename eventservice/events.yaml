@@ -4,188 +4,187 @@ info:
   description: Events Building Block API Documentation
   version: 1.11.0
 servers:
-  - url: https://api.rokwire.illinois.edu
-    description: Production server
-  - url: https://api-test.rokwire.illinois.edu
-    description: Test server
-  - url: https://api-dev.rokwire.illinois.edu
-    description: Development server
+- url: https://api.rokwire.illinois.edu
+  description: Production server
+- url: https://api-test.rokwire.illinois.edu
+  description: Test server
+- url: https://api-dev.rokwire.illinois.edu
+  description: Development server
 tags:
-  - name: Events
-    description: API endpoints for managing events.
+- name: Events
+  description: API endpoints for managing events.
 paths:
   /events:
     get:
       tags:
-        - Events
+      - Events
       summary: searches events
       description: |
         By passing in the appropriate options, you can search for events matching your criteria in the system
-
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
         - CoreTokenAuth: []
+        - UserAuth: []
       parameters:
-        - name: title
-          in: query
-          description: The parameter for searching events based on keywords in the title.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: recurrenceId
-          in: query
-          description: The parameter to search events based on a specific recurrence ID.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-        - name: tags
-          in: query
-          description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee or music
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: targetAudience
-          in: query
-          description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff. This parameter is CURRENTLY IGNORED.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: startDate
-          in: query
-          description: The parameter for searching events based on a given start date, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: startDate.lte
-          in: query
-          description: The parameter for searching events based on a given start date, e.g., /events?startDate.lte=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: startDate.gte
-          in: query
-          description: The parameter for searching events based on a given start date, e.g., /events?startDate.gte=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: startDateLimit
-          in: query
-          description: Another parameter for searching events based on a given start date, e.g., /events?startDateLimit=2019-04-25T13:00:00. This query will return all events whose start date is less than or equal to the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: endDate
-          in: query
-          description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: endDate.lte
-          in: query
-          description: The parameter for searching events based on a given start date, e.g., /events?endDate.lte=2019-04-25T13:00:00. This query will return all events whose end date is equal or before the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: endDate.gte
-          in: query
-          description: The parameter for searching events based on a given start date, e.g., /events?endDate.gte=2019-04-25T13:00:00. This query will return all events whose end date is equal or after the given input date.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: latitude
-          in: query
-          description: The latitude of the center point for geolocation radius search.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: number
-        - name: longitude
-          in: query
-          description: The longitude of the center point for geolocation radius search.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: number
-        - name: radius
-          in: query
-          description: The parameter to search events within a given radius of the provided location in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-        - name: skip
-          in: query
-          description: number of records to skip for pagination
-          required: false
-          style: form
-          explode: true
-          schema:
-            minimum: 0
-            type: integer
-            format: int32
-        - name: limit
-          in: query
-          description: maximum number of records to return
-          required: false
-          style: form
-          explode: true
-          schema:
-            maximum: 50
-            minimum: 0
-            type: integer
-            format: int32
-        - name: id
-          in: query
-          description: The parameter for searching multiple events based on their IDs.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: superEventId
-          in: query
-          description: The parameter for searching sub events based on the ID of a super event.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: groupId
-          in: query
-          description: The parameter for searching group events based on the group IDs.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-            format: uuid
+      - name: title
+        in: query
+        description: The parameter for searching events based on keywords in the title.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: recurrenceId
+        in: query
+        description: The parameter to search events based on a specific recurrence ID.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: tags
+        in: query
+        description: Search events with the given tags, e.g., /events?tags=coffee&tags=music. This query will return all events whose tags contain coffee or music
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: targetAudience
+        in: query
+        description: The parameter for searching events based on given input target audience, e.g., /events?targetAudience=students&targetAudience=staff. This query will return all events whose target audience is either students or staff. This parameter is CURRENTLY IGNORED.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate.lte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate.lte=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDate.gte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?startDate.gte=2019-04-25T13:00:00. This query will return all events whose start date is equal or after the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: startDateLimit
+        in: query
+        description: Another parameter for searching events based on a given start date, e.g., /events?startDateLimit=2019-04-25T13:00:00. This query will return all events whose start date is less than or equal to the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: The parameter for searching events based on a given end date, e.g., /events?endDate=2019-04-25T13:00:00. This query will return all events whose start date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate.lte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?endDate.lte=2019-04-25T13:00:00. This query will return all events whose end date is equal or before the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate.gte
+        in: query
+        description: The parameter for searching events based on a given start date, e.g., /events?endDate.gte=2019-04-25T13:00:00. This query will return all events whose end date is equal or after the given input date.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: latitude
+        in: query
+        description: The latitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: longitude
+        in: query
+        description: The longitude of the center point for geolocation radius search.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: radius
+        in: query
+        description: The parameter to search events within a given radius of the provided location in meters, e.g., /events?latitude=40.1078955&longitude=-88.224036&radius=800. This query will return back all events whose geolocation is within 800 meter centered at given geolocation point.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: skip
+        in: query
+        description: number of records to skip for pagination
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: maximum number of records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+      - name: id
+        in: query
+        description: The parameter for searching multiple events based on their IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: superEventId
+        in: query
+        description: The parameter for searching sub events based on the ID of a super event.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: groupId
+        in: query
+        description: The parameter for searching group events based on the group IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
       responses:
         200:
           description: search results matching criteria
@@ -194,7 +193,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Event"
+                  $ref: '#/components/schemas/Event'
 
         401:
           description: Unauthorized
@@ -208,7 +207,6 @@ paths:
       summary: create an event
       description: |
         create an event record into the system
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -224,7 +222,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         201:
@@ -232,7 +230,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
         400:
           description: Bad request
         401:
@@ -242,35 +240,34 @@ paths:
   /events/{event_id}:
     get:
       tags:
-        - Events
+      - Events
       summary: Get one event by the given event id.
       description: |
         Get the event record matching the eventId.
-
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
         - CoreTokenAuth: []
+        - UserAuth: []
       parameters:
-        - name: event_id
-          in: path
-          description: ID of the event that needs to be updated
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: ID of the event that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
             application/xml:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
         400:
           description: Invalid ID supplied
         401:
@@ -279,11 +276,10 @@ paths:
           description: Internal error
     put:
       tags:
-        - Events
+      - Events
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -295,20 +291,20 @@ paths:
       security:
         - UserAuth: []
       parameters:
-        - name: event_id
-          in: path
-          description: ID of the event that needs to be updated
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: ID of the event that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: update one event object
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         200:
@@ -316,10 +312,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
             application/xml:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
         400:
           description: Invalid ID supplied
         401:
@@ -330,11 +326,10 @@ paths:
           description: Internal error
     delete:
       tags:
-        - Events
+      - Events
       summary: Deletes an event by the given event id
       description: |
         Delete the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -346,14 +341,14 @@ paths:
       security:
         - UserAuth: []
       parameters:
-        - name: event_id
-          in: path
-          description: event id to delete
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: event id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         202:
           description: Event is deleted
@@ -369,7 +364,6 @@ paths:
       summary: Updates one event with form data
       description: |
         Update the event record matching the eventId.
-
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
           ```
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager
@@ -394,7 +388,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: '#/components/schemas/Event'
         required: true
       responses:
         200:
@@ -402,10 +396,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
             application/xml:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
         400:
           description: Invalid ID supplied
         401:
@@ -417,11 +411,10 @@ paths:
   /events/categories:
     get:
       tags:
-        - Events
+      - Events
       summary: Get events categories
       description: |
         return back a list of categories and subcategories
-
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
@@ -434,7 +427,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Categories"
+                  $ref: '#/components/schemas/Categories'
 
         401:
           description: Unauthorized
@@ -445,7 +438,7 @@ paths:
   /events/tags:
     get:
       tags:
-        - Events
+      - Events
       summary: Get a list of Rokwire event tags
       description: |
         Auth: Requires a valid API Key for access.
@@ -466,7 +459,7 @@ paths:
   /events/super-events/tags:
     get:
       tags:
-        - Events
+      - Events
       summary: Get a list of Rokwire super event tags
       description: |
         Auth: Requires a valid API Key for access.
@@ -487,14 +480,14 @@ paths:
   /events/{event_id}/images:
     get:
       tags:
-        - Events
+      - Events
       summary: Get IDs of all images associated with the requested event.
       description: |
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
         - CoreTokenAuth: []
+        - UserAuth: []
       parameters:
         - name: event_id
           in: path
@@ -539,12 +532,12 @@ paths:
               minLength: 1
               maxLength: 5000000
       parameters:
-        - name: event_id
-          in: path
-          description: Event ID
-          required: true
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        schema:
+          type: string
       responses:
         201:
           description: Images uploaded
@@ -568,27 +561,27 @@ paths:
   /events/{event_id}/images/{image_id}:
     get:
       tags:
-        - Events
+      - Events
       summary: Download an event image by providing the IDs of the event and the image.
       description: |
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
         - CoreTokenAuth: []
+        - UserAuth: []
       parameters:
-        - name: event_id
-          in: path
-          description: Event ID
-          required: true
-          schema:
-            type: string
-        - name: image_id
-          in: path
-          description: Requested image ID
-          required: true
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        schema:
+          type: string
+      - name: image_id
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: Successful image download
@@ -602,7 +595,7 @@ paths:
 
     put:
       tags:
-        - Events
+      - Events
       summary: Update an image associated with the specified event
       description: |
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
@@ -625,18 +618,18 @@ paths:
               minLength: 1
               maxLength: 5000000
       parameters:
-        - name: event_id
-          in: path
-          description: Event ID
-          required: true
-          schema:
-            type: string
-        - name: image_id
-          in: path
-          description: Requested image ID
-          required: true
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        schema:
+          type: string
+      - name: image_id
+        in: path
+        description: Requested image ID
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: Image updated
@@ -660,7 +653,7 @@ paths:
 
     delete:
       tags:
-        - Events
+      - Events
       summary: Delete an image associated with the specified event
       description: |
         Auth: Requires a valid id_token that indicates membership in at least one of the following groups\:
@@ -674,18 +667,18 @@ paths:
       security:
         - UserAuth: []
       parameters:
-        - name: event_id
-          in: path
-          description: Event ID
-          required: true
-          schema:
-            type: string
-        - name: image_id
-          in: path
-          description: ID of the image that needs to be deleted
-          required: true
-          schema:
-            type: string
+      - name: event_id
+        in: path
+        description: Event ID
+        required: true
+        schema:
+          type: string
+      - name: image_id
+        in: path
+        description: ID of the image that needs to be deleted
+        required: true
+        schema:
+          type: string
       responses:
         202:
           description: Image is deleted
@@ -769,12 +762,12 @@ components:
           items:
             type: "string"
             enum:
-              - students
-              - faculty
-              - staff
-              - alumni
-              - parents
-              - public
+            - students
+            - faculty
+            - staff
+            - alumni
+            - parents
+            - public
         imageUrl:
           type: string
         icalUrl:
@@ -816,17 +809,17 @@ components:
           type: string
           description: store the status of this event submission
           enum:
-            - submitted
-            - published
-            - rejected
-            - incomplete
-            - archived
+          - submitted
+          - published
+          - rejected
+          - incomplete
+          - archived
         isEventFree:
           type: boolean
           description: This boolean field will indicate whether the event is free or not.
         isGroupPrivate:
           type: boolean
-          description: If this field's value is set to true, it means that this is a private group event. If it's set to false, it means that this is a public group event.
+          description:  If this field's value is set to true, it means that this is a private group event. If it's set to false, it means that this is a public group event.
         isSuperEvent:
           type: boolean
           description: States whether an event is a super event (`true`) or not (`false`). A super event is defined as an event that contains one more sub events. E.g. conference, workshop, exhibition, etc. Each sub event can be a featured sub event and can contain a track that the sub event belongs to.
@@ -865,7 +858,7 @@ components:
         subcategories:
           type: array
           items:
-            $ref: "#/components/schemas/SubCategory"
+            $ref: '#/components/schemas/SubCategory'
     SubCategory:
       type: string
     Location:

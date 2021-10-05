@@ -34,7 +34,7 @@ from utils import query_params
 from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
-# from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
+from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
 from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access, check_permission_access_event
 
 logging.Formatter.converter = gmtime
@@ -55,8 +55,7 @@ def search():
     args = request.args
     query = dict()
     try:
-        query = query_params.format_query(
-            args, query, include_private_events, group_ids)
+        query = query_params.format_query(args, query, include_private_events, group_ids)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
@@ -73,7 +72,7 @@ def search():
     return current_app.response_class(result, mimetype='application/json')
 
 
-# @memoize_query(**CACHE_GET_EVENTS)
+@memoize_query(**CACHE_GET_EVENTS)
 def _get_events_result(query, limit, skip):
     """
     Perform the get_events query and return the serialized results. This is
@@ -161,8 +160,7 @@ def tags_search():
 def super_events_tags_search():
     response = []
     try:
-        tags_path = os.path.join(
-            current_app.root_path, "superevents_tags.json")
+        tags_path = os.path.join(current_app.root_path, "superevents_tags.json")
         with open(tags_path, 'r') as tags_file:
             response = json.load(tags_file)
     except Exception as ex:
@@ -183,7 +181,7 @@ def categories_search():
     return current_app.response_class(result, mimetype='application/json')
 
 
-# @memoize(**CACHE_GET_CATEGORIES)
+@memoize(**CACHE_GET_CATEGORIES)
 def _get_categories_result():
     """
     Perform the get_categories query and return the serialized results. This is
@@ -231,7 +229,7 @@ def get(event_id):
     return current_app.response_class(result, mimetype='application/json')
 
 
-# @memoize_query(**CACHE_GET_EVENT)
+@memoize_query(**CACHE_GET_EVENT)
 def _get_event_result(query):
     """
     Perform the get_event query and return the serialized results. This is
@@ -309,10 +307,8 @@ def put(event_id):
         abort(401)
 
     try:
-        status = db['events'].replace_one(
-            {'_id': ObjectId(event_id)}, req_data)
-        msg = "[PUT]: event id %s, nUpdate = %d " % (
-            str(event_id), status.modified_count)
+        status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
+        msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -342,8 +338,7 @@ def patch(event_id):
                     if not coordinates:
                         abort(500)
                     break
-                req_data = query_params.update_coordinates(
-                    req_data, coordinates)
+                req_data = query_params.update_coordinates(req_data, coordinates)
         except Exception as ex:
             __logger.exception(ex)
             abort(500)
@@ -373,10 +368,8 @@ def patch(event_id):
 
     try:
         db = get_db()
-        status = db['events'].update_one(
-            {'_id': ObjectId(event_id)}, {"$set": req_data})
-        msg = "[PATCH]: event id %s, nUpdate = %d " % (
-            str(event_id), status.modified_count)
+        status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
+        msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
         __logger.debug(msg)
     except Exception as ex:
         __logger.exception(ex)
@@ -412,8 +405,7 @@ def delete(event_id):
     try:
         db = get_db()
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
-        msg = "[DELETE]: event id %s, nDelete = %d " % (
-            str(event_id), status.deleted_count)
+        msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
         __logger.debug(msg)
     except Exception as ex:
         __logger.exception(ex)
@@ -454,12 +446,11 @@ def images_search(event_id):
         __logger.exception(ex)
         abort(500)
 
-    msg = "[get images]: find %d images related to event %s" % (
-        len(result), event_id)
+    msg = "[get images]: find %d images related to event %s" % (len(result), event_id)
     return success_response(200, msg, result)
 
 
-# @memoize_query(**CACHE_GET_EVENTIMAGES)
+@memoize_query(**CACHE_GET_EVENTIMAGES)
 def _get_imagefiles_result(query):
     """
     Perform the get_imagefiles query and return the results. This is
@@ -622,8 +613,7 @@ def images_delete(event_id, image_id):
     if not check_group_event_admin_access(event, group_memberships):
         abort(401)
 
-    msg = "[delete image]: event id %s, image id: %s" % (
-        str(event_id), str(image_id))
+    msg = "[delete image]: event id %s, image id: %s" % (str(event_id), str(image_id))
     try:
         S3EventsImages().delete(event_id, image_id)
         db = get_db()
