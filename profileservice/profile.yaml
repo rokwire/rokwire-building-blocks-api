@@ -208,17 +208,9 @@ paths:
         explode: true
         schema:
           type: string
-      - name: firstname
+      - name: phone
         in: query
-        description: The parameter for searching PII data by firstname
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: lastname
-        in: query
-        description: The parameter for searching PII data by lastname
+        description: The parameter for searching PII data by phone
         required: false
         style: form
         explode: true

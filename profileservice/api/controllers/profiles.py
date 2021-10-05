@@ -234,7 +234,7 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(uin=None, firstname=None, lastname=None): 
+def core_search(uin=None, phone=None): 
     if request.headers.get("ROKWIRE-CBB-API-KEY") != cfg.CORE_BB_API_KEY:
         msg = {
             "reason": "Unauthorized",
@@ -247,9 +247,8 @@ def core_search(uin=None, firstname=None, lastname=None):
     fields = {}
     if uin:
         fields['uin'] = uin
-    if firstname and lastname:
-        fields['firstname'] = firstname
-        fields['lastname'] = lastname
+    if phone:
+        fields['phone'] = phone
     if len(fields) == 0:
         msg = {
             "reason": "Must provide firstname and lastname or netid",
