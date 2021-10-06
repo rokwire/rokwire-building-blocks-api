@@ -2,6 +2,15 @@ FROM python:3-alpine3.12
 
 LABEL maintainer="ywkim@illinois.edu"
 
+# get repository
+#RUN apt-get update && apt-get install -y git
+#RUN echo $(git rev-parse --show-toplevel) > /git-repo.txt
+# set git repo as env variable
+
+#RUN apk --update add git
+#RUN GIT_REPO = git rev-parse --show-toplevel
+#ENV GIT_REPO ${GIT_REPO}
+
 EXPOSE 5000
 
 WORKDIR /usr/src/app/lib
