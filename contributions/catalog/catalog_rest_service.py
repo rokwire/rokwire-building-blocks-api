@@ -75,7 +75,8 @@ def index():
     cap_json = []
     tal_json = []
     user = None
-    repo = Repo(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
+    #repo = Repo(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
+    repo = cfg.GIT_REPO
     tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
     gittag = str(tags[-1])
 
