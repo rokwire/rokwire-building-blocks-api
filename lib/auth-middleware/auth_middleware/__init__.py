@@ -252,7 +252,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
-        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
 
         if issuer == ROKWIRE_AUTH_HOST:
             isAnonymous = unverified_payload.get('anonymous')
