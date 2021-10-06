@@ -251,7 +251,7 @@ def core_search(uin=None, phone=None):
         fields['phone'] = phone
     if len(fields) == 0:
         msg = {
-            "reason": "Must provide firstname and lastname or netid",
+            "reason": "Must provide uin or phone",
             "error": "Bad Request: " + request.url,
         }
         msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
