@@ -492,6 +492,7 @@ components:
         - name
         - shortDescription
         - contributionAdmins
+        - contacts
       properties:
         id:
           type: string
@@ -511,6 +512,25 @@ components:
             anyOf:
               - $ref: '#/components/schemas/Person'
               - $ref: '#/components/schemas/Organization'
+        contacts:
+          type: array
+          items:
+            properties:
+              name:
+                nullable: false
+                type: string
+              email:
+                nullable: false
+                type: string
+              phone:
+                nullable: false
+                type: string
+              organization:
+                nullable: true
+                type: string
+              officialAddress:
+                nullable: true
+                type: string
         capabilities:
           nullable: true
           type: array
@@ -605,6 +625,9 @@ components:
           type: string
         version:
           type: string
+        versionUrl:
+          nullable: true
+          type: string
         healthCheckUrl:
           nullable: true
           type: string
@@ -617,26 +640,6 @@ components:
               description: Deletion endpoint details. E.g. `DELETE /users/details/{UUID}`
             apiKey:
               type: string
-        contacts:
-          nullable: true
-          type: array
-          items:
-            properties:
-              name:
-                nullable: true
-                type: string
-              email:
-                nullable: true
-                type: string
-              phone:
-                nullable: true
-                type: string
-              organization:
-                nullable: true
-                type: string
-              officialAddress:
-                nullable: true
-                type: string
     Talent:
       type: object
       description: A core feature in the app user interface.

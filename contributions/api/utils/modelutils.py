@@ -79,6 +79,11 @@ def construct_contributors(in_json):
         is_person = True
     except:
         pass
+    try:
+        middlename = in_json["middleName"]
+        is_person = True
+    except:
+        pass
 
     contributor_dataset = None
     if is_person:

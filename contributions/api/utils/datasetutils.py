@@ -14,7 +14,7 @@
 
 import copy
 
-from models.capabilities.contact import Contact
+from models.contact import Contact
 from models.capabilities.datadeletionendpointdetail import DataDeletionEndpointDetail
 from models.capabilities.deploymentdetails import DeploymentDetails
 from models.capabilities.environmentvariable import EnvironmentVariable
@@ -49,6 +49,44 @@ def update_contribution_dataset_from_json(dataset, injson):
         dataset.set_contributors(injson['contributors'])
         del outjson['contributors']
     except:
+        pass
+    try:
+        contact_list = []
+        contact_json = injson['contacts']
+        for i in range(len(contact_json)):
+            tmp_contact = Contact()
+            try:
+                name = injson["contacts"][i]["name"]
+                tmp_contact.set_name(name)
+            except:
+                pass
+            try:
+                email = injson["contacts"][i]["email"]
+                tmp_contact.set_email(email)
+            except:
+                pass
+            try:
+                phone = injson["contacts"][i]["phone"]
+                tmp_contact.set_phone(phone)
+            except:
+                pass
+            try:
+                organization = injson["contacts"][i]["organization"]
+                tmp_contact.set_organization(organization)
+            except:
+                pass
+            try:
+                officialAddress = injson["contacts"][i]["officialAddress"]
+                tmp_contact.set_officialAddress(officialAddress)
+            except:
+                pass
+            contact_list.append(tmp_contact)
+        dataset.set_contacts(contact_list)
+        try:
+            del outjson["contacts"]
+        except:
+            pass
+    except Exception as e:
         pass
     try:
         dataset.set_capabilities(injson['capabilities'])
@@ -169,6 +207,11 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_version_url(injson['versionUrl'])
+        del outjson['versionUrl']
+    except:
+        pass
+    try:
         dataset.set_health_check_url(injson["healthCheckUrl"])
         del outjson["healthCheckUrl"]
     except Exception as e:
@@ -198,44 +241,6 @@ def update_capability_dataset_from_json(dataset, injson):
         dataset.set_data_deletion_endpoint_details(data_deletion_endpoint_detail)
         try:
             del outjson["dataDeletionEndpointDetails"]
-        except:
-            pass
-    except Exception as e:
-        pass
-    try:
-        contact_list = []
-        contact_json = injson['contacts']
-        for i in range(len(contact_json)):
-            tmp_contact = Contact()
-            try:
-                name = injson["contacts"]["name"]
-                tmp_contact.set_name(name)
-            except:
-                pass
-            try:
-                email = injson["contacts"]["email"]
-                tmp_contact.set_email(email)
-            except:
-                pass
-            try:
-                phone = injson["contacts"]["phone"]
-                tmp_contact.set_phone(phone)
-            except:
-                pass
-            try:
-                organization = injson["contacts"]["organization"]
-                tmp_contact.set_organization(organization)
-            except:
-                pass
-            try:
-                officialAddress = injson["contacts"]["officialAddress"]
-                tmp_contact.set_officialAddress(officialAddress)
-            except:
-                pass
-            contact_list.append(tmp_contact)
-        dataset.set_contacts(contact_list)
-        try:
-            del outjson["contacts"]
         except:
             pass
     except Exception as e:
@@ -302,7 +307,7 @@ def update_organization_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_email(injson['address'])
+        dataset.set_address(injson['address'])
         del outjson['address']
     except:
         pass

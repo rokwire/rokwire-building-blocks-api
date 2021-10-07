@@ -28,14 +28,7 @@ def init_talent():
         "minEndUserRoles": [],
         "startDate": date.today().strftime("%d/%m/%Y"),
         "endDate": date.today().strftime("%d/%m/%Y"),
-        "dataDescription": '',
-        "selfCertification": {
-            "dataDeletionUponRequest": '',
-            "respectingUserPrivacySetting": '',
-            "discloseAds": '',
-            "discloseSponsors": '',
-            "discloseImageRights": ''
-        }
+        "dataDescription": ''
     }
     return d
 
@@ -78,8 +71,29 @@ def to_talent(d):
                     talent_list[i][name] = []
                 else:
                     talent_list[i][name] = v[i]
-
+        talent_list[i]["selfCertification"] = to_self_certification(d)
     return talent_list
+
+def init_self_certification():
+    d = {
+        "dataDeletionUponRequest": '',
+        "respectingUserPrivacySetting": '',
+        "discloseAds": '',
+        "discloseSponsors": '',
+        "discloseImageRights": ''
+        }
+
+    return d
+
+
+def to_self_certification(d):
+    if not d: return {}
+    res = init_self_certification()
+    for k, v in d.items():
+        if "selfcertificate_" in k:
+            name = k.split("selfcertificate_")[-1]
+            res[name] = v[0]
+    return res
 
 def reconstruct_required_capabilities(d):
     # removed \r\n

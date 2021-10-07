@@ -364,8 +364,9 @@ def post_contribution(json_data):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
+            err_msg = str(err_json['status']), err_json['title'], err_json['detail']
             return False, str("post method fails with error: ") + str(result.status_code) \
-                   + ": " + str(err_json['reason'])
+                   + ": " + str(err_msg)
         else:
             logging.info("posted ok.".format(json_data))
             return True, str("post success!")
