@@ -44,6 +44,8 @@ SHIBBOLETH_CLIENT_ID=<Shibboleth Client ID>
 ROKWIRE_API_KEY=<API Key 1>,<API Key 2>,<API Key 3>
 ROKWIRE_ISSUER=<Rokwire ID Token Issuer Name>
 
+CORE_BB_API_KEY=<API Key used by Core BB>
+
 # AWS environment variables to set when running on development machine. 
 # This is not required when running within AWS.
 AWS_ACCESS_KEY_ID=<AWS Access Key ID>

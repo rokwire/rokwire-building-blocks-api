@@ -263,16 +263,13 @@ def core_search(uin=None, phone=None):
         if len(data_list) > 1:
             msg = {
                 "reason": "There is more than 1 pii record: " + str(fields),
-                "error": "Not Found: " + request.url,
+                "error": "There is more than 1 pii record: " + request.url,
             }
             msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
             logging.error("CORE PROFILE GET " + json.dumps(msg_json))
             return rs_handlers.internal_server_error(msg_json)
         if len(data_list) == 0:
-            msg = {
-                "reason": "There is no pii record for the query: " + str(fields),
-                "error": "Not Found: " + request.url,
-            }
+            msg = {"Not Found": str(fields)}
             msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
             logging.info("CORE PROFILE GET " + json.dumps(msg_json))
             return mongoutils.construct_json_from_query_list({})
