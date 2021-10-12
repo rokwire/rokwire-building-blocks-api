@@ -1,30 +1,34 @@
 <!doctype html>
-<title>
-    <h4>Contribution Catalog / Packager</h4>
-</title>
-<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='/css/bar.css') }}" rel="stylesheet" type="text/css">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="../css/style.css" rel="stylesheet">
-<link href="../css/bar.css" rel="stylesheet">
-<script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<html>
+
+    <title>
+        Contribution Catalog / Packager
+    </title>
+
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='/css/bar.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/bar.css" rel="stylesheet">
+
+    <script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
 
-<!-- <div class="topnav" id="myTopnav">-->
-<!--        <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>-->
-<!--        <a href="{{ url_for('contribute.create') }}">Contribute</a>-->
-<!-- </div>-->
+    <!-- <div class="topnav" id="myTopnav">-->
+    <!--        <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>-->
+    <!--        <a href="{{ url_for('contribute.create') }}">Contribute</a>-->
+    <!-- </div>-->
 
+    {%  block head %}
+    {%  endblock %}
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
 
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
-</section>
+</html>

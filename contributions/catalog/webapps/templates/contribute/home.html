@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <!--    <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">-->
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-</head>
+{%  extends 'base.html' %}
+{%  block title %}
+    Contribution Catalog / Packager
+{%  endblock %}
+
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='/css/bar.css') }}" rel="stylesheet" type="text/css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+<link href="../css/bar.css" rel="stylesheet">
+
+<script href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<meta content="width=device-width, initial-scale=1" name="viewport">
 
 <style>
     /* Center website */
@@ -170,8 +173,16 @@
 
 </style>
 
+{%  block head %}
+    <div id="header">
+        <h2 id="title"> Contributions Catalog / Packager </h2>
+    </div>
+{%  endblock %}
+
 {#<body>#}
+
 <body onload=start()>
+
 <div class="topnav" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
     <div id="submit_contribution" style="display: none;">
@@ -193,10 +204,7 @@
     <a href="{{ url_for('contribute.logout') }}">Logout</a>
 </div>
 
-<div id="header">
-    <h2 id="title"> Contributions Catalog/Packager </h2>
-</div>
-<!-- MAIN (Center website) -->
+    <!-- MAIN (Center website) -->
 <div class="main">
 
 
@@ -254,6 +262,7 @@
                 {% endfor %}
             {% endif %}
         </div><!-- END GRID -->
+
     <script>
 
         function start() {
@@ -321,5 +330,6 @@
     </script>
     </div>
 </div>
+
+
 </body>
-</html>
