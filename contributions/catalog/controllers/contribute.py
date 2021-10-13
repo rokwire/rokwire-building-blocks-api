@@ -15,8 +15,9 @@
 import json
 import logging
 import traceback
-
 import requests
+import controllers.config as release
+
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
@@ -30,7 +31,6 @@ from utils import adminutil
 from utils import requestutil
 
 import os
-from git import Repo
 
 bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 
@@ -44,10 +44,11 @@ def home():
     cap_json = []
     tal_json = []
 
-    repo = Repo(os.path.dirname( os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) )
-    #repo = cfg.GIT_REPO
-    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-    gittag = str(tags[-1])
+    # repo = Repo(os.path.dirname( os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) )
+    # #repo = cfg.GIT_REPO
+    # tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
+    # gittag = str(tags[-1])
+    gittag = release.release
 
     try:
         # create error to see if the user is logged in or now

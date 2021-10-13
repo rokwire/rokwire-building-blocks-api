@@ -16,6 +16,11 @@ import os
 
 from dotenv import load_dotenv
 
+# The short X.Y version
+version = '0.2'
+# The full version, including alpha/beta/rc tags
+release = '0.2.0'
+
 # Load .env file
 load_dotenv()
 

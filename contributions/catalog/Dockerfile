@@ -2,12 +2,6 @@ FROM python:3-alpine3.12
 
 LABEL maintainer="<ywkim@illinois.edu>, <minum@illinois.edu>"
 
-# get repository
-#RUN apt-get install git
-RUN GIT_REPO = $(git rev-parse --git-dir --show-toplevel)
-# set git repo as env variable
-ENV GIT_REPO ${GIT_REPO}
-
 EXPOSE 5050
 
 WORKDIR /usr/src/app/catalog

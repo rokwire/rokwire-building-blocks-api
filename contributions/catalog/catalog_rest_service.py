@@ -16,6 +16,7 @@ import logging
 import os
 import utils.requestutil as requestutil
 import utils.jsonutil as jsonutil
+import controllers.config as release
 
 from time import gmtime
 from jinja2 import environment
@@ -24,8 +25,6 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
-
-from git import Repo
 
 debug = cfg.DEBUG
 
@@ -74,11 +73,9 @@ def index():
     is_logged_in = False
     cap_json = []
     tal_json = []
+
     user = None
-    #repo = Repo(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
-    repo = cfg.GIT_REPO
-    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-    gittag = str(tags[-1])
+    gittag = str(release.release)
 
     try:
         # create error to see if the user is logged in or now
