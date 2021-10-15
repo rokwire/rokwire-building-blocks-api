@@ -57,7 +57,6 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -87,7 +86,6 @@ paths:
        - Talents
       security:
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -126,7 +124,6 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
         - name: name
           in: query
@@ -164,7 +161,6 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -197,7 +193,6 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
         - name: id
           in: path
@@ -230,7 +225,6 @@ paths:
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
       parameters:
       - name: id
         in: path
@@ -788,9 +782,3 @@ components:
           scopes: {}
       x-tokenInfoUrl: https://api.github.com/user
       description: The client must send a unexpired GitHub OAuth2 access_token in the Authorization header when making requests to API endpoints that require GitHub authentication.
-    CoreTokenAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      x-bearerInfoFunc: auth_middleware.verify_core_token
-      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens
