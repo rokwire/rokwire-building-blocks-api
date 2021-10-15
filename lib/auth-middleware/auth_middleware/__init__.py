@@ -254,11 +254,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
 
         if issuer == ROKWIRE_AUTH_HOST:
-            isAnonymous = unverified_payload.get('anonymous')
-            if isAnonymous is None or isAnonymous:
-                logger.warning(
-                    "anonymous flag must be set to False")
-                raise OAuthProblem('Invalid token')
             valid_issuer = True
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
@@ -286,6 +281,24 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
     return id_info
+
+def verify_userauth_coretoken(group_name=None):
+    id_token = get_bearer_token(request)
+    if not id_token:
+        raise OAuthProblem('Missing id token')
+
+    # check which token auth verify to use
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+
+    isAnonymous = unverified_payload.get('anonymous')
+    if isAnonymous != None and not isAnonymous:
+        logger.info(
+            "checking userauth")
+        return verify_userauth(id_token, group_name)
+    logger.info("checking anonymous core token auth")
+    return verify_core_token(group_name)
+
 
 
 def use_security_token_auth(func):

@@ -25,8 +25,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: title
         in: query
@@ -250,8 +249,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: event_id
         in: path
@@ -493,8 +491,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
         - name: event_id
           in: path
@@ -574,8 +571,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - CoreTokenAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: event_id
         in: path
@@ -923,4 +919,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens
+    UserAndCoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_userauth_coretoken
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens

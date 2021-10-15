@@ -86,7 +86,6 @@ paths:
       tags:
        - Talents
       security:
-        - GitHubAuth: []
         - ApiKeyAuth: []
         - CoreTokenAuth: []
       parameters:
