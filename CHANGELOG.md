@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
 
 ## [1.11.2] - 2021-09-17
 ### Changed
@@ -16,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.11.0] - 2021-07-29
 ### Added
-- Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
 - Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
