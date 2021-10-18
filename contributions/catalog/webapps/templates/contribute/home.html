@@ -1,169 +1,13 @@
 {%  extends 'base.html' %}
 {%  block title %}
-    Contribution Catalog / Packager
+    Contributions Catalog / Packager
 {%  endblock %}
 
 
-<style>
-    /* Center website */
-    .main {
-        margin: auto;
-        position: relative;
-        max-width: 1000px;
-    }
-
-    .row {
-        margin: 10px -16px;
-    }
-
-    /* Add padding BETWEEN each column */
-    .row,
-    .row > .column {
-        padding: 10px;
-    }
-
-    /* Create three equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 33.33%;
-    }
-
-    /* Clear floats after rows */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    /* Style the buttons */
-    .btn {
-        position: relative;
-        margin-top: 20px;
-        border: none;
-        outline: none;
-        padding: 12px 16px;
-        background-color: white;
-        cursor: pointer;
-    }
-
-    .btn:hover {
-        background-color: #ddd;
-        color: white;
-    }
-
-    .btn.active {
-        background-color: #666;
-        color: white;
-    }
-
-    .i {
-        cursor: pointer;
-    }
-
-
-    h1 {
-        font-size: 50px;
-        word-break: break-all;
-    }
-
-    #header {
-        margin: auto;
-        position: relative;
-        max-width: 1000px;
-
-        left: auto;
-        right: auto;
-        border: none;
-        /*padding: 30px;*/
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-        background-repeat: no-repeat;
-        /*height: 30%;*/
-        /*width: 52%;*/
-        height: 250px;
-        width: 1000px;
-        background-position: center;
-        background-size: auto;
-    }
-
-    #title {
-        margin: auto;
-        text-align: center;
-        position: relative;
-        top: 50%;
-        left: 15%;
-        transform: translate(-25%, -25%);
-        color: white;
-    }
-
-    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-    .search {
-        width: 100%;
-        position: relative;
-        display: flex;
-    }
-
-    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-        background-color: #2a4b45;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: relative;
-        background-color: #2a4b45;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        /*z-index: 1;*/
-        cursor: pointer;
-    }
-
-    .dropdown-content a {
-        float: right;
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        padding-right: 50px;
-        padding-left: 50px;
-        text-align: right;
-        cursor: pointer;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #f4f7f5;
-        border: grey;
-        border-radius: 5%;
-    }
-
-    .show {
-        display: block;
-    }
-
-    /* the card feature */
-    .content {
-        background-color: #f7f3f3;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(98, 66, 66, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-
-    }
-
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-decoration: #8fd19e;
-    }
-
-</style>
-
-{%  block head %}
+{%  block header %}
     <div id="header">
         <h2 id="title"> Contributions Catalog / Packager </h2>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/centerwebsite.css') }}" />
     </div>
 {%  endblock %}
 
@@ -194,7 +38,7 @@
 </div>
 {% endblock %}
     <!-- MAIN (Center website) -->
-{% block content %}
+{% block maincontent %}
 <div class="main">
 
 
