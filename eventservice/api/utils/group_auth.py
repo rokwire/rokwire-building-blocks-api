@@ -1,9 +1,7 @@
 import controllers.configs as cfg
 import requests
-import logging
 from flask import g
 
-logger = logging.getLogger(__name__)
 
 def get_group_ids():
     group_ids = list()
@@ -15,11 +13,8 @@ def get_group_ids():
         iss = auth_resp.get('iss')
         if iss == cfg.ROKWIRE_AUTH_HOST:
             uin = auth_resp.get('uid')
-            logger.info("CORE TOKEN", uin)
-
         elif iss == cfg.SHIB_HOST:
             uin = auth_resp.get('uiucedu_uin')
-            logger.info("SHIB TOKEN", uin)
         else:
             raise Exception("invalid token issuer")
         url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
@@ -45,12 +40,8 @@ def get_group_memberships():
         iss = auth_resp.get('iss')
         if iss == cfg.ROKWIRE_AUTH_HOST:
             uin = auth_resp.get('uid')
-            logger.info("CORE TOKEN", uin)
-
         elif iss == cfg.SHIB_HOST:
             uin = auth_resp.get('uiucedu_uin')
-            logger.info("SHIB TOKEN", uin)
-
         else:
             raise Exception("invalid token issuer")
         url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
