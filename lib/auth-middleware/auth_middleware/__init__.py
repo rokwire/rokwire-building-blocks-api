@@ -254,6 +254,11 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
 
         if issuer == ROKWIRE_AUTH_HOST:
+            isAnonymous = unverified_payload.get('anonymous')
+            if isAnonymous is None or isAnonymous:
+                logger.warning(
+                    "anonymous flag must be set to False")
+                raise OAuthProblem('Invalid token')
             valid_issuer = True
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
