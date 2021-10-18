@@ -297,7 +297,7 @@ def verify_userauth_coretoken(group_name=None):
         id_token)
 
     isAnonymous = unverified_payload.get('anonymous')
-    if isAnonymous:
+    if isAnonymous == True:
         return verify_core_token(group_name)
     return verify_userauth(id_token, group_name)
 
