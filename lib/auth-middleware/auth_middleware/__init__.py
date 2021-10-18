@@ -297,7 +297,7 @@ def verify_userauth_coretoken(group_name=None):
         id_token)
 
     isAnonymous = unverified_payload.get('anonymous')
-    if isAnonymous != None and not isAnonymous:
+    if isAnonymous == None or (isAnonymous != None and not isAnonymous):
         logger.info(
             "checking userauth")
         return verify_userauth(id_token, group_name)
