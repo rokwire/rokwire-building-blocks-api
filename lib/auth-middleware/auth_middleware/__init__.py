@@ -186,6 +186,8 @@ def verify_core_token(group_name=None):
         return {'id_token_valid': True}
     else:
         raise OAuthProblem('invalid core token')
+    g.user_token_data = id_info
+    g.user_token = id_token
 
 
 def verify_apikey(key, required_scopes=None):
@@ -285,6 +287,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
+    g.user_token = id_token
     return id_info
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
@@ -355,6 +358,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
+    g.user_token = id_token
     return id_info
 
 def verify_userauth_coretoken(group_name=None):
@@ -369,7 +373,7 @@ def verify_userauth_coretoken(group_name=None):
     isAnonymous = unverified_payload.get('anonymous')
     if isAnonymous == True:
         return verify_core_token(group_name)
-    return verify_userauth(id_token, group_name)
+    return verify_core_userauth(id_token, group_name)
 
 
 
