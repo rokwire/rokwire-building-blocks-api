@@ -333,8 +333,6 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         target_client_ids = None
 
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
-        ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
-        ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
 
         if issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
