@@ -204,7 +204,7 @@ def verify_apikey(key, required_scopes=None):
         raise OAuthProblem('Invalid API Key')
 
 
-def verify_userauth(id_token, group_name=None, internal_token_only=False):
+def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
@@ -265,6 +265,78 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
 
         elif issuer == 'https://' + SHIB_HOST:
+            if internal_token_only:
+                logger.warning("incorrect token type")
+                raise OAuthProblem('Invalid token')
+            valid_issuer = True
+            keyset = get_keyset(
+                'https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+            target_client_ids = re.split(
+                ',', (os.getenv('SHIBBOLETH_CLIENT_ID', '')).replace(" ", ""))
+
+        # Comment about the next bit. The Py JWT package's support for getting the keys
+        # and verifying against said key is (like the rest of it) undocumented.
+        # These calls may therefore change without warning without notification in future
+        # releases of that library. If this stops working, check the Py JWT libraries first.
+        if not valid_issuer:
+            logger.warning("invalid issuer = %s" % issuer)
+            raise OAuthProblem('Invalid token')
+
+        id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
+    # Store ID info for future references in the current request context.
+    g.user_token_data = id_info
+    return id_info
+
+def verify_userauth(id_token, group_name=None, internal_token_only=False):
+    id_info = None
+    if not id_token:
+        logger.warning("Request missing id token")
+        raise OAuthProblem('Missing id token')
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+
+    if unverified_header.get('phone', False):
+        # phone number verify -- reject if this should be another type of token.
+        if internal_token_only:
+            logger.warning('incorrect id token type.')
+            raise OAuthProblem('Invalid token')
+        phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
+        if not phone_verify_secret:
+            logger.warning("PHONE_VERIFY_SECRET environment variable not set")
+            raise OAuthProblem('Invalid token')
+        phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
+        if not phone_verify_audience:
+            logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
+            raise OAuthProblem('Invalid token')
+        try:
+            id_info = jwt.decode(
+                id_token,
+                phone_verify_secret,
+                audience=phone_verify_audience,
+                verify=True
+            )
+        except jwt.DecodeError as de:
+            logger.warning("error on id_token decode. Message = %s" % str(de))
+            raise OAuthProblem('Invalid token')
+        # import pprint; pprint.pprint(id_info)
+    else:
+        issuer = unverified_payload.get('iss')
+        if not issuer:
+            logger.warning("Issuer not found. Aborting.")
+            raise OAuthProblem('Invalid token')
+        kid = unverified_header.get('kid')
+        if not kid:
+            logger.warning("kid not found. Aborting.")
+            raise OAuthProblem('Invalid token')
+        valid_issuer = False
+        keyset = None
+        target_client_ids = None
+
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+        ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+        ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
+
+        if issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
                 raise OAuthProblem('Invalid token')
