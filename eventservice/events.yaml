@@ -25,6 +25,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: title
         in: query
