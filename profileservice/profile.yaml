@@ -198,7 +198,7 @@ paths:
       description: |
         Returns a single PII entry with associated Non PII information.
 
-        Auth: Requires a valid API Key for access. The API Key must match the value of environment variable CORE_BB_API_KEY. This API Key is only used by the Core BB.
+        Auth: Requires a valid API Key for access. The API Key must match the value of environment variable ROKWIRE_CORE_BB_API_KEY. This API Key is only used by the Core BB.
       parameters:
       - name: uin
         in: query

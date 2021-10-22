@@ -358,7 +358,7 @@ API will return the message
         "username": "jd325",
         "creationDate": "2019/07/03T11:51:43",
         "lastname": "doe",
-        "phone": "123-456-7890",
+        "phone": "+12345678901",
         "uuid":[
             "a6856b73-d453-4515-8002-56e8d0522136"
         ]

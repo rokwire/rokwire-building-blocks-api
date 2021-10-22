@@ -37,4 +37,4 @@ FIELD_OBJECTID = '_id'
 FIELD_PROFILE_UUID = 'uuid'
 FIELD_PID = 'pid'
 
-CORE_BB_API_KEY = os.getenv('CORE_BB_API_KEY', '')
+ROKWIRE_CORE_BB_API_KEY = os.getenv('ROKWIRE_CORE_BB_API_KEY', '')

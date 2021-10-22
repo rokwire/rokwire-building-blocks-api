@@ -234,8 +234,8 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
-def core_search(uin=None, phone=None): 
-    if request.headers.get("ROKWIRE-CBB-API-KEY") != cfg.CORE_BB_API_KEY:
+def core_search(uin=None, phone=None):
+    if request.headers.get("ROKWIRE-CORE-BB-API-KEY") != cfg.ROKWIRE_CORE_BB_API_KEY:
         msg = {
             "reason": "Unauthorized",
             "error": "Unauthorized: " + request.url,
