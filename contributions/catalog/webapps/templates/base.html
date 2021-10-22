@@ -1,21 +1,24 @@
 <!doctype html>
 <html>
 
-    <title>
-        Contributions Catalog / Packager
-    </title>
+    <head>
+        <title>
+            Contributions Catalog / Packager
+        </title>
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-    <script type="text/javascript" href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/resources/demos/style.css" />
+        <script type="text/javascript" href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css" />
 
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+    </head>
+
 
 
     <!-- <div class="topnav" id="myTopnav">-->
@@ -23,15 +26,13 @@
     <!--        <a href="{{ url_for('contribute.create') }}">Contribute</a>-->
     <!-- </div>-->
 
-    <head>
-        {%  block header %}
-        {%  endblock %}
-    </head>
 
     <body di="wrap">
         <div class="container-fluid">
             <!-- container-fluid class gives a little margin in the website. Doesn't look like flowing out -->
             {% block topnavcontent %}
+            {% endblock %}
+            {% block header %}
             {% endblock %}
             {% block maincontent %}
             {% endblock %}
