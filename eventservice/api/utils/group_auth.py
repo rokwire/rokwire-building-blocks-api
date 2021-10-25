@@ -31,7 +31,7 @@ def get_group_memberships():
         include_private_events = True
         url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
         logger.info("URL is ", url)
-
+        id_token = g.user_token
         headers = {"Content-Type": "application/json",
                     "Authorization": "Bearer " + id_token}
 
