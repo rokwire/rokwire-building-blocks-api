@@ -28,7 +28,7 @@ EVENT_DB_NAME = os.getenv("EVENT_DB_NAME", "rokwire")
 URL_PREFIX = os.getenv("URL_PREFIX", "")
 
 GROUPS_BUILDING_BLOCK_HOST= os.getenv("GROUPS_BUILDING_BLOCK_HOST", "https://api-dev.rokwire.illinois.edu/gr")
-ROKWIRE_AUTH_HOST = os.getenv("ROKWIRE_AUTH_HOST", "https://core.api.dev.services.rokmetro.com/core")
+ROKWIRE_AUTH_HOST = os.getenv("ROKWIRE_AUTH_HOST", "https://api-dev.rokwire.illinois.edu/core")
 SHIB_HOST = os.getenv("SHIB_HOST", "shibboleth.illinois.edu")
 
 ROKWIRE_GROUPS_API_KEY = os.getenv("ROKWIRE_GROUPS_API_KEY", "")
