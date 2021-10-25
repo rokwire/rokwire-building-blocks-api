@@ -183,11 +183,12 @@ def verify_core_token(group_name=None):
         target_client_ids = re.split(
             ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
+        g.user_token_data = id_info
+        g.user_token = id_token
         return {'id_token_valid': True}
     else:
         raise OAuthProblem('invalid core token')
-    g.user_token_data = id_info
-    g.user_token = id_token
+
 
 
 def verify_apikey(key, required_scopes=None):
