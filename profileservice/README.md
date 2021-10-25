@@ -339,3 +339,62 @@ API will return the message
   }
 ]
 ```
+### SEARCH profile data using uin or phone
+Search existing PII dataset and associated Non-PII dataset by using uin or phone. Used by the Core Building Block to for ROKWIRE 3.0 data migration.
+```
+curl http://localhost:5000/profiles/core?uin=<uin>&phone=<phone>
+```
+API will return the message
+```
+{
+    "pii": {
+        "lastModifiedDate": "2019/07/03T11:53:12",
+        "netid": "jd123",
+        "uin": "2340345",
+        "firstname": "john",
+        "pid": "90e7b9ee-de9c-4e2e-a32a-0295e92b035b",
+        "imageUrl": null,
+        "email": "jd@testmail.com",
+        "username": "jd325",
+        "creationDate": "2019/07/03T11:51:43",
+        "lastname": "doe",
+        "phone": "+12345678901",
+        "uuid":[
+            "a6856b73-d453-4515-8002-56e8d0522136"
+        ]
+    },
+    "non_pii": {
+        "over13": true,
+        "uuid": "a6856b73-d453-4515-8002-56e8d0522136",
+        "interests":[
+            {
+                "subcategories":[
+                    "Football",
+                    "Basketball"
+                ],
+                "category": "Athletics"
+            },
+            {
+                "category": "Entertainment"
+            }
+        ],
+        "positiveInterestTags":[
+            "jazz",
+            "rock"
+        ],
+        "negativeInterestTags":[
+            "Rock",
+            "Hip Hop"
+        ],
+        "creationDate": "2019/07/03T11:31:44",
+        "lastModifiedDate": "2019/07/03T11:37:39",
+        "favorites":{
+            "placeIds":[],
+            "eventIds":[],
+            "athleticEventIds":[],
+            "laundryPlaceIds":[],
+            "diningPlaceIds":[]
+        }
+    }
+}
+```
