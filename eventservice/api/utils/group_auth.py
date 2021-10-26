@@ -8,13 +8,13 @@ logger = logging.getLogger(__name__)
 def get_group_ids():
     group_ids = list()
     include_private_events = False
-    if 'user_token' in g:
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
         id_token = g.user_token
         url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
         headers = {"Content-Type": "application/json",
                     "Authorization": "Bearer " + id_token}
-
+        logger.info("headers", headers)
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
             req_data = req.json()
@@ -27,10 +27,9 @@ def get_group_ids():
 def get_group_memberships():
     group_memberships = list()
     include_private_events = False
-    if 'user_token' in g:
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
         url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
-        logger.info("URL is ", url)
         id_token = g.user_token
         headers = {"Content-Type": "application/json",
                     "Authorization": "Bearer " + id_token}
