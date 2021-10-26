@@ -14,7 +14,6 @@ def get_group_ids():
         url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
         headers = {"Content-Type": "application/json",
                     "Authorization": "Bearer " + id_token}
-        logger.info("headers", headers)
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
             req_data = req.json()
