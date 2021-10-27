@@ -25,7 +25,6 @@ from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
 
-from git import Repo
 
 debug = cfg.DEBUG
 
@@ -75,9 +74,7 @@ def index():
     cap_json = []
     tal_json = []
     user = None
-    repo = Repo(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
-    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-    gittag = str(tags[-1])
+    gittag = cfg.gittag
 
     try:
         # create error to see if the user is logged in or now

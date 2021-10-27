@@ -30,7 +30,6 @@ from utils import adminutil
 from utils import requestutil
 
 import os
-from git import Repo
 
 bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 
@@ -44,9 +43,7 @@ def home():
     cap_json = []
     tal_json = []
 
-    repo = Repo(os.path.dirname( os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) )
-    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-    gittag = str(tags[-1])
+    gittag = cfg.gittag
 
     try:
         # create error to see if the user is logged in or now
@@ -75,7 +72,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', gittag=gittag,cap_json=cap_json, tal_json=tal_json,
+        return render_template('contribute/home.html', gittag=gittag, cap_json=cap_json, tal_json=tal_json,
                                show_sel=show_sel, user=user)
     else:
         # query only published ones
