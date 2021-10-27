@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
 - footer for contributions catalog home.html. [#770](https://github.com/rokwire/rokwire-building-blocks-api/issues/770)
+- /version endpoint in AppConfig.[#760](https://github.com/rokwire/rokwire-building-blocks-api/issues/760)
 
 ### Changed
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
@@ -23,14 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
 - Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
 - Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
-<<<<<<< HEAD
-=======
-
 
 ## [1.11.1] - 2021-08-11
 ### Changed
 - Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
->>>>>>> 61d1eaece23a9ebe75e837eb9a67e8cea9c03b15
 
 ## [1.11.0] - 2021-07-29
 ### Added
