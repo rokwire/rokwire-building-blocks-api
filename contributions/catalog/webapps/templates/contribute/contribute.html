@@ -11,7 +11,7 @@
     Capability Catalog
 {%  endblock %}
 
-<body onload=data_validation()>
+<body onsubmit="data_validation()">
 
 <div class="container-fluid">
 
@@ -110,13 +110,14 @@
                         <input class="form-control" id="contribution_Admins"
                                name="contribution_contributionAdmins"
                                placeholder="Give a list of admin names, separated by comma"
-                               type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                               type="text" value="{{ post.contributionAdmins|join(' ') }}">
                     {% else %}
                         <input class="form-control" id="contribution_Admins"
                                name="contribution_contributionAdmins"
                                placeholder="Give a list of admin names, separated by comma"
-                               type="text"></div>
+                               type="text">
                     {% endif %}
+                </div>
             </div>
 
             <div class="form-group">
@@ -600,7 +601,6 @@
                                         <br>
                                     </div>
                                 </div>
-                            </div>
                             {% endfor %}
                         {% else %}
                             <div class="form-group">
@@ -768,8 +768,9 @@
                                     <br>
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
+                    </div>
+
 
 
                     <!--------------------------------------------talent block ------------------------------------------>
@@ -989,8 +990,8 @@
     {% endblock %}
 </div>
 
-</body>
 
+<script type="text/javascript" src="{{ url_for('static', filename='js/contribute_data_validation.js') }}"></script>
 
 <script>
 
@@ -1204,5 +1205,4 @@
 
 </script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/contribute_data_validation.js') }}"></script>
-
+</body>
