@@ -198,12 +198,24 @@ def contribution_edit(contribution_id):
         the_json_res = get_contribution(contribution_id)
         # check if the user is editable then set the is_editable
         is_editable = False
+        is_reviewer = False
         username = session["username"]
         headers = requestutil.get_header_using_session(session)
-        is_editable = adminutil.check_if_reviewer(username, headers)
+
+        # check if the user is in contribution's admins
+        if username in the_json_res["contributionAdmins"]:
+            is_editable = True
+
+        # check if the user is a reviewer
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+        if is_reviewer:
+            is_editable = True
 
         if is_editable:
-            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+            return render_template('contribute/contribute.html', is_reviewer=is_reviewer, is_editable=is_editable,
+                                   user=session["name"], token=session['oauth_token']['access_token'],
+                                   post=the_json_res)
         else:
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
@@ -321,6 +333,48 @@ def create():
                 return render_template('contribute/error.html', error_msg=s)
     return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
+# reviewers page
+@bp.route('/contributions/reviwers', methods=['GET'])
+@login_required
+def reviewers_main():
+    show_sel = request.args.get('show')
+    user = None
+    token = None
+    is_logged_in = False
+    is_editable = False
+    the_res_json = None
+
+    try:
+        # create error to see if the user is logged in or now
+        # TODO this should be changed to better way
+        if (session["name"] == ""):
+            is_logged_in = True
+        else:
+            is_logged_in = True
+        user = session["name"]
+        token = session['oauth_token']['access_token']
+    except:
+        is_logged_in = False
+
+    if is_logged_in:
+        # check if the user is editable then set the is_editable
+        username = session["username"]
+        headers = requestutil.get_header_using_session(session)
+        is_editable = adminutil.check_if_reviewer(username, headers)
+
+    if is_editable:
+        result = requestutil.request_contributions(headers)
+        if show_sel == None or show_sel == "all":
+            # create the json for only submitted
+            the_json_res = result.json()
+        else:
+            # create the json for keyword related
+            the_json_res = jsonutil.create_status_json_from_contribution_json(result.json(), show_sel)
+        return render_template('contribute/reviewers.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+    else:
+        s = "You don't have a permission to edit the contribution."
+        return render_template('contribute/error.html', error_msg=s)
+
 @bp.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
@@ -338,6 +392,22 @@ def submitted():
 def search_results(search):
     return render_template('results.html', results=results, user=session["name"],  token=session['oauth_token']['access_token'])
 
+# get all contributions
+def get_contributions():
+    headers = requestutil.get_header_using_session(session)
+
+    try:
+        result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers)
+
+        if result.status_code != 200:
+            err_json = parse_response_error(result)
+            logging.error("Contribution GET " + json.dumps(err_json))
+            return {}
+
+    except Exception:
+        # traceback.print_exc()
+        return False
+    return result.json()
 
 # post a json_data in a http request
 def post_contribution(json_data):
