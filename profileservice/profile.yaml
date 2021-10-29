@@ -27,6 +27,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       requestBody:
         description: Created profile object
         content:
@@ -58,6 +59,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: favorites.eventId
           in: query
@@ -93,6 +95,7 @@ paths:
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
       - name: uuid
         in: path
@@ -128,6 +131,7 @@ paths:
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
       - name: uuid
         in: path
@@ -170,6 +174,7 @@ paths:
         Auth: Requires a valid API Key and profile uuid for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
       - name: uuid
         in: path
@@ -330,7 +335,7 @@ paths:
       summary: Get PII by PID
       description: |
         Returns a single PII entry.
-
+        
         Auth: Requires a valid id_token and PID for access. The contents of the id_token (phone number, uin) must match the PII entry contents.
       security:
         - UserAuth: []
@@ -673,3 +678,9 @@ components:
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
       x-bearerInfoFunc: auth_middleware.verify_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens
