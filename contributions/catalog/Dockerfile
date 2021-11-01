@@ -1,6 +1,6 @@
 FROM python:3-alpine3.12
 
-LABEL maintainer="<ywkim@illinois.edu>, <wzhu26@illinois.edu>"
+LABEL maintainer="<ywkim@illinois.edu>, <minum@illinois.edu>"
 
 EXPOSE 5050
 
