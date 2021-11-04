@@ -5,6 +5,6 @@ boto3==1.9.188
 python-dotenv==0.10.3
 gevent==20.9.0
 diskcache==4.0.0
-connexion[swagger-ui]==2.4.0
+connexion[swagger-ui]==2.9.0
 
 ../lib/auth-middleware

@@ -40,6 +40,7 @@ class PiiData:
         self.fileDescriptors = None
         self.creationDate = None
         self.lastModifiedDate = None
+        self.coreMigrateDate = None
 
         self = datasetutils.update_pii_dataset_from_json(self, injson)
 
@@ -200,3 +201,9 @@ class PiiData:
 
     def get_last_modified_date(self):
         return self.lastModifiedDate
+
+    def set_core_migrate_date(self, coreMigrateDate):
+        self.coreMigrateDate = coreMigrateDate
+
+    def get_core_migrate_date(self):
+        return self.coreMigrateDate

@@ -198,6 +198,10 @@ def update_pii_dataset_from_json(dataset, injson):
         dataset.set_last_modified_date(injson["lastModifiedDate"])
     except Exception as e:
         pass
+    try:
+        dataset.set_core_migrate_date(injson["coreMigrateDate"])
+    except Exception as e:
+        pass
 
     return dataset
 

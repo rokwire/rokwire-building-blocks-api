@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add reviewer's page to catalog. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
+- Core BB Auth Support [#808](https://github.com/rokwire/rokwire-building-blocks-api/issues/808)
+- Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
+
 ## [1.11.2] - 2021-09-17
 ### Changed
 - Update Events Building Block logs and related configuration. [#793](https://github.com/rokwire/rokwire-building-blocks-api/issues/793)
