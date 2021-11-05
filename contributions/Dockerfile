@@ -24,8 +24,8 @@ WORKDIR /usr/src/app/contributions/api
 
 COPY contributions/contribution.yaml .
 
-ARG gittag
-ARG gitsha
+ARG GIT_TAG
+ARG GIT_SHA
 
 
 ENV API_LOC='../' \
