@@ -135,7 +135,10 @@ def callback():
     """ Step 3: Retrieving an access token.
     """
     # print("Step 3: Retrieving an access token")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=session['oauth_state'])
+    if 'oauth_state' in session:
+        github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=session['oauth_state'])
+    else:
+        github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=None)
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
@@ -147,7 +150,6 @@ def callback():
     session['name'] = resp.json()["name"]
 
     return redirect(url_for('contribute.home'))
-
 
 if __name__ == '__main__':
     app.run(port=cfg.CATALOG_PORT, host=None, debug=True)

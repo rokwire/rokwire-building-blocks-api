@@ -77,7 +77,6 @@ If you want to use gunicorn, cd into api folder then, use ` gunicorn catalog_res
 cd rokwire-building-blocks-api
 docker build --pull -f contributions/catalog/Dockerfile -t rokwire/contributions-catalog .
 docker run --name catalog --rm --env-file=contributions/catalog/.env -e MONGO_URL=mongodb://<mongodb-url>:27017 -p 5050:5000 rokwire/contributions-catalog
-```
 
 For a list of available configurations, please see `controllers/config.py`.
 
@@ -88,7 +87,7 @@ Make sure that a repository called rokwire/contributions-catalog exists in ECR. 
 
 ```
 cd rokwire-building-blocks-api
-$(aws ecr get-login --no-include-email --region us-east-2)
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 779619664536.dkr.ecr.us-east-2.amazonaws.com
 docker build --pull -f contributions/catalog/Dockerfile -t rokwire/contributions-catalog .
 docker tag rokwire/contributions-catalog:latest 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/contributions-catalog:latest
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/contributions-catalog:latest
