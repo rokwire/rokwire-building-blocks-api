@@ -24,9 +24,6 @@ WORKDIR /usr/src/app/contributions/api
 
 COPY contributions/contribution.yaml .
 
-ARG GIT_TAG
-ARG GIT_SHA
-
 
 ENV API_LOC='../' \
     MONGO_CONTRIBUTION_URL='localhost:27017' \
@@ -36,9 +33,7 @@ ENV API_LOC='../' \
     CONTRIBUTION_DB_NAME='contributions_db' \
     CONTRIBUTION_COLL_NAME='contributions' \
     DEBUG='False' \
-    CORS_ENABLED='False' \
-    GIT_TAG=$GIT_TAG \
-    GIT_SHA=$GIT_SHA
+    CORS_ENABLED='False'
 
 
 CMD ["gunicorn", "contributions_rest_service:app", "--config", "/usr/src/app/contributions/api/gunicorn.config.py"]
