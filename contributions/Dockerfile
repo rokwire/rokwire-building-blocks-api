@@ -12,6 +12,7 @@ WORKDIR /usr/src/app/contributions
 
 COPY contributions .
 
+
 RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
   apk --update add --virtual build-dependencies libffi-dev openssl-dev python3-dev py3-pip musl-dev cargo build-base && \
   pip install --upgrade pip && \
@@ -23,6 +24,10 @@ WORKDIR /usr/src/app/contributions/api
 
 COPY contributions/contribution.yaml .
 
+ARG gittag
+ARG gitsha
+
+
 ENV API_LOC='../' \
     MONGO_CONTRIBUTION_URL='localhost:27017' \
     FLASK_APP='contributions_rest_service' \
@@ -31,6 +36,9 @@ ENV API_LOC='../' \
     CONTRIBUTION_DB_NAME='contributions_db' \
     CONTRIBUTION_COLL_NAME='contributions' \
     DEBUG='False' \
-    CORS_ENABLED='False'
+    CORS_ENABLED='False' \
+    GIT_TAG=$GIT_TAG \
+    GIT_SHA=$GIT_SHA
+
 
 CMD ["gunicorn", "contributions_rest_service:app", "--config", "/usr/src/app/contributions/api/gunicorn.config.py"]
