@@ -1,19 +1,19 @@
 import controllers.configs as cfg
 import requests
+import logging
 from flask import g
+
+logger = logging.getLogger(__name__)
 
 def get_group_ids():
     group_ids = list()
     include_private_events = False
-    # user UserAuth request
-    if 'user_token_data' in g:
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
-        auth_resp = g.user_token_data
-        uin = auth_resp.get('uiucedu_uin')
-        url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
+        id_token = g.user_token
+        url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
         headers = {"Content-Type": "application/json",
-                  "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
-
+                    "Authorization": "Bearer " + id_token}
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
             req_data = req.json()
@@ -26,14 +26,12 @@ def get_group_ids():
 def get_group_memberships():
     group_memberships = list()
     include_private_events = False
-    # user UserAuth request
-    if 'user_token_data' in g:
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
-        auth_resp = g.user_token_data
-        uin = auth_resp.get('uiucedu_uin')
-        url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_ENDPOINT, uin)
+        url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
+        id_token = g.user_token
         headers = {"Content-Type": "application/json",
-                  "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
+                    "Authorization": "Bearer " + id_token}
 
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
