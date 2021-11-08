@@ -130,8 +130,7 @@ def login():
 
 
 # Step 2: User authorization, this happens on the provider.
-# "http://localhost:5050/contributions/catalog/auth/callback"
-@app.route("/contributions/catalog/auth/callback", methods=["GET"])
+@app.route("/catalog/auth/callback", methods=["GET"])
 def callback():
     """ Step 3: Retrieving an access token.
     """
