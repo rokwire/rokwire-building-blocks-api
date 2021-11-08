@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#source release_base_script.sh
+source release_base_script.sh
 
 # Contributions catalog version information
 # Docker build args
