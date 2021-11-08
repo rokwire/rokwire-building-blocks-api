@@ -68,6 +68,7 @@ def home():
     if (is_logged_in):
         # query with auth
         headers = requestutil.get_header_using_session(session)
+        print(headers)
         result = requestutil.request_contributions(headers)
         if show_sel == "capability":
             # create the json for only capability
@@ -97,7 +98,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', gittag=gittag, gitsha=gitsha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+        return render_template('/contribute/home.html', gittag=gittag, gitsha=gitsha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
     # print("homepage.")
     # if request.method == 'POST' and request.validate_on_submit():

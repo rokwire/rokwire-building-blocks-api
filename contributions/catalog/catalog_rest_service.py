@@ -21,6 +21,7 @@ from time import gmtime
 from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
+
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
