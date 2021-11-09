@@ -49,7 +49,7 @@
             border: grey;
             border-radius: 5%;
         }
-        .hidden-form-group{
+        #sourceurl{
             display:none;
         }
 
@@ -394,16 +394,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="required control-label col-sm-2">Open Sourced? </label>
+                                    <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
                                     <label class="form-check-label">
                                         {% if is_editable %}
                                             {% if capability | filter_nested_dict(["isOpenSource"]) %}
-                                                <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio" checked="checked">
+                                                <input class="form-check-input" id="open_source_y"
+                                                       name="capability_isOpenSource" type="radio" checked="checked" onclick="show_sourceurl();">
                                                 yes</label>
                                             {% else %}
-                                                <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio">
+                                                <input class="form-check-input" id="open_source_n"
+                                                       name="capability_isOpenSource" type="radio" onclick="hide_sourceurl();">
                                                 yes</label>
                                             {%  endif %}
                                             {% if capability | filter_nested_dict(["isOpensource"]) == False %}
@@ -440,10 +440,10 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="sourceurl">
                                     <label class="control-label col-sm-2">Source repo URL</label>
                                     <div class="col-sm-10">
-                                        {# TODO change this to required field if "Is the Code Open Sourced?"#}
+                                        {# TODO change this to required field if "Code Open Sourced?"#}
                                         {% if is_editable %}
                                             <input class="form-control" id="source_url" name="capability_source_url"
                                                    placeholder="Source code repository URL (if open sourced)"
@@ -667,7 +667,7 @@
                                     yes</label>
                                     <label class="form-check-label">
                                         <input class="form-check-input" id="open_source_n"
-                                               name="capability_isOpenSource" type="radio">
+                                               name="capability_isOpenSource" type="radio" onclick="hide_sourceurl();">
                                         no</label>
                             </div>
                             <div class="form-group">
@@ -677,8 +677,8 @@
                                            placeholder="API documentation URL" type="text">
                                 </div>
                             </div>
-                            {# TODO change this to required field if "Is the Code Open Sourced?"#}
-                            <div class="hidden-form-group" id="sourceurl">
+                            {# TODO change this to required field if " Code Open Sourced?"#}
+                            <div class="form-group" id="sourceurl">
                                 <label class="control-label col-sm-2">Source repo URL</label>
                                 <div class="col-sm-10">
 
@@ -1040,6 +1040,9 @@
 
     function show_sourceurl() {
         document.getElementById('sourceurl').style.display='block';
+    }
+    function hide_sourceurl() {
+        document.getElementById('sourceurl').style.display='none';
     }
 
     $(function () {
