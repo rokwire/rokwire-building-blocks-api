@@ -26,7 +26,6 @@ from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
 
-
 debug = cfg.DEBUG
 
 log = logging.getLogger('werkzeug')
