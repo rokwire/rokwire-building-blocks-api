@@ -21,6 +21,7 @@ from time import gmtime
 from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
+
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -52,6 +53,7 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+
 @app.template_filter('filter_nested_dict')
 def filter_nested_dict(dict, item_list):
     try:
@@ -72,6 +74,16 @@ def index():
     cap_json = []
     tal_json = []
     user = None
+
+    if 'GIT_TAG' in os.environ:
+        git_tag=os.environ['GIT_TAG']
+    else:
+        git_tag=''
+    if 'GIT_SHA' in os.environ:
+        git_sha=os.environ['GIT_SHA']
+    else:
+        git_sha=''
+
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -113,7 +125,8 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
+    return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha,
+                           cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
 def login():
