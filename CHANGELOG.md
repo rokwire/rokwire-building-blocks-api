@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix top navigation to provide correct login info. [#773](https://github.com/rokwire/rokwire-building-blocks-api/issues/773)
 - Fix login button provide correct info when user not logged in. [#778](https://github.com/rokwire/rokwire-building-blocks-api/issues/778)
 - Contributions Catalog release script and Dockerfile. [#787](https://github.com/rokwire/rokwire-building-blocks-api/issues/787)
+- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
 
 ## [1.11.2] - 2021-09-17
 ### Changed
@@ -432,4 +433,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.0.0...1.0.1
-[1.0.0]: https://github.com/rokwire/rokwire-building-blocks-api/releases/tag/1.0.0
