@@ -40,10 +40,3 @@ class Config(object):
     USER_INFO_URL = os.getenv("USER_INFO_URL", 'https://api.github.com/user')
     CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
     ADMIN_USERS = os.getenv('ADMIN_USERS', '')
-
-    # The short X.Y version
-    version = '0.2'
-    # The full version, including alpha/beta/rc tags
-    release = '0.2.0'
-    # the latest git tag
-    gittag = '1.11.2'
