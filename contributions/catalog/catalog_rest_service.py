@@ -75,15 +75,15 @@ def index():
     cap_json = []
     tal_json = []
     user = None
-    #gittag = cfg.gittag
+
     if 'GIT_TAG' in os.environ:
-        gittag=os.environ['GIT_TAG']
+        git_tag=os.environ['GIT_TAG']
     else:
-        gittag=''
+        git_tag=''
     if 'GIT_SHA' in os.environ:
-        gitsha=os.environ['GIT_SHA']
+        git_sha=os.environ['GIT_SHA']
     else:
-        gitsha=''
+        git_sha=''
 
     try:
         # create error to see if the user is logged in or now
@@ -126,7 +126,7 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', gittag=gittag, gitsha=gitsha,
+    return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha,
                            cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
