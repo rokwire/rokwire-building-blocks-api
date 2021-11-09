@@ -79,14 +79,14 @@
                 <li class="current"><a href="#contribute">Contribution Details</a></li>
                 <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
                 <li><em><a href="#contact">Contact & Self-certification</a></em></li>
-                <li><em>Submit</em></li> {# ###TODO : does it make sense to add a href to the submit button? Makes it more uniform #}
+                <li><em>Submit</em></li> 
             </ol>
         </nav>
     </div>
 
     <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
         <div>
-            {% for member in teammembers %} {#  ### TODO : where does teammember gets populated from #}
+            {% for member in teammembers %} 
                 {{ member['name'] }}
             {% endfor %}
         </div>
@@ -95,14 +95,14 @@
         <div class="container">
             <h2 id="contribute">Contribution Details</h2>
 
-            {% if is_editable %} {# ### TODO : where is is_editable set? #}
+            {% if is_editable %} 
                 <input class="form-control" type="hidden" name="contribution_id" value={{ post.id }} >
             {% endif %}
 
             <div class="form-group">
                 <label class="required control-label col-sm-2">Contribution Name</label>
                 <div class="col-sm-10" id="contribution_name_div">
-                    {% if is_editable %} {# ###TODO : why if else clause for input? Where is filter_nested_dict values coming from? #}
+                    {% if is_editable %} 
                         <input class="form-control" id="contribution_name" name="contribution_name"
                                placeholder="Give a name for your contribution"
                                value="{{ post | filter_nested_dict(["name"]) }}" type="text">
@@ -350,8 +350,6 @@
                     </div>
                 </div>
 
-
-                {# ### TODO : ask how does this form get displayed when clicking the "Select contribution type" button #}
 
                 <form class="form-horizontal" method="POST">
                     <div id="capability-div" style="display: none; background-color:white">
@@ -1028,15 +1026,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-    /*
-    const sourceURL_form= document.querySelector("form[name='sourceurl']");
-
-    document.querySelector('#open_source_y').addEventListener('change',(event)=>{
-      if (event.target.checked){
-        sourceurl.classList.remove("hidden");
-      }
-    });
-    */
 
     function show_sourceurl() {
         document.getElementById('sourceurl').style.display='block';
