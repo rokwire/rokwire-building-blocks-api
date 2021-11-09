@@ -6,7 +6,7 @@ EXPOSE 5050
 
 WORKDIR /usr/src/app/catalog
 
-COPY catalog .
+COPY contributions/catalog .
 
 RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
   apk --update add --virtual build-dependencies libffi-dev openssl-dev python3-dev py3-pip musl-dev cargo build-base && \

@@ -25,7 +25,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: title
         in: query
@@ -217,7 +217,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       requestBody:
         description: Created event object
         content:
@@ -249,7 +249,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: event_id
         in: path
@@ -291,7 +291,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
       - name: event_id
         in: path
@@ -342,7 +342,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
       - name: event_id
         in: path
@@ -377,7 +377,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
         - name: event_id
           in: path
@@ -423,6 +423,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: search results matching criteria
@@ -448,6 +449,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: Getting event tags successful
@@ -468,6 +470,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       responses:
         200:
           description: Getting super event tags successful
@@ -488,7 +491,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
         - name: event_id
           in: path
@@ -522,7 +525,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       requestBody:
         description: Image file to upload and associate with the requested event
         content:
@@ -568,7 +571,7 @@ paths:
         Auth: Requires a valid API Key or ID Token for access.
       security:
         - ApiKeyAuth: []
-        - UserAuth: []
+        - UserAndCoreTokenAuth: []
       parameters:
       - name: event_id
         in: path
@@ -607,7 +610,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       requestBody:
         description: Image file to add to the event
         content:
@@ -665,7 +668,7 @@ paths:
           urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access
           ```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
       - name: event_id
         in: path
@@ -905,9 +908,21 @@ components:
       name: ROKWIRE-API-KEY
       x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
-    UserAuth:
+    CoreUserAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_userauth
+      x-bearerInfoFunc: auth_middleware.verify_core_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens
+    UserAndCoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_userauth_coretoken
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens
