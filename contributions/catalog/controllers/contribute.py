@@ -96,7 +96,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', git_tag=git_tag, gitsha=git_sha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+        return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
     # print("homepage.")
     # if request.method == 'POST' and request.validate_on_submit():
