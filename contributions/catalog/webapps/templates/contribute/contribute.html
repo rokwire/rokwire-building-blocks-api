@@ -54,22 +54,11 @@
     </style>
 </head>
 
-<body>
+<body onload=start()>
 
 <div class="container-fluid">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
-            <meta id="nav-user-data">
-            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
-        </div>
 
-
-    </div>
-    <div class="dropdown-content" id="myDropdown" style="display: none">
-        <a href="{{ url_for('contribute.logout') }}">Logout</a>
-    </div>
+    {% include 'topnav.html' %}
 
     <div>
         <nav>
@@ -1021,6 +1010,9 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
+
+{% include 'topnav_javascript.html' %}
+
 <script>
 
     $(function () {
