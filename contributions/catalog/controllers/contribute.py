@@ -29,6 +29,8 @@ from utils import jsonutil
 from utils import adminutil
 from utils import requestutil
 
+import os
+
 bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 
 
@@ -40,6 +42,16 @@ def home():
     is_logged_in = False
     cap_json = []
     tal_json = []
+
+    if 'GIT_TAG' in os.environ:
+        git_tag=os.environ['GIT_TAG']
+    else:
+        git_tag=''
+    if 'GIT_SHA' in os.environ:
+        git_sha=os.environ['GIT_SHA']
+    else:
+        git_sha=''
+
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -67,8 +79,8 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel,
-                               user=user)
+        return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha, cap_json=cap_json, tal_json=tal_json,
+                               show_sel=show_sel, user=user)
     else:
         # query only published ones
         headers = requestutil.get_header_using_api_key()
@@ -84,7 +96,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+        return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
     # print("homepage.")
     # if request.method == 'POST' and request.validate_on_submit():
