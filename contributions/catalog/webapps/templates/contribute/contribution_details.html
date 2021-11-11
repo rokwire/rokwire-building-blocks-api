@@ -100,15 +100,16 @@
 
     {% if post.contacts %}
     <h4>Contact details</h4>
-
-    {% for key,val in post.contacts.items() %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            {{key}}
-        </div>
-        <p class="col-sm-2">{{val}}</p>
-    </div>
-    {% endfor %}
+        {% for contact in post["contacts"] %}
+            {% for key,val in contact.items() %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    {{key}}
+                </div>
+                <p class="col-sm-2">{{val}}</p>
+            </div>
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 
     {% if post.capabilities %}
