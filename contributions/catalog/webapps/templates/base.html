@@ -2,26 +2,35 @@
 <html lang="en">
 
     <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}" />
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript"> <!-- TODO : is this needed, as script href is also there for modernizer ? -->
-        <!-- <link rel="stylesheet" href="/resources/demos/style.css" /> --> <!-- TODO : getting 404 error -->
+        {%  block metas %}
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1" name="viewport">
+        {%  endblock %}
 
-        <script type="text/javascript" href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr --> <!-- TODO : is src of href needed? -->
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        {%  block styles %}
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bar.css') }}" />
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+            <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript"> <!-- TODO : is this needed, as script href is also there for modernizer ? -->
+            <!-- <link rel="stylesheet" href="/resources/demos/style.css" /> --> <!-- TODO : getting 404 error -->
+        {% endblock %}
 
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-    </head>
+        {%  block commonscripts %}
+            <script type="text/javascript" href="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr --> <!-- TODO : is src of href needed? -->
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        {% endblock %}
 
-    <title>
+        <title>
         {% block title %}
             Contributions Catalog / Packager
         {% endblock %}
-    </title>
+        </title>
+
+    </head>
+
+
 
 
 
@@ -34,13 +43,21 @@
     <body di="wrap">
         <div class="container-fluid">
             <!-- container-fluid class gives a little margin in the website. Doesn't look like flowing out -->
-            {% block topnavcontent %}
-            {% endblock %}
             {% block header %}
             {% endblock %}
             {% block maincontent %}
             {% endblock %}
+            {% block formcontent %}
+            {% endblock %}
+            {%  block content %}
+            {% endblock %}
+
         </div>
+        <section class="content">
+            {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
+        </section>
 
 
     </body>

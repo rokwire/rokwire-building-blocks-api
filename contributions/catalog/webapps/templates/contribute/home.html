@@ -1,5 +1,5 @@
 {%  extends 'base.html' %}
-
+{#  {% from 'contribute/topnav.html' import topnav %} #}
 
 {%  block header %}
     <div id="header">
@@ -14,31 +14,9 @@
 
 {#<body>#}
 
-{%  block topnavcontent %}
 
 <body onload=start()>
-
-<div class="topnav" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
-    <div id="submit_contribution" style="display: none;">
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-    </div>
-
-
-    <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
-        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
-    </div>
-
-    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
-        <meta id="nav-user-data" user="{{user}}">
-        <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
-    </div>
-</div>
-
-<div class="dropdown-content" id="myDropdown" style="display: none">
-    <a href="{{ url_for('contribute.logout') }}">Logout</a>
-</div>
-{% endblock %}
+    {% include 'contribute/topnav.html' %}
     <!-- MAIN (Center website) -->
 {% block maincontent %}
 <div class="main">
