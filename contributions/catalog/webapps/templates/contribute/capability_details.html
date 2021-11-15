@@ -164,7 +164,8 @@
 
 </div>
 
-{% include 'topnav_javascript.html' %}
+{#  <script type="text/javascript" src="{{ url_for('static', filename='js/topnav_javascript.js') }}"></script> #}
+{%  include 'topnav_javascript.html' %}
 
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');

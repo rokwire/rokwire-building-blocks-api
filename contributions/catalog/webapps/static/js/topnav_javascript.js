@@ -1,5 +1,10 @@
 function start() {
     var user_name = "{{user}}";
+    if (user_name == "None") {
+            user_name = "";
+    }
+    // user is None here
+    // document.getElementById("demo").innerHTML = "{{user}}"
     // var user_name = $('#nav-user-data').data("user");
     //console.log(user_name)
     // alert(user_name)
