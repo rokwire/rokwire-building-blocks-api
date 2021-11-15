@@ -31,14 +31,10 @@
             {% block topnavcontent %}{% endblock %}
             {% block header %}{% endblock %}
             {% block maincontent %}{% endblock %}
-
-            {%  block content %}
-            <section class="content">
-                {% for message in get_flashed_messages() %}
-                    <div class="flash">{{ message }}</div>
-                {% endfor %}
-            </section>
-            {%  endblock %}
+            {%  block content %}{% endblock %}
+            {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
 
             {%  block footer %}
                 <style>

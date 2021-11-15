@@ -38,24 +38,3 @@ window.onclick = function (event) {
         }
     }
 }
-
-function get_url(c) {
-    var cur_url = window.location.href.split('/');
-    if (c === "all")
-        window.location.href = cur_url[0] + "?show=all"
-    if (c === "capability")
-        window.location.href = cur_url[0] + "?show=capability"
-    if (c === "talent")
-        window.location.href = cur_url[0] + "?show=talent"
-}
-
-// Add active class to the current button (highlight it)
-var btnContainer = document.getElementById("myBtnContainer");
-var btns = btnContainer.getElementsByClassName("btn");
-for (var i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
-        var current = document.getElementsByClassName("active");
-        current[0].className = current[0].className.replace(" active", "");
-        this.className += " active";
-    });
-}
