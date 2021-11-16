@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import io
 import os
 import json
 import logging
@@ -21,7 +20,8 @@ import flask.json
 import auth_middleware
 import pymongo
 
-import requests
+import utils.jsonutils as jsonutils
+import utils.mongoutils as mongoutils
 
 from bson import ObjectId
 from flask import request, make_response, redirect, abort, current_app, g
@@ -266,10 +266,15 @@ def post():
         db = get_db()
         event_id = db['events'].insert(req_data)
         msg = "[POST]: event record created: id = %s" % str(event_id)
-        __logger.info(msg)
+        if req_data is not None:
+            msg_json = jsonutils.create_log_json("Events", "POST", req_data)
+        else:
+            msg_json = jsonutils.create_log_json("Events", "POST", {})
+        __logger.info("POST " + json.dumps(msg_json))
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
     return success_response(201, msg, str(event_id))
 
 
@@ -312,9 +317,15 @@ def put(event_id):
     try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+        if req_data is not None:
+            msg_json = jsonutils.create_log_json("Events", "PUT", req_data)
+        else:
+            msg_json = jsonutils.create_log_json("Events", "PUT", {})
+        __logger.info("PUT " + json.dumps(msg_json))
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
+
     return success_response(200, msg, str(event_id))
 
 
@@ -373,7 +384,11 @@ def patch(event_id):
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
         msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
-        __logger.info(msg)
+        if req_data is not None:
+            msg_json = jsonutils.create_log_json("Events", "PATCH", req_data)
+        else:
+            msg_json = jsonutils.create_log_json("Events", "PATCH", {})
+        __logger.info("PATCH " + json.dumps(msg_json))
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -407,9 +422,14 @@ def delete(event_id):
 
     try:
         db = get_db()
+        req_data = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
         msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
-        __logger.info(msg)
+        if req_data is not None:
+            msg_json = jsonutils.create_log_json("Events", "DELETE", req_data)
+        else:
+            msg_json = jsonutils.create_log_json("Events", "DELETE", {})
+        __logger.info("DELETE " + json.dumps(msg_json))
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
