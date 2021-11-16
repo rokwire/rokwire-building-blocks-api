@@ -23,20 +23,20 @@ a {
     text-decoration: none;
 }
 
-section {
-    /* used just to separate different styles */
-    border-bottom: 1px solid #e6e6e6;
-    padding: 4em 0;
-}
+/*section {*/
+/*    !* used just to separate different styles *!*/
+/*    border-bottom: 1px solid #e6e6e6;*/
+/*    padding: 4em 0;*/
+/*}*/
 
-section h2 {
-    width: 90%;
-    margin: 0 auto 2em;
-    color: #2c3f4c;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-}
+/*section h2 {*/
+/*    width: 90%;*/
+/*    margin: 0 auto 2em;*/
+/*    color: #2c3f4c;*/
+/*    font-size: 2rem;*/
+/*    font-weight: 700;*/
+/*    text-align: center;*/
+/*}*/
 
 @media only screen and (min-width: 1170px) {
     section {

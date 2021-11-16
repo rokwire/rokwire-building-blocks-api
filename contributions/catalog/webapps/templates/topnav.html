@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/centerwebsite.css') }}" />
+{# <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}" /> #}
 <div class="topnav" id="myTopnav">
     <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
     <div id="submit_contribution" style="display: none;">
@@ -18,4 +18,3 @@
 <div class="dropdown-content" id="myDropdown" style="display: none">
     <a href="{{ url_for('contribute.logout') }}">Logout</a>
 </div>
-<script type="text/javascript" src="{{ url_for('static', filename='js/topnav_javascript.js') }}"></script>

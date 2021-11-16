@@ -1,39 +1,23 @@
 {%  extends 'base.html' %}
 
 {%  block title %} Contributions Catalog / Packager {%  endblock %}
-
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/centerwebsite.css') }}" />
-
-{#
-{%  block header %}
-    <div id="header">
-        <h2 id="title">
-            {%  block title %}
-                Contributions Catalog / Packager
-            {%  endblock %}
-        </h2>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/centerwebsite.css') }}" />
-    </div>
-{%  endblock %}
-#}
+{%  block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}" />
+{% endblock %}
 
 {#<body>#}
 
-<body onload=start()>
-    {# TODO : Check - username not available in start - topnav_javascript.js #}
-    {% block topnavcontent %}
-        {% include 'contribute/topnav.html' %}
-    {% endblock %}
+<body>
+    {# TODO : Check - username not available in start - topnav.js . Hence Contribute.create and user greeting not displayed #}
 
     {%  block header %}
     <div id="header">
         <h2 id="title"> Contributions Catalog/Packager </h2>
-        <p id="demo"></p>
     </div>
     {%  endblock %}
 
     <!-- MAIN (Center website) -->
-    {%  block maincontent %}
+    {%  block content %}
     <div class="main">
         <div id="myBtnContainer">
             {% if show_sel == "capability" %}
@@ -113,6 +97,6 @@
             </script>
         </div>
     </div>
-    {%  endblock %}
+    {% endblock %}
 
 </body>
