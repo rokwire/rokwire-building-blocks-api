@@ -14,7 +14,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,6 +28,7 @@
     <body onload="start()">
             {% include 'topnav.html' %}
             <script type="text/javascript" src="{{ url_for('static', filename='js/topnav.js') }}"></script>
+            {# TODO : currently the login name is displayed in another font color. Check why #}
             <section>
                 {% block header %}{% endblock %}
                 {%  block content %}{% endblock %}
