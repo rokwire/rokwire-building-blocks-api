@@ -28,7 +28,9 @@ def create_log_json(ep_name, ep_method, in_json):
     if 'title' in in_json:
         out_json['title'] = in_json['title']
     if 'description' in in_json:
-        out_json['description'] = in_json['description']
+        out_json['longDescription'] = in_json['description']
+    elif 'longDescription' in in_json:
+        out_json['longDescription'] = in_json['longDescription']
     if len(in_json) == 0:
         out_json['ep_method_status'] = "failed"
     else:
