@@ -38,10 +38,9 @@
     </style>
 
 <body onload=start()>
-
+{% block header %}{% endblock %}
+{% block content %}
 <div class="container-fluid">
-
-    {% include 'contribute/../topnav.html' %}
 
     <div>
         <nav>
@@ -967,12 +966,10 @@
         </div>
     </form>
 </div>
+{% endblock %}
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
-
-{% include 'topnav_javascript.html' %}
-
 <script>
 
     $(function () {
