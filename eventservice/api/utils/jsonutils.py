@@ -20,7 +20,7 @@ def create_log_json(ep_name, ep_method, in_json):
     create a json for logging
     """
     out_json = {}
-    out_json['ep_building_block'] = "event_service_building_block"
+    out_json['ep_building_block'] = "events_building_block"
     out_json['ep_name'] = ep_name
     out_json['ep_method'] = ep_method
     if 'tags' in in_json:
