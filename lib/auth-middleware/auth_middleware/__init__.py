@@ -46,6 +46,12 @@ rokwire_events_approvers = 'event_approvers'
 rokwire_group_admins = 'groups_access'
 rokwire_app_config_manager_group = 'app_config_manager'
 
+rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
+rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
+rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
+rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
+
 ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
                               rokwire_events_approvers, rokwire_group_admins]
 ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
@@ -324,6 +330,9 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         # import pprint; pprint.pprint(id_info)
     else:
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+        
         issuer = unverified_payload.get('iss')
         if not issuer:
             logger.warning("Issuer not found. Aborting.")
@@ -336,7 +345,19 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         keyset = None
         target_client_ids = None
 
-        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+        if issuer == ROKWIRE_ISSUER:
+            valid_issuer = True
+            # Path to the ROKWire public key for its id tokens
+            # This is kept in case we decide to revive it, but has been replaced with
+            # simply setting the single key (as a JWK blob) in the environment
+            # and decoding it here.
+            #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
+            #            file1 = open(LOCAL_KEY_PATH, "r")
+            #            lines = file1.readlines()
+            #            file1.close()
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+            keyset = json.loads(lines)
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
         if issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
