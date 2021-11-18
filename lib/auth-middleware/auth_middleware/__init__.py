@@ -39,18 +39,12 @@ shib_rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-se
 shib_rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
 shib_rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
 
-# rokwire_event_manager_group = 'events_manager'
-# rokwire_events_uploader = 'events_uploader'
-# rokwire_events_web_app = 'events_web_app'
-# rokwire_events_approvers = 'event_approvers'
+rokwire_event_manager_group = 'events_manager'
+rokwire_events_uploader = 'events_uploader'
+rokwire_events_web_app = 'events_web_app'
+rokwire_events_approvers = 'event_approvers'
 rokwire_group_admins = 'groups_access'
-# rokwire_app_config_manager_group = 'app_config_manager'
-
-rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
-rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
-rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
-rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
-rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
+rokwire_app_config_manager_group = 'app_config_manager'
 
 ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
                               rokwire_events_approvers, rokwire_group_admins]
