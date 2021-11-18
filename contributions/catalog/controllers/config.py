@@ -40,3 +40,4 @@ class Config(object):
     USER_INFO_URL = os.getenv("USER_INFO_URL", 'https://api.github.com/user')
     CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
     ADMIN_USERS = os.getenv('ADMIN_USERS', '')
+    CATALOG_PORT = int(os.getenv('CATALOG_PORT', '5000'))
