@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.11.3] - 2021-11-18
+### Added
+- More information to logs in event services when performing POST, PUT, DELETE. [#822](https://github.com/rokwire/rokwire-building-blocks-api/issues/822)
 
 ## [1.11.2] - 2021-09-17
 ### Changed
