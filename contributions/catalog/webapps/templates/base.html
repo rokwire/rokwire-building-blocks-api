@@ -27,7 +27,6 @@
     <body onload="start()">
             {% include 'topnav.html' %}
             <script type="text/javascript" src="{{ url_for('static', filename='js/topnav.js') }}"></script>
-            {# TODO : currently the login name is displayed in another font color. Check why #}
             <section>
                 {# TODO: section tag has some padding on top. This is reflected on all templates. Need to remove this #}
                 {% block header %}{% endblock %}
