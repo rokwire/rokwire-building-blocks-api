@@ -234,6 +234,72 @@ def get_data_list(uuid):
 
     return None, None, True, resp
 
+def core_search(uin=None, phone=None):
+    if request.headers.get("ROKWIRE-CORE-BB-API-KEY") != cfg.ROKWIRE_CORE_BB_API_KEY:
+        msg = {
+            "reason": "Unauthorized",
+            "error": "Unauthorized: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        return rs_handlers.forbidden(msg_json) 
+
+    fields = {}
+    if uin:
+        fields['uin'] = uin
+    if phone:
+        fields['phone'] = phone
+    if len(fields) == 0:
+        msg = {
+            "reason": "Must provide uin or phone",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    if fields != None:
+        data_list = mongoutils.get_pii_result(fields)
+        if len(data_list) > 1:
+            msg = {
+                "reason": "There is more than 1 pii record: " + str(fields),
+                "error": "There is more than 1 pii record: " + request.url,
+            }
+            msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+            logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+            return rs_handlers.internal_server_error(msg_json)
+        if len(data_list) == 0:
+            msg = {"Not Found": str(fields)}
+            msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+            logging.info("CORE PROFILE GET " + json.dumps(msg_json))
+            return mongoutils.construct_json_from_query_list({})
+    else:
+        msg = {
+            "reason": "Invalid search: " + str(fields),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", msg)
+        logging.error("CORE PROFILE GET " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
+
+    data_list = jsonutils.remove_file_descriptor_from_data_list(data_list)
+    uuid_list = data_list[0].get('uuid')
+    return_data = {"pii": jsonutils.remove_null_fields(data_list[0])}
+    
+    if uuid_list != None and len(uuid_list) > 0:
+        non_pii_data = mongoutils.get_non_pii_query_json_from_field(cfg.FIELD_PROFILE_UUID, uuid_list[0])
+        non_pii_data = jsonutils.remove_file_descriptor_from_dataset(non_pii_data)
+        non_pii_data = jsonutils.remove_null_subcategory(non_pii_data)
+        return_data["non_pii"] = jsonutils.remove_null_fields(non_pii_data)
+        
+    out_json = mongoutils.construct_json_from_query_list(return_data)
+    msg_json = jsonutils.create_log_json("CORE PROFILE", "GET", return_data)
+    logging.info("CORE PROFILE GET " + json.dumps(msg_json))
+
+    currenttime = otherutils.get_current_time_utc()
+    mongoutils.update_pii_core_migrate_date(fields, currenttime)
+
+    return out_json
 
 def pii_post():
     # msg = {'message': 'POST info for PII:'}

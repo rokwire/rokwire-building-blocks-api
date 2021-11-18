@@ -1,88 +1,100 @@
 {%  extends 'base.html' %}
-{#  {% from 'contribute/topnav.html' import topnav %} #}
 
-{%  block header %}
-    <div id="header">
-        <h2 id="title">
-            {%  block title %}
-                Contributions Catalog / Packager
-            {%  endblock %}
-        </h2>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/centerwebsite.css') }}" />
-    </div>
-{%  endblock %}
-
-{#<body>#}
-
-
-<body onload=start()>
-    {% include 'contribute/topnav.html' %}
-    <!-- MAIN (Center website) -->
-{% block maincontent %}
-<div class="main">
-
-
-    <div id="myBtnContainer">
-        {% if show_sel == "capability" %}
-            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn active" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% elif show_sel == "talent" %}
-            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn active" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% else %}
-            <button class="btn active" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% endif %}
-
-
-        <div class="form-group pull-right">
-            <form action="{{ url_for('contribute.result')}}" method="POST">
-                <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
-                <input id="myBtn" style="display:none;" type="submit" value="Submit">
-            </form>
-        </div>
-
-        <div class="row" id="grid-view">
-            {% if cap_json|length > 0 %}
-                {% for capability in cap_json %}
-                    <div class="column capability">
-                        <div class="content">
-                            <a class="card=link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
-                            <h4 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h4>
-                            <p class="capability_description">{{ capability|filter_nested_dict(["description"]) }}</p>
-                            <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
-                            </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution >>> </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            {% if tal_json|length > 0 %}
-                {% for talent in tal_json %}
-                    <div class="column talent">
-                        <div class="content">
-                            <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
-                            <h4 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h4>
-                            <p class="talent_description">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
-                            <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
-                            </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution >>> </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div><!-- END GRID -->
-
-    <script type="text/javascript", src="{{ url_for('static', filename='js/home_start.js') }}"></script>
-
-    </div>
-</div>
+{%  block title %} Contributions Catalog / Packager {%  endblock %}
+{%  block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}" />
 {% endblock %}
 
+<body>
+    {# TODO: Padding/space between topnav and header block. Check why #}
+
+    {%  block header %}
+    <div id="header">
+        <h2 id="title"> Contributions Catalog/Packager </h2>
+    </div>
+    {%  endblock %}
+
+    <!-- MAIN (Center website) -->
+    {%  block content %}
+    <div class="main">
+        <div id="myBtnContainer">
+            {% if show_sel == "capability" %}
+                <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="btn active" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% elif show_sel == "talent" %}
+                <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="btn active" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% else %}
+                <button class="btn active" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% endif %}
+
+            <div class="form-group pull-right">
+                <form action="{{ url_for('contribute.result')}}" method="POST">
+                    <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
+                    <input id="myBtn" style="display:none;" type="submit" value="Submit">
+                </form>
+            </div>
+
+            <div class="row" id="grid-view">
+                {% if cap_json|length > 0 %}
+                    {% for capability in cap_json %}
+                        <div class="column capability">
+                            <div class="content">
+                                <a class="card=link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
+                                <h4 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h4>
+                                <p class="capability_description">{{ capability|filter_nested_dict(["description"]) }}</p>
+                                <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
+                                </a>
+                                <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution >>> </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if tal_json|length > 0 %}
+                    {% for talent in tal_json %}
+                        <div class="column talent">
+                            <div class="content">
+                                <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
+                                <h4 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h4>
+                                <p class="talent_description">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
+                                <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
+                                </a>
+                                <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution >>> </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div><!-- END GRID -->
+
+            <script>
+                function get_url(c) {
+                    var cur_url = window.location.href.split('/');
+                    if (c === "all")
+                        window.location.href = cur_url[0] + "?show=all"
+                    if (c === "capability")
+                        window.location.href = cur_url[0] + "?show=capability"
+                    if (c === "talent")
+                        window.location.href = cur_url[0] + "?show=talent"
+                }
+
+                // Add active class to the current button (highlight it)
+                var btnContainer = document.getElementById("myBtnContainer");
+                var btns = btnContainer.getElementsByClassName("btn");
+                for (var i = 0; i < btns.length; i++) {
+                    btns[i].addEventListener("click", function () {
+                        var current = document.getElementsByClassName("active");
+                        current[0].className = current[0].className.replace(" active", "");
+                        this.className += " active";
+                    });
+                }
+            </script>
+        </div>
+    </div>
+    {% endblock %}
+
 </body>
-
-

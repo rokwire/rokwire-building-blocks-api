@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Core BB Auth Support [#808](https://github.com/rokwire/rokwire-building-blocks-api/issues/808)
+- Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
+
+### Fixed
+- Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
+- Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
+- Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
+- Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
+- Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
+- Fix login problem with session. [#796](https://github.com/rokwire/rokwire-building-blocks-api/issues/796)
+- Fix logout. [#775](https://github.com/rokwire/rokwire-building-blocks-api/issues/775)
+- Fix top navigation to provide correct login info. [#773](https://github.com/rokwire/rokwire-building-blocks-api/issues/773)
+- Fix login button provide correct info when user not logged in. [#778](https://github.com/rokwire/rokwire-building-blocks-api/issues/778)
+- Contributions Catalog release script and Dockerfile. [#787](https://github.com/rokwire/rokwire-building-blocks-api/issues/787)
+- Added version and gitsha in catalog footer [#770](https://github.com/rokwire/rokwire-building-blocks-api/issues/770)
 
 ## [1.11.2] - 2021-09-17
 ### Changed
@@ -28,19 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
-- Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
-- Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
-- Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
-- Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
-- Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
-<<<<<<< HEAD
-=======
-
 
 ## [1.11.1] - 2021-08-11
 ### Changed
 - Temporarily turn off group authentication on image get endpoints.[#750](https://github.com/rokwire/rokwire-building-blocks-api/issues/750)
->>>>>>> 61d1eaece23a9ebe75e837eb9a67e8cea9c03b15
 
 ## [1.11.0] - 2021-07-29
 ### Added

@@ -6,7 +6,7 @@ EXPOSE 5050
 
 WORKDIR /usr/src/app/catalog
 
-COPY catalog .
+COPY contributions/catalog .
 
 RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
   apk --update add --virtual build-dependencies libffi-dev openssl-dev python3-dev py3-pip musl-dev cargo build-base && \
@@ -16,6 +16,9 @@ RUN apk --update add python3 py3-pip openssl ca-certificates py3-openssl && \
 
 WORKDIR /usr/src/app/catalog
 
+ARG GIT_TAG
+ARG GIT_SHA
+
 ENV CONTRIBUTION_BUILDING_BLOCK_URL='' \
     DB_NAME='' \
     GITHUB_CLIENT_ID='' \
@@ -24,6 +27,8 @@ ENV CONTRIBUTION_BUILDING_BLOCK_URL='' \
     TOKEN_URL='https://github.com/login/oauth/access_token' \
     AUTHENTICATION_TOKEN='' \
     URL_PREFIX='/catalog' \
-    DEBUG='False'
+    DEBUG='False' \
+    GIT_TAG=$GIT_TAG \
+    GIT_SHA=$GIT_SHA
 
 CMD ["gunicorn", "catalog_rest_service:app", "--config", "/usr/src/app/catalog/gunicorn.config.py"]
