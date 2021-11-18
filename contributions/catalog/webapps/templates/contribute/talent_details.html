@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+{% extends 'base.html' %}
+{% block title %} Talent Details {% endblock %}
+{% block styles %}
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>Talent Details</title>
-
-</head>
+{% endblock %}
 
 <body onload=start()>
-<div class="header">
-    {% include 'contribute/../topnav.html' %}
-</div>
 
-
-
+{% block content %}
 <div class="container">
     <h1>Talent Details</h1>
 
@@ -281,10 +269,10 @@
 <div class="action">
 
 </div>
+{% endblock %}
 
 </body>
 
-{% include 'topnav_javascript.html' %}
 
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
@@ -309,4 +297,3 @@
     })
 </script>
 
-</html>
