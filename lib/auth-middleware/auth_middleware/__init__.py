@@ -208,7 +208,6 @@ def verify_apikey(key, required_scopes=None):
 
 
 def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
-    print("coreauth")
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
@@ -300,7 +299,6 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
     return id_info
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
-    print("userauth")
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
@@ -362,7 +360,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             keyset = json.loads(lines)
             target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
-        if issuer == 'https://' + SHIB_HOST:
+        elif issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
                 raise OAuthProblem('Invalid token')
