@@ -39,12 +39,12 @@ shib_rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-se
 shib_rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
 shib_rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
 
-rokwire_event_manager_group = 'events_manager'
-rokwire_events_uploader = 'events_uploader'
-rokwire_events_web_app = 'events_web_app'
-rokwire_events_approvers = 'event_approvers'
+# rokwire_event_manager_group = 'events_manager'
+# rokwire_events_uploader = 'events_uploader'
+# rokwire_events_web_app = 'events_web_app'
+# rokwire_events_approvers = 'event_approvers'
 rokwire_group_admins = 'groups_access'
-rokwire_app_config_manager_group = 'app_config_manager'
+# rokwire_app_config_manager_group = 'app_config_manager'
 
 rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
 rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
@@ -214,6 +214,7 @@ def verify_apikey(key, required_scopes=None):
 
 
 def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
+    print("coreauth")
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
@@ -261,6 +262,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER', '')
 
         if issuer == ROKWIRE_AUTH_HOST:
             isAnonymous = unverified_payload.get('anonymous')
@@ -272,6 +274,12 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
                 ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+
+        elif issuer == ROKWIRE_ISSUER:
+            valid_issuer = True
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+            keyset = json.loads(lines)
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
         elif issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
@@ -298,6 +306,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
     return id_info
 
 def verify_userauth(id_token, group_name=None, internal_token_only=False):
+    print("userauth")
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
@@ -332,7 +341,7 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
     else:
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
-        
+
         issuer = unverified_payload.get('iss')
         if not issuer:
             logger.warning("Issuer not found. Aborting.")
