@@ -264,11 +264,15 @@ def post():
         db = get_db()
         event_id = db['events'].insert(req_data)
         msg = "[POST]: event record created: id = %s" % str(event_id)
+<<<<<<< HEAD
         if req_data is not None:
             msg_json = jsonutils.create_log_json("Events", "POST", req_data)
         else:
             msg_json = jsonutils.create_log_json("Events", "POST", {})
         __logger.info("POST " + json.dumps(msg_json))
+=======
+        __logger.info(msg)
+>>>>>>> master
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -382,11 +386,15 @@ def patch(event_id):
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
         msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
+<<<<<<< HEAD
         if req_data is not None:
             msg_json = jsonutils.create_log_json("Events", "PATCH", req_data)
         else:
             msg_json = jsonutils.create_log_json("Events", "PATCH", {})
         __logger.info("PATCH " + json.dumps(msg_json))
+=======
+        __logger.info(msg)
+>>>>>>> master
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -423,11 +431,15 @@ def delete(event_id):
         req_data = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
         msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
+<<<<<<< HEAD
         if req_data is not None:
             msg_json = jsonutils.create_log_json("Events", "DELETE", req_data)
         else:
             msg_json = jsonutils.create_log_json("Events", "DELETE", {})
         __logger.info("DELETE " + json.dumps(msg_json))
+=======
+        __logger.info(msg)
+>>>>>>> master
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
