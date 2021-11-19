@@ -11,29 +11,14 @@
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>Talent Details</title>
+    <title>Capability Details</title>
 </head>
 
-<body>
+<body onload=start()>
 
 <div class="header">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-        <div class="topnav-right" id="nav_greeting" style="float: right; margin-right: 15px;">
-            <meta id="nav-user-data">
-            <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
-        </div>
-
-
-    </div>
-    <div class="dropdown-content" id="myDropdown" style="display: none">
-        <a href="{{ url_for('contribute.logout') }}">Logout</a>
-    </div>
-
+    {% include 'topnav.html' %}
 </div>
-
-
 
 <div class="container">
     <h1>Capability Details</h1>
@@ -178,6 +163,9 @@
 <div class="action">
 
 </div>
+
+{% include 'topnav_javascript.html' %}
+
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
     function get_url(){
@@ -192,6 +180,13 @@
         }
         window.location.href = res;
     }
+
+    var user_icon = document.getElementById('user_profile');
+    user_icon.addEventListener('click', function () {
+        if (user_icon.style.display === '') {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    })
 </script>
 </body>
 </html>
