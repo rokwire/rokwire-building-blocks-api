@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.12.0] - 2021-11-19
 ### Added
+- Add edit contribution capability in catalog. [#737](https://github.com/rokwire/rokwire-building-blocks-api/issues/737)
+- Add edit contribution button based on the logged in user. [#766](https://github.com/rokwire/rokwire-building-blocks-api/issues/766)
 - Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
@@ -61,8 +63,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add group authorization to PUT/events/{event_id}/images/{image_id} endpoint.[#719](https://github.com/rokwire/rokwire-building-blocks-api/issues/719)
 - Add group authorization to DELETE /events/{event_id}/images/{image_id} endpoint.[#720](https://github.com/rokwire/rokwire-building-blocks-api/issues/720)
 - Make catalog pages to show different items for reviewers and non reviewers. [#709](https://github.com/rokwire/rokwire-building-blocks-api/issues/709)
-- Add edit contribution capability in catalog. [#737](https://github.com/rokwire/rokwire-building-blocks-api/issues/737)
-- Add edit contribution button based on the logged in user. [#766](https://github.com/rokwire/rokwire-building-blocks-api/issues/766)
 
 ### Fixed
 - Fixed talent page to show decoded capaiblities. [#703](https://github.com/rokwire/rokwire-building-blocks-api/issues/703)
