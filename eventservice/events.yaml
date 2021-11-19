@@ -14,6 +14,23 @@ tags:
 - name: Events
   description: API endpoints for managing events.
 paths:
+  /events/version:
+    get:
+      tags:
+        - Events
+      summary: version endpoint
+      description: Public endpoint which returns the latest version of events building block
+      responses:
+        200:
+          description: version returned as text
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request.
+        500:
+          description: Internal error
   /events:
     get:
       tags:
