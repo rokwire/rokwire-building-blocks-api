@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core BB Auth Support [#808](https://github.com/rokwire/rokwire-building-blocks-api/issues/808)
 - Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
 - SECURITY.md file. [#804](https://github.com/rokwire/rokwire-building-blocks-api/issues/804)
+- Add version endpoint in Events building block.[#725](https://github.com/rokwire/rokwire-building-blocks-api/issues/725)
 
 ### Changed
 - Modified contribution schema for required capability [#790](https://github.com/rokwire/rokwire-building-blocks-api/issues/790)
@@ -41,7 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
 - /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
 - /version endpoint in AppConfig.[#760](https://github.com/rokwire/rokwire-building-blocks-api/issues/760)
-- Add version endpoint in Events building block.[#725](https://github.com/rokwire/rokwire-building-blocks-api/issues/725)
 
 ### Changed
 - Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
