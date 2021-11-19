@@ -168,30 +168,23 @@
         text-decoration: #8fd19e;
     }
 
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        background-color: #2a4b45;
+        color: #ffffff;
+
+}
+
 </style>
 
 {#<body>#}
 <body onload=start()>
-<div class="topnav" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
-    <div id="submit_contribution" style="display: none;">
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
-    </div>
 
-
-    <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
-        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
-    </div>
-
-    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
-        <meta id="nav-user-data" user="{{user}}">
-        <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
-    </div>
-</div>
-
-<div class="dropdown-content" id="myDropdown" style="display: none">
-    <a href="{{ url_for('contribute.logout') }}">Logout</a>
-</div>
+{% include 'topnav.html' %}
 
 <div id="header">
     <h2 id="title"> Contributions Catalog/Packager </h2>
@@ -215,6 +208,9 @@
             <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
         {% endif %}
 
+        <div class="footer">
+            <p>Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Privacy Policy</a> </p>
+        </div>
 
         <div class="form-group pull-right">
             <form action="{{ url_for('contribute.result')}}" method="POST">
@@ -254,37 +250,9 @@
                 {% endfor %}
             {% endif %}
         </div><!-- END GRID -->
+
+    {% include 'topnav_javascript.html' %}
     <script>
-
-        function start() {
-            var user_name = "{{user}}";
-            // var user_name = $('#nav-user-data').data("user");
-            //console.log(user_name)
-            // alert(user_name)
-            var nav_login = document.getElementById('nav_login');
-            var nav_greet = document.getElementById('nav_greeting')
-            var nav_user = document.getElementById('user_profile')
-            var submit_btn = document.getElementById('submit_contribution')
-            if (user_name.length > 0) {
-                nav_login.style.display = 'none';
-                nav_greet.style.display = 'block';
-                nav_user.style.display = 'block';
-                submit_btn.style.display = 'block';
-            } else {
-                nav_login.style.display = 'block';
-                nav_greet.style.display = 'none';
-                nav_user.style.display = 'block';
-                submit_btn.style.display = 'none';
-            }
-        }
-
-        var user_icon = document.getElementById('user_profile');
-        user_icon.addEventListener('click', function () {
-            if (user_icon.style.display === 'block') {
-                document.getElementById("myDropdown").classList.toggle("show");
-            }
-        })
-
         window.onclick = function (event) {
             if (!event.target.matches('.dropbtn')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -320,6 +288,7 @@
 
     </script>
     </div>
+
 </div>
 </body>
 </html>

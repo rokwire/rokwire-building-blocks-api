@@ -80,28 +80,5 @@ def to_capability(d):
                     capability_list[i][name] = []
                 else:
                     capability_list[i][name] = v[i]
-        capability_list[i]["contacts"] = to_contact(d)
 
     return capability_list
-
-
-def init_contact():
-    d = {"name": "",
-         "email": "",
-         "phone": "",
-         "organization": "",
-         "officialAddress": ""
-         }
-    return d
-
-
-def to_contact(d):
-    if not d: return {}
-    res = [init_contact()]
-    for cont in res:
-        for k, v in d.items():
-            if "contact_" in k:
-                name = k.split("contact_")[-1]
-                print(name, v)
-                cont[name] = v[0]
-    return res

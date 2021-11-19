@@ -21,6 +21,7 @@ class Contribution():
         self.shortDescription = None
         self.longDescription = None
         self.contributors = None
+        self.contacts = None
         self.capabilities = None
         self.talents = None
         self.status = None
@@ -76,6 +77,12 @@ class Contribution():
 
     def get_contributors(self):
         return self.contributors
+
+    def set_contacts(self, contacts):
+        self.contacts = contacts
+
+    def get_contacts(self):
+        return self.contacts
 
     def set_date_created(self, dateCreated):
         self.dateCreated = dateCreated

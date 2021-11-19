@@ -69,7 +69,7 @@ def search():
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
-    __logger.debug("[GET]: %s nRecords = %d ", request.url, result_len)
+    __logger.info("[GET]: %s nRecords = %d ", request.url, result_len)
     return current_app.response_class(result, mimetype='application/json')
 
 
@@ -178,7 +178,7 @@ def categories_search():
         __logger.exception(ex)
         abort(500)
 
-    __logger.debug("[GET]: %s nRecords = %d ", request.url, result_len)
+    __logger.info("[GET]: %s nRecords = %d ", request.url, result_len)
     return current_app.response_class(result, mimetype='application/json')
 
 
@@ -226,7 +226,7 @@ def get(event_id):
         if json_result.get('createdByGroupId') not in group_ids:
             abort(401)
 
-    __logger.debug("[Get Event]: event id %s", event_id)
+    __logger.info("[Get Event]: event id %s", event_id)
     return current_app.response_class(result, mimetype='application/json')
 
 
@@ -264,7 +264,7 @@ def post():
         db = get_db()
         event_id = db['events'].insert(req_data)
         msg = "[POST]: event record created: id = %s" % str(event_id)
-        __logger.debug(msg)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -371,7 +371,7 @@ def patch(event_id):
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
         msg = "[PATCH]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
-        __logger.debug(msg)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -407,7 +407,7 @@ def delete(event_id):
         db = get_db()
         status = db['events'].delete_one({'_id': ObjectId(event_id)})
         msg = "[DELETE]: event id %s, nDelete = %d " % (str(event_id), status.deleted_count)
-        __logger.debug(msg)
+        __logger.info(msg)
     except Exception as ex:
         __logger.exception(ex)
         abort(500)
@@ -537,7 +537,7 @@ def images_get(event_id, image_id):
         event_id=event_id,
         image_id=image_id,
     )
-    __logger.debug("[download image] redirect to %s", url)
+    __logger.info("[download image] redirect to %s", url)
     return redirect(url, code=302)
 
 
