@@ -42,6 +42,15 @@ def remove_null_subcategory(injson):
 
     return injson
 
+def remove_null_fields(injson: dict):
+    null_keys = []
+    for k, v in injson.items():
+        if v == None:
+            null_keys.append(k)
+    for k in null_keys:
+        del injson[k]
+    return injson
+
 def create_log_json(ep_name, ep_method, in_json, data_type=None):
     if data_type is not None:
         if data_type.lower() == 'pii':

@@ -1,12 +1,13 @@
 FROM python:3-alpine3.12
 
-LABEL maintainer="wzhu26@illinois.edu"
+LABEL maintainer="minum@illinois.edu"
 
 WORKDIR /app
 
 COPY appconfigservice ./appconfigservice
 COPY lib ../lib/
 COPY appconfigservice/appconfig.yaml .
+COPY appconfigservice/appconfig.yaml /app/appconfigservice/api
 
 ENV APP_CONFIG_MONGO_URL=""
 ENV APP_CONFIG_URL_PREFIX=""

@@ -11,13 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import logging
+
 from bson import ObjectId
 from flask import session
 
 '''
 add contributionAdmins element in the contribution json
 '''
-def add_contribution_admins(in_json):
+def add_contribution_admins(in_json, is_edit=False):
     login_user = session['username']
     admin_input = in_json['contributionAdmins']
 
@@ -26,7 +28,10 @@ def add_contribution_admins(in_json):
     if admin_input:
         contribution_admins = [admin_name for admin_name in admin_input.split(',') if admin_name]
 
-    updated_json = {"contributionAdmins": [login_user] + contribution_admins}
+    if is_edit:
+        updated_json = {"contributionAdmins": contribution_admins}
+    else:
+        updated_json = {"contributionAdmins": [login_user] + contribution_admins}
     in_json.update(updated_json)
     return in_json
 
@@ -68,3 +73,38 @@ def remove_objectid_from_dataset(dataset):
 
     return dataset
 
+"""
+create json for capabilities for home page
+"""
+def create_capability_json_from_contribution_json(injson):
+    out_json_list = []
+
+    # add capability first
+    for contribution in injson:
+        try:
+            for capability in contribution["capabilities"]:
+                # need to add contribution id in capability as well
+                capability["cont_id"] = contribution["id"]
+                out_json_list.append(capability)
+        except:
+            logging.warning("There is no capability in the contribution")
+
+    return out_json_list
+
+"""
+create json for talents for home page
+"""
+def create_talent_json_from_contribution_json(injson):
+    out_json_list = []
+
+    # add talents
+    for contribution in injson:
+        try:
+            for talent in contribution["talents"]:
+                # need to add contribution id in capability as well
+                talent["cont_id"] = contribution["id"]
+                out_json_list.append(talent)
+        except:
+            logging.warning("There is no talent in the contribution")
+
+    return out_json_list
