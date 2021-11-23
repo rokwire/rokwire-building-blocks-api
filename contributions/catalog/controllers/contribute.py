@@ -198,12 +198,14 @@ def contribution_edit(contribution_id):
 
             if response:
                 if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                    return render_template('contribute/submitted.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'])
                 else:
                     return render_template('contribute/submitted.html')
             elif not response:
                 if "name" in session:
-                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                    return render_template('contribute/error.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'], error_msg=s)
                 else:
                     return render_template('contribute/error.html', error_msg=s)
     else:
@@ -214,8 +216,13 @@ def contribution_edit(contribution_id):
         headers = requestutil.get_header_using_session(session)
         is_editable = adminutil.check_if_reviewer(username, headers)
 
+        # get capability list to create required capability list
+        required_capability_list = requestutil.request_required_capability_list(headers)
+
         if is_editable:
-            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+            return render_template('contribute/contribute.html', required_capabilities=required_capability_list,
+                                   is_editable=is_editable, user=session["name"],
+                                   token=session['oauth_token']['access_token'], post=the_json_res)
         else:
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
@@ -331,7 +338,13 @@ def create():
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
             else:
                 return render_template('contribute/error.html', error_msg=s)
-    return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
+
+    # get capability list to create required capability list
+    header = requestutil.get_header_using_session(session)
+    required_capability_list = requestutil.request_required_capability_list(header)
+
+    return render_template('contribute/contribute.html', required_capabilities=required_capability_list,
+                           post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -363,8 +376,9 @@ def post_contribution(json_data):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
+            err_msg = str(err_json['status']), err_json['title'], err_json['detail']
             return False, str("post method fails with error: ") + str(result.status_code) \
-                   + ": " + str(err_json['reason'])
+                   + ": " + str(err_msg)
         else:
             logging.info("posted ok.".format(json_data))
             return True, str("post success!")
