@@ -65,17 +65,7 @@ def get_pii_result(query):
         return None
 
     db_data = db_pii.pii_collection.find(query, {'_id': 0})
-    data_list = list(db_data)
-
-    if len(data_list) > 0:
-        data_dump = dumps(data_list)
-        data_dump = data_dump[:-1]
-        data_dump = data_dump[1:]
-        json_load = json.loads(data_dump)
-
-        return json_load
-    else:
-        return None
+    return list(db_data)
 
 """
 get query output json from field name and query string
@@ -346,6 +336,16 @@ def update_pii_dataset_in_mongo_by_field(fld, query_str, datasetobj):
     result = db_pii.pii_collection.update_one({fld: query_str}, {"$set": dataset}, upsert=False)
 
     return result.acknowledged, dataset
+
+"""
+update pii core migrate date
+"""
+def update_pii_core_migrate_date(query, core_migrate_date):
+    if not query:
+        return None
+
+    result = db_pii.pii_collection.update_one(query, {"$set": {"coreMigrateDate": core_migrate_date}}, upsert=False)
+    return result.acknowledged
 
 """
 index non pii collection

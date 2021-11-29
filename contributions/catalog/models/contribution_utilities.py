@@ -23,6 +23,7 @@ def init_contribution():
         "longDescription": '',
         'contributionAdmins': [],
         "contributors": [],
+        "contacts": '',
         "capabilities": [],
         "talents": []
     }
@@ -95,6 +96,28 @@ def to_contributor(d):
     return person_list + org_list
 
 
+def init_contact():
+    d = {"name": "",
+         "email": "",
+         "phone": "",
+         "organization": "",
+         "officialAddress": ""
+         }
+    return d
+
+
+def to_contact(d):
+    if not d: return {}
+    res = [init_contact()]
+    for cont in res:
+        for k, v in d.items():
+            if "contact_" in k:
+                name = k.split("contact_")[-1]
+                print(name, v)
+                cont[name] = v[0]
+    return res
+
+
 def to_contribution(d):
     if not d: return {}
     res = init_contribution()
@@ -107,6 +130,8 @@ def to_contribution(d):
         res["talents"] = talent
     contributor = to_contributor(d)
     res["contributors"] = contributor
+    contact = to_contact(d)
+    res["contacts"] = contact
 
     for k, v in d.items():
         if "contribution_" in k:

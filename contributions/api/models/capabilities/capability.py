@@ -24,9 +24,9 @@ class Capability():
         self.deploymentDetails = None
         self.apiBaseUrl = None
         self.version = None
+        self.versionUrl = None
         self.healthCheckUrl = None
         self.dataDeletionEndpointDetails = None
-        self.contacts = None
         # self.creationDate = None
         # self.lastModifiedDate = None
 
@@ -92,6 +92,12 @@ class Capability():
     def get_version(self):
         return self.version
 
+    def set_version_url(self, versionUrl):
+        self.versionUrl = versionUrl
+
+    def get_version_url(self):
+        return self.versionUrl
+
     def set_health_check_url(self, healthCheckUrl):
         self.healthCheckUrl = healthCheckUrl
 
@@ -109,12 +115,6 @@ class Capability():
 
     def get_data_deletion_endpoint_details(self):
         return self.dataDeletionEndpointDetails
-
-    def set_contacts(self, contacts):
-        self.contacts = contacts
-
-    def get_contacts(self):
-        return self.contacts
 
     # def set_creation_date(self, creationDate):
     #     self.creationDate = creationDate

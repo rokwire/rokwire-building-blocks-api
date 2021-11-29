@@ -33,17 +33,35 @@ logger = logging.getLogger(__name__)
 # The header in the request
 rokwire_api_key_header = 'rokwire-api-key'
 # Group names for the event and app config manager. These typically come in the is_member_of claim in the id token
-rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
-rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
-rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
-rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
-rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
-rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
+shib_rokwire_event_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events manager'
+shib_rokwire_events_uploader = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire ems events uploader'
+shib_rokwire_events_web_app = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire events web app'
+shib_rokwire_events_approvers = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire event approvers'
+shib_rokwire_group_admins = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire groups access'
+shib_rokwire_app_config_manager_group = 'urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager'
+
+rokwire_event_manager_group = 'events_manager'
+rokwire_events_uploader = 'events_uploader'
+rokwire_events_web_app = 'events_web_app'
+rokwire_events_approvers = 'event_approvers'
+rokwire_group_admins = 'groups_access'
+rokwire_app_config_manager_group = 'app_config_manager'
 
 ROKWIRE_EVENT_WRITE_GROUPS = [rokwire_event_manager_group, rokwire_events_uploader, rokwire_events_web_app,
                               rokwire_events_approvers, rokwire_group_admins]
 ROKWIRE_APP_CONFIG_WRITE_GROUPS = [rokwire_app_config_manager_group]
+
+ROKWIRE_GROUPS_MAP = {
+    rokwire_event_manager_group: shib_rokwire_event_manager_group,
+    rokwire_events_uploader: shib_rokwire_events_uploader,
+    rokwire_events_web_app: shib_rokwire_events_web_app,
+    rokwire_events_approvers: shib_rokwire_events_approvers,
+    rokwire_group_admins: shib_rokwire_group_admins,
+    rokwire_app_config_manager_group: shib_rokwire_app_config_manager_group
+}
+
 # This is the is member of claim name from the
+is_member_of_claim = "permissions"
 uiucedu_is_member_of = "uiucedu_is_member_of"
 DEBUG_ON = False
 
@@ -80,17 +98,8 @@ def authenticate(group_name=None, internal_token_only=False):
         should_use_security_token_auth = getattr(view_func, '_use_security_token_auth', False)
     # print("should use security token auth = %s" % should_use_security_token_auth)
 
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        logger.warning("Request missing Authorization header")
-        raise OAuthProblem('Missing authorization header')
-    ah_split = auth_header.split()
-    if len(ah_split) != 2 or ah_split[0].lower() != 'bearer':
-        logger.warning("invalid auth header. expecting 'bearer' and token with space between")
-        raise OAuthProblem('Invalid request header')
-    _id_token = ah_split[1]
+    _id_token = get_bearer_token(request)
     id_info = verify_userauth(_id_token, group_name, internal_token_only)
-
     return id_info
 
 
@@ -103,15 +112,28 @@ def authorize(group_name=None):
         id_info = g.user_token_data
 
         if group_name is not None:
+            ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+
+            # So we are to check is a group membership is required.
+            # Get the membership check keys based on issuer
+            if id_info['iss'] == ROKWIRE_AUTH_HOST:
+                is_member_of_key = is_member_of_claim
+            else:
+                is_member_of_key = uiucedu_is_member_of
+
             # check if the group_name is list or string
             if isinstance(group_name, str):
                 # make group name as list
                 group_name = [group_name]
 
             is_authorize = False
-            for name in group_name:
-                if uiucedu_is_member_of in id_info:
-                    is_member_of = id_info[uiucedu_is_member_of]
+            if is_member_of_key in id_info:
+                is_member_of = id_info[is_member_of_key]
+                if is_member_of_key == is_member_of_claim:
+                    is_member_of = is_member_of.split(',')
+                for name in group_name:
+                    if id_info['iss'] != ROKWIRE_AUTH_HOST:
+                        name = ROKWIRE_GROUPS_MAP[name]
                     if name in is_member_of:
                         is_authorize = True
                         break
@@ -123,6 +145,8 @@ def authorize(group_name=None):
 # Checks that the request has the right secret for this. This call is used initially and assumes that
 # the header contains the x-api-key. This (trivially) returns true of the verification worked and
 # otherwise will return various other exit codes.
+
+
 def verify_secret(request):
     key = request.headers.get(rokwire_api_key_header)
     if not key:
@@ -135,13 +159,44 @@ def verify_secret(request):
     for test_key in keys:
         if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return True
-    raise OAuthProblem('Invalid API Key') # failed matching means unauthorized in this context.
+    # failed matching means unauthorized in this context.
+    raise OAuthProblem('Invalid API Key')
+
+
+def verify_core_token(group_name=None):
+    id_token = get_bearer_token(request)
+    if not id_token:
+        raise OAuthProblem('Missing id token')
+
+    # check if its the rokwire core issuer
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+    ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+    ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
+    issuer = unverified_payload.get('iss')
+    kid = unverified_header.get('kid')
+    if not kid:
+        logger.warning("kid not found. Aborting.")
+        raise OAuthProblem('Invalid token')
+
+    if issuer == ROKWIRE_AUTH_HOST:
+        keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
+        target_client_ids = re.split(
+            ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+        id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
+        g.user_token_data = id_info
+        g.user_token = id_token
+        return {'id_token_valid': True}
+    else:
+        raise OAuthProblem('invalid core token')
+
 
 
 def verify_apikey(key, required_scopes=None):
     if not key:
         logger.warning("API key is missing the " + rokwire_api_key_header + " header")
         raise OAuthProblem('Missing API Key')
+
     # Assumption is that the key is a comma separated list of uuid's
     # This simply turns it in to a list and iterates. If the supplied key is in this list, true is returned
     # Otherwise, an error is raised.
@@ -153,19 +208,14 @@ def verify_apikey(key, required_scopes=None):
         raise OAuthProblem('Invalid API Key')
 
 
-def verify_userauth(id_token, group_name=None, internal_token_only=False):
+def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
     id_info = None
     if not id_token:
         logger.warning("Request missing id token")
         raise OAuthProblem('Missing id token')
-    try:
-        # We need to get both the header and the payload initially as unverified since we have to
-        # check their issuer, key id and a few other items before we can figure out how to unpack them
-        unverified_header = jwt.get_unverified_header(id_token)
-        unverified_payload = jwt.decode(id_token, verify=False)
-    except jwt.exceptions.PyJWTError as jwte:
-        logger.warning("jwt error on get unverified header. message = %s" % jwte)
-        raise OAuthProblem('Invalid token')
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+
     if unverified_header.get('phone', False):
         # phone number verify -- reject if this should be another type of token.
         if internal_token_only:
@@ -191,11 +241,99 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         # import pprint; pprint.pprint(id_info)
     else:
-        # Note there are two cases here that are closely related. Basically we can only differentiate them
-        # by which issuer is in the id token.
-        # shibboleth
-        SHIB_HOST = os.getenv('SHIBBOLETH_HOST')
+        issuer = unverified_payload.get('iss')
+        if not issuer:
+            logger.warning("Issuer not found. Aborting.")
+            raise OAuthProblem('Invalid token')
+        kid = unverified_header.get('kid')
+        if not kid:
+            logger.warning("kid not found. Aborting.")
+            raise OAuthProblem('Invalid token')
+        valid_issuer = False
+        keyset = None
+        target_client_ids = None
+
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+        ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
+        ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER', '')
+
+        if issuer == ROKWIRE_AUTH_HOST:
+            isAnonymous = unverified_payload.get('anonymous')
+            if isAnonymous is None or isAnonymous:
+                logger.warning(
+                    "anonymous flag must be set to False")
+                raise OAuthProblem('Invalid token')
+            valid_issuer = True
+            keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
+            target_client_ids = re.split(
+                ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+
+        elif issuer == ROKWIRE_ISSUER:
+            valid_issuer = True
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+            keyset = json.loads(lines)
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
+
+        elif issuer == 'https://' + SHIB_HOST:
+            if internal_token_only:
+                logger.warning("incorrect token type")
+                raise OAuthProblem('Invalid token')
+            valid_issuer = True
+            keyset = get_keyset(
+                'https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+            target_client_ids = re.split(
+                ',', (os.getenv('SHIBBOLETH_CLIENT_ID', '')).replace(" ", ""))
+
+        # Comment about the next bit. The Py JWT package's support for getting the keys
+        # and verifying against said key is (like the rest of it) undocumented.
+        # These calls may therefore change without warning without notification in future
+        # releases of that library. If this stops working, check the Py JWT libraries first.
+        if not valid_issuer:
+            logger.warning("invalid issuer = %s" % issuer)
+            raise OAuthProblem('Invalid token')
+
+        id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
+    # Store ID info for future references in the current request context.
+    g.user_token_data = id_info
+    g.user_token = id_token
+    return id_info
+
+def verify_userauth(id_token, group_name=None, internal_token_only=False):
+    id_info = None
+    if not id_token:
+        logger.warning("Request missing id token")
+        raise OAuthProblem('Missing id token')
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+
+    if unverified_header.get('phone', False):
+        # phone number verify -- reject if this should be another type of token.
+        if internal_token_only:
+            logger.warning('incorrect id token type.')
+            raise OAuthProblem('Invalid token')
+        phone_verify_secret = os.getenv('PHONE_VERIFY_SECRET')
+        if not phone_verify_secret:
+            logger.warning("PHONE_VERIFY_SECRET environment variable not set")
+            raise OAuthProblem('Invalid token')
+        phone_verify_audience = os.getenv('PHONE_VERIFY_AUDIENCE')
+        if not phone_verify_audience:
+            logger.warning("PHONE_VERIFY_AUDIENCE environnment variable not set")
+            raise OAuthProblem('Invalid token')
+        try:
+            id_info = jwt.decode(
+                id_token,
+                phone_verify_secret,
+                audience=phone_verify_audience,
+                verify=True
+            )
+        except jwt.DecodeError as de:
+            logger.warning("error on id_token decode. Message = %s" % str(de))
+            raise OAuthProblem('Invalid token')
+        # import pprint; pprint.pprint(id_info)
+    else:
         ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
 
         issuer = unverified_payload.get('iss')
         if not issuer:
@@ -221,22 +359,17 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             #            file1.close()
             lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
             keyset = json.loads(lines)
-
             target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
-
-        if issuer == 'https://' + SHIB_HOST:
+        elif issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
                 raise OAuthProblem('Invalid token')
             valid_issuer = True
-            keyset_resp = requests.get('https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
-            if keyset_resp.status_code != 200:
-                logger.warning("bad status getting keyset. status code = %s" % keyset_resp.status_code)
-                raise OAuthProblem('Invalid token')
-            keyset = keyset_resp.json()
-
-            target_client_ids = re.split(',', (os.getenv('SHIBBOLETH_CLIENT_ID')).replace(" ", ""))
+            keyset = get_keyset(
+                'https://' + SHIB_HOST + '/idp/profile/oidc/keyset')
+            target_client_ids = re.split(
+                ',', (os.getenv('SHIBBOLETH_CLIENT_ID', '')).replace(" ", ""))
 
         # Comment about the next bit. The Py JWT package's support for getting the keys
         # and verifying against said key is (like the rest of it) undocumented.
@@ -246,30 +379,74 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             logger.warning("invalid issuer = %s" % issuer)
             raise OAuthProblem('Invalid token')
 
-        matching_jwks = [key_dict for key_dict in keyset['keys'] if key_dict['kid'] == kid]
-        if len(matching_jwks) != 1:
-            logger.warning("should have exactly one match for kid = %s" % kid)
-            raise OAuthProblem('Invalid token')
-        jwk = matching_jwks[0]
-        pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
-        try:
-            id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, verify=True)
-        except jwt.exceptions.PyJWTError as jwte:
-            logger.warning("jwt error on decode. message = %s" % jwte)
-            raise OAuthProblem('Invalid token')
-        if not id_info:
-            logger.warning("id_info was not returned from decode")
-            raise OAuthProblem('Invalid token')
+        id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
     # Store ID info for future references in the current request context.
     g.user_token_data = id_info
-
+    g.user_token = id_token
     return id_info
+
+def verify_userauth_coretoken(group_name=None):
+    id_token = get_bearer_token(request)
+    if not id_token:
+        raise OAuthProblem('Missing id token')
+
+    # check which token auth verify to use
+    unverified_header, unverified_payload = get_unverified_header_payload(
+        id_token)
+
+    isAnonymous = unverified_payload.get('anonymous')
+    if isAnonymous == True:
+        return verify_core_token(group_name)
+    return verify_core_userauth(id_token, group_name)
+
 
 
 def use_security_token_auth(func):
     func._use_security_token_auth = True
     return func
 
+
+def get_keyset(request_url):
+    keyset_resp = requests.get(request_url)
+    if keyset_resp.status_code != 200:
+        logger.warning(
+            "bad status getting keyset. status code = %s" % keyset_resp.status_code)
+        raise OAuthProblem('Invalid token')
+    keyset = keyset_resp.json()
+    return keyset
+
+
+def get_unverified_header_payload(id_token):
+    try:
+        # We need to get both the header and the payload initially as unverified since we have to
+        # check their issuer, key id and a few other items before we can figure out how to unpack them
+        unverified_header = jwt.get_unverified_header(id_token)
+        unverified_payload = jwt.decode(id_token, verify=False)
+    except jwt.exceptions.PyJWTError as jwte:
+        logger.warning(
+            "jwt error on get unverified header. message = %s" % jwte)
+        raise OAuthProblem('Invalid token')
+    return unverified_header, unverified_payload
+
+
+def decode_id_token(id_token, keyset, target_client_ids, kid):
+    matching_jwks = [key_dict for key_dict in keyset['keys']
+                     if key_dict['kid'] == kid]
+    if len(matching_jwks) != 1:
+        logger.warning("should have exactly one match for kid = %s" % kid)
+        raise OAuthProblem('Invalid token')
+    jwk = matching_jwks[0]
+    pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    try:
+        id_info = jwt.decode(id_token, key=pub_key,
+                             audience=target_client_ids, verify=True)
+    except jwt.exceptions.PyJWTError as jwte:
+        logger.warning("jwt error on decode. message = %s" % jwte)
+        raise OAuthProblem('Invalid token')
+    if not id_info:
+        logger.warning("id_info was not returned from decode")
+        raise OAuthProblem('Invalid token')
+    return id_info
 
 # def authenticate_google():
 #     from google.oauth2 import id_token
