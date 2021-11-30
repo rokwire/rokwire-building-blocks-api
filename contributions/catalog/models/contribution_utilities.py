@@ -113,7 +113,7 @@ def to_contact(d):
         for k, v in d.items():
             if "contact_" in k:
                 name = k.split("contact_")[-1]
-                print(name, v)
+                # print(name, v)
                 cont[name] = v[0]
     return res
 

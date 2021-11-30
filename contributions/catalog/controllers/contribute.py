@@ -333,9 +333,9 @@ def create():
             logging.error(s)
             msg = "Contribution submission failed. Please try again after some time!"
             if "name" in session:
-                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg, error_detail=s)
+                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg)
             else:
-                return render_template('contribute/error.html', error_msg=s)
+                return render_template('contribute/error.html', error_msg=msg)
 
     # get capability list to create required capability list
     header = requestutil.get_header_using_session(session)
@@ -385,7 +385,6 @@ def post_contribution(json_data):
             return True, contribution_id, json.loads(json_data.replace("\n",""))
 
     except Exception:
-        traceback.print_exc()
         var = traceback.format_exc()
         return False, var, None
 

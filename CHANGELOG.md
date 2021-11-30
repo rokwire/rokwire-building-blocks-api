@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
 
+### Fixed
+- Catalog redirects to error page when the contribution request is not published. [#774](https://github.com/rokwire/rokwire-building-blocks-api/issues/774)
+- Successful POST of contribution redirect to contribution details page. [#777](https://github.com/rokwire/rokwire-building-blocks-api/issues/777)
+
 ## [1.12.0] - 2021-11-19
 ### Added
 - Add edit contribution capability in catalog. [#737](https://github.com/rokwire/rokwire-building-blocks-api/issues/737)
@@ -30,7 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Default Contributions Catalog port to 5000 and made it configurable. [#788](https://github.com/rokwire/rokwire-building-blocks-api/issues/788)
 
 ### Fixed
-- Successful POST of contribution redirect to contribution details page. [#777](https://github.com/rokwire/rokwire-building-blocks-api/issues/777)
 - Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
 - Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
 - Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
