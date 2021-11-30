@@ -29,6 +29,8 @@ from utils import jsonutil
 from utils import adminutil
 from utils import requestutil
 
+import os
+
 bp = Blueprint('contribute', __name__, url_prefix=cfg.URL_PREFIX)
 
 
@@ -40,6 +42,16 @@ def home():
     is_logged_in = False
     cap_json = []
     tal_json = []
+
+    if 'GIT_TAG' in os.environ:
+        git_tag=os.environ['GIT_TAG']
+    else:
+        git_tag=''
+    if 'GIT_SHA' in os.environ:
+        git_sha=os.environ['GIT_SHA']
+    else:
+        git_sha=''
+
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -67,8 +79,8 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel,
-                               user=user)
+        return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha, cap_json=cap_json, tal_json=tal_json,
+                               show_sel=show_sel, user=user)
     else:
         # query only published ones
         headers = requestutil.get_header_using_api_key()
@@ -84,7 +96,7 @@ def home():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-        return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
+        return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha, cap_json=cap_json, tal_json=tal_json, show_sel=show_sel)
 
     # print("homepage.")
     # if request.method == 'POST' and request.validate_on_submit():
@@ -186,12 +198,14 @@ def contribution_edit(contribution_id):
 
             if response:
                 if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],  token=session['oauth_token']['access_token'])
+                    return render_template('contribute/submitted.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'])
                 else:
                     return render_template('contribute/submitted.html')
             elif not response:
                 if "name" in session:
-                    return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=s)
+                    return render_template('contribute/error.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'], error_msg=s)
                 else:
                     return render_template('contribute/error.html', error_msg=s)
     else:
@@ -202,8 +216,13 @@ def contribution_edit(contribution_id):
         headers = requestutil.get_header_using_session(session)
         is_editable = adminutil.check_if_reviewer(username, headers)
 
+        # get capability list to create required capability list
+        required_capability_list = requestutil.request_required_capability_list(headers)
+
         if is_editable:
-            return render_template('contribute/contribute.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+            return render_template('contribute/contribute.html', required_capabilities=required_capability_list,
+                                   is_editable=is_editable, user=session["name"],
+                                   token=session['oauth_token']['access_token'], post=the_json_res)
         else:
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
@@ -316,8 +335,14 @@ def create():
             if "name" in session:
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg, error_detail=s)
             else:
-                return render_template('contribute/error.html', error_msg=msg, error_detail=3)
-    return render_template('contribute/contribute.html', post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
+                return render_template('contribute/error.html', error_msg=s)
+
+    # get capability list to create required capability list
+    header = requestutil.get_header_using_session(session)
+    required_capability_list = requestutil.request_required_capability_list(header)
+
+    return render_template('contribute/contribute.html', required_capabilities=required_capability_list,
+                           post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -349,8 +374,9 @@ def post_contribution(json_data):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
+            err_msg = str(err_json['status']), err_json['title'], err_json['detail']
             return False, str("post method fails with error: ") + str(result.status_code) \
-                   + ": " + str(err_json['reason']), None
+                   + ": " + str(err_msg)
         else:
             # parse contribution id from response
             result_str = result.content.decode("utf-8").replace("\n", "")

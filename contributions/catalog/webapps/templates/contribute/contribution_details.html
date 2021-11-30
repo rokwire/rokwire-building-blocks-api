@@ -53,7 +53,6 @@
         <p class="col-sm-2" style="text-align: justify;">{{post.name}}</p>
     </div>
 
-
     <div class="row">
         <div class="col-12 col-sm-2">
             <h4>Contribution short description</h4>
@@ -62,70 +61,70 @@
     </div>
 
     {% if post.longDescription %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Contribution long description</h4>
+        <div class="row">
+            <div class="col-12 col-sm-2">
+                <h4>Contribution long description</h4>
+            </div>
+            <p class="col-sm-9">{{post.longDescription}}</p>
         </div>
-        <p class="col-sm-9">{{post.longDescription}}</p>
-    </div>
     {% endif %}
 
 
     {% if post.contributors %}
-    <h4>Contributor details</h4>
-    {% for c in post.contributors %}
-    {% for key,val in c.items() %}
-    {% if key == "affiliation" %}
-    {% for k,v in val.items() %}
-    {% if v %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            {{k}}
-        </div>
-        <p class="col-sm-2">{{v}}</p>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% elif val %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            {{key}}
-        </div>
-        <p class="col-sm-2">{{val}}</p>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
+        <h4>Contributor details</h4>
+        {% for c in post.contributors %}
+            {% for key,val in c.items() %}
+                {% if key == "affiliation" %}
+                    {% for k,v in val.items() %}
+                        {% if v %}
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                {{k}}
+                            </div>
+                            <p class="col-sm-2">{{v}}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% elif val %}
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        {{key}}
+                    </div>
+                    <p class="col-sm-2">{{val}}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 
     {% if post.contacts %}
     <h4>Contact details</h4>
-
-    {% for key,val in post.contacts.items() %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            {{key}}
-        </div>
-        <p class="col-sm-2">{{val}}</p>
-    </div>
-    {% endfor %}
+        {% for contact in post["contacts"] %}
+            {% for key,val in contact.items() %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    {{key}}
+                </div>
+                <p class="col-sm-2">{{val}}</p>
+            </div>
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 
     {% if post.capabilities %}
     <h4>Capabilities in this contribution</h4>
-    {% for c in post.capabilities %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <ol><h4>{{c.name}}</h4></ol>
+        {% for c in post.capabilities %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    <ol><h4>{{c.name}}</h4></ol>
+                </div>
+                <button class="button button1" onclick="cap_url('{{c.id}}')" >  View  </button>
             </div>
-            <button class="button button1" onclick="cap_url('{{c.id}}')" >  View  </button>
-        </div>
         {% endfor %}
     {% endif %}
 
-
     {% if post.talents %}
-    <h4>Talents in this contribution</h4>
+        <h4>Talents in this contribution</h4>
        {% for t in post.talents %}
         <div class="row">
             <div class="col-12 col-sm-2">

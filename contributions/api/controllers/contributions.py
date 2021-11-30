@@ -172,7 +172,7 @@ def post(token_info):
                 if talent.requiredCapabilities is not None:
                     required_cap_list = talent.requiredCapabilities
                     for capability_json in required_cap_list:
-                        capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
+                        capability, rest_capability_json, msg = modelutils.construct_required_capability(capability_json)
                         is_uuid = otherutils.check_if_uuid(capability.id)
                         if not is_uuid:
                             msg = {
