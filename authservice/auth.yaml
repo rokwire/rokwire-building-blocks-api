@@ -3,7 +3,6 @@ info:
   title: Rokwire Auth Building Block API
   description: Authentication Building Block API Documentation
   version: 1.12.0
-
 paths:
   /authentication/phone-initiate:
     post:
