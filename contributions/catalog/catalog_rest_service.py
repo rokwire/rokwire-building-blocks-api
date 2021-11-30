@@ -143,7 +143,7 @@ def login():
 
 
 # Step 2: User authorization, this happens on the provider.
-@app.route("/contributions/catalog/auth/callback", methods=["GET"])
+@app.route("/catalog/auth/callback", methods=["GET"])
 def callback():
     """ Step 3: Retrieving an access token.
     """

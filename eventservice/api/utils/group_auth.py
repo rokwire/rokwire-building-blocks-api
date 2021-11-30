@@ -5,15 +5,29 @@ from flask import g
 
 logger = logging.getLogger(__name__)
 
+
+def generate_groups_request():
+    # Rokwire issuer token
+    if g.user_token_data.get('iss') == cfg.ROKWIRE_ISSUER:
+        uin = g.user_token_data.get('uiucedu_uin')
+        url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/int/user/", uin)
+        headers = {"Content-Type": "application/json",
+                   "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
+    # Core BB Access Token, Shibboleth ID Token, etc.
+    else:
+        id_token = g.user_token
+        url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
+        headers = {"Content-Type": "application/json",
+                   "Authorization": "Bearer " + id_token}
+    return url, headers
+
+
 def get_group_ids():
     group_ids = list()
     include_private_events = False
     if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
-        id_token = g.user_token
-        url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
-        headers = {"Content-Type": "application/json",
-                    "Authorization": "Bearer " + id_token}
+        url, headers = generate_groups_request()
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
             req_data = req.json()
@@ -23,16 +37,13 @@ def get_group_ids():
             raise Exception("failed to authorize with the groups building block %d" % req.status_code)
     return include_private_events, group_ids
 
+
 def get_group_memberships():
     group_memberships = list()
     include_private_events = False
     if 'user_token' in g and not g.user_token_data.get('anonymous'):
         include_private_events = True
-        url = cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/user/group-memberships"
-        id_token = g.user_token
-        headers = {"Content-Type": "application/json",
-                    "Authorization": "Bearer " + id_token}
-
+        url, headers = generate_groups_request()
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
             req_data = req.json()

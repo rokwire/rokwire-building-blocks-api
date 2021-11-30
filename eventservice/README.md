@@ -83,7 +83,7 @@ curl -d '{
         "sponsor": "Krannert Center for the Performing Arts",
         "startDate": "2019/05/02T11:00:00",
         "endDate": "2019/05/02T16:00:00",
-        "description": "Looking for a casual place to study on Reading Day from 11am-4pm? Krannert Center has got your back: plenty of seating with charging stations, delicious food and beverages available for purchase from Intermezzo cafe, and more.",
+        "longDescription": "Looking for a casual place to study on Reading Day from 11am-4pm? Krannert Center has got your back: plenty of seating with charging stations, delicious food and beverages available for purchase from Intermezzo cafe, and more.",
         "location": {
             "latitude": 40.1078955,
             "longitude": -88.224036,
@@ -102,7 +102,7 @@ curl -d '{
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
         "endDate": "2019/04/25T16:00:00",
-        "description": "celerate mathematic Pi-day at NCSA",
+        "longDescription": "celerate mathematic Pi-day at NCSA",
         "location": {
             "latitude": 40.1147743,
             "longitude": -88.2252053,
@@ -134,7 +134,7 @@ curl -d '{
         "sponsor": "NCSA",
         "startDate": "2019/04/25T13:00:00",
         "endDate": "2019/04/25T16:00:00",
-        "description": "celerate mathematic Pi-day at NCSA",
+        "longDescription": "celerate mathematic Pi-day at NCSA",
         "location": {
             "latitude": 40.1147743,
             "longitude": -88.2252053,
