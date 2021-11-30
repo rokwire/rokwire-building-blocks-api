@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
+- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837) 
 
 ## [1.12.0] - 2021-11-19
 ### Added
