@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] 
 ### Changed
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
+- Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
+
+## [1.12.0] - 2021-11-19
+### Added
+- Add edit contribution capability in catalog. [#737](https://github.com/rokwire/rokwire-building-blocks-api/issues/737)
+- Add edit contribution button based on the logged in user. [#766](https://github.com/rokwire/rokwire-building-blocks-api/issues/766)
+- Add contributionAdmins to capability and talent detail end point. [#730](https://github.com/rokwire/rokwire-building-blocks-api/issues/730)
+- Catalog release script. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
+- /ok endpoint for healthcheck in AppConfig.[#754](https://github.com/rokwire/rokwire-building-blocks-api/issues/754)
+- /version endpoint in AppConfig.[#760](https://github.com/rokwire/rokwire-building-blocks-api/issues/760)
+- Core BB Auth Support [#808](https://github.com/rokwire/rokwire-building-blocks-api/issues/808)
+- Core BB profile migration [#809](https://github.com/rokwire/rokwire-building-blocks-api/issues/809)
+- SECURITY.md file. [#804](https://github.com/rokwire/rokwire-building-blocks-api/issues/804)
+- Add version endpoint in Events building block.[#725](https://github.com/rokwire/rokwire-building-blocks-api/issues/725)
+
+### Changed
+- Updated pre-commit config and corresponding GitHub Action to use `Yelp/detect-secrets` version 1.0.3. [#649](https://github.com/rokwire/rokwire-building-blocks-api/issues/649)
+- Make catalog pages to show all the items for contribution admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Make contribution details pages to show all items for reviewers and admins. [#728](https://github.com/rokwire/rokwire-building-blocks-api/issues/728)
+- Catalog default port and default URL prefix. [#784](https://github.com/rokwire/rokwire-building-blocks-api/issues/784)
+- Modified contribution schema for required capability [#790](https://github.com/rokwire/rokwire-building-blocks-api/issues/790)
+- Default Contributions Catalog port to 5000 and made it configurable. [#788](https://github.com/rokwire/rokwire-building-blocks-api/issues/788)
+
+### Fixed
+- Fix get event endpoint with user auth key. [#746](https://github.com/rokwire/rokwire-building-blocks-api/issues/746)
+- Fix published capabilities and talents not showing without login. [#767](https://github.com/rokwire/rokwire-building-blocks-api/issues/767)
+- Fix catalog use python generated result instead of java script.  [#772](https://github.com/rokwire/rokwire-building-blocks-api/issues/772)
+- Contribution POST gives proper error message. [#714](https://github.com/rokwire/rokwire-building-blocks-api/issues/714)
+- Hard coded base url. [#780](https://github.com/rokwire/rokwire-building-blocks-api/issues/780)
+- Multiple bugs/improvements around login. [#782](https://github.com/rokwire/rokwire-building-blocks-api/issues/782)
+- Fix login problem with session. [#796](https://github.com/rokwire/rokwire-building-blocks-api/issues/796)
+- Fix logout. [#775](https://github.com/rokwire/rokwire-building-blocks-api/issues/775)
+- Fix top navigation to provide correct login info. [#773](https://github.com/rokwire/rokwire-building-blocks-api/issues/773)
+- Fix login button provide correct info when user not logged in. [#778](https://github.com/rokwire/rokwire-building-blocks-api/issues/778)
+- Contributions Catalog release script and Dockerfile. [#787](https://github.com/rokwire/rokwire-building-blocks-api/issues/787)
+- Added version and gitsha in catalog footer [#770](https://github.com/rokwire/rokwire-building-blocks-api/issues/770)
+- Auth middleware lib to recognize Rokwire issuer.  [#823](https://github.com/rokwire/rokwire-building-blocks-api/issues/823)
+- Groups membership request in Events BB. [#823](https://github.com/rokwire/rokwire-building-blocks-api/issues/823)
 
 ## [1.11.3] - 2021-11-18
 ### Added
@@ -378,7 +416,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
+<<<<<<< HEAD
 [Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...HEAD
+=======
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...HEAD
+[1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0
+[1.11.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...1.11.3
+[1.11.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...1.11.2
+>>>>>>> 8c4908d0c3ac0bdd1d650ef966f638132bd673ef
 [1.11.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.9.1...1.10.0

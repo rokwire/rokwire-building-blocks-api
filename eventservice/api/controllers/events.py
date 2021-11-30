@@ -19,6 +19,7 @@ import flask
 import flask.json
 import auth_middleware
 import pymongo
+import yaml
 
 import utils.jsonutils as jsonutils
 import utils.mongoutils as mongoutils
@@ -219,13 +220,10 @@ def get(event_id):
     if not result_found:
         abort(404)
     json_result = json.loads(result)
-    if include_private_events:
-        # check the group id
-        if result and json_result.get('createdByGroupId') not in group_ids:
-            abort(401)
-    else:
-        # check public group
-        if result and json_result.get('isGroupPrivate') is True:
+
+    if result and json_result.get('isGroupPrivate') is True:
+        # private group event
+        if json_result.get('createdByGroupId') not in group_ids:
             abort(401)
 
     __logger.info("[Get Event]: event id %s", event_id)
@@ -659,3 +657,13 @@ def success_response(status_code, msg, event_id):
     resp.status_code = status_code
 
     return make_response(resp)
+
+def version_search():
+    """
+    Method to return Events BB version number
+    Reads yaml file and returns version number
+    Return : plain text - version number
+    """
+    yaml_file = open('events.yaml')
+    parsed_appconfig_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
+    return parsed_appconfig_yaml['info']['version']

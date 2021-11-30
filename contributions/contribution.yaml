@@ -2,7 +2,8 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.11.0
+  version: 1.12.0
+
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -338,7 +339,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Talent'
+                  allOf:
+                  - $ref: '#/components/schemas/Talent'
+                  - type: object
+                    properties:
+                      contributionAdmins:
+                        description: List of GitHub usernames of Contribution admins
+                        type: array
         400:
           description: Bad request
         401:
@@ -378,7 +385,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Capability'
+                  allOf:
+                    - $ref: '#/components/schemas/Capability'
+                    - type: object
+                      properties:
+                        contributionAdmins:
+                          description: List of GitHub usernames of Contribution admins
+                          type: array
         400:
           description: Bad request
         401:
@@ -480,6 +493,7 @@ components:
         - name
         - shortDescription
         - contributionAdmins
+        - contacts
       properties:
         id:
           type: string
@@ -499,6 +513,25 @@ components:
             anyOf:
               - $ref: '#/components/schemas/Person'
               - $ref: '#/components/schemas/Organization'
+        contacts:
+          type: array
+          items:
+            properties:
+              name:
+                nullable: false
+                type: string
+              email:
+                nullable: false
+                type: string
+              phone:
+                nullable: false
+                type: string
+              organization:
+                nullable: true
+                type: string
+              officialAddress:
+                nullable: true
+                type: string
         capabilities:
           nullable: true
           type: array
@@ -593,6 +626,9 @@ components:
           type: string
         version:
           type: string
+        versionUrl:
+          nullable: true
+          type: string
         healthCheckUrl:
           nullable: true
           type: string
@@ -605,26 +641,6 @@ components:
               description: Deletion endpoint details. E.g. `DELETE /users/details/{UUID}`
             apiKey:
               type: string
-        contacts:
-          nullable: true
-          type: array
-          items:
-            properties:
-              name:
-                nullable: true
-                type: string
-              email:
-                nullable: true
-                type: string
-              phone:
-                nullable: true
-                type: string
-              organization:
-                nullable: true
-                type: string
-              officialAddress:
-                nullable: true
-                type: string
     Talent:
       type: object
       description: A core feature in the app user interface.
@@ -646,7 +662,7 @@ components:
         requiredCapabilities:
           type: array
           items:
-            $ref: '#/components/schemas/Capability'
+            $ref: '#/components/schemas/RequiredCapability'
         requiredBuildingBlocks:
           type: array
           items:
@@ -706,6 +722,27 @@ components:
             discloseImageRights:
               type: string
               description: Self disclosure about the rights to use images within the Talent
+    RequiredCapability:
+      type: object
+      description: A required capabiity object that recorded in talent
+      required:
+        - contributionId
+        - capabilityId
+        - capabilityName
+      properties:
+        contributionId:
+          type: string
+          description: ObjectID formation string identifier of the contribution
+        contributionName:
+          type: string
+          description: Name of the contribution
+        capabilityId:
+          type: string
+          format: uuid
+          description: UUID4 format string identifier of the capability
+        capabilityName:
+          type: string
+          description: Name of the capability
     Person:
       type: object
       properties:

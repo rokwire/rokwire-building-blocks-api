@@ -7,6 +7,7 @@ RUN mkdir -p /app/eventservice/events-images/
 WORKDIR /app
 COPY eventservice/events.yaml /app/
 COPY eventservice /app/eventservice/
+COPY eventservice/events.yaml /app/eventservice/api
 COPY lib /lib/
 
 
