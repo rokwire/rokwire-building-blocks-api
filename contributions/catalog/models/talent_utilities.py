@@ -48,7 +48,7 @@ def to_talent(d):
         talent['id'] = tal_id
 
         for k, v in d.items():
-            print(k, v)
+            # print(k, v)
             if "minUserPrivacyLevel" in k:
                 if len(v[i]) > 0:
                     talent_list[i]["minUserPrivacyLevel"] = int(v[i])
