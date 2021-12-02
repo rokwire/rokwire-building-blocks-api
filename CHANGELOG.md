@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
-- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837) 
 
 ### Fixed
 - Catalog redirects to error page when the contribution request is not published. [#774](https://github.com/rokwire/rokwire-building-blocks-api/issues/774)
@@ -15,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
+- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837)
 
 ## [1.12.0] - 2021-11-19
 ### Added
