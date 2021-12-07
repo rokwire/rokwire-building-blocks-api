@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
 
 ### Fixed
+- Added additional env variable for audience for ROKWIRE_AUTH_HOST tokens. [#842](https://github.com/rokwire/rokwire-building-blocks-api/issues/842)
 - Catalog redirects to error page when the contribution request is not published. [#774](https://github.com/rokwire/rokwire-building-blocks-api/issues/774)
 - Successful POST of contribution redirect to contribution details page. [#777](https://github.com/rokwire/rokwire-building-blocks-api/issues/777)
 
