@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire App Config Building Block API
   description: App Config Building Block API Documentation
-  version: 1.11.0
+  version: 1.12.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -25,7 +25,7 @@ paths:
 
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       requestBody:
         description: Creates AppConfig object
         content:
@@ -91,6 +91,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
         - name: mobileAppVersion
           in: query
@@ -159,6 +160,7 @@ paths:
         Auth: Requires a valid API Key for access.
       security:
         - ApiKeyAuth: []
+        - CoreTokenAuth: []
       parameters:
       - name: id
         in: path
@@ -194,7 +196,7 @@ paths:
 
           ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
       - name: id
         in: path
@@ -233,7 +235,7 @@ paths:
 
         ```urn:mace:uiuc.edu:urbana:authman:app-rokwire-service-policy-rokwire app config manager```
       security:
-        - UserAuth: []
+        - CoreUserAuth: []
       parameters:
       - name: id
         in: path
@@ -297,9 +299,15 @@ components:
       name: ROKWIRE-API-KEY
       x-apikeyInfoFunc: auth_middleware.verify_apikey
       description: Each client version has unique API key (e.g., "c6befa22-50a6-4403-a8fc-378c9719743b"). For API endpoints that do not require user authentication, the ROKWIRE-API-KEY header must contain an API key corresponding to a supported client.
-    UserAuth:
+    CoreUserAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT # https://openid.net/specs/openid-connect-core-1_0.html [id_token]
-      x-bearerInfoFunc: auth_middleware.verify_userauth
+      x-bearerInfoFunc: auth_middleware.verify_core_userauth
       description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header when making requests to API endpoints that require user authentication.
+    CoreTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: auth_middleware.verify_core_token
+      description: The client must send a valid (i.e., signed, not expired) OpenID Connect id_token in the Authorization header including anonymous tokens

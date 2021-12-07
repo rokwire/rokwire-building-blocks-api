@@ -8,8 +8,8 @@
     <link href="{{ url_for('static', filename='css/filter.css') }}" rel="stylesheet">
 
 </head>
-<body>
 
+<body onload=start()>
 
 <style>
 
@@ -122,24 +122,26 @@
 
 </style>
 
-<div class="navbar" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}">Capability Catalog/Packager</a>
-    <a href="{{ url_for('contribute.create') }}">Contribute</a>
-</div>
+{% include 'topnav_javascript.html' %}
 
 <!-- MAIN (Center website) -->
 <div class="main">
     <h1></h1>
     <h1>Contribution Catalog / Packager</h1>
-    <hr>
 
-    {{ error_msg }}
+    <h3>{{ error_msg }}</h3>
+
+    {% if error_detail %}
+        <BR>{{ error_detail }}
+    {% endif %}
 
     <!-- END GRID -->
 </div>
 
 <!-- END MAIN -->
 </div>
+
+{% include 'topnav_javascript.html' %}
 
 <script>
     filterSelection("all")

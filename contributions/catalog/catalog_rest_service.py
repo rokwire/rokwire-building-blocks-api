@@ -21,6 +21,7 @@ from time import gmtime
 from jinja2 import environment
 from flask import Flask, redirect, url_for, render_template, request, session
 from requests_oauthlib import OAuth2Session
+
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
@@ -52,6 +53,7 @@ app.config.from_object(cfg)
 init_app(app)
 app.register_blueprint(contribute_bp)
 
+
 @app.template_filter('filter_nested_dict')
 def filter_nested_dict(dict, item_list):
     try:
@@ -72,6 +74,16 @@ def index():
     cap_json = []
     tal_json = []
     user = None
+
+    if 'GIT_TAG' in os.environ:
+        git_tag=os.environ['GIT_TAG']
+    else:
+        git_tag=''
+    if 'GIT_SHA' in os.environ:
+        git_sha=os.environ['GIT_SHA']
+    else:
+        git_sha=''
+
     try:
         # create error to see if the user is logged in or now
         # TODO this should be changed to better way
@@ -113,7 +125,8 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
+    return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha,
+                           cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
 def login():
@@ -130,13 +143,15 @@ def login():
 
 
 # Step 2: User authorization, this happens on the provider.
-# "http://localhost:5050/contributions/catalog/auth/callback"
-@app.route("/contributions/catalog/auth/callback", methods=["GET"])
+@app.route("/catalog/auth/callback", methods=["GET"])
 def callback():
     """ Step 3: Retrieving an access token.
     """
     # print("Step 3: Retrieving an access token")
-    github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=session['oauth_state'])
+    if 'oauth_state' in session:
+        github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=session['oauth_state'])
+    else:
+        github = OAuth2Session(cfg.GITHUB_CLIENT_ID, state=None)
     token = github.fetch_token(cfg.TOKEN_URL, client_secret=cfg.GITHUB_CLIENT_SECRET,
                                authorization_response=request.url)
     session['oauth_token'] = token
@@ -149,6 +164,5 @@ def callback():
 
     return redirect(url_for('contribute.home'))
 
-
 if __name__ == '__main__':
-    app.run(port=5050, host=None, debug=True)
+    app.run(port=cfg.CATALOG_PORT, host=None, debug=True)
