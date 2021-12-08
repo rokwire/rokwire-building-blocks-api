@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import base64
+import hmac
 import json
 import logging
 import os
@@ -156,7 +157,7 @@ def verify_secret(request):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return True
     # failed matching means unauthorized in this context.
     raise OAuthProblem('Invalid API Key')
@@ -201,7 +202,7 @@ def verify_apikey(key, required_scopes=None):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return {'token_valid': True}
     else:
         raise OAuthProblem('Invalid API Key')
