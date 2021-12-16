@@ -115,9 +115,12 @@
 <div class="main">
     <h1></h1>
     <h1>Contribution Catalog / Packager</h1>
-    <hr>
 
-    {{ error_msg }}
+    <h3>{{ error_msg }}</h3>
+
+    {% if error_detail %}
+        <BR>{{ error_detail }}
+    {% endif %}
 
     <!-- END GRID -->
 </div>

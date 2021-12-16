@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import base64
+import hmac
 import json
 import logging
 import os
@@ -156,7 +157,7 @@ def verify_secret(request):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return True
     # failed matching means unauthorized in this context.
     raise OAuthProblem('Invalid API Key')
@@ -181,7 +182,7 @@ def verify_core_token(group_name=None):
     if issuer == ROKWIRE_AUTH_HOST:
         keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
         target_client_ids = re.split(
-            ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+            ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
         g.user_token_data = id_info
         g.user_token = id_token
@@ -201,7 +202,7 @@ def verify_apikey(key, required_scopes=None):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return {'token_valid': True}
     else:
         raise OAuthProblem('Invalid API Key')
@@ -266,7 +267,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
             valid_issuer = True
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
-                ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+                ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
 
         elif issuer == ROKWIRE_ISSUER:
             valid_issuer = True
