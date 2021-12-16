@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.12.1] - 2021-12-08
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
 
@@ -12,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Catalog redirects to error page when the contribution request is not published. [#774](https://github.com/rokwire/rokwire-building-blocks-api/issues/774)
 - Successful POST of contribution redirect to contribution details page. [#777](https://github.com/rokwire/rokwire-building-blocks-api/issues/777)
 - Added additional env variable for audience for ROKWIRE_AUTH_HOST tokens. [#842](https://github.com/rokwire/rokwire-building-blocks-api/issues/842)
+
 ### Security
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
 
@@ -422,7 +425,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...HEAD
+[1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0
 [1.11.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...1.11.3
 [1.11.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...1.11.2
