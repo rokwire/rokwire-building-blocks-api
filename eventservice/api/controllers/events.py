@@ -30,7 +30,7 @@ from werkzeug.utils import secure_filename
 from time import gmtime
 
 import controllers.configs as cfg
-import configs.messages as msgs
+import controllers.configs.messages as msgs
 from utils.db import get_db
 from utils import query_params
 from controllers.images.s3 import S3EventsImages
