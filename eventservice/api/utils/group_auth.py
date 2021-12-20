@@ -4,6 +4,8 @@ import logging
 from flask import g
 
 logger = logging.getLogger(__name__)
+ALL_GROUP_EVENTS = 'all_group-events'
+ALL_EVENTS = 'all-events'
 
 
 def generate_groups_request():
@@ -81,3 +83,23 @@ def check_permission_access_event(event, include_private_events, group_ids):
         if event and event.get('isGroupPrivate') is True:
             return False
     return True
+
+
+def check_all_group_event_admin():
+    is_all_group_event = False
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+        if g.user_token_data.get('permissions'):
+            if g.user_token_data.get('permissions').lower() == ALL_GROUP_EVENTS:
+                is_all_group_event = True
+
+    return is_all_group_event
+
+
+def check_all_event_admin():
+    is_all_event = False
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+        if g.user_token_data.get('permissions'):
+            if g.user_token_data.get('permissions').lower() == ALL_EVENTS:
+                is_all_group_event = True
+
+    return is_all_event
