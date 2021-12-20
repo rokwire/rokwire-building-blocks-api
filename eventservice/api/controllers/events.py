@@ -430,6 +430,19 @@ def delete(event_id):
         __logger.exception(ex)
         abort(500)
 
+    can_delete = False
+
+    # check permission if the user is all event or user is all group event
+    try:
+        is_all_group_event = check_all_group_event_admin()
+        is_all_event = check_all_event_admin()
+        if is_all_event or is_all_event:
+            can_delete = True
+    except Exception as ex:
+        msg = "Failed to parse the id token."
+        __logger.exception(msg, ex)
+        abort(500)
+
     db = None
     event = None
     try:
@@ -439,8 +452,9 @@ def delete(event_id):
         __logger.exception(ex)
         abort(500)
 
-    if not check_group_event_admin_access(event, group_memberships):
-        abort(401)
+    if not can_delete:
+        if not check_group_event_admin_access(event, group_memberships):
+            abort(401)
 
     try:
         db = get_db()

@@ -174,8 +174,8 @@ def format_query(args, query, include_private_events=False, group_ids=None,
 
     # All events
     # TODO need to figure out what to do with all_events permission
-    #if all_event:
-
+    if all_event:
+        query_parts.append({})
     return query
 
 
