@@ -418,7 +418,21 @@ def patch(event_id):
 
 
 def delete(event_id):
-    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+    can_delete = False
+
+    # check permission if the user is all event or user is all group event
+    try:
+        is_all_group_event = check_all_group_event_admin()
+        is_all_event = check_all_event_admin()
+        if is_all_group_event or is_all_event:
+            can_delete = True
+    except Exception as ex:
+        msg = "Failed to parse the id token."
+        __logger.exception(msg, ex)
+        abort(500)
+
+    if not can_delete:
+        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -428,19 +442,6 @@ def delete(event_id):
         _, group_memberships = get_group_memberships()
     except Exception as ex:
         __logger.exception(ex)
-        abort(500)
-
-    can_delete = False
-
-    # check permission if the user is all event or user is all group event
-    try:
-        is_all_group_event = check_all_group_event_admin()
-        is_all_event = check_all_event_admin()
-        if is_all_event or is_all_event:
-            can_delete = True
-    except Exception as ex:
-        msg = "Failed to parse the id token."
-        __logger.exception(msg, ex)
         abort(500)
 
     db = None
