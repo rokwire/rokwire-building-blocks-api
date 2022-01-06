@@ -2,8 +2,6 @@ FROM python:3-alpine3.12
 
 LABEL maintainer="<ywkim@illinois.edu>, <minum@illinois.edu>"
 
-EXPOSE 5050
-
 WORKDIR /usr/src/app/catalog
 
 COPY contributions/catalog .
@@ -28,7 +26,10 @@ ENV CONTRIBUTION_BUILDING_BLOCK_URL='' \
     AUTHENTICATION_TOKEN='' \
     URL_PREFIX='/catalog' \
     DEBUG='False' \
+    CATALOG_PORT=5000 \
     GIT_TAG=$GIT_TAG \
     GIT_SHA=$GIT_SHA
+
+EXPOSE ${CATALOG_PORT}
 
 CMD ["gunicorn", "catalog_rest_service:app", "--config", "/usr/src/app/catalog/gunicorn.config.py"]

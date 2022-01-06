@@ -14,6 +14,7 @@
 
 from datetime import date
 import uuid
+import json
 
 def init_talent():
     d = {
@@ -27,14 +28,7 @@ def init_talent():
         "minEndUserRoles": [],
         "startDate": date.today().strftime("%d/%m/%Y"),
         "endDate": date.today().strftime("%d/%m/%Y"),
-        "dataDescription": '',
-        "selfCertification": {
-            "dataDeletionUponRequest": '',
-            "respectingUserPrivacySetting": '',
-            "discloseAds": '',
-            "discloseSponsors": '',
-            "discloseImageRights": ''
-        }
+        "dataDescription": ''
     }
     return d
 
@@ -54,17 +48,55 @@ def to_talent(d):
         talent['id'] = tal_id
 
         for k, v in d.items():
-            print(k, v)
+            # print(k, v)
             if "minUserPrivacyLevel" in k:
                 if len(v[i]) > 0:
                     talent_list[i]["minUserPrivacyLevel"] = int(v[i])
                 d[k][i] = talent_list[i]["minUserPrivacyLevel"]
             if "talent_" in k:
                 name = k.split("talent_")[-1]
+                # TODO this is not a very good exercise since everything is list,
+                #  so the code only checks the very first items in the list assuming that
+                #  the items are only single item entry.
+                #  However, required capabilities should be a list so it should be handled differently,
+                #  and if there is any item that is a list, that should be handled separately.
                 if name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) > 0:
-                    talent_list[i][name].append(v[i])
+                    if name == "requiredCapabilities":
+                        for j in range(len(v)):
+                            v[j] = reconstruct_required_capabilities(v[j])
+                            talent_list[i][name].append(v[j])
+                    else:
+                        talent_list[i][name].append(v[i])
                 elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) == 0:
                     talent_list[i][name] = []
                 else:
                     talent_list[i][name] = v[i]
+        talent_list[i]["selfCertification"] = to_self_certification(d)
     return talent_list
+
+def init_self_certification():
+    d = {
+        "dataDeletionUponRequest": '',
+        "respectingUserPrivacySetting": '',
+        "discloseAds": '',
+        "discloseSponsors": '',
+        "discloseImageRights": ''
+        }
+
+    return d
+
+
+def to_self_certification(d):
+    if not d: return {}
+    res = init_self_certification()
+    for k, v in d.items():
+        if "selfcertificate_" in k:
+            name = k.split("selfcertificate_")[-1]
+            res[name] = v[0]
+    return res
+
+def reconstruct_required_capabilities(d):
+    # removed \r\n
+    d = json.loads(d.replace("\r\n",""))
+
+    return d

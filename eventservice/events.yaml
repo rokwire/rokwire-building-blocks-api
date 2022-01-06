@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.11.0
+  version: 1.12.1
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -14,6 +14,23 @@ tags:
 - name: Events
   description: API endpoints for managing events.
 paths:
+  /events/version:
+    get:
+      tags:
+        - Events
+      summary: version endpoint
+      description: Public endpoint which returns the latest version of events building block
+      responses:
+        200:
+          description: version returned as text
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request.
+        500:
+          description: Internal error
   /events:
     get:
       tags:

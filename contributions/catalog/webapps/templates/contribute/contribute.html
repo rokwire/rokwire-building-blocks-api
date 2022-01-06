@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title> Capability Catalog </title>
     <meta charset="utf-8">
@@ -55,95 +55,93 @@
 </head>
 
 <body onload=start()>
+    <div class="container-fluid">
 
-<div class="container-fluid">
+        {% include 'topnav.html' %}
 
-    {% include 'topnav.html' %}
-
-    <div>
-        <nav>
-            <ol class="cd-multi-steps text-top">
-                <li class="current"><a href="#contribute">Contribution Details</a></li>
-                <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
-                <li><em><a href="#contact">Contact & Self-certification</a></em></li>
-                <li><em>Submit</em></li>
-            </ol>
-        </nav>
-    </div>
-
-    <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
         <div>
-            {% for member in teammembers %}
-                {{ member['name'] }}
-            {% endfor %}
+            <nav>
+                <ol class="cd-multi-steps text-top">
+                    <li class="current"><a href="#contribute">Contribution Details</a></li>
+                    <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                    <li><em><a href="#contact">Contact & Self-certification</a></em></li>
+                    <li><em>Submit</em></li>
+                </ol>
+            </nav>
         </div>
 
+        <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
+            <div>
+                {% for member in teammembers %}
+                    {{ member['name'] }}
+                {% endfor %}
+            </div>
 
-        <div class="container">
-            <h2 id="contribute">Contribution Details</h2>
+            <div class="container">
+                <h2 id="contribute">Contribution Details</h2>
 
-            {% if is_editable %}
-                <input class="form-control" type="hidden" name="contribution_id" value={{ post.id }} >
-            {% endif %}
+                {% if is_editable %}
+                    <input class="form-control" type="hidden" name="contribution_id" value={{ post.id }} >
+                {% endif %}
 
-            <div class="form-group">
-                <label class="required control-label col-sm-2">Contribution Name</label>
-                <div class="col-sm-10" id="contribution_name_div">
-                    {% if is_editable %}
-                        <input class="form-control" id="contribution_name" name="contribution_name"
-                               placeholder="Give a name for your contribution"
-                               value="{{ post | filter_nested_dict(["name"]) }}" type="text">
-                    {% else %}
-                        <input class="form-control" id="contribution_name" name="contribution_name"
-                               placeholder="Give a name for your contribution" type="text">
-                    {% endif %}
-                    <p class="error_message"></p>
+                <div class="form-group">
+                    <label class="required control-label col-sm-2">Contribution Name</label>
+                    <div class="col-sm-10" id="contribution_name_div">
+                        {% if is_editable %}
+                            <input class="form-control" id="contribution_name" name="contribution_name"
+                                   placeholder="Give a name for your contribution"
+                                   value="{{ post | filter_nested_dict(["name"]) }}" type="text">
+                        {% else %}
+                            <input class="form-control" id="contribution_name" name="contribution_name"
+                                   placeholder="Give a name for your contribution" type="text">
+                        {% endif %}
+                        <p class="error_message"></p>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="required control-label col-sm-2">Short Description</label>
-                <div class="col-sm-10">
-                    {% if is_editable %}
-                        <input class="form-control" id="contribution_description" name="contribution_shortDescription"
-                               placeholder="Give a short description"
-                               value="{{ post | filter_nested_dict(["shortDescription"]) }}" type="text">
-                    {% else %}
-                        <input class="form-control" id="contribution_description" name="contribution_shortDescription"
-                               placeholder="Give a short description" type="text">
-                    {% endif %}
+                <div class="form-group">
+                    <label class="required control-label col-sm-2">Short Description</label>
+                    <div class="col-sm-10">
+                        {% if is_editable %}
+                            <input class="form-control" id="contribution_description" name="contribution_shortDescription"
+                                   placeholder="Give a short description"
+                                   value="{{ post | filter_nested_dict(["shortDescription"]) }}" type="text">
+                        {% else %}
+                            <input class="form-control" id="contribution_description" name="contribution_shortDescription"
+                                   placeholder="Give a short description" type="text">
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2">Long Description</label>
-                <div class="col-sm-10">
-                    {% if is_editable %}
-                        <textarea id="contribution_detail" name="contribution_longDescription"
-                                  placeholder="Give a detailed description"
-                                  style="height:150px">{{ post | filter_nested_dict(["longDescription"]) }}</textarea>
-                    {% else %}
-                        <textarea id="contribution_detail" name="contribution_longDescription"
-                                  placeholder="Give a detailed description"
-                                  style="height:150px"></textarea>
-                    {% endif %}
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Long Description</label>
+                    <div class="col-sm-10">
+                        {% if is_editable %}
+                            <textarea id="contribution_detail" name="contribution_longDescription"
+                                      placeholder="Give a detailed description"
+                                      style="height:150px">{{ post | filter_nested_dict(["longDescription"]) }}</textarea>
+                        {% else %}
+                            <textarea id="contribution_detail" name="contribution_longDescription"
+                                      placeholder="Give a detailed description"
+                                      style="height:150px"></textarea>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="form-group">
-                <label class="control-label col-sm-2">Contribution Admins</label>
-                <div class="col-sm-10">
-                    {% if is_editable %}
-                        <input class="form-control" id="contribution_Admins"
-                               name="contribution_contributionAdmins"
-                               placeholder="Give a list of admin names, separated by comma"
-                               type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
-                    {% else %}
-                        <input class="form-control" id="contribution_Admins"
-                               name="contribution_contributionAdmins"
-                               placeholder="Give a list of admin names, separated by comma"
-                               type="text"></div>
-                    {% endif %}
-            </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contribution Admins</label>
+                    <div class="col-sm-10">
+                        {% if is_editable %}
+                            <input class="form-control" id="contribution_Admins"
+                                   name="contribution_contributionAdmins"
+                                   placeholder="Give a list of admin names, separated by comma"
+                                   type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                        {% else %}
+                            <input class="form-control" id="contribution_Admins"
+                                   name="contribution_contributionAdmins"
+                                   placeholder="Give a list of admin names, separated by comma"
+                                   type="text"></div>
+                        {% endif %}
+                </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Contributor Details</label>
@@ -158,158 +156,464 @@
                 <!--                </div>-->
             </div>
 
-        {% for contributor in post.contributors %}
-            <div id="organization" style="display: none">
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Organization Name</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="org_name" name="org_name" placeholder=""
-                                   type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
-                        {% else %}
-                            <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Organization Address</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="org_address" name="org_address" placeholder=""
-                                   type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
-                        {% else %}
-                            <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Organization Email</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="org_email" name="org_email" placeholder=""
-                                   type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
-                        {% else %}
-                            <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Organization Phone</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="org_phone" name="org_phone" placeholder=""
-                                   type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
-                        {% else %}
-                            <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+            {% if post %}
+                {% if post.contributors %}
+                    {% for contributor in post.contributors %}
+                        <div id="organization" style="display: none">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Organization Name</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="org_name" name="org_name" placeholder=""
+                                               type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Organization Address</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="org_address" name="org_address" placeholder=""
+                                               type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Organization Email</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="org_email" name="org_email" placeholder=""
+                                               type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Organization Phone</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="org_phone" name="org_phone" placeholder=""
+                                               type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
 
-            <div id="contributor" style="display: none">
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor's first name</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
-                        {% else %}
-                            <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
-                        {% endif %}
+                        <div id="contributor_block" style="display: none">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contributor's first name</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contributor's middle name</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contributor's last name</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contributor Email</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="person_email" placeholder=""
+                                               type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="person_email" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contributor Phone</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="person_phone" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="person_phone" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Affiliation Name</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="affiliation_name" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="affiliation_name" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Affiliation Address</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="affiliation_address" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="affiliation_address" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Affiliation Email</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="affiliation_email" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="affiliation_email" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Affiliation Phone</label>
+                                <div class="col-sm-10">
+                                    {% if is_editable %}
+                                        <input class="form-control" name="affiliation_phone" placeholder=""
+                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
+                                    {% else %}
+                                        <input class="form-control" name="affiliation_phone" placeholder="" type="text">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div id="organization" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Organization Name</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="org_name" name="org_name" placeholder=""
+                                           type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Organization Address</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="org_address" name="org_address" placeholder=""
+                                           type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Organization Email</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="org_email" name="org_email" placeholder=""
+                                           type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Organization Phone</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="org_phone" name="org_phone" placeholder=""
+                                           type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="contributor_block" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contributor's first name</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contributor's middle name</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contributor's last name</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
+                                {% else %}
+                                    <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contributor Email</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="person_email" placeholder=""
+                                           type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="person_email" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contributor Phone</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="person_phone" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="person_phone" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Affiliation Name</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="affiliation_name" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="affiliation_name" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Affiliation Address</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="affiliation_address" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="affiliation_address" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Affiliation Email</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="affiliation_email" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="affiliation_email" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Affiliation Phone</label>
+                            <div class="col-sm-10">
+                                {% if is_editable %}
+                                    <input class="form-control" name="affiliation_phone" placeholder=""
+                                           type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
+                                {% else %}
+                                    <input class="form-control" name="affiliation_phone" placeholder="" type="text">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div id="organization" style="display: none">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Name</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="org_name" name="org_name" placeholder=""
+                                       type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
+                            {% else %}
+                                <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Address</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="org_address" name="org_address" placeholder=""
+                                       type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
+                            {% else %}
+                                <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Email</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="org_email" name="org_email" placeholder=""
+                                       type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
+                            {% else %}
+                                <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Phone</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="org_phone" name="org_phone" placeholder=""
+                                       type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
+                            {% else %}
+                                <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor's middle name</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
-                        {% else %}
-                            <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
-                        {% endif %}
+                <div id="contributor_block" style="display: none">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor's first name</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
+                            {% else %}
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor's last name</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
-                        {% else %}
-                            <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
-                        {% endif %}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor's middle name</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
+                            {% else %}
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor's last name</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
+                            {% else %}
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor Email</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="person_email" placeholder=""
+                                       type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
+                            {% else %}
+                                <input class="form-control" name="person_email" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor Phone</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="person_phone" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
+                            {% else %}
+                                <input class="form-control" name="person_phone" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Name</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="affiliation_name" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
+                            {% else %}
+                                <input class="form-control" name="affiliation_name" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Address</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="affiliation_address" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
+                            {% else %}
+                                <input class="form-control" name="affiliation_address" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Email</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="affiliation_email" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
+                            {% else %}
+                                <input class="form-control" name="affiliation_email" placeholder="" type="text">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Phone</label>
+                        <div class="col-sm-10">
+                            {% if is_editable %}
+                                <input class="form-control" name="affiliation_phone" placeholder=""
+                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
+                            {% else %}
+                                <input class="form-control" name="affiliation_phone" placeholder="" type="text">
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor Email</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="person_email" placeholder=""
-                                   type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
-                        {% else %}
-                            <input class="form-control" name="person_email" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Contributor Phone</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="person_phone" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
-                        {% else %}
-                            <input class="form-control" name="person_phone" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Affiliation Name</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="affiliation_name" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
-                        {% else %}
-                            <input class="form-control" name="affiliation_name" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Affiliation Address</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="affiliation_address" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
-                        {% else %}
-                            <input class="form-control" name="affiliation_address" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Affiliation Email</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="affiliation_email" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
-                        {% else %}
-                            <input class="form-control" name="affiliation_email" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Affiliation Phone</label>
-                    <div class="col-sm-10">
-                        {% if is_editable %}
-                            <input class="form-control" name="affiliation_phone" placeholder=""
-                                   type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
-                        {% else %}
-                            <input class="form-control" name="affiliation_phone" placeholder="" type="text">
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+            {% endif %}
 
             <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
             <!-----------------------------------------capability block ------------------------------------>
@@ -336,7 +640,6 @@
                         <button class="button button1" id="add-talent">Add a Talent</button>
                     </div>
                 </div>
-
 
                 <form class="form-horizontal" method="POST">
                     <div id="capability-div" style="display: none; background-color:white">
@@ -503,26 +806,37 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
-                                        <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                                    {% if capability["deploymentDetails"]["environmentVariables"] %}
+                                        {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
+                                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                            <div class="col-sm-10" id="key-val">
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text">
+                                                {% endif %}
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text">
+                                                {% endif %}
+                                                <br>
+                                            </div>
+                                        {% endfor %}
+                                    {%  else %}
+                                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                         <div class="col-sm-10" id="key-val">
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text">
-                                            {% endif %}
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text">
-                                            {% endif %}
+                                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                   type="text">
+                                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                   type="text">
                                             <br>
                                         </div>
-                                    {% endfor %}
+                                    {% endif %}
                                     <div class="row">
                                         <button class="button button3" id='add-user' type="submit">Add more fields</button>
                                     </div>
@@ -561,11 +875,11 @@
                                     <label class="control-label col-sm-2">Version URL</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control" id="version_url" name="capability_version_url"
+                                            <input class="form-control" id="version_url" name="capability_versionUrl"
                                                    placeholder=""
                                                    type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
                                         {% else %}
-                                            <input class="form-control" id="version_url" name="capability_version_url"
+                                            <input class="form-control" id="version_url" name="capability_versionUrl"
                                                    placeholder=""
                                                    type="text">
                                         {% endif %}
@@ -620,7 +934,6 @@
                                         <br>
                                     </div>
                                 </div>
-                            </div>
                             {% endfor %}
                         {% else %}
                             <div class="form-group">
@@ -732,7 +1045,7 @@
                                 {# TODO what is version url #}
                                 <label class="control-label col-sm-2">Version URL</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="version_url" name="capability_version_url"
+                                    <input class="form-control" id="version_url" name="capability_versionUrl"
                                            placeholder=""
                                            type="text">
                                 </div>
@@ -788,119 +1101,262 @@
                                     <br>
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
-
+                    </div>
 
                     <!--------------------------------------------talent block ------------------------------------------>
                     <div class="container" id="talent-div" style="display: none">
                         <hr class="dotted">
                         <h3>Add a Talent to this Contribution</h3>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Talent Name</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="talent_name" name="talent_name"
-                                           placeholder="Give a name for your talent"
-                                           type="text" value="{{ post|filter_nested_dict(["talents", 0, "name"]) }}">
-                                {% else %}
+                        {% if is_editable %}
+                            {% for talent in post["talents"] %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Talent Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="talent_name" name="talent_name"
+                                               placeholder="Give a name for your talent"
+                                               type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Talent Description</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="talent_description" name="talent_shortDescription"
+                                               placeholder=""
+                                               type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Required Building Block(s)</label>
+                                    <div class="col-sm-10">
+                                        {# TODO what is required building blocks #}
+                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
+                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                               placeholder=""
+                                               type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                   placeholder=""
+                                                   type="text" value="">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                                    <div class="col-sm-10">
+                                        <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
+                                            <option value = "0">Capability in this contribution</option>
+                                            {# if there is required capabilities in the talent #}
+                                            {% if talent["requiredCapabilities"] %}
+                                                {% set required_capabilities_from_talent = talent["requiredCapabilities"] %}
+                                                {% for capability in required_capabilities %}
+                                                    {% set re_cap_ns = namespace(is_existing=false) %}
+                                                    {% for recap in required_capabilities_from_talent %}
+                                                        {% if capability["capabilityId"] == recap["capabilityId"] %}
+                                                            {% set re_cap_ns.is_existing = True %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if re_cap_ns.is_existing %}
+                                                        <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                        "capabilityName": "{{ capability["capabilityName"] }}",
+                                                        "contributionId": "{{ capability["contributionId"] }}"}' selected>
+                                                            {{ capability["capabilityName"] }}
+                                                        </option>
+                                                    {% else %}
+                                                        <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                        "capabilityName": "{{ capability["capabilityName"] }}",
+                                                        "contributionId": "{{ capability["contributionId"] }}"}'>
+                                                            {{ capability["capabilityName"] }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                            {# if there is no reguired capabilities #}
+                                                {% for capability in required_capabilities %}
+                                                    <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                            "capabilityName": "{{ capability["capabilityName"] }}",
+                                                            "contributionId": "{{ capability["contributionId"] }}"}'>
+                                                        {{ capability["capabilityName"] }}
+                                                    </option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">User Privacy Level</label>
+                                    <div class="col-sm-10">
+                                        <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                               step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">End User Role</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="student"> student</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="visitor"> visitor</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox"
+                                                                           value="alumni"> alumni</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                           name="talent_minEndUserRoles" type="checkbox"
+                                                                           value="employee"> employee</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox"
+                                                                           value="parent"> parent</label>
+                                    <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                           name="talent_minEndUserRoles"
+                                                                           type="checkbox" value="fan"> fan</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Select active date range</label>
+                                    <label class="form-check-label">start</label>
+                                    <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                                    <label class="form-check-label"> end</label>
+                                    <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Data Description</label>
+                                    <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                                  placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                                  style="height:150px"
+                                                                  type="text"></div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Talent Name</label>
+                                <div class="col-sm-10">
                                     <input class="form-control" id="talent_name" name="talent_name"
                                            placeholder="Give a name for your talent" type="text">
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Talent Description</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"shortDescription"]) }}">
-                                {% else %}
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Talent Description</label>
+                                <div class="col-sm-10">
                                     <input class="form-control" id="talent_description" name="talent_shortDescription"
                                            placeholder="" type="text">
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Required Building Block(s)</label>
-                            <div class="col-sm-10">
-                            {# TODO what is required building blocks #}
-                                {% if is_editable %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"requiredBuildingBlocks"]) }}">
-                                {% else %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder="" type="text">
-                                {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Required Building Block(s)</label>
+                                <div class="col-sm-10">
+                                    {# TODO what is required building blocks #}
+                                    {% if tallent and talent["requiredBuildingBlocks"] %}
+                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
+                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                   placeholder=""
+                                                   type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                   placeholder=""
+                                                   type="text" value="">
+                                        {% endif %}
+                                    {% else %}
+                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                               placeholder=""
+                                               type="text" value="">
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input class="form-control" id="required_capability" name="talent_requiredCapabilities"
-                                           placeholder=""
-                                           type="text" value="{{ post|filter_nested_dict(["talents",0,"requiredCapabilities"]) }}">
-                                {% else %}
-                                    <input class="form-control" id="required_capability" name="talent_requiredCapabilities"
-                                           placeholder="" type="text">
-                                {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
+                                        <option value = "0" selected>Capability in this contribution</option>
+                                        {% for capability in required_capabilities %}
+                                            <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                            "capabilityName": "{{ capability["capabilityName"] }}",
+                                                            "contributionId": "{{ capability["contributionId"] }}"}'>
+                                                {{ capability["capabilityName"] }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">User Privacy Level</label>
-                            <div class="col-sm-10">
-                                {% if is_editable %}
-                                    <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                           step="1" type="number" value="{{ post|filter_nested_dict(["talents",0,"minUserPrivacyLevel"]) }}"/>
-                                {% else %}
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">User Privacy Level</label>
+                                <div class="col-sm-10">
                                     <input max="5" min="1" name="talent_minUserPrivacyLevel"
                                            step="1" type="number"/>
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">End User Role</label>
-                            <label class="form-check-label"><input class="form-check-input" id="student"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="student"> student</label>
-                            <label class="form-check-label"><input class="form-check-input" id="visitor"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="visitor"> visitor</label>
-                            <label class="form-check-label"><input class="form-check-input" id="alumni"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox"
-                                                                   value="alumni"> alumni</label>
-                            <label class="form-check-label"><input class="form-check-input" id="employee"
-                                                                   name="talent_minEndUserRoles" type="checkbox"
-                                                                   value="employee"> employee</label>
-                            <label class="form-check-label"><input class="form-check-input" id="parent"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox"
-                                                                   value="parent"> parent</label>
-                            <label class="form-check-label"><input class="form-check-input" id="fan"
-                                                                   name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="fan"> fan</label>
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">End User Role</label>
+                                <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="student"> student</label>
+                                <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="visitor"> visitor</label>
+                                <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox"
+                                                                       value="alumni"> alumni</label>
+                                <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                       name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="employee"> employee</label>
+                                <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox"
+                                                                       value="parent"> parent</label>
+                                <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                       name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="fan"> fan</label>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Select active date range</label>
-                            <label class="form-check-label">start</label>
-                            <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
-                            <label class="form-check-label"> end</label>
-                            <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Select active date range</label>
+                                <label class="form-check-label">start</label>
+                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                                <label class="form-check-label"> end</label>
+                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                            </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Data Description</label>
-                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                          style="height:150px"
-                                                          type="text"></div>
-                        </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Data Description</label>
+                                <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                              placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                              style="height:150px"
+                                                              type="text"></div>
+                            </div>
 
+                            <h4>Self-certification</h4>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Deleting data upon request</label>
+                                <div class="col-sm-10"><input class="form-control"
+                                                              name="selfcertificate_dataDeletionUponRequest"
+                                                              placeholder="Deleting data upon request"
+                                                              type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Respecting privacy setting</label>
+                                <div class="col-sm-10"><input class="form-control"
+                                                              name="selfcertificate_respectingUserPrivacySetting"
+                                                              placeholder="Respecting privacy setting"
+                                                              type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                                <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
+                                                              placeholder="Disclose sponsors / ads"
+                                                              type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Disclose right to use images</label>
+                                <div class="col-sm-10"><input class="form-control"
+                                                              name="selfcertificate_discloseImageRights"
+                                                              placeholder="Disclose right to use images"
+                                                              type="text"></div>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!--------------------------------------------contact/privacy check ------------------------------------------>
@@ -910,7 +1366,7 @@
                                 <li class="visited"><a href="#contribute">Contribution Details</a></li>
                                 <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
                                 </li>
-                                <li class="current"><em><a href="#contact">Contact & Self-certification</a></em></li>
+                                <li class="current"><em><a href="#contact">Contact</a></em></li>
                                 <li><em>Submit</em></li>
                             </ol>
                         </nav>
@@ -919,34 +1375,111 @@
 
                     <div class="container">
                         <h3 id="contact">Contact Details</h3>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contact Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                          placeholder="" type="text"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contact Email</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                          placeholder="" type="text"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contact Phone</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                          placeholder="" type="text"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                          name="contact_organization"
-                                                          placeholder="" type="text"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                          name="contact_officialAddress"
-                                                          placeholder="" type="text"></div>
-                        </div>
+                        {% if post.contacts %}
+                            {% set contact = post["contacts"][0] %}
+                            {% if is_editable %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Contact Name</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                                  placeholder="" type="text" value="{{ contact.name }}"></div>
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Contact Name</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                                  placeholder="" type="text"></div>
+                                </div>
+                            {% endif %}
+                            {% if is_editable %}
+                                <div class="form-group">
+                                <label class="required control-label col-sm-2">Contact Email</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                              placeholder="" type="text" value="{{ contact.email }}"></div>
+                            </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Contact Email</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                                  placeholder="" type="text"></div>
+                                </div>
+                            {% endif %}
+                            {% if is_editable %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Contact Phone</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_phone"
+                                                                  name="contact_phone"
+                                                                  placeholder="" type="text"
+                                                                  value="{{ contact.phone }}"></div>
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label class="required control-label col-sm-2">Contact Phone</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
+                                                                  placeholder="" type="text"></div>
+                                </div>
+                            {% endif %}
+                            {% if is_editable %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Contact Organization</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                                  name="contact_organization"
+                                                                  placeholder="" type="text"
+                                                                  value="{{ contact.organization }}"></div>
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Contact Organization</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                                  name="contact_organization"
+                                                                  placeholder="" type="text"></div>
+                                </div>
+                            {% endif %}
+                            {% if is_editable %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Official Address</label>
+                                    <div class="col-sm-10"><input class="form-control"
+                                                                  id="contact_address"
+                                                                  name="contact_officialAddress"
+                                                                  placeholder="" type="text"
+                                                                  value="{{ contact.officialAddress }}"></div>
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Official Address</label>
+                                    <div class="col-sm-10"><input class="form-control" id="contact_address"
+                                                                  name="contact_officialAddress"
+                                                                  placeholder="" type="text"></div>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Contact Name</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                              placeholder="" type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Contact Email</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                              placeholder="" type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required control-label col-sm-2">Contact Phone</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
+                                                              placeholder="" type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Contact Organization</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                              name="contact_organization"
+                                                              placeholder="" type="text"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Official Address</label>
+                                <div class="col-sm-10"><input class="form-control" id="contact_address"
+                                                              name="contact_officialAddress"
+                                                              placeholder="" type="text"></div>
+                            </div>
+                        {% endif %}
 
                     </div>
 
@@ -1333,7 +1866,7 @@
     $(function () {
         $("#add-contributor-person").click(function (e) {
             e.preventDefault();
-            var original = document.getElementById('contributor');
+            var original = document.getElementById('contributor_block');
             if (original.style.display === "none") {
                 original.style.display = "block";
             } else {
