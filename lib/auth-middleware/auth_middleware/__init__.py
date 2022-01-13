@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import base64
+import hmac
 import json
 import logging
 import os
@@ -156,7 +157,7 @@ def verify_secret(request):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return True
     # failed matching means unauthorized in this context.
     raise OAuthProblem('Invalid API Key')
@@ -181,7 +182,7 @@ def verify_core_token(group_name=None):
     if issuer == ROKWIRE_AUTH_HOST:
         keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
         target_client_ids = re.split(
-            ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+            ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
         g.user_token_data = id_info
         g.user_token = id_token
@@ -201,7 +202,7 @@ def verify_apikey(key, required_scopes=None):
     # Otherwise, an error is raised.
     keys = os.getenv('ROKWIRE_API_KEY').strip().split(',')
     for test_key in keys:
-        if key == test_key.strip():  # just in case there are embedded blanks
+        if hmac.compare_digest(key, test_key.strip()):  # just in case there are embedded blanks
             return {'token_valid': True}
     else:
         raise OAuthProblem('Invalid API Key')
@@ -255,6 +256,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
         SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
         ROKWIRE_AUTH_HOST = os.getenv('ROKWIRE_AUTH_HOST', '')
         ROKWIRE_AUTH_KEY_PATH = os.getenv('ROKWIRE_AUTH_KEY_PATH', '')
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER', '')
 
         if issuer == ROKWIRE_AUTH_HOST:
             isAnonymous = unverified_payload.get('anonymous')
@@ -265,7 +267,13 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
             valid_issuer = True
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
-                ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+                ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
+
+        elif issuer == ROKWIRE_ISSUER:
+            valid_issuer = True
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+            keyset = json.loads(lines)
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
         elif issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
@@ -324,6 +332,9 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
             raise OAuthProblem('Invalid token')
         # import pprint; pprint.pprint(id_info)
     else:
+        ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER')
+        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+
         issuer = unverified_payload.get('iss')
         if not issuer:
             logger.warning("Issuer not found. Aborting.")
@@ -336,9 +347,21 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
         keyset = None
         target_client_ids = None
 
-        SHIB_HOST = os.getenv('SHIBBOLETH_HOST', '')
+        if issuer == ROKWIRE_ISSUER:
+            valid_issuer = True
+            # Path to the ROKWire public key for its id tokens
+            # This is kept in case we decide to revive it, but has been replaced with
+            # simply setting the single key (as a JWK blob) in the environment
+            # and decoding it here.
+            #            LOCAL_KEY_PATH = os.getenv('ROKWIRE_KEY_PATH')
+            #            file1 = open(LOCAL_KEY_PATH, "r")
+            #            lines = file1.readlines()
+            #            file1.close()
+            lines = base64.b64decode(os.getenv('ROKWIRE_PUB_KEY'))
+            keyset = json.loads(lines)
+            target_client_ids = re.split(',', (os.getenv('ROKWIRE_API_CLIENT_ID')).replace(" ", ""))
 
-        if issuer == 'https://' + SHIB_HOST:
+        elif issuer == 'https://' + SHIB_HOST:
             if internal_token_only:
                 logger.warning("incorrect token type")
                 raise OAuthProblem('Invalid token')

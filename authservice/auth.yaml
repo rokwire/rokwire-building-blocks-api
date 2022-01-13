@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   title: Rokwire Auth Building Block API
   description: Authentication Building Block API Documentation
-  version: "1.11.0"
+  version: 1.12.1
 paths:
   /authentication/phone-initiate:
     post:
