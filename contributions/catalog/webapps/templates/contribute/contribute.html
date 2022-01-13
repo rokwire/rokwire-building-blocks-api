@@ -717,6 +717,19 @@
                                                 no</label>
                                         {% endif %}
                                 </div>
+                                <div class="form-group" id="sourceurl">
+                                    <label class="control-label col-sm-2">Source repo URL</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="source_url" name="capability_source_url"
+                                                   placeholder="Source code repository URL (if open sourced)"
+                                                   type="text" value="{{ capability | filter_nested_dict(["sourceUrl"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="source_url" name="capability_source_url"
+                                                   placeholder="Source code repository URL (if open sourced)" type="text">
+                                        {% endif %}
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">API Doc URL</label>
                                     <div class="col-sm-10">
@@ -727,20 +740,6 @@
                                         {% else %}
                                             <input class="form-control" id="api_url" name="capability_apiDocUrl"
                                                    placeholder="API documentation URL" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group" id="sourceurl">
-                                    <label class="control-label col-sm-2">Source repo URL</label>
-                                    <div class="col-sm-10">
-                                        {# TODO change this to required field if "Code Open Sourced?"#}
-                                        {% if is_editable %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
-                                                   placeholder="Source code repository URL (if open sourced)"
-                                                   type="text" value="{{ capability | filter_nested_dict(["sourceUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
-                                                   placeholder="Source code repository URL (if open sourced)" type="text">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -970,14 +969,6 @@
                                                name="capability_isOpenSource" type="radio" onclick="hide_sourceurl();">
                                         no</label>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">API Doc URL</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                           placeholder="API documentation URL" type="text">
-                                </div>
-                            </div>
-                            {# TODO change this to required field if " Code Open Sourced?"#}
                             <div class="form-group" id="sourceurl">
                                 <label class="control-label col-sm-2">Source repo URL</label>
                                 <div class="col-sm-10">
@@ -986,7 +977,13 @@
                                            placeholder="Source code repository URL (if open sourced)" type="text">
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">API Doc URL</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                           placeholder="API documentation URL" type="text">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Deployment location</label>
                                 <label class="form-check-label">
