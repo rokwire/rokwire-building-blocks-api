@@ -24,10 +24,10 @@ from requests_oauthlib import OAuth2Session
 from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
-from models.contribution_utilities import to_contribution
 from utils import jsonutil
 from utils import adminutil
 from utils import requestutil
+import models.contribution_utilities as cont_util
 
 import os
 
@@ -189,7 +189,7 @@ def contribution_edit(contribution_id):
             return render_template('contribute/error.html', error_msg=s)
 
         if is_put:
-            contribution = to_contribution(result)
+            contribution = cont_util.to_contribution(result)
             contribution = jsonutil.add_contribution_admins(contribution, is_edit=True)
             # remove id from json_data
             del contribution["id"]
@@ -320,7 +320,7 @@ def create():
         result = request.form.to_dict(flat=False)
         # result = dict((key, request.form.getlist(key) if len(request.form.getlist(key)) > 1 else request.form.getlist(key)[0]) for key in request.form.keys())
 
-        contribution = to_contribution(result)
+        contribution = cont_util.to_contribution(result)
         # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
         contribution["status"] = "Submitted"

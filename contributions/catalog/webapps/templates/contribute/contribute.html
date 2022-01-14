@@ -689,11 +689,11 @@
                                         {% if is_editable %}
                                             {% if capability | filter_nested_dict(["isOpenSource"]) %}
                                                 <input class="form-check-input" id="open_source_y"
-                                                       name="capability_isOpenSource" type="radio" checked="checked" onclick="show_sourceurl();">
+                                                       name="capability_isOpenSource" type="radio" checked="checked" onclick="show_sourceRepoUrl();">
                                                 yes</label>
                                             {% else %}
                                                 <input class="form-check-input" id="open_source_n"
-                                                       name="capability_isOpenSource" type="radio" onclick="hide_sourceurl();">
+                                                       name="capability_isOpenSource" type="radio" onclick="hide_sourceRepoUrl();">
                                                 yes</label>
                                             {%  endif %}
                                             {% if capability | filter_nested_dict(["isOpensource"]) == False %}
@@ -721,11 +721,11 @@
                                     <label class="control-label col-sm-2">Source repo URL</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
+                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
                                                    placeholder="Source code repository URL (if open sourced)"
                                                    type="text" value="{{ capability | filter_nested_dict(["sourceUrl"]) }}">
                                         {% else %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
+                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
                                                    placeholder="Source code repository URL (if open sourced)" type="text">
                                         {% endif %}
                                     </div>
@@ -962,18 +962,18 @@
                                 <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
                                 <label class="form-check-label">
                                     <input class="form-check-input" id="open_source_y"
-                                           name="capability_isOpenSource" type="radio" onclick="show_sourceurl();">
+                                           name="capability_isOpenSource" type="radio" onclick="show_sourceRepoUrl();">
                                     yes</label>
                                     <label class="form-check-label">
                                         <input class="form-check-input" id="open_source_n"
-                                               name="capability_isOpenSource" type="radio" onclick="hide_sourceurl();">
+                                               name="capability_isOpenSource" type="radio" onclick="hide_sourceRepoUrl();">
                                         no</label>
                             </div>
                             <div class="form-group" id="sourceurl">
                                 <label class="control-label col-sm-2">Source repo URL</label>
                                 <div class="col-sm-10">
 
-                                    <input class="form-control" id="source_url" name="capability_source_url"
+                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
                                            placeholder="Source code repository URL (if open sourced)" type="text">
                                 </div>
                             </div>
@@ -1517,10 +1517,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
 
-    function show_sourceurl() {
+    function show_sourceRepoUrl() {
         document.getElementById('sourceurl').style.display='block';
     }
-    function hide_sourceurl() {
+    function hide_sourceRepoUrl() {
         document.getElementById('sourceurl').style.display='none';
     }
 

@@ -21,7 +21,7 @@ def init_capability():
          'icon': None,
          'apiDocUrl': None,
          'isOpenSource': False,
-         'sourceUrl': '',
+         'sourceRepoUrl': '',
          'apiBaseUrl': None,
          'version': '',
          'healthCheckUrl': None,
