@@ -13,16 +13,15 @@
 #  limitations under the License.
 
 import json
-import datetime
+import hmac
 import logging
 import uuid as uuidlib
 import copy
 
-from flask import jsonify, request, g
+from flask import request, g
 from bson import ObjectId
 
 import controllers.configs as cfg
-import utils.mongoutils as mongoutils
 import utils.jsonutils as jsonutils
 import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
@@ -235,7 +234,7 @@ def get_data_list(uuid):
     return None, None, True, resp
 
 def core_search(uin=None, phone=None):
-    if request.headers.get("ROKWIRE-CORE-BB-API-KEY") != cfg.ROKWIRE_CORE_BB_API_KEY:
+    if not hmac.compare_digest(request.headers.get("ROKWIRE-CORE-BB-API-KEY"), cfg.ROKWIRE_CORE_BB_API_KEY):
         msg = {
             "reason": "Unauthorized",
             "error": "Unauthorized: " + request.url,
@@ -609,7 +608,7 @@ def append_non_pii_uuid(non_pii_uuid, non_pii_uuid_from_dataset, pii_dataset):
     is_non_pii_uuid_in_json_new = True
     # check if non-pii-uuid is already in there
     for i in range(len(non_pii_uuid_from_dataset)):
-        if non_pii_uuid == non_pii_uuid_from_dataset[i]:
+        if hmac.compare_digest(non_pii_uuid, non_pii_uuid_from_dataset[i]):
             is_non_pii_uuid_in_json_new = False
 
     # adde non-pii uuid in json only if it is new uuid
@@ -623,10 +622,10 @@ def check_auth(self, dataset, tk_uin, tk_phone, tk_is_uin, tk_is_phone):
     auth_pass = False
     if dataset:
         if tk_is_uin:
-            if dataset.get_uin() == tk_uin:
+            if hmac.compare_digest(dataset.get_uin(), tk_uin):
                 auth_pass = True
         if tk_is_phone:
-            if dataset.get_phone() == tk_phone:
+            if hmac.compare_digest(dataset.get_phone(), tk_phone):
                 auth_pass = True
 
     return auth_pass
@@ -693,12 +692,12 @@ def check_id(id_token, data_list):
     if id_type == 1:  # Shibboleth ID Token
         # get id info from data_list
         id_from_db = data_list['uin']
-        if id_from_db == id_string:
+        if hmac.compare_digest(id_from_db, id_string):
             auth_pass = True
     elif id_type == 2:  # Phone ID Token
         # get phone number from data_list
         id_from_db = data_list['phone']
-        if id_from_db == id_string:
+        if hmac.compare_digest(id_from_db, id_string):
             auth_pass = True
 
     return auth_pass
@@ -801,7 +800,7 @@ def pii_put(pid=None):
 
     # if consentProvided value has been changed, update the last modified date
     try:
-        if consent_provided != pii_dataset.testResultsConsent['consentProvided']:
+        if not hmac.compare_digest(consent_provided, pii_dataset.testResultsConsent['consentProvided']):
             pii_dataset = update_test_results_consent(pii_dataset)
         else: # record the exising modified date that got lost during the json update
             pii_dataset.testResultsConsent['dateModified'] = consent_last_modified
