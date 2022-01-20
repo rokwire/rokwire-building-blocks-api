@@ -143,7 +143,7 @@ def update_capability_dataset_from_json(dataset, injson):
         pass
     try:
         dataset.set_source_repo_url(injson['sourceRepoUrl'])
-        del outjson['sourceReoUrl']
+        del outjson['sourceRepoUrl']
     except:
         pass
     try:
