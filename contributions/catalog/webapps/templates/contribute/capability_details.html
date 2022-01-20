@@ -45,14 +45,12 @@
         <p class="col-sm-9">{{post.isOpenSource}}</p>
     </div>
 
-    {% if post.isOpenSource == true %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Source code repository URL</h4>
-            </div>
-            <p class="col-sm-9">{{post.sourceRepoUrl}}</p>
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Source code repository URL</h4>
         </div>
-    {% endif %}
+        <p class="col-sm-9">{{post.sourceRepoUrl}}</p>
+    </div>
 
     <div class="row">
         <div class="col-12 col-sm-2">

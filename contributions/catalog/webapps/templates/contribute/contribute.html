@@ -688,32 +688,32 @@
                                     <label class="form-check-label">
                                         {% if is_editable %}
                                             {% if capability | filter_nested_dict(["isOpenSource"]) %}
-                                                <input class="form-check-input" id="open_source_y"
-                                                       name="capability_isOpenSource" type="radio" checked="checked" onclick="show_sourceRepoUrl();">
+                                                <input class="form-check-input" id="open_source"
+                                                       name="capability_isOpenSource" type="radio" checked="checked" value="y">
                                                 yes</label>
                                             {% else %}
-                                                <input class="form-check-input" id="open_source_n"
-                                                       name="capability_isOpenSource" type="radio" onclick="hide_sourceRepoUrl();">
+                                                <input class="form-check-input" id="open_source"
+                                                       name="capability_isOpenSource" type="radio" value="y">
                                                 yes</label>
                                             {%  endif %}
                                             {% if capability | filter_nested_dict(["isOpensource"]) == False %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input"
-                                                           name="capability_isOpenSource" type="radio" checked="checked">
+                                                    <input class="form-check-input" id="open_source"
+                                                           name="capability_isOpenSource" type="radio" checked="checked" value="n">
                                                     no</label>
                                             {% else %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input"
-                                                           name="capability_isOpenSource" type="radio">
+                                                    <input class="form-check-input" id="open_source"
+                                                           name="capability_isOpenSource" type="radio" value="n">
                                                     no</label>
                                             {%  endif %}
                                         {% else %}
                                             <input class="form-check-input" id="open_source"
-                                                   name="capability_isOpenSource" type="radio">
+                                                   name="capability_isOpenSource" type="radio" value="y">
                                             yes</label>
                                             <label class="form-check-label">
-                                                <input class="form-check-input"
-                                                       name="capability_isOpenSource" type="radio">
+                                                <input class="form-check-input" id="open_source"
+                                                       name="capability_isOpenSource" type="radio" value="n">
                                                 no</label>
                                         {% endif %}
                                 </div>
@@ -961,14 +961,15 @@
                             <div class="form-group">
                                 <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="open_source_y"
-                                           name="capability_isOpenSource" type="radio" onclick="show_sourceRepoUrl();">
+                                    <input class="form-check-input" id="open_source"
+                                           name="capability_isOpenSource" type="radio" value="y">
                                     yes</label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" id="open_source_n"
-                                               name="capability_isOpenSource" type="radio" onclick="hide_sourceRepoUrl();">
+                                        <input class="form-check-input" id="open_source"
+                                               name="capability_isOpenSource" type="radio" value="n">
                                         no</label>
                             </div>
+
                             <div class="form-group" id="sourceurl">
                                 <label class="control-label col-sm-2">Source repo URL</label>
                                 <div class="col-sm-10">
@@ -1517,12 +1518,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
 
-    function show_sourceRepoUrl() {
-        document.getElementById('sourceurl').style.display='block';
-    }
-    function hide_sourceRepoUrl() {
-        document.getElementById('sourceurl').style.display='none';
-    }
+    $(function() {
+        $('input[name="capability_isOpenSource"]').on('click', function() {
+            if ($(this).val() == 'y') {
+                $('#sourceurl').show();
+            }
+            else {
+                $('#sourceurl').hide();
+            }
+        });
+    });
 
     $(function () {
         function split(val) {
