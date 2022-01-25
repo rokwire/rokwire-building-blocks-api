@@ -61,7 +61,7 @@ def to_capability(d):
 
         for k, v in d.items():
             if "isOpenSource" in k:
-                if v[i] == 'on':
+                if v[i] == 'y':
                     capability_list[i]["isOpenSource"] = True
                 else:
                     capability_list[i]["isOpenSource"] = False
