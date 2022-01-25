@@ -52,7 +52,7 @@ def search():
 
     is_all_group_event = False
 
-    # check permission if the user is all event or user is all group event
+    # check permission if the user has access to all group events.
     try:
         is_all_group_event = check_all_group_event_admin()
     except Exception as ex:
