@@ -5,7 +5,6 @@ from flask import g
 
 logger = logging.getLogger(__name__)
 ALL_GROUP_EVENTS = 'all_group-events'
-ALL_EVENTS = 'all-events'
 
 
 def generate_groups_request():
