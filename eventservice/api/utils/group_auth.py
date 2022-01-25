@@ -92,13 +92,3 @@ def check_all_group_event_admin():
                 is_all_group_event = True
 
     return is_all_group_event
-
-
-def check_all_event_admin():
-    is_all_event = False
-    if 'user_token' in g and not g.user_token_data.get('anonymous'):
-        if g.user_token_data.get('permissions'):
-            if g.user_token_data.get('permissions').lower().find(ALL_EVENTS) != -1:
-                is_all_event = True
-
-    return is_all_event

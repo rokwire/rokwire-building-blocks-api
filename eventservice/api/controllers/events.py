@@ -38,7 +38,7 @@ from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
 from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access, check_permission_access_event, \
-    check_all_group_event_admin, check_all_event_admin
+    check_all_group_event_admin
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -51,12 +51,10 @@ def search():
     include_private_events = False
 
     is_all_group_event = False
-    is_all_event = False
 
     # check permission if the user is all event or user is all group event
     try:
         is_all_group_event = check_all_group_event_admin()
-        is_all_event = check_all_event_admin()
     except Exception as ex:
         msg = "Failed to parse the id token."
         __logger.exception(msg, ex)
@@ -73,14 +71,11 @@ def search():
     args = request.args
     query = dict()
     try:
-        # if all group then give the query with all the group event
-        if is_all_event:
-            query = query_params.format_query(args, query, True, None, True, False)
+        # if all group group then give the query with all the group event
+        if is_all_group_event:
+            query = query_params.format_query(args, query, True, None, False, True)
         else:
-            if is_all_group_event:
-                query = query_params.format_query(args, query, True, None, False, True)
-            else:
-                query = query_params.format_query(args, query, include_private_events, group_ids)
+            query = query_params.format_query(args, query, include_private_events, group_ids)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
@@ -424,8 +419,7 @@ def delete(event_id):
     # check permission if the user is all event or user is all group event
     try:
         is_all_group_event = check_all_group_event_admin()
-        is_all_event = check_all_event_admin()
-        if is_all_group_event or is_all_event:
+        if is_all_group_event:
             can_delete = True
     except Exception as ex:
         msg = "Failed to parse the id token."
