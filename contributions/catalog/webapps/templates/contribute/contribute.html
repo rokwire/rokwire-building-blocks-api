@@ -687,7 +687,7 @@
                                     <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
                                     <label class="form-check-label">
                                         {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) %}
+                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
                                                 <input class="form-check-input" id="open_source"
                                                        name="capability_isOpenSource" type="radio" checked="checked" value="y">
                                                 yes</label>
@@ -1517,6 +1517,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
+    var open_source_value = document.getElementById("open_source").value;
+    console.log("open_source value")
+    console.log(open_source_value)
 
     $(function() {
         $('input[name="capability_isOpenSource"]').on('click', function() {
