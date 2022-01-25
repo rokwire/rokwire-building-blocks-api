@@ -17,8 +17,7 @@ import re
 from bson import ObjectId
 
 
-def format_query(args, query, include_private_events=False, group_ids=None,
-                 all_event=False, all_group_event=False):
+def format_query(args, query, include_private_events=False, group_ids=None, all_group_event=False):
     query_parts = []
     # group id
     group_id = args.get('groupId')
@@ -156,12 +155,12 @@ def format_query(args, query, include_private_events=False, group_ids=None,
 
     # ApiKeyAuth query
     if not include_private_events:
-        if not all_group_event and not all_event:
+        if not all_group_event:
             query_parts.append({'isGroupPrivate': {'$ne': True}})
         query['$and'] = query_parts
     # UserAuth query
     else:
-        if not all_group_event and not all_event:
+        if not all_group_event:
             pubic_private_groups_access_parts = {'$or': [
                 {'isGroupPrivate': {'$ne': True}},  # Includes both group public and regular public events
                 {'createdByGroupId': {'$in': group_ids}}]}  # Check for group membership. Also include group private events.
@@ -172,10 +171,6 @@ def format_query(args, query, include_private_events=False, group_ids=None,
     if all_group_event:
         query_parts.append({'createdByGroupId': {'$exists': True}})
 
-    # All events
-    # TODO need to figure out what to do with all_events permission
-    if all_event:
-        query_parts.append({})
     return query
 
 

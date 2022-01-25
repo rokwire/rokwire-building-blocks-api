@@ -73,7 +73,7 @@ def search():
     try:
         # if all group group then give the query with all the group event
         if is_all_group_event:
-            query = query_params.format_query(args, query, True, None, False, True)
+            query = query_params.format_query(args, query, True, None, True)
         else:
             query = query_params.format_query(args, query, include_private_events, group_ids)
     except Exception as ex:
