@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add reviewer's page to catalog. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
+- Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
+
+### Changed
+- All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
+
+### Security
+- Change string comparisons to constant time comparisons in Profile BB. [#850](https://github.com/rokwire/rokwire-building-blocks-api/issues/850)
 
 ## [1.12.1] - 2021-12-08
 ### Changed
@@ -19,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
+- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837)
 
 ## [1.12.0] - 2021-11-19
 ### Added

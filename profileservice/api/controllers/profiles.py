@@ -13,16 +13,15 @@
 #  limitations under the License.
 
 import json
-import datetime
+import hmac
 import logging
 import uuid as uuidlib
 import copy
 
-from flask import jsonify, request, g
+from flask import request, g
 from bson import ObjectId
 
 import controllers.configs as cfg
-import utils.mongoutils as mongoutils
 import utils.jsonutils as jsonutils
 import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
@@ -235,7 +234,7 @@ def get_data_list(uuid):
     return None, None, True, resp
 
 def core_search(uin=None, phone=None):
-    if request.headers.get("ROKWIRE-CORE-BB-API-KEY") != cfg.ROKWIRE_CORE_BB_API_KEY:
+    if not hmac.compare_digest(request.headers.get("ROKWIRE-CORE-BB-API-KEY"), cfg.ROKWIRE_CORE_BB_API_KEY):
         msg = {
             "reason": "Unauthorized",
             "error": "Unauthorized: " + request.url,
