@@ -262,7 +262,10 @@ def get(token_info=None, id=None):
     if is_error:
         return resp
     jsonutils.convert_obejctid_from_dataset_json(data_list[0])
-    out_json = mongoutils.construct_json_from_query_list(data_list[0])
+
+    out_json = mongoutils.construct_json_from_query_list(data_list[0], login_id=login_id)
+
+
     msg_json = jsonutils.create_log_json("Contribution", "GET", {"id": str(id)})
     logging.info("Contribution GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
 
@@ -388,7 +391,7 @@ def put(token_info, id):
     out_json = contribution_dataset
     msg_json = jsonutils.create_log_json("Contribution", "PUT", {"id": str(id)})
     logging.info("Contribution PUT " + json.dumps(msg_json))
-    out_json = mongoutils.construct_json_from_query_list(out_json)
+    out_json = mongoutils.construct_json_from_query_list(out_json, login_id=token_info["login"])
 
     return out_json
 
