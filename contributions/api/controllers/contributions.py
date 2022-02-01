@@ -173,15 +173,16 @@ def post(token_info):
                     required_cap_list = talent.requiredCapabilities
                     for capability_json in required_cap_list:
                         capability, rest_capability_json, msg = modelutils.construct_required_capability(capability_json)
-                        is_uuid = otherutils.check_if_uuid(capability.id)
-                        if not is_uuid:
-                            msg = {
-                                "reason": "Capability id in requiredCapabilities is not in uuid format",
-                                "error": "Bad Request: " + request.url,
-                            }
-                            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-                            logging.error("Contribution POST " + json.dumps(msg_json))
-                            return rs_handlers.bad_request(msg)
+                        if capability.id is not None:
+                            is_uuid = otherutils.check_if_uuid(capability.id)
+                            if not is_uuid:
+                                msg = {
+                                    "reason": "Capability id in requiredCapabilities is not in uuid format",
+                                    "error": "Bad Request: " + request.url,
+                                }
+                                msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                                logging.error("Contribution POST " + json.dumps(msg_json))
+                                return rs_handlers.bad_request(msg)
                 talent_list.append(talent)
             contribution_dataset.set_talents(talent_list)
         except:
@@ -362,15 +363,16 @@ def put(token_info, id):
                 required_cap_list = talent.requiredCapabilities
                 for capability_json in required_cap_list:
                     capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
-                    is_uuid = otherutils.check_if_uuid(capability.id)
-                    if not is_uuid:
-                        msg = {
-                            "reason": "Capability id in requiredCapabilities is not in uuid format",
-                            "error": "Bad Request: " + request.url,
-                        }
-                        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-                        logging.error("Contribution POST " + json.dumps(msg_json))
-                        return rs_handlers.bad_request(msg)
+                    if capability.id is not None:
+                        is_uuid = otherutils.check_if_uuid(capability.id)
+                        if not is_uuid:
+                            msg = {
+                                "reason": "Capability id in requiredCapabilities is not in uuid format",
+                                "error": "Bad Request: " + request.url,
+                            }
+                            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                            logging.error("Contribution POST " + json.dumps(msg_json))
+                            return rs_handlers.bad_request(msg)
 
             talent_list.append(talent)
         contribution_dataset.set_talents(talent_list)

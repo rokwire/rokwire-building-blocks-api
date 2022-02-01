@@ -135,7 +135,7 @@
         {% endfor %}
     {% endif %}
 
-    {% if reviewer %}
+    {% if (reviewer or editor or review) %}
         <div class="row">
             <div class="col-12 col-sm-2">
                 <h4>Contribution admins</h4>
@@ -166,15 +166,93 @@
         </div>
     {% endif %}
 
-    {% if reviewer %}
+    {% if editor %}
         <a class="button button3" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
+    {% endif %}
+
+    {% if reviewer %}
+        <a class="button button4" role="button" href="{{ url_for('contribute.contribution_review', contribution_id=post.id, review=True) }}">Review Contribution</a>
     {% endif %}
 </div>
 
-
-<div class="action">
-
-</div>
+{% if review %}
+    <div class="container">
+        <h1>Review</h1>
+        <hr class="divider"/>
+        <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Status</h4>
+                    </div>
+                    <div class="col-sm-10" style="width: 250px">
+                        <select class="form-control" id="status" name="contribution_status">
+                            {% if post["status"].lower() == "submitted" %}
+                                <option value="Submitted" selected>Submitted</option>
+                            {% else %}
+                                <option value="Submitted">Submitted</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "reviewing" %}
+                                <option value="Reviewing" selected>Reviewing</option>
+                            {% else %}
+                                <option value="Reviewing" >Reviewing</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "approved" %}
+                                <option value="Approved" selected>Approved</option>
+                            {% else %}
+                                <option value="Approved">Approved</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "disapproved" %}
+                                <option value="Disapproved" selected>Disapproved</option>
+                            {% else %}
+                                <option value="Disapproved">Disapproved</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "published" %}
+                                <option value="Published" selected>Published</option>
+                            {% else %}
+                                <option value="Published">Published</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Comment</h4>
+                    </div>
+                    <div class="col-sm-10">
+                        {% if is_editable %}
+                            <textarea id="reviewer_comment" name="contribution_reviewer_comment"
+                                      placeholder="Give a comment"
+                                      style="height:150px">{{ post | filter_nested_dict(["review"]) }}</textarea>
+                        {% else %}
+                            <textarea id="contribution_detail" name="contribution_reviewer_comment"
+                                      placeholder="Give a comment"
+                                      style="height:150px"></textarea>
+                        {% endif %}
+                    </div>
+                    <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input href="{{ url_for('contribute.home') }}"
+                                           id="button_submit"
+                                           type="submit"
+                                           value="Submit">
+                                </td>
+                                <td>
+                                    <input id="button_reset", type="reset" value="Reset">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endif %}
 
 {% include 'topnav_javascript.html' %}
 

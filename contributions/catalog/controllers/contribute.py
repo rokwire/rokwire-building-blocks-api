@@ -16,6 +16,7 @@ import json
 import logging
 import traceback
 import requests
+import datetime
 
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
@@ -151,26 +152,32 @@ def contribution_details(contribution_id):
     except:
         is_logged_in = False
 
+    is_editor = False
     is_reviewer = False
     name = ""
 
     if (is_logged_in):
         # check to see if the logged in user is an editable user for creating edit button
-        is_editable = False
-        username = session["username"]
-        headers = requestutil.get_header_using_session(session)
-        is_editable = adminutil.check_if_reviewer(username, headers)
-
-        the_json_res = get_contribution(contribution_id)
-        # check if the user is reviewer by requesting to endpoint
         username = session["username"]
         name = session["name"]
         headers = requestutil.get_header_using_session(session)
+
+        the_json_res = get_contribution(contribution_id)
+
+        # check if the logged in user is the editor
+        is_superuser = adminutil.check_if_superuser(username)
+        if is_superuser:
+            is_editor = True
+        elif username in the_json_res["contributionAdmins"]:
+            is_editor = True
+
+        # check if the user is reviewer by requesting to endpoint
         is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
         the_json_res = get_contribution_with_api_key(contribution_id)
 
-    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, post=the_json_res, user=name)
+    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, editor=is_editor,
+                           post=the_json_res, user=name)
 
 @bp.route('/contributions/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -235,6 +242,94 @@ def contribution_edit(contribution_id):
                                    token=session['oauth_token']['access_token'], post=the_json_res)
         else:
             s = "You don't have a permission to edit the contribution."
+            return render_template('contribute/error.html', error_msg=s)
+
+@bp.route('/contributions/<contribution_id>/review', methods=['GET', 'POST'])
+@login_required
+def contribution_review(contribution_id):
+    review_flag = request.args.get('review')
+    is_review = False
+    username = session["username"]
+    headers = requestutil.get_header_using_session(session)
+
+    if request.method == 'POST':
+        is_put = False
+        contribution_id = None
+        result = request.form.to_dict(flat=False)
+
+        # check if it is PUT
+        try:
+            contribution_status = result["contribution_status"][0]
+            contribution_comment = result["contribution_reviewer_comment"][0]
+            contribution_id = result["contribution_id"][0]
+            is_put = True
+        except:
+            s = "There is a error in edit. The method is not an edit."
+            return render_template('contribute/error.html', error_msg=s)
+
+        if is_put:
+            # check reviewer id from token
+            reviewer_id = adminutil.get_reviewer_id(headers, username)
+            if reviewer_id.lower == "none":
+                s = "You don't have a permission to review the contribution."
+                return render_template('contribute/error.html', error_msg=s)
+            contribution_result = requestutil.request_single_contribution(headers, contribution_id)
+            contribution = json.loads(contribution_result.text)
+
+            # remove id from json_data
+            del contribution["id"]
+
+            # iterate reviews to find out the correct review location
+            review_loc = 0
+            if "review" in contribution.keys():
+                review_list = contribution["review"]
+                for idx, review_entry in enumerate(review_list):
+                    if review_entry["reviewerId"] == reviewer_id:
+                        review_loc = idx
+
+            # add new elements
+            currenttime = datetime.datetime.now()
+            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+            contribution["review"][review_loc]["lastUpdated"] = currenttime
+            contribution["review"][review_loc]["reviewerComment"] = contribution_comment
+            contribution["review"][review_loc]["reviewerId"] = reviewer_id
+            json_contribution = json.dumps(contribution, indent=4)
+            response, s = put_contribution(json_contribution, contribution_id)
+
+            if response:
+                if "name" in session:
+                    return render_template('contribute/submitted.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'])
+                else:
+                    return render_template('contribute/submitted.html')
+            elif not response:
+                if "name" in session:
+                    return render_template('contribute/error.html', user=session["name"],
+                                           token=session['oauth_token']['access_token'], error_msg=s)
+                else:
+                    return render_template('contribute/error.html', error_msg=s)
+    else:
+        if review_flag is not None:
+            if review_flag.lower() == 'true':
+                is_review = True
+
+        the_json_res = get_contribution(contribution_id)
+
+        # check if the user is in contribution's admins
+        if username in the_json_res["contributionAdmins"]:
+            is_editable = True
+
+        # check if the user is a reviewer
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
+
+        # get capability list to create required capability list
+        required_capability_list = requestutil.request_required_capability_list(headers)
+
+        if is_reviewer and is_review:
+            return render_template('contribute/contribution_details.html', review=is_review, required_capabilities=required_capability_list,
+                                   user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        else:
+            s = "You don't have a permission to review the contribution."
             return render_template('contribute/error.html', error_msg=s)
 
 @bp.route('/contributions/<contribution_id>/capabilities/<id>', methods=['GET'])

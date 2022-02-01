@@ -1515,44 +1515,6 @@
                         </div>
                     </div>
 
-                {% if is_reviewer %}
-                    <div class="container">
-                        <h3>Reviewer Section</h3>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Status</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="status" name="contribution_status">
-                                    {% if post["status"].lower() == "submitted" %}
-                                        <option value="Submitted" selected>Submitted</option>
-                                    {% else %}
-                                        <option value="Submitted">Submitted</option>
-                                    {% endif %}
-                                    {% if post["status"].lower() == "reviewing" %}
-                                        <option value="Reviewing" selected>Reviewing</option>
-                                    {% else %}
-                                        <option value="Reviewing" >Reviewing</option>
-                                    {% endif %}
-                                    {% if post["status"].lower() == "approved" %}
-                                        <option value="Approved" selected>Approved</option>
-                                    {% else %}
-                                        <option value="Approved">Approved</option>
-                                    {% endif %}
-                                    {% if post["status"].lower() == "disapproved" %}
-                                        <option value="Disapproved" selected>Disapproved</option>
-                                    {% else %}
-                                        <option value="Disapproved">Disapproved</option>
-                                    {% endif %}
-                                    {% if post["status"].lower() == "published" %}
-                                        <option value="Published" selected>Published</option>
-                                    {% else %}
-                                        <option value="Published">Published</option>
-                                    {% endif %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
                         <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
                             <input href="{{ url_for('contribute.home') }}"
