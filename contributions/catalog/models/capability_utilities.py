@@ -66,6 +66,8 @@ def to_capability(d):
                 else:
                     capability_list[i]["isOpenSource"] = False
                 d[k][i] = capability_list[i]["isOpenSource"]
+            elif "sourceRepoUrl" in k:
+                capability_list[i]["sourceRepoUrl"] = v[i]
             elif "deploymentDetails_" in k:
                 name = k.split("deploymentDetails_")[-1]
                 capability_list[i]["deploymentDetails"][name] = v[i]
