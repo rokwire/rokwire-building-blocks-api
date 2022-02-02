@@ -279,6 +279,9 @@ def contribution_review(contribution_id):
             # remove id from json_data
             del contribution["id"]
 
+            currenttime = datetime.datetime.now()
+            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+
             # iterate reviews to find out the correct review location
             review_loc = 0
             if "review" in contribution.keys():
@@ -286,13 +289,18 @@ def contribution_review(contribution_id):
                 for idx, review_entry in enumerate(review_list):
                     if review_entry["reviewerId"] == reviewer_id:
                         review_loc = idx
-
-            # add new elements
-            currenttime = datetime.datetime.now()
-            currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
-            contribution["review"][review_loc]["lastUpdated"] = currenttime
-            contribution["review"][review_loc]["reviewerComment"] = contribution_comment
-            contribution["review"][review_loc]["reviewerId"] = reviewer_id
+                # add new elements(review_json)
+                currenttime = datetime.datetime.now()
+                currenttime = currenttime.strftime("%Y/%m/%dT%H:%M:%S")
+                contribution["review"][review_loc]["lastUpdated"] = currenttime
+                contribution["review"][review_loc]["reviewerComment"] = contribution_comment
+                contribution["review"][review_loc]["reviewerId"] = reviewer_id
+            else:
+                # add new elements
+                review_json = {'review':[{'lastUpdated': currenttime, 'reviewerComment': contribution_comment,
+                                'reviewerId': reviewer_id}]}
+                contribution.update(review_json)
+            contribution["status"] = contribution_status
             json_contribution = json.dumps(contribution, indent=4)
             response, s = put_contribution(json_contribution, contribution_id)
 
@@ -326,6 +334,19 @@ def contribution_review(contribution_id):
         required_capability_list = requestutil.request_required_capability_list(headers)
 
         if is_reviewer and is_review:
+            # need to add review information to html so it can pre render if needed
+            reviewer_id = adminutil.get_reviewer_id(headers, username)
+            if "review" in the_json_res.keys():
+                review_exist = False
+                review_list = the_json_res["review"]
+                for idx, review_entry in enumerate(review_list):
+                    if review_entry["reviewerId"] == reviewer_id:
+                        review_loc = idx
+                        review_exist = True
+                if review_exist:
+                    review_json = {'review': review_list[review_loc]}
+                    the_json_res.update(review_json)
+
             return render_template('contribute/contribution_details.html', review=is_review, required_capabilities=required_capability_list,
                                    user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
         else:

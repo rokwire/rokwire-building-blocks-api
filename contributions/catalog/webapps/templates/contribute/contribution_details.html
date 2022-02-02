@@ -220,14 +220,24 @@
                         <h4>Comment</h4>
                     </div>
                     <div class="col-sm-10">
-                        {% if is_editable %}
+                        {% if 'review' in post %}
                             <textarea id="reviewer_comment" name="contribution_reviewer_comment"
                                       placeholder="Give a comment"
-                                      style="height:150px">{{ post | filter_nested_dict(["review"]) }}</textarea>
+                                      style="height:150px">{{ post | filter_nested_dict(["review", "reviewerComment"]) }}</textarea>
                         {% else %}
                             <textarea id="contribution_detail" name="contribution_reviewer_comment"
                                       placeholder="Give a comment"
                                       style="height:150px"></textarea>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Last Updated</h4>
+                    </div>
+                    <div class="col-sm-10">
+                        {% if 'review' in post %}
+                            {{ post | filter_nested_dict(["review", "lastUpdated"]) }}
                         {% endif %}
                     </div>
                     <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
