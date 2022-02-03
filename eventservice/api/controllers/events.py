@@ -30,13 +30,15 @@ from werkzeug.utils import secure_filename
 from time import gmtime
 
 import controllers.configs as cfg
+import controllers.messages as msgs
 from utils.db import get_db
 from utils import query_params
 from controllers.images.s3 import S3EventsImages
 from controllers.images import localfile
 
 from utils.cache import memoize , memoize_query, CACHE_GET_EVENTS, CACHE_GET_EVENT, CACHE_GET_EVENTIMAGES, CACHE_GET_CATEGORIES
-from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access, check_permission_access_event
+from utils.group_auth import get_group_ids, get_group_memberships, check_group_event_admin_access, check_permission_access_event, \
+    check_all_group_event_admin
 
 logging.Formatter.converter = gmtime
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%dT%H:%M:%S',
@@ -47,16 +49,33 @@ __logger = logging.getLogger("events_building_block")
 def search():
     group_ids = list()
     include_private_events = False
+
+    is_all_group_event = False
+
+    # check permission if the user has access to all group events.
+    try:
+        is_all_group_event = check_all_group_event_admin()
+    except Exception as ex:
+        msg = "Failed to parse the id token."
+        __logger.exception(msg, ex)
+        abort(500)
+
     try:
         include_private_events, group_ids = get_group_ids()
+        # check if the user is in all group then give some boolean checking
+        # use the field called createdByGroupId to check if it is group event
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP)
         abort(500)
 
     args = request.args
     query = dict()
     try:
-        query = query_params.format_query(args, query, include_private_events, group_ids)
+        # if all group group then give the query with all the group event
+        if is_all_group_event:
+            query = query_params.format_query(args, query, True, None, True)
+        else:
+            query = query_params.format_query(args, query, include_private_events, group_ids)
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
@@ -67,7 +86,7 @@ def search():
             args.get('skip', 0, int)
         )
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
     __logger.info("[GET]: %s nRecords = %d ", request.url, result_len)
     return current_app.response_class(result, mimetype='application/json')
@@ -153,7 +172,7 @@ def tags_search():
         with open(tags_path, 'r') as tags_file:
             response = json.load(tags_file)
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_SEARCH_TAG)
         abort(500)
     return flask.jsonify(response)
 
@@ -165,7 +184,7 @@ def super_events_tags_search():
         with open(tags_path, 'r') as tags_file:
             response = json.load(tags_file)
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_SEARCH_SUPERTAG)
         abort(500)
     return flask.jsonify(response)
 
@@ -175,7 +194,7 @@ def categories_search():
     try:
         result, result_len = _get_categories_result()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_SEARCH_CATEGORY)
         abort(500)
 
     __logger.info("[GET]: %s nRecords = %d ", request.url, result_len)
@@ -208,13 +227,13 @@ def get(event_id):
     try:
         include_private_events, group_ids = get_group_ids()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP)
         abort(500)
 
     try:
         result, result_found = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
     if not result_found:
@@ -270,7 +289,7 @@ def post():
             msg_json = jsonutils.create_log_json("Events", "POST", {})
         __logger.info("POST " + json.dumps(msg_json))
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_POST_EVENT)
         abort(500)
 
     return success_response(201, msg, str(event_id))
@@ -290,14 +309,14 @@ def put(event_id):
         req_data = query_params.formate_location(req_data)
         req_data = query_params.formate_category(req_data)
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_UPDATE)
         abort(400)
 
     group_memberships = list()
     try:
         _, group_memberships = get_group_memberships()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
     db = None
     event = None
@@ -305,7 +324,7 @@ def put(event_id):
         db = get_db()
         event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
     # If this is a group event, apply group authorization. Regular events can proceed like before.
@@ -321,7 +340,7 @@ def put(event_id):
             msg_json = jsonutils.create_log_json("Events", "PUT", {})
         __logger.info("PUT " + json.dumps(msg_json))
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_UPDATE)
         abort(500)
 
     return success_response(200, msg, str(event_id))
@@ -348,11 +367,12 @@ def patch(event_id):
                 for data_tuple in db['events'].find({'_id': ObjectId(event_id)}, {'_id': 0, 'coordinates': 1}):
                     coordinates = data_tuple.get('coordinates')
                     if not coordinates:
+                        __logger.exception(msgs.ERR_MSG_GET_COORDINATE)
                         abort(500)
                     break
                 req_data = query_params.update_coordinates(req_data, coordinates)
         except Exception as ex:
-            __logger.exception(ex)
+            __logger.exception(msgs.ERR_MSG_PATCH_EVENT)
             abort(500)
 
     except Exception as ex:
@@ -363,7 +383,7 @@ def patch(event_id):
     try:
         _, group_memberships = get_group_memberships()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
 
     db = None
@@ -372,7 +392,7 @@ def patch(event_id):
         db = get_db()
         event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
     if not check_group_event_admin_access(event, group_memberships):
@@ -388,13 +408,26 @@ def patch(event_id):
             msg_json = jsonutils.create_log_json("Events", "PATCH", {})
         __logger.info("PATCH " + json.dumps(msg_json))
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_PATCH_EVENT)
         abort(500)
     return success_response(200, msg, str(event_id))
 
 
 def delete(event_id):
-    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+    can_delete = False
+
+    # check permission if the user has access to all group events.
+    try:
+        is_all_group_event = check_all_group_event_admin()
+        if is_all_group_event:
+            can_delete = True
+    except Exception as ex:
+        msg = "Failed to parse the id token."
+        __logger.exception(msg, ex)
+        abort(500)
+
+    if not can_delete:
+        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     if not ObjectId.is_valid(event_id):
         abort(400)
@@ -403,7 +436,7 @@ def delete(event_id):
     try:
         _, group_memberships = get_group_memberships()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
 
     db = None
@@ -412,11 +445,12 @@ def delete(event_id):
         db = get_db()
         event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
-    if not check_group_event_admin_access(event, group_memberships):
-        abort(401)
+    if not can_delete:
+        if not check_group_event_admin_access(event, group_memberships):
+            abort(401)
 
     try:
         db = get_db()
@@ -429,7 +463,7 @@ def delete(event_id):
             msg_json = jsonutils.create_log_json("Events", "DELETE", {})
         __logger.info("DELETE " + json.dumps(msg_json))
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_DELETE_EVENT)
         abort(500)
     if status.deleted_count == 0:
         abort(404)
@@ -445,13 +479,13 @@ def images_search(event_id):
     try:
         include_private_events, group_ids = get_group_ids()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP)
         abort(500)
 
     try:
         result, result_found = _get_event_result({'_id': ObjectId(event_id)})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
     if not result_found:
@@ -464,7 +498,7 @@ def images_search(event_id):
     try:
         result = _get_imagefiles_result({'eventId': event_id})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_IMG_FILE)
         abort(500)
 
     msg = "[get images]: find %d images related to event %s" % (len(result), event_id)
@@ -511,7 +545,7 @@ def images_post(event_id):
         else:
             raise
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_POST_IMG)
         abort(500)
     finally:
         localfile.deletefile(tmpfile)
@@ -568,7 +602,7 @@ def images_put(event_id, image_id):
     try:
         _, group_memberships = get_group_memberships()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
     db = None
     event = None
@@ -576,7 +610,7 @@ def images_put(event_id, image_id):
         db = get_db()
         event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_EVENT)
         abort(500)
 
     # If this is a group event, apply group authorization. Regular events can proceed like before.
@@ -604,7 +638,7 @@ def images_put(event_id, image_id):
         else:
             raise
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_IMG)
         abort(500)
     finally:
         localfile.deletefile(tmpfile)
@@ -619,7 +653,7 @@ def images_delete(event_id, image_id):
     try:
         _, group_memberships = get_group_memberships()
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
 
     db = None
@@ -628,7 +662,7 @@ def images_delete(event_id, image_id):
         db = get_db()
         event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
         abort(500)
 
     if not check_group_event_admin_access(event, group_memberships):
@@ -642,7 +676,7 @@ def images_delete(event_id, image_id):
             '_id': ObjectId(image_id)
         })
     except Exception as ex:
-        __logger.exception(ex)
+        __logger.exception(msgs.ERR_MSG_DELETE_IMG)
         abort(500)
     return success_response(202, msg, str(event_id))
 
