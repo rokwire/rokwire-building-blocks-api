@@ -786,10 +786,13 @@ components:
       required:
         - name
         - githubUsername
+        - email
       properties:
         name:
           type: string
         githubUsername:
+          type: string
+        email:
           type: string
   securitySchemes:
     ApiKeyAuth:
