@@ -2,10 +2,7 @@
 *   @sandeep-ps
 
 # App Config Building Block
-/appconfigservice/  @wenjzhu
-
-# Authentication Building Block
-/authservice/  @wenjzhu
+/appconfigservice/  @minump
 
 # Authentication Middleware Library
 /lib/auth-middleware/   @ywkim312
@@ -28,4 +25,4 @@
 /contributions/api/    @ywkim312
 
 # Contributions Catalog
-/contributions/catalog/    @wenjzhu
+/contributions/catalog/    @minump
