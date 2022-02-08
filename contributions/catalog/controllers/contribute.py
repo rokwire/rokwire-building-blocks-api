@@ -285,7 +285,7 @@ def contribution_review(contribution_id):
 
             # iterate reviews to find out the correct review location
             review_loc = 0
-            if "review" in contribution.keys():
+            if "review" in contribution.keys() and contribution["review"] is not None:
                 review_list = contribution["review"]
                 for idx, review_entry in enumerate(review_list):
                     if review_entry["reviewerId"] == reviewer_id:
