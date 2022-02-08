@@ -20,8 +20,8 @@ def init_capability():
          'description': '',
          'icon': None,
          'apiDocUrl': None,
-         'isOpenSource': False,
-         'sourceUrl': '',
+         'isOpenSource': None,
+         'sourceRepoUrl': '',
          'apiBaseUrl': None,
          'version': '',
          'healthCheckUrl': None,
@@ -61,11 +61,14 @@ def to_capability(d):
 
         for k, v in d.items():
             if "isOpenSource" in k:
-                if v[i] == 'on':
+                if v[i] == 'y':
                     capability_list[i]["isOpenSource"] = True
                 else:
                     capability_list[i]["isOpenSource"] = False
                 d[k][i] = capability_list[i]["isOpenSource"]
+            elif "sourceRepoUrl" in k:
+                if capability_list[i]["isOpenSource"]:
+                    capability_list[i]["sourceRepoUrl"] = v[i]
             elif "deploymentDetails_" in k:
                 name = k.split("deploymentDetails_")[-1]
                 capability_list[i]["deploymentDetails"][name] = v[i]
