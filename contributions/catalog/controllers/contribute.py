@@ -250,6 +250,9 @@ def contribution_review(contribution_id):
     username = session["username"]
     headers = requestutil.get_header_using_session(session)
 
+    # check if the user is a reviewer
+    is_reviewer = adminutil.check_if_reviewer(username, headers)
+
     if request.method == 'POST':
         is_put = False
         contribution_id = None
@@ -304,8 +307,7 @@ def contribution_review(contribution_id):
 
             if response:
                 if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],
-                                           token=session['oauth_token']['access_token'])
+                    return redirect(url_for('contribute.contribution_details', contribution_id=contribution_id))
                 else:
                     return render_template('contribute/submitted.html')
             elif not response:
@@ -320,9 +322,6 @@ def contribution_review(contribution_id):
         # check if the user is in contribution's admins
         if username in the_json_res["contributionAdmins"]:
             is_editable = True
-
-        # check if the user is a reviewer
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
 
         # get capability list to create required capability list
         required_capability_list = requestutil.request_required_capability_list(headers)
