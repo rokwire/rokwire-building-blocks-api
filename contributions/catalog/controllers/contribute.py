@@ -176,7 +176,7 @@ def contribution_details(contribution_id):
     else:
         the_json_res = get_contribution_with_api_key(contribution_id)
 
-    return render_template("contribute/contribution_details.html", reviewer=is_reviewer, editor=is_editor,
+    return render_template("contribute/contribution_details.html", is_reviewer=is_reviewer, is_editable=is_editor,
                            post=the_json_res, user=name)
 
 @bp.route('/contributions/<contribution_id>/edit', methods=['GET', 'POST'])
@@ -247,8 +247,6 @@ def contribution_edit(contribution_id):
 @bp.route('/contributions/<contribution_id>/review', methods=['GET', 'POST'])
 @login_required
 def contribution_review(contribution_id):
-    review_flag = request.args.get('review')
-    is_review = False
     username = session["username"]
     headers = requestutil.get_header_using_session(session)
 
@@ -317,10 +315,6 @@ def contribution_review(contribution_id):
                 else:
                     return render_template('contribute/error.html', error_msg=s)
     else:
-        if review_flag is not None:
-            if review_flag.lower() == 'true':
-                is_review = True
-
         the_json_res = get_contribution(contribution_id)
 
         # check if the user is in contribution's admins
@@ -333,7 +327,8 @@ def contribution_review(contribution_id):
         # get capability list to create required capability list
         required_capability_list = requestutil.request_required_capability_list(headers)
 
-        if is_reviewer and is_review:
+        # if is_reviewer and is_review:
+        if is_reviewer:
             # need to add review information to html so it can pre render if needed
             reviewer_id = adminutil.get_reviewer_id(headers, username)
             if "review" in the_json_res.keys():
@@ -347,7 +342,7 @@ def contribution_review(contribution_id):
                             the_json_res.update(review_json)
                             break
 
-            return render_template('contribute/contribution_details.html', review=is_review, required_capabilities=required_capability_list,
+            return render_template('contribute/contribution_details.html', is_review=True, required_capabilities=required_capability_list,
                                    user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
         else:
             s = "You don't have a permission to review the contribution."
@@ -471,9 +466,9 @@ def create():
                            post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 # reviewers page
-@bp.route('/contributions/reviwers', methods=['GET'])
+@bp.route('/contributions/reviews', methods=['GET'])
 @login_required
-def reviewers_main():
+def reviews_main():
     show_sel = request.args.get('show')
     user = None
     token = None
@@ -507,7 +502,7 @@ def reviewers_main():
         else:
             # create the json for keyword related
             the_json_res = jsonutil.create_status_json_from_contribution_json(result.json(), show_sel)
-        return render_template('contribute/reviewers.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
+        return render_template('contribute/reviews.html', is_editable=is_editable, user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
     else:
         s = "You don't have a permission to edit the contribution."
         return render_template('contribute/error.html', error_msg=s)

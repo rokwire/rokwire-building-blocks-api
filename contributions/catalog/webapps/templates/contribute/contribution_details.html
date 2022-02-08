@@ -135,7 +135,7 @@
         {% endfor %}
     {% endif %}
 
-    {% if (reviewer or editor or review) %}
+    {% if (is_reviewer or is_editable or is_review) %}
         <div class="row">
             <div class="col-12 col-sm-2">
                 <h4>Contribution admins</h4>
@@ -166,16 +166,16 @@
         </div>
     {% endif %}
 
-    {% if editor %}
+    {% if is_editable %}
         <a class="button button3" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
     {% endif %}
 
-    {% if reviewer %}
+    {% if is_reviewer %}
         <a class="button button4" role="button" href="{{ url_for('contribute.contribution_review', contribution_id=post.id, review=True) }}">Review Contribution</a>
     {% endif %}
 </div>
 
-{% if review %}
+{% if is_review %}
     <div class="container">
         <h1>Review</h1>
         <hr class="divider"/>
