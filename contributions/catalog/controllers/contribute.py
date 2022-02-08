@@ -339,13 +339,13 @@ def contribution_review(contribution_id):
             if "review" in the_json_res.keys():
                 review_exist = False
                 review_list = the_json_res["review"]
-                for idx, review_entry in enumerate(review_list):
-                    if review_entry["reviewerId"] == reviewer_id:
-                        review_loc = idx
-                        review_exist = True
-                if review_exist:
-                    review_json = {'review': review_list[review_loc]}
-                    the_json_res.update(review_json)
+                if review_list is not None:
+                    for idx, review_entry in enumerate(review_list):
+                        if review_entry["reviewerId"] == reviewer_id:
+                            review_loc = idx
+                            review_json = {'review': review_list[review_loc]}
+                            the_json_res.update(review_json)
+                            break
 
             return render_template('contribute/contribution_details.html', review=is_review, required_capabilities=required_capability_list,
                                    user=session["name"], token=session['oauth_token']['access_token'], post=the_json_res)
