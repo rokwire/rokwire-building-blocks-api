@@ -20,6 +20,7 @@ class Capability():
         self.name = None
         self.description = None
         self.isOpenSource = None
+        self.sourceRepoUrl = None
         self.apiDocUrl = None
         self.deploymentDetails = None
         self.apiBaseUrl = None
@@ -55,6 +56,12 @@ class Capability():
 
     def get_is_open_source(self):
         return self.isOpenSource
+
+    def set_source_repo_url(self, sourceRepoUrl):
+        self.sourceRepoUrl = sourceRepoUrl
+
+    def get_source_repo_url(self):
+        return self.sourceRepoUrl
 
     def set_api_doc_url(self, apiDocUrl):
         self.apiDocUrl = apiDocUrl

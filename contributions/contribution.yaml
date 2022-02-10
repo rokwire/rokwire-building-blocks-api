@@ -587,6 +587,10 @@ components:
           nullable: true
           type: string
           description: API documentation URL
+        sourceRepoUrl:
+          nullable: true
+          type: string
+          description: Source Repository documentation URL
         deploymentDetails:
           type: object
           properties:
