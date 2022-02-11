@@ -555,6 +555,11 @@ components:
             - Approved
             - Disapproved
             - Published
+        reviews:
+          items:
+            $ref: '#/components/schemas/Review'
+          nullable: true
+          type: array
         dateCreated:
           type: string
           format: date-time
@@ -794,6 +799,18 @@ components:
         name:
           type: string
         githubUsername:
+          type: string
+    Review:
+      description: A review from a reviewer.
+      properties:
+        reviewerId:
+          description: Reviewer's ID.
+          type: string
+          format: uuid
+        comment:
+          type: string
+        lastUpdated:
+          format: date-time
           type: string
   securitySchemes:
     ApiKeyAuth:
