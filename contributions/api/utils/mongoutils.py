@@ -23,6 +23,7 @@ from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
 from utils import query_params
 from utils import jsonutils
+from utils import adminutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -304,8 +305,15 @@ def query_dataset_no_status(db_collection, fld, query_str):
 """
 construct json from mongo query
 """
-def construct_json_from_query_list(data_list):
-    data_dump = dumps(data_list)
+def construct_json_from_query_list(in_json, login_id=None):
+    # check if the user is a reviewer or admin, otherwise, remove review from the output
+    if login_id is not None:
+        is_reviewer = adminutils.check_if_reviewer(login_id)
+        # remove review if the requested user is not reviewer
+        if not is_reviewer:
+            if "review" in in_json:
+                del in_json["review"]
+    data_dump = dumps(in_json)
     out_json = make_response(data_dump)
     out_json.mimetype = 'application/json'
 

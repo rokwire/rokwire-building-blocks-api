@@ -99,6 +99,11 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_review(injson['review'])
+        del outjson['review']
+    except:
+        pass
+    try:
         dataset.set_status(injson["status"])
         del outjson["status"]
     except Exception as e:
@@ -429,6 +434,29 @@ def update_talent_dataset_from_json(dataset, injson):
         except:
             pass
     except Exception as e:
+        pass
+
+    return dataset, outjson
+
+"""
+update review dataset
+"""
+def update_review_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_reviewer_id(injson['reviewerId'])
+        del outjson['reviewerId']
+    except:
+        pass
+    try:
+        dataset.set_review_comment(injson['reviewComment'])
+        del outjson['reviewComment']
+    except:
+        pass
+    try:
+        dataset.set_review_comment(injson['reviewLastUpdate'])
+        del outjson['reviewLastUpdated']
+    except:
         pass
 
     return dataset, outjson

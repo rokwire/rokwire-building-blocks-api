@@ -25,6 +25,7 @@ class Contribution():
         self.capabilities = None
         self.talents = None
         self.status = None
+        self.review = None
         self.dateCreated = None
         self.dateModified = None
 
@@ -71,6 +72,12 @@ class Contribution():
 
     def get_status(self):
         return self.status
+
+    def set_review(self, review):
+        self.review = review
+
+    def get_review(self):
+        return self.review
 
     def set_contributors(self, contributors):
         self.contributors = contributors
