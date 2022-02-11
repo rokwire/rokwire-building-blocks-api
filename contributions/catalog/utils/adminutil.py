@@ -29,15 +29,31 @@ def check_if_superuser(login_id):
         return False
 
 """
+get reviewer id from given username
+"""
+def get_reviewer_id(headers, username):
+    # check if the logged in id is in reviewers database
+    # otherwise it will give 401
+    reviewer_id = "None"
+    result = requestutil.request_reviewers(headers)
+
+    # if the result is not 201, it is not reviewer
+    if result.status_code == 200:
+        # check if the login id is in reviewer list
+        result_str = result.content.decode('utf-8').replace('\n', '')
+        reviewer_list = json.loads(result_str)
+
+        # check if the user name and id
+        for reviewer in reviewer_list:
+            if reviewer["githubUsername"] == username:
+                reviewer_id = reviewer["id"]
+
+    return reviewer_id
+
+"""
 check if the logged in user is a reviewer
 """
 def check_if_reviewer(login_id, headers):
-    # check if the logged in id is admin user
-    is_superuser = check_if_superuser(login_id)
-
-    if is_superuser:
-        return True
-
     # check if the logged in id is in reviewers database
     # otherwise it will give 401
     result = requestutil.request_reviewers(headers)
@@ -57,5 +73,3 @@ def check_if_reviewer(login_id, headers):
             return True
 
     return False
-
-
