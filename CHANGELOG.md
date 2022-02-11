@@ -5,11 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
+- `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
+
 ### Added
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
 
-### Fixed
-- `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
+### Changed
+- All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
 
 ### Security
 - Change string comparisons to constant time comparisons in Profile BB. [#850](https://github.com/rokwire/rokwire-building-blocks-api/issues/850)

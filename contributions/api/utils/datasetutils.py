@@ -142,6 +142,11 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_source_repo_url(injson['sourceRepoUrl'])
+        del outjson['sourceRepoUrl']
+    except:
+        pass
+    try:
         dataset.set_api_doc_url(injson['apiDocUrl'])
         del outjson['apiDocUrl']
     except:
