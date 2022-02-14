@@ -644,7 +644,8 @@
                 </div>
 
                 <form class="form-horizontal" method="POST">
-                    <div id="capability-div" style="display: none; background-color:white">
+                    <div id="capability-parent" style="display: block; background-color:white">
+                        <div id="capability-div" style="display: none; background-color:white">
                         <hr class="dotted">
                         <h3 id="capability">Add a Capability to this Contribution</h3>
 
@@ -1132,9 +1133,10 @@
                             </div>
                         {% endif %}
                     </div>
-
+                    </div>
                     <!--------------------------------------------talent block ------------------------------------------>
-                    <div class="container" id="talent-div" style="display: none">
+                    <div id="talent-parent" style="display: block; background-color:white">
+                        <div class="container" id="talent-div" style="display: none">
                         <hr class="dotted">
                         <h3>Add a Talent to this Contribution</h3>
                         {% if is_editable %}
@@ -1386,6 +1388,7 @@
                                                               type="text"></div>
                             </div>
                         {% endif %}
+                    </div>
                     </div>
 
                     <!--------------------------------------------contact/privacy check ------------------------------------------>
@@ -1798,37 +1801,51 @@
 
 
     $(function () {
+        var capability_count = 0;
         $("#add-capability").click(function (e) {
             e.preventDefault();
+
             var original = document.getElementById('capability-div');
             if (original.style.display === "none") {
                 original.style.display = "block";
-            } else {
+                var $cap_div = $("#capability-div");
+                $cap_div.find(':input').attr('id', function(i, val) {
+                    return val + capability_count;
+                });
+                capability_count++;
 
-                var clone = original.cloneNode(true); // "deep" clone
-                if (clone.style.display === "none") {
-                    clone.style.display = "block";
-                }
-                $("#capability-div").append(clone);
-                $("#capability-div").append("<br>");
+                $("#capability-parent").append("<br>");
+            } else {
+                var $clone = $("#capability-div").clone(true);
+                $clone.find(':input').attr('id', function(i, val) {
+                    return val + capability_count;
+                });
+                capability_count++;
+
+                $("#capability-parent").append($clone);
+                $("#capability-parent").append("<br>");
             }
 
         });
     });
 
     $(function () {
+        var talent_count = 1;
         $("#add-talent").click(function (e) {
             e.preventDefault();
             var original = document.getElementById('talent-div');
             if (original.style.display === "none") {
                 original.style.display = "block";
+                $("#talent-parent").append("<br>");
             } else {
-                var clone = original.cloneNode(true); // "deep" clone
-                if (clone.style.display === "none") {
-                    clone.style.display = "block";
-                }
-                $("#talent-div").append(clone);
-                $("#talent-div").append("<br>");
+                var $clone = $("#talent-div").clone(true);
+                $clone.find(':input').attr('id', function(i, val) {
+                    return val + talent_count;
+                });
+                talent_count++;
+
+                $("#talent-parent").append($clone);
+                $("#talent-parent").append("<br>");
             }
 
         });
