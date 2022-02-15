@@ -748,7 +748,7 @@ components:
           type: string
           format: uuid
           description: UUID4 format string identifier of the capability
-        capabilityName:x
+        capabilityName:
           type: string
           description: Name of the capability
     Person:
@@ -802,6 +802,9 @@ components:
         githubUsername:
           type: string
         email:
+          type: string
+          format: email
+          pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
     Review:
       description: A review from a reviewer.
       properties:
