@@ -45,24 +45,19 @@
         <p class="col-sm-9">{{post.isOpenSource}}</p>
     </div>
 
-    {% if post.isOpenSource == true %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Api Documentation URL, if the above data is "Yes" </h4>
-        </div>
-        <p class="col-sm-9">{{post.apiDocUrl}}</p>
-    </div>
-    {% endif %}
-
-    {% if post.sourceUrl %}
     <div class="row">
         <div class="col-12 col-sm-2">
             <h4>Source code repository URL</h4>
         </div>
-        <p class="col-sm-9">{{post.sourceUrl}}</p>
+        <p class="col-sm-9">{{post.sourceRepoUrl}}</p>
     </div>
-    {% endif %}
 
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Api Documentation URL</h4>
+        </div>
+        <p class="col-sm-9">{{post.apiDocUrl}}</p>
+    </div>
 
     {% if post.deploymentDetails%}
     <div class="row">
