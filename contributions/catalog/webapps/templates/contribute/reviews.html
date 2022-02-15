@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+    {% include 'head.html' %}
+    {% include 'style.html' %}
+</head>
+
+<body>
+<div class="main">
+    <div id="myBtnContainer">
+        {% if show_sel == "submitted" %}
+            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn active" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn active" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% elif show_sel == "reviewing" %}
+            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn active" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn active" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% elif show_sel == "approved" %}
+            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn active" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% elif show_sel == "disapproved" %}
+            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn active" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% elif show_sel == "published" %}
+            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn active" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% else %}
+            <button class="btn active" id="all_btn" onclick="get_url('all')"> Show All</button>
+            <button class="btn" id="capability_btn" onclick="get_url('submitted')"> Submitted</button>
+            <button class="btn" id="talent_btn" onclick="get_url('reviewing')"> Reviewing</button>
+            <button class="btn" id="all_btn" onclick="get_url('approved')"> Approved</button>
+            <button class="btn" id="capability_btn" onclick="get_url('disapproved')"> Disapproved</button>
+            <button class="btn" id="talent_btn" onclick="get_url('published')"> Published</button>
+        {% endif %}
+    </div><!-- end myBtnContainer -->
+
+    <div class="row" id="grid-view">
+        {% if post|length > 0 %}
+            {% for contribution in post %}
+                <div class="column contribution">
+                    <div class="content">
+                        <h4 class="contribution_name">{{ contribution["name"] }}</h4>
+                        <p class="contribution_description">{{ contribution["shortDescription"] }}</p>
+                        <p class="contribution_status">{{ contribution["status"] }}</p>
+                        <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=contribution['id']) }}"> View Contribution >>> </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div><!-- END GRID -->
+</div><!-- end main div -->
+
+
+</body>
+
+<script>
+
+    function start() {
+        var user_name = "{{user}}";
+        // var user_name = $('#nav-user-data').data("user");
+        //console.log(user_name)
+        // alert(user_name)
+        var nav_login = document.getElementById('nav_login');
+        var nav_greet = document.getElementById('nav_greeting')
+        var nav_user = document.getElementById('user_profile')
+        var submit_btn = document.getElementById('submit_contribution')
+        if (user_name.length > 0) {
+            nav_login.style.display = 'none';
+            nav_greet.style.display = 'block';
+            nav_user.style.display = 'block';
+            submit_btn.style.display = 'block';
+        } else {
+            nav_login.style.display = 'block';
+            nav_greet.style.display = 'none';
+            nav_user.style.display = 'block';
+            submit_btn.style.display = 'none';
+        }
+    }
+
+    var user_icon = document.getElementById('user_profile');
+    user_icon.addEventListener('click', function () {
+        if (user_icon.style.display === 'block') {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    })
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function get_url(c) {
+        var cur_url = window.location.href.split('/');
+        if (c === "all")
+            window.location.href = cur_url[0] + "?show=all"
+        if (c === "submitted")
+            window.location.href = cur_url[0] + "?show=submitted"
+        if (c === "reviewing")
+            window.location.href = cur_url[0] + "?show=reviewing"
+        if (c === "approved")
+            window.location.href = cur_url[0] + "?show=approved"
+        if (c === "disapproved")
+            window.location.href = cur_url[0] + "?show=disapproved"
+        if (c === "published")
+            window.location.href = cur_url[0] + "?show=published"
+    }
+
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
+
+</script>
+
+</html>

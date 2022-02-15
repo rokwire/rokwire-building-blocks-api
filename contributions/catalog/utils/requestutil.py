@@ -49,10 +49,19 @@ def get_header_using_auth_token(auth_token):
     }
 
 """
+request single contribution
+"""
+"""
 request contribution list
 """
+def request_single_contribution(headers, contribution_id):
+    request_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+    result = requests.get(request_url, headers=headers)
+
+    return result
+
 """
-request reviewer
+request contribution list
 """
 def request_contributions(headers):
     result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers)
