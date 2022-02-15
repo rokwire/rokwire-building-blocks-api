@@ -689,31 +689,31 @@
                                     <label class="form-check-label">
                                         {% if is_editable %}
                                             {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                                <input class="form-check-input" id="open_source"
+                                                <input class="form-check-input" id="open_source_yes"
                                                        name="capability_isOpenSource" type="radio" checked="checked" value="y">
                                                 yes</label>
                                             {% else %}
-                                                <input class="form-check-input" id="open_source"
+                                                <input class="form-check-input" id="open_source_yes"
                                                        name="capability_isOpenSource" type="radio" value="y">
                                                 yes</label>
                                             {%  endif %}
                                             {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source"
+                                                    <input class="form-check-input" id="open_source_no"
                                                            name="capability_isOpenSource" type="radio" checked="checked" value="n">
                                                     no</label>
                                             {% else %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source"
+                                                    <input class="form-check-input" id="open_source_no"
                                                            name="capability_isOpenSource" type="radio" value="n">
                                                     no</label>
                                             {%  endif %}
                                         {% else %}
-                                            <input class="form-check-input" id="open_source"
+                                            <input class="form-check-input" id="open_source_yes"
                                                    name="capability_isOpenSource" type="radio" value="y">
                                             yes</label>
                                             <label class="form-check-label">
-                                                <input class="form-check-input" id="open_source"
+                                                <input class="form-check-input" id="open_source_no"
                                                        name="capability_isOpenSource" type="radio" value="n">
                                                 no</label>
                                         {% endif %}
@@ -841,17 +841,18 @@
                                             <div class="col-sm-10" id="key-val">
                                                 {% if is_editable %}
                                                     <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           id="environmentVariables_key"
                                                            type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
                                                 {% else %}
                                                     <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                           type="text">
+                                                           id="environmentVariables_key" type="text">
                                                 {% endif %}
                                                 {% if is_editable %}
                                                     <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                           type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                           id="environmentVariables_value" type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                 {% else %}
                                                     <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                           type="text">
+                                                           id="environmentVariables_value" type="text">
                                                 {% endif %}
                                                 <br>
                                             </div>
@@ -860,9 +861,9 @@
                                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                         <div class="col-sm-10" id="key-val">
                                             <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                   type="text">
+                                                   id="environmentVariables_key" type="text">
                                             <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                   type="text">
+                                                   id="environmentVariables_value" type="text">
                                             <br>
                                         </div>
                                     {% endif %}
@@ -989,11 +990,11 @@
                             <div class="form-group">
                                 <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="open_source"
+                                    <input class="form-check-input" id="open_source_yes"
                                            name="capability_isOpenSource" type="radio" value="y">
                                     yes</label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" id="open_source"
+                                        <input class="form-check-input" id="open_source_no"
                                                name="capability_isOpenSource" type="radio" value="n">
                                         no</label>
                             </div>
@@ -1045,9 +1046,9 @@
                                 <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
                                 <div class="col-sm-10" id="key-val">
                                     <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                           type="text">
+                                           id="environmentVariables_key" type="text">
                                     <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                           type="text">
+                                           id="environmentVariables_value" type="text">
                                     <br>
                                 </div>
                                 <div class="row">
@@ -1547,6 +1548,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
+    var capability_count = 0;
+    var talent_count = 0;
 
     $(function() {
         $('input[name="capability_isOpenSource"]').on('click', function() {
@@ -1658,91 +1661,132 @@
             contribution_des.required = true;
             return false;
         }
-        var capability_name = document.getElementById('capability_name');
-        var talent_name = document.getElementById('talent_name');
-        if (capability_name.value == "" && talent_name.value == "") {
+
+        if (capability_count == 0 && talent_count == 0) {
             document.getElementById('select-contribution').focus();
             document.getElementById('select-contribution').required = true;
             window.alert("Please enter either a capability or a talent.");
             return false;
         }
-        //use capability's validation setting
-        if (capability_name.value != "") {
-            var capability_description = document.getElementById('capability_description');
-            if (capability_description.value == "") {
-                // window.alert("Please enter either a capability description.");
-                capability_description.focus();
-                capability_description.required = true;
-                return false;
-            }
-            // var capability_opensource = document.getElementById('open_source');
-            // if (capability_opensource.value == "") {
-            //     // window.alert("Please enter if this capability is open-souced.");
-            //     capability_opensource.required = true;
-            //     capability_opensource.focus();
-            //     return false;
-            // }
-            var deploy_location = document.getElementsByName('deploymentDetails_location')
 
-            var deploy_internal = document.getElementById('deploy_internal')
-            var deploy_external = document.getElementById('deploy_external')
-            if (!deploy_internal.checked && !deploy_external.checked) {
-                window.alert("Please select deployed location.");
-                deploy_internal.focus();
-                deploy_external.focus();
-                return false;
-            }
-            var dockerimage = document.getElementById('docker_img');
-            if (dockerimage.value == "") {
-                // window.alert("Please enter the docker image.");
-                dockerimage.focus();
-                dockerimage.required = true;
-                return false;
-            }
+        var capability_name = []
+        var capability_description = []
+        var capability_opensource = []
+        var opensource_yes = []
+        var opensource_no = []
+        var deploy_location = []
+        var deploy_internal = []
+        var deploy_external = []
+        var environmentVariables_key = []
+        var environmentVariables_value = []
+        var dockerimage = []
+        var db = []
+        var version = []
+        var health_check = []
+        var authmethod = []
+        var datadel_endpoint = []
+        var datadel_api = []
 
-            var db = document.getElementById('db-detail');
-            if (db.value == "") {
-                // window.alert("Please enter the database details. ");
-                db.focus();
-                db.required = true;
-                return false;
+        if (capability_count > 0) {
+            for (var i = 0, l = capability_count; i < l; i++) {
+                capability_name[i] = document.getElementById('capability_name' + '_' + i);
+                if (capability_name[i].value == "") {
+                    // window.alert("Please enter either a capability description.");
+                    capability_name[i].focus();
+                    capability_name[i].required = true;
+                    return false;
+                }
+                capability_description[i] = document.getElementById('capability_description' + '_' + i);
+                if (capability_description[i].value == "") {
+                    // window.alert("Please enter either a capability description.");
+                    capability_description[i].focus();
+                    capability_description[i].required = true;
+                    return false;
+                }
+                opensource_yes[i] = document.getElementById('open_source_yes' + '_' + i);
+                opensource_no[i] = document.getElementById('open_source_no' + '_' + i);
+                if (!opensource_yes[i].checked && !opensource_no[i].checked) {
+                    window.alert("Please enter if this capability is open-sourced.");
+                    opensource_yes[i].focus();
+                    return false;
+                }
+                deploy_location[i] = document.getElementsByName('deploymentDetails_location' + '_' + i)
+                deploy_internal[i] = document.getElementById('deploy_internal' + '_' + i)
+                deploy_external[i] = document.getElementById('deploy_external' + '_' + i)
+                if (!deploy_internal[i].checked && !deploy_external[i].checked) {
+                    window.alert("Please select deployed location.");
+                    deploy_internal[i].focus();
+                    return false;
+                }
+                dockerimage[i] = document.getElementById('docker_img' + '_' + i);
+                if (dockerimage[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    dockerimage[i].focus();
+                    dockerimage[i].required = true;
+                    return false;
+                }
+                environmentVariables_key[i] = document.getElementById('environmentVariables_key' + '_' + i);
+                if (environmentVariables_key[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    environmentVariables_key[i].focus();
+                    environmentVariables_key[i].required = true;
+                    return false;
+                }
+                environmentVariables_value[i] = document.getElementById('environmentVariables_value' + '_' + i);
+                if (environmentVariables_value[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    environmentVariables_value[i].focus();
+                    environmentVariables_value[i].required = true;
+                    return false;
+                }
+                db[i] = document.getElementById('db-detail' + '_' + i);
+                if (db[i].value == "") {
+                    // window.alert("Please enter the database details. ");
+                    db[i].focus();
+                    db[i].required = true;
+                    return false;
+                }
+                version[i] = document.getElementById('version' + '_' + i);
+                if (version[i].value == "") {
+                    // window.alert("Please enter the version. ");
+                    version[i].focus();
+                    version[i].required = true;
+                    return false;
+                }
+                health_check[i] = document.getElementById('health' + '_' + i);
+                if (health_check[i].value == "") {
+                    // window.alert("Please enter the health check url. ");
+                    health_check[i].focus();
+                    health_check[i].required = true;
+                    return false;
+                }
+                authmethod[i] = document.getElementById('auth' + '_' + i);
+                if (authmethod[i].value == "") {
+                    // window.alert("Please enter the auth method. ");
+                    authmethod[i].focus();
+                    authmethod[i].required = true;
+                    return false;
+                }
+                datadel_endpoint[i] = document.getElementById("datadel_endpoint" + '_' + i);
+                if (datadel_endpoint[i].value == "") {
+                    // window.alert("Please enter the data deletion endpoint. ");
+                    datadel_endpoint[i].focus();
+                    datadel_endpoint[i].required = true;
+                    return false;
+                }
+                datadel_api[i] = document.getElementById("datadel_api" + '_' + i);
+                if (datadel_api[i].value == "") {
+                    // window.alert("Please enter the data deletion api. ");
+                    datadel_api[i].focus();
+                    datadel_api[i].required = true;
+                    return false;
+                }
             }
-            var version = document.getElementById('version');
-            if (version.value == "") {
-                // window.alert("Please enter the version. ");
-                version.focus();
-                version.required = true;
-                return false;
-            }
-            var health_check = document.getElementById('health');
-            if (health_check.value == "") {
-                // window.alert("Please enter the health check url. ");
-                health_check.focus();
-                health_check.required = true;
-                return false;
-            }
-            var authmethod = document.getElementById('auth');
-            if (authmethod.value == "") {
-                // window.alert("Please enter the auth method. ");
-                authmethod.focus();
-                authmethod.required = true;
-                return false;
-            }
-            var datadel_endpoint = document.getElementById("datadel_endpoint");
-            if (datadel_endpoint.value == "") {
-                // window.alert("Please enter the data deletion endpoint. ");
-                datadel_endpoint.focus();
-                datadel_endpoint.required = true;
-                return false;
-            }
-            var datadel_api = document.getElementById("datadel_api");
-            if (datadel_api.value == "") {
-                // window.alert("Please enter the data deletion api. ");
-                datadel_api.focus();
-                datadel_api.required = true;
-                return false;
-            }
-        } else {
+        }
+
+        if (talent_count > 0) {
+            var talent_name = document.getElementById('talent_name');
+
             var talent_des = document.getElementById("talent_description");
             if (talent_des.value == "") {
                 // window.alert("Please enter the talent description. ");
@@ -1751,7 +1795,6 @@
                 return false;
             }
         }
-
         //success
         // window.location.href = "/contribute";
         var x = document.getElementById('submit-pop').innerHTML = "Your Contribution is being submitted. Please wait!";
@@ -1799,55 +1842,37 @@
         original.parentNode.appendChild(clone);
     }
 
-
     $(function () {
-        var capability_count = 0;
+
         $("#add-capability").click(function (e) {
             e.preventDefault();
+            var $clone = $("#capability-div").clone(true);
+            $clone.find(':input').attr('id', function(i, val) {
+                return val + '_' + capability_count;
+            });
+            $clone.find(':input').attr('name', function(i, val) {
+                return val + '_' + capability_count;
+            });
+            $clone.attr('style', 'display: block, background-color: white')
+            capability_count++;
 
-            var original = document.getElementById('capability-div');
-            if (original.style.display === "none") {
-                original.style.display = "block";
-                var $cap_div = $("#capability-div");
-                $cap_div.find(':input').attr('id', function(i, val) {
-                    return val + capability_count;
-                });
-                capability_count++;
-
-                $("#capability-parent").append("<br>");
-            } else {
-                var $clone = $("#capability-div").clone(true);
-                $clone.find(':input').attr('id', function(i, val) {
-                    return val + capability_count;
-                });
-                capability_count++;
-
-                $("#capability-parent").append($clone);
-                $("#capability-parent").append("<br>");
-            }
-
+            $("#capability-parent").append($clone);
+            $("#capability-parent").append("<br>");
         });
     });
 
     $(function () {
-        var talent_count = 1;
         $("#add-talent").click(function (e) {
             e.preventDefault();
-            var original = document.getElementById('talent-div');
-            if (original.style.display === "none") {
-                original.style.display = "block";
-                $("#talent-parent").append("<br>");
-            } else {
-                var $clone = $("#talent-div").clone(true);
-                $clone.find(':input').attr('id', function(i, val) {
-                    return val + talent_count;
-                });
-                talent_count++;
+            var $clone = $("#talent-div").clone(true);
+            $clone.find(':input').attr('id', function(i, val) {
+                return val + '_' + talent_count;
+            });
+            $clone.attr('style', 'display: block, background-color: white')
+            talent_count++;
 
-                $("#talent-parent").append($clone);
-                $("#talent-parent").append("<br>");
-            }
-
+            $("#talent-parent").append($clone);
+            $("#talent-parent").append("<br>");
         });
     });
 
