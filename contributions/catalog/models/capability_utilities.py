@@ -34,8 +34,9 @@ def init_capability():
              'environmentVariables': []
          },
          'dataDeletionEndpointDetails': {
-             'endpoint': '',
-             'api': ''
+             'deletionEndpoint': '',
+             'apiKey': '',
+             'description': ''
          },
          }
     return d
