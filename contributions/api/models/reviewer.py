@@ -18,6 +18,7 @@ class Reviewer:
     def __init__(self, injson):
         self.name = None
         self.githubUsername = None
+        self.email = None
         self.dateCreated = None
 
         self, restjson = datasetutils.update_reviwer_dataset_from_json(self, injson)
@@ -33,6 +34,12 @@ class Reviewer:
 
     def get_github_username(self):
         return self.githubUsername
+
+    def set_email(self, email):
+        self.email = email
+
+    def get_email(self):
+        return self.email
 
     def set_date_created(self, dateCreated):
         self.dateCreated = dateCreated
