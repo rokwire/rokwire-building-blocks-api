@@ -36,3 +36,6 @@ FIELD_OBJECTID = '_id'
 FIELD_NAME = 'name'
 
 ADMIN_USERS = os.getenv('ADMIN_USERS', '')
+
+SENDER_EMAIL = os.getenv('SENDER_EMAIL', '')
+SENDER_EMAIL_PASSWORD= os.getenv('SENDER_EMAIL_PASSWORD', '')

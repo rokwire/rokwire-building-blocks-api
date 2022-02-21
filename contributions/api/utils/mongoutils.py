@@ -381,6 +381,27 @@ def list_reviewers():
     else:
         return None
 
+def get_email(collection, username):
+    """
+    Method to return the email id of a reviewer from mongodb reviewer collection
+    Args:
+        collection (str): mongodb collection name. reviewer collection
+        username (str): github username
+    Returns:
+        (json) : json output from mongodb find query
+    """
+    db_data = collection.find({"githubUsername": username})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+        return json_load
+    else:
+        return None
+
+
 """
 query using query field and querystring and convert result to object
 """

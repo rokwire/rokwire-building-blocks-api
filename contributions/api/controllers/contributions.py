@@ -884,7 +884,8 @@ def admin_reviewers_post(token_info):
     logging.info("Contribution Admin POST " + json.dumps(msg_json))
 
     reviewer_id = str(dataset['_id'])
-
+    # send email when new reviewer is added
+    send_email_reviewer(dataset['githubUsername'])
     return rs_handlers.return_id(msg, 'id', reviewer_id)
 
 def admin_reviewers_search(token_info):
@@ -936,3 +937,25 @@ def admin_reviewers_delete(token_info, id):
         msg_json = jsonutils.create_log_json("Contribution Admin ", "DELETE", msg)
         logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
+
+def send_email_reviewer(username):
+    """
+    Method to send email to user username
+    Args:
+        username (str) : github username of reviewer
+    """
+    # check if the dataset is existing with given github username
+    dataset = mongoutils.get_email(coll_reviewer, username)
+    if dataset is None:
+        msg = {
+            "reason": "Github Username not present in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+    subject = "Reviewer updated"
+    message = "Reviewer has been updated for a contribution"
+    adminutils.send_email(dataset[0]['email'], subject, message)
