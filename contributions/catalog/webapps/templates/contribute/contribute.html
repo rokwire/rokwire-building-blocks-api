@@ -1640,16 +1640,6 @@
         }
     }
 
-    //$(function () {
-    //    $("#add-env-var").click(function (e) {
-    //        e.preventDefault();
-    //        alert("test");
-    //        $("#key-val").append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
-    //        $("#key-val").append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
-    //        $("#key-val").append("<br>");
-    //    });
-    //});
-
     function duplicate() {
         var original = document.getElementById('capability' + i);
         var clone = original.cloneNode(true); // "deep" clone
@@ -1673,24 +1663,6 @@
             });
             $clone.attr('style', 'display: block, background-color: white')
 
-            var env_var_button = []
-            for (var i = 0, l = capability_count-1; i < l; i++) {
-                //env_var_button[i] = document.getElementById('add-env-var-button-div' + '_' + i);
-                //env_var_button[i].on('click', '#add-env-var_' + i, function(){
-                //    alert(capability_count);
-                //    $("#key-val_" + i).append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
-                //    $("#key-val_" + i).append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
-                //    $("#key-val_" + i).append("<br>");
-                //});
-                //$('#add-env-var-button-div').on('click', '#add-env-var_' + i, function(){
-                //    alert(capability_count);
-                //    $("#key-val_" + i).append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
-                //    $("#key-val_" + i).append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
-                //    $("#key-val_" + i).append("<br>");
-                //});
-
-            };
-
             var i = capability_count;
             var env_var_button = '<button class="button button3" type="submit" id="add_env_var_'+ i + '">Add more fields</button>'
 
@@ -1707,13 +1679,6 @@
             capability_count++;
         });
     });
-
-    //$('#add-env-var-button-div').on('click', '#add-env-var_0', function(){
-    //    alert(capability_count);
-    //    $("#key-val_0").append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
-    //    $("#key-val_0").append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
-    //    $("#key-val_0").append("<br>");
-    //});
 
     $(function () {
         $("#add-talent").click(function (e) {
