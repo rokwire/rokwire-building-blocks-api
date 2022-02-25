@@ -358,8 +358,7 @@ def put(token_info, id):
             if talent.requiredCapabilities is not None:
                 required_cap_list = talent.requiredCapabilities
                 for capability_json in required_cap_list:
-                    capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
-                    is_uuid = otherutils.check_if_uuid(capability.id)
+                    is_uuid = otherutils.check_if_uuid(capability_json["capabilityId"])
                     if not is_uuid:
                         msg = {
                             "reason": "Capability id in requiredCapabilities is not in uuid format",

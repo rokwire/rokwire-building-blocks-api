@@ -49,9 +49,11 @@ def to_capability(d):
     # check how many capabilities are in the given json
     # this should be checked keys that is as surfix of _number
     num_cap = 0
+    # if there is capability_name_0, it means that there is capability
     if "capability_name_0" in d:
         keys = list(d.keys())
         cap_len = []
+        # iterate to count the number of capabilities
         for key in keys:
             key_splitted = key.split("capability_name_")
             if len(key_splitted) > 1:
@@ -59,15 +61,13 @@ def to_capability(d):
         num_cap = max(cap_len) + 1
 
         # init capability
-        if isinstance(d['capability_name'], str):
+        for _ in range(num_cap):
             capability_list.append(init_capability())
-        else:
-            for _ in range(num_cap):
-                capability_list.append(init_capability())
 
     for i, capability in enumerate(capability_list):
         cap_id = str(uuid.uuid4())
         capability['id'] = cap_id
+
         env_k, env_v = d['environmentVariables_key_' + str(i)], d['environmentVariables_value_' + str(i)]
         for k, v in list(zip(env_k, env_v)):
             capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
@@ -93,7 +93,6 @@ def to_capability(d):
             elif "capability_" in k:
                 if ("_" + str(i)) in k:
                     name = (k.split("capability_")[-1]).split('_' + str(i))[0]
-                    print(name)
                     if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[0]) > 0:
                         capability_list[i][name].append(v[0])
                     elif name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[0]) == 0:
