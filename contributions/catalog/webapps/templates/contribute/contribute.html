@@ -1174,7 +1174,7 @@
                                     <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
                                     <div class="col-sm-10">
                                         <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
-                                            <option value = "0" disabled selected hidden>Capability in this contribution</option>
+                                            <option value = "0" disabled selected hidden>None</option>
                                             {# if there is required capabilities in the talent #}
                                             {% if talent["requiredCapabilities"] %}
                                                 {% set required_capabilities_from_talent = talent["requiredCapabilities"] %}
@@ -1299,7 +1299,7 @@
                                 <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
                                 <div class="col-sm-10">
                                     <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
-                                        <option value = "0" disabled selected hidden>Capability in this contribution</option>
+                                        <option value = "0" disabled selected hidden>None</option>
                                         {% for capability in required_capabilities %}
                                             <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
                                                             "capabilityName": "{{ capability["capabilityName"] }}",
