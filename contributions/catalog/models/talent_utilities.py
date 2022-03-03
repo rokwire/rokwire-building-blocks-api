@@ -78,6 +78,9 @@ def to_talent(d):
                             for j in range(len(v)):
                                 v[j] = reconstruct_required_capabilities(v[j])
                                 talent_list[i][name].append(v[j])
+                        elif name == "minEndUserRoles":
+                            for j in range(len(v)):
+                                talent_list[i][name].append(v[j])
                         else:
                             talent_list[i][name].append(v[i])
                     elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[0]) == 0:
