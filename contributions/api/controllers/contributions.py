@@ -173,15 +173,16 @@ def post(token_info):
                     required_cap_list = talent.requiredCapabilities
                     for capability_json in required_cap_list:
                         capability, rest_capability_json, msg = modelutils.construct_required_capability(capability_json)
-                        is_uuid = otherutils.check_if_uuid(capability.id)
-                        if not is_uuid:
-                            msg = {
-                                "reason": "Capability id in requiredCapabilities is not in uuid format",
-                                "error": "Bad Request: " + request.url,
-                            }
-                            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-                            logging.error("Contribution POST " + json.dumps(msg_json))
-                            return rs_handlers.bad_request(msg)
+                        if capability.id is not None:
+                            is_uuid = otherutils.check_if_uuid(capability.id)
+                            if not is_uuid:
+                                msg = {
+                                    "reason": "Capability id in requiredCapabilities is not in uuid format",
+                                    "error": "Bad Request: " + request.url,
+                                }
+                                msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                                logging.error("Contribution POST " + json.dumps(msg_json))
+                                return rs_handlers.bad_request(msg)
                 talent_list.append(talent)
             contribution_dataset.set_talents(talent_list)
         except:
@@ -262,7 +263,10 @@ def get(token_info=None, id=None):
     if is_error:
         return resp
     jsonutils.convert_obejctid_from_dataset_json(data_list[0])
-    out_json = mongoutils.construct_json_from_query_list(data_list[0])
+
+    out_json = mongoutils.construct_json_from_query_list(data_list[0], login_id=login_id)
+
+
     msg_json = jsonutils.create_log_json("Contribution", "GET", {"id": str(id)})
     logging.info("Contribution GET " + json.dumps(jsonutils.remove_objectid_from_dataset(msg_json)))
 
@@ -367,7 +371,6 @@ def put(token_info, id):
                         msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
                         logging.error("Contribution POST " + json.dumps(msg_json))
                         return rs_handlers.bad_request(msg)
-
             talent_list.append(talent)
         contribution_dataset.set_talents(talent_list)
     except:
@@ -387,7 +390,7 @@ def put(token_info, id):
     out_json = contribution_dataset
     msg_json = jsonutils.create_log_json("Contribution", "PUT", {"id": str(id)})
     logging.info("Contribution PUT " + json.dumps(msg_json))
-    out_json = mongoutils.construct_json_from_query_list(out_json)
+    out_json = mongoutils.construct_json_from_query_list(out_json, login_id=token_info["login"])
 
     return out_json
 

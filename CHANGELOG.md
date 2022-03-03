@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
 - Error in creating new contribution. [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
 
 ### Added
+- Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
 
 ### Changed
 - All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
+- CODEOWNERS file. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
 
 ### Security
 - Change string comparisons to constant time comparisons in Profile BB. [#850](https://github.com/rokwire/rokwire-building-blocks-api/issues/850)
