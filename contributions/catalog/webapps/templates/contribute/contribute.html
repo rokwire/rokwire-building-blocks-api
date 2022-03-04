@@ -455,8 +455,9 @@
                                 <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
                             </div>
 
-                            <div class="form-group">
+                            <div id="open-source-check-div" class="form-group">
                                 <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
+                                <!-- open source yes no block -->
                                 <label class="form-check-label">
                                     {% if is_editable %}
                                         {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
@@ -758,16 +759,17 @@
                             <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="open-source-check-div">
                             <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                        <!-- open source yes no block -->
                             <label class="form-check-label">
                                 <input class="form-check-input" id="open_source_yes"
                                        name="capability_isOpenSource" type="radio" value="y">
                                 yes</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="open_source_no"
-                                           name="capability_isOpenSource" type="radio" value="n">
-                                    no</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="open_source_no"
+                                       name="capability_isOpenSource" type="radio" value="n">
+                                no</label>
                         </div>
 
                         <div class="form-group" id="sourceurl">
@@ -909,10 +911,16 @@
                                 <label class="control-label col-sm-2">Required Building Block(s)</label>
                                 <div class="col-sm-10">
                                     {# TODO what is required building blocks #}
-                                    {% if talent["requiredBuildingBlocks"]|length > 0 %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder=""
-                                           type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                    {%  if talent["requiredBuildingBlocks"] %}
+                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
+                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                   placeholder=""
+                                                   type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                   placeholder=""
+                                                   type="text" value="">
+                                        {% endif %}
                                     {% else %}
                                         <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
                                                placeholder=""
@@ -971,51 +979,72 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">End User Role</label>
-                                {%  set student_ns = namespace(is_on=false) %}
-                                {%  set visitor_ns = namespace(is_on=false) %}
-                                {%  set alumni_ns = namespace(is_on=false) %}
-                                {%  set employee_ns = namespace(is_on=false) %}
-                                {%  set parent_ns = namespace(is_on=false) %}
-                                {%  set fan_ns = namespace(is_on=false) %}
-                                {% for role in talent["minEndUserRoles"] %}
-                                    {% if role == "student" %}
-                                        {% set student_ns.is_on = True %}
-                                    {% elif role == "visitor" %}
-                                        {% set visitor_ns.is_on = True %}
-                                    {% elif role == "alumni" %}
-                                        {% set alumni_ns.is_on = True %}
-                                    {% elif role == "employee" %}
-                                        {% set employee_ns.is_on = True %}
-                                    {% elif role == "parent" %}
-                                        {% set parent_ns.is_on = True %}
-                                    {% elif role == "fan" %}
-                                        {% set fan_ns.is_on = True %}
-                                    {% endif %}
-                                {% endfor %}
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="student" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="student"
-                                            {% if student_ns.is_on %} checked {% endif %}> student</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="visitor"
-                                            {% if visitor_ns.is_on %} checked {% endif %}> visitor</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="alumni"
-                                            {% if alumni_ns.is_on %} checked {% endif %}> alumni</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="employee" name="talent_minEndUserRoles" type="checkbox"
-                                                                   value="employee"
-                                            {% if employee_ns.is_on %} checked {% endif %}> employee</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="parent" name="talent_minEndUserRoles" type="checkbox"
-                                                                   value="parent"
-                                            {% if parent_ns.is_on %} checked {% endif %}> parent</label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="fan" name="talent_minEndUserRoles"
-                                                                   type="checkbox" value="fan"
-                                            {% if fan_ns.is_on %} checked {% endif %}> fan</label>
+                                {% if talent["minEndUserRoles"] %}
+                                    {%  set student_ns = namespace(is_on=false) %}
+                                    {%  set visitor_ns = namespace(is_on=false) %}
+                                    {%  set alumni_ns = namespace(is_on=false) %}
+                                    {%  set employee_ns = namespace(is_on=false) %}
+                                    {%  set parent_ns = namespace(is_on=false) %}
+                                    {%  set fan_ns = namespace(is_on=false) %}
+                                    {% for role in talent["minEndUserRoles"] %}
+                                        {% if role == "student" %}
+                                            {% set student_ns.is_on = True %}
+                                        {% elif role == "visitor" %}
+                                            {% set visitor_ns.is_on = True %}
+                                        {% elif role == "alumni" %}
+                                            {% set alumni_ns.is_on = True %}
+                                        {% elif role == "employee" %}
+                                            {% set employee_ns.is_on = True %}
+                                        {% elif role == "parent" %}
+                                            {% set parent_ns.is_on = True %}
+                                        {% elif role == "fan" %}
+                                            {% set fan_ns.is_on = True %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="student" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="student"
+                                                {% if student_ns.is_on %} checked {% endif %}> student</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="visitor"
+                                                {% if visitor_ns.is_on %} checked {% endif %}> visitor</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="alumni"
+                                                {% if alumni_ns.is_on %} checked {% endif %}> alumni</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="employee" name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="employee"
+                                                {% if employee_ns.is_on %} checked {% endif %}> employee</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="parent" name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="parent"
+                                                {% if parent_ns.is_on %} checked {% endif %}> parent</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="fan" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="fan"
+                                                {% if fan_ns.is_on %} checked {% endif %}> fan</label>
+                                {% else %}
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="student" name="talent_minEndUserRoles"
+                                               type="checkbox" value="student"> student</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
+                                               type="checkbox" value="visitor"> visitor</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                                               type="checkbox" value="alumni"> alumni</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="employee" name="talent_minEndUserRoles" type="checkbox"
+                                               value="employee"> employee</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="parent" name="talent_minEndUserRoles" type="checkbox"
+                                               value="parent"> parent</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="fan" name="talent_minEndUserRoles"
+                                               type="checkbox" value="fan"> fan</label>
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
@@ -1361,17 +1390,6 @@
     var capability_count = 0;
     var talent_count = 0;
 
-    $(function() {
-        $('input[name="capability_isOpenSource"]').on('click', function() {
-            if ($(this).val() == 'y') {
-                $('#sourceurl').show();
-            }
-            else {
-                $('#sourceurl').hide();
-            }
-        });
-    });
-
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -1427,7 +1445,6 @@
                 }
             });
     });
-
 
     var modal = document.getElementById("myModal");
     // Get the button that opens the modal
@@ -1661,17 +1678,34 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_'+ i + '">Add more fields</button>'
+            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_'+ i + '">' +
+                'Add more fields</button>'
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
+
+            $('#open_source_yes_' + i).click(function(e) {
+                $('#sourceurl_' + i).show();
+            });
+            $('#open_source_no_' + i).click(function(e) {
+                $('#sourceurl_' + i).hide();
+            });
+
             $('#add-env-var-button-div_' + i).append(env_var_button);
             $('#add_env_var_' + i).click(function(e) {
                 e.preventDefault();
-                $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" id=\"environmentVariables_value_" + i + "\" type=\"text\" placeholder=\"Value\">");
+                $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
+                    "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
+                $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" " +
+                    "id=\"environmentVariables_value_" + i + "\" type=\"text\" placeholder=\"Value\">");
                 $("#key-val_" + i).append("<br>");
             });
+
+            if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
+                $('#sourceurl_' + i).show();
+            } else {
+                $('#sourceurl_' + i).hide();
+            }
 
             capability_count++;
         });
