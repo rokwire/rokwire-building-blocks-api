@@ -28,6 +28,8 @@ def format_query(args, query, include_private_events=False, group_ids=None, all_
     if super_event_id and ObjectId.is_valid(super_event_id):
         query_parts.append({'_id': ObjectId(super_event_id)})
         query_parts.append({'isSuperEvent': True})
+    if args.getlist('createdBy'):
+        query_parts.append({'createdBy': args.getlist('createdBy')})
     # multiple events ids
     if args.getlist('id'):
         ids = list()
