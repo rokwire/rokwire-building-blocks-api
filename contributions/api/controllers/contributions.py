@@ -200,6 +200,11 @@ def post(token_info):
         msg_json = jsonutils.create_log_json("Contribution", "POST", {"id": str(contribution_id)})
         logging.info("Contribution POST " + json.dumps(msg_json))
 
+        # send new contribution email to add reviewers
+        list_reviewers = mongoutils.list_reviewers()
+        for reviewer in list_reviewers:
+            send_email_new_contribution(reviewer['githubUsername'])
+
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
 def search(token_info=None, name=None):
@@ -885,7 +890,7 @@ def admin_reviewers_post(token_info):
 
     reviewer_id = str(dataset['_id'])
     # send email when new reviewer is added
-    send_email_reviewer(dataset['githubUsername'])
+    send_email_new_reviewer(dataset['githubUsername'])
     return rs_handlers.return_id(msg, 'id', reviewer_id)
 
 def admin_reviewers_search(token_info):
@@ -939,14 +944,14 @@ def admin_reviewers_delete(token_info, id):
         return rs_handlers.not_found(msg_json)
 
 
-def send_email_reviewer(username):
+def send_email_new_reviewer(username):
     """
-    Method to send email to user username
+    Method to send email to user for new reviewers
     Args:
         username (str) : github username of reviewer
     """
     # check if the dataset is existing with given github username
-    dataset = mongoutils.get_email(coll_reviewer, username)
+    dataset = mongoutils.get_reviewers_record(coll_reviewer, username)
     if dataset is None:
         msg = {
             "reason": "Github Username not present in the database: " + str(username),
@@ -956,6 +961,30 @@ def send_email_reviewer(username):
         logging.error("Contribution Admin POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg)
 
-    subject = "Reviewer updated"
-    message = "Reviewer has been updated for a contribution"
-    adminutils.send_email(dataset[0]['email'], subject, message)
+    if 'email' in dataset[0].keys():
+        subject = "Reviewer updated"
+        message = "Reviewer has been updated for a contribution"
+        adminutils.send_email(dataset[0]['email'], subject, message)
+
+def send_email_new_contribution(username):
+    """
+    Method to send email to user for new contribution
+    Args:
+        username (str) : github username of reviewer
+    """
+    # check if the dataset is existing with given github username
+    dataset = mongoutils.get_reviewers_record(username)
+    if dataset is None:
+        msg = {
+            "reason": "Github Username not present in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+    if 'email' in dataset[0].keys():
+        subject = "New Contribution"
+        message = "New contribution has been added for your review"
+        adminutils.send_email(dataset[0]['email'], subject, message)
+
