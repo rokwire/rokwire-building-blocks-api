@@ -17,16 +17,14 @@
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/modernizr.js') }}"></script> <!-- Modernizr -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
         {% block styles %} {% endblock %}
-        {% block scripts %} {% endblock %}
     </head>
 
 
     <body onload="start()">
             {% include 'topnav.html' %}
-            <script type="text/javascript" src="{{ url_for('static', filename='js/topnav.js') }}"></script>
             <section>
                 {# TODO: section tag has some padding on top. This is reflected on all templates. Need to remove this #}
                 {% block header %}{% endblock %}
@@ -36,9 +34,11 @@
                 {% endfor %}
             </section>
 
-            <div class="footer" id="footer">
-                Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Privacy Policy</a>
-            </div>
+        <div class="footer" id="footer">
+            Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Privacy Policy</a>
+        </div>
     </body>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/topnav.js') }}"></script>
+    {% block scripts %} {% endblock %}
 
 </html>
