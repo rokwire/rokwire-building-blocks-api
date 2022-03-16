@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} Capability Details {% endblock %}
 {% block styles %}
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
-
-<body onload=start()>
 
 {% block header %}{% endblock %}
 
@@ -157,26 +151,27 @@
 </div>
 {% endblock %}
 
-<script>
-    var post = JSON.parse('{{ post | tojson | safe}}');
-    function get_url(){
-        var cur_url = window.location.href.split('/');
-        var res = '';
-        for (let i = 0; i < cur_url.length-1; i++){
-            res += cur_url[i];
-            if (cur_url[i+1] == 'talents' || cur_url[i+1] == 'capabilities'){
-                break;
+{% block scripts %}
+    <script>
+        var post = JSON.parse('{{ post | tojson | safe}}');
+        function get_url(){
+            var cur_url = window.location.href.split('/');
+            var res = '';
+            for (let i = 0; i < cur_url.length-1; i++){
+                res += cur_url[i];
+                if (cur_url[i+1] == 'talents' || cur_url[i+1] == 'capabilities'){
+                    break;
+                }
+                res += '/';
             }
-            res += '/';
+            window.location.href = res;
         }
-        window.location.href = res;
-    }
 
-    var user_icon = document.getElementById('user_profile');
-    user_icon.addEventListener('click', function () {
-        if (user_icon.style.display === '') {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-    })
-</script>
-</body>
+        var user_icon = document.getElementById('user_profile');
+        user_icon.addEventListener('click', function () {
+            if (user_icon.style.display === '') {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+        })
+    </script>
+{% endblock %}

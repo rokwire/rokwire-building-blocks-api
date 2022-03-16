@@ -2,12 +2,6 @@
 {% block title %} Capability Catalog {% endblock %}
 
 {%  block styles %}
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    {#  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" /> #}
-    {# TODO: This did not work instead of the above bootstrap.min. Check why #}
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}" />
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
     <style>
         .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
@@ -46,7 +40,6 @@
     </style>
 {%  endblock %}
 
-<body onload=start()>
 {% block header %}{% endblock %}
 {% block content %}
 <div class="container-fluid"> {# TODO: container-fluid not working with extending base. the topnav and footer flows through. #}
@@ -495,26 +488,28 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
-                                        <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
-                                        <div class="col-sm-10" id="key-val">
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       type="text">
-                                            {% endif %}
-                                            {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                            {% else %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       type="text">
-                                            {% endif %}
-                                            <br>
-                                        </div>
-                                    {% endfor %}
+                                    {% if capability["deploymentDetails"]["environmentVariables"] %}
+                                        {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
+                                            <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                                            <div class="col-sm-10" id="key-val">
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                           type="text">
+                                                {% endif %}
+                                                {% if is_editable %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                {% else %}
+                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                           type="text">
+                                                {% endif %}
+                                                <br>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                     <div class="row">
                                         <button class="button button3" id='add-user' type="submit">Add more fields</button>
                                     </div>
@@ -976,8 +971,9 @@
     </form>
 </div>
 {% endblock %}
-</body>
 
+
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
 
@@ -1303,5 +1299,5 @@
             }
         }
     }
-
 </script>
+{% endblock %}

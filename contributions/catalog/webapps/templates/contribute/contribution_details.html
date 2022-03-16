@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} Contribution Details {% endblock %}
 {% block styles %}
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
             /* Style the buttons */
         .btn {
@@ -29,7 +25,34 @@
     </style>
 {% endblock %}
 
-<body onload=start()>
+{% block scripts %}
+<script>
+    var post = JSON.parse('{{ post | tojson | safe}}');
+    var cid = "{{post.contributionid}}";
+
+    function cap_url(id){
+        window.location.href =  window.location.href +  "/capabilities/" + id;
+    }
+
+    function tal_url(id){
+        window.location.href = window.location.href + "/talents/" + id;
+    }
+
+    function get_url(id){
+        var cur_url = window.location.href.split('/');
+        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit"
+    }
+
+    var user_icon = document.getElementById('user_profile');
+    user_icon.addEventListener('click', function () {
+        if (user_icon.style.display === '') {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    })
+
+</script>
+{% endblock %}
+
 {% block header %}{% endblock %}
 
 {% block content %}
@@ -168,30 +191,3 @@
 
 </div>
 {% endblock %}
-
-<script>
-    var post = JSON.parse('{{ post | tojson | safe}}');
-    var cid = "{{post.contributionid}}";
-
-    function cap_url(id){
-        window.location.href =  window.location.href +  "/capabilities/" + id;
-    }
-
-    function tal_url(id){
-        window.location.href = window.location.href + "/talents/" + id;
-    }
-
-    function get_url(id){
-        var cur_url = window.location.href.split('/');
-        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit"
-    }
-
-    var user_icon = document.getElementById('user_profile');
-    user_icon.addEventListener('click', function () {
-        if (user_icon.style.display === '') {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-    })
-
-</script>
-</body>
