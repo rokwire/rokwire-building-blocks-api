@@ -552,6 +552,7 @@ def post_contribution(json_data):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
+            # TODO the message should be updated in more user friendly way.
             if 'reason' in err_json:
                 return False, str("post method fails with error: ") + str(result.status_code) \
                        + ": " + str(str(err_json['reason'])), err_json
