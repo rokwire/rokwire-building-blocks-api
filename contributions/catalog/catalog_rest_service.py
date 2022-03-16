@@ -164,5 +164,19 @@ def callback():
 
     return redirect(url_for('contribute.home'))
 
+
+@app.context_processor
+def inject_data():
+
+    git_tag = os.getenv("GIT_TAG", "")
+    git_sha = os.getenv("GIT_SHA", "")
+    print(git_sha)
+
+    if "name" in session:
+        return dict(user=session["name"], git_tag=git_tag, git_sha=git_sha)
+    else:
+        return dict(user=None, git_tag=git_tag, git_sha=git_sha)
+
+
 if __name__ == '__main__':
     app.run(port=cfg.CATALOG_PORT, host=None, debug=True)
