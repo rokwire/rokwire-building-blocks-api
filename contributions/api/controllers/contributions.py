@@ -943,7 +943,6 @@ def admin_reviewers_delete(token_info, id):
         logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
 
-
 def send_email_new_reviewer(username):
     """
     Method to send email to user for new reviewers
@@ -987,4 +986,11 @@ def send_email_new_contribution(username):
         subject = "New Contribution"
         message = "New contribution has been added for your review"
         adminutils.send_email(dataset[0]['email'], subject, message)
-
+    else:
+        msg = {
+            "reason": "Email not present for Github Username in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
