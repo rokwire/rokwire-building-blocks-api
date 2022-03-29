@@ -13,7 +13,6 @@
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
     <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-    <link href="/resources/demos/style.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -55,8 +54,17 @@
 
     </style>
 </head>
-
-<body onload=start()>
+<script>
+    var capability_count = 0;
+    var talent_count = 0;
+</script>
+{% if post.capabilities %}
+    <script>is_cap_edting = true;</script>
+{% endif %}
+{% if post.talents %}
+    <script>is_tal_edting = true;</script>
+{% endif %}
+<body>
     <div class="container-fluid">
 
         {% include 'topnav.html' %}
@@ -417,20 +425,174 @@
 
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
-                <div id="capability-div" style="display: none; background-color:white">
+
+                <!--------------------------- capability clean block --------------------------------->
+                <div id="capability-div-clean" style="display: none; background-color:white">
                     <hr class="dotted">
                     <h3 id="capability">Add a Capability to this Contribution</h3>
-                    {% if post.capabilities %}
-                        {% for capability in post.capabilities %}
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Capability Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="capability_name" name="capability_name"
+                                   placeholder="Give a name for your capability" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Capability Description</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="capability_description" name="capability_description"
+                                   placeholder="Give a short description" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
+                            capability</label>
+                        <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                    </div>
+
+                    <div class="form-group" id="open-source-check-div">
+                        <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                        <!-- open source yes no block -->
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="open_source_yes"
+                                   name="capability_isOpenSource" type="radio" value="y">
+                            yes</label>
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="open_source_no"
+                                   name="capability_isOpenSource" type="radio" value="n">
+                            no</label>
+                    </div>
+
+                    <div class="form-group" id="sourceurl">
+                        <label class="control-label col-sm-2">Source repo URL</label>
+                        <div class="col-sm-10">
+
+                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                   placeholder="Source code repository URL (if open sourced)" type="url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">API Doc URL</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                   placeholder="API documentation URL" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Deployment location</label>
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                   type="radio" value="internal"> internal
+                        </label>
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="deploy_external"
+                                   name="deploymentDetails_location" type="radio"
+                                   value="external"> external
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="api_base">API Base Location</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                   placeholder="API base URL" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                   placeholder="Docker image name (If internally deployed)" type="text">
+                        </div>
+                    </div>
+
+                    <div name="add-env-var-div" class="form-group">
+                        <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                        <div class="col-sm-10" id="key-val">
+                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                   id="environmentVariables_key" type="text">
+                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                   id="environmentVariables_value" type="text">
+                            <br>
+                        </div>
+                        <div id="add-env-var-button-div" class="row">
+                            <!-- place holder for dynamic button for add more fields" -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Database Detail</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                   placeholder="Details of API endpoint to delete user info given the user UUID"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Version</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="version" name="capability_version"
+                                   placeholder="latest version number"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {# TODO what is version url #}
+                        <label class="control-label col-sm-2">Version URL</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="version_url" name="capability_versionUrl"
+                                   placeholder=""
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Health Check URL</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="health" name="capability_healthCheckUrl"
+                                   placeholder="health check url" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Authentication Method</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="auth" name="deploymentDetails_authMethod"
+                                   placeholder="" type="text">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Data Deletion</label>
+                        <div class="col-sm-10">
+                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                   placeholder="Endpoint" type="text">
+                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                   placeholder="Api Key" type="text">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <!--------------------------------- capability block for existing records ------------------------->
+                {% if post.capabilities %}
+                    {% for capability in post.capabilities %}
+                        <div id="capability-div-existing-records" style="display: block; background-color:white">
+                        <hr class="dotted">
+                        <h3 id="capability">Add a Capability to this Contribution</h3>
+                            {{loop.index0}}
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Capability Name</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-control" id="capability_name" name="capability_name"
+                                        <input class="form-control" id="capability_name_{{loop.index0}}"
+                                               name="capability_name_{{loop.index0}}"
                                                placeholder="Give a name for your capability"
                                                type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
                                     {% else %}
-                                        <input class="form-control" id="capability_name" name="capability_name"
+                                        <input class="form-control" id="capability_name_{{loop.index0}}"
+                                               name="capability_name_{{loop.index0}}"
                                                placeholder="Give a name for your capability" type="text">
                                     {% endif %}
                                 </div>
@@ -439,11 +601,13 @@
                                 <label class="required control-label col-sm-2">Capability Description</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-control" id="capability_description" name="capability_description"
+                                        <input class="form-control" id="capability_description_{{loop.index0}}"
+                                               name="capability_description_{{loop.index0}}"
                                                placeholder="Give a short description"
                                                type="text" value="{{ capability | filter_nested_dict(["description"]) }}">
                                     {% else %}
-                                        <input class="form-control" id="capability_description" name="capability_description"
+                                        <input class="form-control" id="capability_description_{{loop.index0}}"
+                                               name="capability_description_{{loop.index0}}"
                                                placeholder="Give a short description" type="text">
                                     {% endif %}
                                 </div>
@@ -452,7 +616,8 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
                                     capability</label>
-                                <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                                <input accept="image/*" id="capability_icon_{{loop.index0}}"
+                                       name="capability_icon_{{loop.index0}}" type="file">
                             </div>
 
                             <div id="open-source-check-div" class="form-group">
@@ -461,32 +626,38 @@
                                 <label class="form-check-label">
                                     {% if is_editable %}
                                         {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                            <input class="form-check-input" id="open_source_yes"
-                                                   name="capability_isOpenSource" type="radio" checked="checked" value="y">
+                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}" type="radio"
+                                                   checked="checked" value="y">
                                             yes</label>
                                         {% else %}
-                                            <input class="form-check-input" id="open_source_yes"
-                                                   name="capability_isOpenSource" type="radio" value="y">
+                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="y">
                                             yes</label>
                                         {%  endif %}
                                         {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
                                             <label class="form-check-label">
-                                                <input class="form-check-input" id="open_source_no"
-                                                       name="capability_isOpenSource" type="radio" checked="checked" value="n">
+                                                <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                       name="capability_isOpenSource_{{loop.index0}}"
+                                                       type="radio" checked="checked" value="n">
                                                 no</label>
                                         {% else %}
                                             <label class="form-check-label">
-                                                <input class="form-check-input" id="open_source_no"
-                                                       name="capability_isOpenSource" type="radio" value="n">
+                                                <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                       name="capability_isOpenSource_{{loop.index0}}"
+                                                       type="radio" value="n">
                                                 no</label>
                                         {%  endif %}
                                     {% else %}
-                                        <input class="form-check-input" id="open_source_yes"
-                                               name="capability_isOpenSource" type="radio" value="y">
+                                        <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                               name="capability_isOpenSource_{{loop.index0}}"
+                                               type="radio" value="y">
                                         yes</label>
                                         <label class="form-check-label">
-                                            <input class="form-check-input" id="open_source_no"
-                                                   name="capability_isOpenSource" type="radio" value="n">
+                                            <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="n">
                                             no</label>
                                     {% endif %}
                             </div>
@@ -495,18 +666,22 @@
                                     <div class="form-group" id="sourceurl" style="display: block;">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
-                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                       placeholder="Source code repository URL (if open sourced)"
-                                                       type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
+                                            <input class="form-control" id="source_url_{{loop.index0}}"
+                                                   name="capability_sourceRepoUrl_{{loop.index0}}"
+                                                   placeholder="Source code repository URL (if open sourced)"
+                                                   type="url"
+                                                   value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
                                         </div>
                                     </div>
                                 {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                    <div class="form-group" id="sourceurl" style="display: none;">
+                                    <div class="form-group" id="sourceurl_{{loop.index0}}" style="display: none;">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
-                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                <input class="form-control" id="source_url_{{loop.index0}}"
+                                                       name="capability_sourceRepoUrl_{{loop.index0}}"
                                                        placeholder="Source code repository URL (if open sourced)"
-                                                       type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
+                                                       type="url"
+                                                       value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
                                         </div>
                                     </div>
                                 {% endif %}
@@ -515,16 +690,20 @@
                                     <div class="form-group" id="sourceurl" style="display: block">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
-                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                       placeholder="Source code repository URL (if open sourced)" type="url">
+                                            <input class="form-control" id="source_url_{{loop.index0}}"
+                                                   name="capability_sourceRepoUrl_{{loop.index0}}"
+                                                   placeholder="Source code repository URL (if open sourced)"
+                                                   type="url">
                                         </div>
                                     </div>
                                 {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
                                     <div class="form-group" id="sourceurl" style="display: none">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
-                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                       placeholder="Source code repository URL (if open sourced)" type="url" >
+                                                <input class="form-control" id="source_url_{{loop.index0}}"
+                                                       name="capability_sourceRepoUrl_{{loop.index0}}"
+                                                       placeholder="Source code repository URL (if open sourced)"
+                                                       type="url" >
                                         </div>
                                     </div>
                                 {% endif %}
@@ -534,11 +713,14 @@
                                 <label class="control-label col-sm-2">API Doc URL</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                        <input class="form-control" id="api_url_{{loop.index0}}"
+                                               name="capability_apiDocUrl_{{loop.index0}}"
                                                placeholder="API documentation URL"
-                                               type="text" value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
+                                               type="text"
+                                               value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
                                     {% else %}
-                                        <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                        <input class="form-control" id="api_url_{{loop.index0}}"
+                                               name="capability_apiDocUrl_{{loop.index0}}"
                                                placeholder="API documentation URL" type="text">
                                     {% endif %}
                                 </div>
@@ -548,31 +730,34 @@
                                 <label class="form-check-label">
                                     {% if is_editable %}
                                         {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
-                                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                            <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
+                                                   name="deploymentDetails_location_{{loop.index0}}"
                                                    type="radio" value="internal" checked="checked"> internal
                                         {% else %}
-                                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                            <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
+                                                   name="deploymentDetails_location_{{loop.index0}}"
                                                    type="radio" value="internal"> internal
                                         {% endif %}
                                     {% else %}
-                                        <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                        <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
+                                               name="deploymentDetails_location_{{loop.index0}}"
                                                type="radio" value="internal"> internal
                                     {% endif %}
                                 </label>
                                 <label class="form-check-label">
                                     {% if is_editable %}
                                         {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
-                                            <input class="form-check-input" id="deploy_external"
-                                                   name="deploymentDetails_location" type="radio"
+                                            <input class="form-check-input" id="deploy_external_{{loop.index0}}"
+                                                   name="deploymentDetails_location_{{loop.index0}}" type="radio"
                                                    value="external" checked="checked"> external
                                         {% else %}
-                                            <input class="form-check-input" id="deploy_external"
-                                                   name="deploymentDetails_location" type="radio"
+                                            <input class="form-check-input" id="deploy_external_{{loop.index0}}"
+                                                   name="deploymentDetails_location_{{loop.index0}}" type="radio"
                                                    value="external"> external
                                         {% endif %}
                                     {% else %}
-                                        <input class="form-check-input" id="deploy_external"
-                                               name="deploymentDetails_location" type="radio"
+                                        <input class="form-check-input" id="deploy_external_{{loop.index0}}"
+                                               name="deploymentDetails_location_{{loop.index0}}" type="radio"
                                                value="external"> external
                                     {% endif %}
                                 </label>
@@ -582,11 +767,14 @@
                                 <label class="control-label col-sm-2" for="api_base">API Base Location</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                        <input class="form-control" id="api_base_{{loop.index0}}"
+                                               name="capability_apiBaseUrl_{{loop.index0}}"
                                                placeholder="API base URL"
-                                               type="text" value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
+                                               type="text"
+                                               value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
                                     {% else %}
-                                        <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                        <input class="form-control" id="api_base_{{loop.index0}}"
+                                               name="capability_apiBaseUrl_{{loop.index0}}"
                                                placeholder="API base URL" type="text">
                                     {% endif %}
                                 </div>
@@ -595,12 +783,14 @@
                                 <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                        <input class="form-control" id="docker_img_{{loop.index0}}"
+                                               name="deploymentDetails_dockerImageName_{{loop.index0}}"
                                                placeholder="Docker image name (If internally deployed)"
                                                type="text"
                                                value="{{ capability | filter_nested_dict(["deploymentDetails","dockerImageName"]) }}">
                                     {% else %}
-                                        <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                        <input class="form-control" id="docker_img_{{loop.index0}}"
+                                               name="deploymentDetails_dockerImageName_{{loop.index0}}"
                                                placeholder="Docker image name (If internally deployed)" type="text">
                                     {% endif %}
                                 </div>
@@ -612,19 +802,30 @@
                                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                         <div class="col-sm-10" id="key-val">
                                             {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       id="environmentVariables_key"
+                                                <input class="form-inline"
+                                                       name="environmentVariables_key_{{loop.index0}}"
+                                                       placeholder="Key"
+                                                       id="environmentVariables_key_{{loop.index0}}"
                                                        type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
                                             {% else %}
-                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                       id="environmentVariables_key" type="text">
+                                                <input class="form-inline"
+                                                       name="environmentVariables_key_{{loop.index0}}"
+                                                       placeholder="Key"
+                                                       id="environmentVariables_key_{{loop.index0}}" type="text">
                                             {% endif %}
                                             {% if is_editable %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       id="environmentVariables_value" type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                <input class="form-inline"
+                                                       name="environmentVariables_value_{{loop.index0}}"
+                                                       placeholder="Value"
+                                                       id="environmentVariables_value_{{loop.index0}}"
+                                                       type="text"
+                                                       value="{{ envvar | filter_nested_dict(["value"]) }}">
                                             {% else %}
-                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       id="environmentVariables_value" type="text">
+                                                <input class="form-inline"
+                                                       name="environmentVariables_value_{{loop.index0}}"
+                                                       placeholder="Value"
+                                                       id="environmentVariables_value_{{loop.index0}}"
+                                                       type="text">
                                             {% endif %}
                                             <br>
                                         </div>
@@ -736,153 +937,10 @@
                                     <br>
                                 </div>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Capability Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="capability_name" name="capability_name"
-                                       placeholder="Give a name for your capability" type="text">
-                            </div>
+                            <script>capability_count++;</script>
                         </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Capability Description</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="capability_description" name="capability_description"
-                                       placeholder="Give a short description" type="text">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
-                                capability</label>
-                            <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
-                        </div>
-
-                        <div class="form-group" id="open-source-check-div">
-                            <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
-                        <!-- open source yes no block -->
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="open_source_yes"
-                                       name="capability_isOpenSource" type="radio" value="y">
-                                yes</label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="open_source_no"
-                                       name="capability_isOpenSource" type="radio" value="n">
-                                no</label>
-                        </div>
-
-                        <div class="form-group" id="sourceurl">
-                            <label class="control-label col-sm-2">Source repo URL</label>
-                            <div class="col-sm-10">
-
-                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                       placeholder="Source code repository URL (if open sourced)" type="url">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">API Doc URL</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                       placeholder="API documentation URL" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Deployment location</label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                       type="radio" value="internal"> internal
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="deploy_external"
-                                       name="deploymentDetails_location" type="radio"
-                                       value="external"> external
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                       placeholder="API base URL" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                       placeholder="Docker image name (If internally deployed)" type="text">
-                            </div>
-                        </div>
-
-                        <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
-                            <div class="col-sm-10" id="key-val">
-                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                       id="environmentVariables_key" type="text">
-                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                       id="environmentVariables_value" type="text">
-                                <br>
-                            </div>
-                            <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Database Detail</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                       placeholder="Details of API endpoint to delete user info given the user UUID"
-                                       type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Version</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="version" name="capability_version"
-                                       placeholder="latest version number"
-                                       type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {# TODO what is version url #}
-                            <label class="control-label col-sm-2">Version URL</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="version_url" name="capability_versionUrl"
-                                       placeholder=""
-                                       type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Health Check URL</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                       placeholder="health check url" type="text">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Authentication Method</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                       placeholder="" type="text">
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required control-label col-sm-2">Data Deletion</label>
-                            <div class="col-sm-10">
-                                <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                       placeholder="Endpoint" type="text">
-                                <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                       placeholder="Api Key" type="text">
-                                <br>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
+                    {% endfor %}
+                {% endif %}
             </div>
             <!--------------------------------------------talent block ------------------------------------------>
             <div id="talent-parent" style="display: block; background-color:white">
@@ -1385,9 +1443,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-    var capability_count = 0;
-    var talent_count = 0;
-
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -1663,34 +1718,34 @@
     $(function () {
         $("#add-capability").click(function (e) {
             e.preventDefault();
-            var $clone = $("#capability-div").clone(true);
-            $clone.find(':input').attr('id', function(i, val) {
+            var $clone = $("#capability-div-clean").clone(true);
+            $clone.find(':input').attr('id', function (i, val) {
                 return val + '_' + capability_count;
             });
-            $clone.find(':input').attr('name', function(i, val) {
+            $clone.find(':input').attr('name', function (i, val) {
                 return val + '_' + capability_count;
             });
-            $clone.find('div').attr('id', function(i, val) {
+            $clone.find('div').attr('id', function (i, val) {
                 return val + '_' + capability_count;
             });
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_'+ i + '">' +
+            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
                 'Add more fields</button>'
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
 
-            $('#open_source_yes_' + i).click(function(e) {
+            $('#open_source_yes_' + i).click(function (e) {
                 $('#sourceurl_' + i).show();
             });
-            $('#open_source_no_' + i).click(function(e) {
+            $('#open_source_no_' + i).click(function (e) {
                 $('#sourceurl_' + i).hide();
             });
 
             $('#add-env-var-button-div_' + i).append(env_var_button);
-            $('#add_env_var_' + i).click(function(e) {
+            $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
                 $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
                     "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
@@ -1711,19 +1766,21 @@
 
     $(function () {
         $("#add-talent").click(function (e) {
-            e.preventDefault();
-            var $clone = $("#talent-div").clone(true);
-            $clone.find(':input').attr('id', function(i, val) {
-                return val + '_' + talent_count;
-            });
-            $clone.find(':input').attr('name', function(i, val) {
-                return val + '_' + talent_count;
-            });
-            $clone.attr('style', 'display: block, background-color: white')
-            talent_count++;
+            if (is_edting === false) {
+                e.preventDefault();
+                var $clone = $("#talent-div").clone(true);
+                $clone.find(':input').attr('id', function (i, val) {
+                    return val + '_' + talent_count;
+                });
+                $clone.find(':input').attr('name', function (i, val) {
+                    return val + '_' + talent_count;
+                });
+                $clone.attr('style', 'display: block, background-color: white')
+                talent_count++;
 
-            $("#talent-parent").append($clone);
-            $("#talent-parent").append("<br>");
+                $("#talent-parent").append($clone);
+                $("#talent-parent").append("<br>");
+            }
         });
     });
 
