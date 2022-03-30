@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
 - Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
-
+- Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
+- Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
 ### Changed
 - All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
 - CODEOWNERS file. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
