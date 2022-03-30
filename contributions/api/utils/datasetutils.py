@@ -499,5 +499,10 @@ def update_reviwer_dataset_from_json(dataset, injson):
         del outjson['githubUsername']
     except:
         pass
+    try:
+        dataset.set_email(injson['email'])
+        del outjson['email']
+    except:
+        pass
 
     return dataset, outjson

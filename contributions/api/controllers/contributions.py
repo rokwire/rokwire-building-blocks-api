@@ -858,6 +858,7 @@ def admin_reviewers_post(token_info):
     in_json = request.get_json()
     name = in_json["name"]
     username = in_json["githubUsername"]
+    email = in_json["email"]
 
     # check if the dataset is existing with given github username
     dataset = mongoutils.get_dataset_from_field(coll_reviewer, "githubUsername", username)
