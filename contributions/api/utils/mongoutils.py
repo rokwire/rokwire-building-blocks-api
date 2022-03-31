@@ -234,6 +234,11 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
                 else:
                     status_code = '401'
                     return None, status_code
+            else:
+                # if not logged in and if status is not Published return unauthorized
+                status_code = '401'
+                return None, status_code
+
     else:
         status_code = '400'
         return None, status_code
