@@ -37,5 +37,7 @@ FIELD_NAME = 'name'
 
 ADMIN_USERS = os.getenv('ADMIN_USERS', '')
 
+SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.office365.com')
+SMTP_PORT = os.getenv('SMTP_PORT', 587)
 SENDER_EMAIL = os.getenv('SENDER_EMAIL', '')
 SENDER_EMAIL_PASSWORD = os.getenv('SENDER_EMAIL_PASSWORD', '')

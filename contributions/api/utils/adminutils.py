@@ -61,7 +61,10 @@ def send_email(mail_to, subject, message):
         mail_to (str): email id of recipient
         subject (str): subject of the email
         message (str): message of the email
-    Returns: None
+    Returns:
+        (bool): True if success, False if failure
+        (str): Error code is failure, empty string if success
+        (str): Error message if failure, empty string if success
     """
     mail_subject = subject
     mail_body = message
@@ -74,8 +77,12 @@ def send_email(mail_to, subject, message):
     mimemsg['To'] = mail_to
     mimemsg['Subject'] = mail_subject
     mimemsg.attach(MIMEText(mail_body, 'plain'))
-    connection = smtplib.SMTP(host='smtp.office365.com', port=587)
-    connection.starttls()
-    connection.login(mail_from, password)
-    connection.send_message(mimemsg)
-    connection.quit()
+    try:
+        connection = smtplib.SMTP(host=cfg.SMTP_HOST, port=cfg.SMTP_PORT)
+        connection.starttls()
+        connection.login(mail_from, password)
+        connection.send_message(mimemsg)
+        connection.quit()
+        return True, ' ', ' '
+    except smtplib.SMTPException as stmpex:
+        return False, smtplib.SMTPResponseException.smtp_code, smtplib.SMTPResponseException.smtp_error

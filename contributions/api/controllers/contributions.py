@@ -15,6 +15,7 @@
 import json
 import datetime
 import logging
+import re
 
 from flask import wrappers, request
 from bson import ObjectId
@@ -203,7 +204,7 @@ def post(token_info):
         # send new contribution email to add reviewers
         list_reviewers = mongoutils.list_reviewers()
         for reviewer in list_reviewers:
-            send_email_new_contribution(reviewer['githubUsername'])
+            send_email_new_contribution(reviewer['githubUsername'], contribution_name)
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
@@ -961,15 +962,32 @@ def send_email_new_reviewer(username):
         return rs_handlers.bad_request(msg)
 
     if 'email' in dataset[0].keys():
-        subject = "Reviewer updated"
-        message = "Reviewer has been updated for a contribution"
-        adminutils.send_email(dataset[0]['email'], subject, message)
+        if check_email(dataset[0]['email']):
+            subject = "Reviewer updated"
+            message = "Reviewer has been updated for a contribution"
+            success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+            if not success:
+                msg = {
+                    "reason": "Error in sending email via SMTP: " + error_msg,
+                    "error": "Error code" + error_code
+                }
+                msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                logging.error("Contribution POST " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg)
+        else:
+            msg = {
+                "reason": "Email not correct for username " + str(username)
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg)
 
-def send_email_new_contribution(username):
+def send_email_new_contribution(username, contribution_name):
     """
     Method to send email to user for new contribution
     Args:
         username (str) : github username of reviewer
+        contribution_name (str): cfg.FIELD_NAME of contribution
     """
     # check if the dataset is existing with given github username
     dataset = mongoutils.get_reviewers_record(username)
@@ -983,9 +1001,26 @@ def send_email_new_contribution(username):
         return rs_handlers.bad_request(msg)
 
     if 'email' in dataset[0].keys():
-        subject = "New Contribution"
-        message = "New contribution has been added for your review"
-        adminutils.send_email(dataset[0]['email'], subject, message)
+        if check_email(dataset[0]['email']):
+            subject = "New Rokwire Contribution Submitted"
+            message = "New contribution " + contribution_name + " has been added for your review"
+            success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+            if not success:
+                msg = {
+                    "reason": "Error in sending email via SMTP: " + error_msg,
+                    "error": "Error code" + error_code
+                }
+                msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                logging.error("Contribution POST " + json.dumps(msg_json))
+                return rs_handlers.bad_request(msg)
+        else:
+            msg = {
+                "reason": "Email not correct for username " + str(username)
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg)
+
     else:
         msg = {
             "reason": "Email not present for Github Username in the database: " + str(username),
@@ -994,3 +1029,16 @@ def send_email_new_contribution(username):
         msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
         logging.error("Contribution Admin POST " + json.dumps(msg_json))
         return rs_handlers.bad_request(msg)
+
+def check_email(email):
+    """
+    Method to check if the email id is valid
+    Args:
+        email (str): Email id from database
+    Returns:
+        (bool): True if it is a valid email id, False if not
+    """
+    email_pattern = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+    matched = re.match(email_pattern, email)
+    is_matched = bool(matched)
+    return is_matched
