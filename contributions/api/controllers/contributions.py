@@ -951,7 +951,7 @@ def send_email_new_reviewer(username):
         username (str) : github username of reviewer
     """
     # check if the dataset is existing with given github username
-    dataset = mongoutils.get_reviewers_record(coll_reviewer, username)
+    dataset = mongoutils.get_reviewers_record(username)
     if dataset is None:
         msg = {
             "reason": "Github Username not present in the database: " + str(username),
