@@ -227,9 +227,9 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
         if status == "Published":
             return dataset, status_code
         else:
-            if (is_login):
+            if is_login:
                 # check if the user is in contributionAdmin group
-                if (is_admin):
+                if is_admin:
                     return dataset, status_code
                 else:
                     status_code = '401'
