@@ -99,6 +99,11 @@ def update_contribution_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_review(injson['review'])
+        del outjson['review']
+    except:
+        pass
+    try:
         dataset.set_status(injson["status"])
         del outjson["status"]
     except Exception as e:
@@ -139,6 +144,11 @@ def update_capability_dataset_from_json(dataset, injson):
     try:
         dataset.set_is_open_source(injson['isOpenSource'])
         del outjson['isOpenSource']
+    except:
+        pass
+    try:
+        dataset.set_source_repo_url(injson['sourceRepoUrl'])
+        del outjson['sourceRepoUrl']
     except:
         pass
     try:
@@ -429,6 +439,29 @@ def update_talent_dataset_from_json(dataset, injson):
     return dataset, outjson
 
 """
+update review dataset
+"""
+def update_review_dataset_from_json(dataset, injson):
+    outjson = copy.copy(injson)
+    try:
+        dataset.set_reviewer_id(injson['reviewerId'])
+        del outjson['reviewerId']
+    except:
+        pass
+    try:
+        dataset.set_review_comment(injson['reviewComment'])
+        del outjson['reviewComment']
+    except:
+        pass
+    try:
+        dataset.set_review_comment(injson['reviewLastUpdate'])
+        del outjson['reviewLastUpdated']
+    except:
+        pass
+
+    return dataset, outjson
+
+"""
 update required capability dataset
 """
 def update_required_capability_dataset_from_json(dataset, injson):
@@ -464,6 +497,11 @@ def update_reviwer_dataset_from_json(dataset, injson):
     try:
         dataset.set_github_username(injson['githubUsername'])
         del outjson['githubUsername']
+    except:
+        pass
+    try:
+        dataset.set_email(injson['email'])
+        del outjson['email']
     except:
         pass
 

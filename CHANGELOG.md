@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2022-04-04
+### Fixed
+- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
+- Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
+- `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
+- Build error in Events BB. [#884](https://github.com/rokwire/rokwire-building-blocks-api/issues/884)
+
+### Added
+- Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
+- Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
+- Added email field for reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
+- Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
+
+### Changed
+- All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
+- CODEOWNERS file. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
+
+### Security
+- Change string comparisons to constant time comparisons in Profile BB. [#850](https://github.com/rokwire/rokwire-building-blocks-api/issues/850)
+
 ## [1.12.1] - 2021-12-08
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
@@ -17,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
+- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837)
 
 ## [1.12.0] - 2021-11-19
 ### Added
@@ -425,7 +447,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...HEAD
+[1.13.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...1.13.0
 [1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0
 [1.11.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...1.11.3

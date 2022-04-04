@@ -49,7 +49,9 @@
             border: grey;
             border-radius: 5%;
         }
-
+        #sourceurl{
+            display:none;
+        }
 
     </style>
 </head>
@@ -682,39 +684,79 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                                    <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
                                     <label class="form-check-label">
                                         {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) %}
+                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
                                                 <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio" checked="checked">
+                                                       name="capability_isOpenSource" type="radio" checked="checked" value="y">
                                                 yes</label>
                                             {% else %}
                                                 <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio">
+                                                       name="capability_isOpenSource" type="radio" value="y">
                                                 yes</label>
                                             {%  endif %}
-                                            {% if capability | filter_nested_dict(["isOpensource"]) == False %}
+                                            {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input"
-                                                           name="capability_isOpenSource" type="radio" checked="checked">
+                                                    <input class="form-check-input" id="open_source"
+                                                           name="capability_isOpenSource" type="radio" checked="checked" value="n">
                                                     no</label>
                                             {% else %}
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input"
-                                                           name="capability_isOpenSource" type="radio">
+                                                    <input class="form-check-input" id="open_source"
+                                                           name="capability_isOpenSource" type="radio" value="n">
                                                     no</label>
                                             {%  endif %}
                                         {% else %}
                                             <input class="form-check-input" id="open_source"
-                                                   name="capability_isOpenSource" type="radio">
+                                                   name="capability_isOpenSource" type="radio" value="y">
                                             yes</label>
                                             <label class="form-check-label">
-                                                <input class="form-check-input"
-                                                       name="capability_isOpenSource" type="radio">
+                                                <input class="form-check-input" id="open_source"
+                                                       name="capability_isOpenSource" type="radio" value="n">
                                                 no</label>
                                         {% endif %}
                                 </div>
+                                {% if is_editable %}
+                                    {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                        <div class="form-group" id="sourceurl" style="display: block;">
+                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                           placeholder="Source code repository URL (if open sourced)"
+                                                           type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
+                                            </div>
+                                        </div>
+                                    {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                        <div class="form-group" id="sourceurl" style="display: none;">
+                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <div class="col-sm-10">
+                                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                           placeholder="Source code repository URL (if open sourced)"
+                                                           type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                        <div class="form-group" id="sourceurl" style="display: block">
+                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                           placeholder="Source code repository URL (if open sourced)" type="url">
+                                            </div>
+                                        </div>
+                                    {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                        <div class="form-group" id="sourceurl" style="display: none">
+                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <div class="col-sm-10">
+                                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                           placeholder="Source code repository URL (if open sourced)" type="url" >
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">API Doc URL</label>
                                     <div class="col-sm-10">
@@ -725,20 +767,6 @@
                                         {% else %}
                                             <input class="form-control" id="api_url" name="capability_apiDocUrl"
                                                    placeholder="API documentation URL" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Source repo URL</label>
-                                    <div class="col-sm-10">
-                                        {# TODO what is source repo url?#}
-                                        {% if is_editable %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
-                                                   placeholder="Source code repository URL (if open sourced)"
-                                                   type="text" value="{{ capability | filter_nested_dict(["sourceUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="source_url" name="capability_source_url"
-                                                   placeholder="Source code repository URL (if open sourced)" type="text">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -961,26 +989,27 @@
                                 <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
                                 <label class="form-check-label">
                                     <input class="form-check-input" id="open_source"
-                                           name="capability_isOpenSource" type="radio">
+                                           name="capability_isOpenSource" type="radio" value="y">
                                     yes</label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input"
-                                               name="capability_isOpenSource" type="radio">
+                                        <input class="form-check-input" id="open_source"
+                                               name="capability_isOpenSource" type="radio" value="n">
                                         no</label>
+                            </div>
+
+                            <div class="form-group" id="sourceurl">
+                                <label class="control-label col-sm-2">Source repo URL</label>
+                                <div class="col-sm-10">
+
+                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                           placeholder="Source code repository URL (if open sourced)" type="url">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">API Doc URL</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" id="api_url" name="capability_apiDocUrl"
                                            placeholder="API documentation URL" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Source repo URL</label>
-                                <div class="col-sm-10">
-                                    {# TODO what is source repo url?#}
-                                    <input class="form-control" id="source_url" name="capability_source_url"
-                                           placeholder="Source code repository URL (if open sourced)" type="text">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1105,35 +1134,47 @@
                     </div>
 
                     <!--------------------------------------------talent block ------------------------------------------>
-                    <div class="container" id="talent-div" style="display: none">
+                    <div id="talent-div" style="display: none">
                         <hr class="dotted">
                         <h3>Add a Talent to this Contribution</h3>
-                        {% if is_editable %}
+                        {% if post.talents %}
                             {% for talent in post["talents"] %}
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="talent_name" name="talent_name"
-                                               placeholder="Give a name for your talent"
-                                               type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="talent_name" name="talent_name"
+                                                   placeholder="Give a name for your talent"
+                                                   type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="talent_name" name="talent_name"
+                                           placeholder="Give a name for your talent" type="text">
+                                        {%  endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Description</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                               placeholder=""
-                                               type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="talent_description" name="talent_shortDescription"
+                                                   placeholder=""
+                                                   type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="talent_description" name="talent_shortDescription"
+                                           placeholder="" type="text">
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Required Building Block(s)</label>
                                     <div class="col-sm-10">
                                         {# TODO what is required building blocks #}
-                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
-                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                               placeholder=""
-                                               type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                        {% if is_editable %}
+                                            {% if talent["requiredBuildingBlocks"]|length > 0 %}
+                                                <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                                       placeholder=""
+                                                       type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                            {% endif %}
                                         {% else %}
                                             <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
                                                    placeholder=""
@@ -1186,8 +1227,13 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">User Privacy Level</label>
                                     <div class="col-sm-10">
-                                        <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                               step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                        {%  if is_editable %}
+                                            <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                                   step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                        {% else %}
+                                            <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                           step="1" type="number"/>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -1224,10 +1270,17 @@
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Data Description</label>
-                                    <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                                  placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                                  style="height:150px"
-                                                                  type="text"></div>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input id="data_des" name="talent_dataDescription"
+                                                   placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                   style="height:150px" type="text">
+                                        {% else %}
+                                            <input id="data_des" name="talent_dataDescription"
+                                                   placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                   style="height:150px" type="text">
+                                        {% endif %}
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -1485,6 +1538,35 @@
 
                     <div class="container">
                         <!--        <form class="form-horizontal" method = "POST">-->
+                        <h3>Self-certification</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Deleting data upon request</label>
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_dataDeletionUponRequest"
+                                                          placeholder="Deleting data upon request"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Respecting privacy setting</label>
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_respectingUserPrivacySetting"
+                                                          placeholder="Respecting privacy setting"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
+                                                          placeholder="Disclose sponsors / ads"
+                                                          type="text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Disclose right to use images</label>
+                            <div class="col-sm-10"><input class="form-control"
+                                                          name="selfcertificate_discloseImageRights"
+                                                          placeholder="Disclose right to use images"
+                                                          type="text"></div>
+                        </div>
+                    </div>
 
                         <!-------------------------------------------- submit ------------------------------------------>
                         <div class="row">
@@ -1504,20 +1586,27 @@
                                 <p id="submit-pop">Please finish the form!</p>
                                 <br>
                             </div>
-
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </form>
     </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
-
-{% include 'topnav_javascript.html' %}
-
 <script>
+
+    $(function() {
+        $('input[name="capability_isOpenSource"]').on('click', function() {
+            if ($(this).val() == 'y') {
+                $('#sourceurl').show();
+            }
+            else {
+                $('#sourceurl').hide();
+            }
+        });
+    });
 
     $(function () {
         function split(val) {

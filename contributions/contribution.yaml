@@ -555,6 +555,11 @@ components:
             - Approved
             - Disapproved
             - Published
+        reviews:
+          items:
+            $ref: '#/components/schemas/Review'
+          nullable: true
+          type: array
         dateCreated:
           type: string
           format: date-time
@@ -587,6 +592,10 @@ components:
           nullable: true
           type: string
           description: API documentation URL
+        sourceRepoUrl:
+          nullable: true
+          type: string
+          description: Source Repository documentation URL
         deploymentDetails:
           type: object
           properties:
@@ -786,10 +795,27 @@ components:
       required:
         - name
         - githubUsername
+        - email
       properties:
         name:
           type: string
         githubUsername:
+          type: string
+        email:
+          type: string
+          format: email
+          pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+    Review:
+      description: A review from a reviewer.
+      properties:
+        reviewerId:
+          description: Reviewer's ID.
+          type: string
+          format: uuid
+        comment:
+          type: string
+        lastUpdated:
+          format: date-time
           type: string
   securitySchemes:
     ApiKeyAuth:

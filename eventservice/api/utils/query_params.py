@@ -17,7 +17,7 @@ import re
 from bson import ObjectId
 
 
-def format_query(args, query, include_private_events=False, group_ids=None):
+def format_query(args, query, include_private_events=False, group_ids=None, all_group_event=False):
     query_parts = []
     # group id
     group_id = args.get('groupId')
@@ -28,6 +28,8 @@ def format_query(args, query, include_private_events=False, group_ids=None):
     if super_event_id and ObjectId.is_valid(super_event_id):
         query_parts.append({'_id': ObjectId(super_event_id)})
         query_parts.append({'isSuperEvent': True})
+    if args.getlist('createdBy'):
+        query_parts.append({'createdBy': {'$in': args.getlist('createdBy')}})
     # multiple events ids
     if args.getlist('id'):
         ids = list()
@@ -155,15 +157,22 @@ def format_query(args, query, include_private_events=False, group_ids=None):
 
     # ApiKeyAuth query
     if not include_private_events:
-        query_parts.append({'isGroupPrivate': {'$ne': True}})
+        if not all_group_event:
+            query_parts.append({'isGroupPrivate': {'$ne': True}})
         query['$and'] = query_parts
     # UserAuth query
     else:
-        pubic_private_groups_access_parts = {'$or': [
-            {'isGroupPrivate': {'$ne': True}},  # Includes both group public and regular public events
-            {'createdByGroupId': {'$in': group_ids}}]}  # Check for group membership. Also include group private events.
-        query_parts.append(pubic_private_groups_access_parts)
+        if not all_group_event:
+            pubic_private_groups_access_parts = {'$or': [
+                {'isGroupPrivate': {'$ne': True}},  # Includes both group public and regular public events
+                {'createdByGroupId': {'$in': group_ids}}]}  # Check for group membership. Also include group private events.
+            query_parts.append(pubic_private_groups_access_parts)
         query['$and'] = query_parts
+
+    # All_group_events
+    if all_group_event:
+        query_parts.append({'createdByGroupId': {'$exists': True}})
+
     return query
 
 
