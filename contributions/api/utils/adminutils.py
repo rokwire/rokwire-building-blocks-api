@@ -77,12 +77,31 @@ def send_email(mail_to, subject, message):
     mimemsg['To'] = mail_to
     mimemsg['Subject'] = mail_subject
     mimemsg.attach(MIMEText(mail_body, 'plain'))
+
+    connection = smtplib.SMTP(host=cfg.SMTP_HOST, port=cfg.SMTP_PORT)
     try:
-        connection = smtplib.SMTP(host=cfg.SMTP_HOST, port=cfg.SMTP_PORT)
+        connection.ehlo()
+    except smtplib.SMTPHeloError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
         connection.starttls()
+    except smtplib.SMTPConnectError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
         connection.login(mail_from, password)
+    except smtplib.SMTPAuthenticationError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
         connection.send_message(mimemsg)
+    except smtplib.SMTPResponseException as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    except smtplib.SMTPException as ex:
+        return False, ex.strerror, ex.errno
+    try:
         connection.quit()
         return True, ' ', ' '
-    except smtplib.SMTPException as stmpex:
-        return False, smtplib.SMTPResponseException.smtp_code, smtplib.SMTPResponseException.smtp_error
+    except smtplib.SMTPResponseException as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    except smtplib.SMTPException as ex:
+        return False, ex.strerror, ex.errno
+
