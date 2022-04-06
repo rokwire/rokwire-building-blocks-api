@@ -6,15 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
-- Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
 - Posting contirbuiton error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
 
 ### Added
-- Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
 
 ### Changed
@@ -23,10 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.13.0] - 2022-04-04
 ### Fixed
+- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
+- Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
 - `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
 - Build error in Events BB. [#884](https://github.com/rokwire/rokwire-building-blocks-api/issues/884)
 
 ### Added
+- Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
 - Added email field for reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 - Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
