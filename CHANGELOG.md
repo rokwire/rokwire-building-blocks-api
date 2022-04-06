@@ -5,18 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.13.0] - 2022-04-04
 ### Fixed
 - UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
+- Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
 - `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
 - Posting contirbuiton error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- Build error in Events BB. [#884](https://github.com/rokwire/rokwire-building-blocks-api/issues/884)
 
 ### Added
 - Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
 - Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
+- Added email field for reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
+- Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
 
 ### Changed
 - All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
@@ -447,7 +454,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...HEAD
+[1.13.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...1.13.0
 [1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0
 [1.11.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...1.11.3
