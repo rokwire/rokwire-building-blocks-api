@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
+- Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 
 ## [1.13.0] - 2022-04-04
 ### Fixed
@@ -16,8 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
-- Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
-- Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 - Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
 - Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
 ### Changed
