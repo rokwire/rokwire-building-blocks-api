@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
+
+### Changed
+- Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
+- Minimum end user role as text in talent detail page [#879](https://github.com/rokwire/rokwire-building-blocks-api/issues/879)
+
+### Fixed
+- Posting contirbuiton error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
+- End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
+- Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
+- Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
 
 ## [1.13.0] - 2022-04-04
 ### Fixed
