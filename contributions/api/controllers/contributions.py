@@ -43,6 +43,7 @@ client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
+notification_enabled = cfg.NOTIFICATION_ENABLED
 
 def post(token_info):
     is_new_install = True
@@ -202,9 +203,10 @@ def post(token_info):
         logging.info("Contribution POST " + json.dumps(msg_json))
 
         # send new contribution email to add reviewers
-        list_reviewers = mongoutils.list_reviewers()
-        for reviewer in list_reviewers:
-            send_email_new_contribution(reviewer['githubUsername'], contribution_name)
+        if notification_enabled:
+            list_reviewers = mongoutils.list_reviewers()
+            for reviewer in list_reviewers:
+                send_email_new_contribution(reviewer['githubUsername'], contribution_name)
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
@@ -891,7 +893,8 @@ def admin_reviewers_post(token_info):
     reviewer_id = str(dataset['_id'])
     # send email when new reviewer is added
     ### TODO : This function is to be called when a reviewer is assigned to a contribution
-    send_email_new_reviewer(dataset['githubUsername'])
+    if notification_enabled:
+        send_email_new_reviewer(dataset['githubUsername'])
     return rs_handlers.return_id(msg, 'id', reviewer_id)
 
 def admin_reviewers_search(token_info):

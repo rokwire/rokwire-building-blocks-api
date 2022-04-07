@@ -37,6 +37,7 @@ FIELD_NAME = 'name'
 
 ADMIN_USERS = os.getenv('ADMIN_USERS', '')
 
+NOTIFICATION_ENABLED = bool(os.getenv('NOTIFICATION_ENABLED', 'True') == 'True')
 SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.office365.com')
 SMTP_PORT = os.getenv('SMTP_PORT', 587)
 SENDER_EMAIL = os.getenv('SENDER_EMAIL', '')
