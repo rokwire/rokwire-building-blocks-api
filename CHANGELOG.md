@@ -18,13 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- GET contributions returns 401 for unpublished contributions. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
 
 ## [1.13.0] - 2022-04-04
 ### Fixed
 - UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
 - Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
 - `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
-- GET contributions returns 401 for unpublished contributions. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
 - Build error in Events BB. [#884](https://github.com/rokwire/rokwire-building-blocks-api/issues/884)
 
 ### Added
