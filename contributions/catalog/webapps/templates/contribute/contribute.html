@@ -127,8 +127,6 @@
                         {% endif %}
                     </div>
                 </div>
-
-
                 <div class="form-group">
                     <label class="control-label col-sm-2">Contribution Admins</label>
                     <div class="col-sm-10">
@@ -143,8 +141,7 @@
                                    placeholder="Give a list of admin names, separated by comma"
                                    type="text"></div>
                         {% endif %}
-                </div>
-
+            </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Contributor Details</label>
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
@@ -158,161 +155,8 @@
                 <!--                </div>-->
             </div>
 
-            {% if post %}
-                {% if post.contributors %}
-                    {% for contributor in post.contributors %}
-                        <div id="organization" style="display: none">
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Organization Name</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="org_name" name="org_name" placeholder=""
-                                               type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Organization Address</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="org_address" name="org_address" placeholder=""
-                                               type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Organization Email</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="org_email" name="org_email" placeholder=""
-                                               type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Organization Phone</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="org_phone" name="org_phone" placeholder=""
-                                               type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="contributor_block" style="display: none">
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contributor's first name</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contributor's middle name</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contributor's last name</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
-                                    {% else %}
-                                        <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contributor Email</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="person_email" placeholder=""
-                                               type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="person_email" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contributor Phone</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="person_phone" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="person_phone" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Affiliation Name</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="affiliation_name" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="affiliation_name" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Affiliation Address</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="affiliation_address" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="affiliation_address" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Affiliation Email</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="affiliation_email" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="affiliation_email" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Affiliation Phone</label>
-                                <div class="col-sm-10">
-                                    {% if is_editable %}
-                                        <input class="form-control" name="affiliation_phone" placeholder=""
-                                               type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
-                                    {% else %}
-                                        <input class="form-control" name="affiliation_phone" placeholder="" type="text">
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
+            {% if post.contributors %}
+                {% for contributor in post.contributors %}
                     <div id="organization" style="display: none">
                         <div class="form-group">
                             <label class="control-label col-sm-2">Organization Name</label>
@@ -463,51 +307,31 @@
                             </div>
                         </div>
                     </div>
-                {% endif %}
+                {% endfor %}
             {% else %}
                 <div id="organization" style="display: none">
                     <div class="form-group">
                         <label class="control-label col-sm-2">Organization Name</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="org_name" name="org_name" placeholder=""
-                                       type="text" value="{{ contributor|filter_nested_dict(["orgName"]) }}">
-                            {% else %}
-                                <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Organization Address</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="org_address" name="org_address" placeholder=""
-                                       type="text" value="{{ contributor|filter_nested_dict(["orgAddress"]) }}">
-                            {% else %}
-                                <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Organization Email</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="org_email" name="org_email" placeholder=""
-                                       type="text" value="{{ contributor|filter_nested_dict(["orgEmail"]) }}">
-                            {% else %}
-                                <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Organization Phone</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder=""
-                                       type="text" value="{{ contributor|filter_nested_dict(["orgPhone"]) }}">
-                            {% else %}
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
                         </div>
                     </div>
                 </div>
@@ -516,466 +340,112 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contributor's first name</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["firstname"]) }}">
-                            {% else %}
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contributor's middle name</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["middlename"]) }}">
-                            {% else %}
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contributor's last name</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["lastname"]) }}">
-                            {% else %}
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contributor Email</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="person_email" placeholder=""
-                                       type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
-                            {% else %}
-                                <input class="form-control" name="person_email" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="person_email" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contributor Phone</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="person_phone" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
-                            {% else %}
-                                <input class="form-control" name="person_phone" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="person_phone" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Affiliation Name</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="affiliation_name" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
-                            {% else %}
-                                <input class="form-control" name="affiliation_name" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="affiliation_name" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Affiliation Address</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="affiliation_address" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
-                            {% else %}
-                                <input class="form-control" name="affiliation_address" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="affiliation_address" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Affiliation Email</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="affiliation_email" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
-                            {% else %}
-                                <input class="form-control" name="affiliation_email" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="affiliation_email" placeholder="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Affiliation Phone</label>
                         <div class="col-sm-10">
-                            {% if is_editable %}
-                                <input class="form-control" name="affiliation_phone" placeholder=""
-                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
-                            {% else %}
-                                <input class="form-control" name="affiliation_phone" placeholder="" type="text">
-                            {% endif %}
+                            <input class="form-control" name="affiliation_phone" placeholder="" type="text">
                         </div>
                     </div>
                 </div>
             {% endif %}
+            <div>
+                <nav>
+                    <ol class="cd-multi-steps text-top">
+                        <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
+                        <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        </li>
+                        <li><em><a href="#contact">Contact & Self-certification</a></em></li>
+                        <li><em>Submit</em></li>
+                    </ol>
+                </nav>
+            </div>
 
-            <!--            <div><button id = "add-contributor-person" style="display: none">Add more Contributor as Person</button></div>-->
-            <!-----------------------------------------capability block ------------------------------------>
-            <div class="container">
+            <div class="form-group">
+                <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type
+                    *</label>
                 <div>
-                    <nav>
-                        <ol class="cd-multi-steps text-top">
-                            <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
-                            <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
-                            </li>
-                            <li><em><a href="#contact">Contact & Self-certification</a></em></li>
-                            <li><em>Submit</em></li>
-                        </ol>
-                    </nav>
-
+                    <button class="button button2" id="add-capability">Add a Capability</button>
+                    OR
+                    <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type
-                        *</label>
-                    <div>
-                        <button class="button button2" id="add-capability">Add a Capability</button>
-                        OR
-                        <button class="button button1" id="add-talent">Add a Talent</button>
-                    </div>
-                </div>
-
-                <form class="form-horizontal" method="POST">
-                    <div id="capability-div" style="display: none; background-color:white">
-                        <hr class="dotted">
-                        <h3 id="capability">Add a Capability to this Contribution</h3>
-
-                        {% if post.capabilities %}
-                            {% for capability in post.capabilities %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Capability Name</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="capability_name" name="capability_name"
-                                                   placeholder="Give a name for your capability"
-                                                   type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="capability_name" name="capability_name"
-                                                   placeholder="Give a name for your capability" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Capability Description</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="capability_description" name="capability_description"
-                                                   placeholder="Give a short description"
-                                                   type="text" value="{{ capability | filter_nested_dict(["description"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="capability_description" name="capability_description"
-                                                   placeholder="Give a short description" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
-                                        capability</label>
-                                    <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
-                                    <label class="form-check-label">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                                <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio" checked="checked" value="y">
-                                                yes</label>
-                                            {% else %}
-                                                <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio" value="y">
-                                                yes</label>
-                                            {%  endif %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source"
-                                                           name="capability_isOpenSource" type="radio" checked="checked" value="n">
-                                                    no</label>
-                                            {% else %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source"
-                                                           name="capability_isOpenSource" type="radio" value="n">
-                                                    no</label>
-                                            {%  endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="open_source"
-                                                   name="capability_isOpenSource" type="radio" value="y">
-                                            yes</label>
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" id="open_source"
-                                                       name="capability_isOpenSource" type="radio" value="n">
-                                                no</label>
-                                        {% endif %}
-                                </div>
-                                {% if is_editable %}
-                                    {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                        <div class="form-group" id="sourceurl" style="display: block;">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                           placeholder="Source code repository URL (if open sourced)"
-                                                           type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
-                                            </div>
-                                        </div>
-                                    {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                        <div class="form-group" id="sourceurl" style="display: none;">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
-                                            <div class="col-sm-10">
-                                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                           placeholder="Source code repository URL (if open sourced)"
-                                                           type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% else %}
-                                    {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                        <div class="form-group" id="sourceurl" style="display: block">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                           placeholder="Source code repository URL (if open sourced)" type="url">
-                                            </div>
-                                        </div>
-                                    {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                        <div class="form-group" id="sourceurl" style="display: none">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
-                                            <div class="col-sm-10">
-                                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                                           placeholder="Source code repository URL (if open sourced)" type="url" >
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">API Doc URL</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                                   placeholder="API documentation URL"
-                                                   type="text" value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                                   placeholder="API documentation URL" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Deployment location</label>
-                                    <label class="form-check-label">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
-                                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                                       type="radio" value="internal" checked="checked"> internal
-                                            {% else %}
-                                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                                       type="radio" value="internal"> internal
-                                            {% endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                                   type="radio" value="internal"> internal
-                                        {% endif %}
-                                    </label>
-                                    <label class="form-check-label">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
-                                                <input class="form-check-input" id="deploy_external"
-                                                       name="deploymentDetails_location" type="radio"
-                                                       value="external" checked="checked"> external
-                                            {% else %}
-                                                <input class="form-check-input" id="deploy_external"
-                                                       name="deploymentDetails_location" type="radio"
-                                                       value="external"> external
-                                            {% endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="deploy_external"
-                                                   name="deploymentDetails_location" type="radio"
-                                                   value="external"> external
-                                        {% endif %}
-                                    </label>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                                   placeholder="API base URL"
-                                                   type="text" value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                                   placeholder="API base URL" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                                   placeholder="Docker image name (If internally deployed)"
-                                                   type="text"
-                                                   value="{{ capability | filter_nested_dict(["deploymentDetails","dockerImageName"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                                   placeholder="Docker image name (If internally deployed)" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    {% if capability["deploymentDetails"]["environmentVariables"] %}
-                                        {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
-                                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                                            <div class="col-sm-10" id="key-val">
-                                                {% if is_editable %}
-                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                           type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                                {% else %}
-                                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                           type="text">
-                                                {% endif %}
-                                                {% if is_editable %}
-                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                           type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                                {% else %}
-                                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                           type="text">
-                                                {% endif %}
-                                                <br>
-                                            </div>
-                                        {% endfor %}
-                                    {%  else %}
-                                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                                        <div class="col-sm-10" id="key-val">
-                                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                                   type="text">
-                                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                   type="text">
-                                            <br>
-                                        </div>
-                                    {% endif %}
-                                    <div class="row">
-                                        <button class="button button3" id='add-user' type="submit">Add more fields</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Database Detail</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                                   placeholder="Details of API endpoint to delete user info given the user UUID"
-                                                   type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                                   placeholder="Details of API endpoint to delete user info given the user UUID"
-                                                   type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Version</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="version" name="capability_version"
-                                                   placeholder="latest version number"
-                                                   type="text" value="{{ capability | filter_nested_dict(["version"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="version" name="capability_version"
-                                                   placeholder="latest version number"
-                                                   type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {# TODO what is version url #}
-                                    <label class="control-label col-sm-2">Version URL</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="version_url" name="capability_versionUrl"
-                                                   placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="version_url" name="capability_versionUrl"
-                                                   placeholder=""
-                                                   type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Health Check URL</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                                   placeholder="health check url"
-                                                   type="text" value="{{ capability | filter_nested_dict(["healthCheckUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                                   placeholder="health check url" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Authentication Method</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                                   placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","authMethod"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                                   placeholder="" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Data Deletion</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                                   placeholder="Endpoint"
-                                                   type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
-                                        {% else %}
-                                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                                   placeholder="Endpoint" type="text">
-                                        {% endif %}
-                                        {% if is_editable %}
-                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                                   placeholder="Api Key"
-                                                   type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
-                                        {% else %}
-                                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                                   placeholder="Api Key" type="text">
-                                        {% endif %}
-                                        <br>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
+            <!-----------------------------------------capability block ------------------------------------>
+            <div id="capability-parent" style="display: block; background-color:white">
+                <div id="capability-div" style="display: none; background-color:white">
+                    <hr class="dotted">
+                    <h3 id="capability">Add a Capability to this Contribution</h3>
+                    {% if post.capabilities %}
+                        {% for capability in post.capabilities %}
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Capability Name</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="capability_name" name="capability_name"
-                                           placeholder="Give a name for your capability" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="capability_name" name="capability_name"
+                                               placeholder="Give a name for your capability"
+                                               type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="capability_name" name="capability_name"
+                                               placeholder="Give a name for your capability" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Capability Description</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="capability_description" name="capability_description"
-                                           placeholder="Give a short description" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="capability_description" name="capability_description"
+                                               placeholder="Give a short description"
+                                               type="text" value="{{ capability | filter_nested_dict(["description"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="capability_description" name="capability_description"
+                                               placeholder="Give a short description" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -985,300 +455,464 @@
                                 <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
                             </div>
 
-                            <div class="form-group">
-                                <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                            <div id="open-source-check-div" class="form-group">
+                                <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
+                                <!-- open source yes no block -->
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="open_source"
-                                           name="capability_isOpenSource" type="radio" value="y">
-                                    yes</label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="open_source"
-                                               name="capability_isOpenSource" type="radio" value="n">
-                                        no</label>
+                                    {% if is_editable %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                            <input class="form-check-input" id="open_source_yes"
+                                                   name="capability_isOpenSource" type="radio" checked="checked" value="y">
+                                            yes</label>
+                                        {% else %}
+                                            <input class="form-check-input" id="open_source_yes"
+                                                   name="capability_isOpenSource" type="radio" value="y">
+                                            yes</label>
+                                        {%  endif %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_no"
+                                                       name="capability_isOpenSource" type="radio" checked="checked" value="n">
+                                                no</label>
+                                        {% else %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_no"
+                                                       name="capability_isOpenSource" type="radio" value="n">
+                                                no</label>
+                                        {%  endif %}
+                                    {% else %}
+                                        <input class="form-check-input" id="open_source_yes"
+                                               name="capability_isOpenSource" type="radio" value="y">
+                                        yes</label>
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="open_source_no"
+                                                   name="capability_isOpenSource" type="radio" value="n">
+                                            no</label>
+                                    {% endif %}
                             </div>
+                            {% if is_editable %}
+                                {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                    <div class="form-group" id="sourceurl" style="display: block;">
+                                        <label class="control-label col-sm-2">Source repo URL</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                       placeholder="Source code repository URL (if open sourced)"
+                                                       type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
+                                        </div>
+                                    </div>
+                                {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                    <div class="form-group" id="sourceurl" style="display: none;">
+                                        <label class="control-label col-sm-2">Source repo URL</label>
+                                        <div class="col-sm-10">
+                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                       placeholder="Source code repository URL (if open sourced)"
+                                                       type="url" value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                    <div class="form-group" id="sourceurl" style="display: block">
+                                        <label class="control-label col-sm-2">Source repo URL</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                       placeholder="Source code repository URL (if open sourced)" type="url">
+                                        </div>
+                                    </div>
+                                {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                    <div class="form-group" id="sourceurl" style="display: none">
+                                        <label class="control-label col-sm-2">Source repo URL</label>
+                                        <div class="col-sm-10">
+                                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                                       placeholder="Source code repository URL (if open sourced)" type="url" >
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
 
-                            <div class="form-group" id="sourceurl">
-                                <label class="control-label col-sm-2">Source repo URL</label>
-                                <div class="col-sm-10">
-
-                                    <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                           placeholder="Source code repository URL (if open sourced)" type="url">
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">API Doc URL</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                           placeholder="API documentation URL" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                               placeholder="API documentation URL"
+                                               type="text" value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                               placeholder="API documentation URL" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Deployment location</label>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                           type="radio" value="internal"> internal
+                                    {% if is_editable %}
+                                        {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
+                                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                                   type="radio" value="internal" checked="checked"> internal
+                                        {% else %}
+                                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                                   type="radio" value="internal"> internal
+                                        {% endif %}
+                                    {% else %}
+                                        <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                               type="radio" value="internal"> internal
+                                    {% endif %}
                                 </label>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="deploy_external"
-                                           name="deploymentDetails_location" type="radio"
-                                           value="external"> external
+                                    {% if is_editable %}
+                                        {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
+                                            <input class="form-check-input" id="deploy_external"
+                                                   name="deploymentDetails_location" type="radio"
+                                                   value="external" checked="checked"> external
+                                        {% else %}
+                                            <input class="form-check-input" id="deploy_external"
+                                                   name="deploymentDetails_location" type="radio"
+                                                   value="external"> external
+                                        {% endif %}
+                                    {% else %}
+                                        <input class="form-check-input" id="deploy_external"
+                                               name="deploymentDetails_location" type="radio"
+                                               value="external"> external
+                                    {% endif %}
                                 </label>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="api_base">API Base Location</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                           placeholder="API base URL" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                               placeholder="API base URL"
+                                               type="text" value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                               placeholder="API base URL" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                           placeholder="Docker image name (If internally deployed)" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                               placeholder="Docker image name (If internally deployed)"
+                                               type="text"
+                                               value="{{ capability | filter_nested_dict(["deploymentDetails","dockerImageName"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                               placeholder="Docker image name (If internally deployed)" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
-                                <div class="col-sm-10" id="key-val">
-                                    <input class="form-inline" name="environmentVariables_key" placeholder="Key"
-                                           type="text">
-                                    <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                           type="text">
-                                    <br>
-                                </div>
-                                <div class="row">
-                                    <button class="button button3" id='add-user' type="submit">Add more fields</button>
+                            <div name="add-env-var" class="form-group">
+                                {% if capability["deploymentDetails"]["environmentVariables"] %}
+                                    {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
+                                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                        <div class="col-sm-10" id="key-val">
+                                            {% if is_editable %}
+                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                       id="environmentVariables_key"
+                                                       type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                            {% else %}
+                                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                                       id="environmentVariables_key" type="text">
+                                            {% endif %}
+                                            {% if is_editable %}
+                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                       id="environmentVariables_value" type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                            {% else %}
+                                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                                       id="environmentVariables_value" type="text">
+                                            {% endif %}
+                                            <br>
+                                        </div>
+                                    {% endfor %}
+                                {%  else %}
+                                    <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                    <div class="col-sm-10" id="key-val">
+                                        <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                               id="environmentVariables_key" type="text">
+                                        <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                               id="environmentVariables_value" type="text">
+                                        <br>
+                                    </div>
+                                {% endif %}
+                                <div id="add-env-var-button-div" class="row">
+                                    <!-- place holder for dynamic button for add more fields" -->
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Database Detail</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                           placeholder="Details of API endpoint to delete user info given the user UUID"
-                                           type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                               placeholder="Details of API endpoint to delete user info given the user UUID"
+                                               type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                               placeholder="Details of API endpoint to delete user info given the user UUID"
+                                               type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Version</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="version" name="capability_version"
-                                           placeholder="latest version number"
-                                           type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="version" name="capability_version"
+                                               placeholder="latest version number"
+                                               type="text" value="{{ capability | filter_nested_dict(["version"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="version" name="capability_version"
+                                               placeholder="latest version number"
+                                               type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 {# TODO what is version url #}
                                 <label class="control-label col-sm-2">Version URL</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="version_url" name="capability_versionUrl"
-                                           placeholder=""
-                                           type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="version_url" name="capability_versionUrl"
+                                               placeholder=""
+                                               type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="version_url" name="capability_versionUrl"
+                                               placeholder=""
+                                               type="text">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Health Check URL</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                           placeholder="health check url" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-control" id="health" name="capability_healthCheckUrl"
+                                               placeholder="health check url"
+                                               type="text" value="{{ capability | filter_nested_dict(["healthCheckUrl"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="health" name="capability_healthCheckUrl"
+                                               placeholder="health check url" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
-
-                            <!--                        <div class="form-group">-->
-                            <!--                            <label class="control-label col-sm-2">Status</label>-->
-                            <!--                            <label class="form-check-label"><input class="form-check-input"-->
-                            <!--                                                                   id="submitted" name="capability_status"-->
-                            <!--                                                                   type="checkbox"-->
-                            <!--                                                                   value="Submitted"> submitted</label>-->
-                            <!--                            <label class="form-check-label"><input class="form-check-input"-->
-                            <!--                                                                   id="in review" name="capability_status"-->
-                            <!--                                                                   type="checkbox"-->
-                            <!--                                                                   value="Reviewing"> in review</label>-->
-                            <!--                            <label class="form-check-label"><input class="form-check-input"-->
-                            <!--                                                                   id="approved" name="capability_status"-->
-                            <!--                                                                   type="checkbox"-->
-                            <!--                                                                   value="Approved"> approved</label>-->
-                            <!--                            <label class="form-check-label"><input class="form-check-input"-->
-                            <!--                                                                   id="rejected" name="capability_status"-->
-                            <!--                                                                   type="checkbox"-->
-                            <!--                                                                   value="Disapproved"> rejected</label>-->
-                            <!--                            <label class="form-check-label"><input class="form-check-input"-->
-                            <!--                                                                   id="published" name="capability_status"-->
-                            <!--                                                                   type="checkbox"-->
-                            <!--                                                                   value="Published"> published</label>-->
-                            <!--                        </div>-->
-
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Authentication Method</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                           placeholder="" type="text">
-
+                                    {% if is_editable %}
+                                        <input class="form-control" id="auth" name="deploymentDetails_authMethod"
+                                               placeholder=""
+                                               type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","authMethod"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="auth" name="deploymentDetails_authMethod"
+                                               placeholder="" type="text">
+                                    {% endif %}
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Data Deletion</label>
                                 <div class="col-sm-10">
-                                    <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                           placeholder="Endpoint" type="text">
-                                    <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                           placeholder="Api Key" type="text">
+                                    {% if is_editable %}
+                                        <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                               placeholder="Endpoint"
+                                               type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
+                                    {% else %}
+                                        <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                               placeholder="Endpoint" type="text">
+                                    {% endif %}
+                                    {% if is_editable %}
+                                        <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                               placeholder="Api Key"
+                                               type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
+                                    {% else %}
+                                        <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                               placeholder="Api Key" type="text">
+                                    {% endif %}
                                     <br>
                                 </div>
                             </div>
-                        {% endif %}
-                    </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Capability Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="capability_name" name="capability_name"
+                                       placeholder="Give a name for your capability" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Capability Description</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="capability_description" name="capability_description"
+                                       placeholder="Give a short description" type="text">
+                            </div>
+                        </div>
 
-                    <!--------------------------------------------talent block ------------------------------------------>
-                    <div class="container" id="talent-div" style="display: none">
-                        <hr class="dotted">
-                        <h3>Add a Talent to this Contribution</h3>
-                        {% if is_editable %}
-                            {% for talent in post["talents"] %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Talent Name</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" id="talent_name" name="talent_name"
-                                               placeholder="Give a name for your talent"
-                                               type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Talent Description</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                               placeholder=""
-                                               type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Required Building Block(s)</label>
-                                    <div class="col-sm-10">
-                                        {# TODO what is required building blocks #}
-                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
-                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                               placeholder=""
-                                               type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                                   placeholder=""
-                                                   type="text" value="">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
-                                    <div class="col-sm-10">
-                                        <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
-                                            <option value = "0">Capability in this contribution</option>
-                                            {# if there is required capabilities in the talent #}
-                                            {% if talent["requiredCapabilities"] %}
-                                                {% set required_capabilities_from_talent = talent["requiredCapabilities"] %}
-                                                {% for capability in required_capabilities %}
-                                                    {% set re_cap_ns = namespace(is_existing=false) %}
-                                                    {% for recap in required_capabilities_from_talent %}
-                                                        {% if capability["capabilityId"] == recap["capabilityId"] %}
-                                                            {% set re_cap_ns.is_existing = True %}
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                    {% if re_cap_ns.is_existing %}
-                                                        <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
-                                                        "capabilityName": "{{ capability["capabilityName"] }}",
-                                                        "contributionId": "{{ capability["contributionId"] }}"}' selected>
-                                                            {{ capability["capabilityName"] }}
-                                                        </option>
-                                                    {% else %}
-                                                        <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
-                                                        "capabilityName": "{{ capability["capabilityName"] }}",
-                                                        "contributionId": "{{ capability["contributionId"] }}"}'>
-                                                            {{ capability["capabilityName"] }}
-                                                        </option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% else %}
-                                            {# if there is no reguired capabilities #}
-                                                {% for capability in required_capabilities %}
-                                                    <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
-                                                            "capabilityName": "{{ capability["capabilityName"] }}",
-                                                            "contributionId": "{{ capability["contributionId"] }}"}'>
-                                                        {{ capability["capabilityName"] }}
-                                                    </option>
-                                                {% endfor %}
-                                            {% endif %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">User Privacy Level</label>
-                                    <div class="col-sm-10">
-                                        <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                               step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">End User Role</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="student"
-                                                                           name="talent_minEndUserRoles"
-                                                                           type="checkbox" value="student"> student</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="visitor"
-                                                                           name="talent_minEndUserRoles"
-                                                                           type="checkbox" value="visitor"> visitor</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="alumni"
-                                                                           name="talent_minEndUserRoles"
-                                                                           type="checkbox"
-                                                                           value="alumni"> alumni</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="employee"
-                                                                           name="talent_minEndUserRoles" type="checkbox"
-                                                                           value="employee"> employee</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="parent"
-                                                                           name="talent_minEndUserRoles"
-                                                                           type="checkbox"
-                                                                           value="parent"> parent</label>
-                                    <label class="form-check-label"><input class="form-check-input" id="fan"
-                                                                           name="talent_minEndUserRoles"
-                                                                           type="checkbox" value="fan"> fan</label>
-                                </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
+                                capability</label>
+                            <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                        </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Select active date range</label>
-                                    <label class="form-check-label">start</label>
-                                    <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
-                                    <label class="form-check-label"> end</label>
-                                    <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Data Description</label>
-                                    <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                                  placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                                  style="height:150px"
-                                                                  type="text"></div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
+                        <div class="form-group" id="open-source-check-div">
+                            <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                        <!-- open source yes no block -->
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="open_source_yes"
+                                       name="capability_isOpenSource" type="radio" value="y">
+                                yes</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="open_source_no"
+                                       name="capability_isOpenSource" type="radio" value="n">
+                                no</label>
+                        </div>
+
+                        <div class="form-group" id="sourceurl">
+                            <label class="control-label col-sm-2">Source repo URL</label>
+                            <div class="col-sm-10">
+
+                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                       placeholder="Source code repository URL (if open sourced)" type="url">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">API Doc URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                       placeholder="API documentation URL" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Deployment location</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                       type="radio" value="internal"> internal
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="deploy_external"
+                                       name="deploymentDetails_location" type="radio"
+                                       value="external"> external
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="api_base">API Base Location</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                       placeholder="API base URL" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                       placeholder="Docker image name (If internally deployed)" type="text">
+                            </div>
+                        </div>
+
+                        <div name="add-env-var-div" class="form-group">
+                            <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                            <div class="col-sm-10" id="key-val">
+                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                       id="environmentVariables_key" type="text">
+                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                       id="environmentVariables_value" type="text">
+                                <br>
+                            </div>
+                            <div id="add-env-var-button-div" class="row">
+                                <!-- place holder for dynamic button for add more fields" -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Database Detail</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                       placeholder="Details of API endpoint to delete user info given the user UUID"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Version</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="version" name="capability_version"
+                                       placeholder="latest version number"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {# TODO what is version url #}
+                            <label class="control-label col-sm-2">Version URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="version_url" name="capability_versionUrl"
+                                       placeholder=""
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Health Check URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="health" name="capability_healthCheckUrl"
+                                       placeholder="health check url" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Authentication Method</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="auth" name="deploymentDetails_authMethod"
+                                       placeholder="" type="text">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Data Deletion</label>
+                            <div class="col-sm-10">
+                                <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                       placeholder="Endpoint" type="text">
+                                <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                       placeholder="Api Key" type="text">
+                                <br>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!--------------------------------------------talent block ------------------------------------------>
+            <div id="talent-parent" style="display: block; background-color:white">
+                <div id="talent-div" style="display: none">
+                    <hr class="dotted">
+                    <h3>Add a Talent to this Contribution</h3>
+                    {% if is_editable %}
+                        {% for talent in post["talents"] %}
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Talent Name</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" id="talent_name" name="talent_name"
-                                           placeholder="Give a name for your talent" type="text">
+                                           placeholder="Give a name for your talent"
+                                           type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Talent Description</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                           placeholder="" type="text">
+                                           placeholder=""
+                                           type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Required Building Block(s)</label>
                                 <div class="col-sm-10">
                                     {# TODO what is required building blocks #}
-                                    {% if tallent and talent["requiredBuildingBlocks"] %}
+                                    {%  if talent["requiredBuildingBlocks"] %}
                                         {% if talent["requiredBuildingBlocks"]|length > 0 %}
                                             <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
                                                    placeholder=""
@@ -1299,14 +933,40 @@
                                 <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
                                 <div class="col-sm-10">
                                     <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
-                                        <option value = "0" selected>Capability in this contribution</option>
-                                        {% for capability in required_capabilities %}
-                                            <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
-                                                            "capabilityName": "{{ capability["capabilityName"] }}",
-                                                            "contributionId": "{{ capability["contributionId"] }}"}'>
-                                                {{ capability["capabilityName"] }}
-                                            </option>
-                                        {% endfor %}
+                                        {# if there is required capabilities in the talent #}
+                                        {% if talent["requiredCapabilities"] %}
+                                            {% set required_capabilities_from_talent = talent["requiredCapabilities"] %}
+                                            {% for capability in required_capabilities %}
+                                                {% set re_cap_ns = namespace(is_existing=false) %}
+                                                {% for recap in required_capabilities_from_talent %}
+                                                    {% if capability["capabilityId"] == recap["capabilityId"] %}
+                                                        {% set re_cap_ns.is_existing = True %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if re_cap_ns.is_existing %}
+                                                    <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                    "capabilityName": "{{ capability["capabilityName"] }}",
+                                                    "contributionId": "{{ capability["contributionId"] }}"}' selected>
+                                                        {{ capability["capabilityName"] }}
+                                                    </option>
+                                                {% else %}
+                                                    <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                    "capabilityName": "{{ capability["capabilityName"] }}",
+                                                    "contributionId": "{{ capability["contributionId"] }}"}'>
+                                                        {{ capability["capabilityName"] }}
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                        {# if there is no reguired capabilities #}
+                                            {% for capability in required_capabilities %}
+                                                <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                        "capabilityName": "{{ capability["capabilityName"] }}",
+                                                        "contributionId": "{{ capability["contributionId"] }}"}'>
+                                                    {{ capability["capabilityName"] }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
                                     </select>
                                 </div>
                             </div>
@@ -1314,39 +974,87 @@
                                 <label class="control-label col-sm-2">User Privacy Level</label>
                                 <div class="col-sm-10">
                                     <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                           step="1" type="number"/>
+                                           step="1" type="number" value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">End User Role</label>
-                                <label class="form-check-label"><input class="form-check-input" id="student"
-                                                                       name="talent_minEndUserRoles"
-                                                                       type="checkbox" value="student"> student</label>
-                                <label class="form-check-label"><input class="form-check-input" id="visitor"
-                                                                       name="talent_minEndUserRoles"
-                                                                       type="checkbox" value="visitor"> visitor</label>
-                                <label class="form-check-label"><input class="form-check-input" id="alumni"
-                                                                       name="talent_minEndUserRoles"
-                                                                       type="checkbox"
-                                                                       value="alumni"> alumni</label>
-                                <label class="form-check-label"><input class="form-check-input" id="employee"
-                                                                       name="talent_minEndUserRoles" type="checkbox"
-                                                                       value="employee"> employee</label>
-                                <label class="form-check-label"><input class="form-check-input" id="parent"
-                                                                       name="talent_minEndUserRoles"
-                                                                       type="checkbox"
-                                                                       value="parent"> parent</label>
-                                <label class="form-check-label"><input class="form-check-input" id="fan"
-                                                                       name="talent_minEndUserRoles"
-                                                                       type="checkbox" value="fan"> fan</label>
+                                {% if talent["minEndUserRoles"] %}
+                                    {%  set student_ns = namespace(is_on=false) %}
+                                    {%  set visitor_ns = namespace(is_on=false) %}
+                                    {%  set alumni_ns = namespace(is_on=false) %}
+                                    {%  set employee_ns = namespace(is_on=false) %}
+                                    {%  set parent_ns = namespace(is_on=false) %}
+                                    {%  set fan_ns = namespace(is_on=false) %}
+                                    {% for role in talent["minEndUserRoles"] %}
+                                        {% if role == "student" %}
+                                            {% set student_ns.is_on = True %}
+                                        {% elif role == "visitor" %}
+                                            {% set visitor_ns.is_on = True %}
+                                        {% elif role == "alumni" %}
+                                            {% set alumni_ns.is_on = True %}
+                                        {% elif role == "employee" %}
+                                            {% set employee_ns.is_on = True %}
+                                        {% elif role == "parent" %}
+                                            {% set parent_ns.is_on = True %}
+                                        {% elif role == "fan" %}
+                                            {% set fan_ns.is_on = True %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="student" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="student"
+                                                {% if student_ns.is_on %} checked {% endif %}> student</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="visitor"
+                                                {% if visitor_ns.is_on %} checked {% endif %}> visitor</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="alumni"
+                                                {% if alumni_ns.is_on %} checked {% endif %}> alumni</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="employee" name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="employee"
+                                                {% if employee_ns.is_on %} checked {% endif %}> employee</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="parent" name="talent_minEndUserRoles" type="checkbox"
+                                                                       value="parent"
+                                                {% if parent_ns.is_on %} checked {% endif %}> parent</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="fan" name="talent_minEndUserRoles"
+                                                                       type="checkbox" value="fan"
+                                                {% if fan_ns.is_on %} checked {% endif %}> fan</label>
+                                {% else %}
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="student" name="talent_minEndUserRoles"
+                                               type="checkbox" value="student"> student</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="visitor" name="talent_minEndUserRoles"
+                                               type="checkbox" value="visitor"> visitor</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="alumni" name="talent_minEndUserRoles"
+                                               type="checkbox" value="alumni"> alumni</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="employee" name="talent_minEndUserRoles" type="checkbox"
+                                               value="employee"> employee</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="parent" name="talent_minEndUserRoles" type="checkbox"
+                                               value="parent"> parent</label>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="fan" name="talent_minEndUserRoles"
+                                               type="checkbox" value="fan"> fan</label>
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Select active date range</label>
                                 <label class="form-check-label">start</label>
-                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date"
+                                value="{{ talent|filter_nested_dict(["startDate"]) }}">
                                 <label class="form-check-label"> end</label>
-                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date"
+                                       value="{{ talent|filter_nested_dict(["endDate"]) }}">
                             </div>
 
                             <div class="form-group">
@@ -1354,10 +1062,150 @@
                                 <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
                                                               placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
                                                               style="height:150px"
-                                                              type="text"></div>
+                                                              type="text"
+                                                              value="{{ talent|filter_nested_dict(["dataDescription"]) }}">
+                                </div>
                             </div>
+                            <!---------- self certification block -------------------->
+                            <div class="container">
+                                <h3>Self-certification</h3>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Deleting data upon request</label>
+                                    <div class="col-sm-10"><input class="form-control"
+                                                                  name="selfcertificate_dataDeletionUponRequest"
+                                                                  placeholder="Deleting data upon request"
+                                                                  type="text"
+                                                                  value="{{ talent|filter_nested_dict(["selfCertification", "dataDeletionUponRequest"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Respecting privacy setting</label>
+                                    <div class="col-sm-10"><input class="form-control"
+                                                                  name="selfcertificate_respectingUserPrivacySetting"
+                                                                  placeholder="Respecting privacy setting"
+                                                                  type="text"
+                                                                  value="{{ talent|filter_nested_dict(["selfCertification", "respectingUserPrivacySetting"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                                    <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
+                                                                  placeholder="Disclose sponsors / ads"
+                                                                  type="text"
+                                                                  value="{{ talent|filter_nested_dict(["selfCertification", "discloseAds"]) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Disclose right to use images</label>
+                                    <div class="col-sm-10"><input class="form-control"
+                                                                  name="selfcertificate_discloseImageRights"
+                                                                  placeholder="Disclose right to use images"
+                                                                  type="text"
+                                                                  value="{{ talent|filter_nested_dict(["selfCertification", "discloseImageRights"]) }}">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Talent Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="talent_name" name="talent_name"
+                                       placeholder="Give a name for your talent" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Talent Description</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="talent_description" name="talent_shortDescription"
+                                       placeholder="" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Required Building Block(s)</label>
+                            <div class="col-sm-10">
+                                {# TODO what is required building blocks #}
+                                {% if tallent and talent["requiredBuildingBlocks"] %}
+                                    {% if talent["requiredBuildingBlocks"]|length > 0 %}
+                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                               placeholder=""
+                                               type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                    {% else %}
+                                        <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                               placeholder=""
+                                               type="text" value="">
+                                    {% endif %}
+                                {% else %}
+                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
+                                           placeholder=""
+                                           type="text" value="">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
+                                    {% for capability in required_capabilities %}
+                                        <option value='{"capabilityId": "{{ capability["capabilityId"] }}",
+                                                        "capabilityName": "{{ capability["capabilityName"] }}",
+                                                        "contributionId": "{{ capability["contributionId"] }}"}'>
+                                            {{ capability["capabilityName"] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">User Privacy Level</label>
+                            <div class="col-sm-10">
+                                <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                       step="1" type="number"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">End User Role</label>
+                            <label class="form-check-label"><input class="form-check-input" id="student"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="student"> student</label>
+                            <label class="form-check-label"><input class="form-check-input" id="visitor"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="visitor"> visitor</label>
+                            <label class="form-check-label"><input class="form-check-input" id="alumni"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox"
+                                                                   value="alumni"> alumni</label>
+                            <label class="form-check-label"><input class="form-check-input" id="employee"
+                                                                   name="talent_minEndUserRoles" type="checkbox"
+                                                                   value="employee"> employee</label>
+                            <label class="form-check-label"><input class="form-check-input" id="parent"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox"
+                                                                   value="parent"> parent</label>
+                            <label class="form-check-label"><input class="form-check-input" id="fan"
+                                                                   name="talent_minEndUserRoles"
+                                                                   type="checkbox" value="fan"> fan</label>
+                        </div>
 
-                            <h4>Self-certification</h4>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Select active date range</label>
+                            <label class="form-check-label">start</label>
+                            <input class="form-check-input" id="start_day" name="talent_startDate" type="date">
+                            <label class="form-check-label"> end</label>
+                            <input class="form-check-input" id="end_day" name="talent_endDate" type="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Data Description</label>
+                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
+                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                                          style="height:150px"
+                                                          type="text"></div>
+                        </div>
+                        <!---------- self certification block -------------------->
+                        <div class="container">
+                            <!--        <form class="form-horizontal" method = "POST">-->
+                            <h3>Self-certification</h3>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Deleting data upon request</label>
                                 <div class="col-sm-10"><input class="form-control"
@@ -1385,185 +1233,151 @@
                                                               placeholder="Disclose right to use images"
                                                               type="text"></div>
                             </div>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
+                </div>
 
-                    <!--------------------------------------------contact/privacy check ------------------------------------------>
-                    <div>
-                        <nav>
-                            <ol class="cd-multi-steps text-top">
-                                <li class="visited"><a href="#contribute">Contribution Details</a></li>
-                                <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
-                                </li>
-                                <li class="current"><em><a href="#contact">Contact</a></em></li>
-                                <li><em>Submit</em></li>
-                            </ol>
-                        </nav>
+            </div>
 
-                    </div>
+            <!--------------------------------------------contact/privacy check ------------------------------------------>
+            <div>
+                <nav>
+                    <ol class="cd-multi-steps text-top">
+                        <li class="visited"><a href="#contribute">Contribution Details</a></li>
+                        <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        </li>
+                        <li class="current"><em><a href="#contact">Contact</a></em></li>
+                        <li><em>Submit</em></li>
+                    </ol>
+                </nav>
 
-                    <div class="container">
-                        <h3 id="contact">Contact Details</h3>
-                        {% if post.contacts %}
-                            {% set contact = post["contacts"][0] %}
-                            {% if is_editable %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Contact Name</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                                  placeholder="" type="text" value="{{ contact.name }}"></div>
-                                </div>
-                            {% else %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Contact Name</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                                  placeholder="" type="text"></div>
-                                </div>
-                            {% endif %}
-                            {% if is_editable %}
-                                <div class="form-group">
-                                <label class="required control-label col-sm-2">Contact Email</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                              placeholder="" type="text" value="{{ contact.email }}"></div>
-                            </div>
-                            {% else %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Contact Email</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                                  placeholder="" type="text"></div>
-                                </div>
-                            {% endif %}
-                            {% if is_editable %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Contact Phone</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_phone"
-                                                                  name="contact_phone"
-                                                                  placeholder="" type="text"
-                                                                  value="{{ contact.phone }}"></div>
-                                </div>
-                            {% else %}
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2">Contact Phone</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                                  placeholder="" type="text"></div>
-                                </div>
-                            {% endif %}
-                            {% if is_editable %}
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Contact Organization</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                                  name="contact_organization"
-                                                                  placeholder="" type="text"
-                                                                  value="{{ contact.organization }}"></div>
-                                </div>
-                            {% else %}
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Contact Organization</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                                  name="contact_organization"
-                                                                  placeholder="" type="text"></div>
-                                </div>
-                            {% endif %}
-                            {% if is_editable %}
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Official Address</label>
-                                    <div class="col-sm-10"><input class="form-control"
-                                                                  id="contact_address"
-                                                                  name="contact_officialAddress"
-                                                                  placeholder="" type="text"
-                                                                  value="{{ contact.officialAddress }}"></div>
-                                </div>
-                            {% else %}
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Official Address</label>
-                                    <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                                  name="contact_officialAddress"
-                                                                  placeholder="" type="text"></div>
-                                </div>
-                            {% endif %}
-                        {% else %}
-                            <div class="form-group">
-                                <label class="required control-label col-sm-2">Contact Name</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                              placeholder="" type="text"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="required control-label col-sm-2">Contact Email</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                              placeholder="" type="text"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="required control-label col-sm-2">Contact Phone</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                              placeholder="" type="text"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Contact Organization</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                              name="contact_organization"
-                                                              placeholder="" type="text"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2">Official Address</label>
-                                <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                              name="contact_officialAddress"
-                                                              placeholder="" type="text"></div>
-                            </div>
-                        {% endif %}
+            </div>
 
-                    </div>
-
-                    <div class="container">
-                        <!--        <form class="form-horizontal" method = "POST">-->
-                        <h3>Self-certification</h3>
+            <div class="container">
+                <h3 id="contact">Contact Details</h3>
+                {% if post.contacts %}
+                    {% set contact = post["contacts"][0] %}
+                    {% if is_editable %}
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Deleting data upon request</label>
+                            <label class="required control-label col-sm-2">Contact Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                          placeholder="" type="text" value="{{ contact.name }}"></div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Contact Name</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                    {% endif %}
+                    {% if is_editable %}
+                        <div class="form-group">
+                        <label class="required control-label col-sm-2">Contact Email</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                      placeholder="" type="text" value="{{ contact.email }}"></div>
+                    </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Contact Email</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                    {% endif %}
+                    {% if is_editable %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Contact Phone</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_phone"
+                                                          name="contact_phone"
+                                                          placeholder="" type="text"
+                                                          value="{{ contact.phone }}"></div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Contact Phone</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                    {% endif %}
+                    {% if is_editable %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Organization</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                          name="contact_organization"
+                                                          placeholder="" type="text"
+                                                          value="{{ contact.organization }}"></div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Contact Organization</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                          name="contact_organization"
+                                                          placeholder="" type="text"></div>
+                        </div>
+                    {% endif %}
+                    {% if is_editable %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Official Address</label>
                             <div class="col-sm-10"><input class="form-control"
-                                                          name="selfcertificate_dataDeletionUponRequest"
-                                                          placeholder="Deleting data upon request"
-                                                          type="text"></div>
+                                                          id="contact_address"
+                                                          name="contact_officialAddress"
+                                                          placeholder="" type="text"
+                                                          value="{{ contact.officialAddress }}"></div>
                         </div>
+                    {% else %}
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Respecting privacy setting</label>
-                            <div class="col-sm-10"><input class="form-control"
-                                                          name="selfcertificate_respectingUserPrivacySetting"
-                                                          placeholder="Respecting privacy setting"
-                                                          type="text"></div>
+                            <label class="control-label col-sm-2">Official Address</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_address"
+                                                          name="contact_officialAddress"
+                                                          placeholder="" type="text"></div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Disclose sponsors / ads</label>
-                            <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
-                                                          placeholder="Disclose sponsors / ads"
-                                                          type="text"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Disclose right to use images</label>
-                            <div class="col-sm-10"><input class="form-control"
-                                                          name="selfcertificate_discloseImageRights"
-                                                          placeholder="Disclose right to use images"
-                                                          type="text"></div>
-                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Contact Name</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
+                                                      placeholder="" type="text"></div>
                     </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Contact Email</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                      placeholder="" type="text"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required control-label col-sm-2">Contact Phone</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
+                                                      placeholder="" type="text"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contact Organization</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_org"
+                                                      name="contact_organization"
+                                                      placeholder="" type="text"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Official Address</label>
+                        <div class="col-sm-10"><input class="form-control" id="contact_address"
+                                                      name="contact_officialAddress"
+                                                      placeholder="" type="text"></div>
+                    </div>
+                {% endif %}
 
-                        <!-------------------------------------------- submit ------------------------------------------>
-                        <div class="row">
-                            <input href="{{ url_for('contribute.home') }}"
-                                   id="submit_button"
-                                   onsubmit="return data_validation()"
-                                   type="submit"
-                                   value="Submit">
-                        </div>
+            </div>
+            <!-------------------------------------------- submit ------------------------------------------>
+            <div class="row">
+                <input href="{{ url_for('contribute.home') }}"
+                       id="submit_button"
+                       onsubmit="return data_validation()"
+                       type="submit"
+                       value="Submit">
+            </div>
 
-                        <!-- The Modal -->
-                        <div class="modal" id="myModal">
-
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <p id="submit-pop">Please finish the form!</p>
-                                <br>
-                            </div>
-                        </div>
-                    </form>
+            <!-- The Modal -->
+            <div class="modal" id="myModal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p id="submit-pop">Please finish the form!</p>
+                    <br>
                 </div>
             </div>
         </form>
@@ -1572,17 +1386,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-
-    $(function() {
-        $('input[name="capability_isOpenSource"]').on('click', function() {
-            if ($(this).val() == 'y') {
-                $('#sourceurl').show();
-            }
-            else {
-                $('#sourceurl').hide();
-            }
-        });
-    });
+    var capability_count = 0;
+    var talent_count = 0;
 
     $(function () {
         function split(val) {
@@ -1640,7 +1445,6 @@
             });
     });
 
-
     var modal = document.getElementById("myModal");
     // Get the button that opens the modal
     var btn = document.getElementById("submit_button");
@@ -1683,100 +1487,142 @@
             contribution_des.required = true;
             return false;
         }
-        var capability_name = document.getElementById('capability_name');
-        var talent_name = document.getElementById('talent_name');
-        if (capability_name.value == "" && talent_name.value == "") {
+
+        if (capability_count == 0 && talent_count == 0) {
             document.getElementById('select-contribution').focus();
             document.getElementById('select-contribution').required = true;
             window.alert("Please enter either a capability or a talent.");
             return false;
         }
-        //use capability's validation setting
-        if (capability_name.value != "") {
-            var capability_description = document.getElementById('capability_description');
-            if (capability_description.value == "") {
-                // window.alert("Please enter either a capability description.");
-                capability_description.focus();
-                capability_description.required = true;
-                return false;
-            }
-            // var capability_opensource = document.getElementById('open_source');
-            // if (capability_opensource.value == "") {
-            //     // window.alert("Please enter if this capability is open-souced.");
-            //     capability_opensource.required = true;
-            //     capability_opensource.focus();
-            //     return false;
-            // }
-            var deploy_location = document.getElementsByName('deploymentDetails_location')
 
-            var deploy_internal = document.getElementById('deploy_internal')
-            var deploy_external = document.getElementById('deploy_external')
-            if (!deploy_internal.checked && !deploy_external.checked) {
-                window.alert("Please select deployed location.");
-                deploy_internal.focus();
-                deploy_external.focus();
-                return false;
-            }
-            var dockerimage = document.getElementById('docker_img');
-            if (dockerimage.value == "") {
-                // window.alert("Please enter the docker image.");
-                dockerimage.focus();
-                dockerimage.required = true;
-                return false;
-            }
+        var capability_name = []
+        var capability_description = []
+        var capability_opensource = []
+        var opensource_yes = []
+        var opensource_no = []
+        var deploy_location = []
+        var deploy_internal = []
+        var deploy_external = []
+        var environmentVariables_key = []
+        var environmentVariables_value = []
+        var dockerimage = []
+        var db = []
+        var version = []
+        var health_check = []
+        var authmethod = []
+        var datadel_endpoint = []
+        var datadel_api = []
 
-            var db = document.getElementById('db-detail');
-            if (db.value == "") {
-                // window.alert("Please enter the database details. ");
-                db.focus();
-                db.required = true;
-                return false;
-            }
-            var version = document.getElementById('version');
-            if (version.value == "") {
-                // window.alert("Please enter the version. ");
-                version.focus();
-                version.required = true;
-                return false;
-            }
-            var health_check = document.getElementById('health');
-            if (health_check.value == "") {
-                // window.alert("Please enter the health check url. ");
-                health_check.focus();
-                health_check.required = true;
-                return false;
-            }
-            var authmethod = document.getElementById('auth');
-            if (authmethod.value == "") {
-                // window.alert("Please enter the auth method. ");
-                authmethod.focus();
-                authmethod.required = true;
-                return false;
-            }
-            var datadel_endpoint = document.getElementById("datadel_endpoint");
-            if (datadel_endpoint.value == "") {
-                // window.alert("Please enter the data deletion endpoint. ");
-                datadel_endpoint.focus();
-                datadel_endpoint.required = true;
-                return false;
-            }
-            var datadel_api = document.getElementById("datadel_api");
-            if (datadel_api.value == "") {
-                // window.alert("Please enter the data deletion api. ");
-                datadel_api.focus();
-                datadel_api.required = true;
-                return false;
-            }
-        } else {
-            var talent_des = document.getElementById("talent_description");
-            if (talent_des.value == "") {
-                // window.alert("Please enter the talent description. ");
-                talent_des.focus();
-                talent_des.required = true;
-                return false;
+        if (capability_count > 0) {
+            for (var i = 0, l = capability_count; i < l; i++) {
+                capability_name[i] = document.getElementById('capability_name' + '_' + i);
+                if (capability_name[i].value == "") {
+                    // window.alert("Please enter either a capability description.");
+                    capability_name[i].focus();
+                    capability_name[i].required = true;
+                    return false;
+                }
+                capability_description[i] = document.getElementById('capability_description' + '_' + i);
+                if (capability_description[i].value == "") {
+                    // window.alert("Please enter either a capability description.");
+                    capability_description[i].focus();
+                    capability_description[i].required = true;
+                    return false;
+                }
+                opensource_yes[i] = document.getElementById('open_source_yes' + '_' + i);
+                opensource_no[i] = document.getElementById('open_source_no' + '_' + i);
+                if (!opensource_yes[i].checked && !opensource_no[i].checked) {
+                    window.alert("Please enter if this capability is open-sourced.");
+                    opensource_yes[i].focus();
+                    return false;
+                }
+                deploy_location[i] = document.getElementsByName('deploymentDetails_location' + '_' + i)
+                deploy_internal[i] = document.getElementById('deploy_internal' + '_' + i)
+                deploy_external[i] = document.getElementById('deploy_external' + '_' + i)
+                if (!deploy_internal[i].checked && !deploy_external[i].checked) {
+                    window.alert("Please select deployed location.");
+                    deploy_internal[i].focus();
+                    return false;
+                }
+                dockerimage[i] = document.getElementById('docker_img' + '_' + i);
+                if (dockerimage[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    dockerimage[i].focus();
+                    dockerimage[i].required = true;
+                    return false;
+                }
+                environmentVariables_key[i] = document.getElementById('environmentVariables_key' + '_' + i);
+                if (environmentVariables_key[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    environmentVariables_key[i].focus();
+                    environmentVariables_key[i].required = true;
+                    return false;
+                }
+                environmentVariables_value[i] = document.getElementById('environmentVariables_value' + '_' + i);
+                if (environmentVariables_value[i].value == "") {
+                    // window.alert("Please enter the docker image.");
+                    environmentVariables_value[i].focus();
+                    environmentVariables_value[i].required = true;
+                    return false;
+                }
+                db[i] = document.getElementById('db-detail' + '_' + i);
+                if (db[i].value == "") {
+                    // window.alert("Please enter the database details. ");
+                    db[i].focus();
+                    db[i].required = true;
+                    return false;
+                }
+                version[i] = document.getElementById('version' + '_' + i);
+                if (version[i].value == "") {
+                    // window.alert("Please enter the version. ");
+                    version[i].focus();
+                    version[i].required = true;
+                    return false;
+                }
+                health_check[i] = document.getElementById('health' + '_' + i);
+                if (health_check[i].value == "") {
+                    // window.alert("Please enter the health check url. ");
+                    health_check[i].focus();
+                    health_check[i].required = true;
+                    return false;
+                }
+                authmethod[i] = document.getElementById('auth' + '_' + i);
+                if (authmethod[i].value == "") {
+                    // window.alert("Please enter the auth method. ");
+                    authmethod[i].focus();
+                    authmethod[i].required = true;
+                    return false;
+                }
+                datadel_endpoint[i] = document.getElementById("datadel_endpoint" + '_' + i);
+                if (datadel_endpoint[i].value == "") {
+                    // window.alert("Please enter the data deletion endpoint. ");
+                    datadel_endpoint[i].focus();
+                    datadel_endpoint[i].required = true;
+                    return false;
+                }
+                datadel_api[i] = document.getElementById("datadel_api" + '_' + i);
+                if (datadel_api[i].value == "") {
+                    // window.alert("Please enter the data deletion api. ");
+                    datadel_api[i].focus();
+                    datadel_api[i].required = true;
+                    return false;
+                }
             }
         }
 
+        if (talent_count > 0) {
+            for (var i = 0, l = capability_count; i < l; i++) {
+                var talent_name = document.getElementById('talent_name_' + '_' + i);
+
+                var talent_des = document.getElementById("talent_description_" + '_' + i);
+                if (talent_des.value == "") {
+                    // window.alert("Please enter the talent description. ");
+                    talent_des.focus();
+                    talent_des.required = true;
+                    return false;
+                }
+            }
+        }
         //success
         // window.location.href = "/contribute";
         var x = document.getElementById('submit-pop').innerHTML = "Your Contribution is being submitted. Please wait!";
@@ -1807,15 +1653,6 @@
         }
     }
 
-    $(function () {
-        $("#add-user").click(function (e) {
-            e.preventDefault();
-            $("#key-val").append("<input name=\"environmentVariables_key\" type=\"text\" placeholder=\"Key\">");
-            $("#key-val").append("<input name=\"environmentVariables_value\" type=\"text\" placeholder=\"Value\">");
-            $("#key-val").append("<br>");
-        });
-    });
-
     function duplicate() {
         var original = document.getElementById('capability' + i);
         var clone = original.cloneNode(true); // "deep" clone
@@ -1824,41 +1661,70 @@
         original.parentNode.appendChild(clone);
     }
 
-
     $(function () {
         $("#add-capability").click(function (e) {
             e.preventDefault();
-            var original = document.getElementById('capability-div');
-            if (original.style.display === "none") {
-                original.style.display = "block";
-            } else {
+            var $clone = $("#capability-div").clone(true);
+            $clone.find(':input').attr('id', function(i, val) {
+                return val + '_' + capability_count;
+            });
+            $clone.find(':input').attr('name', function(i, val) {
+                return val + '_' + capability_count;
+            });
+            $clone.find('div').attr('id', function(i, val) {
+                return val + '_' + capability_count;
+            });
+            $clone.attr('style', 'display: block, background-color: white')
 
-                var clone = original.cloneNode(true); // "deep" clone
-                if (clone.style.display === "none") {
-                    clone.style.display = "block";
-                }
-                $("#capability-div").append(clone);
-                $("#capability-div").append("<br>");
+            var i = capability_count;
+            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_'+ i + '">' +
+                'Add more fields</button>'
+
+            $("#capability-parent").append($clone);
+            $("#capability-parent").append("<br>");
+
+            $('#open_source_yes_' + i).click(function(e) {
+                $('#sourceurl_' + i).show();
+            });
+            $('#open_source_no_' + i).click(function(e) {
+                $('#sourceurl_' + i).hide();
+            });
+
+            $('#add-env-var-button-div_' + i).append(env_var_button);
+            $('#add_env_var_' + i).click(function(e) {
+                e.preventDefault();
+                $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
+                    "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
+                $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" " +
+                    "id=\"environmentVariables_value_" + i + "\" type=\"text\" placeholder=\"Value\">");
+                $("#key-val_" + i).append("<br>");
+            });
+
+            if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
+                $('#sourceurl_' + i).show();
+            } else {
+                $('#sourceurl_' + i).hide();
             }
 
+            capability_count++;
         });
     });
 
     $(function () {
         $("#add-talent").click(function (e) {
             e.preventDefault();
-            var original = document.getElementById('talent-div');
-            if (original.style.display === "none") {
-                original.style.display = "block";
-            } else {
-                var clone = original.cloneNode(true); // "deep" clone
-                if (clone.style.display === "none") {
-                    clone.style.display = "block";
-                }
-                $("#talent-div").append(clone);
-                $("#talent-div").append("<br>");
-            }
+            var $clone = $("#talent-div").clone(true);
+            $clone.find(':input').attr('id', function(i, val) {
+                return val + '_' + talent_count;
+            });
+            $clone.find(':input').attr('name', function(i, val) {
+                return val + '_' + talent_count;
+            });
+            $clone.attr('style', 'display: block, background-color: white')
+            talent_count++;
 
+            $("#talent-parent").append($clone);
+            $("#talent-parent").append("<br>");
         });
     });
 

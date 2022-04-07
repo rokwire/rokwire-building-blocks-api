@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.12.1
+  version: 1.13.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -202,6 +202,14 @@ paths:
         schema:
           type: string
           format: uuid
+      - name: createdBy
+        in: query
+        description: The parameter for searching user events based on the createdBy field.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         200:
           description: search results matching criteria
