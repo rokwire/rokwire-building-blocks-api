@@ -451,7 +451,7 @@ def create():
             return redirect(url_for('contribute.contribution_details', contribution_id=s))
         elif not response:
             logging.error(s)
-            msg = "Contribution submission failed. Please try again after some time!"
+            msg = "Contribution submission failed. Please try again after some time!    " + s
             if "name" in session:
                 return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg)
             else:
@@ -552,9 +552,15 @@ def post_contribution(json_data):
         if result.status_code != 200:
             err_json = parse_response_error(result)
             logging.error("Contribution POST " + json.dumps(err_json))
-            err_msg = str(err_json['status']), err_json['title'], err_json['detail']
-            return False, str("post method fails with error: ") + str(result.status_code) \
-                   + ": " + str(err_msg)
+            # TODO the message should be updated in more user friendly way.
+            if 'reason' in err_json:
+                return False, str("post method fails with error: ") + str(result.status_code) \
+                       + ": " + str(str(err_json['reason'])), err_json
+            elif 'detail' in err_json:
+                return False, str("post method fails with error: ") + str(result.status_code) \
+                       + ": " + str(str(err_json['detail'])), err_json
+            else:
+                return False, str("post method fails with error: ") + str(result.status_code), err_json
         else:
             # parse contribution id from response
             result_str = result.content.decode("utf-8").replace("\n", "")
