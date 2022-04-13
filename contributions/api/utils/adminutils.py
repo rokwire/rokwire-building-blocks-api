@@ -140,7 +140,9 @@ def send_email(mail_to, subject, message, connection):
     mimemsg.attach(MIMEText(mail_body, 'plain'))
 
     if not test_smtp_connection(connection):
-        connection = establish_smtp_connection()
+        connection, error_str, error_code = establish_smtp_connection()
+        if error_code:
+            return False, error_str, error_code
     try:
         connection.send_message(mimemsg)
     except smtplib.SMTPResponseException as ex:
