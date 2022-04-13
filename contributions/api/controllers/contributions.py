@@ -45,6 +45,11 @@ coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
 notification_enabled = cfg.NOTIFICATION_ENABLED
 
+if notification_enabled:
+    connection, error_str, error_code = adminutils.establish_smtp_connection()
+    if error_str:
+        logging.error("SMTP connection error " + error_str + error_code)
+
 def post(token_info):
     is_new_install = True
     in_json = None
@@ -964,7 +969,7 @@ def send_email_new_reviewer(username):
     if 'email' in dataset[0].keys():
         subject = "Reviewer updated"
         message = "Reviewer has been updated for a contribution"
-        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message, connection)
         if not success:
             msg = {
                 "reason": "Error in sending email via SMTP: " + str(error_msg),
@@ -1002,11 +1007,11 @@ def send_email_new_contribution(username, contribution_name):
     if 'email' in dataset[0].keys():
         subject = "New Rokwire Contribution Submitted"
         message = "New contribution " + contribution_name + " has been added for your review"
-        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message, connection)
         if not success:
             msg = {
                 "reason": "Error in sending email via SMTP: " + str(error_msg),
-                "error": "Error code" + str(error_code)
+                "error": "Error code " + str(error_code)
             }
             msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
             logging.error("Contribution POST " + json.dumps(msg_json))

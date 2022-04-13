@@ -54,30 +54,17 @@ def check_if_reviewer(login_id):
 
     return False
 
-def send_email(mail_to, subject, message):
+def establish_smtp_connection():
     """
-    Method to send email to a user and print if success or failure
-    Args:
-        mail_to (str): email id of recipient
-        subject (str): subject of the email
-        message (str): message of the email
+    Method to establish SMTP connection
+    Args: None
     Returns:
-        (bool): True if success, False if failure
-        (str): Error code is failure, empty string if success
-        (str): Error message if failure, empty string if success
+        connection (obj): SMTP object
+        smtp_error (str): Error string
+        smtp_code (str): Error code
     """
-    mail_subject = subject
-    mail_body = message
-
     mail_from = cfg.SENDER_EMAIL
     password = cfg.SENDER_EMAIL_PASSWORD
-
-    mimemsg = MIMEMultipart()
-    mimemsg['From'] = mail_from
-    mimemsg['To'] = mail_to
-    mimemsg['Subject'] = mail_subject
-    mimemsg.attach(MIMEText(mail_body, 'plain'))
-
     connection = smtplib.SMTP(host=cfg.SMTP_HOST, port=cfg.SMTP_PORT)
     try:
         connection.ehlo()
@@ -91,17 +78,74 @@ def send_email(mail_to, subject, message):
         connection.login(mail_from, password)
     except smtplib.SMTPAuthenticationError as ex:
         return False, ex.smtp_error, ex.smtp_code
+    return connection, '', ''
+
+
+def test_smtp_connection(connection):
+    """
+    Method to test the SMTP connection
+    Args:
+        connection (obj): SMTP object
+    Returns:
+        (bool): True if connection is open, False if not
+    """
+    try:
+        status = connection.noop()[0]
+    except smtplib.SMTPServerDisconnected as ex:
+        status = -1
+    return True if status == 250 else False
+
+
+def quit_smtp_connection(connection):
+    """
+    Method to quit the SMTP connection
+    Args:
+        connection (obj): SMTP object
+    Returns:
+        (bool): True if connection is closed successfully, False if not
+        smtp_error (str): Error string if failure, empty string if success
+        smtp_code (str): Error code if failure, empty string if success
+    """
+    if test_smtp_connection(connection):
+        try:
+            connection.quit()
+            return True, ' ', ' '
+        except smtplib.SMTPResponseException as ex:
+            return False, ex.smtp_error, ex.smtp_code
+        except smtplib.SMTPException as ex:
+            return False, ex.strerror, ex.errno
+
+
+def send_email(mail_to, subject, message, connection):
+    """
+    Method to send email to a user and print if success or failure
+    Args:
+        mail_to (str): email id of recipient
+        subject (str): subject of the email
+        message (str): message of the email
+        connection (obj): SMTP object
+    Returns:
+        (bool): True if success, False if failure
+        (str): Error code is failure, empty string if success
+        (str): Error message if failure, empty string if success
+    """
+    mail_subject = subject
+    mail_body = message
+    mail_from = cfg.SENDER_EMAIL
+
+    mimemsg = MIMEMultipart()
+    mimemsg['From'] = mail_from
+    mimemsg['To'] = mail_to
+    mimemsg['Subject'] = mail_subject
+    mimemsg.attach(MIMEText(mail_body, 'plain'))
+
+    if not test_smtp_connection(connection):
+        connection = establish_smtp_connection()
     try:
         connection.send_message(mimemsg)
     except smtplib.SMTPResponseException as ex:
         return False, ex.smtp_error, ex.smtp_code
     except smtplib.SMTPException as ex:
         return False, ex.strerror, ex.errno
-    try:
-        connection.quit()
-        return True, ' ', ' '
-    except smtplib.SMTPResponseException as ex:
-        return False, ex.smtp_error, ex.smtp_code
-    except smtplib.SMTPException as ex:
-        return False, ex.strerror, ex.errno
+    return True, ' ', ' '
 
