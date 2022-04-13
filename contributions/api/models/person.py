@@ -16,6 +16,7 @@ import utils.datasetutils as datasetutils
 
 class Person:
     def __init__(self, injson):
+        self.contributorType = None
         self.firstname = None
         self.middlename = None
         self.lastname = None
@@ -24,6 +25,12 @@ class Person:
         self.affiliation = None
 
         self, restjson = datasetutils.update_person_dataset_from_json(self, injson)
+
+    def set_contributor_type(self, contributorType):
+        self.contributorType = contributorType
+
+    def get_contributor_type(self):
+        return self.contributorType
 
     def set_firstname(self, firstname):
         self.firstname = firstname

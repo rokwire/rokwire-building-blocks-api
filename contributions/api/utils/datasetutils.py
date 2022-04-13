@@ -274,6 +274,11 @@ update person dataset
 def update_person_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
     try:
+        dataset.set_contributor_type(injson['contributorType'])
+        del outjson['contributorType']
+    except:
+        pass
+    try:
         dataset.set_firstname(injson['firstName'])
         del outjson['firstName']
     except:
@@ -311,6 +316,11 @@ update organization dataset
 """
 def update_organization_dataset_from_json(dataset, injson):
     outjson = copy.copy(injson)
+    try:
+        dataset.set_contributor_type(injson['contributorType'])
+        del outjson['contributorType']
+    except:
+        pass
     try:
         dataset.set_name(injson['name'])
         del outjson['name']
