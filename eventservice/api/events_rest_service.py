@@ -40,4 +40,4 @@ app.add_api('events.yaml', base_path=cfg.URL_PREFIX, arguments={'title': 'Rokwir
             resolver_error=501)
 
 if __name__ == '__main__':
-    app.run(port=5000, host=None, server='flask', debug=debug)
+    app.run(port=6000, host=None, server='flask', debug=debug)
