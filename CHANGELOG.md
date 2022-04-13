@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- Warning in Logs Building Block. [#881](https://github.com/rokwire/rokwire-building-blocks-api/issues/881)
 - Fix jinjia version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
 
 ## [1.13.0] - 2022-04-04
