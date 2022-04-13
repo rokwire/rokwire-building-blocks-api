@@ -36,42 +36,60 @@ def init_talent():
 def to_talent(d):
     if not d: return {}
     talent_list = []
-    if 'talent_name' in d.keys():
-        if isinstance(d['talent_name'], str):
+
+    # check how many capabilities are in the given json
+    # this should be checked keys that is as surfix of _number
+    num_tal = 0
+
+    # if there is talent_name_0, this means that there is talent
+    if 'talent_name_0' in d.keys():
+        keys = list(d.keys())
+        tal_len = []
+        # iterated talents to see how many talents are in there
+        for key in keys:
+            key_splitted = key.split("talent_name_")
+            if len(key_splitted) > 1:
+                tal_len.append(int(key_splitted[1]))
+        num_tal = max(tal_len) + 1
+
+        # init talent
+        for _ in range(num_tal):
             talent_list.append(init_talent())
-        else:
-            for _ in range(len(d['talent_name'])):
-                talent_list.append(init_talent())
 
-        for i, talent in enumerate(talent_list):
-            tal_id = str(uuid.uuid4())
-            talent['id'] = tal_id
+    for i, talent in enumerate(talent_list):
+        tal_id = str(uuid.uuid4())
+        talent['id'] = tal_id
 
-            for k, v in d.items():
-                # print(k, v)
-                if "minUserPrivacyLevel" in k:
-                    if len(v[i]) > 0:
-                        talent_list[i]["minUserPrivacyLevel"] = int(v[i])
-                    d[k][i] = talent_list[i]["minUserPrivacyLevel"]
-                if "talent_" in k:
-                    name = k.split("talent_")[-1]
+        for k, v in d.items():
+            if "minUserPrivacyLevel_" in k:
+                if len(str(v[0])) > 0:
+                    talent_list[i]["minUserPrivacyLevel"] = int(v[0])
+                d[k][0] = talent_list[i]["minUserPrivacyLevel"]
+            if "talent_" in k:
+                if ("_" + str(i)) in k:
+                    name = (k.split("talent_")[-1]).split('_' + str(i))[0]
                     # TODO this is not a very good exercise since everything is list,
                     #  so the code only checks the very first items in the list assuming that
                     #  the items are only single item entry.
                     #  However, required capabilities should be a list so it should be handled differently,
                     #  and if there is any item that is a list, that should be handled separately.
-                    if name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) > 0:
+                    if name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[0]) > 0:
                         if name == "requiredCapabilities":
                             for j in range(len(v)):
                                 v[j] = reconstruct_required_capabilities(v[j])
                                 talent_list[i][name].append(v[j])
+                        elif name == "minEndUserRoles":
+                            for j in range(len(v)):
+                                talent_list[i][name].append(v[j])
                         else:
                             talent_list[i][name].append(v[i])
-                    elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[i]) == 0:
+                    elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[0]) == 0:
                         talent_list[i][name] = []
                     else:
-                        talent_list[i][name] = v[i]
-            talent_list[i]["selfCertification"] = to_self_certification(d)
+                        talent_list[i][name] = v[0]
+
+        talent_list[i]["selfCertification"] = to_self_certification(d, i)
+
     return talent_list
 
 def init_self_certification():
@@ -86,13 +104,14 @@ def init_self_certification():
     return d
 
 
-def to_self_certification(d):
+def to_self_certification(d, i):
     if not d: return {}
     res = init_self_certification()
     for k, v in d.items():
         if "selfcertificate_" in k:
-            name = k.split("selfcertificate_")[-1]
-            res[name] = v[0]
+            if ("_" + str(i)) in k:
+                name = (k.split("selfcertificate_")[-1]).split('_' + str(i))[0]
+                res[name] = v[0]
     return res
 
 def reconstruct_required_capabilities(d):
