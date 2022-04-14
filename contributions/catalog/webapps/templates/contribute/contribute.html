@@ -4,6 +4,7 @@
     <title> Capability Catalog </title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -817,12 +818,13 @@
                         </div>
 
                         <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
                             <div class="col-sm-10" id="key-val">
                                 <input class="form-inline" name="environmentVariables_key" placeholder="Key"
                                        id="environmentVariables_key" type="text">
                                 <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                       id="environmentVariables_value" type="text">
+                                       id="environmentVariables_value" type="password">
+                                <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></i>
                                 <br>
                             </div>
                             <div id="add-env-var-button-div" class="row">
@@ -1468,6 +1470,18 @@
             modal.style.display = "none";
         }
     }
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#environmentVariables_value");
+
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+
+        // toggle the icon
+        this.classList.toggle("bi-eye");
+        this.classList.toggle("bi-eye-slash");
+    });
 
     function data_validation() {
         var contribution_name = document.getElementById('contribution_name');
