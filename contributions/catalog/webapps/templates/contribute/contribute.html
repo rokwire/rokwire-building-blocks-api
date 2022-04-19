@@ -622,10 +622,14 @@
                                             {% endif %}
                                             {% if is_editable %}
                                                 <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       id="environmentVariables_value" type="text" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                       id="environmentVariables_value" type="password" value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                <!--<span toggle="#password-field" class="bi bi-eye-slash togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></span>-->
+                                                <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer; "></i>
                                             {% else %}
                                                 <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                                       id="environmentVariables_value" type="text">
+                                                       id="environmentVariables_value" type="password">
+                                                <!--<span toggle="#password-field" class="bi bi-eye-slash togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></span>-->
+                                                <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer; "></i>
                                             {% endif %}
                                             <br>
                                         </div>
@@ -636,7 +640,9 @@
                                         <input class="form-inline" name="environmentVariables_key" placeholder="Key"
                                                id="environmentVariables_key" type="text">
                                         <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                               id="environmentVariables_value" type="text">
+                                               id="environmentVariables_value" type="password">
+                                        <!--<span toggle="#password-field" class="bi bi-eye-slash togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></span>-->
+                                        <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer; "></i>
                                         <br>
                                     </div>
                                 {% endif %}
@@ -824,7 +830,8 @@
                                        id="environmentVariables_key" type="text">
                                 <input class="form-inline" name="environmentVariables_value" placeholder="Value"
                                        id="environmentVariables_value" type="password">
-                                <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></i>
+                                <!--<span toggle="#password-field" class="fa fa-fw fa-eye-slash field_icon togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></span>-->
+                                <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor: pointer; "></i>
                                 <br>
                             </div>
                             <div id="add-env-var-button-div" class="row">
@@ -1387,7 +1394,38 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
+
 <script>
+    /*
+    $(function() {
+        const togglePassword = document.getElementById("togglePassword");
+        let password = document.getElementById("environmentVariables_value");
+        togglePassword.addEventListener("click", function () {
+
+            // toggle the type attribute
+            console.log("password")
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+    });
+
+    $(".togglePassword").on('click', function() {
+        $(this).toggleClass("fa-eye fa-eye");
+        var input = $("#environmentVariables_value");
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+
+    });
+
+
+    */
+
     var capability_count = 0;
     var talent_count = 0;
 
@@ -1470,17 +1508,6 @@
             modal.style.display = "none";
         }
     }
-    const togglePassword = document.querySelector("#togglePassword");
-    const password = document.querySelector("#environmentVariables_value");
-
-    togglePassword.addEventListener("click", function () {
-        // toggle the type attribute
-        const type = password.getAttribute("type") === "password" ? "text" : "password";
-        password.setAttribute("type", type);
-
-        // toggle the icon
-        this.classList.toggle("bi-eye");
-    });
 
     function data_validation() {
         var contribution_name = document.getElementById('contribution_name');
@@ -1709,7 +1736,8 @@
                 $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
                     "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
                 $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" " +
-                    "id=\"environmentVariables_value_" + i + "\" type=\"text\" placeholder=\"Value\">");
+                    "id=\"environmentVariables_value_" + i + "\" type=\"password\" placeholder=\"Value\">");
+                $("#key-val_" + i).append("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor: pointer;\">");
                 $("#key-val_" + i).append("<br>");
             });
 
@@ -1718,6 +1746,13 @@
             } else {
                 $('#sourceurl_' + i).hide();
             }
+            $('#togglePassword').click(function() {
+                let password = document.getElementById("environmentVariables_value");
+                const type = password.getAttribute("type") === "password" ? "text" : "password";
+                password.setAttribute("type", type);
+                // toggle the icon
+                $(this).classList.toggle("bi-eye");
+            });
 
             capability_count++;
         });
