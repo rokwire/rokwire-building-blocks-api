@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Warning in Logs Building Block. [#881](https://github.com/rokwire/rokwire-building-blocks-api/issues/881)
 - Editing multiple talent and capabilities. [#883](https://github.com/rokwire/rokwire-building-blocks-api/issues/883)
 - Contributor editing for person and organization. [#888](https://github.com/rokwire/rokwire-building-blocks-api/issues/888)
+- Fix the Jinja version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
 
 ## [1.13.0] - 2022-04-04
 ### Fixed
