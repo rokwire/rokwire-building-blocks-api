@@ -1050,11 +1050,9 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Select active date range</label>
                                 <label class="form-check-label">start</label>
-                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date"
-                                value="{{ talent|filter_nested_dict(["startDate"]) }}">
+                                <input class="form-check-input" id="start_day" name="talent_startDate" type="date" value="{{ talent|filter_nested_dict(["startDate"]) }}">
                                 <label class="form-check-label"> end</label>
-                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date"
-                                       value="{{ talent|filter_nested_dict(["endDate"]) }}">
+                                <input class="form-check-input" id="end_day" name="talent_endDate" type="date" value="{{ talent|filter_nested_dict(["endDate"]) }}">
                             </div>
 
                             <div class="form-group">
@@ -1386,6 +1384,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
+
+    /*
+    $('#start_day').datepicker({
+        onSelect: function(dateText, inst){
+            $('#end_day').datepicker('option', 'minDate', new Date(dateText));
+        }
+    });
+
+    $('#end_day').datepicker({
+        onSelect: function(dateText, inst){
+            $('#start_day').datepicker('option', 'maxDate', new Date(dateText));
+        }
+    });
+     */
     var capability_count = 0;
     var talent_count = 0;
 
@@ -1494,7 +1506,7 @@
             window.alert("Please enter either a capability or a talent.");
             return false;
         }
-
+        // variables for capability
         var capability_name = []
         var capability_description = []
         var capability_opensource = []
@@ -1512,6 +1524,9 @@
         var authmethod = []
         var datadel_endpoint = []
         var datadel_api = []
+        // variables for talent
+        var start_day = []
+        var end_day = []
 
         if (capability_count > 0) {
             for (var i = 0, l = capability_count; i < l; i++) {
@@ -1619,6 +1634,13 @@
                     // window.alert("Please enter the talent description. ");
                     talent_des.focus();
                     talent_des.required = true;
+                    return false;
+                }
+                start_day[i] = new Date(document.getElementById('start_day_' + '_' + i).val());
+                end_day[i] = new Date(document.getElementById('end_day_' + '_' + i).val());
+                if (start_day[i]<end_day[i]) {
+                    window.alert("End date cannot be earlier than start date.");
+                    end_day[i].focus();
                     return false;
                 }
             }
