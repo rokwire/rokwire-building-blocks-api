@@ -279,17 +279,17 @@ def update_person_dataset_from_json(dataset, injson):
     except:
         pass
     try:
-        dataset.set_firstname(injson['firstName'])
+        dataset.set_first_name(injson['firstName'])
         del outjson['firstName']
     except:
         pass
     try:
-        dataset.set_middlename(injson['middleName'])
+        dataset.set_middle_name(injson['middleName'])
         del outjson['middleName']
     except:
         pass
     try:
-        dataset.set_lastname(injson['lastName'])
+        dataset.set_last_name(injson['lastName'])
         del outjson['lastName']
     except:
         pass
