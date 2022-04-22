@@ -15,7 +15,7 @@
 import json
 import datetime
 import logging
-import re
+import os
 
 from flask import wrappers, request
 from bson import ObjectId
@@ -28,6 +28,7 @@ import utils.otherutils as otherutils
 import utils.modelutils as modelutils
 import utils.adminutils as adminutils
 import utils.jsonutils as jsonutils
+import contribution_jsons as cj
 
 from utils import query_params
 from models.contribution import Contribution
@@ -843,6 +844,14 @@ def talents_get(token_info=None, id=None, talent_id=None):
 
 def ok_search():
     return rs_handlers.return_200("okay")
+
+def api_requiredbb_search():
+    req_bb_json = cj.REQUIRED_BUILDING_BLOCKS
+
+    req_bb_list = req_bb_json["requiredBuildingBlocks"]
+
+    return req_bb_json
+    # return rs_handlers.return_200("required building block")
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database

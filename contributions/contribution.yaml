@@ -483,6 +483,18 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+  /contributions/api/requiredbb:
+    get:
+      summary: Get the list of required building block
+      tags:
+        - api
+      responses:
+        200:
+          description: List of the required building block
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
