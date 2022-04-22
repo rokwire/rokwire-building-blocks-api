@@ -1849,19 +1849,25 @@
                 }
             }
         }
-
-        if (talent_count > 0) {
-            for (var i = 0, l = capability_count; i < l; i++) {
-                var talent_name = document.getElementById('talent_name_' + '_' + i);
-
-                var talent_des = document.getElementById("talent_description_" + '_' + i);
-                if (talent_des.value == "") {
-                    // window.alert("Please enter the talent description. ");
-                    talent_des.focus();
-                    talent_des.required = true;
-                    return false;
-                }
-            }
+        var contact_name = document.getElementById('contact_name');
+        if (contact_name.value == "") {
+            contact_name.focus();
+            var x = document.getElementById("contribution_name_div");
+            // x.querySelector(".error_message").innerHTML = "This is required!";
+            contact_name.required = true;
+            return false;
+        }
+        var contact_email = document.getElementById('contact_email');
+        if (contact_email.value == "") {
+            contact_email.focus();
+            contact_email.required = true;
+            return false;
+        }
+        var contact_phone = document.getElementById('contact_phone');
+        if (contact_phone.value == "") {
+            contact_phone.focus();
+            contact_phone.required = true;
+            return false;
         }
         //success
         // window.location.href = "/contribute";
