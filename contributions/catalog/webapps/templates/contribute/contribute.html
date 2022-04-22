@@ -1525,6 +1525,8 @@
         var datadel_endpoint = []
         var datadel_api = []
         // variables for talent
+        var talent_name = []
+        var talent_des = []
         var start_day = []
         var end_day = []
 
@@ -1626,19 +1628,25 @@
         }
 
         if (talent_count > 0) {
-            for (var i = 0, l = capability_count; i < l; i++) {
-                var talent_name = document.getElementById('talent_name_' + '_' + i);
-
-                var talent_des = document.getElementById("talent_description_" + '_' + i);
-                if (talent_des.value == "") {
-                    // window.alert("Please enter the talent description. ");
-                    talent_des.focus();
-                    talent_des.required = true;
+            for (var i = 0, l = talent_count; i < l; i++) {
+                talent_name[i] = document.getElementById('talent_name_' + '_' + i);
+                if (talent_name[i].value == "") {
+                    // window.alert("Please enter either a talent name.");
+                    talent_name[i].focus();
+                    talent_name[i].required = true;
                     return false;
                 }
-                start_day[i] = new Date(document.getElementById('start_day_' + '_' + i).val());
-                end_day[i] = new Date(document.getElementById('end_day_' + '_' + i).val());
-                if (start_day[i]<end_day[i]) {
+
+                talent_des[i] = document.getElementById("talent_description_" + '_' + i);
+                if (talent_des[i].value == "") {
+                    // window.alert("Please enter the talent description. ");
+                    talent_des[i].focus();
+                    talent_des[i].required = true;
+                    return false;
+                }
+                start_day[i] = new Date(document.getElementById('start_day_' + '_' + i));
+                end_day[i] = new Date(document.getElementById('end_day_' + '_' + i));
+                if (start_day[i].value<end_day[i].value) {
                     window.alert("End date cannot be earlier than start date.");
                     end_day[i].focus();
                     return false;
@@ -1674,13 +1682,20 @@
             a.style.display = "none";
         }
     }
-
+    var n = 0
     function duplicate() {
-        var original = document.getElementById('capability' + i);
-        var clone = original.cloneNode(true); // "deep" clone
-        clone.id = "capability" + ++i; // there can only be one element with an ID
-        clone.onclick = duplicate; // event handlers are not cloned
-        original.parentNode.appendChild(clone);
+        // clone capability div
+        var original_cap = document.getElementById('capability' + n);
+        var clone_cap = original_cap.cloneNode(true); // "deep" clone
+        clone_cap.id = "capability" + ++n; // there can only be one element with an ID
+        clone_cap.onclick = duplicate; // event handlers are not cloned
+        original_cap.parentNode.appendChild(clone_cap);
+        // clone talent div
+        var original_tal = document.getElementById('talent' + n);
+        var clone_tal = original_tal.cloneNode(true); // "deep" clone
+        clone_tal.id = "talent" + ++n; // there can only be one element with an ID
+        clone_tal.onclick = duplicate; // event handlers are not cloned
+        original_tal.parentNode.appendChild(clone_tal);
     }
 
     $(function () {
@@ -1740,6 +1755,9 @@
                 return val + '_' + talent_count;
             });
             $clone.find(':input').attr('name', function(i, val) {
+                return val + '_' + talent_count;
+            });
+            $clone.find('div').attr('id', function(i, val) {
                 return val + '_' + talent_count;
             });
             $clone.attr('style', 'display: block, background-color: white')
