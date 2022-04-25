@@ -826,9 +826,9 @@
                         <div name="add-env-var-div" class="form-group">
                             <label class="required control-label col-sm-2">Environment Variable(s)</label>
                             <div class="col-sm-10" id="key-val">
-                                <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                                <input class="form-control" name="environmentVariables_key" placeholder="Key"
                                        id="environmentVariables_key" type="text">
-                                <input class="form-inline" name="environmentVariables_value" placeholder="Value"
+                                <input class="form-control" name="environmentVariables_value" placeholder="Value"
                                        id="environmentVariables_value" type="password">
                                 <!--<span toggle="#password-field" class="fa fa-fw fa-eye-slash field_icon togglePassword" style="cursor: pointer; margin-left: -30px; z-index: 100;"></span>-->
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor: pointer; "></i>
@@ -1411,10 +1411,11 @@
             this.classList.toggle("bi-eye");
         });
     });
-
-    $(".togglePassword").on('click', function() {
-        $(this).toggleClass("fa-eye fa-eye");
-        var input = $("#environmentVariables_value");
+    */
+    $("#togglePassword").on('click', function() {
+        $(this).toggleClass("bi-eye bi-eye");
+        console.log("toggled");
+        let input = $(this).prev();
         if (input.attr("type") === "password") {
             input.attr("type", "text");
         } else {
@@ -1424,7 +1425,7 @@
     });
 
 
-    */
+
 
     var capability_count = 0;
     var talent_count = 0;
@@ -1746,6 +1747,7 @@
             } else {
                 $('#sourceurl_' + i).hide();
             }
+            /*
             $('#togglePassword').click(function() {
                 let password = document.getElementById("environmentVariables_value");
                 const type = password.getAttribute("type") === "password" ? "text" : "password";
@@ -1753,6 +1755,8 @@
                 // toggle the icon
                 $(this).classList.toggle("bi-eye");
             });
+
+             */
 
             capability_count++;
         });
