@@ -29,5 +29,3 @@ API_LOC = os.getenv('API_LOC', '../')
 PRINT_LOG = bool(os.getenv('PRINT_LOG', 'True') == 'True')
 
 DEBUG = bool(os.getenv('DEBUG', 'False') == 'True')
-
-VERSION = '1.13.0'
