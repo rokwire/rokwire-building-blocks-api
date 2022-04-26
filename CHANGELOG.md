@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 - Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
+- Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
 
 ### Changed
 - Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
