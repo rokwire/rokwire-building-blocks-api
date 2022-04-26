@@ -487,10 +487,22 @@ paths:
     get:
       summary: Get version of logging building block
       tags:
-        - Logs
+        - Contributions
       responses:
         200:
           description: The version of logging building block.
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+  /contributions/requiredbb:
+    get:
+      summary: Get the list of required building block
+      tags:
+        - Contributions
+      responses:
+        200:
+          description: List of the required building block
         400:
           description: Bad request
         500:

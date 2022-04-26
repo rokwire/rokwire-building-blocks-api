@@ -28,6 +28,7 @@ import utils.otherutils as otherutils
 import utils.modelutils as modelutils
 import utils.adminutils as adminutils
 import utils.jsonutils as jsonutils
+import contribution_jsons as cj
 
 from utils import query_params
 from models.contribution import Contribution
@@ -848,6 +849,14 @@ def version_search():
     contribution_yaml = open('contribution.yaml')
     parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
     return parsed_contribution_yaml['info']['version']
+
+def requiredbb_search():
+    req_bb_json = cj.REQUIRED_BUILDING_BLOCKS
+
+    req_bb_list = req_bb_json["requiredBuildingBlocks"]
+
+    return req_bb_json
+    # return rs_handlers.return_200("required building block")
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database
