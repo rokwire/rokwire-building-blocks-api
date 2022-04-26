@@ -15,7 +15,7 @@
 import json
 import datetime
 import logging
-import re
+import yaml
 
 from flask import wrappers, request
 from bson import ObjectId
@@ -843,6 +843,11 @@ def talents_get(token_info=None, id=None, talent_id=None):
 
 def ok_search():
     return rs_handlers.return_200("okay")
+
+def version_search():
+    contribution_yaml = open('contribution.yaml')
+    parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
+    return parsed_contribution_yaml['info']['version']
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database

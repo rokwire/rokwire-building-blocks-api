@@ -483,6 +483,18 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+  /contributions/version:
+    get:
+      summary: Get version of logging building block
+      tags:
+        - Logs
+      responses:
+        200:
+          description: The version of logging building block.
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
