@@ -16,12 +16,19 @@ import utils.datasetutils as datasetutils
 
 class Organization:
     def __init__(self, injson):
+        self.contributorType = None
         self.name = None
         self.address = None
         self.email = None
         self.phone = None
 
         self, restjson = datasetutils.update_organization_dataset_from_json(self, injson)
+
+    def set_contributor_type(self, contributorType):
+        self.contributorType = contributorType
+
+    def get_contributor_type(self):
+        return self.contributorType
 
     def set_name(self, name):
         self.name = name
