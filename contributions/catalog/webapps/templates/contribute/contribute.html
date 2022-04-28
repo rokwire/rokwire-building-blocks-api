@@ -583,10 +583,11 @@
                     <div name="add-env-var-div" class="form-group">
                         <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
-                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                            <input class="form-control" name="environmentVariables_key" placeholder="Key"
                                    id="environmentVariables_key" type="text">
-                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                   id="environmentVariables_value" type="text">
+                            <input class="form-control" name="environmentVariables_value" placeholder="Value"
+                                   id="environmentVariables_value" type="password">
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                             <br>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -733,9 +734,7 @@
                             </div>
                             {% if is_editable %}
                                 {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                    <div class="form-group"
-                                         id="sourceurl_{{loop.index0}}"
-                                         style="display: block;">
+                                    <div class="form-group" id="sourceurl_{{loop.index0}}" style="display: block;">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
                                             <input class="form-control"
@@ -760,9 +759,7 @@
                                 {% endif %}
                             {% else %}
                                 {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                    <div class="form-group"
-                                         id="sourceurl_{{loop.index0}}"
-                                         style="display: block">
+                                    <div class="form-group" id="sourceurl_{{loop.index0}}" style="display: block">
                                         <label class="control-label col-sm-2">Source repo URL</label>
                                         <div class="col-sm-10">
                                             <input class="form-control"
@@ -882,25 +879,24 @@
                                                            placeholder="Key"
                                                            id="environmentVariables_key_{{loop.index0}}"
                                                            type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                    <input class="form-inline"
+                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
+                                                           placeholder="Value"
+                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
+                                                           type="password"
+                                                           value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                                                 {% else %}
                                                     <input class="form-inline"
                                                            name="environmentVariables_key_{{keyvalloop.index0}}"
                                                            placeholder="Key"
                                                            id="environmentVariables_key_{{loop.index0}}" type="text">
-                                                {% endif %}
-                                                {% if is_editable %}
                                                     <input class="form-inline"
                                                            name="environmentVariables_value_{{keyvalloop.index0}}"
                                                            placeholder="Value"
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           type="text"
-                                                           value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                                {% else %}
-                                                    <input class="form-inline"
-                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           placeholder="Value"
-                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           type="text">
+                                                           type="password">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                                                 {% endif %}
                                                 <br>
                                         {% endfor %}
@@ -908,7 +904,8 @@
                                         <input class="form-inline" name="environmentVariables_key_0" placeholder="Key"
                                                id="environmentVariables_key_0" type="text">
                                         <input class="form-inline" name="environmentVariables_value_0" placeholder="Value"
-                                               id="environmentVariables_value_0" type="text">
+                                               id="environmentVariables_value_0" type="password">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                                         <br>
                                     {% endif %}
                                 </div>
@@ -1134,21 +1131,6 @@
                                                                name="talent_minEndUserRoles"
                                                                type="checkbox" value="fan"> fan</label>
                     </div>
-
-                        <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                            <div class="col-sm-10" id="key-val">
-                                <input class="form-control" name="environmentVariables_key" placeholder="Key"
-                                       id="environmentVariables_key" type="text">
-                                <input class="form-control" name="environmentVariables_value" placeholder="Value"
-                                       id="environmentVariables_value" type="password">
-                                <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px" ></i>
-                                <br>
-                            </div>
-                            <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
-                            </div>
-                        </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Select active date range</label>
                         <label class="form-check-label">start</label>
