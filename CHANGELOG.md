@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 - Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
 - Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
+- Items in contact details are added to required field data validation [#907](https://github.com/rokwire/rokwire-building-blocks-api/issues/907)
 
 ### Changed
 - Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
@@ -21,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
 - GET contributions returns 401 for unpublished contributions. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
 - Warning in Logs Building Block. [#881](https://github.com/rokwire/rokwire-building-blocks-api/issues/881)
+- Editing multiple talent and capabilities. [#883](https://github.com/rokwire/rokwire-building-blocks-api/issues/883)
+- Contributor editing for person and organization. [#888](https://github.com/rokwire/rokwire-building-blocks-api/issues/888)
 - Fix the Jinja version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
 
 ## [1.13.0] - 2022-04-04
@@ -36,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
 - Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
 - Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
+
 ### Changed
 - All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
 - CODEOWNERS file. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
