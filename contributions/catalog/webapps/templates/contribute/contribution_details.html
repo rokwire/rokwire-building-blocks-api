@@ -200,14 +200,50 @@
     {% if post.contacts %}
     <h4>Contact details</h4>
         {% for contact in post["contacts"] %}
+            {% set contact_ns = namespace(name='', officialAddress='', phone='', email='', organization='') %}
             {% for key,val in contact.items() %}
+                {% if key == 'name' %}
+                    {% set contact_ns.name = val %}
+                {% elif key == 'phone' %}
+                    {% set contact_ns.phone = val %}
+                {% elif key == 'email' %}
+                    {% set contact_ns.email = val %}
+                {% elif key == 'officialAddress' %}
+                    {% set contact_ns.officialAddress = val %}
+                {% elif key == 'organization' %}
+                    {% set contact_ns.organization = val %}
+                {% endif %}
+            {% endfor %}
             <div class="row">
                 <div class="col-12 col-sm-2">
-                    {{key}}
+                    Name
                 </div>
-                <p class="col-sm-2">{{val}}</p>
+                <p class="col-sm-2">{{contact_ns.name}}</p>
             </div>
-            {% endfor %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Official Address
+                </div>
+                <p class="col-sm-2">{{contact_ns.officialAddress}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Email
+                </div>
+                <p class="col-sm-2">{{contact_ns.email}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Phone
+                </div>
+                <p class="col-sm-2">{{contact_ns.phone}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Organization
+                </div>
+                <p class="col-sm-2">{{contact_ns.organization}}</p>
+            </div>
         {% endfor %}
     {% endif %}
 
