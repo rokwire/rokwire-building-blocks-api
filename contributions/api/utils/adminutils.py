@@ -69,15 +69,15 @@ def establish_smtp_connection():
     try:
         connection.ehlo()
     except smtplib.SMTPHeloError as ex:
-        return False, ex.smtp_error, ex.smtp_code
+        return None, ex.smtp_error, ex.smtp_code
     try:
         connection.starttls()
     except smtplib.SMTPConnectError as ex:
-        return False, ex.smtp_error, ex.smtp_code
+        return None, ex.smtp_error, ex.smtp_code
     try:
         connection.login(mail_from, password)
     except smtplib.SMTPAuthenticationError as ex:
-        return False, ex.smtp_error, ex.smtp_code
+        return None, ex.smtp_error, ex.smtp_code
     return connection, '', ''
 
 
@@ -106,6 +106,7 @@ def quit_smtp_connection(connection):
         smtp_error (str): Error string if failure, empty string if success
         smtp_code (str): Error code if failure, empty string if success
     """
+    # quit connection if connection exists
     if test_smtp_connection(connection):
         try:
             connection.quit()
