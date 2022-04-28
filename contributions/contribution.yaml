@@ -495,14 +495,14 @@ paths:
           description: Bad request
         500:
           description: Internal server error
-  /contributions/requiredbb:
+  /contributions/buildingblocks:
     get:
-      summary: Get the list of required building block
+      summary: Get the list of building blocks
       tags:
         - Contributions
       responses:
         200:
-          description: List of the required building block
+          description: List of the building blocks
         400:
           description: Bad request
         500:

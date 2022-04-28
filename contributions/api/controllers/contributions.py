@@ -16,6 +16,7 @@ import json
 import datetime
 import logging
 import yaml
+import os
 
 from flask import wrappers, request
 from bson import ObjectId
@@ -28,14 +29,9 @@ import utils.otherutils as otherutils
 import utils.modelutils as modelutils
 import utils.adminutils as adminutils
 import utils.jsonutils as jsonutils
-import contribution_jsons as cj
 
 from utils import query_params
 from models.contribution import Contribution
-from models.person import Person
-from models.organization import Organization
-from models.capabilities.capability import Capability
-from models.talents.talent import Talent
 from models.reviewer import Reviewer
 from pymongo import MongoClient
 
@@ -850,13 +846,12 @@ def version_search():
     parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
     return parsed_contribution_yaml['info']['version']
 
-def requiredbb_search():
-    req_bb_json = cj.REQUIRED_BUILDING_BLOCKS
+def buildingblocks_search():
+    print(os.getcwd())
+    with open(os.path.join('api', 'jsons', 'building_blocks_list.json')) as f:
+        json_data = json.load(f)
 
-    req_bb_list = req_bb_json["requiredBuildingBlocks"]
-
-    return req_bb_json
-    # return rs_handlers.return_200("required building block")
+    return json_data
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database
