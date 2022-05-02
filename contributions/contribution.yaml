@@ -778,6 +778,8 @@ components:
     Person:
       type: object
       properties:
+        contributorType:
+          type: string
         firstName:
           nullable: true
           type: string
@@ -801,6 +803,8 @@ components:
     Organization:
       type: object
       properties:
+        contributorType:
+          type: string
         name:
           nullable: true
           type: string

@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Contribution Details</title>
 </head>
@@ -73,18 +73,21 @@
     {% if post.contributors %}
         <h4>Contributor details</h4>
         {% for c in post.contributors %}
+            <h5><b>{{ c["contributorType"] }}</b></h5>
             {% for key,val in c.items() %}
                 {% if key == "affiliation" %}
-                    {% for k,v in val.items() %}
-                        {% if v %}
+                    {% for k,vk in val.items() %}
+                        {% if vk %}
                         <div class="row">
                             <div class="col-12 col-sm-2">
-                                {{k}}
+                                affiliation {{k}}
                             </div>
-                            <p class="col-sm-2">{{v}}</p>
+                            <p class="col-sm-2">{{vk}}</p>
                         </div>
                         {% endif %}
                     {% endfor %}
+                {% elif key == "contributorType" %}
+                    <!--- skip contributorType -->
                 {% elif val %}
                 <div class="row">
                     <div class="col-12 col-sm-2">
