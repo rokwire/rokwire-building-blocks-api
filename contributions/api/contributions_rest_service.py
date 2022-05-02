@@ -13,15 +13,20 @@
 #  limitations under the License.
 
 import connexion
+import flask
+from flask import current_app, g
+from flask.cli import with_appcontext
 import logging
 import controllers.configs as cfg
 
 from time import gmtime
 from rokwireresolver import RokwireResolver
 from flask_cors import CORS
+from utils.smtputils import init_app
 
 debug = cfg.DEBUG
 cors_enabled = cfg.CORS_ENABLED
+notification_enabled = cfg.NOTIFICATION_ENABLED
 
 log = logging.getLogger('werkzeug')
 log.disabled = True
@@ -40,6 +45,10 @@ app.add_api('contribution.yaml', base_path=cfg.CONTRIBUTION_URL_PREFIX, argument
 
 if cors_enabled:
     CORS(app.app)
+
+if notification_enabled:
+    # call initapp from smtputils to establish SMTP connection
+    init_app(app.app)
 
 if __name__ == '__main__':
     app.run(port=5000, host=None, server='flask', debug=debug)

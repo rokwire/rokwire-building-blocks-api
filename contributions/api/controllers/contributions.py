@@ -16,10 +16,12 @@ import json
 import datetime
 import logging
 import re
+import click
+from flask.cli import with_appcontext
 
-from flask import wrappers, request
+from flask import wrappers, request, current_app, g
 from bson import ObjectId
-
+from contributions.contributions_rest_service import app
 import controllers.configs as cfg
 import utils.datasetutils as datasetutils
 import utils.rest_handlers as rs_handlers
@@ -28,7 +30,7 @@ import utils.otherutils as otherutils
 import utils.modelutils as modelutils
 import utils.adminutils as adminutils
 import utils.jsonutils as jsonutils
-
+from utils.smtputils import get_smtp_connection
 from utils import query_params
 from models.contribution import Contribution
 from models.person import Person
@@ -44,11 +46,6 @@ db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
 notification_enabled = cfg.NOTIFICATION_ENABLED
-
-if notification_enabled:
-    connection, error_str, error_code = adminutils.establish_smtp_connection()
-    if error_str:
-        logging.error("SMTP connection error " + error_str + error_code)
 
 def post(token_info):
     is_new_install = True
@@ -969,7 +966,7 @@ def send_email_new_reviewer(username):
     if 'email' in dataset[0].keys():
         subject = "Reviewer updated"
         message = "Reviewer has been updated for a contribution"
-        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message, connection)
+        success, error_msg, error_code = adminutils.send_email(dataset[0]['email'], subject, message)
         if not success:
             msg = {
                 "reason": "Error in sending email via SMTP: " + str(error_msg),
@@ -1007,7 +1004,7 @@ def send_email_new_contribution(username, contribution_name):
     if 'email' in dataset[0].keys():
         subject = "New Rokwire Contribution Submitted"
         message = "New contribution " + contribution_name + " has been added for your review"
-        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message, connection)
+        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
         if not success:
             msg = {
                 "reason": "Error in sending email via SMTP: " + str(error_msg),
