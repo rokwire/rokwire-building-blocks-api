@@ -29,15 +29,6 @@ def success_response_only_status_code(status_code, msg):
 
     return make_response(resp)
 
-def return_version(version):
-    message = {
-        'version': version,
-    }
-    resp = flask.jsonify(message)
-    resp.status_code = 200
-
-    return make_response(resp)
-
 
 def success_response(status_code, msg, uuid):
     message = {

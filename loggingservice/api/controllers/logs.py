@@ -64,4 +64,5 @@ def post():
 def version_search():
     logs_yaml = open('logging.yaml')
     parsed_logs_yaml = yaml.load(logs_yaml, Loader=yaml.FullLoader)
+
     return parsed_logs_yaml['info']['version']

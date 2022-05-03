@@ -78,6 +78,10 @@ paths:
       responses:
         200:
           description: The version of logging building block.
+          content:
+            text/plain:
+              schema:
+                type: string
         400:
           description: Bad request
         500:

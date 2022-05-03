@@ -491,6 +491,10 @@ paths:
       responses:
         200:
           description: Contributions building block version.
+          content:
+            text/plain:
+              schema:
+                type: string
         400:
           description: Bad request
         500:
