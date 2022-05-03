@@ -18,7 +18,7 @@ import logging
 import yaml
 import os
 
-from flask import wrappers, request
+from flask import wrappers, request, current_app
 from bson import ObjectId
 
 import controllers.configs as cfg
@@ -847,10 +847,10 @@ def version_search():
     return parsed_contribution_yaml['info']['version']
 
 def building_blocks_search():
-    with open(os.path.join(os.getcwd(), 'api', 'jsons', 'building_blocks_list.json')) as f:
+    with open(os.path.join(current_app.root_path, 'jsons', 'building_blocks_list.json')) as f:
         json_data = json.load(f)
 
-    return json_data
+    return json_data["buildingBlocks"]
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database
