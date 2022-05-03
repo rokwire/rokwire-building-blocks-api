@@ -847,7 +847,7 @@ def version_search():
     return parsed_contribution_yaml['info']['version']
 
 def building_blocks_search():
-    with open(os.path.join('api', 'jsons', 'building_blocks_list.json')) as f:
+    with open(os.path.join(os.getcwd(), 'api', 'jsons', 'building_blocks_list.json')) as f:
         json_data = json.load(f)
 
     return json_data
