@@ -1,0 +1,19 @@
+{
+  "buildingBlocks" :
+  ["Admin",
+    "App Config",
+    "Content",
+    "Core",
+    "Events",
+    "Groups",
+    "Learning Management System",
+    "Locations",
+    "Logs",
+    "Notifications",
+    "Polls",
+    "Rewards",
+    "Sports",
+    "Talent Chooser",
+    "Transportation"
+  ]
+}

@@ -15,9 +15,10 @@
 import json
 import datetime
 import logging
-import re
+import yaml
+import os
 
-from flask import wrappers, request
+from flask import wrappers, request, current_app
 from bson import ObjectId
 
 import controllers.configs as cfg
@@ -31,10 +32,6 @@ import utils.jsonutils as jsonutils
 
 from utils import query_params
 from models.contribution import Contribution
-from models.person import Person
-from models.organization import Organization
-from models.capabilities.capability import Capability
-from models.talents.talent import Talent
 from models.reviewer import Reviewer
 from pymongo import MongoClient
 
@@ -843,6 +840,17 @@ def talents_get(token_info=None, id=None, talent_id=None):
 
 def ok_search():
     return rs_handlers.return_200("okay")
+
+def version_search():
+    contribution_yaml = open('contribution.yaml')
+    parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
+    return parsed_contribution_yaml['info']['version']
+
+def building_blocks_search():
+    with open(os.path.join(current_app.root_path, 'jsons', 'building_blocks_list.json')) as f:
+        json_data = json.load(f)
+
+    return json_data["buildingBlocks"]
 
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database

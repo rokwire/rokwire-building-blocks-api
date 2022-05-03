@@ -69,6 +69,23 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+
+  /logs/version:
+    get:
+      summary: Get version of logging building block
+      tags:
+        - Logs
+      responses:
+        200:
+          description: The version of logging building block.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Logs:
