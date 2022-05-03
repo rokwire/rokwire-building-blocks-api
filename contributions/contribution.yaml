@@ -485,17 +485,17 @@ paths:
           description: Internal error
   /contributions/version:
     get:
-      summary: Get version of logging building block
+      summary: Get version of contribution building block
       tags:
         - Contributions
       responses:
         200:
-          description: The version of logging building block.
+          description: Contributions building block version.
         400:
           description: Bad request
         500:
           description: Internal server error
-  /contributions/buildingblocks:
+  /contributions/building-blocks:
     get:
       summary: Get the list of building blocks
       tags:

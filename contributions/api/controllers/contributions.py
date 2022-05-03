@@ -846,8 +846,7 @@ def version_search():
     parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
     return parsed_contribution_yaml['info']['version']
 
-def buildingblocks_search():
-    print(os.getcwd())
+def building_blocks_search():
     with open(os.path.join('api', 'jsons', 'building_blocks_list.json')) as f:
         json_data = json.load(f)
 
