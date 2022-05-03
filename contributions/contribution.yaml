@@ -488,6 +488,8 @@ paths:
       summary: Get version of contribution building block
       tags:
         - Contributions
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: Contributions building block version.

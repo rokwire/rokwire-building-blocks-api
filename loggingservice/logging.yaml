@@ -75,6 +75,8 @@ paths:
       summary: Get version of logging building block
       tags:
         - Logs
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: The version of logging building block.
