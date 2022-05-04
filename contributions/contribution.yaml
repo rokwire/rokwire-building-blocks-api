@@ -483,6 +483,36 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+  /contributions/version:
+    get:
+      summary: Get version of contribution building block
+      tags:
+        - Contributions
+      responses:
+        200:
+          description: Contributions building block version.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+  /contributions/building-blocks:
+    get:
+      summary: Get the list of building blocks
+      tags:
+        - Contributions
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: List of the building blocks
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
