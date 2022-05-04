@@ -887,6 +887,8 @@
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password"
                                                            value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                                    <br>
                                                 {% else %}
                                                     <input class="form-control"
                                                            name="environmentVariables_key_{{keyvalloop.index0}}"
@@ -897,6 +899,8 @@
                                                            placeholder="Value"
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                                    <br>
                                                 {% endif %}
                                         {% endfor %}
                                     {%  else %}
@@ -904,9 +908,9 @@
                                                id="environmentVariables_key_0" type="text">
                                         <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
                                                id="environmentVariables_value_0" type="password">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                        <br>
                                     {% endif %}
-                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
-                                    <br>
                                 </div>
                                 <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
                                     <script>
@@ -919,19 +923,14 @@
                                                 "id=\"environmentVariables_key_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ loop.index0 }}\" " +
                                                 "id=\"environmentVariables_value_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px\">").each(function () {
-                                               var eye = $(this);
-                                               eye.on('click', function() {
-                                                   eye.toggleClass("bi-eye-slash bi-eye");
-                                                   eye.prev("input").each(function () {
-                                                       if (eye.hasClass('bi-eye')) {
-                                                           $(this).attr('type', 'text');
-                                                       }
-                                                       else if (eye.hasClass('bi-eye-slash')) {
-                                                           $(this).attr('type', 'password');
-                                                       }
-                                                   });
-                                               });
+                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px\">").on('click', function () {
+                                                $(this).toggleClass("bi-eye");
+                                                let input = $(this).prev();
+                                                if (input.attr("type") === "password") {
+                                                    input.attr("type", "text");
+                                                } else {
+                                                    input.attr("type", "password");
+                                                }
                                             }));
                                             $("#key-val_{{ loop.index0 }}").append("<br>");
                                         });
@@ -1624,7 +1623,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-    // function to toggle environmentVariables_value for clean capability
+    // toggle for first required env variable in capability
     $('.bi').each(function () {
         var eye = $(this);
         eye.on('click', function() {
@@ -1966,9 +1965,9 @@
             $('#add-env-var-button-div_' + i).append(env_var_button);
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
-                $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + i + "\" " +
                     "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" " +
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + i + "\" " +
                     "id=\"environmentVariables_value_" + i + "\" type=\"password\" placeholder=\"Value\">");
                 $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px\">").on('click', function () {
                     $(this).toggleClass("bi-eye");
