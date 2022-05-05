@@ -1624,40 +1624,20 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
     // toggle for first required env variable in capability
-    /*
-    $("#togglePassword").on('click', function() {
-        console.log("togglepassword")
-        $(this).toggleClass("bi-eye");
-        let input = $(this).prev();
-        if (input.attr("type") === "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-
-    });
-
-     */
     $('.bi').each(function () {
-        console.log("bi")
         let eye = $(this);
-        console.log(eye)
         eye.on('click', function() {
             let icon = $(this);
-            console.log("onclick");
-            //eye.toggleClass("bi-eye-slash");
-            console.log($(this));
             icon.toggleClass("bi-eye");
-
-            {#let input = icon.prev("input")#}
-            {#input.each(function () {#}
-            {#    if ($(this).hasClass('bi-eye')) {#}
-            {#        input.attr('type', 'text');#}
-            {#    }#}
-            {#    else if ($(this).hasClass('bi-eye-slash')) {#}
-            {#        input.attr('type', 'password');#}
-            {#    }#}
-            {#});#}
+            let input = icon.prev("input")
+            input.each(function () {
+                if (icon.hasClass('bi-eye')) {
+                    input.attr('type', 'text');
+                }
+                else if (icon.hasClass('bi-eye-slash')) {
+                    input.attr('type', 'password');
+                }
+            });
         });
     });
 
