@@ -1625,6 +1625,7 @@
 <script>
     // toggle for first required env variable in capability
     $("#togglePassword").on('click', function() {
+        console.log("togglepassword")
         $(this).toggleClass("bi-eye");
         let input = $(this).prev();
         if (input.attr("type") === "password") {
@@ -1635,6 +1636,7 @@
 
     });
     $('.bi').each(function () {
+        console.log("bi")
         var eye = $(this);
         eye.on('click', function() {
             eye.toggleClass("bi-eye-slash bi-eye");
