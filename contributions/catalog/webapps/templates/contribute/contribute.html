@@ -1624,6 +1624,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
     // toggle for first required env variable in capability
+    /*
     $("#togglePassword").on('click', function() {
         console.log("togglepassword")
         $(this).toggleClass("bi-eye");
@@ -1635,19 +1636,28 @@
         }
 
     });
+
+     */
     $('.bi').each(function () {
         console.log("bi")
-        var eye = $(this);
+        let eye = $(this);
+        console.log(eye)
         eye.on('click', function() {
-            eye.toggleClass("bi-eye-slash bi-eye");
-            eye.prev("input").each(function () {
-                if (eye.hasClass('bi-eye')) {
-                    $(this).attr('type', 'text');
-                }
-                else if (eye.hasClass('bi-eye-slash')) {
-                    $(this).attr('type', 'password');
-                }
-            });
+            let icon = $(this);
+            console.log("onclick");
+            //eye.toggleClass("bi-eye-slash");
+            console.log($(this));
+            icon.toggleClass("bi-eye");
+
+            {#let input = icon.prev("input")#}
+            {#input.each(function () {#}
+            {#    if ($(this).hasClass('bi-eye')) {#}
+            {#        input.attr('type', 'text');#}
+            {#    }#}
+            {#    else if ($(this).hasClass('bi-eye-slash')) {#}
+            {#        input.attr('type', 'password');#}
+            {#    }#}
+            {#});#}
         });
     });
 
