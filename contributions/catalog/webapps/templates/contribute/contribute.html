@@ -1627,6 +1627,7 @@
         }
     });
      */
+    // Handle end_day constraint based on the choice of start_day
 
     $(function () {
         function split(val) {
@@ -1869,8 +1870,17 @@
                     talent_des[i].required = true;
                     return false;
                 }
+                $('#start_day_'+ i).onchange = function(){
+                    var start = $('#start_day_'+ i).val()
+                    document.getElementById("end_day_" + i).setAttribute("min", start)
+                    var end = $('#end_day_' + i).val()
+                    if (end < start){
+                        $('#end_day_' + i).val(null)
+                    }
+                }
             }
         }
+
         var contact_name = document.getElementById('contact_name');
         if (contact_name.value == "") {
             contact_name.focus();
@@ -2061,6 +2071,18 @@
             }
         }
     }
+    $(function () {
+        for (var i = 0, l = talent_count; i < l; i++) {
+            $('#start_day_'+ i).onchange = function(){
+                var start = $('#start_day_'+ i).val()
+                document.getElementById("end_day_" + i).setAttribute("min", start)
+                var end = $('#end_day_' + i).val()
+                if (end < start){
+                    $('#end_day_' + i).val(null)
+                }
+            };
+        }
+    });
 
 </script>
 </html>
