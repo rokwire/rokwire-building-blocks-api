@@ -118,3 +118,18 @@ def request_required_capability_list(headers):
             required_capability_list.append(tmp_required_capability)
 
     return required_capability_list
+
+"""
+request building blocks list
+"""
+def request_buildingblocks(headers):
+    request_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/building-blocks"
+    result = requests.get(request_url, headers=headers)
+
+    # create the list of required capabilities
+    if result.status_code == 200:
+        # check if the login id is in reviewer list
+        result_str = result.content.decode('utf-8').replace('\n', '')
+        building_block_list_json = json.loads(result_str)
+
+    return building_block_list_json

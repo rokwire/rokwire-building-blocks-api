@@ -83,7 +83,17 @@
         <div class="col-12 col-sm-2">
             <h4>Required Building Blocks</h4>
         </div>
-        <p class="col-sm-9">{{post.requiredBuildingBlocks}}</p>
+        <table>
+            {% for x in post.requiredBuildingBlocks %}
+                <tr>
+                    <td>{{x}}</td>
+                </tr>
+            {% endfor %}
+            <!-- extra row for the separation to next field -->
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
     </div>
     {% endif %}
 

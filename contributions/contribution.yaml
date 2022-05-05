@@ -705,14 +705,6 @@ components:
           type: array
           items:
             type: string
-            enum:
-              - App Config
-              - Authentication
-              - Events
-              - Logging
-              - Profile
-              - Talent Chooser
-              - Transportation
         minUserPrivacyLevel:
           description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
           type: integer
