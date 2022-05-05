@@ -1391,14 +1391,24 @@
                                 <input class="form-check-input"
                                        id="start_day_{{loop.index0}}"
                                        name="talent_startDate_{{loop.index0}}"
-                                       type="date"
-                                value="{{ talent|filter_nested_dict(["startDate"]) }}">
+                                       type="date" value="{{ talent|filter_nested_dict(["startDate"]) }}">
                                 <label class="form-check-label"> end</label>
                                 <input class="form-check-input"
                                        id="end_day_{{loop.index0}}"
                                        name="talent_endDate_{{loop.index0}}"
                                        type="date"
                                        value="{{ talent|filter_nested_dict(["endDate"]) }}">
+                                <script>
+                                    $('#start_day_{{loop.index0}}').change(function(){
+                                        let start_val = $(this).val();
+                                        let end_day = document.getElementById("end_day_{{loop.index0}}");
+                                        end_day.setAttribute("min", start_val);
+                                        let end_val = end_day.val;
+                                        if (end_val < start_val){
+                                            end_day.val(null);
+                                        }
+                                    });
+                                </script>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Data Description</label>
@@ -1613,21 +1623,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-
-    /*
-    $('#start_day').datepicker({
-        onSelect: function(dateText, inst){
-            $('#end_day').datepicker('option', 'minDate', new Date(dateText));
+    // validate end day
+    $('[id^="start_day"]').change(function(){
+        let start_day_id = this.id;
+        let id_number = start_day_id.replace("start_day_","");
+        let start_val = $(this).val();
+        let end_day = document.getElementById("end_day_"+id_number);
+        end_day.setAttribute("min", start_val);
+        let end_val = end_day.val;
+        if (end_val < start_val){
+            end_day.val(null)
         }
     });
-
-    $('#end_day').datepicker({
-        onSelect: function(dateText, inst){
-            $('#start_day').datepicker('option', 'maxDate', new Date(dateText));
-        }
-    });
-     */
-    // Handle end_day constraint based on the choice of start_day
 
     $(function () {
         function split(val) {
@@ -2005,18 +2012,6 @@
             $("#talent-parent").append($clone);
             $("#talent-parent").append("<br>");
 
-            let i = talent_count;
-            console.log(i)
-            $('#start_day_'+ i).change(function(){
-                console.log("start_day")
-                var start = $('#start_day_'+ i).val()
-                document.getElementById("end_day_" + i).setAttribute("min", start)
-                var end = $('#end_day_' + i).val()
-                if (end < start){
-                    $('#end_day_' + i).val(null)
-                }
-            });
-
             talent_count++;
         });
     });
@@ -2076,18 +2071,6 @@
             }
         }
     }
-    $(function () {
-        for (var i = 0, l = talent_count; i < l; i++) {
-            $('#start_day_'+ i).onchange = function(){
-                var start = $('#start_day_'+ i).val()
-                document.getElementById("end_day_" + i).setAttribute("min", start)
-                var end = $('#end_day_' + i).val()
-                if (end < start){
-                    $('#end_day_' + i).val(null)
-                }
-            };
-        }
-    });
 
 </script>
 </html>
