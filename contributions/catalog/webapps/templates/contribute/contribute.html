@@ -1925,20 +1925,13 @@
             a.style.display = "none";
         }
     }
-    var n = 0
+    // not currently used
     function duplicate() {
-        // clone capability div
         var original_cap = document.getElementById('capability' + n);
         var clone_cap = original_cap.cloneNode(true); // "deep" clone
         clone_cap.id = "capability" + ++n; // there can only be one element with an ID
         clone_cap.onclick = duplicate; // event handlers are not cloned
         original_cap.parentNode.appendChild(clone_cap);
-        // clone talent div
-        var original_tal = document.getElementById('talent' + n);
-        var clone_tal = original_tal.cloneNode(true); // "deep" clone
-        clone_tal.id = "talent" + ++n; // there can only be one element with an ID
-        clone_tal.onclick = duplicate; // event handlers are not cloned
-        original_tal.parentNode.appendChild(clone_tal);
     }
 
     $(function () {
