@@ -638,10 +638,11 @@
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Data Deletion</label>
                         <div class="col-sm-10">
-                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                            <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                    placeholder="Endpoint" type="text">
-                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                   placeholder="Api Key" type="text">
+                            <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                   placeholder="Api Key" type="password">
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                             <br>
                         </div>
                     </div>
@@ -1026,28 +1027,30 @@
                                 <label class="required control-label col-sm-2">Data Deletion</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_endpoint_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                placeholder="Endpoint"
                                                type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                     {% else %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_endpoint_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                placeholder="Endpoint" type="text">
                                     {% endif %}
                                     {% if is_editable %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_api_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                placeholder="Api Key"
-                                               type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
+                                               type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                                     {% else %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_api_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
-                                               placeholder="Api Key" type="text">
+                                               placeholder="Api Key" type="password">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
                                     {% endif %}
                                     <br>
                                 </div>
@@ -1623,7 +1626,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
-    // toggle for first required env variable in capability
+    // toggle sensitive data visibility
     $('.bi').each(function () {
         let eye = $(this);
         eye.on('click', function() {
