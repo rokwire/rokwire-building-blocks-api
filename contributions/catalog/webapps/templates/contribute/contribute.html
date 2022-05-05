@@ -1870,14 +1870,6 @@
                     talent_des[i].required = true;
                     return false;
                 }
-                $('#start_day_'+ i).onchange = function(){
-                    var start = $('#start_day_'+ i).val()
-                    document.getElementById("end_day_" + i).setAttribute("min", start)
-                    var end = $('#end_day_' + i).val()
-                    if (end < start){
-                        $('#end_day_' + i).val(null)
-                    }
-                }
             }
         }
 
@@ -2013,9 +2005,22 @@
             $("#talent-parent").append($clone);
             $("#talent-parent").append("<br>");
 
+            let i = talent_count;
+            console.log(i)
+            $('#start_day_'+ i).change(function(){
+                console.log("start_day")
+                var start = $('#start_day_'+ i).val()
+                document.getElementById("end_day_" + i).setAttribute("min", start)
+                var end = $('#end_day_' + i).val()
+                if (end < start){
+                    $('#end_day_' + i).val(null)
+                }
+            });
+
             talent_count++;
         });
     });
+
 
     $(function () {
         $("#add-contributor-person").click(function (e) {
