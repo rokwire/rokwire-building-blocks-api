@@ -52,6 +52,12 @@
         #sourceurl{
             display:none;
         }
+        .i {
+            cursor:pointer;
+            margin-left:-100px;
+            margin-top:-30px;
+            z-index:-100;
+        }
 
     </style>
 </head>
@@ -585,7 +591,7 @@
                                    id="environmentVariables_key" type="text">
                             <input class="form-control" name="environmentVariables_value" placeholder="Value"
                                    id="environmentVariables_value" type="password">
-                            <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -642,7 +648,7 @@
                                    placeholder="Endpoint" type="text">
                             <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                    placeholder="Api Key" type="password">
-                            <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
                     </div>
@@ -888,7 +894,7 @@
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password"
                                                            value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                                     <br>
                                                 {% else %}
                                                     <input class="form-control"
@@ -900,7 +906,7 @@
                                                            placeholder="Value"
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password">
-                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                                     <br>
                                                 {% endif %}
                                         {% endfor %}
@@ -909,7 +915,7 @@
                                                id="environmentVariables_key_0" type="text">
                                         <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
                                                id="environmentVariables_value_0" type="password">
-                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         <br>
                                     {% endif %}
                                 </div>
@@ -924,7 +930,7 @@
                                                 "id=\"environmentVariables_key_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ loop.index0 }}\" " +
                                                 "id=\"environmentVariables_value_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px\">").on('click', function () {
+                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
                                                 $(this).toggleClass("bi-eye");
                                                 let input = $(this).prev();
                                                 if (input.attr("type") === "password") {
@@ -1044,13 +1050,13 @@
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                placeholder="Api Key"
                                                type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
-                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                     {% else %}
                                         <input class="form-control"
                                                id="datadel_api_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                placeholder="Api Key" type="password">
-                                        <i class="bi bi-eye-slash field_icon" id="togglePassword" style="cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px"></i>
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                     {% endif %}
                                     <br>
                                 </div>
@@ -1974,7 +1980,7 @@
                     "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
                 $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + i + "\" " +
                     "id=\"environmentVariables_value_" + i + "\" type=\"password\" placeholder=\"Value\">");
-                $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" style=\"cursor:pointer; position:absolute; margin-left:-20px; margin-top:-20px\">").on('click', function () {
+                $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
                     $(this).toggleClass("bi-eye");
                     let input = $(this).prev();
                     if (input.attr("type") === "password") {
