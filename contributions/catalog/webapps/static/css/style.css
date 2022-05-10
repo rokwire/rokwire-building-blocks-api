@@ -384,3 +384,7 @@ hr.dotted {
 .show {
     display: block;
 }
+
+#togglePassword {
+    cursor: pointer;
+}
