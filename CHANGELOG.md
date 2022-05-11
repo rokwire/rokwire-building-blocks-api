@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
 - Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
 - Items in contact details are added to required field data validation [#907](https://github.com/rokwire/rokwire-building-blocks-api/issues/907)
+- Version endpoint to contribution building block  [#897](https://github.com/rokwire/rokwire-building-blocks-api/issues/897)
+- Version endpoint to logging building block  [#898](https://github.com/rokwire/rokwire-building-blocks-api/issues/898)
+- Endpoint for showing required building blocks to contribution building block [#904](https://github.com/rokwire/rokwire-building-blocks-api/issues/904)
+- Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
 
 ### Changed
 - Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Environmental varialbes in capability detail page shows html formatted data [#915](https://github.com/rokwire/rokwire-building-blocks-api/issues/915)
 
 ### Fixed
-- Posting contirbuiton error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
+- Posting contribution error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
