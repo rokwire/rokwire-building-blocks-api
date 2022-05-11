@@ -387,4 +387,7 @@ hr.dotted {
 
 #togglePassword {
     cursor: pointer;
+    position: absolute;
+    margin-left: -20px;
+    margin-top: -20px;
 }
