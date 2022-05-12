@@ -1084,22 +1084,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Required Building Block(s)</label>
                         <div class="col-sm-10">
-                            {# TODO what is required building blocks #}
-                            {% if tallent and talent["requiredBuildingBlocks"] %}
-                                {% if talent["requiredBuildingBlocks"]|length > 0 %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder=""
-                                           type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
-                                {% else %}
-                                    <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                           placeholder=""
-                                           type="text" value="">
-                                {% endif %}
-                            {% else %}
-                                <input class="form-control" id="required_bb" name="talent_requiredBuildingBlocks"
-                                       placeholder=""
-                                       type="text" value="">
-                            {% endif %}
+                            <select class="custom-select" multiple id="required_bb" name="talent_requiredBuildingBlocks">
+                                {% for bb in building_blocks %}
+                                    <option value='{{bb}}'>
+                                        {{bb}}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1226,28 +1217,38 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Required Building Block(s)</label>
                                 <div class="col-sm-10">
-                                    {# TODO what is required building blocks #}
-                                    {%  if talent["requiredBuildingBlocks"] %}
-                                        {% if talent["requiredBuildingBlocks"]|length > 0 %}
-                                            <input class="form-control"
-                                                   id="required_bb_{{loop.index0}}"
-                                                   name="talent_requiredBuildingBlocks_{{loop.index0}}"
-                                                   placeholder=""
-                                                   type="text" value="{{ talent|filter_nested_dict(["requiredBuildingBlocks"]) }}">
+                                    <select class="custom-select" multiple
+                                            id="required_bb_{{loop.index0}}"
+                                            name="talent_requiredBuildingBlocks_{{loop.index0}}">
+                                        {# if there is required building blocks in the talent #}
+                                        {% if talent["requiredBuildingBlocks"] %}
+                                            {% set required_bb_from_talent = talent["requiredBuildingBlocks"] %}
+                                            {% for bb in building_blocks %}
+                                                {% set re_bb_ns = namespace(is_existing=false) %}
+                                                {% for rebb in required_bb_from_talent %}
+                                                    {% if bb == rebb %}
+                                                        {% set re_bb_ns.is_existing = True %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if re_bb_ns.is_existing %}
+                                                    <option value='{{ bb }}' selected>
+                                                        {{ bb }}
+                                                    </option>
+                                                {% else %}
+                                                    <option value='{{ bb }}'>
+                                                        {{ bb }}
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
                                         {% else %}
-                                            <input class="form-control"
-                                                   id="required_bb_{{loop.index0}}"
-                                                   name="talent_requiredBuildingBlocks_{{loop.index0}}"
-                                                   placeholder=""
-                                                   type="text" value="">
+                                            {# if there is no reguired building blocks #}
+                                            {% for bb in building_blocks %}
+                                                <option value='{{bb}}'>
+                                                    {{ bb }}
+                                                </option>
+                                            {% endfor %}
                                         {% endif %}
-                                    {% else %}
-                                        <input class="form-control"
-                                               id="required_bb_{{loop.index0}}"
-                                               name="talent_requiredBuildingBlocks_{{loop.index0}}"
-                                               placeholder=""
-                                               type="text" value="">
-                                    {% endif %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
