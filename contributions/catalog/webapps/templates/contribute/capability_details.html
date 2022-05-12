@@ -135,8 +135,18 @@
                     {% endif %}
                     {% if post.deploymentDetails.environmentVariables %}
                     <tr>
-                        <td><b>Environment Variables&nbsp;&nbsp;</b></td>
-                        <td>{{post.deploymentDetails.environmentVariables}}</td>
+                        <td valign="top"><b>Environment Variables&nbsp;&nbsp;</b></td>
+                        <td>
+                            {% for envvar in post.deploymentDetails.environmentVariables %}
+                                <table>
+                                    {% for key,val in envvar.items() %}
+                                        <tr>
+                                            <td>{{key}}: {{val}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        </td>
                     </tr>
                     {% endif %}
                     {% if post.deploymentDetails.location %}
