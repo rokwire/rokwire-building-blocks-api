@@ -1405,13 +1405,24 @@
                                        id="start_day_{{loop.index0}}"
                                        name="talent_startDate_{{loop.index0}}"
                                        type="date"
-                                value="{{ talent|filter_nested_dict(["startDate"]) }}">
+                                       value="{{ talent|filter_nested_dict(["startDate"]) }}">
                                 <label class="form-check-label"> end</label>
                                 <input class="form-check-input"
                                        id="end_day_{{loop.index0}}"
                                        name="talent_endDate_{{loop.index0}}"
                                        type="date"
                                        value="{{ talent|filter_nested_dict(["endDate"]) }}">
+                                <script>
+                                    $('#start_day_{{loop.index0}}').change(function(){
+                                        let start_val = $(this).val();
+                                        let end_day = document.getElementById("end_day_{{loop.index0}}");
+                                        end_day.setAttribute("min", start_val);
+                                        let end_val = end_day.val;
+                                        if (end_val < start_val){
+                                            end_day.val(null);
+                                        }
+                                    });
+                                </script>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Data Description</label>
@@ -1642,6 +1653,19 @@
                 }
             });
         });
+    });
+
+    // validate start and end dates in talent form
+    $('[id^="start_day"]').change(function() {
+        let start_day_id = this.id;
+        let id_number = start_day_id.replace("start_day_", "");
+        let start_val = $(this).val();
+        let end_day = document.getElementById("end_day_" + id_number);
+        end_day.setAttribute("min", start_val);
+        let end_val = end_day.val;
+        if (end_val < start_val) {
+            end_day.val(null)
+        }
     });
 
     $(function () {
