@@ -13,13 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Version endpoint to logging building block  [#898](https://github.com/rokwire/rokwire-building-blocks-api/issues/898)
 - Endpoint for showing required building blocks to contribution building block [#904](https://github.com/rokwire/rokwire-building-blocks-api/issues/904)
 - Multiple selection list for required building block added to talent [#917](https://github.com/rokwire/rokwire-building-blocks-api/issues/917)
+- Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
 
 ### Changed
 - Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
 - Minimum end user role as text in talent detail page [#879](https://github.com/rokwire/rokwire-building-blocks-api/issues/879)
 
 ### Fixed
-- Posting contirbuiton error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
+- Posting contribution error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
 - End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
 - Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
 - Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)

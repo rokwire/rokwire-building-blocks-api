@@ -4,6 +4,7 @@
     <title> Capability Catalog </title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -83,6 +84,7 @@
 
         <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
             <div>
+                <!-- not currently used -->
                 {% for member in teammembers %}
                     {{ member['name'] }}
                 {% endfor %}
@@ -486,15 +488,13 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" id="select-contribution">Select the Contribution Type
-                    *</label>
+                <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
                 <div>
                     <button class="button button2" id="add-capability">Add a Capability</button>
                     OR
                     <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
             </div>
-
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
 
@@ -539,7 +539,6 @@
                     <div class="form-group" id="sourceurl">
                         <label class="control-label col-sm-2">Source repo URL</label>
                         <div class="col-sm-10">
-
                             <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
                                    placeholder="Source code repository URL (if open sourced)" type="url">
                         </div>
@@ -580,12 +579,13 @@
                     </div>
 
                     <div name="add-env-var-div" class="form-group">
-                        <label class="required control-label col-sm-2">Enviroment Variable(s)</label>
+                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
-                            <input class="form-inline" name="environmentVariables_key" placeholder="Key"
+                            <input class="form-control" name="environmentVariables_key" placeholder="Key"
                                    id="environmentVariables_key" type="text">
-                            <input class="form-inline" name="environmentVariables_value" placeholder="Value"
-                                   id="environmentVariables_value" type="text">
+                            <input class="form-control" name="environmentVariables_value" placeholder="Value"
+                                   id="environmentVariables_value" type="password">
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -638,10 +638,11 @@
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Data Deletion</label>
                         <div class="col-sm-10">
-                            <input class="form-inline" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                            <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                    placeholder="Endpoint" type="text">
-                            <input class="form-inline" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                   placeholder="Api Key" type="text">
+                            <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                   placeholder="Api Key" type="password">
+                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
                     </div>
@@ -876,38 +877,39 @@
                                         {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
                                             {% set keyvalloop = loop %}
                                                 {% if is_editable %}
-                                                    <input class="form-inline"
+                                                    <input class="form-control"
                                                            name="environmentVariables_key_{{keyvalloop.index0}}"
                                                            placeholder="Key"
                                                            id="environmentVariables_key_{{loop.index0}}"
                                                            type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                    <input class="form-control"
+                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
+                                                           placeholder="Value"
+                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
+                                                           type="password"
+                                                           value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
+                                                    <br>
                                                 {% else %}
-                                                    <input class="form-inline"
+                                                    <input class="form-control"
                                                            name="environmentVariables_key_{{keyvalloop.index0}}"
                                                            placeholder="Key"
                                                            id="environmentVariables_key_{{loop.index0}}" type="text">
-                                                {% endif %}
-                                                {% if is_editable %}
-                                                    <input class="form-inline"
+                                                    <input class="form-control"
                                                            name="environmentVariables_value_{{keyvalloop.index0}}"
                                                            placeholder="Value"
                                                            id="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           type="text"
-                                                           value="{{ envvar | filter_nested_dict(["value"]) }}">
-                                                {% else %}
-                                                    <input class="form-inline"
-                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           placeholder="Value"
-                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
-                                                           type="text">
+                                                           type="password">
+                                                    <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
+                                                    <br>
                                                 {% endif %}
-                                                <br>
                                         {% endfor %}
                                     {%  else %}
-                                        <input class="form-inline" name="environmentVariables_key_0" placeholder="Key"
+                                        <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
                                                id="environmentVariables_key_0" type="text">
-                                        <input class="form-inline" name="environmentVariables_value_0" placeholder="Value"
-                                               id="environmentVariables_value_0" type="text">
+                                        <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
+                                               id="environmentVariables_value_0" type="password">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         <br>
                                     {% endif %}
                                 </div>
@@ -918,10 +920,19 @@
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
-                                            $("#key-val_{{ loop.index0 }}").append("<input name=\"environmentVariables_key_{{ loop.index0 }}\" " +
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_{{ loop.index0 }}\" " +
                                                 "id=\"environmentVariables_key_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                            $("#key-val_{{ loop.index0 }}").append("<input name=\"environmentVariables_value_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_value_{{ loop.index0 }}\" type=\"text\" placeholder=\"Value\">");
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_value_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
+                                                $(this).toggleClass("bi-eye");
+                                                let input = $(this).prev();
+                                                if (input.attr("type") === "password") {
+                                                    input.attr("type", "text");
+                                                } else {
+                                                    input.attr("type", "password");
+                                                }
+                                            }));
                                             $("#key-val_{{ loop.index0 }}").append("<br>");
                                         });
                                     </script>
@@ -1016,28 +1027,30 @@
                                 <label class="required control-label col-sm-2">Data Deletion</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_endpoint_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                placeholder="Endpoint"
                                                type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                     {% else %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_endpoint_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                placeholder="Endpoint" type="text">
                                     {% endif %}
                                     {% if is_editable %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_api_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                placeholder="Api Key"
-                                               type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
+                                               type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                     {% else %}
-                                        <input class="form-inline"
+                                        <input class="form-control"
                                                id="datadel_api_{{loop.index0}}"
                                                name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
-                                               placeholder="Api Key" type="text">
+                                               placeholder="Api Key" type="password">
+                                        <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                     {% endif %}
                                     <br>
                                 </div>
@@ -1614,6 +1627,24 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
 <script>
+    // toggle sensitive data visibility
+    $('.bi').each(function () {
+        let eye = $(this);
+        eye.on('click', function() {
+            let icon = $(this);
+            icon.toggleClass("bi-eye");
+            let input = icon.prev("input")
+            input.each(function () {
+                if (icon.hasClass('bi-eye')) {
+                    input.attr('type', 'text');
+                }
+                else if (icon.hasClass('bi-eye-slash')) {
+                    input.attr('type', 'password');
+                }
+            });
+        });
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -1899,7 +1930,7 @@
             a.style.display = "none";
         }
     }
-
+    // not currently used
     function duplicate() {
         var original = document.getElementById('capability' + i);
         var clone = original.cloneNode(true); // "deep" clone
@@ -1940,10 +1971,19 @@
             $('#add-env-var-button-div_' + i).append(env_var_button);
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
-                $("#key-val_" + i).append("<input name=\"environmentVariables_key_" + i + "\" " +
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + i + "\" " +
                     "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $("#key-val_" + i).append("<input name=\"environmentVariables_value_" + i + "\" " +
-                    "id=\"environmentVariables_value_" + i + "\" type=\"text\" placeholder=\"Value\">");
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + i + "\" " +
+                    "id=\"environmentVariables_value_" + i + "\" type=\"password\" placeholder=\"Value\">");
+                $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
+                    $(this).toggleClass("bi-eye");
+                    let input = $(this).prev();
+                    if (input.attr("type") === "password") {
+                        input.attr("type", "text");
+                    } else {
+                        input.attr("type", "password");
+                    }
+                }));
                 $("#key-val_" + i).append("<br>");
             });
 
