@@ -125,6 +125,7 @@ request building blocks list
 def request_buildingblocks(headers):
     request_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/building-blocks"
     result = requests.get(request_url, headers=headers)
+    building_block_list=[]
 
     # create the list of required capabilities
     if result.status_code == 200:
