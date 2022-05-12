@@ -73,44 +73,177 @@
     {% if post.contributors %}
         <h4>Contributor details</h4>
         {% for c in post.contributors %}
-            <h5><b>{{ c["contributorType"] }}</b></h5>
+            {% set contributor_ns = namespace(firstName='', lastName='', middleName='', address='', phone='', email='',
+            name='', contributorType='', affil_name='', affil_address='', affil_phone='', affil_email='') %}
             {% for key,val in c.items() %}
                 {% if key == "affiliation" %}
                     {% for k,vk in val.items() %}
                         {% if vk %}
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                affiliation {{k}}
-                            </div>
-                            <p class="col-sm-2">{{vk}}</p>
-                        </div>
+                            {% if k == 'name' %}
+                                {% set contributor_ns.affil_name = vk %}
+                            {% elif k == 'address' %}
+                                {% set contributor_ns.affil_address = vk %}
+                            {% elif k == 'phone' %}
+                                {% set contributor_ns.affil_phone = vk %}
+                            {% elif k == 'email' %}
+                                {% set contributor_ns.affil_email = vk %}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
-                {% elif key == "contributorType" %}
-                    <!--- skip contributorType -->
-                {% elif val %}
-                <div class="row">
-                    <div class="col-12 col-sm-2">
-                        {{key}}
-                    </div>
-                    <p class="col-sm-2">{{val}}</p>
-                </div>
+                {% else %}
+                    {% if key == 'contributorType' %}
+                        {% set contributor_ns.contributorType = val %}
+                    {% elif key == 'firstName' %}
+                        {% set contributor_ns.firstName = val %}
+                    {% elif key == 'lastName' %}
+                        {% set contributor_ns.lastName = val %}
+                    {% elif key == 'middleName' %}
+                        {% set contributor_ns.middleName = val %}
+                    {% elif key == 'phone' %}
+                        {% set contributor_ns.phone = val %}
+                    {% elif key == 'email' %}
+                        {% set contributor_ns.email = val %}
+                    {% elif key == 'address' %}
+                        {% set contributor_ns.address = val %}
+                    {% elif key == 'name' %}
+                        {% set contributor_ns.name = val %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
+            {% if contributor_ns.contributorType == "person" %}
+                <h5><b>Person</b></h5>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        First Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.firstName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Middle Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.middleName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Last Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.lastName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.phone}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.email}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_name}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Address
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_address}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_phone}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_email}}</p>
+                </div>
+            {% endif %}
+            {% if contributor_ns.contributorType == "organization" %}
+                <h5><b>Organization</b></h5>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.name}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Address
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.address}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.email}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.phone}}</p>
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
     {% if post.contacts %}
     <h4>Contact details</h4>
         {% for contact in post["contacts"] %}
+            {% set contact_ns = namespace(name='', officialAddress='', phone='', email='', organization='') %}
             {% for key,val in contact.items() %}
+                {% if key == 'name' %}
+                    {% set contact_ns.name = val %}
+                {% elif key == 'phone' %}
+                    {% set contact_ns.phone = val %}
+                {% elif key == 'email' %}
+                    {% set contact_ns.email = val %}
+                {% elif key == 'officialAddress' %}
+                    {% set contact_ns.officialAddress = val %}
+                {% elif key == 'organization' %}
+                    {% set contact_ns.organization = val %}
+                {% endif %}
+            {% endfor %}
             <div class="row">
                 <div class="col-12 col-sm-2">
-                    {{key}}
+                    Name
                 </div>
-                <p class="col-sm-2">{{val}}</p>
+                <p class="col-sm-2">{{contact_ns.name}}</p>
             </div>
-            {% endfor %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Official Address
+                </div>
+                <p class="col-sm-2">{{contact_ns.officialAddress}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Email
+                </div>
+                <p class="col-sm-2">{{contact_ns.email}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Phone
+                </div>
+                <p class="col-sm-2">{{contact_ns.phone}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Organization
+                </div>
+                <p class="col-sm-2">{{contact_ns.organization}}</p>
+            </div>
         {% endfor %}
     {% endif %}
 
