@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Show general html values instead of raw data format in catalog [#909](https://github.com/rokwire/rokwire-building-blocks-api/issues/909)
 - Contact information in contribution detail page shows html formatted data [#914](https://github.com/rokwire/rokwire-building-blocks-api/issues/914)
 - Environmental varialbes in capability detail page shows html formatted data [#915](https://github.com/rokwire/rokwire-building-blocks-api/issues/915)
+- Added error message when the api key is not correct in catalog [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
 
 ### Fixed
 - Posting contribution error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)

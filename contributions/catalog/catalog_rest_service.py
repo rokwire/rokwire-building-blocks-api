@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import logging
+import json
 import os
 import utils.requestutil as requestutil
 import utils.jsonutil as jsonutil
@@ -114,6 +115,14 @@ def index():
         # query only published ones
         headers = requestutil.get_header_using_api_key()
         result = requestutil.request_contributions(headers)
+
+        if result.status_code != 200:
+            msg = {
+                "ERROR": "There is a problem getting contributions list. Maybe API Key is not correct."
+            }
+            msg_json = jsonutil.create_log_json("Contribution", "SEARCH", msg)
+            logging.info("Contribution SEARCH " + json.dumps(msg))
+
         if show_sel == "capability":
             # create the json for only capability
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
