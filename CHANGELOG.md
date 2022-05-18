@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<<<<<<< HEAD
 ## [1.14.0] - 2022-05-17
 ### Added
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
@@ -37,8 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributor editing for person and organization. [#888](https://github.com/rokwire/rokwire-building-blocks-api/issues/888)
 - Fix the Jinja version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
 
-=======
->>>>>>> 7c09b3db20f8c178e64126f47872eafede916606
 ## [1.13.0] - 2022-04-04
 ### Fixed
 - UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
