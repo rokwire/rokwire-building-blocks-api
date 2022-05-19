@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Logging Building Block API
   description: Logging Building Block API Documentation
-  version: 1.12.1
+  version: 1.14.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -69,6 +69,23 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+
+  /logs/version:
+    get:
+      summary: Get version of logging building block
+      tags:
+        - Logs
+      responses:
+        200:
+          description: The version of logging building block.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Logs:

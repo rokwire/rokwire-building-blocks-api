@@ -15,6 +15,7 @@
 import logging
 import json
 import sys
+import yaml
 
 from connexion.exceptions import OAuthProblem
 from flask import request
@@ -59,3 +60,9 @@ def post():
         raise OAuthProblem(ex)
 
     return rs_handlers.success_response_only_status_code(200, "logging information successfully posted")
+
+def version_search():
+    logs_yaml = open('logging.yaml')
+    parsed_logs_yaml = yaml.load(logs_yaml, Loader=yaml.FullLoader)
+
+    return parsed_logs_yaml['info']['version']

@@ -6,6 +6,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.0] - 2022-05-17
+### Added
+- Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
+- Items in contact details are added to required field data validation [#907](https://github.com/rokwire/rokwire-building-blocks-api/issues/907)
+- Version endpoint to contribution building block  [#897](https://github.com/rokwire/rokwire-building-blocks-api/issues/897)
+- Version endpoint to logging building block  [#898](https://github.com/rokwire/rokwire-building-blocks-api/issues/898)
+- Endpoint for showing required building blocks to contribution building block [#904](https://github.com/rokwire/rokwire-building-blocks-api/issues/904)
+- Multiple selection list for required building block added to talent [#917](https://github.com/rokwire/rokwire-building-blocks-api/issues/917)
+- Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
+
+### Changed
+- Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
+- Minimum end user role as text in talent detail page [#879](https://github.com/rokwire/rokwire-building-blocks-api/issues/879)
+- Made person and organization display order more consistence in catalog [#908](https://github.com/rokwire/rokwire-building-blocks-api/issues/908)
+- Show general html values instead of raw data format in catalog [#909](https://github.com/rokwire/rokwire-building-blocks-api/issues/909)
+- Contact information in contribution detail page shows html formatted data [#914](https://github.com/rokwire/rokwire-building-blocks-api/issues/914)
+- Environmental variables in capability detail page shows html formatted data [#915](https://github.com/rokwire/rokwire-building-blocks-api/issues/915)
+
+### Fixed
+- Posting contribution error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
+- End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
+- Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
+- Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- GET contributions returns 401 for unpublished contributions. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
+- Warning in Logs Building Block. [#881](https://github.com/rokwire/rokwire-building-blocks-api/issues/881)
+- Editing multiple talent and capabilities. [#883](https://github.com/rokwire/rokwire-building-blocks-api/issues/883)
+- Contributor editing for person and organization. [#888](https://github.com/rokwire/rokwire-building-blocks-api/issues/888)
+- Fix the Jinja version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
+
 ## [1.13.0] - 2022-04-04
 ### Fixed
 - UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
@@ -16,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
 - Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
-- Added email field for reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
 - Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
 - Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
 
@@ -447,7 +477,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...HEAD
+[1.14.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...1.14.0
 [1.13.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...1.13.0
 [1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0

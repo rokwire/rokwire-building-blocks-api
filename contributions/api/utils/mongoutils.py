@@ -227,13 +227,18 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
         if status == "Published":
             return dataset, status_code
         else:
-            if (is_login):
+            if is_login:
                 # check if the user is in contributionAdmin group
-                if (is_admin):
+                if is_admin:
                     return dataset, status_code
                 else:
                     status_code = '401'
                     return None, status_code
+            else:
+                # if not logged in and if status is not Published return unauthorized
+                status_code = '401'
+                return None, status_code
+
     else:
         status_code = '400'
         return None, status_code
@@ -380,6 +385,26 @@ def list_reviewers():
         return json_load
     else:
         return None
+
+def get_reviewers_record(username):
+    """
+    Method to return the record of a reviewer from mongodb reviewer collection
+    Args:
+        username (str): github username
+    Returns:
+        (json) : json output from mongodb find query
+    """
+    db_data = coll_reviewer.find({"githubUsername": username})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+        return json_load
+    else:
+        return None
+
 
 """
 query using query field and querystring and convert result to object

@@ -32,6 +32,7 @@ def init_contribution():
 
 def init_person():
     return {
+        "contributorType": "",
         "firstName": "",
         "middleName": "",
         "lastName": "",
@@ -48,6 +49,7 @@ def init_person():
 
 def init_organization():
     return {
+        "contributorType": "",
         "name": "",
         "address": "",
         "email": "",
@@ -57,43 +59,61 @@ def init_organization():
 
 def to_contributor(d):
     if not d: return {}
-    person_list = []
-    org_list = []
+    # person_list = []
+    # org_list = []
+    contributor_list = []
+    # num_contributor = 0
 
-    if 'org_name' in d:
-        if isinstance(d['org_name'], str):
-            org_list.append(init_organization())
-        else:
-            for _ in range(len(d['org_name'])):
-                org_list.append(init_organization())
+    # if there is contributor_type_0, it means that there is capability
+    if 'contributor_type_0' in d.keys():
+        # keys = list(d.keys())
+        contributor_len = []
 
-    if 'person_firstName' in d:
-        if isinstance(d['person_firstName'], str):
-            person_list.append(init_person())
-        else:
-            for _ in range(len(d['person_firstName'])):
-                person_list.append(init_person())
+        # iterate to count the number of contributors
+        for key, value in d.items():
+            key_splitted = key.split("contributor_type_")
+            if len(key_splitted) > 1:
+                contributor_len.append(int(key_splitted[1]))
+                if value[0] == "person":
+                    contributor_list.append(init_person())
+                elif value[0] == "organization":
+                    contributor_list.append(init_organization())
+        # num_contributor = max(contributor_len) + 1
 
-    for i, e in enumerate(person_list):
-        for k, v in d.items():
-            if "affiliation_" in k.lower():
-                # print(k,v)
-                name = k.split("affiliation_")[-1]
-                person_list[i]["affiliation"][name] = v[i]
-            if "person_" in k.lower():
-                name = k.split("person_")[-1]
-                person_list[i][name] = v[i]
-    # print(person_list)
+    # init contributor
+    # for i in range(num_contributor):
+    #     # todo separate person and organization
+    #     # if d[i]["contributor_type"]:
+    #     #     contributor_list.append(init_organization())
+    for k, v in d.items():
+        if "person_" in k.lower():
+            name = k.split("person_")[-1]
+            splitted_key = name.split("_")
+            if len(splitted_key) > 1:    # means there is some number tag after '_'
+                index = int(splitted_key[-1])
+                name = splitted_key[0]
+                contributor_list[index][name] = v[0]
+        if "affiliation_" in k.lower():
+            name = k.split("affiliation_")[-1]
+            splitted_key = name.split("_")
+            if len(splitted_key) > 1:    # means there is some number tag after '_'
+                index = int(splitted_key[-1])
+                name = splitted_key[0]
+                contributor_list[index]["affiliation"][name] = v[0]
+        if "org_" in k.lower():
+            name = k.split("org_")[-1]
+            splitted_key = name.split("_")
+            if len(splitted_key) > 1:    # means there is some number tag after '_'
+                index = int(splitted_key[-1])
+                name = splitted_key[0]
+                contributor_list[index][name] = v[0]
+        if "contributor_type_" in k.lower():
+            splitted_key = k.split("contributor_type_")
+            if len(splitted_key) > 1:    # means there is some number tag after '_'
+                index = int(splitted_key[-1])
+                contributor_list[index]["contributorType"] = v[0]
 
-    for i, e in enumerate(org_list):
-        for k, v in d.items():
-            if "org_" in k:
-                name = k.split("org_")[-1]
-                org_list[i][name] = v[i]
-
-    if not person_list or len(person_list) == 0: return org_list
-    if not org_list or len(person_list) == 0: return person_list
-    return person_list + org_list
+    return contributor_list
 
 
 def init_contact():
@@ -137,4 +157,5 @@ def to_contribution(d):
         if "contribution_" in k:
             name = k.split("contribution_")[-1]
             res[name] = v[0]
+
     return res

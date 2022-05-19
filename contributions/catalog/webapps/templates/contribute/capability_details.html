@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="../../../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Capability Details</title>
 </head>
@@ -135,8 +135,18 @@
                     {% endif %}
                     {% if post.deploymentDetails.environmentVariables %}
                     <tr>
-                        <td><b>Environment Variables&nbsp;&nbsp;</b></td>
-                        <td>{{post.deploymentDetails.environmentVariables}}</td>
+                        <td valign="top"><b>Environment Variables&nbsp;&nbsp;</b></td>
+                        <td>
+                            {% for envvar in post.deploymentDetails.environmentVariables %}
+                                <table>
+                                    {% for key,val in envvar.items() %}
+                                        <tr>
+                                            <td>{{key}}: {{val}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        </td>
                     </tr>
                     {% endif %}
                     {% if post.deploymentDetails.location %}

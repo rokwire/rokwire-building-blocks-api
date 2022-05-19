@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.12.1
+  version: 1.14.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -483,6 +483,36 @@ paths:
           description: Unauthorized
         500:
           description: Internal error
+  /contributions/version:
+    get:
+      summary: Get version of contribution building block
+      tags:
+        - Contributions
+      responses:
+        200:
+          description: Contributions building block version.
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+  /contributions/building-blocks:
+    get:
+      summary: Get the list of building blocks
+      tags:
+        - Contributions
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: List of the building blocks
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
 components:
   schemas:
     Contribution:
@@ -675,14 +705,6 @@ components:
           type: array
           items:
             type: string
-            enum:
-              - App Config
-              - Authentication
-              - Events
-              - Logging
-              - Profile
-              - Talent Chooser
-              - Transportation
         minUserPrivacyLevel:
           description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
           type: integer
@@ -754,6 +776,8 @@ components:
     Person:
       type: object
       properties:
+        contributorType:
+          type: string
         firstName:
           nullable: true
           type: string
@@ -777,6 +801,8 @@ components:
     Organization:
       type: object
       properties:
+        contributorType:
+          type: string
         name:
           nullable: true
           type: string

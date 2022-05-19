@@ -15,8 +15,10 @@
 import json
 import datetime
 import logging
+import yaml
+import os
 
-from flask import wrappers, request
+from flask import wrappers, request, current_app
 from bson import ObjectId
 
 import controllers.configs as cfg
@@ -30,10 +32,6 @@ import utils.jsonutils as jsonutils
 
 from utils import query_params
 from models.contribution import Contribution
-from models.person import Person
-from models.organization import Organization
-from models.capabilities.capability import Capability
-from models.talents.talent import Talent
 from models.reviewer import Reviewer
 from pymongo import MongoClient
 
@@ -42,6 +40,7 @@ client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
+notification_enabled = cfg.NOTIFICATION_ENABLED
 
 def post(token_info):
     is_new_install = True
@@ -199,6 +198,12 @@ def post(token_info):
         msg = "new contribution has been created: " + str(contribution_name)
         msg_json = jsonutils.create_log_json("Contribution", "POST", {"id": str(contribution_id)})
         logging.info("Contribution POST " + json.dumps(msg_json))
+
+        # send new contribution email to add reviewers
+        if notification_enabled:
+            list_reviewers = mongoutils.list_reviewers()
+            for reviewer in list_reviewers:
+                send_email_new_contribution(reviewer['githubUsername'], contribution_name)
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
@@ -362,18 +367,15 @@ def put(token_info, id):
             if talent.requiredCapabilities is not None:
                 required_cap_list = talent.requiredCapabilities
                 for capability_json in required_cap_list:
-                    capability, rest_capability_json, msg = modelutils.construct_capability(capability_json)
-                    if capability.id is not None:
-                        is_uuid = otherutils.check_if_uuid(capability.id)
-                        if not is_uuid:
-                            msg = {
-                                "reason": "Capability id in requiredCapabilities is not in uuid format",
-                                "error": "Bad Request: " + request.url,
-                            }
-                            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
-                            logging.error("Contribution POST " + json.dumps(msg_json))
-                            return rs_handlers.bad_request(msg)
-
+                    is_uuid = otherutils.check_if_uuid(capability_json["capabilityId"])
+                    if not is_uuid:
+                        msg = {
+                            "reason": "Capability id in requiredCapabilities is not in uuid format",
+                            "error": "Bad Request: " + request.url,
+                        }
+                        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+                        logging.error("Contribution POST " + json.dumps(msg_json))
+                        return rs_handlers.bad_request(msg)
             talent_list.append(talent)
         contribution_dataset.set_talents(talent_list)
     except:
@@ -839,6 +841,17 @@ def talents_get(token_info=None, id=None, talent_id=None):
 def ok_search():
     return rs_handlers.return_200("okay")
 
+def version_search():
+    contribution_yaml = open('contribution.yaml')
+    parsed_contribution_yaml = yaml.load(contribution_yaml, Loader=yaml.FullLoader)
+    return parsed_contribution_yaml['info']['version']
+
+def building_blocks_search():
+    with open(os.path.join(current_app.root_path, 'jsons', 'building_blocks_list.json')) as f:
+        json_data = json.load(f)
+
+    return json_data["buildingBlocks"]
+
 def admin_reviewers_post(token_info):
     # this is for adding reviewers to the database
     # only superuser can add the reviewer
@@ -859,7 +872,6 @@ def admin_reviewers_post(token_info):
     name = in_json["name"]
     username = in_json["githubUsername"]
     email = in_json["email"]
-
     # check if the dataset is existing with given github username
     dataset = mongoutils.get_dataset_from_field(coll_reviewer, "githubUsername", username)
     if dataset is not None:
@@ -884,7 +896,10 @@ def admin_reviewers_post(token_info):
     logging.info("Contribution Admin POST " + json.dumps(msg_json))
 
     reviewer_id = str(dataset['_id'])
-
+    # send email when new reviewer is added
+    ### TODO : This function is to be called when a reviewer is assigned to a contribution
+    if notification_enabled:
+        send_email_new_reviewer(dataset['githubUsername'])
     return rs_handlers.return_id(msg, 'id', reviewer_id)
 
 def admin_reviewers_search(token_info):
@@ -936,3 +951,80 @@ def admin_reviewers_delete(token_info, id):
         msg_json = jsonutils.create_log_json("Contribution Admin ", "DELETE", msg)
         logging.info("Contribution Admin DELETE " + json.dumps(msg_json))
         return rs_handlers.not_found(msg_json)
+
+def send_email_new_reviewer(username):
+    """
+    Method to send email to user for new reviewers
+    Args:
+        username (str) : github username of reviewer
+    """
+    # check if the dataset is existing with given github username
+    dataset = mongoutils.get_reviewers_record(username)
+    if dataset is None:
+        msg = {
+            "reason": "Github Username not present in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+    if 'email' in dataset[0].keys():
+        subject = "Reviewer updated"
+        message = "Reviewer has been updated for a contribution"
+        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+        if not success:
+            msg = {
+                "reason": "Error in sending email via SMTP: " + str(error_msg),
+                "error": "Error code" + str(error_code)
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg)
+    else:
+        msg = {
+            "reason": "Email not present for username " + str(username)
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+        logging.error("Contribution POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+def send_email_new_contribution(username, contribution_name):
+    """
+    Method to send email to user for new contribution
+    Args:
+        username (str) : github username of reviewer
+        contribution_name (str): cfg.FIELD_NAME of contribution
+    """
+    # check if the dataset is existing with given github username
+    dataset = mongoutils.get_reviewers_record(username)
+    if dataset is None:
+        msg = {
+            "reason": "Github Username not present in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
+    if 'email' in dataset[0].keys():
+        subject = "New Rokwire Contribution Submitted"
+        message = "New contribution " + contribution_name + " has been added for your review"
+        success, error_code, error_msg = adminutils.send_email(dataset[0]['email'], subject, message)
+        if not success:
+            msg = {
+                "reason": "Error in sending email via SMTP: " + str(error_msg),
+                "error": "Error code" + str(error_code)
+            }
+            msg_json = jsonutils.create_log_json("Contribution", "POST", msg)
+            logging.error("Contribution POST " + json.dumps(msg_json))
+            return rs_handlers.bad_request(msg)
+    else:
+        msg = {
+            "reason": "Email not present for Github Username in the database: " + str(username),
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution Admin", "POST", msg)
+        logging.error("Contribution Admin POST " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg)
+
