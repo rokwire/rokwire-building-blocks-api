@@ -919,14 +919,14 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        let i = loop.index0;
+                                        let i = {{ loop.index0 }};
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
-                                            $("#key-val_{{ loop.index0 }}_{{ i }}").append("<input class=\"form-control\" name=\"environmentVariables_key_{{ cap_count }}_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_key_{{ cap_count }}_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                            $("#key-val_{{ cap_count }}_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ cap_count }}_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_value_{{ cap_count }}_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                            $("#key-val_{{ cap_count }}_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
+                                            $("#key-val_{{ loop.index0 }}_{{ i }}").append("<input class=\"form-control\" name=\"environmentVariables_key_{{ cap_count }}_{{ i }}\" " +
+                                                "id=\"environmentVariables_key_{{ cap_count }}_{{ i }}\" type=\"text\" placeholder=\"Key\">");
+                                            $("#key-val_{{ cap_count }}_{{ i }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ cap_count }}_{{ i }}\" " +
+                                                "id=\"environmentVariables_value_{{ cap_count }}_{{ i }}\" type=\"password\" placeholder=\"Value\">");
+                                            $("#key-val_{{ cap_count }}_{{ i }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
                                                 $(this).toggleClass("bi-eye");
                                                 let input = $(this).prev();
                                                 if (input.attr("type") === "password") {
@@ -935,7 +935,8 @@
                                                     input.attr("type", "password");
                                                 }
                                             }));
-                                            $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            $("#key-val_{{ cap_count }}_{{ i }}").append("<br>");
+                                            i++;
                                         });
                                     </script>
                                 </div>
@@ -1958,7 +1959,7 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var cap_count = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + cap_count '">' +
+            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + cap_count +'">' +
                 'Add more fields</button>'
 
             $("#capability-parent").append($clone);
@@ -1975,7 +1976,7 @@
             let i = 0;
             $('#add_env_var_' + cap_count).click(function (e) {
                 e.preventDefault();
-                $("#key-val_" + cap_count + '_' + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + cap_count + '_' + i + "\" " +
+                $("#key-val_" + cap_count + '_' + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + cap_count + "_" + i + "\" " +
                     "id=\"environmentVariables_key_" + cap_count + '_' +  i + "\" type=\"text\" placeholder=\"Key\">");
                 $("#key-val_" + cap_count + '_' +  i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + cap_count + '_' + i + "\" " +
                     "id=\"environmentVariables_value_" + cap_count + '_' + i + "\" type=\"password\" placeholder=\"Value\">");
