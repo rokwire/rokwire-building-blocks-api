@@ -68,9 +68,13 @@ def to_capability(d):
         cap_id = str(uuid.uuid4())
         capability['id'] = cap_id
 
-        env_k, env_v = d['environmentVariables_key_' + str(i)], d['environmentVariables_value_' + str(i)]
+        # get all values in environmentVariables_key, except for the first which is always empty
+        env_k = [value[0] for key, value in d.items() if key.startswith('environmentVariables_key_' + str(i))]
+        # get all values in environmentVariables_value, except for the first which is always empty
+        env_v = [value[0] for key, value in d.items() if key.startswith('environmentVariables_value_' + str(i))]
         for k, v in list(zip(env_k, env_v)):
-            capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
+            if len(k)>0:
+                capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
 
         for k, v in d.items():
             if "isOpenSource_" + str(i) in k:
