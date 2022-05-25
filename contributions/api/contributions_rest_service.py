@@ -15,7 +15,6 @@
 import connexion
 import logging
 import controllers.configs as cfg
-from werkzeug.middleware.proxy_fix import ProxyFix
 
 from time import gmtime
 from rokwireresolver import RokwireResolver
@@ -39,8 +38,6 @@ app = connexion.FlaskApp(__name__, debug=debug, specification_dir=cfg.API_LOC)
 app.add_api('contribution.yaml', base_path=cfg.CONTRIBUTION_URL_PREFIX, arguments={'title': 'Rokwire'}, resolver=RokwireResolver('controllers'),
             resolver_error=501, strict_validation=True)
 
-# App is behind one proxy that sets the -For and -Host headers.
-app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
 
 if cors_enabled:
     CORS(app.app)
