@@ -581,10 +581,10 @@
                     <div name="add-env-var-div" class="form-group">
                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
-                            <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
-                                   id="environmentVariables_key_0" type="text">
-                            <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
-                                   id="environmentVariables_value_0" type="password">
+                            <input class="form-control" name="environmentVariables_key_0_0" placeholder="Key"
+                                   id="environmentVariables_key_0_0" type="text">
+                            <input class="form-control" name="environmentVariables_value_0_0" placeholder="Value"
+                                   id="environmentVariables_value_0_0" type="password">
                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
@@ -1961,6 +1961,8 @@
             var cap_count = capability_count;
             var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + cap_count +'">' +
                 'Add more fields</button>'
+
+            console.log("cap_count" + cap_count);
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
