@@ -51,7 +51,7 @@ app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath,
             template_folder=template_dir)
 app.config.from_object(cfg)
 
-# App is behind one proxy that sets the -For and -Host headers.
+# TODO: Experimental fix for running behind the load balancer. Revisit to verify that this fix matches the actual deployment environment. Ref: https://werkzeug.palletsprojects.com/en/2.1.x/middleware/proxy_fix/
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
 
 init_app(app)
