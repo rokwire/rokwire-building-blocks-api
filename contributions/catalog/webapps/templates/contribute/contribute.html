@@ -497,6 +497,7 @@
             </div>
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
+                {% set cap_count_parent = 0 %}
 
                 <!--------------------------- capability clean block --------------------------------->
                 <div id="capability-div-clean" style="display: none; background-color:white">
@@ -581,10 +582,10 @@
                     <div name="add-env-var-div" class="form-group">
                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
-                            <input class="form-control" name="environmentVariables_key_0_0" placeholder="Key"
-                                   id="environmentVariables_key_0_0" type="text">
-                            <input class="form-control" name="environmentVariables_value_0_0" placeholder="Value"
-                                   id="environmentVariables_value_0_0" type="password">
+                            <input class="form-control" name="environmentVariables_key_{{ cap_count_parent }}" placeholder="Key"
+                                   id="environmentVariables_key_{{ cap_count_parent }}" type="text">
+                            <input class="form-control" name="environmentVariables_value_{{ cap_count_parent }}" placeholder="Value"
+                                   id="environmentVariables_value_{{ cap_count_parent }}" type="password">
                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
@@ -646,6 +647,7 @@
                             <br>
                         </div>
                     </div>
+                    {% set cap_count_parent = cap_count_parent + 1 %}
                 </div>
 
                 <!--------------------------------- capability block for existing records ------------------------->
