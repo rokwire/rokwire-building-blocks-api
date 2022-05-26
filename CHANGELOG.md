@@ -481,7 +481,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...HEAD
+[1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...1.14.0
 [1.13.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...1.13.0
 [1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
