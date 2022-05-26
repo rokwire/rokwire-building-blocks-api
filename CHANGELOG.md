@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
 
 ## [1.14.0] - 2022-05-17
 ### Added
@@ -16,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Endpoint for showing required building blocks to contribution building block [#904](https://github.com/rokwire/rokwire-building-blocks-api/issues/904)
 - Multiple selection list for required building block added to talent [#917](https://github.com/rokwire/rokwire-building-blocks-api/issues/917)
 - Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
-- Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
 
 ### Changed
 - Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
