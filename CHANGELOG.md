@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.1] - 2022-05-26
+### Fixed
+- ProxyFix for OAuth Lib Transport Error when deploying in docker containers. [#928](https://github.com/rokwire/rokwire-building-blocks-api/issues/928)
+
 ## [1.14.0] - 2022-05-17
 ### Added
 - Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
