@@ -158,30 +158,55 @@
                         <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
                         <td>{{post.selfCertification.dataDeletionUponRequest}}</td>
                     </tr>
+                    {% else %}
+                        <tr>
+                        <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
+                        <td>None</td>
+                        </tr>
                     {% endif %}
                     {% if post.selfCertification.discloseAds %}
                     <tr>
                         <td><b>Disclose ads&nbsp;&nbsp;</b></td>
                         <td>{{post.selfCertification.discloseAds}}</td>
                     </tr>
+                    {% else %}
+                        <tr>
+                        <td><b>Disclose ads&nbsp;&nbsp;</b></td>
+                        <td>None</td>
+                        </tr>
                     {% endif %}
                     {% if post.selfCertification.discloseImageRights %}
                     <tr>
                         <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
                         <td>{{post.selfCertification.discloseImageRights}}</td>
                     </tr>
+                    {% else %}
+                        <tr>
+                        <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
+                        <td>None</td>
+                        </tr>
                     {% endif %}
                     {% if post.selfCertification.discloseSponsors %}
                     <tr>
                         <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
                         <td>{{post.selfCertification.discloseSponsors}}</td>
                     </tr>
+                    {% else %}
+                        <tr>
+                        <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
+                        <td>None</td>
+                        </tr>
                     {% endif %}
                     {% if post.selfCertification.respectingUserPrivacySetting %}
                     <tr>
                         <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
                         <td>{{post.selfCertification.respectingUserPrivacySetting}}</td>
                     </tr>
+                    {% else %}
+                        <tr>
+                        <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
+                        <td>None</td>
+                        </tr>
                     {% endif %}
                 </table>
             </p>
