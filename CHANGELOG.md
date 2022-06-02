@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
 
 ### Fixed
 - Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
