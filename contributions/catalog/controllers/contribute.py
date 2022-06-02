@@ -233,12 +233,15 @@ def contribution_edit(contribution_id):
         if is_reviewer:
             is_editable = True
 
+        # get required building block list to create required building block list
+        building_blocks_list = requestutil.request_buildingblocks(requestutil.get_header_using_api_key())
+
         # get capability list to create required capability list
         required_capability_list = requestutil.request_required_capability_list(headers)
 
         if is_editable:
             return render_template('contribute/contribute.html', is_reviewer=is_reviewer, required_capabilities=required_capability_list,
-                                   is_editable=is_editable, user=session["name"],
+                                   is_editable=is_editable, user=session["name"], building_blocks=building_blocks_list,
                                    token=session['oauth_token']['access_token'], post=the_json_res)
         else:
             s = "You don't have a permission to edit the contribution."
@@ -385,7 +388,6 @@ def capability_details(contribution_id, id):
         the_json_res = get_capability_with_api_key(contribution_id, id)
         return render_template("contribute/capability_details.html", reviewer=is_reviewer, post=the_json_res)
 
-
 @bp.route('/contributions/<contribution_id>/talents/<id>', methods=['GET'])
 def talent_details(contribution_id, id):
     # check if the user is logged in
@@ -427,11 +429,6 @@ def talent_details(contribution_id, id):
 
     return render_template("contribute/talent_details.html", reviewer=is_reviewer, post=the_json_res)
 
-# @bp.route('/edit/<contribution_id>', methods=('GET', 'POST'))
-# def edit(contribution_id):
-#     #todo: need to implement the edit form page
-#     return render_template("contribute/contribution_details.html", contribution_json=the_json_res)
-
 @bp.route('/contributions/create', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -453,15 +450,20 @@ def create():
             logging.error(s)
             msg = "Contribution submission failed. Please try again after some time!    " + s
             if "name" in session:
-                return render_template('contribute/error.html', user=session["name"],  token=session['oauth_token']['access_token'], error_msg=msg)
+                return render_template('contribute/error.html', user=session["name"],
+                                       token=session['oauth_token']['access_token'], error_msg=msg)
             else:
                 return render_template('contribute/error.html', error_msg=msg)
+
+    # get required building block list to create required building block list
+    building_blocks_list = requestutil.request_buildingblocks(requestutil.get_header_using_api_key())
 
     # get capability list to create required capability list
     header = requestutil.get_header_using_session(session)
     required_capability_list = requestutil.request_required_capability_list(header)
 
     return render_template('contribute/contribute.html', required_capabilities=required_capability_list,
+                           building_blocks=building_blocks_list,
                            post=json_contribute, user=session["name"],  token=session['oauth_token']['access_token'])
 
 # reviewers page

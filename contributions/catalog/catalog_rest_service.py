@@ -26,6 +26,7 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 debug = cfg.DEBUG
 
@@ -50,6 +51,9 @@ static_dir = os.path.join(os.path.abspath('webapps'), 'static')
 app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, static_folder=static_dir,
             template_folder=template_dir)
 app.config.from_object(cfg)
+
+# TODO: Experimental fix for running behind the load balancer. Revisit to verify that this fix matches the actual deployment environment. Ref: https://werkzeug.palletsprojects.com/en/2.1.x/middleware/proxy_fix/
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
 
 init_app(app)
 app.register_blueprint(contribute_bp)

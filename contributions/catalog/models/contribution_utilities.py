@@ -113,32 +113,6 @@ def to_contributor(d):
                 index = int(splitted_key[-1])
                 contributor_list[index]["contributorType"] = v[0]
 
-    # if 'person_firstName' in d:
-    #     if isinstance(d['person_firstName'], str):
-    #         person_list.append(init_person())
-    #     else:
-    #         for _ in range(len(d['person_firstName'])):
-    #             person_list.append(init_person())
-    #
-    # for i, e in enumerate(person_list):
-    #     for k, v in d.items():
-    #         if "affiliation_" in k.lower():
-    #             # print(k,v)
-    #             name = k.split("affiliation_")[-1]
-    #             person_list[i]["affiliation"][name] = v[i]
-    #         if "person_" in k.lower():
-    #             name = k.split("person_")[-1]
-    #             person_list[i][name] = v[i]
-    # # print(person_list)
-    #
-    # for i, e in enumerate(org_list):
-    #     for k, v in d.items():
-    #         if "org_" in k:
-    #             name = k.split("org_")[-1]
-    #             org_list[i][name] = v[i]
-    #
-    # if not person_list or len(person_list) == 0: return org_list
-    # if not org_list or len(person_list) == 0: return person_list
     return contributor_list
 
 
@@ -183,4 +157,5 @@ def to_contribution(d):
         if "contribution_" in k:
             name = k.split("contribution_")[-1]
             res[name] = v[0]
+
     return res
