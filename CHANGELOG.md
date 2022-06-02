@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Fixed
 - Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
+- Bug if reviewers collection is empty. [#929](https://github.com/rokwire/rokwire-building-blocks-api/issues/929)
 
 ## [1.14.1] - 2022-05-26
 ### Fixed
