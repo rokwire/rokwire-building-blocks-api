@@ -895,7 +895,7 @@
                                                     <br>
                                                 {% else %}
                                                     <input class="form-control"
-                                                           name="environmentVariables_key_{{ cap_count }}_{{keyvalloop.index0}}"
+                                                           name="environmentVariables_key_{{keyvalloop.index0}}_{{ cap_count }}"
                                                            placeholder="Key"
                                                            id="environmentVariables_key_{{ cap_count }}_{{keyvalloop.index0}}" type="text">
                                                     <input class="form-control"
@@ -908,10 +908,10 @@
                                                 {% endif %}
                                         {% endfor %}
                                     {%  else %}
-                                        <input class="form-control" name="environmentVariables_key_{{ cap_count }}_0" placeholder="Key"
-                                               id="environmentVariables_key_{{ cap_count }}_0" type="text">
-                                        <input class="form-control" name="environmentVariables_value_{{ cap_count }}_0" placeholder="Value"
-                                               id="environmentVariables_value_{{ cap_count }}_0" type="password">
+                                        <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
+                                               id="environmentVariables_key_0" type="text">
+                                        <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
+                                               id="environmentVariables_value_0" type="password">
                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         <br>
                                     {% endif %}
