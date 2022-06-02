@@ -581,10 +581,10 @@
                     <div name="add-env-var-div" class="form-group">
                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
-                            <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
-                                   id="environmentVariables_key_0" type="text">
-                            <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
-                                   id="environmentVariables_value_0" type="password">
+                            <input class="form-control" name="environmentVariables_key" placeholder="Key"
+                                   id="environmentVariables_key" type="text">
+                            <input class="form-control" name="environmentVariables_value" placeholder="Value"
+                                   id="environmentVariables_value" type="password">
                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                             <br>
                         </div>
@@ -874,42 +874,41 @@
                                 <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                 <div class="col-sm-10" id="key-val_{{ loop.index0 }}">
                                     {% if capability["deploymentDetails"]["environmentVariables"] %}
-                                        {% set caploop = loop.index0 %}
                                         {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
                                             {% set keyvalloop = loop %}
                                                 {% if is_editable %}
                                                     <input class="form-control"
-                                                           name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           name="environmentVariables_key_{{keyvalloop.index0}}"
                                                            placeholder="Key"
-                                                           id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           id="environmentVariables_key_{{loop.index0}}"
                                                            type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
                                                     <input class="form-control"
-                                                           name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
                                                            placeholder="Value"
-                                                           id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password"
                                                            value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                     <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
                                                     <br>
                                                 {% else %}
                                                     <input class="form-control"
-                                                           name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           name="environmentVariables_key_{{keyvalloop.index0}}"
                                                            placeholder="Key"
-                                                           id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}" type="text">
+                                                           id="environmentVariables_key_{{loop.index0}}" type="text">
                                                     <input class="form-control"
-                                                           name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           name="environmentVariables_value_{{keyvalloop.index0}}"
                                                            placeholder="Value"
-                                                           id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
+                                                           id="environmentVariables_value_{{keyvalloop.index0}}"
                                                            type="password">
                                                     <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                                     <br>
                                                 {% endif %}
                                         {% endfor %}
                                     {%  else %}
-                                        <input class="form-control" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
-                                               id="environmentVariables_key_0_{{ loop.index0 }}" type="text">
-                                        <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
-                                               id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
+                                        <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
+                                               id="environmentVariables_key_0" type="text">
+                                        <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
+                                               id="environmentVariables_value_0" type="password">
                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         <br>
                                     {% endif %}
@@ -919,14 +918,12 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        var add_env_var_button_click_count=0
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
-                                            add_env_var_button_click_count++;
-                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_key_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_value_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
                                             $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
                                                 $(this).toggleClass("bi-eye");
                                                 let input = $(this).prev();
@@ -1831,14 +1828,14 @@
                     dockerimage[i].required = true;
                     return false;
                 }
-                environmentVariables_key[i] = document.getElementById('environmentVariables_key_0' + '_' + i);
+                environmentVariables_key[i] = document.getElementById('environmentVariables_key' + '_' + i);
                 if (environmentVariables_key[i].value == "") {
                     // window.alert("Please enter the docker image.");
                     environmentVariables_key[i].focus();
                     environmentVariables_key[i].required = true;
                     return false;
                 }
-                environmentVariables_value[i] = document.getElementById('environmentVariables_value_0' + '_' + i);
+                environmentVariables_value[i] = document.getElementById('environmentVariables_value' + '_' + i);
                 if (environmentVariables_value[i].value == "") {
                     // window.alert("Please enter the docker image.");
                     environmentVariables_value[i].focus();
@@ -1996,14 +1993,12 @@
             });
 
             $('#add-env-var-button-div_' + i).append(env_var_button);
-            var add_env_var_button_click_count = 0;
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
-                add_env_var_button_click_count++;
-                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
-                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
-                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + i + "\" " +
+                    "id=\"environmentVariables_key_" + i + "\" type=\"text\" placeholder=\"Key\">");
+                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + i + "\" " +
+                    "id=\"environmentVariables_value_" + i + "\" type=\"password\" placeholder=\"Value\">");
                 $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
                     $(this).toggleClass("bi-eye");
                     let input = $(this).prev();
