@@ -64,7 +64,6 @@ def to_capability(d):
         # init capability
         for _ in range(num_cap):
             capability_list.append(init_capability())
-
     for i, capability in enumerate(capability_list):
         cap_id = str(uuid.uuid4())
         capability['id'] = cap_id
@@ -72,9 +71,8 @@ def to_capability(d):
         val_pattern = re.compile('environmentVariables_value_[0-9]+' + '_' + str(i))
         d_keys = list(filter(key_pattern.match, d))  # filter keys matching pattern
         d_vals = list(filter(val_pattern.match, d))  # filter keys matching pattern
-        #env_k, env_v = d['environmentVariables_key_' + str(i)], d['environmentVariables_value_' + str(i)]
         for k, v in list(zip(d_keys, d_vals)):
-            capability["deploymentDetails"]['environmentVariables'].append({'key': str(d[k]) , 'value': str(d[v])})
+            capability["deploymentDetails"]['environmentVariables'].append({'key': d[k][0], 'value': d[v][0]})
 
         for k, v in d.items():
             if "isOpenSource_" + str(i) in k:
