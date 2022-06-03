@@ -173,8 +173,8 @@ def update_capability_dataset_from_json(dataset, injson):
             in_env_var_list = injson["deploymentDetails"]["environmentVariables"]
             for env_var in in_env_var_list:
                 environment_variable = EnvironmentVariable()
-                key = env_var["key"][0]
-                value = env_var["value"][0]
+                key = env_var["key"]
+                value = env_var["value"]
                 environment_variable.set_key(key)
                 environment_variable.set_value(value)
                 env_var_list.append(environment_variable)

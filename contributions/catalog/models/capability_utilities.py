@@ -71,8 +71,8 @@ def to_capability(d):
         val_pattern = re.compile('environmentVariables_value_[0-9]+' + '_' + str(i))
         d_keys = list(filter(key_pattern.match, d))  # filter keys matching pattern
         d_vals = list(filter(val_pattern.match, d))  # filter keys matching pattern
-        for k, v in list(zip(d_keys, d_vals)):
-            capability["deploymentDetails"]['environmentVariables'].append({'key': d[k][0], 'value': d[v][0]})
+        for k, v in zip(d_keys, d_vals):
+                capability["deploymentDetails"]['environmentVariables'].append({'key': d[k][0], 'value': d[v][0]})
 
         for k, v in d.items():
             if "isOpenSource_" + str(i) in k:
