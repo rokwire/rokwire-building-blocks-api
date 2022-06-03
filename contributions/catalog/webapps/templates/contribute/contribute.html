@@ -919,7 +919,7 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        var add_env_var_button_click_count=0
+                                        var add_env_var_button_click_count=0;
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
                                             add_env_var_button_click_count++;
