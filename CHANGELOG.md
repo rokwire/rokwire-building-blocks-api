@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
 - Bug if reviewers collection is empty. [#929](https://github.com/rokwire/rokwire-building-blocks-api/issues/929)
+- Fixed indexing of environment variables key and value pairs. [#921](https://github.com/rokwire/rokwire-building-blocks-api/issues/921)
 
 ## [1.14.1] - 2022-05-26
 ### Fixed
