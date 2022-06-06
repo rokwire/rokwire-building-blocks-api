@@ -919,10 +919,11 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        var add_env_var_button_click_count=0;
+                                        var envvar = document.querySelectorAll(`input[id^="environmentVariables_key_"]`);
+                                        var add_env_var_button_click_count = envvar.length - 1;
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
-                                            add_env_var_button_click_count++;
+
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
                                                 "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
@@ -937,6 +938,7 @@
                                                 }
                                             }));
                                             $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            add_env_var_button_click_count++;
                                         });
                                     </script>
                                 </div>
@@ -1996,10 +1998,11 @@
             });
 
             $('#add-env-var-button-div_' + i).append(env_var_button);
-            var add_env_var_button_click_count = 0;
+            var envvar = document.querySelectorAll(`input[id^="environmentVariables_key_"]`);
+            var add_env_var_button_click_count = envvar.length - 1;
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
-                add_env_var_button_click_count++;
+
                 $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
                     "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
                 $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
@@ -2014,6 +2017,7 @@
                     }
                 }));
                 $("#key-val_" + i).append("<br>");
+                add_env_var_button_click_count++;
             });
 
             if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
