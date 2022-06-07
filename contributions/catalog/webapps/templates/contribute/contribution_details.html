@@ -312,6 +312,7 @@
 
     {% if is_editable %}
         <a class="button button3" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
+        <a class="button button3" role="button" href="{{ url_for('contribute.contribution_delete', contribution_id=post.id) }}">Delete Contribution</a>
     {% endif %}
 
     {% if is_reviewer %}
