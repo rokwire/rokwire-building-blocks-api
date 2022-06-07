@@ -202,8 +202,10 @@ def post(token_info):
         # send new contribution email to add reviewers
         if notification_enabled:
             list_reviewers = mongoutils.list_reviewers()
-            for reviewer in list_reviewers:
-                send_email_new_contribution(reviewer['githubUsername'], contribution_name)
+            # check for empty collection
+            if list_reviewers:
+                for reviewer in list_reviewers:
+                    send_email_new_contribution(reviewer['githubUsername'], contribution_name)
 
         return rs_handlers.return_id(msg, 'id', contribution_id)
 
