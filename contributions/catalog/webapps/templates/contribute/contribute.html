@@ -919,8 +919,8 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        var envvar = document.querySelectorAll(`input[id^="environmentVariables_key_"]`);
-                                        var add_env_var_button_click_count = envvar.length - 1;
+                                        var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
+                                        var add_env_var_button_click_count = envvar_list.length;
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
 
@@ -1998,16 +1998,17 @@
             });
 
             $('#add-env-var-button-div_' + i).append(env_var_button);
-            var envvar = document.querySelectorAll(`input[id^="environmentVariables_key_"]`);
-            var add_env_var_button_click_count = envvar.length - 1;
+            let $key_val_div = $("#key-val_" + i)
+            var envvar_list = $key_val_div.children(`input[id^="environmentVariables_key_"]`);
+            var add_env_var_button_click_count = envvar_list.length;
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
 
-                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
+                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
                     "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $("#key-val_" + i).append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
+                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
                     "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
-                $("#key-val_" + i).append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
+                $key_val_div.append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
                     $(this).toggleClass("bi-eye");
                     let input = $(this).prev();
                     if (input.attr("type") === "password") {
@@ -2016,7 +2017,7 @@
                         input.attr("type", "password");
                     }
                 }));
-                $("#key-val_" + i).append("<br>");
+                $key_val_div.append("<br>");
                 add_env_var_button_click_count++;
             });
 
