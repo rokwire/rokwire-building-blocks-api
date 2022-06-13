@@ -290,7 +290,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: ID of the contribution that needs to be updated
+        description: ID of the contribution that needs to be deleted
         required: true
         style: simple
         explode: false

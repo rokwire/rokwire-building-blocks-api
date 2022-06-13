@@ -252,17 +252,12 @@ def contribution_edit(contribution_id):
 @login_required
 def contribution_delete(contribution_id):
     if request.method == 'DELETE':
-        is_put = False
-        contribution_id = None
-        result = request.form.to_dict(flat=False)
-
-        # check if it is PUT
         try:
-            contribution_id = result["contribution_id"][0]
-            is_put = True
+            return render_template('contribute/home.html')
         except:
-            s = "There is a error in edit. The method is not an edit."
+            s = "There is a error in contribution id"
             return render_template('contribute/error.html', error_msg=s)
+
 
 @bp.route('/contributions/<contribution_id>/review', methods=['GET', 'POST'])
 @login_required
