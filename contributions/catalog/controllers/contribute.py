@@ -248,13 +248,13 @@ def contribution_edit(contribution_id):
             return render_template('contribute/error.html', error_msg=s)
 
 
-@bp.route('/contributions/<contribution_id>/delete', methods=['GET', 'DELETE'])
+@bp.route('/contributions/<contribution_id>/delete', methods=['GET'])
 @login_required
 def contribution_delete(contribution_id):
     try:
         response, s = delete_contribution(contribution_id)
         if response:
-            return render_template('contribute/submitted.html')
+            return redirect(url_for('.home'))
         else:
             s = "There is a error in deleting contribution"
             return render_template('contribute/error.html', error_msg=s)
