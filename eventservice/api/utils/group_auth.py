@@ -13,7 +13,7 @@ def generate_groups_request():
         uin = g.user_token_data.get('uiucedu_uin')
         url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/int/user/", uin)
         headers = {"Content-Type": "application/json",
-                   "ROKWIRE_GS_API_KEY": cfg.INTERNAL_API_KEY}
+                   "INTERNAL-API-KEY": cfg.INTERNAL_API_KEY}
     # Core BB Access Token, Shibboleth ID Token, etc.
     else:
         id_token = g.user_token
