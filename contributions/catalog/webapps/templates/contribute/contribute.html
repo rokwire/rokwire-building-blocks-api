@@ -500,6 +500,7 @@
 
                 <!--------------------------- capability clean block --------------------------------->
                 <div id="capability-div-clean" style="display: none; background-color:white">
+                    <!-- all field id in capability clean block will be appended with _0 -->
                     <hr class="dotted">
                     <h3 id="capability">Add a Capability to this Contribution</h3>
                     <div class="form-group">
@@ -581,6 +582,8 @@
                     <div name="add-env-var-div" class="form-group">
                         <label class="required control-label col-sm-2">Environment Variable(s)</label>
                         <div class="col-sm-10" id="key-val">
+                            <!-- environment variables are appended with env_index and cap_index starting with 0 -->
+                            <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                             <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
                                    id="environmentVariables_key_0" type="text">
                             <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
@@ -874,6 +877,7 @@
                                 <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                 <div class="col-sm-10" id="key-val_{{ loop.index0 }}">
                                     {% if capability["deploymentDetails"]["environmentVariables"] %}
+                                        <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                                         {% set caploop = loop.index0 %}
                                         {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
                                             {% set keyvalloop = loop %}
@@ -906,6 +910,7 @@
                                                 {% endif %}
                                         {% endfor %}
                                     {%  else %}
+                                        <!-- first envvar pair starts with index0 -->
                                         <input class="form-control" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
                                                id="environmentVariables_key_0_{{ loop.index0 }}" type="text">
                                         <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
@@ -919,11 +924,13 @@
                                         var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                             'Add more fields</button>'
                                         $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
+                                        // get all envvar pairs in the key-val div.
                                         var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
+                                        // start the envvar counter with the number of envvar pairs in the key-val div
                                         var add_env_var_button_click_count = envvar_list.length;
                                         $('#add_env_var_{{ loop.index0 }}').click(function (e) {
                                             e.preventDefault();
-
+                                            // environment variables match the pattern environmentVariables_key_envindex_capindex
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
                                                 "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
                                             $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
@@ -938,6 +945,7 @@
                                                 }
                                             }));
                                             $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            // once new envvar pairs are added, increment the counter
                                             add_env_var_button_click_count++;
                                         });
                                     </script>
@@ -1998,8 +2006,10 @@
             });
 
             $('#add-env-var-button-div_' + i).append(env_var_button);
+            // get all envvar pairs in the corresponding key-val div
             let $key_val_div = $("#key-val_" + i)
             var envvar_list = $key_val_div.children(`input[id^="environmentVariables_key_"]`);
+            // when adding more envvars start the counter with the number of envvar pairs already present.
             var add_env_var_button_click_count = envvar_list.length;
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
@@ -2018,6 +2028,7 @@
                     }
                 }));
                 $key_val_div.append("<br>");
+                // once added, increment the envvar counter
                 add_env_var_button_click_count++;
             });
 
