@@ -580,7 +580,6 @@ def put_contribution(json_data, contribution_id):
     try:
         # set PUT url
         put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
-
         # Setting up post request
         result = requests.put(put_url,
                                headers=headers,
