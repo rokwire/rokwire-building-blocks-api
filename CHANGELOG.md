@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
+- Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
 
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)

@@ -142,6 +142,11 @@ def update_capability_dataset_from_json(dataset, injson):
     except:
         pass
     try:
+        dataset.set_icon(injson['icon'])
+        del outjson['icon']
+    except:
+        pass
+    try:
         dataset.set_is_open_source(injson['isOpenSource'])
         del outjson['isOpenSource']
     except:
@@ -357,6 +362,11 @@ def update_talent_dataset_from_json(dataset, injson):
     try:
         dataset.set_name(injson['name'])
         del outjson['name']
+    except:
+        pass
+    try:
+        dataset.set_icon(injson['icon'])
+        del outjson['icon']
     except:
         pass
     try:

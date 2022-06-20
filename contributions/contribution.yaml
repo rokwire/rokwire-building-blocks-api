@@ -616,6 +616,9 @@ components:
           type: string
         description:
           type: string
+        icon:
+          type: string
+          description: URL for the icon image for capability in content building block
         isOpenSource:
           type: boolean
         apiDocUrl:
@@ -697,6 +700,9 @@ components:
           type: string
         longDescription:
           type: string
+        icon:
+          type: string
+          description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
           items:
