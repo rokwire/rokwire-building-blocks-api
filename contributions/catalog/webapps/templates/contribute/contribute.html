@@ -501,6 +501,9 @@
                 <!--------------------------- capability clean block --------------------------------->
                 <div id="capability-div-clean" style="display: none; background-color:white">
                     <hr class="dotted">
+                    {% if is_editable %}
+                        <button class="button button3 pull-right" id="delete-capability" name="delete_capability_0" style="margin-top:-15px;">Delete Capability</button>
+                    {% endif %}
                     <h3 id="capability">Add a Capability to this Contribution</h3>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Capability Name</label>
@@ -652,12 +655,12 @@
                 {% if post.capabilities %}
                     {% for capability in post.capabilities %}
                         <div id="capability-div-existing-records" style="display: block; background-color:white">
-                        <hr class="dotted">
-                        {% if is_editable %}
-                            <button class="button button3 pull-right" id="delete-capability" name="delete_capability_{{loop.index0}}">Delete Capability</button>
-                        {% endif %}
-                        <h3 id="capability">Add a Capability to this Contribution</h3>
+                            <hr class="dotted">
+                            {% if is_editable %}
+                                <button class="button button3 pull-right" id="delete-capability" name="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
+                            {% endif %}
                             <div id="capability_{{loop.index0}}">
+                                <h3 id="capability">Add a Capability to this Contribution</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Capability Name</label>
                                     <div class="col-sm-10">
@@ -2026,9 +2029,10 @@
         });
         $("#delete-capability").click(function (e) {
             var del_cap_button_name = $(this).attr("name");
-            cap_num = del_cap_button_name.split("_").pop()
-            $("div#capability_" + cap_num).remove()
+            cap_num = del_cap_button_name.split("_").pop();
+            $("div#capability_" + cap_num).remove();
             capability_count--;
+            $(this).hide();
         });
     });
 
