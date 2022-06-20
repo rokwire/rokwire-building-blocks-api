@@ -125,3 +125,10 @@ def create_talent_json_from_contribution_json(injson):
             logging.warning("There is no talent in the contribution")
 
     return out_json_list
+
+def create_log_json(ep_name, ep_method, in_json):
+    in_json['ep_building_block'] = "contributions_building_block"
+    in_json['ep_name'] = ep_name
+    in_json['ep_method'] = ep_method
+
+    return in_json
