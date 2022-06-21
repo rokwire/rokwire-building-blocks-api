@@ -502,9 +502,9 @@
                 <div id="capability-div-clean" style="display: none; background-color:white">
                     <hr class="dotted">
                     {% if is_editable %}
-                        <button type="button" class="button button3 pull-right" id="delete_capability_0" style="margin-top:-15px;">Delete Capability</button>
+                        <button type="button" class="button button3 pull-right" id="delete_capability" style="margin-top:-15px;">Delete Capability</button>
                     {% endif %}
-                    <div id="capability_0">
+                    <div id="capability">
                         <h3 id="capability">Add a Capability to this Contribution</h3>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Capability Name</label>
@@ -668,7 +668,6 @@
                                     <div class="col-sm-10">
                                         {% if is_editable %}
                                             <input class="form-control" id="capability_name_{{loop.index0}}"
-
                                                    placeholder="Give a name for your capability"
                                                    type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
                                         {% else %}
@@ -2029,12 +2028,14 @@
 
             capability_count++;
         });
-    });
-    $('[id^="delete_capability_"]').on('click', function (e) {
-        var del_cap_button_name = $(this).attr("id");
-        cap_num = del_cap_button_name.split("_").pop();
-        $("div#capability_" + cap_num).remove();
-        $(this).hide();
+
+        $('[id^="delete_capability_"]').on('click', function (e) {
+            var del_cap_button_name = $(this).attr("id");
+            let cap_num = del_cap_button_name.split("_").pop();
+            $("div#capability_" + cap_num).remove();
+            $(this).hide();
+            capability_count--;
+        });
     });
 
     $(function () {
