@@ -502,151 +502,153 @@
                 <div id="capability-div-clean" style="display: none; background-color:white">
                     <hr class="dotted">
                     {% if is_editable %}
-                        <button class="button button3 pull-right" id="delete-capability" name="delete_capability_0" style="margin-top:-15px;">Delete Capability</button>
+                        <button type="button" class="button button3 pull-right" id="delete_capability_0" style="margin-top:-15px;">Delete Capability</button>
                     {% endif %}
-                    <h3 id="capability">Add a Capability to this Contribution</h3>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Capability Name</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="capability_name" name="capability_name"
-                                   placeholder="Give a name for your capability" type="text">
+                    <div id="capability_0">
+                        <h3 id="capability">Add a Capability to this Contribution</h3>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Capability Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="capability_name" name="capability_name"
+                                       placeholder="Give a name for your capability" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Capability Description</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="capability_description" name="capability_description"
-                                   placeholder="Give a short description" type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Capability Description</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="capability_description" name="capability_description"
+                                       placeholder="Give a short description" type="text">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
-                            capability</label>
-                        <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
-                    </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="capability_icon">Upload an ICON for
+                                capability</label>
+                            <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                        </div>
 
-                    <div class="form-group" id="open-source-check-div">
-                        <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
-                        <!-- open source yes no block -->
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="open_source_yes"
-                                   name="capability_isOpenSource" type="radio" value="y">
-                            yes</label>
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="open_source_no"
-                                   name="capability_isOpenSource" type="radio" value="n">
-                            no</label>
-                    </div>
+                        <div class="form-group" id="open-source-check-div">
+                            <label class="required control-label col-sm-2"> Is the Code Open Sourced? </label>
+                            <!-- open source yes no block -->
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="open_source_yes"
+                                       name="capability_isOpenSource" type="radio" value="y">
+                                yes</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="open_source_no"
+                                       name="capability_isOpenSource" type="radio" value="n">
+                                no</label>
+                        </div>
 
-                    <div class="form-group" id="sourceurl">
-                        <label class="control-label col-sm-2">Source repo URL</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                   placeholder="Source code repository URL (if open sourced)" type="url">
+                        <div class="form-group" id="sourceurl">
+                            <label class="control-label col-sm-2">Source repo URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
+                                       placeholder="Source code repository URL (if open sourced)" type="url">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">API Doc URL</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                   placeholder="API documentation URL" type="text">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">API Doc URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="api_url" name="capability_apiDocUrl"
+                                       placeholder="API documentation URL" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Deployment location</label>
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                   type="radio" value="internal"> internal
-                        </label>
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="deploy_external"
-                                   name="deploymentDetails_location" type="radio"
-                                   value="external"> external
-                        </label>
-                    </div>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Deployment location</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                       type="radio" value="internal"> internal
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="deploy_external"
+                                       name="deploymentDetails_location" type="radio"
+                                       value="external"> external
+                            </label>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                   placeholder="API base URL" type="text">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="api_base">API Base Location</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="api_base" name="capability_apiBaseUrl"
+                                       placeholder="API base URL" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                   placeholder="Docker image name (If internally deployed)" type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
+                                       placeholder="Docker image name (If internally deployed)" type="text">
+                            </div>
                         </div>
-                    </div>
 
-                    <div id="add-env-var-div" class="form-group">
-                        <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                        <div class="col-sm-10" id="key-val">
-                            <input class="form-control" name="environmentVariables_key" placeholder="Key"
-                                   id="environmentVariables_key" type="text">
-                            <input class="form-control" name="environmentVariables_value" placeholder="Value"
-                                   id="environmentVariables_value" type="password">
-                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                            <br>
+                        <div id="add-env-var-div" class="form-group">
+                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                            <div class="col-sm-10" id="key-val">
+                                <input class="form-control" name="environmentVariables_key" placeholder="Key"
+                                       id="environmentVariables_key" type="text">
+                                <input class="form-control" name="environmentVariables_value" placeholder="Value"
+                                       id="environmentVariables_value" type="password">
+                                <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
+                                <br>
+                            </div>
+                            <div id="add-env-var-button-div" class="row">
+                                <!-- place holder for dynamic button for add more fields" -->
+                            </div>
                         </div>
-                        <div id="add-env-var-button-div" class="row">
-                            <!-- place holder for dynamic button for add more fields" -->
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Database Detail</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                   placeholder="Details of API endpoint to delete user info given the user UUID"
-                                   type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Database Detail</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
+                                       placeholder="Details of API endpoint to delete user info given the user UUID"
+                                       type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Version</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="version" name="capability_version"
-                                   placeholder="latest version number"
-                                   type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Version</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="version" name="capability_version"
+                                       placeholder="latest version number"
+                                       type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        {# TODO what is version url #}
-                        <label class="control-label col-sm-2">Version URL</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="version_url" name="capability_versionUrl"
-                                   placeholder=""
-                                   type="text">
+                        <div class="form-group">
+                            {# TODO what is version url #}
+                            <label class="control-label col-sm-2">Version URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="version_url" name="capability_versionUrl"
+                                       placeholder=""
+                                       type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Health Check URL</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                   placeholder="health check url" type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Health Check URL</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="health" name="capability_healthCheckUrl"
+                                       placeholder="health check url" type="text">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Authentication Method</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                   placeholder="" type="text">
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Authentication Method</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="auth" name="deploymentDetails_authMethod"
+                                       placeholder="" type="text">
 
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="required control-label col-sm-2">Data Deletion</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                   placeholder="Endpoint" type="text">
-                            <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                   placeholder="Api Key" type="password">
-                            <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                            <br>
+                        <div class="form-group">
+                            <label class="required control-label col-sm-2">Data Deletion</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                       placeholder="Endpoint" type="text">
+                                <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                       placeholder="Api Key" type="password">
+                                <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
+                                <br>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -657,7 +659,7 @@
                         <div id="capability-div-existing-records" style="display: block; background-color:white">
                             <hr class="dotted">
                             {% if is_editable %}
-                                <button class="button button3 pull-right" id="delete-capability" name="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
+                                <button type="button" class="button button3 pull-right" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
                             {% endif %}
                             <div id="capability_{{loop.index0}}">
                                 <h3 id="capability">Add a Capability to this Contribution</h3>
@@ -2027,13 +2029,12 @@
 
             capability_count++;
         });
-        $("#delete-capability").click(function (e) {
-            var del_cap_button_name = $(this).attr("name");
-            cap_num = del_cap_button_name.split("_").pop();
-            $("div#capability_" + cap_num).remove();
-            capability_count--;
-            $(this).hide();
-        });
+    });
+    $('[id^="delete_capability_"]').on('click', function (e) {
+        var del_cap_button_name = $(this).attr("id");
+        cap_num = del_cap_button_name.split("_").pop();
+        $("div#capability_" + cap_num).remove();
+        $(this).hide();
     });
 
     $(function () {
