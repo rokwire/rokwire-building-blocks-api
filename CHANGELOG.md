@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
+- Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
 
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
+- ROKWIRE_GROUP_API_KEY changed to INTERNAL_API_KEY. [#940](https://github.com/rokwire/rokwire-building-blocks-api/issues/940)
 - Updated SECURITY.md [#946](https://github.com/rokwire/rokwire-building-blocks-api/issues/946)
 
 ### Fixed
