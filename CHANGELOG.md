@@ -5,12 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
+- Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
+
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
+- ROKWIRE_GROUP_API_KEY changed to INTERNAL_API_KEY. [#940](https://github.com/rokwire/rokwire-building-blocks-api/issues/940)
 
 ### Fixed
 - Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
 - Bug if reviewers collection is empty. [#929](https://github.com/rokwire/rokwire-building-blocks-api/issues/929)
+- Fixed indexing of environment variables key and value pairs. [#921](https://github.com/rokwire/rokwire-building-blocks-api/issues/921)
 
 ### Security
 - Update PyJWT package version and corresponding auth middleware library code. [#935](https://github.com/rokwire/rokwire-building-blocks-api/issues/935)
