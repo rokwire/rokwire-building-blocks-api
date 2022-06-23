@@ -32,7 +32,7 @@ ROKWIRE_AUTH_HOST = os.getenv("ROKWIRE_AUTH_HOST", "https://api-dev.rokwire.illi
 SHIB_HOST = os.getenv("SHIB_HOST", "shibboleth.illinois.edu")
 ROKWIRE_ISSUER = os.getenv('ROKWIRE_ISSUER', 'https://api.rokwire.illinois.edu/')
 
-ROKWIRE_GROUPS_API_KEY = os.getenv("ROKWIRE_GROUPS_API_KEY", "")
+INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 
 IMAGE_COLLECTION = os.getenv("IMAGE_COLLECTION", "images")
 IMAGE_FILE_MOUNTPOINT = os.getenv("IMAGE_FILE_MOUNTPOINT", "events-images")
