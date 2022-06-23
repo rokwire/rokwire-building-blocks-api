@@ -249,6 +249,12 @@
                     </div>
                 {% endfor %}
             {% endif %}
+
+            {% if (tal_json|length == 0) and (cap_json|length == 0)  %}
+                <div>
+                    <h4 class="talent_name">There are no published contributions.</h4>
+                </div>
+            {% endif %}
         </div><!-- END GRID -->
 
     {% include 'topnav_javascript.html' %}
