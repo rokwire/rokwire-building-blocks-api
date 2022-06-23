@@ -22,7 +22,6 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
-from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from utils import jsonutil
@@ -596,7 +595,6 @@ def put_contribution(json_data, contribution_id):
     try:
         # set PUT url
         put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
-
         # Setting up post request
         result = requests.put(put_url,
                                headers=headers,

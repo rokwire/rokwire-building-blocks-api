@@ -18,6 +18,7 @@ class Capability():
     def __init__(self, injson):
         self.id = None
         self.name = None
+        self.icon = None
         self.description = None
         self.isOpenSource = None
         self.sourceRepoUrl = None
@@ -38,6 +39,12 @@ class Capability():
 
     def get_id(self):
         return self.id
+
+    def set_icon(self, icon):
+        self.icon = icon
+
+    def get_icon(self):
+        return self.icon
 
     def set_name(self, name):
         self.name = name
