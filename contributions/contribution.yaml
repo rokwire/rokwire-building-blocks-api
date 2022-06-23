@@ -618,6 +618,7 @@ components:
           type: string
         icon:
           type: string
+          nullable: true
           description: URL for the icon image for capability in content building block
         isOpenSource:
           type: boolean
@@ -702,6 +703,7 @@ components:
           type: string
         icon:
           type: string
+          nullable: true
           description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
