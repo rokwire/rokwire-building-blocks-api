@@ -50,9 +50,10 @@ def to_capability(d):
     # check how many capabilities are in the given json
     # this should be checked keys that is as surfix of _number
     num_cap = 0
-    # if there is capability_name_0, it means that there is capability
-    if "capability_name_0" in d:
-        keys = list(d.keys())
+    # if there is capability_name_{num}, it means that there is capability
+    capability_pattern = re.compile('capability_name_[0-9]')
+    keys = list(d.keys())
+    if any(capability_pattern.match(key) for key in keys):
         cap_len = []
         # iterate to count the number of capabilities
         for key in keys:
