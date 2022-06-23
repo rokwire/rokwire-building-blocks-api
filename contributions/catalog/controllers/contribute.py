@@ -22,7 +22,6 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
-from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from utils import jsonutil
