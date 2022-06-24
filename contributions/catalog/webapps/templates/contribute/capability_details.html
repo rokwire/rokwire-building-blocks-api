@@ -38,6 +38,15 @@
         <p class="col-sm-9">{{post.description}}</p>
     </div>
 
+    {% if post.icon %}
+    <div class="row">
+        <div class="col-12 col-sm-2">
+            <h4>Icon </h4>
+        </div>
+        <p class="col-sm-9">{{post.icon}}</p>
+    </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-12 col-sm-2">
             <h4>Is code open source?</h4>

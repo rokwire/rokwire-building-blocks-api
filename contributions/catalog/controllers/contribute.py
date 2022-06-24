@@ -17,6 +17,7 @@ import logging
 import traceback
 import requests
 import datetime
+import tempfile
 
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
@@ -456,6 +457,46 @@ def create():
         # add contributionAdmins to the json_contribution
         contribution = jsonutil.add_contribution_admins(contribution)
         contribution["status"] = "Submitted"
+
+        temp_dir = tempfile.gettempdir()
+        # grab file information from request.
+        # currently, it is only icon for either capability or talent
+        # if there are other file contents added in the catalog, this should be updated
+        for i in range(len(contribution["capabilities"])):
+            file = request.files["capability_icon_" + str(i)]
+            if file.filename != "":
+                # save the file to temp folder
+                tmp_filename = os.path.join(temp_dir, file.filename)
+                file.save(tmp_filename)
+                # upload to content building block
+                uploaded_url = upload_image_to_content_bb(tmp_filename)
+                if uploaded_url != "":
+                    # record to the contribution
+                    contribution["capabilities"][i]["icon"]  = uploaded_url
+                else:
+                    os.remove(tmp_filename)
+                    s = "Failed to upload icon image."
+                    return render_template('contribute/error.html', error_msg=s)
+                # delete tmp file
+                os.remove(tmp_filename)
+        for i in range(len(contribution["talents"])):
+            file = request.files["talent_icon_" + str(i)]
+            if file.filename != "":
+                # save the file to temp folder
+                tmp_filename = os.path.join(temp_dir, file.filename)
+                file.save(tmp_filename)
+                # upload to content building block
+                uploaded_url = upload_image_to_content_bb(tmp_filename)
+                if uploaded_url != "":
+                    # record to the contribution
+                    contribution["talents"][i]["icon"]  = uploaded_url
+                else:
+                    os.remove(tmp_filename)
+                    s = "Failed to upload icon image."
+                    return render_template('contribute/error.html', error_msg=s)
+                # delete tmp file
+                os.remove(tmp_filename)
+
         json_contribution = json.dumps(contribution, indent=4)
         response, s, post_json = post_contribution(json_contribution)
 
@@ -781,3 +822,28 @@ def parse_response_error(response):
     err_json = json.loads(err_content)
 
     return err_json
+
+
+"""
+upload image to content building block
+"""
+def upload_image_to_content_bb(tmp_filename):
+    access_token = "Bearer "
+    headers = {"Authorization": access_token}
+
+    files = {
+        'path': (None, '"/tmp/tmp_folder"'),
+        'fileName': open(tmp_filename, 'rb'),
+    }
+
+    response = requests.post(cfg.CONTENT_BB_IMAGE_ENDPOINT_URL, headers=headers, files=files)
+
+    if response.status_code == 200:
+        url_json = json.loads(response.content.decode("utf-8"))
+        return url_json["url"]
+    else:
+        return ""
+
+    # for testing purpose
+    # url_str = '{"url":"https://rokwire-images.s3.us-east-2.amazonaws.com/%22/tmp/tmp_folder%22/d35ce75c-f3fd-11ec-afd0-0a58a9feac02.webp"}'
+    # url_json = json.loads(url_str)

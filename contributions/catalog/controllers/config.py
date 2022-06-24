@@ -41,3 +41,4 @@ class Config(object):
     CORS_ENABLED = bool(os.getenv('CORS_ENABLED', 'False') == 'True')
     ADMIN_USERS = os.getenv('ADMIN_USERS', '')
     CATALOG_PORT = int(os.getenv('CATALOG_PORT', '5000'))
+    CONTENT_BB_IMAGE_ENDPOINT_URL = os.getenv('CONTENT_BB_IMAGE_ENDPOINT_URL', 'https://api-dev.rokwire.illinois.edu/content/image')
