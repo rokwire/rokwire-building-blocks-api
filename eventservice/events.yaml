@@ -861,7 +861,13 @@ components:
           description: If this flag is set to true, the app client will then display the event only under a super events screen.
         isVirtual:
           type: boolean
-          description: Setting this to true will indicate that the event is virtual. This flag can then be used to ignore geocoding calculation or displaying a physical location in the app.
+          description: Setting this to true will indicate that the event is virtual.
+        virtualEventUrl:
+          type: string
+          description:  This field stores the virtual event's URL.
+        isInPerson:
+          type: boolean
+          description: Setting this to true will indicate that the event has in-person components.
         createdByGroupId:
           type: string
           format: uuid
