@@ -48,7 +48,7 @@ def to_capability(d):
     capability_list = []
 
     # check how many capabilities are in the given json
-    # this should be checked keys that is as surfix of _number
+    # this should be checked keys that is as suffix of _number
     num_cap = 0
     # if there is capability_name_{num}, it means that there is capability
     capability_pattern = re.compile('capability_name_[0-9]')
