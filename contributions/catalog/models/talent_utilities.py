@@ -20,6 +20,7 @@ def init_talent():
     d = {
         'id': '',
         "name": '',
+        "icon": None,
         "shortDescription": '',
         "longDescription": '',
         "requiredCapabilities": [],
