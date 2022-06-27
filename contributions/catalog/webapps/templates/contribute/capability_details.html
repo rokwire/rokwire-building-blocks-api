@@ -142,6 +142,7 @@
                                     {% for key,val in envvar.items() %}
                                         <tr>
                                             <td>{{key}}: {{val}}</td>
+                                            <button type="button" id="toggleText" class="btn btn-default pull-right"><span class="bi bi-eye-slash field_icon" aria-hidden="true"></span></button>
                                         </tr>
                                     {% endfor %}
                                 </table>
@@ -191,7 +192,25 @@
         if (user_icon.style.display === '') {
             document.getElementById("myDropdown").classList.toggle("show");
         }
-    })
+    });
+
+    // toggle sensitive data visibility
+    $('.bi').each(function () {
+        let eye = $(this);
+        eye.on('click', function() {
+            let icon = $(this);
+            icon.toggleClass("bi-eye");
+            let input = icon.prev()
+            input.each(function () {
+                if (icon.hasClass('bi-eye')) {
+                    input.attr('type', 'text');
+                }
+                else if (icon.hasClass('bi-eye-slash')) {
+                    input.attr('type', 'password');
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>
