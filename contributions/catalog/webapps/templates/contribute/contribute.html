@@ -1823,7 +1823,9 @@
 
         if (capability_count > 0) {
             // get the _num of capabilities and iterate through the list
-            var div_cap_ids = $("div[id^='capability_']").attr(id);
+            var div_cap_ids = $("div[id^='capability_']").map(function() {
+                                return this.id;
+                                }).get();
             for (var ind = 0; ind < div_cap_ids.length; ind++) {
                 let i = div_cap_ids[ind].split("_").pop();
                 capability_name[i] = document.getElementById('capability_name' + '_' + i);
@@ -1924,7 +1926,9 @@
         var talent_des = []
         if (talent_count > 0) {
             // get the _num of talents and iterate through the list
-            var div_talent_ids = $("div[id^='talent_']").attr(id);
+            var div_talent_ids = $("div[id^='talent_']").map(function() {
+                return this.id;
+            }).get();
             for (var ind = 0; ind < div_talent_ids.length; ind++) {
                 let i = div_talent_ids[ind].split("_").pop();
                 talent_name[i] = document.getElementById('talent_name_' + i);
