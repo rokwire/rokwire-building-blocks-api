@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
 - Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
 - Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
+- Add support for hybrid events in Events BB. [#955](https://github.com/rokwire/rokwire-building-blocks-api/issues/955)
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 
 ### Changed
