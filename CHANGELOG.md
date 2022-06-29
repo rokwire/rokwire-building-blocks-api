@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bug if reviewers collection is empty. [#929](https://github.com/rokwire/rokwire-building-blocks-api/issues/929)
 - Fixed indexing of environment variables key and value pairs. [#921](https://github.com/rokwire/rokwire-building-blocks-api/issues/921)
 
+### Security
+- Update PyJWT package version and corresponding auth middleware library code. [#935](https://github.com/rokwire/rokwire-building-blocks-api/issues/935)
+
 ## [1.14.1] - 2022-05-26
 ### Fixed
 - ProxyFix for OAuth Lib Transport Error when deploying in docker containers. [#928](https://github.com/rokwire/rokwire-building-blocks-api/issues/928)
