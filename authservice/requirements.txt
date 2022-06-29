@@ -4,7 +4,8 @@ Jinja2==3.0.3
 schema==0.7.0
 connexion[swagger-ui]==2.9.0
 requests==2.22.0
-pyjwt==1.7.1
+pyjwt==2.4.0
+cryptography==3.3.2
 gunicorn==20.0.4
 python-dateutil==2.8.0
 python-dotenv==0.10.3
