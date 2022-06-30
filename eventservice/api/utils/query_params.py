@@ -19,6 +19,15 @@ from bson import ObjectId
 
 def format_query(args, query, include_private_events=False, group_ids=None, all_group_event=False):
     query_parts = []
+    
+    # isInPerson check
+    is_in_person = args.get('isInPerson')
+    if is_in_person:
+        if is_in_person.lower() == "true":
+            is_in_person = True
+        else:
+            is_in_person = False
+        query_parts.append({'isInPerson': is_in_person})
     # group id
     group_id = args.get('groupId')
     if group_id:
