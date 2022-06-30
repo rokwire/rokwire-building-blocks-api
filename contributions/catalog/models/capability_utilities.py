@@ -65,8 +65,6 @@ def to_capability(d):
         for _ in range(num_cap):
             capability_list.append(init_capability())
     for i, capability in enumerate(capability_list):
-        cap_id = str(uuid.uuid4())
-        capability['id'] = cap_id
         # get environment key value pairs by pattern matching.
         # filter by matching with pattern environmentVariables_key_{{env_num}}_{{cap_num}}
         key_pattern = re.compile('environmentVariables_key_[0-9]+' + '_' + str(i))
@@ -104,5 +102,9 @@ def to_capability(d):
                         capability_list[i][name] = []
                     else:
                         capability_list[i][name] = v[0]
+
+        # if the request is post, id should be generated
+        if capability_list[i]["id"] == "":
+            capability['id'] = str(uuid.uuid4())
 
     return capability_list

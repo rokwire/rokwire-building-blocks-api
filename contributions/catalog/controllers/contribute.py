@@ -19,6 +19,7 @@ import requests
 import datetime
 import tempfile
 
+from operator import itemgetter
 from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
@@ -200,6 +201,31 @@ def contribution_edit(contribution_id):
             contribution = jsonutil.add_contribution_admins(contribution, is_edit=True)
             # remove id from json_data
             del contribution["id"]
+
+            # when it is put, since icon doesn't belong to the regular request,
+            # it has to be from the actual database if there is the icon value is there.
+            existing_contribution = get_contribution(contribution_id)
+
+            # insert icon information into request contribution
+            existing_capabilities = existing_contribution["capabilities"]
+            existing_talents = existing_contribution["talents"]
+
+            # match the capability and talent id and insert icon url to contribution
+            for existing_cap in existing_capabilities:
+                for i, cap in enumerate(contribution["capabilities"]):
+                    if existing_cap["id"] == cap["id"]:
+                        contribution["capabilities"][i]["icon"] = existing_cap["icon"]
+            for existing_tal in existing_talents:
+                for i, tal in enumerate(contribution["talents"]):
+                    if existing_tal["id"] == tal["id"]:
+                        contribution["talents"][i]["icon"] = existing_tal["icon"]
+
+            # upload and update icon if there is icon image
+            contribution = check_and_post_image(request, contribution)
+            if contribution is None:
+                s = "Failed to upload icon image."
+                return render_template('contribute/error.html', error_msg=s)
+
             json_contribution = json.dumps(contribution, indent=4)
             response, s = put_contribution(json_contribution, contribution_id)
 
@@ -458,44 +484,11 @@ def create():
         contribution = jsonutil.add_contribution_admins(contribution)
         contribution["status"] = "Submitted"
 
-        temp_dir = tempfile.gettempdir()
-        # grab file information from request.
-        # currently, it is only icon for either capability or talent
-        # if there are other file contents added in the catalog, this should be updated
-        for i in range(len(contribution["capabilities"])):
-            file = request.files["capability_icon_" + str(i)]
-            if file.filename != "":
-                # save the file to temp folder
-                tmp_filename = os.path.join(temp_dir, file.filename)
-                file.save(tmp_filename)
-                # upload to content building block
-                uploaded_url = upload_image_to_content_bb(tmp_filename)
-                if uploaded_url != "":
-                    # record to the contribution
-                    contribution["capabilities"][i]["icon"]  = uploaded_url
-                else:
-                    os.remove(tmp_filename)
-                    s = "Failed to upload icon image."
-                    return render_template('contribute/error.html', error_msg=s)
-                # delete tmp file
-                os.remove(tmp_filename)
-        for i in range(len(contribution["talents"])):
-            file = request.files["talent_icon_" + str(i)]
-            if file.filename != "":
-                # save the file to temp folder
-                tmp_filename = os.path.join(temp_dir, file.filename)
-                file.save(tmp_filename)
-                # upload to content building block
-                uploaded_url = upload_image_to_content_bb(tmp_filename)
-                if uploaded_url != "":
-                    # record to the contribution
-                    contribution["talents"][i]["icon"]  = uploaded_url
-                else:
-                    os.remove(tmp_filename)
-                    s = "Failed to upload icon image."
-                    return render_template('contribute/error.html', error_msg=s)
-                # delete tmp file
-                os.remove(tmp_filename)
+        contribution = check_and_post_image(request, contribution)
+
+        if contribution is None:
+            s = "Failed to upload icon image."
+            return render_template('contribute/error.html', error_msg=s)
 
         json_contribution = json.dumps(contribution, indent=4)
         response, s, post_json = post_contribution(json_contribution)
@@ -823,11 +816,58 @@ def parse_response_error(response):
 
     return err_json
 
+"""
+check if there is image and post
+"""
+def check_and_post_image(request, in_dict):
+    temp_dir = tempfile.gettempdir()
+    del_files = []  # list for holding the path for files to be deleted
+    # grab file information from request.
+    # currently, it is only icon for either capability or talent
+    # if there are other file contents added in the catalog, this should be updated
+    for i in range(len(in_dict["capabilities"])):
+        file = request.files["capability_icon_" + str(i)]
+        if file.filename != "":
+            # save the file to temp folder
+            tmp_filename = os.path.join(temp_dir, file.filename)
+            file.save(tmp_filename)
+            del_files.append(tmp_filename)
+            # upload to content building block
+            uploaded_url = upload_image_to_content_bb(tmp_filename)
+            if uploaded_url != "":
+                # record to the contribution
+                in_dict["capabilities"][i]["icon"] = uploaded_url
+            else:
+                return None
+    for i in range(len(in_dict["talents"])):
+        file = request.files["talent_icon_" + str(i)]
+        if file.filename != "":
+            # save the file to temp folder
+            tmp_filename = os.path.join(temp_dir, file.filename)
+            file.save(tmp_filename)
+            del_files.append(tmp_filename)
+            # upload to content building block
+            uploaded_url = upload_image_to_content_bb(tmp_filename)
+            if uploaded_url != "":
+                # record to the contribution
+                in_dict["talents"][i]["icon"] = uploaded_url
+            else:
+                return None
+
+    # delete tmp files
+    for file in del_files:
+        try:
+            os.remove(file)
+        except:
+            print("failed to delete " + file)
+    return in_dict
 
 """
 upload image to content building block
 """
 def upload_image_to_content_bb(tmp_filename):
+    # TODO the method for gettincg access token should be developed. 
+    #  Then the toke should be inserted in the following line
     access_token = "Bearer "
     headers = {"Authorization": access_token}
 

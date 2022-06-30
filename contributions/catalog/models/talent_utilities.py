@@ -58,9 +58,6 @@ def to_talent(d):
             talent_list.append(init_talent())
 
     for i, talent in enumerate(talent_list):
-        tal_id = str(uuid.uuid4())
-        talent['id'] = tal_id
-
         for k, v in d.items():
             if "minUserPrivacyLevel_" in k:
                 if len(str(v[0])) > 0:
@@ -93,6 +90,11 @@ def to_talent(d):
                         talent_list[i][name] = v[0]
 
         talent_list[i]["selfCertification"] = to_self_certification(d, i)
+
+        # if the request is post, id should be generated
+        if talent_list[i]["id"] == "":
+            tal_id = str(uuid.uuid4())
+            talent['id'] = tal_id
 
     return talent_list
 

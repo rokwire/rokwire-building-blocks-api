@@ -506,6 +506,10 @@
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Capability Name</label>
                         <div class="col-sm-10">
+                            <input type="hidden"
+                                   id="capability_id"
+                                   name="capability_id"
+                                   value="">
                             <input class="form-control" id="capability_name" name="capability_name"
                                    placeholder="Give a name for your capability" type="text">
                         </div>
@@ -661,11 +665,18 @@
                                 <label class="required control-label col-sm-2">Capability Name</label>
                                 <div class="col-sm-10">
                                     {% if is_editable %}
+                                        <input type="hidden"
+                                               id="capability_id_{{loop.index0}}"
+                                               name="capability_id_{{loop.index0}}"
+                                               value="{{ capability | filter_nested_dict(["id"]) }}">
                                         <input class="form-control" id="capability_name_{{loop.index0}}"
                                                name="capability_name_{{loop.index0}}"
                                                placeholder="Give a name for your capability"
                                                type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
                                     {% else %}
+                                        <input type="hidden"
+                                               id="capability_id_{{loop.index0}}"
+                                               name="capability_id_{{loop.index0}}">
                                         <input class="form-control" id="capability_name_{{loop.index0}}"
                                                name="capability_name_{{loop.index0}}"
                                                placeholder="Give a name for your capability" type="text">
@@ -692,6 +703,9 @@
                                     capability</label>
                                 <input accept="image/*" id="capability_icon_{{loop.index0}}"
                                        name="capability_icon_{{loop.index0}}" type="file">
+                                <div>
+                                    {{ capability | filter_nested_dict(["icon"]) }}
+                                </div>
                             </div>
                             <div class="form-group" id="open-source-check-div">
                                 <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
@@ -1080,6 +1094,10 @@
                 <div id="talent-div-clean" style="display: none">
                     <hr class="dotted">
                     <h3>Add a Talent to this Contribution</h3>
+                    <input type="hidden"
+                           id="talent_id"
+                           name="talent_id"
+                           value="">
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Talent Name</label>
                         <div class="col-sm-10">
@@ -1212,6 +1230,10 @@
                         <div id="talent-div-existing-records" style="display: block">
                         <hr class="dotted">
                         <h3>Add a Talent to this Contribution</h3>
+                            <input type="hidden"
+                                   id="talent_id_{{loop.index0}}"
+                                   name="talent_id_{{loop.index0}}"
+                                   value="{{ talent|filter_nested_dict(["id"]) }}">
                             <div class="form-group">
                                 <label class="required control-label col-sm-2">Talent Name</label>
                                 <div class="col-sm-10">
@@ -1237,6 +1259,9 @@
                                     talent</label>
                                 <input accept="image/*" id="talent_icon_{{loop.index0}}"
                                        name="talent_icon_{{loop.index0}}" type="file">
+                                <div>
+                                    {{ talent | filter_nested_dict(["icon"]) }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Required Building Block(s)</label>
