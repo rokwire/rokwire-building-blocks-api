@@ -144,11 +144,11 @@
                                         <tr>
                                             {% if loop.index %2 == 0 %}
                                                 <td>{{key}}: </td>
-                                                <td type="password" style="visibility: hidden;">{{val}} </td>
+                                                <td style="visibility: hidden;">{{val}} </td>
                                                 <td><i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                                             {% else %}
                                                 <td>{{key}}: </td>
-                                                <td style="text-align: center">{{val}} </td>
+                                                <td>{{val}} </td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}
