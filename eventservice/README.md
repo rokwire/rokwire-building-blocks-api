@@ -349,6 +349,19 @@ For example,
 The endpoint will return back the group events with `createdByGroupId` equal to the given group id `a567618a-b4eb-11eb-9129-0a58a9feac02`
 
 
+in Person Events Filter
+
+Set isInPerson filter on search events.
+
+/events?isInPerson=<True/False>
+For example,
+
+/events?isInPerson=True
+
+```
+The endpoint will return back the events with isInPerson field set to True.
+
+
 ## MongoDB
 
 You can import predefined categories into the local mongodb.
