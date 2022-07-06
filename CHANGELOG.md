@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
 - Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
 - Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
+- Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
 
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)

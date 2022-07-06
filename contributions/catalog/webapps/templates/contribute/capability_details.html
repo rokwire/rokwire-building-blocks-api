@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -141,8 +142,14 @@
                                 <table>
                                     {% for key,val in envvar.items() %}
                                         <tr>
-                                            <td>{{key}}: {{val}}</td>
-                                            <button type="button" id="toggleText" class="btn btn-default pull-right"><span class="bi bi-eye-slash field_icon" aria-hidden="true"></span></button>
+                                            {% if loop.index %2 == 0 %}
+                                                <td>{{key}}: </td>
+                                                <td type="password" style="visibility: hidden;">{{val}} </td>
+                                                <td><i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                                            {% else %}
+                                                <td>{{key}}: </td>
+                                                <td style="text-align: center">{{val}} </td>
+                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                 </table>
@@ -200,15 +207,17 @@
         eye.on('click', function() {
             let icon = $(this);
             icon.toggleClass("bi-eye");
-            let input = icon.prev()
-            input.each(function () {
-                if (icon.hasClass('bi-eye')) {
-                    input.attr('type', 'text');
-                }
-                else if (icon.hasClass('bi-eye-slash')) {
-                    input.attr('type', 'password');
-                }
-            });
+            // get the current row
+            var current_row = icon.closest("tr");
+            // get the current row 2nd cell value
+            var cell_value = current_row.find("td:eq(1)");
+            if (icon.hasClass('bi-eye')) {
+                cell_value.attr("style", "visibility: visible");
+                cell_value.attr("style", "text-align: center");
+            }
+            else if (icon.hasClass('bi-eye-slash')) {
+                cell_value.attr("style", "visibility: hidden");
+            }
         });
     });
 </script>
