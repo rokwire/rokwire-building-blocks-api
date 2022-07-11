@@ -22,7 +22,6 @@ from flask import (
     Blueprint, render_template, request, session, redirect, url_for
 )
 from requests_oauthlib import OAuth2Session
-from formencode import variabledecode
 from .auth import login_required
 from controllers.config import Config as cfg
 from utils import jsonutil
@@ -246,6 +245,22 @@ def contribution_edit(contribution_id):
         else:
             s = "You don't have a permission to edit the contribution."
             return render_template('contribute/error.html', error_msg=s)
+
+
+@bp.route('/contributions/<contribution_id>/delete', methods=['GET'])
+@login_required
+def contribution_delete(contribution_id):
+    try:
+        response, s = delete_contribution(contribution_id)
+        if response:
+            return redirect(url_for('.home'))
+        else:
+            s = "There is a error in deleting contribution"
+            return render_template('contribute/error.html', error_msg=s)
+    except:
+        s = "There is a error in contribution id"
+        return render_template('contribute/error.html', error_msg=s)
+
 
 @bp.route('/contributions/<contribution_id>/review', methods=['GET', 'POST'])
 @login_required
@@ -580,7 +595,6 @@ def put_contribution(json_data, contribution_id):
     try:
         # set PUT url
         put_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
-
         # Setting up post request
         result = requests.put(put_url,
                                headers=headers,
@@ -598,6 +612,28 @@ def put_contribution(json_data, contribution_id):
         traceback.print_exc()
         var = "There was an error when updating your Contribution. Please try again later!"
         return False, var
+
+# DELETE a contribution using id
+def delete_contribution(contribution_id):
+    headers = requestutil.get_header_using_session(session)
+    try:
+        # set DELETE url
+        delete_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+
+        # Setting up delete request
+        result = requests.delete(delete_url, headers=headers)
+        if result.status_code == 200 or result.status_code == 202:
+            logging.info("Contribution {} DELETE OK.".format(contribution_id))
+            return True, str("Your Contribution has been successfully deleted.")
+        else:
+            logging.error("DELETE method failed. " + str(result.text))
+            return False, str("Error Code: " + str(result.status_code) +
+                              ". There was an error when deleting your Contribution. Please try again later!")
+    except Exception:
+        traceback.print_exc()
+        logging.error("Delete method failed. ")
+        msg = "There was an error when deleting your Contribution. Please try again later!"
+        return False, msg
 
 def get_contribution(contribution_id):
     headers = requestutil.get_header_using_session(session)

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.14.1
+  version: 1.15.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -290,7 +290,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: ID of the contribution that needs to be updated
+        description: ID of the contribution that needs to be deleted
         required: true
         style: simple
         explode: false
@@ -616,6 +616,10 @@ components:
           type: string
         description:
           type: string
+        icon:
+          type: string
+          nullable: true
+          description: URL for the icon image for capability in content building block
         isOpenSource:
           type: boolean
         apiDocUrl:
@@ -697,6 +701,10 @@ components:
           type: string
         longDescription:
           type: string
+        icon:
+          type: string
+          nullable: true
+          description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
           items:
