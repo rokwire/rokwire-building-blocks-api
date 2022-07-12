@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
 - ROKWIRE_GROUP_API_KEY changed to INTERNAL_API_KEY. [#940](https://github.com/rokwire/rokwire-building-blocks-api/issues/940)
 - Updated SECURITY.md [#946](https://github.com/rokwire/rokwire-building-blocks-api/issues/946)
+- Changed talent fields to nullable [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
 
 ### Fixed
 - Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
