@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
 - Add support for hybrid events in Events BB. [#955](https://github.com/rokwire/rokwire-building-blocks-api/issues/955)
 
-
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
 - ROKWIRE_GROUP_API_KEY changed to INTERNAL_API_KEY. [#940](https://github.com/rokwire/rokwire-building-blocks-api/issues/940)
