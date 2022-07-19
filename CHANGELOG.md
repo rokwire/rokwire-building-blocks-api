@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 
 ## [1.15.0] - 2022-07-11
 ### Added
@@ -12,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
 - Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
 - Add support for hybrid events in Events BB. [#955](https://github.com/rokwire/rokwire-building-blocks-api/issues/955)
-- Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
+
 
 ### Changed
 - Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
