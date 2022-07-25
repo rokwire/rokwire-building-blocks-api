@@ -487,9 +487,9 @@
                 </nav>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="select-contribution-div">
                 <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
-                <div>
+                <div id="select-contribution-button">
                     <button class="button button2" id="add-capability">Add a Capability</button>
                     OR
                     <button class="button button1" id="add-talent">Add a Talent</button>
@@ -1503,7 +1503,9 @@
                 {% endif %}
             </div>
 
-
+            <div id="select-contribution-div-placeholder" class="row">
+                <!-- place holder for dynamic add capability / talent buttons" -->
+            </div>
             <!--------------------------------------------contact/privacy check ------------------------------------------>
             <div>
                 <nav>
@@ -2039,6 +2041,12 @@
             }
 
             capability_count++;
+
+            $('#select-contribution-div').position({
+                my: "center",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder")
+            });
         });
     });
 
@@ -2058,6 +2066,12 @@
             $("#talent-parent").append("<br>");
 
             talent_count++;
+
+            $('#select-contribution-div').position({
+                my: "center",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder")
+            });
         });
     });
 
