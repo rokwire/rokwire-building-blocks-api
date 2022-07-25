@@ -5,7 +5,7 @@
 /appconfigservice/ @minump
 
 # Authentication Middleware Library
-/lib/auth-middleware/ @ywkim312
+/lib/auth-middleware/ @sandeep-ps
 
 # API Doc
 /Dockerfile @sandeep-ps
@@ -15,14 +15,14 @@
 /eventservice/ @bingzhang
 
 # Logging Building Block
-/loggingservice/ @ywkim312
+/loggingservice/ @sandeep-ps
 
 # Profile Building Block
-/profileservice/ @ywkim312
+/profileservice/ @sandeep-ps
 
 # Contributions Building Block
-/contributions/* @ywkim312
-/contributions/api/ @ywkim312
+/contributions/* @minump
+/contributions/api/ @minump
 
 # Contributions Catalog
 /contributions/catalog/ @minump
