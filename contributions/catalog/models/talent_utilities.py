@@ -15,6 +15,7 @@
 from datetime import date
 import uuid
 import json
+import re
 
 def init_talent():
     d = {
@@ -39,28 +40,28 @@ def to_talent(d):
     talent_list = []
 
     # check how many capabilities are in the given json
-    # this should be checked keys that is as surfix of _number
+    # this should be checked keys that is as suffix of _number
     num_tal = 0
-
-    # if there is talent_name_0, this means that there is talent
-    if 'talent_name_0' in d.keys():
-        keys = list(d.keys())
-        tal_len = []
-        # iterated talents to see how many talents are in there
+    # if there is capability_name_{num}, it means that there is capability
+    talent_pattern = re.compile('talent_name_[0-9]')
+    keys = list(d.keys())
+    if any(talent_pattern.match(key) for key in keys):
+        tal_indexes = []
+        # iterate to count the number of capabilities
         for key in keys:
             key_splitted = key.split("talent_name_")
             if len(key_splitted) > 1:
-                tal_len.append(int(key_splitted[1]))
-        num_tal = max(tal_len) + 1
+                tal_indexes.append(int(key_splitted[1]))
+        num_tal = len(tal_indexes)
 
-        # init talent
+        # init capability
         for _ in range(num_tal):
             talent_list.append(init_talent())
 
-    for i, talent in enumerate(talent_list):
+    for ind, talent in enumerate(talent_list):
         tal_id = str(uuid.uuid4())
         talent['id'] = tal_id
-
+        i = tal_indexes[ind]
         for k, v in d.items():
             if "minUserPrivacyLevel_" in k:
                 if len(str(v[0])) > 0:
@@ -74,25 +75,25 @@ def to_talent(d):
                     #  the items are only single item entry.
                     #  However, required capabilities should be a list so it should be handled differently,
                     #  and if there is any item that is a list, that should be handled separately.
-                    if name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[0]) > 0:
+                    if name in talent_list[ind] and isinstance(talent_list[ind][name], list) and len(v[0]) > 0:
                         if name == "requiredCapabilities":
                             for j in range(len(v)):
                                 v[j] = reconstruct_required_capabilities(v[j])
-                                talent_list[i][name].append(v[j])
+                                talent_list[ind][name].append(v[j])
                         elif name == "requiredBuildingBlocks":
                             for j in range(len(v)):
-                                talent_list[i][name].append(v[j])
+                                talent_list[ind][name].append(v[j])
                         elif name == "minEndUserRoles":
                             for j in range(len(v)):
-                                talent_list[i][name].append(v[j])
+                                talent_list[ind][name].append(v[j])
                         else:
-                            talent_list[i][name].append(v[i])
-                    elif name in talent_list[i] and isinstance(talent_list[i][name], list) and len(v[0]) == 0:
-                        talent_list[i][name] = []
+                            talent_list[ind][name].append(v[i])
+                    elif name in talent_list[ind] and isinstance(talent_list[ind][name], list) and len(v[0]) == 0:
+                        talent_list[ind][name] = []
                     else:
-                        talent_list[i][name] = v[0]
+                        talent_list[ind][name] = v[0]
 
-        talent_list[i]["selfCertification"] = to_self_certification(d, i)
+        talent_list[ind]["selfCertification"] = to_self_certification(d, i)
 
     return talent_list
 
