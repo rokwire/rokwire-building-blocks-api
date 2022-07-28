@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Add more fields changed to Add envrionment variables in Capability catalog. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
 ### Fixed
+- Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 
 ## [1.15.0] - 2022-07-11
 ### Added
