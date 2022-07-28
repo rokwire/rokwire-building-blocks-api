@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+
+### Changed
+- Add more fields changed to Add envrionment variables in Capability catalog. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
+### Fixed
 
 ## [1.15.0] - 2022-07-11
 ### Added
