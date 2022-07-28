@@ -1994,12 +1994,6 @@
             var i = capability_count;
             var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
                 'Add environment variables</button>'
-            $('#add_env_var_' + i).position({
-                my: "right top-90%",
-                at: "top+90%",
-                of: $("#envvars"),
-                collision: "fit"
-            });
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
