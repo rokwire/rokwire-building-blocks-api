@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 
+### Changed
+- Heading for add a talent or capability in contribution edit page if talent or capability exists. [#984](https://github.com/rokwire/rokwire-building-blocks-api/issues/984)
 ## [1.15.0] - 2022-07-11
 ### Added
 - Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
