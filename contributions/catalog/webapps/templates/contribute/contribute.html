@@ -1647,6 +1647,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
+                <a class="button button3" role="button" href="{{ url_for('contribute.contribution_details', contribution_id=post.id) }}">Cancel</a>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
