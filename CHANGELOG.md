@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
+- Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
 
 ## [1.15.0] - 2022-07-11
 ### Added
