@@ -928,7 +928,7 @@
                                     </div>
                                     <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
                                         <script>
-                                            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
                                                 'Add environment variables</button>'
                                             $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
                                             // get all envvar pairs in the key-val div.
@@ -2020,7 +2020,7 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
+            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
                 'Add environment variables</button>'
 
             $("#capability-parent").append($clone);
