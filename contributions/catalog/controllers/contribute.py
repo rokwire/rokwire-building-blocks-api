@@ -204,7 +204,6 @@ def contribution_edit(contribution_id):
 
             if response:
                 if "name" in session:
-                    # return render_template('contribute/submitted.html', user=session["name"], token=session['oauth_token']['access_token'])
                     return redirect(url_for('contribute.contribution_details', contribution_id=contribution_id))
                 else:
                     return render_template('contribute/submitted.html')
