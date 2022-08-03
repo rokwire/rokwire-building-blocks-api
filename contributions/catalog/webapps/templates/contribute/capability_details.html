@@ -13,6 +13,10 @@
     <script src="../../../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Capability Details</title>
+    <style>
+        .hidetext { -webkit-text-security: disc; }
+        .showtext { -webkit-text-security: none; }
+    </style>
 </head>
 
 <body onload=start()>
@@ -144,7 +148,7 @@
                                         <tr>
                                             {% if loop.index %2 == 0 %}
                                                 <td>{{key}}: </td>
-                                                <td style="visibility: hidden;">{{val}} </td>
+                                                <td style="text-align: center;" class="hidetext">{{val}} </td>
                                                 <td><i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                                             {% else %}
                                                 <td>{{key}}: </td>
@@ -210,14 +214,21 @@
             // get the current row
             var current_row = icon.closest("tr");
             // get the current row 2nd cell value
-            var cell_value = current_row.find("td:eq(1)");
+            var $cell_value = current_row.find("td:eq(1)");
+            //cell_value.classList.toggle("hidetext");
             if (icon.hasClass('bi-eye')) {
-                cell_value.attr("style", "visibility: visible");
-                cell_value.attr("style", "text-align: center");
+                $cell_value.className = "showtext";
+                //cell_value.attr("style", "-webkit-text-security: none");
+                //cell_value.attr("style", "text-align: center");
+                //cell_value.attr('type', 'text');
             }
             else if (icon.hasClass('bi-eye-slash')) {
-                cell_value.attr("style", "visibility: hidden");
+                $cell_value.className = "hidetext";
+                //cell_value.attr("style", "-webkit-text-security: disc");
+                //cell_value.attr("style", "text-align: center");
+                //cell_value.attr('type', 'password');
             }
+
         });
     });
 </script>
