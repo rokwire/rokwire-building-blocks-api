@@ -143,9 +143,9 @@
                                     {% for key,val in envvar.items() %}
                                         <tr>
                                             {% if loop.index %2 == 0 %}
-                                                <td>{{key}}: </td>
-                                                <td style="text-align: center;" class="hidetext">{{val}} </td>
-                                                <td><i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                                                <td>{{key}}: &#160 </td>
+                                                <td class="hidetext" style="text-align: center;"> {{val}}</td>
+                                                <td>&#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                                             {% else %}
                                                 <td>{{key}}: </td>
                                                 <td>{{val}} </td>
