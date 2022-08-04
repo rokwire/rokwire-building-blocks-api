@@ -583,13 +583,13 @@
 
                         <div name="add-env-var-div" class="form-group">
                             <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                            <div class="col-sm-10" id="key-val">
+                            <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
                                 <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                                 <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
-                                       id="environmentVariables_key_0" type="text">
+                                       id="environmentVariables_key_0" type="text" style="display: table-cell; width: 45%; display: inline-block;" >
                                 <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
-                                       id="environmentVariables_value_0" type="password">
+                                       id="environmentVariables_value_0" type="password" style="display: table-cell; width: 45%; margin-left: 1%; display: inline-block;" >
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <br>
                             </div>
@@ -882,7 +882,7 @@
                                 </div>
                                 <div class="form-group" name="add-env-var">
                                     <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}">
+                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
                                             <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                                             {% set caploop = loop.index0 %}
@@ -893,13 +893,15 @@
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Key"
                                                                id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
-                                                               type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
+                                                               type="text" value="{{ envvar | filter_nested_dict(["key"]) }}"
+                                                               style="display: table-cell;width: 45%;display: inline-block;" >
                                                         <input class="form-control"
                                                                name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Value"
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password"
-                                                               value="{{ envvar | filter_nested_dict(["value"]) }}">
+                                                               value="{{ envvar | filter_nested_dict(["value"]) }}"
+                                                               style="display: table-cell; width: 45%; margin-left: 1%; display: inline-block;" >
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
                                                         <br>
                                                     {% else %}
@@ -939,9 +941,9 @@
                                                 e.preventDefault();
                                                 // environment variables match the pattern environmentVariables_key_envindex_capindex
                                                 $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
+                                                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\" style=\"display: table-cell; width: 45%; display: inline-block;\">");
                                                 $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\" style=\"display: table-cell; width: 45%; margin-left: 1%; display: inline-block;\">");
                                                 $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
                                                     $(this).toggleClass("bi-eye");
                                                     let input = $(this).prev();
