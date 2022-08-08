@@ -71,13 +71,13 @@ def to_capability(d):
         i = cap_indexes[ind]
         # get environment key value pairs by pattern matching.
         # filter by matching with pattern environmentVariables_key_{{env_num}}_{{cap_num}}
-        key_pattern = re.compile('environmentVariables_key_[0-9]+' + '_' + str(i))
-        val_pattern = re.compile('environmentVariables_value_[0-9]+' + '_' + str(i))
+        key_pattern = re.compile('environmentVariables_key_[0-99]+' + '_' + str(i))
+        val_pattern = re.compile('environmentVariables_value_[0-99]+' + '_' + str(i))
         d_keys = list(filter(key_pattern.match, d))  # filter keys matching pattern
         d_vals = list(filter(val_pattern.match, d))  # filter keys matching pattern
         for k, v in zip(d_keys, d_vals):
             # get and append the values if they are not empty
-            if d[k][0] and d[v][0]:
+            if d[k][0]:
                 capability["deploymentDetails"]['environmentVariables'].append({'key': d[k][0], 'value': d[v][0]})
 
         for k, v in d.items():
