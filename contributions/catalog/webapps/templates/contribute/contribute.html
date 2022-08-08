@@ -591,7 +591,7 @@
                                 <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password" >
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <span class="close" id="envvarclose">&times;</span>
+                                <span id="envvarclose" style="color: #aaaaaa; font-weight: bold; cursor: pointer;">&nbsp; &nbsp; &times;</span>
                                 <br>
                             </div>
                             <div id="add-env-var-button-div" class="row">
@@ -904,7 +904,7 @@
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}"
                                                                >
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
-                                                        <span class="close" id="envvarclose">&times;</span>
+                                                        <span id="envvarclose" style="color: #aaaaaa; font-weight: bold; cursor: pointer;">&nbsp; &nbsp; &times;</span>
                                                         <br>
                                                     {% else %}
                                                         <input class="form-control"
@@ -917,7 +917,7 @@
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <span class="close" id="envvarclose">&times;</span>
+                                                        <span id="envvarclose" style="color: #aaaaaa; font-weight: bold; cursor: pointer;">&nbsp; &nbsp; &times;</span>
                                                         <br>
                                                     {% endif %}
                                             {% endfor %}
@@ -928,7 +928,7 @@
                                             <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                            <span class="close" id="envvarclose">&times;</span>
+                                            <span id="envvarclose" style="color: #aaaaaa; font-weight: bold; cursor: pointer;">&nbsp; &nbsp; &times;</span>
                                             <br>
                                         {% endif %}
                                     </div>
@@ -957,8 +957,14 @@
                                                         input.attr("type", "password");
                                                     }
                                                 }));
-                                                //let span_envvarclose = $('<span class=\"close\" id=\"envvarclose\">').html('&times;');
-                                                $("#key-val_{{ loop.index0 }}").append($("<span class=\"close\" id=\"envvarclose\">").html('&times;'));
+                                                var span_envvarclose = '<span id=\"envvarclose\" style=\"color: #aaaaaa; font-weight: bold; cursor: pointer;\">&nbsp; &nbsp; &times;</span>';
+                                                $("#key-val_{{ loop.index0 }}").append($(span_envvarclose).on('click', function () {
+                                                    let closebtn = $(this);
+                                                    let input_envval = closebtn.prevAll("input");
+                                                    let input_envkey = input_envval.prev("input");
+                                                    input_envval.val("");
+                                                    input_envkey.val("");
+                                                }));
                                                 $("#key-val_{{ loop.index0 }}").append("<br>");
                                                 // once new envvar pairs are added, increment the counter
                                                 add_env_var_button_click_count++;
@@ -1710,11 +1716,13 @@
 
     $('[id="envvarclose"]').on('click', function () {
         let closebtn = $(this);
-        let input_envval = closebtn.prev("input");
-        let input_envkey = input_envval.prev("input");
-        input_envval.val("");
-        input_envkey.val("");
-        //$(this).parent().remove();// Close the div that contains the button clicked.
+        let eyebtn = closebtn.prev();
+        let input_envval = eyebtn.prev();
+        let input_envkey = input_envval.prev();
+        eyebtn.remove()
+        input_envval.remove();
+        input_envkey.remove();
+        closebtn.remove();
     });
 
     $(function () {
@@ -1881,20 +1889,44 @@
                     dockerimage[i].required = true;
                     return false;
                 }
-                environmentVariables_key[i] = document.getElementById('environmentVariables_key_0' + '_' + i);
-                if (environmentVariables_key[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_key[i].focus();
-                    environmentVariables_key[i].required = true;
+
+                // get all the environment variables keys for the capability i
+                environmentVariables_key[i] = document.querySelector('[id^="environmentVariables_key_"][id$=i]');
+                console.log(environmentVariables_key[i]);
+                var env_key_flag = false;
+                var j = 0;
+                for (;j < environmentVariables_key[i].length; j++) {
+                    if (environmentVariables_key[i][j].value != "") {
+                        // at least one environment variable key is entered
+                        env_key_flag = true;
+                        break; // break the loop
+                    }
+                }
+                if (env_key_flag == false){
+                    //window.alert("Please enter at least one environment variable key.");
+                    environmentVariables_key[i][j].focus();
+                    environmentVariables_key[i][j].required = true;
                     return false;
                 }
-                environmentVariables_value[i] = document.getElementById('environmentVariables_value_0' + '_' + i);
-                if (environmentVariables_value[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_value[i].focus();
-                    environmentVariables_value[i].required = true;
+
+                // get all the environment variables values for the capability i
+                environmentVariables_value[i] = document.querySelector('[id^="environmentVariables_value_"][id$=i]');
+                var env_value_flag = false;
+                var j = 0;
+                for (;j < environmentVariables_value[i].length; j++) {
+                    if (environmentVariables_value[i][j].value != "") {
+                        // at least one environment variable key is entered
+                        env_value_flag = true;
+                        break; // break the loop
+                    }
+                }
+                if (env_value_flag == false){
+                    //window.alert("Please enter at least one environment variable key.");
+                    environmentVariables_value[i][j].focus();
+                    environmentVariables_value[i][j].required = true;
                     return false;
                 }
+
                 db[i] = document.getElementById('db-detail' + '_' + i);
                 if (db[i].value == "") {
                     // window.alert("Please enter the database details. ");
