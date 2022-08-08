@@ -386,7 +386,18 @@ hr.dotted {
 
 #togglePassword {
     cursor: pointer;
-    position: absolute;
-    margin-left: -20px;
-    margin-top: -20px;
+    position: relative;
+}
+
+input[id^='environmentVariables_key_'] {
+    display: table-cell;
+    width: 45%;
+    display: inline-block;
+}
+
+input[id^='environmentVariables_value_'] {
+    display: table-cell;
+    width: 45%;
+    margin-left: 1%;
+    display: inline-block;
 }
