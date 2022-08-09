@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - UI for environment key value pairs. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 
+### Security
+- Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
+
 ## [1.15.0] - 2022-07-11
 ### Added
 - Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
