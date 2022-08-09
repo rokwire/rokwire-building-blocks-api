@@ -401,3 +401,16 @@ input[id^='environmentVariables_value_'] {
     margin-left: 1%;
     display: inline-block;
 }
+
+input[id^='datadel_endpoint'] {
+    display: table-cell;
+    width: 45%;
+    display: inline-block;
+}
+
+input[id^='datadel_api'] {
+    display: table-cell;
+    width: 45%;
+    margin-left: 1%;
+    display: inline-block;
+}
