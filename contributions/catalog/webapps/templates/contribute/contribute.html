@@ -960,10 +960,13 @@
                                                 var span_envvarclose = '<span id=\"envvarclose\" style=\"color: #aaaaaa; font-weight: bold; cursor: pointer;\">&nbsp; &nbsp; &times;</span>';
                                                 $("#key-val_{{ loop.index0 }}").append($(span_envvarclose).on('click', function () {
                                                     let closebtn = $(this);
-                                                    let input_envval = closebtn.prevAll("input");
-                                                    let input_envkey = input_envval.prev("input");
-                                                    input_envval.val("");
-                                                    input_envkey.val("");
+                                                    let eyebtn = closebtn.prev();
+                                                    let input_envval = eyebtn.prev();
+                                                    let input_envkey = input_envval.prev();
+                                                    eyebtn.remove()
+                                                    input_envval.remove();
+                                                    input_envkey.remove();
+                                                    closebtn.remove();
                                                 }));
                                                 $("#key-val_{{ loop.index0 }}").append("<br>");
                                                 // once new envvar pairs are added, increment the counter
@@ -1891,8 +1894,7 @@
                 }
 
                 // get all the environment variables keys for the capability i
-                environmentVariables_key[i] = document.querySelector('[id^="environmentVariables_key_"][id$=i]');
-                console.log(environmentVariables_key[i]);
+                environmentVariables_key[i] = document.querySelector('[id^="environmentVariables_key_"]:[id$="_' + i + '"]');
                 var env_key_flag = false;
                 var j = 0;
                 for (;j < environmentVariables_key[i].length; j++) {
@@ -1910,7 +1912,7 @@
                 }
 
                 // get all the environment variables values for the capability i
-                environmentVariables_value[i] = document.querySelector('[id^="environmentVariables_value_"][id$=i]');
+                environmentVariables_value[i] = document.querySelector('[id^="environmentVariables_value_"]:[id$="_' + i + '"]');
                 var env_value_flag = false;
                 var j = 0;
                 for (;j < environmentVariables_value[i].length; j++) {
