@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
+- Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 
 ### Changed
 - UI for environment key value pairs. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
