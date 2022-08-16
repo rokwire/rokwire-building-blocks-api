@@ -708,12 +708,12 @@ components:
           description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
-          nullable: true
+          default: []
           items:
             $ref: '#/components/schemas/RequiredCapability'
         requiredBuildingBlocks:
           type: array
-          nullable: true
+          default: []
           items:
             type: string
         minUserPrivacyLevel:
@@ -721,11 +721,11 @@ components:
           type: integer
           minimum: 1
           maximum: 5
-          nullable: true
+          default: 1
         minEndUserRoles:
           description: Minimum set of end user roles that needs to be selected by the user for this Talent to appear in the app interface
           type: array
-          nullable: true
+          default: []
           items:
             type: string
             enum:
