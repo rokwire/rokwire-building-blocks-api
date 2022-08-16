@@ -390,3 +390,6 @@ hr.dotted {
     margin-left: -20px;
     margin-top: -20px;
 }
+
+.hidetext { -webkit-text-security: disc; }
+.showtext { -webkit-text-security: none; }
