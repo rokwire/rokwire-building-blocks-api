@@ -4,6 +4,7 @@ import logging
 from flask import g
 
 logger = logging.getLogger(__name__)
+ALL_GROUP_EVENTS = 'all_group-events'
 
 
 def generate_groups_request():
@@ -12,7 +13,7 @@ def generate_groups_request():
         uin = g.user_token_data.get('uiucedu_uin')
         url = "%s%s/groups" % (cfg.GROUPS_BUILDING_BLOCK_HOST + "/api/int/user/", uin)
         headers = {"Content-Type": "application/json",
-                   "ROKWIRE_GS_API_KEY": cfg.ROKWIRE_GROUPS_API_KEY}
+                   "INTERNAL-API-KEY": cfg.INTERNAL_API_KEY}
     # Core BB Access Token, Shibboleth ID Token, etc.
     else:
         id_token = g.user_token
@@ -81,3 +82,13 @@ def check_permission_access_event(event, include_private_events, group_ids):
         if event and event.get('isGroupPrivate') is True:
             return False
     return True
+
+
+def check_all_group_event_admin():
+    is_all_group_event = False
+    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+        if g.user_token_data.get('permissions'):
+            if g.user_token_data.get('permissions').lower().find(ALL_GROUP_EVENTS) != -1:
+                is_all_group_event = True
+
+    return is_all_group_event

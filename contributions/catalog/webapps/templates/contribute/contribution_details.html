@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="../static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Contribution Details</title>
 </head>
@@ -33,6 +33,9 @@
     .btn.active {
         background-color: #666;
         color: white;
+    }
+    .modal-backdrop {
+        z-index: 0;
     }
 </style>
 
@@ -73,41 +76,177 @@
     {% if post.contributors %}
         <h4>Contributor details</h4>
         {% for c in post.contributors %}
+            {% set contributor_ns = namespace(firstName='', lastName='', middleName='', address='', phone='', email='',
+            name='', contributorType='', affil_name='', affil_address='', affil_phone='', affil_email='') %}
             {% for key,val in c.items() %}
                 {% if key == "affiliation" %}
-                    {% for k,v in val.items() %}
-                        {% if v %}
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                {{k}}
-                            </div>
-                            <p class="col-sm-2">{{v}}</p>
-                        </div>
+                    {% for k,vk in val.items() %}
+                        {% if vk %}
+                            {% if k == 'name' %}
+                                {% set contributor_ns.affil_name = vk %}
+                            {% elif k == 'address' %}
+                                {% set contributor_ns.affil_address = vk %}
+                            {% elif k == 'phone' %}
+                                {% set contributor_ns.affil_phone = vk %}
+                            {% elif k == 'email' %}
+                                {% set contributor_ns.affil_email = vk %}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
-                {% elif val %}
-                <div class="row">
-                    <div class="col-12 col-sm-2">
-                        {{key}}
-                    </div>
-                    <p class="col-sm-2">{{val}}</p>
-                </div>
+                {% else %}
+                    {% if key == 'contributorType' %}
+                        {% set contributor_ns.contributorType = val %}
+                    {% elif key == 'firstName' %}
+                        {% set contributor_ns.firstName = val %}
+                    {% elif key == 'lastName' %}
+                        {% set contributor_ns.lastName = val %}
+                    {% elif key == 'middleName' %}
+                        {% set contributor_ns.middleName = val %}
+                    {% elif key == 'phone' %}
+                        {% set contributor_ns.phone = val %}
+                    {% elif key == 'email' %}
+                        {% set contributor_ns.email = val %}
+                    {% elif key == 'address' %}
+                        {% set contributor_ns.address = val %}
+                    {% elif key == 'name' %}
+                        {% set contributor_ns.name = val %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
+            {% if contributor_ns.contributorType == "person" %}
+                <h5><b>Person</b></h5>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        First Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.firstName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Middle Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.middleName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Last Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.lastName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.phone}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.email}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_name}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Address
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_address}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_phone}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Affiliation Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.affil_email}}</p>
+                </div>
+            {% endif %}
+            {% if contributor_ns.contributorType == "organization" %}
+                <h5><b>Organization</b></h5>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Name
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.name}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Address
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.address}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Email
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.email}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        Phone
+                    </div>
+                    <p class="col-sm-2">{{contributor_ns.phone}}</p>
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
     {% if post.contacts %}
     <h4>Contact details</h4>
         {% for contact in post["contacts"] %}
+            {% set contact_ns = namespace(name='', officialAddress='', phone='', email='', organization='') %}
             {% for key,val in contact.items() %}
+                {% if key == 'name' %}
+                    {% set contact_ns.name = val %}
+                {% elif key == 'phone' %}
+                    {% set contact_ns.phone = val %}
+                {% elif key == 'email' %}
+                    {% set contact_ns.email = val %}
+                {% elif key == 'officialAddress' %}
+                    {% set contact_ns.officialAddress = val %}
+                {% elif key == 'organization' %}
+                    {% set contact_ns.organization = val %}
+                {% endif %}
+            {% endfor %}
             <div class="row">
                 <div class="col-12 col-sm-2">
-                    {{key}}
+                    Name
                 </div>
-                <p class="col-sm-2">{{val}}</p>
+                <p class="col-sm-2">{{contact_ns.name}}</p>
             </div>
-            {% endfor %}
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Official Address
+                </div>
+                <p class="col-sm-2">{{contact_ns.officialAddress}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Email
+                </div>
+                <p class="col-sm-2">{{contact_ns.email}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Phone
+                </div>
+                <p class="col-sm-2">{{contact_ns.phone}}</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-2">
+                    Organization
+                </div>
+                <p class="col-sm-2">{{contact_ns.organization}}</p>
+            </div>
         {% endfor %}
     {% endif %}
 
@@ -118,7 +257,11 @@
                 <div class="col-12 col-sm-2">
                     <ol><h4>{{c.name}}</h4></ol>
                 </div>
-                <button class="button button1" onclick="cap_url('{{c.id}}')" >  View  </button>
+                {% if is_review %}
+                    <button class="button button1" onclick="cap_url_review('{{c.id}}')" >  View  </button>
+                {% else %}
+                    <button class="button button1" onclick="cap_url('{{c.id}}')" >  View  </button>
+                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
@@ -130,12 +273,16 @@
             <div class="col-12 col-sm-2">
                 <ol><h4>{{t.name}}</h4></ol>
             </div>
-            <button class="button button2" onclick="tal_url('{{t.id}}')" >  View  </button>
+            {% if is_review %}
+                <button class="button button2" onclick="tal_url_review('{{t.id}}')" >  View  </button>
+            {% else %}
+                <button class="button button2" onclick="tal_url('{{t.id}}')" >  View  </button>
+            {% endif %}
         </div>
         {% endfor %}
     {% endif %}
 
-    {% if reviewer %}
+    {% if (is_reviewer or is_editable or is_review) %}
         <div class="row">
             <div class="col-12 col-sm-2">
                 <h4>Contribution admins</h4>
@@ -166,21 +313,136 @@
         </div>
     {% endif %}
 
-    {% if reviewer %}
+    {% if is_editable %}
         <a class="button button3" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="button button3" data-toggle="modal" data-target="#confirmDelete">Delete Contribution</button>
+    {% endif %}
+
+    {% if is_reviewer %}
+        <a class="button button4" role="button" href="{{ url_for('contribute.contribution_review', contribution_id=post.id) }}">Review Contribution</a>
     {% endif %}
 </div>
 
-
-<div class="action">
-
-</div>
+{% if is_review %}
+    <div class="container">
+        <h1>Review</h1>
+        <hr class="divider"/>
+        <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Status</h4>
+                    </div>
+                    <div class="col-sm-10" style="width: 250px">
+                        <select class="form-control" id="status" name="contribution_status">
+                            {% if post["status"].lower() == "submitted" %}
+                                <option value="Submitted" selected>Submitted</option>
+                            {% else %}
+                                <option value="Submitted">Submitted</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "reviewing" %}
+                                <option value="Reviewing" selected>Reviewing</option>
+                            {% else %}
+                                <option value="Reviewing" >Reviewing</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "approved" %}
+                                <option value="Approved" selected>Approved</option>
+                            {% else %}
+                                <option value="Approved">Approved</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "disapproved" %}
+                                <option value="Disapproved" selected>Disapproved</option>
+                            {% else %}
+                                <option value="Disapproved">Disapproved</option>
+                            {% endif %}
+                            {% if post["status"].lower() == "published" %}
+                                <option value="Published" selected>Published</option>
+                            {% else %}
+                                <option value="Published">Published</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Comment</h4>
+                    </div>
+                    <div class="col-sm-10">
+                        {% if 'review' in post %}
+                            <textarea id="reviewer_comment" name="contribution_reviewer_comment"
+                                      placeholder="Give a comment"
+                                      style="height:150px">{{ post | filter_nested_dict(["review", "reviewerComment"]) }}</textarea>
+                        {% else %}
+                            <textarea id="contribution_detail" name="contribution_reviewer_comment"
+                                      placeholder="Give a comment"
+                                      style="height:150px"></textarea>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <h4>Last Updated</h4>
+                    </div>
+                    <div class="col-sm-10">
+                        {% if 'review' in post %}
+                            {{ post | filter_nested_dict(["review", "lastUpdated"]) }}
+                        {% endif %}
+                    </div>
+                    <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input href="{{ url_for('contribute.home') }}"
+                                           id="button_submit"
+                                           type="submit"
+                                           value="Submit">
+                                </td>
+                                <td>
+                                    <input id="button_reset", type="reset" value="Reset">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endif %}
 
 {% include 'topnav_javascript.html' %}
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="confirmDeleteTitle">Delete Contribution</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Contribution {{post.name}}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="button button2" data-dismiss="modal">Cancel</button>
+                <button type="button" class="button button3" onclick="contribution_delete_url()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var post = JSON.parse('{{ post | tojson | safe}}');
     var cid = "{{post.contributionid}}";
+
+    function contribution_delete_url(){
+        window.location.href = window.location.href + "/delete";
+    }
 
     function cap_url(id){
         window.location.href =  window.location.href +  "/capabilities/" + id;
@@ -192,7 +454,19 @@
 
     function get_url(id){
         var cur_url = window.location.href.split('/');
-        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit"
+        window.location.href = cur_url[0] + "/contribute/create/" + id + "/edit";
+    }
+
+    function cap_url_review(id){
+        var url = window.location.href + "/";
+        url = url.replace(/([^\/]*\/)$/,"");
+        window.location.href =  url +  "/capabilities/" + id;
+    }
+
+    function tal_url_review(id){
+        var url = window.location.href + "/";
+        url = url.replace(/([^\/]*\/)$/,"");
+        window.location.href = window.location.href + "/talents/" + id;
     }
 
     var user_icon = document.getElementById('user_profile');
@@ -201,6 +475,7 @@
             document.getElementById("myDropdown").classList.toggle("show");
         }
     })
+
 
 </script>
 </body>

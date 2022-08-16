@@ -49,10 +49,19 @@ def get_header_using_auth_token(auth_token):
     }
 
 """
+request single contribution
+"""
+"""
 request contribution list
 """
+def request_single_contribution(headers, contribution_id):
+    request_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + contribution_id
+    result = requests.get(request_url, headers=headers)
+
+    return result
+
 """
-request reviewer
+request contribution list
 """
 def request_contributions(headers):
     result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL, headers=headers)
@@ -109,3 +118,19 @@ def request_required_capability_list(headers):
             required_capability_list.append(tmp_required_capability)
 
     return required_capability_list
+
+"""
+request building blocks list
+"""
+def request_buildingblocks(headers):
+    request_url = cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/building-blocks"
+    result = requests.get(request_url, headers=headers)
+    building_block_list_json=[]
+
+    # create the list of required capabilities
+    if result.status_code == 200:
+        # check if the login id is in reviewer list
+        result_str = result.content.decode('utf-8').replace('\n', '')
+        building_block_list_json = json.loads(result_str)
+
+    return building_block_list_json

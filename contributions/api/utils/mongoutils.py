@@ -23,6 +23,7 @@ from pymongo import MongoClient, ASCENDING
 from models.contribution import Contribution
 from utils import query_params
 from utils import jsonutils
+from utils import adminutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
@@ -226,13 +227,18 @@ def get_contribution_dataset_from_objectid(collection, objectid, login_id=None, 
         if status == "Published":
             return dataset, status_code
         else:
-            if (is_login):
+            if is_login:
                 # check if the user is in contributionAdmin group
-                if (is_admin):
+                if is_admin:
                     return dataset, status_code
                 else:
                     status_code = '401'
                     return None, status_code
+            else:
+                # if not logged in and if status is not Published return unauthorized
+                status_code = '401'
+                return None, status_code
+
     else:
         status_code = '400'
         return None, status_code
@@ -304,8 +310,15 @@ def query_dataset_no_status(db_collection, fld, query_str):
 """
 construct json from mongo query
 """
-def construct_json_from_query_list(data_list):
-    data_dump = dumps(data_list)
+def construct_json_from_query_list(in_json, login_id=None):
+    # check if the user is a reviewer or admin, otherwise, remove review from the output
+    if login_id is not None:
+        is_reviewer = adminutils.check_if_reviewer(login_id)
+        # remove review if the requested user is not reviewer
+        if not is_reviewer:
+            if "review" in in_json:
+                del in_json["review"]
+    data_dump = dumps(in_json)
     out_json = make_response(data_dump)
     out_json.mimetype = 'application/json'
 
@@ -372,6 +385,26 @@ def list_reviewers():
         return json_load
     else:
         return None
+
+def get_reviewers_record(username):
+    """
+    Method to return the record of a reviewer from mongodb reviewer collection
+    Args:
+        username (str): github username
+    Returns:
+        (json) : json output from mongodb find query
+    """
+    db_data = coll_reviewer.find({"githubUsername": username})
+    data_list = list(db_data)
+
+    if len(data_list) > 0:
+        data_dump = dumps(data_list)
+        json_load = json.loads(data_dump)
+        json_load = jsonutils.convert_obejctid_from_dataset_json_list(json_load)
+        return json_load
+    else:
+        return None
+
 
 """
 query using query field and querystring and convert result to object

@@ -5,15 +5,106 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
+- Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
+- Minimum user privacy level in talent form. [#970](https://github.com/rokwire/rokwire-building-blocks-api/issues/970)
+
+### Security
+- Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
+
+### Changed
+
+### Fixed
+
+
+## [1.15.0] - 2022-07-11
+### Added
+- Support in Contributions BB to upload an icon for Talents and Capabilities. [#945](https://github.com/rokwire/rokwire-building-blocks-api/issues/945)
+- Added error message when the Contributions are not retrieved from the Contributions BB [#923](https://github.com/rokwire/rokwire-building-blocks-api/issues/923)
+- Delete contribution button. [#944](https://github.com/rokwire/rokwire-building-blocks-api/issues/944)
+- Add support for hybrid events in Events BB. [#955](https://github.com/rokwire/rokwire-building-blocks-api/issues/955)
+
+### Changed
+- Display of Talent Self Certification fields when empty. [#913](https://github.com/rokwire/rokwire-building-blocks-api/issues/913)
+- ROKWIRE_GROUP_API_KEY changed to INTERNAL_API_KEY. [#940](https://github.com/rokwire/rokwire-building-blocks-api/issues/940)
+- Updated SECURITY.md [#946](https://github.com/rokwire/rokwire-building-blocks-api/issues/946)
+
+### Fixed
+- Validate start and end dates. [#906](https://github.com/rokwire/rokwire-building-blocks-api/issues/906)
+- Bug if reviewers collection is empty. [#929](https://github.com/rokwire/rokwire-building-blocks-api/issues/929)
+- Fixed indexing of environment variables key and value pairs. [#921](https://github.com/rokwire/rokwire-building-blocks-api/issues/921)
+
+### Security
+- Update PyJWT package version and corresponding auth middleware library code. [#935](https://github.com/rokwire/rokwire-building-blocks-api/issues/935)
+
+## [1.14.1] - 2022-05-26
+### Fixed
+- ProxyFix for OAuth Lib Transport Error when deploying in docker containers. [#928](https://github.com/rokwire/rokwire-building-blocks-api/issues/928)
+
+## [1.14.0] - 2022-05-17
+### Added
+- Sending email to reviewers. [#839](https://github.com/rokwire/rokwire-building-blocks-api/issues/839)
+- Self certification information to talent [#878](https://github.com/rokwire/rokwire-building-blocks-api/issues/878)
+- Items in contact details are added to required field data validation [#907](https://github.com/rokwire/rokwire-building-blocks-api/issues/907)
+- Version endpoint to contribution building block  [#897](https://github.com/rokwire/rokwire-building-blocks-api/issues/897)
+- Version endpoint to logging building block  [#898](https://github.com/rokwire/rokwire-building-blocks-api/issues/898)
+- Endpoint for showing required building blocks to contribution building block [#904](https://github.com/rokwire/rokwire-building-blocks-api/issues/904)
+- Multiple selection list for required building block added to talent [#917](https://github.com/rokwire/rokwire-building-blocks-api/issues/917)
+- Hide and toggle sensitive data. [#905](https://github.com/rokwire/rokwire-building-blocks-api/issues/905)
+
+### Changed
+- Modified required capability in talent detail page [#877](https://github.com/rokwire/rokwire-building-blocks-api/issues/877)
+- Minimum end user role as text in talent detail page [#879](https://github.com/rokwire/rokwire-building-blocks-api/issues/879)
+- Made person and organization display order more consistence in catalog [#908](https://github.com/rokwire/rokwire-building-blocks-api/issues/908)
+- Show general html values instead of raw data format in catalog [#909](https://github.com/rokwire/rokwire-building-blocks-api/issues/909)
+- Contact information in contribution detail page shows html formatted data [#914](https://github.com/rokwire/rokwire-building-blocks-api/issues/914)
+- Environmental variables in capability detail page shows html formatted data [#915](https://github.com/rokwire/rokwire-building-blocks-api/issues/915)
+
+### Fixed
+- Posting contribution error when required capability is empty in talent [#874](https://github.com/rokwire/rokwire-building-blocks-api/issues/874)
+- End user role in posting doesn't update multiple selection [#870](https://github.com/rokwire/rokwire-building-blocks-api/issues/870)
+- Show and hide of source repo url based on the selection of open source [#869](https://github.com/rokwire/rokwire-building-blocks-api/issues/869)
+- Saving multiple capabilities error [#858](https://github.com/rokwire/rokwire-building-blocks-api/issues/858)
+- GET contributions returns 401 for unpublished contributions. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
+- Warning in Logs Building Block. [#881](https://github.com/rokwire/rokwire-building-blocks-api/issues/881)
+- Editing multiple talent and capabilities. [#883](https://github.com/rokwire/rokwire-building-blocks-api/issues/883)
+- Contributor editing for person and organization. [#888](https://github.com/rokwire/rokwire-building-blocks-api/issues/888)
+- Fix the Jinja version. [#893](https://github.com/rokwire/rokwire-building-blocks-api/issues/893)
+
+## [1.13.0] - 2022-04-04
+### Fixed
+- UI changes to 'Source Repo URL' field in catalog. [#814](https://github.com/rokwire/rokwire-building-blocks-api/issues/814)
+- Talent form bug fixed in Contribution Catalog. [#857](https://github.com/rokwire/rokwire-building-blocks-api/issues/857)
+- `imageURL` field name in Events BB API Doc. [#846](https://github.com/rokwire/rokwire-building-blocks-api/issues/846)
+- Build error in Events BB. [#884](https://github.com/rokwire/rokwire-building-blocks-api/issues/884)
+
+### Added
+- Add a Review section to Contribution. [#756](https://github.com/rokwire/rokwire-building-blocks-api/issues/756)
+- Error message text to event building block when it is internal sever error.  [#840](https://github.com/rokwire/rokwire-building-blocks-api/issues/840)
+- Added email field for reviewers. [#864](https://github.com/rokwire/rokwire-building-blocks-api/issues/864)
+- Add query filter to get events created by a user. [#873](https://github.com/rokwire/rokwire-building-blocks-api/issues/873)
+- Add Aquatics and Intramural tags. [#872](https://github.com/rokwire/rokwire-building-blocks-api/issues/872)
+
+### Changed
+- All group event user can GET and DELETE group event. [#847](https://github.com/rokwire/rokwire-building-blocks-api/issues/847)
+- CODEOWNERS file. [#826](https://github.com/rokwire/rokwire-building-blocks-api/issues/826)
+
+### Security
+- Change string comparisons to constant time comparisons in Profile BB. [#850](https://github.com/rokwire/rokwire-building-blocks-api/issues/850)
+
+## [1.12.1] - 2021-12-08
 ### Changed
 - Contributions Catalog login callback endpoint to /catalog/auth/callback. [#803](https://github.com/rokwire/rokwire-building-blocks-api/issues/803) 
 
 ### Fixed
 - Catalog redirects to error page when the contribution request is not published. [#774](https://github.com/rokwire/rokwire-building-blocks-api/issues/774)
 - Successful POST of contribution redirect to contribution details page. [#777](https://github.com/rokwire/rokwire-building-blocks-api/issues/777)
+- Added additional env variable for audience for ROKWIRE_AUTH_HOST tokens. [#842](https://github.com/rokwire/rokwire-building-blocks-api/issues/842)
 
 ### Security
 - String comparisons to constant time comparisons in auth middleware library. [#825](https://github.com/rokwire/rokwire-building-blocks-api/issues/825)
+- Removed unused method in token utility. [#837](https://github.com/rokwire/rokwire-building-blocks-api/issues/837)
 
 ## [1.12.0] - 2021-11-19
 ### Added
@@ -422,7 +513,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.1...HEAD
+[1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
+[1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
+[1.14.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...1.14.0
+[1.13.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.1...1.13.0
+[1.12.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.3...1.12.0
 [1.11.3]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.2...1.11.3
 [1.11.2]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.11.1...1.11.2

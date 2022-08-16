@@ -92,6 +92,23 @@ def create_capability_json_from_contribution_json(injson):
     return out_json_list
 
 """
+create json for submitted from contribution list
+"""
+def create_status_json_from_contribution_json(injson, keyward):
+    out_json_list = []
+
+    # add capability first
+    for contribution in injson:
+        try:
+            if contribution["status"].lower() == keyward:
+                # need to add contribution id in capability as well]
+                out_json_list.append(contribution)
+        except:
+            logging.warning("There is no status in the contribution")
+
+    return out_json_list
+
+"""
 create json for talents for home page
 """
 def create_talent_json_from_contribution_json(injson):
@@ -108,3 +125,10 @@ def create_talent_json_from_contribution_json(injson):
             logging.warning("There is no talent in the contribution")
 
     return out_json_list
+
+def create_log_json(ep_name, ep_method, in_json):
+    in_json['ep_building_block'] = "contributions_building_block"
+    in_json['ep_name'] = ep_name
+    in_json['ep_method'] = ep_method
+
+    return in_json

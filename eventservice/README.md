@@ -318,6 +318,13 @@ This query supports main categories search and main/sub categories search. The r
 /events?category=Athletics.Football&category=Community
 ```
 
+
+### CreatedBy Search
+This query search on the `createdBy` field. The request can give multiple `createdBy` query parameters to get a list of returned events.
+```
+/events?createdBy=user1@email.com&createdBy=user2@email.com
+```
+
 ### Super Event Search
 When this query parameter is set to the ID of a super event, the endpoint will return all events as a list (including all the details) that are marked as a sub event of this super event.
 ```
@@ -340,6 +347,19 @@ For example,
 
 ```
 The endpoint will return back the group events with `createdByGroupId` equal to the given group id `a567618a-b4eb-11eb-9129-0a58a9feac02`
+
+
+in Person Events Filter
+
+Set isInPerson filter on search events.
+
+/events?isInPerson=<True/False>
+For example,
+
+/events?isInPerson=True
+
+```
+The endpoint will return back the events with isInPerson field set to True.
 
 
 ## MongoDB

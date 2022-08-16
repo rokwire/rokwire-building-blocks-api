@@ -182,7 +182,7 @@ def verify_core_token(group_name=None):
     if issuer == ROKWIRE_AUTH_HOST:
         keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
         target_client_ids = re.split(
-            ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+            ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
         id_info = decode_id_token(id_token, keyset, target_client_ids, kid)
         g.user_token_data = id_info
         g.user_token = id_token
@@ -234,7 +234,8 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
                 id_token,
                 phone_verify_secret,
                 audience=phone_verify_audience,
-                verify=True
+                options={"verify_signature": True},
+                algorithms=jwt.algorithms.get_default_algorithms()
             )
         except jwt.DecodeError as de:
             logger.warning("error on id_token decode. Message = %s" % str(de))
@@ -267,7 +268,7 @@ def verify_core_userauth(id_token, group_name=None, internal_token_only=False):
             valid_issuer = True
             keyset = get_keyset(ROKWIRE_AUTH_HOST + ROKWIRE_AUTH_KEY_PATH)
             target_client_ids = re.split(
-                ',', (os.getenv('ROKWIRE_API_CLIENT_ID', '')).replace(" ", ""))
+                ',', (os.getenv('ROKWIRE_AUTH_AUD', '')).replace(" ", ""))
 
         elif issuer == ROKWIRE_ISSUER:
             valid_issuer = True
@@ -325,7 +326,8 @@ def verify_userauth(id_token, group_name=None, internal_token_only=False):
                 id_token,
                 phone_verify_secret,
                 audience=phone_verify_audience,
-                verify=True
+                options={"verify_signature": True},
+                algorithms=jwt.algorithms.get_default_algorithms()
             )
         except jwt.DecodeError as de:
             logger.warning("error on id_token decode. Message = %s" % str(de))
@@ -421,7 +423,8 @@ def get_unverified_header_payload(id_token):
         # We need to get both the header and the payload initially as unverified since we have to
         # check their issuer, key id and a few other items before we can figure out how to unpack them
         unverified_header = jwt.get_unverified_header(id_token)
-        unverified_payload = jwt.decode(id_token, verify=False)
+        unverified_payload = jwt.decode(id_token, options={"verify_signature": False},
+                                        algorithms=jwt.algorithms.get_default_algorithms())
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning(
             "jwt error on get unverified header. message = %s" % jwte)
@@ -438,8 +441,8 @@ def decode_id_token(id_token, keyset, target_client_ids, kid):
     jwk = matching_jwks[0]
     pub_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
     try:
-        id_info = jwt.decode(id_token, key=pub_key,
-                             audience=target_client_ids, verify=True)
+        id_info = jwt.decode(id_token, key=pub_key, audience=target_client_ids, options={"verify_signature": True},
+                             algorithms=jwt.algorithms.get_default_algorithms())
     except jwt.exceptions.PyJWTError as jwte:
         logger.warning("jwt error on decode. message = %s" % jwte)
         raise OAuthProblem('Invalid token')

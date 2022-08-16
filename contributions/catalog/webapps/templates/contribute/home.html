@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='js/modernizr.js') }}" rel="javascript">
-    <script src="../../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="static/js/modernizr.js"></script> <!-- Modernizr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
@@ -248,6 +248,12 @@
                         </div>
                     </div>
                 {% endfor %}
+            {% endif %}
+
+            {% if (tal_json|length == 0) and (cap_json|length == 0)  %}
+                <div>
+                    <h4 class="talent_name">There are no published contributions.</h4>
+                </div>
             {% endif %}
         </div><!-- END GRID -->
 

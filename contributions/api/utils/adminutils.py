@@ -15,6 +15,10 @@
 import controllers.configs as cfg
 import utils.mongoutils as mongoutils
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 """
 check if the logged in user is a superuser
 """
@@ -49,3 +53,55 @@ def check_if_reviewer(login_id):
             return True
 
     return False
+
+def send_email(mail_to, subject, message):
+    """
+    Method to send email to a user and print if success or failure
+    Args:
+        mail_to (str): email id of recipient
+        subject (str): subject of the email
+        message (str): message of the email
+    Returns:
+        (bool): True if success, False if failure
+        (str): Error code is failure, empty string if success
+        (str): Error message if failure, empty string if success
+    """
+    mail_subject = subject
+    mail_body = message
+
+    mail_from = cfg.SENDER_EMAIL
+    password = cfg.SENDER_EMAIL_PASSWORD
+
+    mimemsg = MIMEMultipart()
+    mimemsg['From'] = mail_from
+    mimemsg['To'] = mail_to
+    mimemsg['Subject'] = mail_subject
+    mimemsg.attach(MIMEText(mail_body, 'plain'))
+
+    connection = smtplib.SMTP(host=cfg.SMTP_HOST, port=cfg.SMTP_PORT)
+    try:
+        connection.ehlo()
+    except smtplib.SMTPHeloError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
+        connection.starttls()
+    except smtplib.SMTPConnectError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
+        connection.login(mail_from, password)
+    except smtplib.SMTPAuthenticationError as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    try:
+        connection.send_message(mimemsg)
+    except smtplib.SMTPResponseException as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    except smtplib.SMTPException as ex:
+        return False, ex.strerror, ex.errno
+    try:
+        connection.quit()
+        return True, ' ', ' '
+    except smtplib.SMTPResponseException as ex:
+        return False, ex.smtp_error, ex.smtp_code
+    except smtplib.SMTPException as ex:
+        return False, ex.strerror, ex.errno
+

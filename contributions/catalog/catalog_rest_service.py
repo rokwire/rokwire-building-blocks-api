@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import logging
+import json
 import os
 import utils.requestutil as requestutil
 import utils.jsonutil as jsonutil
@@ -25,6 +26,7 @@ from requests_oauthlib import OAuth2Session
 from controllers.config import Config as cfg
 from controllers.contribute import bp as contribute_bp
 from db import init_app
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 debug = cfg.DEBUG
 
@@ -49,6 +51,9 @@ static_dir = os.path.join(os.path.abspath('webapps'), 'static')
 app = Flask(__name__, instance_relative_config=True, static_url_path=staticpath, static_folder=static_dir,
             template_folder=template_dir)
 app.config.from_object(cfg)
+
+# TODO: Experimental fix for running behind the load balancer. Revisit to verify that this fix matches the actual deployment environment. Ref: https://werkzeug.palletsprojects.com/en/2.1.x/middleware/proxy_fix/
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
 
 init_app(app)
 app.register_blueprint(contribute_bp)
@@ -112,8 +117,18 @@ def index():
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
     else:
         # query only published ones
+        show_err_message = False
         headers = requestutil.get_header_using_api_key()
         result = requestutil.request_contributions(headers)
+
+        if result.status_code != 200:
+            msg = {
+                "ERROR": "There is a problem getting contributions list. Maybe API Key is not correct."
+            }
+            msg_json = jsonutil.create_log_json("Contribution", "SEARCH", msg)
+            logging.info("Contribution SEARCH " + json.dumps(msg_json))
+            show_err_message = True
+
         if show_sel == "capability":
             # create the json for only capability
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
@@ -125,8 +140,13 @@ def index():
             cap_json = jsonutil.create_capability_json_from_contribution_json(result.json())
             tal_json = jsonutil.create_talent_json_from_contribution_json(result.json())
 
-    return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha,
-                           cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
+        # show connection error message to main page
+        if show_err_message:
+            err_msg = "ERROR: There is a problem getting contributions list. Please try again later."
+            return render_template('contribute/error.html', error_msg=err_msg)
+        else:
+            return render_template('contribute/home.html', git_tag=git_tag, git_sha=git_sha,
+                                   cap_json=cap_json, tal_json=tal_json, show_sel=show_sel, user=user)
 
 @app.route("/login")
 def login():

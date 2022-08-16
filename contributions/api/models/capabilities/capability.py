@@ -18,8 +18,10 @@ class Capability():
     def __init__(self, injson):
         self.id = None
         self.name = None
+        self.icon = None
         self.description = None
         self.isOpenSource = None
+        self.sourceRepoUrl = None
         self.apiDocUrl = None
         self.deploymentDetails = None
         self.apiBaseUrl = None
@@ -38,6 +40,12 @@ class Capability():
     def get_id(self):
         return self.id
 
+    def set_icon(self, icon):
+        self.icon = icon
+
+    def get_icon(self):
+        return self.icon
+
     def set_name(self, name):
         self.name = name
 
@@ -55,6 +63,12 @@ class Capability():
 
     def get_is_open_source(self):
         return self.isOpenSource
+
+    def set_source_repo_url(self, sourceRepoUrl):
+        self.sourceRepoUrl = sourceRepoUrl
+
+    def get_source_repo_url(self):
+        return self.sourceRepoUrl
 
     def set_api_doc_url(self, apiDocUrl):
         self.apiDocUrl = apiDocUrl

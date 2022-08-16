@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import uuid
+import re
 
 def init_capability():
     d = {'id': '',
@@ -20,8 +21,8 @@ def init_capability():
          'description': '',
          'icon': None,
          'apiDocUrl': None,
-         'isOpenSource': False,
-         'sourceUrl': '',
+         'isOpenSource': None,
+         'sourceRepoUrl': '',
          'apiBaseUrl': None,
          'version': '',
          'healthCheckUrl': None,
@@ -34,8 +35,9 @@ def init_capability():
              'environmentVariables': []
          },
          'dataDeletionEndpointDetails': {
-             'endpoint': '',
-             'api': ''
+             'deletionEndpoint': '',
+             'apiKey': '',
+             'description': ''
          },
          }
     return d
@@ -45,40 +47,64 @@ def to_capability(d):
     if not d: return {}
     capability_list = []
 
-    # init capability
-    if isinstance(d['capability_name'], str):
-        capability_list.append(init_capability())
-    else:
-        for _ in range(len(d['capability_name'])):
-            capability_list.append(init_capability())
+    # check how many capabilities are in the given json
+    # this should be checked keys that is as suffix of _number
+    num_cap = 0
+    # if there is capability_name_{num}, it means that there is capability
+    capability_pattern = re.compile('capability_name_[0-9]')
+    keys = list(d.keys())
+    if any(capability_pattern.match(key) for key in keys):
+        cap_indexes = []
+        # iterate to count the number of capabilities
+        for key in keys:
+            key_splitted = key.split("capability_name_")
+            if len(key_splitted) > 1:
+                cap_indexes.append(int(key_splitted[1]))
+        num_cap = len(cap_indexes)
 
-    for i, capability in enumerate(capability_list):
+        # init capability
+        for _ in range(num_cap):
+            capability_list.append(init_capability())
+    for ind, capability in enumerate(capability_list):
         cap_id = str(uuid.uuid4())
         capability['id'] = cap_id
-        env_k, env_v = d['environmentVariables_key'], d['environmentVariables_value']
-        for k, v in list(zip(env_k, env_v)):
-            capability["deploymentDetails"]['environmentVariables'].append({'key': k, 'value': v})
+        i = cap_indexes[ind]
+        # get environment key value pairs by pattern matching.
+        # filter by matching with pattern environmentVariables_key_{{env_num}}_{{cap_num}}
+        key_pattern = re.compile('environmentVariables_key_[0-9]+' + '_' + str(i))
+        val_pattern = re.compile('environmentVariables_value_[0-9]+' + '_' + str(i))
+        d_keys = list(filter(key_pattern.match, d))  # filter keys matching pattern
+        d_vals = list(filter(val_pattern.match, d))  # filter keys matching pattern
+        for k, v in zip(d_keys, d_vals):
+            # get and append the values
+            capability["deploymentDetails"]['environmentVariables'].append({'key': d[k][0], 'value': d[v][0]})
 
         for k, v in d.items():
-            if "isOpenSource" in k:
-                if v[i] == 'on':
-                    capability_list[i]["isOpenSource"] = True
+            if "isOpenSource_" + str(i) in k:
+                if v[0] == 'y':
+                    capability_list[ind]["isOpenSource"] = True
                 else:
-                    capability_list[i]["isOpenSource"] = False
-                d[k][i] = capability_list[i]["isOpenSource"]
+                    capability_list[ind]["isOpenSource"] = False
+                d[k][0] = capability_list[ind]["isOpenSource"]
+            elif "sourceRepoUrl_" + str(i) in k:
+                if capability_list[ind]["isOpenSource"]:
+                    capability_list[ind]["sourceRepoUrl"] = v[0]
             elif "deploymentDetails_" in k:
-                name = k.split("deploymentDetails_")[-1]
-                capability_list[i]["deploymentDetails"][name] = v[i]
+                if ("_" + str(i)) in k:
+                    name = (k.split("deploymentDetails_")[-1]).split('_' + str(i))[0]
+                    capability_list[ind]["deploymentDetails"][name] = v[0]
             elif "dataDeletionEndpointDetails_" in k:
-                name = k.split("dataDeletionEndpointDetails_")[-1]
-                capability_list[i]["dataDeletionEndpointDetails"][name] = v[i]
+                if ("_" + str(i)) in k:
+                    name = (k.split("dataDeletionEndpointDetails_")[-1]).split('_' + str(i))[0]
+                    capability_list[ind]["dataDeletionEndpointDetails"][name] = v[0]
             elif "capability_" in k:
-                name = k.split("capability_")[-1]
-                if name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) > 0:
-                    capability_list[i][name].append(v[i])
-                elif name in capability_list[i] and isinstance(capability_list[i][name], list) and len(v[i]) == 0:
-                    capability_list[i][name] = []
-                else:
-                    capability_list[i][name] = v[i]
+                if ("_" + str(i)) in k:
+                    name = (k.split("capability_")[-1]).split('_' + str(i))[0]
+                    if name in capability_list[ind] and isinstance(capability_list[ind][name], list) and len(v[0]) > 0:
+                        capability_list[ind][name].append(v[0])
+                    elif name in capability_list[ind] and isinstance(capability_list[ind][name], list) and len(v[0]) == 0:
+                        capability_list[ind][name] = []
+                    else:
+                        capability_list[ind][name] = v[0]
 
     return capability_list
