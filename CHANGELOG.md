@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
 
 ### Changed
-- Changed talent fields to nullable [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
+- Changed talent fields yaml configuration [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
 
 ### Fixed
 
