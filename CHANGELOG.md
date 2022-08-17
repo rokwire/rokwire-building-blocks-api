@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
-
+- Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
 
 ## [1.15.0] - 2022-07-11
 ### Added

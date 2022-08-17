@@ -26,7 +26,7 @@ def generate_groups_request():
 def get_group_ids():
     group_ids = list()
     include_private_events = False
-    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+    if is_core_user_token():
         include_private_events = True
         url, headers = generate_groups_request()
         req = requests.get(url, headers=headers)
@@ -42,7 +42,7 @@ def get_group_ids():
 def get_group_memberships():
     group_memberships = list()
     include_private_events = False
-    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+    if is_core_user_token():
         include_private_events = True
         url, headers = generate_groups_request()
         req = requests.get(url, headers=headers)
@@ -86,9 +86,12 @@ def check_permission_access_event(event, include_private_events, group_ids):
 
 def check_all_group_event_admin():
     is_all_group_event = False
-    if 'user_token' in g and not g.user_token_data.get('anonymous'):
+    if is_core_user_token():
         if g.user_token_data.get('permissions'):
             if g.user_token_data.get('permissions').lower().find(ALL_GROUP_EVENTS) != -1:
                 is_all_group_event = True
 
     return is_all_group_event
+
+def is_core_user_token():
+    return 'user_token' in g and not g.user_token_data.get('anonymous') and not g.user_token_data.get('service')
