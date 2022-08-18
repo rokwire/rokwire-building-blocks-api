@@ -35,6 +35,8 @@ authservice/credentials.env
 
 # Docker ENV files
 .env
+# Docker xml file
+**.xml
 
 # Python builds
 *.egg-info/
