@@ -276,9 +276,10 @@ def post():
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
-
+    # check group event
     if req_data.get('createdByGroupId'):
         group_event_admin_operation_permission_check(req_data, None)
+    # check non-group event
     else:
         auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
@@ -313,8 +314,10 @@ def put(event_id):
         __logger.exception(msgs.ERR_MSG_UPDATE)
         abort(400)
 
+    # check group event
     if req_data.get('createdByGroupId'):
         group_event_admin_operation_permission_check(req_data, event_id)
+    # check non-group event
     else:
         auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
@@ -339,8 +342,10 @@ def patch(event_id):
         abort(400)
     req_data = request.get_json(force=True)
 
+    # check group event
     if req_data.get('createdByGroupId'):
         group_event_admin_operation_permission_check(req_data, event_id)
+    # check non-group event
     else:
         auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
@@ -371,19 +376,6 @@ def patch(event_id):
         __logger.exception(ex)
         abort(405)
 
-
-    db = None
-    event = None
-    try:
-        db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_EVENT)
-        abort(500)
-
-    if not check_group_event_admin_access(event, group_memberships):
-        abort(401)
-
     try:
         db = get_db()
         status = db['events'].update_one({'_id': ObjectId(event_id)}, {"$set": req_data})
@@ -400,43 +392,31 @@ def patch(event_id):
 
 
 def delete(event_id):
-    can_delete = False
-
+    is_all_group_admin = False
     # check permission if the user has access to all group events.
     try:
-        is_all_group_event = check_all_group_event_admin()
-        if is_all_group_event:
-            can_delete = True
+        is_all_group_admin = check_all_group_event_admin()
     except Exception as ex:
         msg = "Failed to parse the id token."
         __logger.exception(msg, ex)
         abort(500)
 
-    if not can_delete:
-        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
-
     if not ObjectId.is_valid(event_id):
         abort(400)
-
-    group_memberships = list()
-    try:
-        _, group_memberships = get_group_memberships()
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
-        abort(500)
-
-    db = None
-    event = None
-    try:
-        db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_EVENT)
-        abort(500)
-
-    if not can_delete:
-        if not check_group_event_admin_access(event, group_memberships):
-            abort(401)
+    # check additional permission if the user has not access to all group events.
+    if not is_all_group_admin:
+        try:
+            db = get_db()
+            event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+            # check group event
+            if event.get('createdByGroupId'):
+                group_event_admin_operation_permission_check(event, event_id)
+            # check non-group event
+            else:
+                auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+        except Exception as ex:
+            __logger.exception(msgs.ERR_MSG_GET_EVENT)
+            abort(500)
 
     try:
         db = get_db()
@@ -666,7 +646,8 @@ def images_delete(event_id, image_id):
         abort(500)
     return success_response(202, msg, str(event_id))
 
-def group_event_admin_operation_permission_check(req_data, event_id):
+
+def group_event_admin_operation_permission_check(req_data, event_id=None):
     if req_data.get('createdByGroupId'):
         group_memberships = list()
         try:
@@ -686,9 +667,10 @@ def group_event_admin_operation_permission_check(req_data, event_id):
             # If this is a group event, apply group authorization. Regular events can proceed like before.
             if not check_group_event_admin_access(event, group_memberships):
                 abort(401)
-                if req_data.get('createdByGroupId') != event.get('createdByGroupId'):
-                    if not check_group_event_admin_access(req_data, group_memberships):
-                        abort(401)
+            # if group id changed, then check the user has the admin permission in the new group.
+            if req_data.get('createdByGroupId') != event.get('createdByGroupId'):
+                if not check_group_event_admin_access(req_data, group_memberships):
+                    abort(401)
         else:
             if not check_group_event_admin_access(req_data, group_memberships):
                 abort(401)
