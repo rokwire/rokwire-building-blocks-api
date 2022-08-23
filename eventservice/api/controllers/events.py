@@ -266,9 +266,7 @@ def _get_event_result(query):
 
 
 def post():
-    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
     req_data = request.get_json(force=True)
-
     if not query_params.required_check(req_data):
         abort(400)
     try:
@@ -278,6 +276,11 @@ def post():
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
+
+    if req_data.get('createdByGroupId'):
+        group_event_admin_operation_permission_check(req_data, None)
+    else:
+        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
 
     try:
         db = get_db()
@@ -296,8 +299,6 @@ def post():
 
 
 def put(event_id):
-    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
-
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
@@ -312,26 +313,13 @@ def put(event_id):
         __logger.exception(msgs.ERR_MSG_UPDATE)
         abort(400)
 
-    group_memberships = list()
-    try:
-        _, group_memberships = get_group_memberships()
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
-        abort(500)
-    db = None
-    event = None
+    if req_data.get('createdByGroupId'):
+        group_event_admin_operation_permission_check(req_data, event_id)
+    else:
+        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+
     try:
         db = get_db()
-        event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_EVENT)
-        abort(500)
-
-    # If this is a group event, apply group authorization. Regular events can proceed like before.
-    if not check_group_event_admin_access(event, group_memberships):
-        abort(401)
-
-    try:
         status = db['events'].replace_one({'_id': ObjectId(event_id)}, req_data)
         msg = "[PUT]: event id %s, nUpdate = %d " % (str(event_id), status.modified_count)
         if req_data is not None:
@@ -347,11 +335,15 @@ def put(event_id):
 
 
 def patch(event_id):
-    auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
-
     if not ObjectId.is_valid(event_id):
         abort(400)
     req_data = request.get_json(force=True)
+
+    if req_data.get('createdByGroupId'):
+        group_event_admin_operation_permission_check(req_data, event_id)
+    else:
+        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+
     try:
         req_data = query_params.formate_datetime(req_data)
         if req_data.get('category') or req_data.get('subcategory'):
@@ -379,12 +371,6 @@ def patch(event_id):
         __logger.exception(ex)
         abort(405)
 
-    group_memberships = list()
-    try:
-        _, group_memberships = get_group_memberships()
-    except Exception as ex:
-        __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
-        abort(500)
 
     db = None
     event = None
@@ -680,6 +666,32 @@ def images_delete(event_id, image_id):
         abort(500)
     return success_response(202, msg, str(event_id))
 
+def group_event_admin_operation_permission_check(req_data, event_id):
+    if req_data.get('createdByGroupId'):
+        group_memberships = list()
+        try:
+            _, group_memberships = get_group_memberships()
+        except Exception as ex:
+            __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
+            abort(500)
+        event = None
+        if event_id:
+            try:
+                db = get_db()
+                event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+            except Exception as ex:
+                __logger.exception(msgs.ERR_MSG_GET_EVENT)
+                abort(500)
+
+            # If this is a group event, apply group authorization. Regular events can proceed like before.
+            if not check_group_event_admin_access(event, group_memberships):
+                abort(401)
+                if req_data.get('createdByGroupId') != event.get('createdByGroupId'):
+                    if not check_group_event_admin_access(req_data, group_memberships):
+                        abort(401)
+        else:
+            if not check_group_event_admin_access(req_data, group_memberships):
+                abort(401)
 
 def success_response(status_code, msg, event_id):
     message = {
