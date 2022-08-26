@@ -277,7 +277,7 @@ def post():
         __logger.exception(ex)
         abort(400)
 
-    group_event_admin_operation_permission_check(req_data, None)
+    event_operation_permission_check(req_data, None)
 
     try:
         db = get_db()
