@@ -276,12 +276,8 @@ def post():
     except Exception as ex:
         __logger.exception(ex)
         abort(400)
-    # check group event
-    if req_data.get('createdByGroupId'):
-        group_event_admin_operation_permission_check(req_data, None)
-    # check non-group event
-    else:
-        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+
+    group_event_admin_operation_permission_check(req_data, None)
 
     try:
         db = get_db()
@@ -314,12 +310,7 @@ def put(event_id):
         __logger.exception(msgs.ERR_MSG_UPDATE)
         abort(400)
 
-    # check group event
-    if req_data.get('createdByGroupId'):
-        group_event_admin_operation_permission_check(req_data, event_id)
-    # check non-group event
-    else:
-        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+    event_operation_permission_check(req_data, event_id)
 
     try:
         db = get_db()
@@ -342,12 +333,7 @@ def patch(event_id):
         abort(400)
     req_data = request.get_json(force=True)
 
-    # check group event
-    if req_data.get('createdByGroupId'):
-        group_event_admin_operation_permission_check(req_data, event_id)
-    # check non-group event
-    else:
-        auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+    event_operation_permission_check(req_data, event_id)
 
     try:
         req_data = query_params.formate_datetime(req_data)
@@ -403,20 +389,10 @@ def delete(event_id):
 
     if not ObjectId.is_valid(event_id):
         abort(400)
+
     # check additional permission if the user has not access to all group events.
     if not is_all_group_admin:
-        try:
-            db = get_db()
-            event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
-            # check group event
-            if event.get('createdByGroupId'):
-                group_event_admin_operation_permission_check(event, event_id)
-            # check non-group event
-            else:
-                auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
-        except Exception as ex:
-            __logger.exception(msgs.ERR_MSG_GET_EVENT)
-            abort(500)
+        event_operation_permission_check(None, event_id)
 
     try:
         db = get_db()
@@ -647,35 +623,48 @@ def images_delete(event_id, image_id):
     return success_response(202, msg, str(event_id))
 
 
-def group_event_admin_operation_permission_check(req_data, event_id=None):
-    if req_data.get('createdByGroupId'):
-        group_memberships = list()
+def event_operation_permission_check(req_data=None, event_id=None):
+    group_memberships = None
+    event = None
+    if event_id:
         try:
-            _, group_memberships = get_group_memberships()
+            db = get_db()
+            event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
         except Exception as ex:
-            __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
+            __logger.exception(msgs.ERR_MSG_GET_EVENT)
             abort(500)
-        event = None
-        if event_id:
+
+        # Event not found
+        if not event:
+            abort(404)
+
+        if not event.get('createdByGroupId'):
+            auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
+        else:
+            group_memberships = list()
             try:
-                db = get_db()
-                event = db['events'].find_one({'_id': ObjectId(event_id)}, {'_id': 0})
+                _, group_memberships = get_group_memberships()
             except Exception as ex:
-                __logger.exception(msgs.ERR_MSG_GET_EVENT)
+                __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
                 abort(500)
-
-            # Event not found
-            if not event:
-                abort(404)
-
             # If this is a group event, apply group authorization. Regular events can proceed like before.
             if not check_group_event_admin_access(event, group_memberships):
                 abort(401)
             # if group id changed, then check the user has the admin permission in the new group.
-            if req_data.get('createdByGroupId') != event.get('createdByGroupId'):
+            if req_data and req_data.get('createdByGroupId') != event.get('createdByGroupId'):
                 if not check_group_event_admin_access(req_data, group_memberships):
                     abort(401)
+    elif req_data:
+        if not req_data.get('createdByGroupId'):
+            auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
         else:
+            if group_memberships is None:
+                group_memberships = list()
+                try:
+                    _, group_memberships = get_group_memberships()
+                except Exception as ex:
+                    __logger.exception(msgs.ERR_MSG_GET_GROUP_MEMBERSHIP)
+                    abort(500)
             if not check_group_event_admin_access(req_data, group_memberships):
                 abort(401)
 
