@@ -664,6 +664,10 @@ def group_event_admin_operation_permission_check(req_data, event_id=None):
                 __logger.exception(msgs.ERR_MSG_GET_EVENT)
                 abort(500)
 
+            # Event not found
+            if not event:
+                abort(404)
+
             # If this is a group event, apply group authorization. Regular events can proceed like before.
             if not check_group_event_admin_access(event, group_memberships):
                 abort(401)
