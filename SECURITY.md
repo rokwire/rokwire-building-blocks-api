@@ -6,8 +6,12 @@ Patches for **Rokwire Building Blocks** in this repository will only be applied 
 
 | Version  | Supported          |
 |----------| ------------------ |
+<<<<<<< HEAD
 | 1.16.0   | ✅ |
 | 1.15.0   | ✅ |
+=======
+| 1.15.0   | :white_check_mark: |
+>>>>>>> 53cab3e28f5a1ef7dc1f80cf8fef4c3b98cdb5a5
 | 1.14.1   | :white_check_mark: |
 | 1.14.0   | :white_check_mark: |
 | 1.13.0   | :white_check_mark: |
