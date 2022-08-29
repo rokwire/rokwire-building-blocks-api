@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.16.0] - 2022-08-29
+
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 - Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
@@ -514,7 +517,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.1...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.1...HEAD
+[1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.1...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
 [1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...1.14.0
