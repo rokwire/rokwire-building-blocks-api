@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-FROM swaggerapi/swagger-ui:v3.28.0
+FROM swaggerapi/swagger-ui:v4.13.2
 
 COPY appconfigservice/appconfig.yaml /usr/share/nginx/html/app/
 COPY authservice/auth.yaml /usr/share/nginx/html/app/
@@ -25,5 +25,3 @@ ENV URLS "[{url: 'app/appconfig.yaml', name: 'App Config Building Block'}, {url:
 VOLUME /usr/share/nginx/html/app/
 
 ENV BASE_URL="/docs"
-
-CMD ["sh", "/usr/share/nginx/run.sh"]
