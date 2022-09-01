@@ -140,16 +140,18 @@
                         <td>
                             {% for envvar in post.deploymentDetails.environmentVariables %}
                                 <table>
-                                    {% for key,val in envvar.items() %}
+                                    {% for key_val in envvar.items() | batch(4) %}
                                         <tr>
-                                            {% if loop.index %2 == 0 %}
-                                                <td>{{key}}: &#160 </td>
-                                                <td class="hidetext" style="text-align: center;"> {{val}}</td>
-                                                <td>&#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
-                                            {% else %}
-                                                <td>{{key}}: </td>
-                                                <td>{{val}} </td>
-                                            {% endif %}
+                                            {% for item in key_val %}
+                                                {% if loop.index %2 == 0 %}
+                                                    <td style="padding:0 5px 0 15px;">{{item[0]}}:</td>
+                                                    <td class="hidetext"> {{item[1]}}</td>
+                                                    <td>&#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                                                {% else %}
+                                                    <td style="padding:0 5px 0 5px;">{{item[0]}}: </td>
+                                                    <td>{{item[1]}} </td>
+                                                {% endif %}
+                                            {% endfor %}
                                         </tr>
                                     {% endfor %}
                                 </table>
