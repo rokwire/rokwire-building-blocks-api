@@ -389,6 +389,12 @@ hr.dotted {
     position: relative;
 }
 
+#envvarclose {
+    cursor: pointer;
+    position: relative;
+    margin-left: 1%;
+}
+
 input[id^='environmentVariables_key_'] {
     display: table-cell;
     width: 47%;
