@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
 
 ### Changed
+- Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
 
 ### Fixed
 
