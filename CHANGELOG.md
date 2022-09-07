@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
+- Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 
 ### Fixed
 
