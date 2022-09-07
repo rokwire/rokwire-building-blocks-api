@@ -75,7 +75,7 @@
             <nav>
                 <ol class="cd-multi-steps text-top">
                     <li class="current"><a href="#contribute">Contribution Details</a></li>
-                    <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                    <li><em><a href="#capability-parent">Capability and/or Talent Details </a></em></li>
                     <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                     <li><em>Submit</em></li>
                 </ol>
@@ -479,7 +479,7 @@
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
-                        <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="current"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                         <li><em>Submit</em></li>
@@ -487,9 +487,9 @@
                 </nav>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="select-contribution-div">
                 <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
-                <div>
+                <div id="select-contribution-button">
                     <button class="button button2" id="add-capability">Add a Capability</button>
                     OR
                     <button class="button button1" id="add-talent">Add a Talent</button>
@@ -1524,13 +1524,15 @@
                 {% endif %}
             </div>
 
-
+            <div id="select-contribution-div-placeholder" class="row">
+                <!-- place holder for dynamic add capability / talent buttons" -->
+            </div>
             <!--------------------------------------------contact/privacy check ------------------------------------------>
             <div>
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
-                        <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="visited"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li class="current"><em><a href="#contact">Contact</a></em></li>
                         <li><em>Submit</em></li>
@@ -2070,6 +2072,12 @@
             }
 
             capability_count++;
+
+            $('#select-contribution-div').position({
+                my: "center",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder")
+            });
         });
     });
     $('[id^="delete_capability_"]').on('click', function (e) {
@@ -2097,6 +2105,12 @@
             $("#talent-parent").append("<br>");
 
             talent_count++;
+
+            $('#select-contribution-div').position({
+                my: "center",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder")
+            });
         });
     });
     $('[id^="delete_talent_"]').on('click', function (e) {
