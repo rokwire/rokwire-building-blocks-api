@@ -20,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
 - Minimum user privacy level in talent form. [#970](https://github.com/rokwire/rokwire-building-blocks-api/issues/970)
 
-
 ### Changed
 - Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
 
