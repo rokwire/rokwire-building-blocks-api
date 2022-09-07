@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
 - Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
+- Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
 
 ## [1.16.0] - 2022-08-29
 
@@ -22,9 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
-
-### Changed
-- Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
 
 ## [1.15.0] - 2022-07-11
 ### Added
