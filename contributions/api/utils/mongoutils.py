@@ -19,7 +19,7 @@ import controllers.configs as cfg
 from bson import ObjectId
 from flask import make_response, json
 from bson.json_util import dumps
-from pymongo import MongoClient, ASCENDING
+from pymongo import MongoClient, ASCENDING, TEXT
 from models.contribution import Contribution
 from utils import query_params
 from utils import jsonutils
@@ -27,13 +27,12 @@ from utils import adminutils
 
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
-coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]
-coll_contribution.create_index([("name", ASCENDING)], background=True)
-coll_contribution.create_index([("capabilities.name", ASCENDING)], background=True)
-coll_contribution.create_index([("talents.name", ASCENDING)], background=True)
+coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]  # set contribution collection
+# create compound text indexes with equal weightage
+coll_contribution.create_index([("name", TEXT), ("capabilities.name", TEXT), ("talents.name", TEXT)], default_language='english')
 
-coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]
-coll_reviewer.create_index([("name", ASCENDING)], background=True)
+coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]  # set reviewer collection
+coll_reviewer.create_index([("name", TEXT)])
 
 """
 get json of all the contributions list
