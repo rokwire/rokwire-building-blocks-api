@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
 - Add more fields button changed to Add environment variables. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
 
+### Fixed
+- Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
+
 ## [1.16.0] - 2022-08-29
 
 ### Added
