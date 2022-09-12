@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
 - Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
+- Page re-direct after contribution edit. [#976](https://github.com/rokwire/rokwire-building-blocks-api/issues/976)
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 
 ### Fixed
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
+
 
 ## [1.15.0] - 2022-07-11
 ### Added
