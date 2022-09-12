@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
 - Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
 - Page re-direct after contribution edit. [#976](https://github.com/rokwire/rokwire-building-blocks-api/issues/976)
+- Add more fields button changed to Add environment variables. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 
 ### Fixed
