@@ -416,3 +416,7 @@ input[id^='datadel_api'] {
     margin-right: 1%;
     display: inline-block;
 }
+
+button[id^='add_env_var']{
+    margin-left: -500px;
+}
