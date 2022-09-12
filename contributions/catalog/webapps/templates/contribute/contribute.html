@@ -475,7 +475,7 @@
                 {% endif %}
             </div>
 
-            <div>
+            <div id="cd-multi-steps-text-top">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
@@ -495,6 +495,7 @@
                     <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
             </div>
+
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
 
@@ -594,7 +595,7 @@
                                 <br> <br>
                             </div>
                             <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
+                                <!-- place holder for dynamic button for add environment variables" -->
                             </div>
                         </div>
 
@@ -930,8 +931,8 @@
                                     </div>
                                     <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
                                         <script>
-                                            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
-                                                'Add more fields</button>'
+                                            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                                'Add environment variables</button>'
                                             $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
                                             // get all envvar pairs in the key-val div.
                                             var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
@@ -1528,7 +1529,7 @@
                 <!-- place holder for dynamic add capability / talent buttons" -->
             </div>
             <!--------------------------------------------contact/privacy check ------------------------------------------>
-            <div>
+            <div id="cd-multi-steps-text-bottom">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
@@ -2025,8 +2026,8 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
-                'Add more fields</button>'
+            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
+                'Add environment variables</button>'
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
@@ -2063,6 +2064,14 @@
                 $key_val_div.append("<br>");
                 // once added, increment the envvar counter
                 add_env_var_button_click_count++;
+
+                // adjust button position
+                $('#select-contribution-div').position({
+                    my: "top",
+                    at: "bottom",
+                    of: $("#select-contribution-div-placeholder"),
+                    collision: "none none"
+                });
             });
 
             if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
@@ -2074,9 +2083,10 @@
             capability_count++;
 
             $('#select-contribution-div').position({
-                my: "center",
+                my: "top",
                 at: "bottom",
-                of: $("#select-contribution-div-placeholder")
+                of: $("#select-contribution-div-placeholder"),
+                collision: "none none"
             });
         });
     });
@@ -2107,7 +2117,7 @@
             talent_count++;
 
             $('#select-contribution-div').position({
-                my: "center",
+                my: "top",
                 at: "bottom",
                 of: $("#select-contribution-div-placeholder")
             });
