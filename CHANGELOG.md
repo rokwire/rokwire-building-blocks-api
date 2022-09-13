@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+- Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
+- Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
+- Page re-direct after contribution edit. [#976](https://github.com/rokwire/rokwire-building-blocks-api/issues/976)
+- Add more fields button changed to Add environment variables. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
+- Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
+- UI for environment key value pairs. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
+
+### Fixed
+- Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
+
+## [1.16.0] - 2022-08-29
+
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 - Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
@@ -12,15 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 
 ### Changed
-- UI for environment key value pairs. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
+- Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
 
 ### Security
 - Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
-
-### Changed
-- Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
-
-### Fixed
 
 
 ## [1.15.0] - 2022-07-11
@@ -518,7 +527,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.1...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...HEAD
+[1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
 [1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.13.0...1.14.0

@@ -160,9 +160,17 @@ def contribution_details(contribution_id):
         username = session["username"]
         name = session["name"]
         headers = requestutil.get_header_using_session(session)
+        # check if the user is reviewer by requesting to endpoint
+        is_reviewer = adminutil.check_if_reviewer(username, headers)
+        result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                              headers=headers)
+        if result.status_code != 200:
+            err_json = parse_response_error(result)
+            logging.error("Contribution GET " + json.dumps(err_json))
+            msg = "Error: " + err_json['reason']
+            return render_template('contribute/error.html', error_msg=msg)
 
-        the_json_res = get_contribution(contribution_id)
-
+        the_json_res = result.json()
         # check if the logged in user is the editor
         is_superuser = adminutil.check_if_superuser(username)
         if is_superuser:
@@ -170,13 +178,19 @@ def contribution_details(contribution_id):
         elif username in the_json_res["contributionAdmins"]:
             is_editor = True
 
-        # check if the user is reviewer by requesting to endpoint
-        is_reviewer = adminutil.check_if_reviewer(username, headers)
     else:
-        the_json_res = get_contribution_with_api_key(contribution_id)
+        headers = requestutil.get_header_using_api_key()
+        result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
+                              headers=headers)
+        the_json_res = result.json()
+        if result.status_code != 200:
+            err_json = parse_response_error(result)
+            logging.error("Contribution GET " + json.dumps(err_json))
+            msg = "Error: " + err_json['reason']
+            return render_template('contribute/error.html', error_msg=msg)
 
     return render_template("contribute/contribution_details.html", is_reviewer=is_reviewer, is_editable=is_editor,
-                           post=the_json_res, user=name)
+                            post=the_json_res, user=name)
 
 @bp.route('/contributions/<contribution_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -204,8 +218,7 @@ def contribution_edit(contribution_id):
 
             if response:
                 if "name" in session:
-                    return render_template('contribute/submitted.html', user=session["name"],
-                                           token=session['oauth_token']['access_token'])
+                    return redirect(url_for('contribute.contribution_details', contribution_id=contribution_id))
                 else:
                     return render_template('contribute/submitted.html')
             elif not response:
@@ -643,17 +656,21 @@ def get_contribution(contribution_id):
             result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
                                   headers=headers)
 
-        if result.status_code != 200:
-            err_json = parse_response_error(result)
-            logging.error("Contribution GET " + json.dumps(err_json))
-            return {}
+            if result.status_code != 200:
+                err_json = parse_response_error(result)
+                logging.error("Contribution GET " + json.dumps(err_json))
+                return {}
+            else:
+                print("GET ok." + str(contribution_id))
+                return result.json()
         else:
-            print("GET ok.".format(contribution_id))
+            logging.error("GET method fails. Incorrect contribution ID" + str(contribution_id))
+            return {}
 
     except Exception:
         # traceback.print_exc()
         return False
-    return result.json()
+
 
 def get_contribution_with_api_key(contribution_id):
     headers = requestutil.get_header_using_api_key()
@@ -662,18 +679,18 @@ def get_contribution_with_api_key(contribution_id):
         if contribution_id:
             result = requests.get(cfg.CONTRIBUTION_BUILDING_BLOCK_URL + "/" + str(contribution_id),
                                   headers=headers)
-
-        if result.status_code != 200:
-            print("GET method fails".format(contribution_id))
-            print("with error code:", result.status_code)
-            return {}
+            if result.status_code != 200:
+                print("GET method fails" + str(contribution_id) + "with error code:" + result.status_code)
+                return {}
+            else:
+                print("GET ok.".format(contribution_id))
+                return result.json()
         else:
-            print("GET ok.".format(contribution_id))
-
+            logging.error("GET method fails. Incorrect contribution ID" + str(contribution_id))
+            return {}
     except Exception:
         # traceback.print_exc()
         return False
-    return result.json()
 
 def get_capability(contribution_id, cid):
     headers = requestutil.get_header_using_session(session)
