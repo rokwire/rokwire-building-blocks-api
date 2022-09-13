@@ -75,7 +75,7 @@
             <nav>
                 <ol class="cd-multi-steps text-top">
                     <li class="current"><a href="#contribute">Contribution Details</a></li>
-                    <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                    <li><em><a href="#capability-parent">Capability and/or Talent Details </a></em></li>
                     <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                     <li><em>Submit</em></li>
                 </ol>
@@ -475,11 +475,11 @@
                 {% endif %}
             </div>
 
-            <div>
+            <div id="cd-multi-steps-text-top">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
-                        <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="current"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                         <li><em>Submit</em></li>
@@ -487,14 +487,15 @@
                 </nav>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="select-contribution-div">
                 <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
-                <div>
+                <div id="select-contribution-button">
                     <button class="button button2" id="add-capability">Add a Capability</button>
                     OR
                     <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
             </div>
+
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
 
@@ -594,7 +595,7 @@
                                 <br>
                             </div>
                             <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
+                                <!-- place holder for dynamic button for add environment variables" -->
                             </div>
                         </div>
 
@@ -664,7 +665,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
                             {% endif %}
                             <div id="capability_{{loop.index0}}">
-                                <h3 id="capability_{{loop.index0}}">Add a Capability to this Contribution</h3>
+                                <h3 id="capability_{{loop.index0}}">Capability - {{ capability | filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Capability Name</label>
                                     <div class="col-sm-10">
@@ -928,8 +929,8 @@
                                     </div>
                                     <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
                                         <script>
-                                            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
-                                                'Add more fields</button>'
+                                            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                                'Add environment variables</button>'
                                             $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
                                             // get all envvar pairs in the key-val div.
                                             var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
@@ -1135,7 +1136,7 @@
                             <label class="control-label col-sm-2">User Privacy Level</label>
                             <div class="col-sm-10">
                                 <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                       step="1" type="number"/>
+                                       step="1" type="number" value="1"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1222,7 +1223,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_talent_{{loop.index0}}" style="margin-top:-15px;">Delete Talent</button>
                             {% endif %}
                             <div id="talent_{{loop.index0}}">
-                                <h3 id="talent_{{loop.index0}}">Add a Talent to this Contribution</h3>
+                                <h3 id="talent_{{loop.index0}}">Talent - {{ talent|filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Name</label>
                                     <div class="col-sm-10">
@@ -1521,13 +1522,15 @@
                 {% endif %}
             </div>
 
-
+            <div id="select-contribution-div-placeholder" class="row">
+                <!-- place holder for dynamic add capability / talent buttons" -->
+            </div>
             <!--------------------------------------------contact/privacy check ------------------------------------------>
-            <div>
+            <div id="cd-multi-steps-text-bottom">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
-                        <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="visited"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li class="current"><em><a href="#contact">Contact</a></em></li>
                         <li><em>Submit</em></li>
@@ -1647,6 +1650,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
+                <a class="button button3" role="button" href="{{ url_for('contribute.home') }}">Cancel</a>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -2020,8 +2024,8 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
-                'Add more fields</button>'
+            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
+                'Add environment variables</button>'
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
@@ -2058,6 +2062,14 @@
                 $key_val_div.append("<br>");
                 // once added, increment the envvar counter
                 add_env_var_button_click_count++;
+
+                // adjust button position
+                $('#select-contribution-div').position({
+                    my: "top",
+                    at: "bottom",
+                    of: $("#select-contribution-div-placeholder"),
+                    collision: "none none"
+                });
             });
 
             if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
@@ -2067,6 +2079,13 @@
             }
 
             capability_count++;
+
+            $('#select-contribution-div').position({
+                my: "top",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder"),
+                collision: "none none"
+            });
         });
     });
     $('[id^="delete_capability_"]').on('click', function (e) {
@@ -2094,6 +2113,12 @@
             $("#talent-parent").append("<br>");
 
             talent_count++;
+
+            $('#select-contribution-div').position({
+                my: "top",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder")
+            });
         });
     });
     $('[id^="delete_talent_"]').on('click', function (e) {
