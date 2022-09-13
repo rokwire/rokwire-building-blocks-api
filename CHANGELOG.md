@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
 - Heading for add a talent or capability in contribution edit page if talent or capability exists. [#984](https://github.com/rokwire/rokwire-building-blocks-api/issues/984)
 - Arrange environment variables into single row in capability view page. [#993](https://github.com/rokwire/rokwire-building-blocks-api/issues/993)
+- Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 
 ### Fixed
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
