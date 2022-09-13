@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Page re-direct after contribution edit. [#976](https://github.com/rokwire/rokwire-building-blocks-api/issues/976)
 - Add more fields button changed to Add environment variables. [#975](https://github.com/rokwire/rokwire-building-blocks-api/issues/975)
 - Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
+- Heading for add a talent or capability in contribution edit page if talent or capability exists. [#984](https://github.com/rokwire/rokwire-building-blocks-api/issues/984)
 - UI for environment key value pairs. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 
 ### Fixed
