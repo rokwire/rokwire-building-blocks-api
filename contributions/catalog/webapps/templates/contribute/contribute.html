@@ -592,7 +592,7 @@
                                 <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password" >
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
+
                             </div>
                             <div id="add-env-var-button-div" class="row">
                                 <!-- place holder for dynamic button for add environment variables" -->
@@ -650,7 +650,6 @@
                                 <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                        placeholder="Api Key" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
                             </div>
                         </div>
                     </div>
@@ -904,7 +903,7 @@
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}"
                                                                >
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
-                                                        <br>
+
                                                     {% else %}
                                                         <input class="form-control"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
@@ -916,7 +915,7 @@
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <br>
+
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
@@ -926,7 +925,7 @@
                                             <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                            <br>
+
                                         {% endif %}
                                     </div>
                                     <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
