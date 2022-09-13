@@ -651,7 +651,6 @@
                                 <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                        placeholder="Api Key" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
                             </div>
                         </div>
                     </div>
@@ -666,7 +665,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
                             {% endif %}
                             <div id="capability_{{loop.index0}}">
-                                <h3 id="capability_{{loop.index0}}">Add a Capability to this Contribution</h3>
+                                <h3 id="capability_{{loop.index0}}">Capability - {{ capability | filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Capability Name</label>
                                     <div class="col-sm-10">
@@ -918,7 +917,7 @@
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <br>
+
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
@@ -1239,7 +1238,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_talent_{{loop.index0}}" style="margin-top:-15px;">Delete Talent</button>
                             {% endif %}
                             <div id="talent_{{loop.index0}}">
-                                <h3 id="talent_{{loop.index0}}">Add a Talent to this Contribution</h3>
+                                <h3 id="talent_{{loop.index0}}">Talent - {{ talent|filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Name</label>
                                     <div class="col-sm-10">
