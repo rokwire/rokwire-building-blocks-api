@@ -386,9 +386,31 @@ hr.dotted {
 
 #togglePassword {
     cursor: pointer;
-    position: absolute;
-    margin-left: -20px;
-    margin-top: -20px;
+    position: relative;
+}
+
+input[id^='environmentVariables_key'] {
+    width: 47%;
+    display: inline-block;
+}
+
+input[id^='environmentVariables_value'] {
+    width: 47%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: inline-block;
+}
+
+input[id^='datadel_endpoint'] {
+    width: 47%;
+    display: inline-block;
+}
+
+input[id^='datadel_api'] {
+    width: 47%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: inline-block;
 }
 
 .hidetext { -webkit-text-security: disc; }
