@@ -392,6 +392,7 @@ hr.dotted {
 input[id^='environmentVariables_key'] {
     width: 47%;
     display: inline-block;
+    display: table-cell;
 }
 
 input[id^='environmentVariables_value'] {
@@ -399,6 +400,7 @@ input[id^='environmentVariables_value'] {
     margin-left: 1%;
     margin-right: 1%;
     display: inline-block;
+    display: table-cell;
 }
 
 input[id^='datadel_endpoint'] {
