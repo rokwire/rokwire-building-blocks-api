@@ -2037,6 +2037,14 @@
                 $('#sourceurl_' + i).hide();
             });
 
+            // adjust button position
+            $('#select-contribution-div').position({
+                my: "top",
+                at: "bottom",
+                of: $("#select-contribution-div-placeholder"),
+                collision: "none none"
+            });
+
             $('#add-env-var-button-div_' + i).append(env_var_button);
             // get all envvar pairs in the corresponding key-val div
             let $key_val_div = $("#key-val_" + i)
@@ -2080,21 +2088,15 @@
 
             capability_count++;
 
-            $('#select-contribution-div').position({
-                my: "top",
-                at: "bottom",
-                of: $("#select-contribution-div-placeholder"),
-                collision: "none none"
+            $('[id^="delete_capability_"]').on('click', function (e) {
+                // get the capability number and remove all corresponding divs
+                var del_cap_button_name = $(this).attr("id");
+                let cap_num = del_cap_button_name.split("_").pop();
+                $("div#capability_" + cap_num).remove();
+                $(this).hide();
+                capability_count--;
             });
         });
-    });
-    $('[id^="delete_capability_"]').on('click', function (e) {
-        // get the capability number and remove all corresponding divs
-        var del_cap_button_name = $(this).attr("id");
-        let cap_num = del_cap_button_name.split("_").pop();
-        $("div#capability_" + cap_num).remove();
-        $(this).hide();
-        capability_count--;
     });
 
     $(function () {
@@ -2107,7 +2109,12 @@
             $clone.find(':input').attr('name', function (i, val) {
                 return val + '_' + talent_count;
             });
+            $clone.find('div').attr('id', function (i, val) {
+                return val + '_' + talent_count;
+            });
             $clone.attr('style', 'display: block, background-color: white')
+
+            var i = talent_count;
 
             $("#talent-parent").append($clone);
             $("#talent-parent").append("<br>");
@@ -2119,15 +2126,16 @@
                 at: "bottom",
                 of: $("#select-contribution-div-placeholder")
             });
+
+            $('[id^="delete_talent_"]').on('click', function (e) {
+                // get the talent number and remove all corresponding divs
+                let del_tal_button_name = $(this).attr("id");
+                let tal_num = del_tal_button_name.split("_").pop();
+                $("div#talent_" + tal_num).remove();
+                $(this).hide();
+                talent_count--;
+            });
         });
-    });
-    $('[id^="delete_talent_"]').on('click', function (e) {
-        // get the talent number and remove all corresponding divs
-        var del_tal_button_name = $(this).attr("id");
-        let tal_num = del_tal_button_name.split("_").pop();
-        $("div#talent_" + tal_num).remove();
-        $(this).hide();
-        talent_count--;
     });
 
     $(function () {
