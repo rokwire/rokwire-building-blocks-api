@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
 
@@ -17,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
 - Heading for add a talent or capability in contribution edit page if talent or capability exists. [#984](https://github.com/rokwire/rokwire-building-blocks-api/issues/984)
 - Arrange environment variables into single row in capability view page. [#993](https://github.com/rokwire/rokwire-building-blocks-api/issues/993)
+- API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
 
 ### Fixed
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
@@ -24,7 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
 
 ## [1.16.0] - 2022-08-29
-
 ### Added
 - Ability to delete a capability or talent from contribution. [#951](https://github.com/rokwire/rokwire-building-blocks-api/issues/951)
 - Hide sensitive data in capability view page. [#950](https://github.com/rokwire/rokwire-building-blocks-api/issues/950)
@@ -34,11 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change to allow all group admins to manage group events. [#996](https://github.com/rokwire/rokwire-building-blocks-api/issues/996)
 
 ### Security
-- Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991) 
-
-
-### Changed
-- API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
+- Upgrade Swagger UI base Docker image to v4.13.2. [#991](https://github.com/rokwire/rokwire-building-blocks-api/issues/991)
 
 ## [1.15.0] - 2022-07-11
 ### Added
