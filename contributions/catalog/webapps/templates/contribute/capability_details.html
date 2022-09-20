@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -13,6 +14,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Capability Details</title>
 </head>
+
+<style>
+    .hidetext { -webkit-text-security: disc; }
+    .showtext { -webkit-text-security: none; }
+</style>
 
 <body onload=start()>
 
@@ -139,9 +145,18 @@
                         <td>
                             {% for envvar in post.deploymentDetails.environmentVariables %}
                                 <table>
-                                    {% for key,val in envvar.items() %}
-                                        <tr>
-                                            <td>{{key}}: {{val}}</td>
+                                    {% for key_val in envvar.items() | batch(4) %}
+                                        <tr id="envvar_row">
+                                            {% for item in key_val %}
+                                                {% if loop.index %2 == 0 %}
+                                                    <td style="padding:0 5px 0 15px;">{{item[0]}}: </td>
+                                                    <td class="hidetext">{{item[1]}}</td>
+                                                    <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                                                {% else %}
+                                                    <td style="padding:0 5px 0 5px;">{{item[0]}}: </td>
+                                                    <td>{{item[1]}}</td>
+                                                {% endif %}
+                                            {% endfor %}
                                         </tr>
                                     {% endfor %}
                                 </table>
@@ -191,7 +206,28 @@
         if (user_icon.style.display === '') {
             document.getElementById("myDropdown").classList.toggle("show");
         }
-    })
+    });
+
+    // toggle sensitive data visibility
+    $('.bi').each(function () {
+        let eye = $(this);
+        eye.on('click', function() {
+            let icon = $(this);
+            icon.toggleClass("bi-eye");
+            // get the current row
+            let current_row = icon.closest("tr");
+            // get the current row 3rd cell value
+            let cell_value = current_row.find("td:eq(3)");
+            if (icon.hasClass('bi-eye')) {
+                cell_value.removeClass("hidetext");
+                cell_value.addClass("showtext");
+            }
+            else if (icon.hasClass('bi-eye-slash')) {
+                cell_value.removeClass("showtext");
+                cell_value.addClass("hidetext");
+            }
+        });
+    });
 </script>
 </body>
 </html>

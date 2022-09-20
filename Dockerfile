@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-FROM swaggerapi/swagger-ui:v3.28.0
+FROM swaggerapi/swagger-ui:v4.13.2
 
 COPY appconfigservice/appconfig.yaml eventservice/events.yaml profileservice/profile.yaml loggingservice/logging.yaml /usr/share/nginx/html/app/
 
