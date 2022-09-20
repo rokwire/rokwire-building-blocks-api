@@ -16,10 +16,9 @@ FROM swaggerapi/swagger-ui:v3.28.0
 
 COPY appconfigservice/appconfig.yaml eventservice/events.yaml profileservice/profile.yaml loggingservice/logging.yaml /usr/share/nginx/html/app/
 
-ENV URLS "[{url: 'app/appconfig.yaml', name: 'App Config Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/content/doc/ui/', name: 'Content Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/core/doc/ui/', name: 'Core Building Block'}, {url: 'app/events.yaml', name: 'Events Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/gr/doc/ui/', name: 'Groups Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/lms/doc/ui/', name: 'Learning Management System (LMS) Building Block'}, {url: 'app/logging.yaml', name: 'Logging Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/notifications/api/doc/ui/', name: 'Notifications Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/polls/doc/ui/', name: 'Polls Building Block'}, {url: 'app/profile.yaml', name: 'Profile Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/rewards/doc/ui/', name: 'Rewards Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/wellness/doc/ui/', name: 'Wellness Building Block'}]"
+ENV BASE_URL="/docs" \
+    URLS="[{url: 'app/appconfig.yaml', name: 'App Config Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/content/doc/ui/', name: 'Content Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/core/doc/ui/', name: 'Core Building Block'}, {url: 'app/events.yaml', name: 'Events Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/gr/doc/ui/', name: 'Groups Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/lms/doc/ui/', name: 'Learning Management System (LMS) Building Block'}, {url: 'app/logging.yaml', name: 'Logging Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/notifications/api/doc/ui/', name: 'Notifications Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/polls/doc/ui/', name: 'Polls Building Block'}, {url: 'app/profile.yaml', name: 'Profile Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/rewards/doc/ui/', name: 'Rewards Building Block'}, {url: 'https://api-dev.rokwire.illinois.edu/wellness/doc/ui/', name: 'Wellness Building Block'}]"
 
 VOLUME /usr/share/nginx/html/app/
-
-ENV BASE_URL="/docs"
 
 CMD ["sh", "/usr/share/nginx/run.sh"]
