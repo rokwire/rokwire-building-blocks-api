@@ -23,10 +23,10 @@ def format_query_status_login(query, login, is_login):
     return query
 
 def format_query_contribution(search_string, query):
-    query_parts = []
+    query_parts = {}
 
     if search_string is not None:
-        query_parts.append({'$search': search_string})
+        query_parts['$search'] = search_string
 
     if query_parts:
         query['$text'] = query_parts
