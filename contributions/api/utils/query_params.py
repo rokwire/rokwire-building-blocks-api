@@ -30,28 +30,5 @@ def format_query_contribution(search_string, query):
 
     if query_parts:
         query['$text'] = query_parts
-    print(query)
     return query
 
-
-def format_query_capability(name, query):
-    query_parts = []
-
-    if name is not None:
-        query_parts.append({'capabilities.name': name})
-
-    if query_parts:
-        query['$and'] = query_parts
-
-    return query
-
-def format_query_talent(name, query):
-    query_parts = []
-
-    if name is not None:
-        query_parts.append({'talents.name': name})
-
-    if query_parts:
-        query['$and'] = query_parts
-
-    return query

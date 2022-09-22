@@ -400,7 +400,7 @@ paths:
           description: Internal server error
   /contributions/admin/reviewers:
     post:
-      summary: Create a new reviewer
+      summary: Add a new reviewer
       tags:
         - Admin
       security:
