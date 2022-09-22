@@ -872,6 +872,16 @@ components:
           type: string
           format: uuid
           description: For an event created by a Rokwire group, this field stores the group ID.
+        groupIds:
+          type: array
+          description: The groupIds is a list of all groups that a user event is associated with.
+          items:
+            type: string
+        userIds:
+          type: array
+          description: The userIds is a list of account IDs to handle "sub-groups" of users that are allowed to see a given event.
+          items:
+            type: string
     SubEventDetails:
       type: object
       properties:
