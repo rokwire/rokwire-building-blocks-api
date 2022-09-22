@@ -51,16 +51,16 @@ paths:
         500:
           description: Internal server error
     get:
-      summary: Return existing Contributions based on search criteria
+      summary: Return existing Contributions based on search string
       tags:
        - Contributions
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
       parameters:
-        - name: name
+        - name: search
           in: query
-          description: Contribution Name
+          description: Search string
           schema:
             type: string
       responses:
@@ -71,7 +71,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contribution'
+                  allOf:
+                    - $ref: '#/components/schemas/Contribution'
+                    - $ref: '#/components/schemas/Talent'
+
+
         400:
           description: Bad request
         401:

@@ -459,14 +459,15 @@ def allcapabilitiessearch(token_info=None, name=None):
         out_json = mongoutils.get_result(coll_contribution, query)
     else:
         try:
-            query = query_params.format_query_capability(name, query)
+            # if there is a query string, query the contributions
+            query = query_params.format_query_contribution(name, query)
         except Exception as ex:
             msg = {
                 "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
         try:
@@ -476,8 +477,8 @@ def allcapabilitiessearch(token_info=None, name=None):
                 "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-            logging.error("Capability SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
     return_json = []
@@ -614,14 +615,15 @@ def alltalentssearch(token_info=None, name=None):
         out_json = mongoutils.get_result(coll_contribution, query)
     else:
         try:
-            query = query_params.format_query_talent(name, query)
+            # if there is a query string, search contributions
+            query = query_params.format_query_contribution(name, query)
         except Exception as ex:
             msg = {
                 "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-            logging.error("Talent SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
         try:
@@ -631,8 +633,8 @@ def alltalentssearch(token_info=None, name=None):
                 "reason": "The query is wrong or bad argument",
                 "error": "Bad Request: " + request.url,
             }
-            msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-            logging.error("Talent SEARCH " + json.dumps(msg_json))
+            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+            logging.error("Contribution SEARCH " + json.dumps(msg_json))
             return rs_handlers.bad_request(msg_json)
 
     return_json = []

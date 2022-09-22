@@ -30,7 +30,7 @@ def format_query_contribution(search_string, query):
 
     if query_parts:
         query['$text'] = query_parts
-
+    print(query)
     return query
 
 

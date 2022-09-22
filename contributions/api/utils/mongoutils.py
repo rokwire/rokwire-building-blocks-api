@@ -97,7 +97,6 @@ def get_result(db_collection, query):
         db_data = db_collection.find(query)
 
     data_list = list(db_data)
-    print(data_list)
 
     if len(data_list) > 0:
         data_dump = dumps(data_list)
