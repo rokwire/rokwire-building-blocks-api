@@ -29,7 +29,10 @@ client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]  # set contribution collection
 # create compound text indexes with equal weightage
-coll_contribution.create_index([("name", TEXT), ("capabilities.name", TEXT), ("talents.name", TEXT)], default_language='english')
+coll_contribution.create_index([("name", TEXT), ("shortDescription", TEXT),
+                                ("capabilities.name", TEXT), ("capabilities.description", TEXT),
+                                ("talents.name", TEXT), ("talents.shortDescription", TEXT)],
+                               default_language='english')
 
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]  # set reviewer collection
 coll_reviewer.create_index([("name", TEXT)])
