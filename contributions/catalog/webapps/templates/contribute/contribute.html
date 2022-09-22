@@ -2092,7 +2092,7 @@
                 // get the capability number and remove all corresponding divs
                 var del_cap_button_name = $(this).attr("id");
                 let cap_num = del_cap_button_name.split("_").pop();
-                $("div#capability_" + cap_num).remove();
+                $("#capability_" + cap_num).remove();
                 $(this).hide();
                 capability_count--;
             });
@@ -2131,7 +2131,7 @@
                 // get the talent number and remove all corresponding divs
                 let del_tal_button_name = $(this).attr("id");
                 let tal_num = del_tal_button_name.split("_").pop();
-                $("div#talent_" + tal_num).remove();
+                $("#talent_" + tal_num).remove();
                 $(this).hide();
                 talent_count--;
             });
