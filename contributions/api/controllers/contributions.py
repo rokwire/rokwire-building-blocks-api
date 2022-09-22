@@ -229,6 +229,7 @@ def search(token_info=None, name=None):
     else:
         try:
             query = query_params.format_query_contribution(name, query)
+            print("query", query)
         except Exception as ex:
             msg = {
                 "reason": "The query is wrong or bad argument",
