@@ -1650,7 +1650,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <button type="button" class="button button3" id="cancel_button">Cancel</button>
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#CancelModal">Cancel</button>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -1658,7 +1658,7 @@
                        value="Submit">
             </div>
 
-            <!-- The Modal -->
+            <!-- Submit modal -->
             <div class="modal" id="myModal">
                 <!-- Modal content -->
                 <div class="modal-content">
@@ -1669,7 +1669,7 @@
             </div>
 
             <!-- Cancel Confirmation modal -->
-            <div class="modal fade" id="CancelModal" tabindex="-1" role="dialog">
+            <div class="modal" id="CancelModal" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -1693,6 +1693,7 @@
 
         </form>
     </div>
+
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
@@ -1726,10 +1727,6 @@
         if (end_val < start_val) {
             end_day.val(null)
         }
-    });
-
-    $("#cancel_button").click(function () {
-        $('#CancelModal').show();
     });
 
     $(function () {
