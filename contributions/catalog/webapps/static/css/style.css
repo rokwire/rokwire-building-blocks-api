@@ -308,8 +308,8 @@ hr.dotted {
     border-top: 5px dotted #919590;
 }
 
-/* The Modal (background) */
-.modal {
+/* Submit Modal (background) */
+#myModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
