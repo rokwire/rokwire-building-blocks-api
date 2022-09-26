@@ -1650,7 +1650,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <a class="button button3" role="button" href="{{ url_for('contribute.home') }}">Cancel</a>
+                <button type="button" class="button button3" id="cancel_button">Cancel</button>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -1667,6 +1667,30 @@
                     <br>
                 </div>
             </div>
+
+            <!-- Cancel Confirmation modal -->
+            <div class="modal fade" id="CancelModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                              Cancel submission
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to Cancel this submission?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">No</button>
+                            <a class="btn btn-primary ml-1" role="button" id="cancel-modal-btn-yes" href="{{ url_for('contribute.home') }}">Yes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
 </body>
@@ -1702,6 +1726,10 @@
         if (end_val < start_val) {
             end_day.val(null)
         }
+    });
+
+    $("#cancel_button").click(function () {
+        $('#CancelModal').show();
     });
 
     $(function () {
