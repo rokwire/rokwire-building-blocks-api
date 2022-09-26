@@ -180,9 +180,11 @@ def update_capability_dataset_from_json(dataset, injson):
                 environment_variable = EnvironmentVariable()
                 key = env_var["key"]
                 value = env_var["value"]
-                environment_variable.set_key(key)
-                environment_variable.set_value(value)
-                env_var_list.append(environment_variable)
+                # check if non-empty key value pair
+                if key or value:
+                    environment_variable.set_key(key)
+                    environment_variable.set_value(value)
+                    env_var_list.append(environment_variable)
             deployment_details.set_environment_variables(env_var_list)
             del outjson["environmentVariables"]
         except Exception as e:
