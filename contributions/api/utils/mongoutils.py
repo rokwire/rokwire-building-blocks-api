@@ -32,7 +32,7 @@ coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]  # set contribut
 coll_contribution.create_index([("name", TEXT), ("shortDescription", TEXT),
                                 ("capabilities.name", TEXT), ("capabilities.description", TEXT),
                                 ("talents.name", TEXT), ("talents.shortDescription", TEXT)],
-                               default_language='english')
+                               name='text_index', default_language='english')
 
 coll_reviewer = db_contribution[cfg.REVIEWER_COLL_NAME]  # set reviewer collection
 coll_reviewer.create_index([("name", TEXT)])
