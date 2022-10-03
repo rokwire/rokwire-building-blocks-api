@@ -28,6 +28,12 @@ from utils import adminutils
 client_contribution = MongoClient(cfg.MONGO_CONTRIBUTION_URL, connect=False)
 db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]  # set contribution collection
+# drop old indexes in contribution collection
+coll_contribution_indexes = coll_contribution.index_information().keys()
+# get all indexes except id and text index
+coll_contribution_old_indexes = [index for index in coll_contribution_indexes if index not in ['_id_', 'text_index']]
+for index_name in coll_contribution_old_indexes:
+    coll_contribution.drop_index(index_name)
 # create compound text indexes with equal weightage
 coll_contribution.create_index([("name", TEXT), ("shortDescription", TEXT),
                                 ("capabilities.name", TEXT), ("capabilities.description", TEXT),
