@@ -71,10 +71,7 @@ paths:
               schema:
                 type: array
                 items:
-                  anyOf:
-                    - $ref: '#/components/schemas/Contribution'
-                    - $ref: '#/components/schemas/Capability'
-                    - $ref: '#/components/schemas/Talent'
+                  $ref: '#/components/schemas/Contribution'
         400:
           description: Bad request
         401:
