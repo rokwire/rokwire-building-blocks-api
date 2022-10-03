@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
-- Add group ids and user ids fileds in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
+- Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
 - Position of Add capability and talent buttons in catalog form. [#971](https://github.com/rokwire/rokwire-building-blocks-api/issues/971)
