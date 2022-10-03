@@ -444,96 +444,43 @@ def delete(token_info, id):
     #     logging.error("DELETE " + json.dumps(msg_json))
     #     return rs_handlers.not_found(msg_json)
 
-def allcapabilitiessearch(token_info=None, name=None):
+def allcapabilitiessearch(token_info=None):
+    # returns a list of all capabilities
     query = dict()
-    is_list = False
-
     login_id, is_login = otherutils.get_login(token_info)
-
     query = query_params.format_query_status_login(query, login_id, is_login)
 
-    if name is None:
-        is_list = True
-
-    if is_list:
+    try:
         out_json = mongoutils.get_result(coll_contribution, query)
-    else:
-        try:
-            # if there is a query string, query the contributions
-            query = query_params.format_query_contribution(name, query)
-        except Exception as ex:
-            msg = {
-                "reason": "The query is wrong or bad argument",
-                "error": "Bad Request: " + request.url,
-            }
-            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-            logging.error("Contribution SEARCH " + json.dumps(msg_json))
-            return rs_handlers.bad_request(msg_json)
-
-        try:
-            out_json = mongoutils.get_result(coll_contribution, query)
-        except Exception as ex:
-            msg = {
-                "reason": "The query is wrong or bad argument",
-                "error": "Bad Request: " + request.url,
-            }
-            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-            logging.error("Contribution SEARCH " + json.dumps(msg_json))
-            return rs_handlers.bad_request(msg_json)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+        logging.error("Contribution SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
     return_json = []
     if out_json is None:
         return_json = []
     else:
-        if is_list:  # list all
-            if isinstance(out_json, list):
-                for in_json in out_json:
-                    contribution_id = in_json["id"]
-                    if in_json['capabilities'] is not None:
-                        for capability in in_json['capabilities']:
-                            capability["contributionId"] = contribution_id
-                            return_json.append(capability)
-            else:
-                contribution_id = out_json["id"]
-                capability = out_json['capabilities']
-                capability["contributionId"] = contribution_id
-                return_json.append(capability)
-        else:   # extract out capabilities with the given name
-            if isinstance(out_json, list):
-                for tmp_json in out_json:
-                    capabilities_json = tmp_json["capabilities"]
-                    contribution_id = tmp_json["id"]
-                    # TODO this is the case of only 1 args that is name.
-                    #  If there are more args this should be updated
-                    for tmp_capability_json in capabilities_json:
-                        capability_json = None
-                        if tmp_capability_json["name"] == name:
-                            capability_json = tmp_capability_json
-                            capability_json["contributionId"] = contribution_id
-                            return_json.append(capability_json)
-            else:
-                capabilities_json = out_json["capabilities"]
-                contribution_id = out_json["id"]
-                # TODO this is the case of only 1 args that is name.
-                #  If there are more args this should be updated
-                for tmp_capability_json in capabilities_json:
-                    capability_json = None
-                    if tmp_capability_json["name"] == name:
-                        capability_json = tmp_capability_json
-                        capability_json["contributionId"] = contribution_id
-                        return_json.append(capability_json)
-    if is_list:
-        msg = {
-            "GET": "Capabilities list"
-        }
-        msg_json = jsonutils.create_log_json("Capabilities", "GET", msg)
-        logging.info("Capabilities GET " + json.dumps(msg_json))
-    else:
-        msg = {
-            "search": "Capability search performed with " + str(name)
-        }
-        msg_json = jsonutils.create_log_json("Capability", "SEARCH", msg)
-        logging.info("Capability SEARCH " + json.dumps(msg_json))
+        if isinstance(out_json, list):
+            for in_json in out_json:
+                contribution_id = in_json["id"]
+                if in_json['capabilities'] is not None:
+                    for capability in in_json['capabilities']:
+                        capability["contributionId"] = contribution_id
+                        return_json.append(capability)
+        else:
+            contribution_id = out_json["id"]
+            capability = out_json['capabilities']
+            capability["contributionId"] = contribution_id
+            return_json.append(capability)
+
+    msg = {"GET": "Capabilities list"}
+    msg_json = jsonutils.create_log_json("Capabilities", "GET", msg)
+    logging.info("Capabilities GET " + json.dumps(msg_json))
 
     return return_json
 
@@ -600,96 +547,43 @@ def capabilities_search(token_info=None, id=None):
 
     return capability_dataset
 
-def alltalentssearch(token_info=None, name=None):
+def alltalentssearch(token_info=None):
+    # returns list of all talents
     query = dict()
-    is_list = False
-
     login_id, is_login = otherutils.get_login(token_info)
-
     query = query_params.format_query_status_login(query, login_id, is_login)
 
-    if name is None:
-        is_list = True
-
-    if is_list:
+    try:
         out_json = mongoutils.get_result(coll_contribution, query)
-    else:
-        try:
-            # if there is a query string, search contributions
-            query = query_params.format_query_contribution(name, query)
-        except Exception as ex:
-            msg = {
-                "reason": "The query is wrong or bad argument",
-                "error": "Bad Request: " + request.url,
-            }
-            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-            logging.error("Contribution SEARCH " + json.dumps(msg_json))
-            return rs_handlers.bad_request(msg_json)
-
-        try:
-            out_json = mongoutils.get_result(coll_contribution, query)
-        except Exception as ex:
-            msg = {
-                "reason": "The query is wrong or bad argument",
-                "error": "Bad Request: " + request.url,
-            }
-            msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
-            logging.error("Contribution SEARCH " + json.dumps(msg_json))
-            return rs_handlers.bad_request(msg_json)
+    except Exception as ex:
+        msg = {
+            "reason": "The query is wrong or bad argument",
+            "error": "Bad Request: " + request.url,
+        }
+        msg_json = jsonutils.create_log_json("Contribution", "SEARCH", msg)
+        logging.error("Contribution SEARCH " + json.dumps(msg_json))
+        return rs_handlers.bad_request(msg_json)
 
     return_json = []
     if out_json is None:
         return_json = []
     else:
-        if is_list:  # list all
-            if isinstance(out_json, list):
-                for in_json in out_json:
-                    contribution_id = in_json["id"]
-                    if in_json['talents'] is not None:
-                        for talent in in_json['talents']:
-                            talent["contributionId"] = contribution_id
-                            return_json.append(talent)
-            else:
-                contribution_id = out_json["id"]
-                talent = out_json['talents']
-                talent["contributionId"] = contribution_id
-                return_json.append(talent)
-        else:   # extract out talent with the given name
-            if isinstance(out_json, list):
-                for tmp_json in out_json:
-                    contribution_id = tmp_json["id"]
-                    talents_json = tmp_json["talents"]
-                    # TODO this is the case of only 1 args that is name.
-                    #  If there are more args this should be updated
-                    for tmp_talent_json in talents_json:
-                        talent_json = None
-                        if tmp_talent_json["name"] == name:
-                            talent_json = tmp_talent_json
-                            talent_json["contributionId"] = contribution_id
-                            return_json.append(talent_json)
-            else:
-                talents_json = out_json["talents"]
-                contribution_id = out_json["id"]
-                # TODO this is the case of only 1 args that is name.
-                #  If there are more args this should be updated
-                for tmp_talent_json in talents_json:
-                    talent_json = None
-                    if tmp_talent_json["name"] == name:
-                        talent_json = tmp_talent_json
-                        talent_json["contributionId"] = contribution_id
-                        return_json.append(talent_json)
-    if is_list:
-        msg = {
-            "GET": "Talent list"
-        }
-        msg_json = jsonutils.create_log_json("Talent", "GET", msg)
-        logging.info("Talent GET " + json.dumps(msg_json))
-    else:
-        msg = {
-            "search": "Talent search performed with " + str(name)
-        }
-        msg_json = jsonutils.create_log_json("Talent", "SEARCH", msg)
-        logging.info("Talent SEARCH " + json.dumps(msg_json))
+        if isinstance(out_json, list):
+            for in_json in out_json:
+                contribution_id = in_json["id"]
+                if in_json['talents'] is not None:
+                    for talent in in_json['talents']:
+                        talent["contributionId"] = contribution_id
+                        return_json.append(talent)
+        else:
+            contribution_id = out_json["id"]
+            talent = out_json['talents']
+            talent["contributionId"] = contribution_id
+            return_json.append(talent)
+
+    msg = {"GET": "Talent list"}
+    msg_json = jsonutils.create_log_json("Talent", "GET", msg)
+    logging.info("Talent GET " + json.dumps(msg_json))
 
     return return_json
 
