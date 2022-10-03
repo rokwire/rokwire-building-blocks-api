@@ -879,7 +879,7 @@ components:
             type: string
         userIds:
           type: array
-          description: The userIds is a list of account IDs to handle "sub-groups" of users that are allowed to see a given event.
+          description: A list of account IDs of users who can view this event. This field gives event view permissions to specific users within a Rokwire group.
           items:
             type: string
     SubEventDetails:
