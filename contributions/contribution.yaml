@@ -58,7 +58,7 @@ paths:
         - GitHubAuth: []
         - ApiKeyAuth: []
       parameters:
-        - name: search
+        - name: name
           in: query
           description: Search string
           schema:

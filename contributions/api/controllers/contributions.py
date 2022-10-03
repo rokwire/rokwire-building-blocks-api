@@ -227,6 +227,7 @@ def search(token_info=None, name=None):
         # return the list of all records
         out_json = mongoutils.get_result(coll_contribution, query)
     else:
+        # search based on query
         try:
             query = query_params.format_query_contribution(name, query)
         except Exception as ex:
