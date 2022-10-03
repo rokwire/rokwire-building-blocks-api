@@ -874,7 +874,7 @@ components:
           description: For an event created by a Rokwire group, this field stores the group ID.
         groupIds:
           type: array
-          description: The groupIds is a list of all groups that a user event is associated with.
+          description: A list of IDs of all groups with administrative permissions on this event.
           items:
             type: string
         userIds:
