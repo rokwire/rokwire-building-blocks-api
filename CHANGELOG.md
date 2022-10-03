@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Edit contribution button color changed to grey. [#981](https://github.com/rokwire/rokwire-building-blocks-api/issues/981)
 - Heading for add a talent or capability in contribution edit page if talent or capability exists. [#984](https://github.com/rokwire/rokwire-building-blocks-api/issues/984)
 - Arrange environment variables into single row in capability view page. [#993](https://github.com/rokwire/rokwire-building-blocks-api/issues/993)
+- Arrange environment variables and data deletion endpoint into single row in capability. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 - API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
 
 ### Fixed
