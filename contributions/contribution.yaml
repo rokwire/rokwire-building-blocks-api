@@ -60,7 +60,7 @@ paths:
       parameters:
         - name: name
           in: query
-          description: Search string
+          description: Search string for the query to search by name and description of contributions, capabilities and talents
           schema:
             type: string
       responses:
