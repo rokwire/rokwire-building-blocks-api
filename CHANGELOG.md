@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
+- Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
 - User confirmation on cancel contribution. [#1022](https://github.com/rokwire/rokwire-building-blocks-api/issues/1022)
 
 ### Changed
