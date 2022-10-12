@@ -655,7 +655,7 @@ def event_operation_permission_check(req_data=None, event_id=None):
                 if not check_group_event_admin_access(req_data, group_memberships):
                     abort(401)
     elif req_data:
-        if not req_data.get('createdByGroupId'):
+        if not req_data.get('createdByGroupId') and not event.get('groupIds'):
             auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
         else:
             if group_memberships is None:
