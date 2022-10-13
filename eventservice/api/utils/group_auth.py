@@ -64,6 +64,7 @@ def check_group_event_admin_access(event, group_memberships):
     if event and event.get('groupIds'):
         if len(event.get('groupIds')) != len(group_memberships):
             return False
+        # check if user be the admin of all groups
         for groupId in event.get('groupIds'):
             found = False
             for group_member in group_memberships:
