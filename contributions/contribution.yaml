@@ -51,7 +51,7 @@ paths:
         500:
           description: Internal server error
     get:
-      summary: Return existing Contributions based on search criteria
+      summary: Return existing Contributions based on search string
       tags:
        - Contributions
       security:
@@ -60,7 +60,7 @@ paths:
       parameters:
         - name: name
           in: query
-          description: Contribution Name
+          description: Search string for the query to search by name and description of contributions, capabilities and talents
           schema:
             type: string
       responses:
@@ -80,19 +80,13 @@ paths:
           description: Internal server error
   /contributions/talents:
     get:
-      summary: Return existing Talents based on search criteria
+      summary: Return existing Talents
       operationId: controllers.contributions.alltalentssearch
       tags:
        - Talents
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-      parameters:
-        - name: name
-          in: query
-          description: Talent Name
-          schema:
-            type: string
       responses:
         200:
           description: Search results
@@ -109,7 +103,6 @@ paths:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Talent belongs to.
-#                  $ref: '#/components/schemas/Talent'
         400:
           description: Bad request
         401:
@@ -118,19 +111,13 @@ paths:
           description: Internal server error+
   /contributions/capabilities:
     get:
-      summary: Return existing Capabilities based on search criteria
+      summary: Return existing Capabilities
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
         - Capabilities
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-      parameters:
-        - name: name
-          in: query
-          description: Capability Name
-          schema:
-            type: string
       responses:
         200:
           description: Search results
@@ -147,7 +134,6 @@ paths:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Capability belongs to.
-#                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:
@@ -227,14 +213,14 @@ paths:
         - GitHubAuth: []
         - ApiKeyAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be obtained
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be obtained
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Contribution details
@@ -253,18 +239,18 @@ paths:
     put:
       summary: Update a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: Contribution object
         content:
@@ -284,18 +270,18 @@ paths:
     delete:
       summary: Delete a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be deleted
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Successfully deleted contribution details
@@ -411,7 +397,7 @@ paths:
           description: Internal server error
   /contributions/admin/reviewers:
     post:
-      summary: Create a new reviwer
+      summary: Add a new reviewer
       tags:
         - Admin
       security:
