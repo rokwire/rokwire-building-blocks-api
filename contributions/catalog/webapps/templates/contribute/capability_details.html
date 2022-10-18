@@ -99,9 +99,10 @@
             <p class="col-sm-9">
                 <table>
                     {% if post.dataDeletionEndpointDetails.apiKey %}
-                    <tr>
+                    <tr id="datadeletion_row">
                         <td><b>Api Key&nbsp;&nbsp;</b></td>
-                        <td>{{post.dataDeletionEndpointDetails.apiKey}}</td>
+                        <td class="hidetext">{{post.dataDeletionEndpointDetails.apiKey}}</td>
+                        <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                     </tr>
                     {% endif %}
                     {% if post.dataDeletionEndpointDetails.deletionEndpoint %}
@@ -216,8 +217,15 @@
             icon.toggleClass("bi-eye");
             // get the current row
             let current_row = icon.closest("tr");
-            // get the current row 3rd cell value
-            let cell_value = current_row.find("td:eq(3)");
+            let cell_value;
+            if (current_row.attr("id") == "envvar_row") {
+                // get the current row 3rd cell value
+                cell_value = current_row.find("td:eq(3)");
+            }
+            else if (current_row.attr("id") == "datadeletion_row") {
+                // get the current row 1st cell value
+                cell_value = current_row.find("td:eq(1)");
+            }
             if (icon.hasClass('bi-eye')) {
                 cell_value.removeClass("hidetext");
                 cell_value.addClass("showtext");
