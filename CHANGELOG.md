@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
 - Compound text indexes for contribution collection. [#1004](https://github.com/rokwire/rokwire-building-blocks-api/issues/1004)
 - Hide data deletion api key in capability view page. [#1010](https://github.com/rokwire/rokwire-building-blocks-api/issues/1010)
+- Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
