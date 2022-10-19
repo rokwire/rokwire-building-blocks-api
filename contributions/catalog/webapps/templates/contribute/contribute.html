@@ -592,7 +592,8 @@
                                 <input class="form-control envvar-value" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
+                                <i class="bi bi-x-lg" id="envvarclose"></i>
+
                             </div>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -881,7 +882,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="form-group" name="add-env-var">
+                                <div class="form-group" name="add-env-var-div">
                                     <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                     <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
@@ -902,7 +903,8 @@
                                                                type="password"
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="envvarclose"></i>
+
                                                     {% else %}
                                                         <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
@@ -914,7 +916,8 @@
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="envvarclose"></i>
+
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
@@ -924,7 +927,8 @@
                                             <input class="form-control envvar-value" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                            <br>
+                                            <i class="bi bi-x-lg" id="envvarclose"></i>
+
                                         {% endif %}
                                     </div>
                                 </div>
@@ -953,7 +957,18 @@
                                                     input.attr("type", "password");
                                                 }
                                             }));
-                                            $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"envvarclose\"></i>';
+                                            $("#key-val_{{ loop.index0 }}").append($(i_envvarclose).on('click', function () {
+                                                let closebtn = $(this);
+                                                let eyebtn = closebtn.prev();
+                                                let input_envval = eyebtn.prev();
+                                                let input_envkey = input_envval.prev();
+                                                eyebtn.remove()
+                                                input_envval.remove();
+                                                input_envkey.remove();
+                                                closebtn.remove();
+                                                MoveSelector(event);
+                                            }));
                                             // once new envvar pairs are added, increment the counter
                                             add_env_var_button_click_count++;
                                         });
@@ -1705,6 +1720,20 @@
         }
     });
 
+    // delete environment keyvalue pair
+    $('[id="envvarclose"]').on('click', function () {
+        let closebtn = $(this);
+        let eyebtn = closebtn.prev();
+        let input_envval = eyebtn.prev();
+        let input_envkey = input_envval.prev();
+        eyebtn.remove()
+        input_envval.remove();
+        input_envkey.remove();
+        closebtn.remove();
+        // adjust selector button div
+        MoveSelector(event);
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -2009,6 +2038,16 @@
         original.parentNode.appendChild(clone);
     }
 
+    function MoveSelector(event) {
+        event.preventDefault();
+        $('#select-contribution-div').position({
+            my: "top",
+            at: "bottom",
+            of: $("#select-contribution-div-placeholder"),
+            collision: "none none"
+        });
+    }
+
     $(function () {
         $("#add-capability").click(function (e) {
             e.preventDefault();
@@ -2060,17 +2099,24 @@
                         input.attr("type", "password");
                     }
                 }));
-                $key_val_div.append("<br>");
-                // once added, increment the envvar counter
+                var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"envvarclose\"></i>';
+                $key_val_div.append($(i_envvarclose).on('click', function () {
+                    let closebtn = $(this);
+                    let eyebtn = closebtn.prev();
+                    let input_envval = eyebtn.prev();
+                    let input_envkey = input_envval.prev();
+                    eyebtn.remove()
+                    input_envval.remove();
+                    input_envkey.remove();
+                    closebtn.remove();
+                    // adjust selector buttons
+                    MoveSelector(event);
+                }));
+                // once new envvar pairs are added, increment the envvar counter
                 add_env_var_button_click_count++;
 
                 // adjust button position
-                $('#select-contribution-div').position({
-                    my: "top",
-                    at: "bottom",
-                    of: $("#select-contribution-div-placeholder"),
-                    collision: "none none"
-                });
+                MoveSelector(event);
             });
 
             if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
@@ -2081,12 +2127,7 @@
 
             capability_count++;
 
-            $('#select-contribution-div').position({
-                my: "top",
-                at: "bottom",
-                of: $("#select-contribution-div-placeholder"),
-                collision: "none none"
-            });
+            MoveSelector(event);
         });
     });
     $('[id^="delete_capability_"]').on('click', function (e) {
