@@ -1651,7 +1651,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#CancelModal">Cancel</button>
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -1660,7 +1660,7 @@
             </div>
 
             <!-- Submit modal -->
-            <div class="modal" id="myModal">
+            <div class="modal" id="submit-modal">
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -1670,7 +1670,7 @@
             </div>
 
             <!-- Cancel Confirmation modal -->
-            <div class="modal" id="CancelModal" role="dialog">
+            <div class="modal" id="cancel-modal" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -1786,7 +1786,7 @@
             });
     });
 
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("submit-modal");
     // Get the button that opens the modal
     var btn = document.getElementById("submit_button");
 
