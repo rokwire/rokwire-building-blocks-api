@@ -490,7 +490,7 @@
             <div class="form-group" id="select-contribution-div">
                 <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
                 <div id="select-contribution-button">
-                    <button class="button button2" id="add-capability">Add a Capability</button>
+                    <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
                     OR
                     <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
@@ -2009,6 +2009,96 @@
         original.parentNode.appendChild(clone);
     }
 
+
+    function AddCapability(event) {
+        event.preventDefault();
+        var $clone = $("#capability-div-clean").clone(true);
+        $clone.find(':input').attr('id', function (i, val) {
+            return val + '_' + capability_count;
+        });
+        $clone.find(':input').attr('name', function (i, val) {
+            return val + '_' + capability_count;
+        });
+        $clone.find('div').attr('id', function (i, val) {
+            return val + '_' + capability_count;
+        });
+        $clone.attr('style', 'display: block, background-color: white')
+
+        var i = capability_count;
+        var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
+            'Add environment variables</button>'
+
+        $("#capability-parent").append($clone);
+        $("#capability-parent").append("<br>");
+
+        $('#open_source_yes_' + i).click(function (e) {
+            $('#sourceurl_' + i).show();
+        });
+        $('#open_source_no_' + i).click(function (e) {
+            $('#sourceurl_' + i).hide();
+        });
+
+        $('#add-env-var-button-div_' + i).append(env_var_button);
+        // get all envvar pairs in the corresponding key-val div
+        let $key_val_div = $("#key-val_" + i)
+        var envvar_list = $key_val_div.children(`input[id^="environmentVariables_key_"]`);
+        // when adding more envvars start the counter with the number of envvar pairs already present.
+        var add_env_var_button_click_count = envvar_list.length;
+        $('#add_env_var_' + i).click(function (e) {
+            e.preventDefault();
+
+            $key_val_div.append("<input class = \"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
+                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
+            $key_val_div.append("<input class = \"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
+                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
+            $key_val_div.append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
+                $(this).toggleClass("bi-eye");
+                let input = $(this).prev();
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            }));
+            $key_val_div.append("<br>");
+            // once added, increment the envvar counter
+            add_env_var_button_click_count++;
+
+            // adjust selector div position
+            MoveSelector(event);
+        });
+
+        if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
+            $('#sourceurl_' + i).show();
+        } else {
+            $('#sourceurl_' + i).hide();
+        }
+
+        capability_count++;
+
+        $('[id^="delete_capability_"]').on('click', function (e) {
+            // get the capability number and remove all corresponding divs
+            var del_cap_button_name = $(this).attr("id");
+            let cap_num = del_cap_button_name.split("_").pop();
+            $("#capability_" + cap_num).remove();
+            $(this).hide();
+            capability_count--;
+        });
+
+    }
+
+    function MoveSelector(event) {
+        // adjust button position
+        event.preventDefault();
+        $('#select-contribution-div').position({
+            my: "top",
+            at: "bottom",
+            of: $("#select-contribution-div-placeholder"),
+            collision: "none none"
+        });
+    }
+
+    /*
     $(function () {
         $("#add-capability").click(function (e) {
             e.preventDefault();
@@ -2099,6 +2189,7 @@
             });
         });
     });
+    */
 
     $(function () {
         $("#add-talent").click(function (e) {
