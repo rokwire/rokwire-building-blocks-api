@@ -395,18 +395,28 @@ hr.dotted {
     margin-left: 1%;
 }
 
-input[id^='environmentVariables_key'] {
+input.envvar-key[type=text] {
     width: 47%;
-    display: inline-block;
     display: table-cell;
 }
 
-input[id^='environmentVariables_value'] {
+input.envvar-value {
+    width: 47%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: table-cell;
+}
+
+input.datadel-endpoint[type=text] {
+    width: 47%;
+    display: inline-block;
+}
+
+input.datadel-api {
     width: 47%;
     margin-left: 1%;
     margin-right: 1%;
     display: inline-block;
-    display: table-cell;
 }
 
 input[id^='datadel_endpoint'] {
