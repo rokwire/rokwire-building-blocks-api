@@ -475,7 +475,7 @@
                 {% endif %}
             </div>
 
-            <div>
+            <div id="cd-multi-steps-text-top">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
@@ -495,6 +495,7 @@
                     <button class="button button1" id="add-talent">Add a Talent</button>
                 </div>
             </div>
+
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
 
@@ -583,19 +584,19 @@
 
                         <div name="add-env-var-div" class="form-group">
                             <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                            <div class="col-sm-10" id="key-val">
+                            <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
                                 <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
-                                <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
+                                <input class="form-control envvar-key" name="environmentVariables_key_0" placeholder="Key"
                                        id="environmentVariables_key_0" type="text">
-                                <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
+                                <input class="form-control envvar-value" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <br>
                             </div>
-                            <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
-                            </div>
+                        </div>
+                        <div id="add-env-var-button-div" class="row">
+                            <!-- place holder for dynamic button for add environment variables" -->
                         </div>
 
                         <div class="form-group">
@@ -644,9 +645,9 @@
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Data Deletion</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                <input class="form-control datadel-endpoint" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                        placeholder="Endpoint" type="text">
-                                <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                <input class="form-control datadel-api" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                        placeholder="Api Key" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <br>
@@ -664,7 +665,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
                             {% endif %}
                             <div id="capability_{{loop.index0}}">
-                                <h3 id="capability_{{loop.index0}}">Add a Capability to this Contribution</h3>
+                                <h3 id="capability_{{loop.index0}}">Capability - {{ capability | filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Capability Name</label>
                                     <div class="col-sm-10">
@@ -882,19 +883,19 @@
                                 </div>
                                 <div class="form-group" name="add-env-var">
                                     <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}">
+                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
                                             <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                                             {% set caploop = loop.index0 %}
                                             {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
                                                 {% set keyvalloop = loop %}
                                                     {% if is_editable %}
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Key"
                                                                id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-value"
                                                                name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Value"
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
@@ -903,11 +904,11 @@
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
                                                         <br>
                                                     {% else %}
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Key"
                                                                id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}" type="text">
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-value"
                                                                name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Value"
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
@@ -918,46 +919,47 @@
                                             {% endfor %}
                                         {%  else %}
                                             <!-- first envvar pair starts with index0 -->
-                                            <input class="form-control" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
+                                            <input class="form-control envvar-key" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
                                                    id="environmentVariables_key_0_{{ loop.index0 }}" type="text">
-                                            <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
+                                            <input class="form-control envvar-value" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                             <br>
                                         {% endif %}
                                     </div>
-                                    <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
-                                        <script>
-                                            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
-                                                'Add more fields</button>'
-                                            $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                            // get all envvar pairs in the key-val div.
-                                            var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
-                                            // start the envvar counter with the number of envvar pairs in the key-val div
-                                            var add_env_var_button_click_count = envvar_list.length;
-                                            $('#add_env_var_{{ loop.index0 }}').click(function (e) {
-                                                e.preventDefault();
-                                                // environment variables match the pattern environmentVariables_key_envindex_capindex
-                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                                $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
-                                                    $(this).toggleClass("bi-eye");
-                                                    let input = $(this).prev();
-                                                    if (input.attr("type") === "password") {
-                                                        input.attr("type", "text");
-                                                    } else {
-                                                        input.attr("type", "password");
-                                                    }
-                                                }));
-                                                $("#key-val_{{ loop.index0 }}").append("<br>");
-                                                // once new envvar pairs are added, increment the counter
-                                                add_env_var_button_click_count++;
-                                            });
-                                        </script>
-                                    </div>
                                 </div>
+                                <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
+                                    <script>
+                                        var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                            'Add environment variables</button>'
+                                        $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
+                                        // get all envvar pairs in the key-val div.
+                                        var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
+                                        // start the envvar counter with the number of envvar pairs in the key-val div
+                                        var add_env_var_button_click_count = envvar_list.length;
+                                        $('#add_env_var_{{ loop.index0 }}').click(function (e) {
+                                            e.preventDefault();
+                                            // environment variables match the pattern environmentVariables_key_envindex_capindex
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
+                                                $(this).toggleClass("bi-eye");
+                                                let input = $(this).prev();
+                                                if (input.attr("type") === "password") {
+                                                    input.attr("type", "text");
+                                                } else {
+                                                    input.attr("type", "password");
+                                                }
+                                            }));
+                                            $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            // once new envvar pairs are added, increment the counter
+                                            add_env_var_button_click_count++;
+                                        });
+                                    </script>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Database Detail</label>
                                     <div class="col-sm-10">
@@ -1047,26 +1049,26 @@
                                     <label class="required control-label col-sm-2">Data Deletion</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                    placeholder="Endpoint"
                                                    type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                         {% else %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                    placeholder="Endpoint" type="text">
                                         {% endif %}
                                         {% if is_editable %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                    placeholder="Api Key"
                                                    type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         {% else %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                    placeholder="Api Key" type="password">
@@ -1222,7 +1224,7 @@
                                 <button type="button" class="button button3 pull-right" id="delete_talent_{{loop.index0}}" style="margin-top:-15px;">Delete Talent</button>
                             {% endif %}
                             <div id="talent_{{loop.index0}}">
-                                <h3 id="talent_{{loop.index0}}">Add a Talent to this Contribution</h3>
+                                <h3 id="talent_{{loop.index0}}">Talent - {{ talent|filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Name</label>
                                     <div class="col-sm-10">
@@ -1525,7 +1527,7 @@
                 <!-- place holder for dynamic add capability / talent buttons" -->
             </div>
             <!--------------------------------------------contact/privacy check ------------------------------------------>
-            <div>
+            <div id="cd-multi-steps-text-bottom">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
@@ -1557,10 +1559,10 @@
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
-                        <label class="required control-label col-sm-2">Contact Email</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                      placeholder="" type="text" value="{{ contact.email }}"></div>
-                    </div>
+                            <label class="required control-label col-sm-2">Contact Email</label>
+                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
+                                                          placeholder="" type="text" value="{{ contact.email }}"></div>
+                        </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Email</label>
@@ -1649,6 +1651,7 @@
             </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -1656,8 +1659,8 @@
                        value="Submit">
             </div>
 
-            <!-- The Modal -->
-            <div class="modal" id="myModal">
+            <!-- Submit modal -->
+            <div class="modal" id="submit-modal">
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -1665,8 +1668,33 @@
                     <br>
                 </div>
             </div>
+
+            <!-- Cancel Confirmation modal -->
+            <div class="modal" id="cancel-modal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                              Cancel submission
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to Cancel this submission?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">No</button>
+                            <a class="btn btn-primary ml-1" role="button" id="cancel-modal-btn-yes" href="{{ url_for('contribute.home') }}">Yes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
+
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
@@ -1758,7 +1786,7 @@
             });
     });
 
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("submit-modal");
     // Get the button that opens the modal
     var btn = document.getElementById("submit_button");
 
@@ -2022,8 +2050,8 @@
             $clone.attr('style', 'display: block, background-color: white')
 
             var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
-                'Add more fields</button>'
+            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
+                'Add environment variables</button>'
 
             $("#capability-parent").append($clone);
             $("#capability-parent").append("<br>");
@@ -2044,9 +2072,9 @@
             $('#add_env_var_' + i).click(function (e) {
                 e.preventDefault();
 
-                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
+                $key_val_div.append("<input class = \"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
                     "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
+                $key_val_div.append("<input class = \"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
                     "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
                 $key_val_div.append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
                     $(this).toggleClass("bi-eye");
@@ -2060,6 +2088,14 @@
                 $key_val_div.append("<br>");
                 // once added, increment the envvar counter
                 add_env_var_button_click_count++;
+
+                // adjust button position
+                $('#select-contribution-div').position({
+                    my: "top",
+                    at: "bottom",
+                    of: $("#select-contribution-div-placeholder"),
+                    collision: "none none"
+                });
             });
 
             if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
@@ -2071,9 +2107,10 @@
             capability_count++;
 
             $('#select-contribution-div').position({
-                my: "center",
+                my: "top",
                 at: "bottom",
-                of: $("#select-contribution-div-placeholder")
+                of: $("#select-contribution-div-placeholder"),
+                collision: "none none"
             });
         });
     });
@@ -2104,7 +2141,7 @@
             talent_count++;
 
             $('#select-contribution-div').position({
-                my: "center",
+                my: "top",
                 at: "bottom",
                 of: $("#select-contribution-div-placeholder")
             });
