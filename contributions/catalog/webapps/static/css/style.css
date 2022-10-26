@@ -389,7 +389,7 @@ hr.dotted {
     position: relative;
 }
 
-#envvarclose {
+#env-var-close-btn {
     cursor: pointer;
     position: relative;
     margin-left: 1%;
