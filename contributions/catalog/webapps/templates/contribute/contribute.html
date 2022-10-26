@@ -653,8 +653,8 @@
                                 <br>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> <!--- end of div id capability --->
+                </div> <!--- end of div capability-div-clean --->
 
                 <!--------------------------------- capability block for existing records ------------------------->
                 {% if post.capabilities %}
@@ -704,44 +704,47 @@
                                 <div class="form-group" id="open-source-check-div">
                                     <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
                                     <!-- open source yes no block -->
-                                    <label class="form-check-label">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                    {% if is_editable %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                            <label class="form-check-label">
                                                 <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}" type="radio"
                                                        checked="checked" value="y">
-                                                yes</label>
-                                            {% else %}
-                                                <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                       name="capability_isOpenSource_{{loop.index0}}"
-                                                       type="radio" value="y">
-                                                yes</label>
-                                            {%  endif %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
-                                                           name="capability_isOpenSource_{{loop.index0}}"
-                                                           type="radio" checked="checked" value="n">
-                                                    no</label>
-                                            {% else %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
-                                                           name="capability_isOpenSource_{{loop.index0}}"
-                                                           type="radio" value="n">
-                                                    no</label>
-                                            {%  endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                   name="capability_isOpenSource_{{loop.index0}}"
-                                                   type="radio" value="y">
                                             yes</label>
+                                        {% else %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                        name="capability_isOpenSource_{{loop.index0}}"
+                                                        type="radio" value="y">
+                                            yes</label>
+                                        {%  endif %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                       name="capability_isOpenSource_{{loop.index0}}"
+                                                       type="radio" checked="checked" value="n">
+                                                no</label>
+                                        {% else %}
                                             <label class="form-check-label">
                                                 <input class="form-check-input" id="open_source_no_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}"
                                                        type="radio" value="n">
                                                 no</label>
-                                        {% endif %}
-                                </div>
+                                        {%  endif %}
+                                    {% else %}
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="y">
+                                        yes</label>
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="n">
+                                            no</label>
+                                    {% endif %}
+                                </div> <!-- end of open source yes no check div -->
+                                <!-- display opensource url if yes -->
                                 {% if is_editable %}
                                     {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
                                         <div class="form-group"
@@ -794,7 +797,7 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                {% endif %}
+                                {% endif %} <!-- end of open source url div -->
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">API Doc URL</label>
                                     <div class="col-sm-10">
@@ -881,7 +884,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="form-group" name="add-env-var">
+                                <div class="form-group" name="add-env-var-div">
                                     <label class="required control-label col-sm-2">Environment Variable(s)</label>
                                     <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
@@ -926,8 +929,8 @@
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                             <br>
                                         {% endif %}
-                                    </div>
-                                </div>
+                                    </div> <!-- end of div key-val_loop.index0 -->
+                                </div> <!-- end of div add-env-var-div -->
                                 <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
                                     <script>
                                         var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
@@ -958,7 +961,7 @@
                                             add_env_var_button_click_count++;
                                         });
                                     </script>
-                                </div>
+                                </div> <!-- end of add-env-var-button-div -->
 
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Database Detail</label>
@@ -1078,11 +1081,11 @@
                                     </div>
                                 </div>
                                 <script>capability_count++;</script>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                            </div> <!--- end of div id capability_loop.index -->
+                        </div> <!--- end of div capability-div-existing-records -->
+                    {% endfor %} <!-- end of for loop iterating through existing capabilities -->
+                {% endif %} <!-- end of if existing capabilities exist -->
+            </div> <!-- end of div capability-parent -->
 
             <!--------------------------------------------talent block ------------------------------------------>
             <div id="talent-parent" style="display: block; background-color:white">
