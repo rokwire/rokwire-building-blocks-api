@@ -583,7 +583,7 @@
                         </div>
 
                         <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                            <label class="control-label col-sm-2">Environment Variable(s)</label>
                             <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
                                 <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
@@ -593,7 +593,6 @@
                                        id="environmentVariables_value_0" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <i class="bi bi-x-lg" id="envvarclose"></i>
-
                             </div>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -883,7 +882,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" name="add-env-var-div">
-                                    <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                    <label class="control-label col-sm-2">Environment Variable(s)</label>
                                     <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
                                             <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
@@ -904,7 +903,6 @@
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
                                                         <i class="bi bi-x-lg" id="envvarclose"></i>
-
                                                     {% else %}
                                                         <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
@@ -917,7 +915,6 @@
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                                         <i class="bi bi-x-lg" id="envvarclose"></i>
-
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
@@ -928,7 +925,6 @@
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                             <i class="bi bi-x-lg" id="envvarclose"></i>
-
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1881,6 +1877,18 @@
         var datadel_api = []
 
         if (capability_count > 0) {
+            // validation for empty environmentVariable key
+            environmentVariables_keys_list = document.getElementsByClassName("envvar-key");
+            // start from index1. index0 is input#environmentVariables_key_0 which does not have any value
+            for (var envkey_ind=1; envkey_ind<environmentVariables_keys_list.length; envkey_ind++)
+            {
+                if (environmentVariables_keys_list[envkey_ind].value == "") {
+                    environmentVariables_keys_list[envkey_ind].focus();
+                    environmentVariables_keys_list[envkey_ind].required = true;
+                    return false;
+                }
+            }
+
             // get the _num of capabilities and iterate through the list
             var div_cap_ids = $("div[id^='capability_']").map(function() {
                                 return this.id;
@@ -1921,20 +1929,6 @@
                     // window.alert("Please enter the docker image.");
                     dockerimage[i].focus();
                     dockerimage[i].required = true;
-                    return false;
-                }
-                environmentVariables_key[i] = document.getElementById('environmentVariables_key_0' + '_' + i);
-                if (environmentVariables_key[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_key[i].focus();
-                    environmentVariables_key[i].required = true;
-                    return false;
-                }
-                environmentVariables_value[i] = document.getElementById('environmentVariables_value_0' + '_' + i);
-                if (environmentVariables_value[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_value[i].focus();
-                    environmentVariables_value[i].required = true;
                     return false;
                 }
                 db[i] = document.getElementById('db-detail' + '_' + i);
