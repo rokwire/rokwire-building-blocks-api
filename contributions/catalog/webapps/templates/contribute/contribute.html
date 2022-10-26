@@ -1140,7 +1140,7 @@
                             <label class="control-label col-sm-2">User Privacy Level</label>
                             <div class="col-sm-10">
                                 <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                       step="1" type="number" value="1"/>
+                                       step="1" type="number" value="1">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1177,10 +1177,12 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Data Description</label>
-                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                          style="height:150px"
-                                                          type="text"></div>
+                            <div class="col-sm-10">
+                                <input id="data_des" name="talent_dataDescription"
+                                       placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                       style="height:150px"
+                                       type="text">
+                            </div>
                         </div>
                         <!---------- self certification block -------------------->
                         <div class="container">
@@ -1188,34 +1190,35 @@
                             <h3>Self-certification</h3>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Deleting data upon request</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_dataDeletionUponRequest"
-                                                              placeholder="Deleting data upon request"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_dataDeletionUponRequest"
+                                           placeholder="Deleting data upon request" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Respecting privacy setting</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_respectingUserPrivacySetting"
-                                                              placeholder="Respecting privacy setting"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
+                                           placeholder="Respecting privacy setting" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose sponsors / ads</label>
-                                <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
-                                                              placeholder="Disclose sponsors / ads"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_discloseAds"
+                                           placeholder="Disclose sponsors / ads" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose right to use images</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_discloseImageRights"
-                                                              placeholder="Disclose right to use images"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_discloseImageRights"
+                                           placeholder="Disclose right to use images" type="text">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div> <!-- end of self certification block -->
+                    </div> <!-- end of div talent -->
+                </div> <!-- end of talent-div-clean -->
 
                 <!----------------------------------------talent existing record block ---------------------------------------->
 
@@ -1336,7 +1339,7 @@
                                                id="minUserPrivacyLevel_{{loop.index0}}"
                                                step="1"
                                                type="number"
-                                               value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                               value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -1517,14 +1520,14 @@
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseImageRights"]) }}">
                                         </div>
                                     </div>
-                                </div>
+                                </div> <!-- end of self certification block div -->
                                 <script>talent_count++;</script>
-                            </div>
-                        {# end of existing talent_i #}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                            </div>  <!--- end of div id talent_loop.index -->
+                        <!-- end of existing talent_i -->
+                        </div> <!-- end of talent-div-existing-records -->
+                    {% endfor %} <!-- end of for loop iterating through existing talents -->
+                {% endif %}  <!-- end of if existing talents exist -->
+            </div>  <!-- end of div talent-parent -->
 
             <div id="select-contribution-div-placeholder" class="row">
                 <!-- place holder for dynamic add capability / talent buttons" -->
@@ -1550,108 +1553,129 @@
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                          placeholder="" type="text" value="{{ contact.name }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_name" name="contact_name"
+                                       placeholder="" type="text" value="{{ contact.name }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_name" name="contact_name"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Email</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                          placeholder="" type="text" value="{{ contact.email }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_email" name="contact_email"
+                                       placeholder="" type="text" value="{{ contact.email }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Email</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_email" name="contact_email"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Phone</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_phone"
-                                                          name="contact_phone"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.phone }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_phone"
+                                       name="contact_phone" placeholder="" type="text"
+                                       value="{{ contact.phone }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Phone</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_phone" name="contact_phone"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                          name="contact_organization"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.organization }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_org"
+                                       name="contact_organization" placeholder="" type="text"
+                                       value="{{ contact.organization }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                          name="contact_organization"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_org"
+                                       name="contact_organization" placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control"
-                                                          id="contact_address"
-                                                          name="contact_officialAddress"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.officialAddress }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_address"
+                                       name="contact_officialAddress" placeholder="" type="text"
+                                       value="{{ contact.officialAddress }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                          name="contact_officialAddress"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_address"
+                                       name="contact_officialAddress" placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                 {% else %}
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Name</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_name" name="contact_name"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Email</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_email" name="contact_email" placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Phone</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_phone" name="contact_phone"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contact Organization</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                      name="contact_organization"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_org" name="contact_organization"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Official Address</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                      name="contact_officialAddress"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_address" name="contact_officialAddress"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                 {% endif %}
+            </div> <!-- end of class container Contact Details div -->
 
-            </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
                 <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
@@ -1693,10 +1717,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> <!-- end of cancel-modal div -->
 
-        </form>
-    </div>
+        </form> <!-- end of form -->
+    </div> <!-- end -->
 
 </body>
 
