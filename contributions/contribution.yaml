@@ -765,7 +765,7 @@ components:
               nullable: true
     RequiredCapability:
       type: object
-      description: A required capabiity object that recorded in talent
+      description: A required capability object that recorded in talent
       required:
         - contributionId
         - capabilityId
