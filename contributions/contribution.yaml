@@ -697,11 +697,13 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/RequiredCapability'
+          default: []
         requiredBuildingBlocks:
           type: array
           nullable: true
           items:
             type: string
+          default: []
         minUserPrivacyLevel:
           description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
           type: integer
@@ -723,6 +725,7 @@ components:
               - student
               - visitor
           uniqueItems: true
+          default: []
         startDate:
           description: Start date at which this Talent can become active.
           type: string
