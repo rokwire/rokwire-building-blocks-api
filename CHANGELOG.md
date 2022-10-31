@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Arrange environment variables into single row in capability view page. [#993](https://github.com/rokwire/rokwire-building-blocks-api/issues/993)
 - Arrange environment variables and data deletion endpoint into single row in capability. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 - API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
+- UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
 
 ### Fixed
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
