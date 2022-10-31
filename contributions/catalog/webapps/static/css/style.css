@@ -180,16 +180,19 @@ input[type=reset]:hover {
 }
 
 .button3 {
-    background-color: white;
     color: black;
-    border: 1px solid #f44336;
     display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
 .button3:hover {
-    background-color: #f44336;
     color: white;
     display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
 }
 
 .button4 {
@@ -415,3 +418,32 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
+
+.capability-details-heading {
+    font-size: 32px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #13294b;
+}
+
+.capability-details-field {
+    font-size: 16px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    margin-bottom:10px;
+    color: #13294b;
+}
+
+.capability-details-field-text {
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #404040;
+}

@@ -16,6 +16,9 @@
 </head>
 
 <style>
+    html * {
+        font-family: proxima-nova,sans-serif;
+      }
     .hidetext { -webkit-text-security: disc; }
     .showtext { -webkit-text-security: none; }
 </style>
@@ -27,155 +30,157 @@
 </div>
 
 <div class="container">
-    <h1>Capability Details</h1>
+    <h1 class="capability-details-heading">Capability Details</h1>
 
     <hr class="divider"/>
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Capability Name </h4>
-        </div>
-        <p class="col-sm-9">{{post.name}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Capability description </h4>
-        </div>
-        <p class="col-sm-9">{{post.description}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Is code open source?</h4>
-        </div>
-        <p class="col-sm-9">{{post.isOpenSource}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Source code repository URL</h4>
-        </div>
-        <p class="col-sm-9">{{post.sourceRepoUrl}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Api Documentation URL</h4>
-        </div>
-        <p class="col-sm-9">{{post.apiDocUrl}}</p>
-    </div>
-
-    {% if post.deploymentDetails%}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Deployment status (Internal vs External)</h4>
-        </div>
-        <p class="col-sm-9">{{post.deploymentDetails.location}}</p>
-    </div>
-    {% endif %}
-
-    {% if reviewer %}
-        {% if post.version %}
+    <div class="capability-details-body">
         <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Version</h4>
+            <div class="col-12 col-sm-2 capability-details-field">
+                Capability Name
             </div>
-            <p class="col-sm-9">{{post.version}}</p>
+            <p class="col-sm-9 capability-details-field-text">{{post.name}}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2 capability-details-field">
+                Capability description
+            </div>
+            <p class="col-sm-9 capability-details-field-text">{{post.description}}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2 capability-details-field">
+                Is code open source?
+            </div>
+            <p class="col-sm-9 capability-details-field-text">{{post.isOpenSource}}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2 capability-details-field">
+                Source code repository URL
+            </div>
+            <p class="col-sm-9 capability-details-field-text">{{post.sourceRepoUrl}}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2 capability-details-field">
+                Api Documentation URL
+            </div>
+            <p class="col-sm-9 capability-details-field-text">{{post.apiDocUrl}}</p>
+        </div>
+
+        {% if post.deploymentDetails%}
+        <div class="row">
+            <div class="col-12 col-sm-2 capability-details-field">
+                Deployment status (Internal vs External)
+            </div>
+            <p class="col-sm-9 capability-details-field-text">{{post.deploymentDetails.location}}</p>
         </div>
         {% endif %}
-        {% if post.healthCheckUrl %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Health Check URL</h4>
+
+        {% if reviewer %}
+            {% if post.version %}
+            <div class="row">
+                <div class="col-12 col-sm-2 capability-details-field">
+                    Version
+                </div>
+                <p class="col-sm-9 capability-details-field-text">{{post.version}}</p>
             </div>
-            <p class="col-sm-9">{{post.healthCheckUrl}}</p>
-        </div>
-        {% endif %}
-        {% if post.dataDeletionEndpointDetails %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Data Deletion Endpoint Details</h4>
+            {% endif %}
+            {% if post.healthCheckUrl %}
+            <div class="row">
+                <div class="col-12 col-sm-2 capability-details-field">
+                    Health Check URL
+                </div>
+                <p class="col-sm-9 capability-details-field-text">{{post.healthCheckUrl}}</p>
             </div>
-            <p class="col-sm-9">
-                <table>
-                    {% if post.dataDeletionEndpointDetails.apiKey %}
-                    <tr id="datadeletion_row">
-                        <td><b>Api Key&nbsp;&nbsp;</b></td>
-                        <td class="hidetext">{{post.dataDeletionEndpointDetails.apiKey}}</td>
-                        <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
-                    </tr>
-                    {% endif %}
-                    {% if post.dataDeletionEndpointDetails.deletionEndpoint %}
-                    <tr>
-                        <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
-                        <td>{{post.dataDeletionEndpointDetails.deletionEndpoint}}</td>
-                    </tr>
-                    {% endif %}
-                    {% if post.dataDeletionEndpointDetails.description %}
-                    <tr>
-                        <td><b>Description&nbsp;&nbsp;</b></td>
-                        <td>{{post.dataDeletionEndpointDetails.description}}</td>
-                    </tr>
-                    {% endif %}
-                </table>
-            </p>
-        </div>
-        {% endif %}
-        {% if post.deploymentDetails %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Deployment Details</h4>
+            {% endif %}
+            {% if post.dataDeletionEndpointDetails %}
+            <div class="row">
+                <div class="col-12 col-sm-2 capability-details-field">
+                    Data Deletion Endpoint Details
+                </div>
+                <p class="col-sm-9 capability-details-field-text">
+                    <table>
+                        {% if post.dataDeletionEndpointDetails.apiKey %}
+                        <tr id="datadeletion_row">
+                            <td><b>Api Key&nbsp;&nbsp;</b></td>
+                            <td class="hidetext">{{post.dataDeletionEndpointDetails.apiKey}}</td>
+                            <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                        </tr>
+                        {% endif %}
+                        {% if post.dataDeletionEndpointDetails.deletionEndpoint %}
+                        <tr>
+                            <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
+                            <td>{{post.dataDeletionEndpointDetails.deletionEndpoint}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if post.dataDeletionEndpointDetails.description %}
+                        <tr>
+                            <td><b>Description&nbsp;&nbsp;</b></td>
+                            <td>{{post.dataDeletionEndpointDetails.description}}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </p>
             </div>
-            <p class="col-sm-9">
-                <table>
-                    {% if post.deploymentDetails.authMethod %}
-                    <tr>
-                        <td><b>Auth Method&nbsp;&nbsp;</b></td>
-                        <td>{{post.deploymentDetails.authMethod}}</td>
-                    </tr>
-                    {% endif %}
-                    {% if post.deploymentDetails.databaseDetails %}
-                    <tr>
-                        <td><b>Database Details&nbsp;&nbsp;</b></td>
-                        <td>{{post.deploymentDetails.databaseDetails}}</td>
-                    </tr>
-                    {% endif %}
-                    {% if post.deploymentDetails.environmentVariables %}
-                    <tr>
-                        <td valign="top"><b>Environment Variables&nbsp;&nbsp;</b></td>
-                        <td>
-                            {% for envvar in post.deploymentDetails.environmentVariables %}
-                                <table>
-                                    {% for key_val in envvar.items() | batch(4) %}
-                                        <tr id="envvar_row">
-                                            {% for item in key_val %}
-                                                {% if loop.index %2 == 0 %}
-                                                    <td style="padding:0 5px 0 15px;">{{item[0]}}: </td>
-                                                    <td class="hidetext">{{item[1]}}</td>
-                                                    <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
-                                                {% else %}
-                                                    <td style="padding:0 5px 0 5px;">{{item[0]}}: </td>
-                                                    <td>{{item[1]}}</td>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% if post.deploymentDetails.location %}
-                    <tr>
-                        <td><b>Location&nbsp;&nbsp;</b></td>
-                        <td>{{post.deploymentDetails.location}}</td>
-                    </tr>
-                    {% endif %}
-                </table>
-            </p>
-        </div>
+            {% endif %}
+            {% if post.deploymentDetails %}
+            <div class="row">
+                <div class="col-12 col-sm-2 capability-details-field">
+                    Deployment Details
+                </div>
+                <p class="col-sm-9 capability-details-field-text">
+                    <table>
+                        {% if post.deploymentDetails.authMethod %}
+                        <tr>
+                            <td><b>Auth Method&nbsp;&nbsp;</b></td>
+                            <td>{{post.deploymentDetails.authMethod}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if post.deploymentDetails.databaseDetails %}
+                        <tr>
+                            <td><b>Database Details&nbsp;&nbsp;</b></td>
+                            <td>{{post.deploymentDetails.databaseDetails}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if post.deploymentDetails.environmentVariables %}
+                        <tr>
+                            <td valign="top"><b>Environment Variables&nbsp;&nbsp;</b></td>
+                            <td>
+                                {% for envvar in post.deploymentDetails.environmentVariables %}
+                                    <table>
+                                        {% for key_val in envvar.items() | batch(4) %}
+                                            <tr id="envvar_row">
+                                                {% for item in key_val %}
+                                                    {% if loop.index %2 == 0 %}
+                                                        <td style="padding:0 5px 0 15px;">{{item[0]}}: </td>
+                                                        <td class="hidetext">{{item[1]}}</td>
+                                                        <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
+                                                    {% else %}
+                                                        <td style="padding:0 5px 0 5px;">{{item[0]}}: </td>
+                                                        <td>{{item[1]}}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if post.deploymentDetails.location %}
+                        <tr>
+                            <td><b>Location&nbsp;&nbsp;</b></td>
+                            <td>{{post.deploymentDetails.location}}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </p>
+            </div>
+            {% endif %}
         {% endif %}
-    {% endif %}
+    </div>
 
     <button class="button button3" onclick="get_url()">View Contribution</button>
 </div>
