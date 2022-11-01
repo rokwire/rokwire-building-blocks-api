@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
+- Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
 
 ## [1.16.0] - 2022-08-29
 ### Added
