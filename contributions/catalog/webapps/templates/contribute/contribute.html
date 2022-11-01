@@ -583,7 +583,7 @@
                         </div>
 
                         <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                            <label class="control-label col-sm-2">Environment Variable(s)</label>
                             <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
                                 <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
@@ -592,7 +592,7 @@
                                 <input class="form-control envvar-value" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
+                                <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                             </div>
                         </div>
                         <div id="add-env-var-button-div" class="row">
@@ -885,7 +885,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" name="add-env-var-div">
-                                    <label class="required control-label col-sm-2">Environment Variable(s)</label>
+                                    <label class="control-label col-sm-2">Environment Variable(s)</label>
                                     <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
                                             <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
@@ -905,7 +905,7 @@
                                                                type="password"
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                                     {% else %}
                                                         <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
@@ -917,7 +917,7 @@
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
@@ -927,7 +927,7 @@
                                             <input class="form-control envvar-value" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                            <br>
+                                            <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                         {% endif %}
                                     </div> <!-- end of div key-val_loop.index0 -->
                                 </div> <!-- end of div add-env-var-div -->
@@ -956,7 +956,18 @@
                                                     input.attr("type", "password");
                                                 }
                                             }));
-                                            $("#key-val_{{ loop.index0 }}").append("<br>");
+                                            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
+                                            $("#key-val_{{ loop.index0 }}").append($(i_envvarclose).on('click', function () {
+                                                let closebtn = $(this);
+                                                let eyebtn = closebtn.prev();
+                                                let input_envval = eyebtn.prev();
+                                                let input_envkey = input_envval.prev();
+                                                eyebtn.remove()
+                                                input_envval.remove();
+                                                input_envkey.remove();
+                                                closebtn.remove();
+                                                MoveSelector(event);
+                                            }));
                                             // once new envvar pairs are added, increment the counter
                                             add_env_var_button_click_count++;
                                         });
@@ -1757,6 +1768,20 @@
         }
     });
 
+    // delete environment keyvalue pair
+    $('[id="env-var-close-btn"]').on('click', function () {
+        let closebtn = $(this);
+        let eyebtn = closebtn.prev();
+        let input_envval = eyebtn.prev();
+        let input_envkey = input_envval.prev();
+        eyebtn.remove()
+        input_envval.remove();
+        input_envkey.remove();
+        closebtn.remove();
+        // adjust selector button div
+        MoveSelector(event);
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -1879,6 +1904,18 @@
         var datadel_api = []
 
         if (capability_count > 0) {
+            // validation for empty environmentVariable key
+            environmentVariables_keys_list = document.getElementsByClassName("envvar-key");
+            // start from index1. index0 is input#environmentVariables_key_0 which does not have any value
+            for (var envkey_ind=1; envkey_ind<environmentVariables_keys_list.length; envkey_ind++)
+            {
+                if (environmentVariables_keys_list[envkey_ind].value == "") {
+                    environmentVariables_keys_list[envkey_ind].focus();
+                    environmentVariables_keys_list[envkey_ind].required = true;
+                    return false;
+                }
+            }
+
             // get the _num of capabilities and iterate through the list
             var div_cap_ids = $("div[id^='capability_']").map(function() {
                                 return this.id;
@@ -1919,20 +1956,6 @@
                     // window.alert("Please enter the docker image.");
                     dockerimage[i].focus();
                     dockerimage[i].required = true;
-                    return false;
-                }
-                environmentVariables_key[i] = document.getElementById('environmentVariables_key_0' + '_' + i);
-                if (environmentVariables_key[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_key[i].focus();
-                    environmentVariables_key[i].required = true;
-                    return false;
-                }
-                environmentVariables_value[i] = document.getElementById('environmentVariables_value_0' + '_' + i);
-                if (environmentVariables_value[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_value[i].focus();
-                    environmentVariables_value[i].required = true;
                     return false;
                 }
                 db[i] = document.getElementById('db-detail' + '_' + i);
@@ -2127,11 +2150,23 @@
                     input.attr("type", "password");
                 }
             }));
-            $key_val_div.append("<br>");
-            // once added, increment the envvar counter
+            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
+            $key_val_div.append($(i_envvarclose).on('click', function () {
+                let closebtn = $(this);
+                let eyebtn = closebtn.prev();
+                let input_envval = eyebtn.prev();
+                let input_envkey = input_envval.prev();
+                eyebtn.remove()
+                input_envval.remove();
+                input_envkey.remove();
+                closebtn.remove();
+                // adjust selector buttons
+                MoveSelector(event);
+            }));
+            // once new envvar pairs are added, increment the envvar counter
             add_env_var_button_click_count++;
 
-            // adjust selector div position
+            // adjust button position
             MoveSelector(event);
         });
 
