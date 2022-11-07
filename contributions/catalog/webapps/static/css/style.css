@@ -398,6 +398,10 @@ hr.dotted {
     display: block;
 }
 
+.link {
+    color: #e84a27;
+}
+
 #togglePassword {
     cursor: pointer;
     position: relative;
