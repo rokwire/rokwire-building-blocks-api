@@ -425,7 +425,7 @@ input.datadel-api {
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
 
-.capability-details-heading {
+h1 {
     font-size: 32px;
     font-weight: 800;
     font-stretch: normal;
@@ -435,7 +435,7 @@ input.datadel-api {
     color: #13294b;
 }
 
-.capability-details-field {
+h4{
     font-size: 16px;
     font-weight: 800;
     font-stretch: normal;
@@ -445,11 +445,12 @@ input.datadel-api {
     color: #13294b;
 }
 
-.capability-details-field-text {
+.small-body-text {
     font-size: 14px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
+    margin-top:10px;
     color: #404040;
 }
