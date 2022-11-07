@@ -687,26 +687,34 @@ components:
           type: string
         longDescription:
           type: string
+          nullable: true
         icon:
           type: string
           nullable: true
           description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/RequiredCapability'
+          default: []
         requiredBuildingBlocks:
           type: array
+          nullable: true
           items:
             type: string
+          default: []
         minUserPrivacyLevel:
           description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
           type: integer
+          nullable: true
           minimum: 1
           maximum: 5
+          default: 1
         minEndUserRoles:
           description: Minimum set of end user roles that needs to be selected by the user for this Talent to appear in the app interface
           type: array
+          nullable: true
           items:
             type: string
             enum:
@@ -717,17 +725,21 @@ components:
               - student
               - visitor
           uniqueItems: true
+          default: []
         startDate:
           description: Start date at which this Talent can become active.
           type: string
           format: date-time
+          nullable: true
         endDate:
           description: End date at which this Talent should be deactivated.
           type: string
           format: date-time
+          nullable: true
         dataDescription:
           description: Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level.
           type: string
+          nullable: true
         selfCertification:
           description: Detailed disclosure about some specific items related to the Rokwire platform.
           type: object
@@ -735,20 +747,25 @@ components:
             dataDeletionUponRequest:
               type: string
               description: Self certification about deleting data upon request
+              nullable: true
             respectingUserPrivacySetting:
               type: string
               description: Self certification about respecting privacy setting
+              nullable: true
             discloseAds:
               type: string
               description: Self disclosure about any Ads shown in the Talent
+              nullable: true
             discloseSponsors:
               type: string
+              nullable: true
             discloseImageRights:
               type: string
               description: Self disclosure about the rights to use images within the Talent
+              nullable: true
     RequiredCapability:
       type: object
-      description: A required capabiity object that recorded in talent
+      description: A required capability object that recorded in talent
       required:
         - contributionId
         - capabilityId

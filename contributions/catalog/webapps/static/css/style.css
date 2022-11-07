@@ -392,6 +392,12 @@ hr.dotted {
     position: relative;
 }
 
+#env-var-close-btn {
+    cursor: pointer;
+    position: relative;
+    margin-left: 1%;
+}
+
 input.envvar-key[type=text] {
     width: 47%;
     display: table-cell;
