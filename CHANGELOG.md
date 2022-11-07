@@ -27,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
 - Talent fields yaml configuration [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
 - UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
-- UI changes for footer in catalog home page. [#1036](https://github.com/rokwire/rokwire-building-blocks-api/issues/1036)
 
 ### Fixed
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
