@@ -139,7 +139,6 @@ input[type=reset]:hover {
 }
 
 .button {
-    background-color: #4CAF50; /* Green */
     border: none;
     border-radius: 4px;
     color: white;
@@ -154,14 +153,15 @@ input[type=reset]:hover {
 }
 
 .button1 {
-    background-color: white;
-    color: black;
-    border: 1px solid #4CAF50;
     display: inline-block;
+    color: black;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
+    background-color: #fff;
 }
 
 .button1:hover {
-    background-color: #4CAF50;
+    background-color: #009fd4;
     color: white;
     display: inline-block;
 }
@@ -198,8 +198,9 @@ input[type=reset]:hover {
 .button4 {
     background-color: white;
     color: black;
-    border: 1px solid #e7e7e7;
     display: inline-block;
+    border-radius: 24px;
+    border: solid 1px #002855;
 }
 
 .button4:hover {
@@ -207,15 +208,19 @@ input[type=reset]:hover {
 }
 
 .button5 {
-    background-color: white;
-    color: black;
-    border: 1px solid #555555;
     display: inline-block;
+    color: black;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
 .button5:hover {
-    background-color: #555555;
     color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #13294b;
 }
 
 /* Style the buttons */
