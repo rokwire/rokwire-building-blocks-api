@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Arrange environment variables and data deletion endpoint into single row in capability. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 - API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
 - Talent fields yaml configuration [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
+- Drop old indexes in contributions collection in mongodb. [#1029](https://github.com/rokwire/rokwire-building-blocks-api/issues/1029)
 - UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
 
 ### Fixed

@@ -30,8 +30,8 @@ db_contribution = client_contribution[cfg.CONTRIBUTION_DB_NAME]
 coll_contribution = db_contribution[cfg.CONTRIBUTION_COLL_NAME]  # set contribution collection
 # drop old indexes in contribution collection
 coll_contribution_indexes = coll_contribution.index_information().keys()
-# get all indexes except id and text index
-coll_contribution_old_indexes = [index for index in coll_contribution_indexes if index not in ['_id_', 'text_index']]
+# get old indexes
+coll_contribution_old_indexes = [index for index in coll_contribution_indexes if index in ['name', 'capabilities.name', 'talents.name']]
 for index_name in coll_contribution_old_indexes:
     coll_contribution.drop_index(index_name)
 # create compound text indexes with equal weightage
