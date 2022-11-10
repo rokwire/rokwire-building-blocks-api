@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
+- Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
+- Compound text indexes for contribution collection. [#1004](https://github.com/rokwire/rokwire-building-blocks-api/issues/1004)
+- Hide data deletion api key in capability view page. [#1010](https://github.com/rokwire/rokwire-building-blocks-api/issues/1010)
+- Support multiple group ids in post endpoint in events building block. [#1020](https://github.com/rokwire/rokwire-building-blocks-api/issues/1020)
+- User confirmation on cancel contribution. [#1022](https://github.com/rokwire/rokwire-building-blocks-api/issues/1022)
+- Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
+- Make environmentVariable key required if present in Catalog. [#1028](https://github.com/rokwire/rokwire-building-blocks-api/issues/1028)
 - Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
 
 ### Changed
@@ -19,11 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Arrange environment variables into single row in capability view page. [#993](https://github.com/rokwire/rokwire-building-blocks-api/issues/993)
 - Arrange environment variables and data deletion endpoint into single row in capability. [#989](https://github.com/rokwire/rokwire-building-blocks-api/issues/989)
 - API Doc Dockerfile URLs to include new building blocks and remove unsupported building blocks. [#831](https://github.com/rokwire/rokwire-building-blocks-api/issues/831)
+- Talent fields yaml configuration [#949](https://github.com/rokwire/rokwire-building-blocks-api/issues/949)
+- Drop old indexes in contributions collection in mongodb. [#1029](https://github.com/rokwire/rokwire-building-blocks-api/issues/1029)
 
 ### Fixed
 - Fix Core BB service token support in events [#994](https://github.com/rokwire/rokwire-building-blocks-api/issues/994)
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
+- Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
 
 ## [1.16.0] - 2022-08-29
 ### Added

@@ -872,6 +872,16 @@ components:
           type: string
           format: uuid
           description: For an event created by a Rokwire group, this field stores the group ID.
+        groupIds:
+          type: array
+          description: A list of IDs of all groups with administrative permissions on this event.
+          items:
+            type: string
+        userIds:
+          type: array
+          description: A list of account IDs of users who can view this event. This field gives event view permissions to specific users within a Rokwire group.
+          items:
+            type: string
     SubEventDetails:
       type: object
       properties:
