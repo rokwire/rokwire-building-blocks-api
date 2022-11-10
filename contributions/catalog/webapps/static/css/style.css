@@ -427,6 +427,7 @@ input.datadel-api {
 
 h1 {
     font-size: 32px;
+    height: 36px;
     font-weight: 800;
     font-stretch: normal;
     font-style: normal;
@@ -437,20 +438,20 @@ h1 {
 
 h4{
     font-size: 16px;
+    height: 20px;
     font-weight: 800;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    margin-bottom:10px;
     color: #13294b;
 }
 
 .small-body-text {
     font-size: 14px;
+    height: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    margin-top:10px;
     color: #404040;
 }
