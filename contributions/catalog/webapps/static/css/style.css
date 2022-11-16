@@ -6,29 +6,7 @@
     order: 1;
 }
 
-/*!* Style the links inside the navigation bar *!*/
-/*.topnav a {*/
-/*    float: left;*/
-/*    display: inline-block;*/
-/*    color: #ffffff;*/
-/*    font-family: proxima-nova,sans-serif;*/
-/*    text-align: center;*/
-/*    padding: 14px 16px;*/
-/*    text-decoration: none;*/
-/*    font-size: 17px;*/
-/*}*/
-
-/*!* Change the color of links on hover *!*/
-/*.topnav a:hover {*/
-/*    background-color: #13294b;*/
-/*    color: #ffffff;*/
-/*}*/
-
-/* Add an active class to highlight the current page */
-.topnav a.active {
-    background-color: #88aeaf;
-    color: white;
-}
+/*!* Style the navigation bar *!*/
 
 /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
@@ -366,6 +344,7 @@ h1 {
 
 .catalog-home {
     margin-left: 35px;
+    margin-right: 35px;
     float: left;
     display: inline-block;
     font-size: 32px;
@@ -376,13 +355,14 @@ h1 {
     color: #FFFFFF;
 }
 
-.contribute-button {
-    margin: 0px 0px 10px 35px;
-    /*padding: 9px 39px 7px;*/
+.contribute-button, .contribute-button:hover, .contribute-button:active {
+    position: relative;
+    margin-top: 20px;
+    outline: none;
     border-radius: 24px;
     color: #e84a27;
     border: solid 2px #e84a27;
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 .dropdown-content {
