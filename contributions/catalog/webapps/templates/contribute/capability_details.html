@@ -17,9 +17,14 @@
 </head>
 
 <style>
-    html * {
+    html {
         font-family: proxima-nova,sans-serif;
+        min-height: 100%; !important;
+        height:100%;
       }
+    body {
+        min-height: 100%;
+    }
 
 </style>
 
@@ -29,59 +34,60 @@
     {% include 'topnav.html' %}
 </div>
 
-<div class="container">
+<div class="container d-none d-md-block content-padding">
     <h1>Capability Details</h1>
 
     <hr class="divider"/>
-    <div class="capability-details-body">
-        <div class="row">
-            <div class="col-12 col-sm-2">
+    <div class="grid container" style="display: grid; grid-auto-rows: max-content; row-gap: 5px; grid-template-rows: fit-content(60%)">
+        <div class="row justify-content-center h-100">
+            <div class="col-12 col-md-3 h-50">
                 <h4>Capability Name </h4>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.name}}</div>
+            <div class="col-12 col-sm-9 small-body-text h-50">{{post.name}}</div>
         </div>
 
-        <div class="row">
-            <div class="col-12 col-sm-2">
+
+        <div class="row d-flex flex-column h-100 justify-content-center">
+            <div class="col-12 col-sm-3">
                 <h4>Capability description </h4>
             </div>
             <div class="col-sm-9 small-body-text">{{post.description}}</div>
         </div>
 
-        <div class="row">
-            <div class="col-12 col-sm-2">
+        <div class="row d-flex flex-column h-100 justify-content-center">
+            <div class="col-12 col-sm-3">
                 <h4>Is code open source? </h4>
             </div>
             <div class="col-sm-9 small-body-text">{{post.isOpenSource}}</div>
         </div>
 
-        <div class="row">
-            <div class="col-12 col-sm-2">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-3">
                 <h4>Source code repository URL </h4>
             </div>
             <div class="col-sm-9 small-body-text">{{post.sourceRepoUrl}}</div>
         </div>
 
         <div class="row">
-            <div class="col-12 col-sm-2">
+            <div class="col-12 col-sm-3">
                 <h4>API Documentation URL </h4>
             </div>
             <div class="col-sm-9 small-body-text">{{post.apiDocUrl}}</div>
         </div>
 
         {% if post.deploymentDetails%}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Deployment status (Internal vs External) </h4>
+            <div class="row">
+                <div class="col-12 col-sm-3 h-50">
+                    <h4>Deployment status (Internal vs External) </h4>
+                </div>
+                <div class="col-sm-9 small-body-text">{{post.deploymentDetails.location}}</div>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.deploymentDetails.location}}</div>
-        </div>
         {% endif %}
 
         {% if reviewer %}
             {% if post.version %}
             <div class="row">
-                <div class="col-12 col-sm-2">
+                <div class="col-12 col-sm-3">
                     <h4>Version </h4>
                 </div>
                 <div class="col-sm-9 small-body-text">{{post.version}}</div>
@@ -89,7 +95,7 @@
             {% endif %}
             {% if post.healthCheckUrl %}
             <div class="row">
-                <div class="col-12 col-sm-2">
+                <div class="col-12 col-sm-3">
                     <h4>Health Check URL </h4>
                 </div>
                 <div class="col-sm-9 small-body-text">{{post.healthCheckUrl}}</div>
@@ -97,7 +103,7 @@
             {% endif %}
             {% if post.dataDeletionEndpointDetails %}
             <div class="row">
-                <div class="col-12 col-sm-2">
+                <div class="col-12 col-sm-3">
                     <h4>Data Deletion Endpoint Details </h4>
                 </div>
                 <div class="col-sm-9 small-body-text">
@@ -127,7 +133,7 @@
             {% endif %}
             {% if post.deploymentDetails %}
             <div class="row">
-                <div class="col-12 col-sm-2">
+                <div class="col-12 col-sm-3">
                     <h4>Deployment Details </h4>
                 </div>
                 <div class="col-sm-9 small-body-text">
@@ -182,8 +188,9 @@
         {% endif %}
     </div>
 
-    <button class="button button3" onclick="get_url()">View Contribution</button>
 </div>
+
+<button class="button button3" onclick="get_url()">View Contribution</button>
 
 
 <div class="action">
