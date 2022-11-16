@@ -1,27 +1,28 @@
 /* Add a black background color to the top navigation */
 .topnav {
     overflow: hidden;
-    background-color: #2a4b45;
+    background-color: #13294b;
     width: 100%;
     order: 1;
 }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-    float: left;
-    display: inline-block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
+/*!* Style the links inside the navigation bar *!*/
+/*.topnav a {*/
+/*    float: left;*/
+/*    display: inline-block;*/
+/*    color: #ffffff;*/
+/*    font-family: proxima-nova,sans-serif;*/
+/*    text-align: center;*/
+/*    padding: 14px 16px;*/
+/*    text-decoration: none;*/
+/*    font-size: 17px;*/
+/*}*/
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: #4c4c4c;
-}
+/*!* Change the color of links on hover *!*/
+/*.topnav a:hover {*/
+/*    background-color: #13294b;*/
+/*    color: #ffffff;*/
+/*}*/
 
 /* Add an active class to highlight the current page */
 .topnav a.active {
@@ -350,6 +351,38 @@ hr.dotted {
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
     background-color: #2a4b45;
+}
+
+h1 {
+    font-size: 32px;
+    height: 36px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #13294b;
+}
+
+.catalog-home {
+    margin-left: 35px;
+    float: left;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #FFFFFF;
+}
+
+.contribute-button {
+    margin: 0px 0px 10px 35px;
+    /*padding: 9px 39px 7px;*/
+    border-radius: 24px;
+    color: #e84a27;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
 .dropdown-content {

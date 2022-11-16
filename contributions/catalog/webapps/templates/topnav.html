@@ -1,7 +1,13 @@
 <div class="topnav" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
+    <div id="catalog-home">
+        <a href="{{ url_for('contribute.home') }}">
+            <h1 class="catalog-home">Contributions Catalog</h1>
+        </a>
+    </div>
     <div id="submit_contribution" style="display: none;">
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
+        <a role="button" href="{{ url_for('contribute.create') }}" class="btn contribute-button">
+            Contribute<i class="bi bi-plus-lg"></i>
+        </a>
     </div>
 
     <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
