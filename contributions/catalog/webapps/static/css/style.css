@@ -5,15 +5,46 @@
     width: 100%;
     order: 1;
 }
-
+/*!* Style the navigation bar *!*/
 .topnav-left {
     display: flex;
     float: left;
-    width:45%;
+    align-items: center;
+    width:50%;
 }
-/*!* Style the navigation bar *!*/
-.topnav-left div {
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+    display: flex;
+    float: right;
+    width:20%;
+    align-items: center;
+    color: #ffffff;
+}
+.topnav-right div, .topnav-left div {
     flex:1;
+}
+
+.topnav-red-button, .topnav-red-button:hover, .topnav-red-button:active {
+    float: left;
+    /*margin-top: 20px;*/
+    outline: none;
+    border-radius: 24px;
+    color: #e84a27;
+    border: solid 2px #e84a27;
+    background-color: #ffffff;
+}
+
+.topnav-blue-button, .topnav-blue-button:hover, .topnav-blue-button:active {
+    float: right;
+    margin-top: 10px;
+    margin-right: 35px;
+    /*margin-bottom: 10px;*/
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    border: solid 2px #e84a27;
+    background-color: #ffffff;
 }
 
 /* Hide the link that should open and close the topnav on small screens */
@@ -21,18 +52,10 @@
     display: none;
 }
 
-/* Right-aligned section inside the top navigation */
-.topnav-right {
-    display: flex;
+.user-greeting{
+    font-size: 16px;
+    margin-top: 10px;
     float: right;
-    position: relative;
-    width:15%;
-    /*vertical-align: middle;*/
-    color: #ffffff;
-    /*cursor: pointer;*/
-}
-.topnav-right div {
-    flex:1;
 }
 
 * {
@@ -369,16 +392,6 @@ h1 {
     font-style: normal;
     letter-spacing: normal;
     color: #FFFFFF;
-}
-
-.topnav-button, .topnav-button:hover, .topnav-button:active {
-    float: left;
-    margin-top: 20px;
-    outline: none;
-    border-radius: 24px;
-    color: #e84a27;
-    border: solid 2px #e84a27;
-    background-color: #ffffff;
 }
 
 .dropdown-content {
