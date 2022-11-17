@@ -60,14 +60,17 @@
                 <h4>Source code repository URL </h4>
             </div>
             <div class="col-12 col-md-9">
-                <span class="small-body-text">{{post.sourceRepoUrl}}</span></div>
+                <span class="small-body-text">{{post.sourceRepoUrl}}</span>
+            </div>
         </div>
 
         <div class="row">
             <div class="col-12 col-sm-3">
                 <h4>API Documentation URL </h4>
             </div>
-            <div class="col-12 col-md-9">{{post.apiDocUrl}}</div>
+            <div class="col-12 col-md-9">
+                <span class="small-body-text">{{post.apiDocUrl}}</span>
+            </div>
         </div>
 
         {% if post.deploymentDetails%}
@@ -75,7 +78,9 @@
                 <div class="col-12 col-sm-3">
                     <h4>Deployment location </h4>
                 </div>
-                <div class="col-12 col-md-9"><span class="small-body-text">{{post.deploymentDetails.location}}</span></div>
+                <div class="col-12 col-md-9">
+                    <span class="small-body-text">{{post.deploymentDetails.location}}</span>
+                </div>
             </div>
         {% endif %}
 
@@ -85,7 +90,9 @@
                 <div class="col-12 col-sm-3">
                     <h4>Version </h4>
                 </div>
-                <div class="col-12 col-md-9"><span class="small-body-text">{{post.version}}</span></div>
+                <div class="col-12 col-md-9">
+                    <span class="small-body-text">{{post.version}}</span>
+                </div>
             </div>
             {% endif %}
             {% if post.healthCheckUrl %}
@@ -93,7 +100,9 @@
                 <div class="col-12 col-sm-3">
                     <h4>Health Check URL </h4>
                 </div>
-                <div class="col-12 col-md-9">{{post.healthCheckUrl}}</div>
+                <div class="col-12 col-md-9">
+                    <span class="small-body-text">{{post.healthCheckUrl}}</span>
+                </div>
             </div>
             {% endif %}
             {% if post.dataDeletionEndpointDetails %}
