@@ -1,25 +1,31 @@
 <div class="topnav" id="myTopnav">
-    <div id="catalog-home">
-        <a href="{{ url_for('contribute.home') }}">
-            <h1 class="catalog-home">Contributions Catalog</h1>
-        </a>
-    </div>
-    <div id="submit_contribution" style="display: none;">
-        <a role="button" href="{{ url_for('contribute.create') }}" class="btn contribute-button">
-            Contribute &nbsp; <i class="bi bi-plus-lg" style="cursor: pointer; color: #e84a27;"></i>
-        </a>
+    <div class="topnav-left">
+        <div id="catalog-home">
+            <a href="{{ url_for('contribute.home') }}">
+                <h1 class="catalog-home">Contributions Catalog</h1>
+            </a>
+        </div>
+        <div id="submit_contribution" style="display: none;">
+            <a role="button" href="{{ url_for('contribute.create') }}" class="btn contribute-button">
+                Contribute &nbsp; <i class="bi bi-plus-lg" style="cursor: pointer; color: #e84a27;"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
+
+    <div class="topnav-right" id="nav_greeting" style="display: none;">
         <meta id="nav-user-data" user="{{user}}">
-        <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+        <div id="user_profile">Hello, {{ user }}! </div>
     </div>
 
     <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
-        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
+        <a role="button" href="{{ url_for('contribute.login') }}" class="btn contribute-button"> Login</a>
     </div>
+
 </div>
 
 <div class="dropdown-content" id="myDropdown" style="display: none">
     <a href="{{ url_for('contribute.logout') }}">Logout</a>
 </div>
+
+

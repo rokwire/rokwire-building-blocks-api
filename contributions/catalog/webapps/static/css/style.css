@@ -6,7 +6,15 @@
     order: 1;
 }
 
+.topnav-left {
+    display: flex;
+    float: left;
+    width:45%;
+}
 /*!* Style the navigation bar *!*/
+.topnav-left div {
+    flex:1;
+}
 
 /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
@@ -16,6 +24,9 @@
 /* Right-aligned section inside the top navigation */
 .topnav-right {
     float: right;
+    position: relative;
+    vertical-align: middle;
+    color: #ffffff;
     cursor: pointer;
 }
 
@@ -344,7 +355,7 @@ h1 {
 
 .catalog-home {
     margin-left: 35px;
-    margin-right: 35px;
+    margin-right: 10px;
     float: left;
     display: inline-block;
     font-size: 32px;
@@ -356,7 +367,7 @@ h1 {
 }
 
 .contribute-button, .contribute-button:hover, .contribute-button:active {
-    position: relative;
+    float: left;
     margin-top: 20px;
     outline: none;
     border-radius: 24px;
