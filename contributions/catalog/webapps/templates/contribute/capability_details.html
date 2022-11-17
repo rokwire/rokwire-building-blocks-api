@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
@@ -15,18 +15,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Capability Details</title>
 </head>
-
-<style>
-    html {
-        font-family: proxima-nova,sans-serif;
-        min-height: 100%; !important;
-        height:100%;
-      }
-    body {
-        min-height: 100%;
-    }
-
-</style>
 
 <body onload=start()>
 
@@ -38,49 +26,56 @@
     <h1>Capability Details</h1>
 
     <hr class="divider"/>
-    <div class="grid container" style="display: grid; grid-auto-rows: max-content; row-gap: 5px; grid-template-rows: fit-content(60%)">
-        <div class="row justify-content-center h-100">
-            <div class="col-12 col-md-3 h-50">
+    <div class="grid container" style="display: grid; grid-auto-rows: max-content; row-gap: 5px; grid-template-rows: fit-content(100%)">
+        <div class="row">
+            <div class="col-12 col-md-3">
                 <h4>Capability Name </h4>
             </div>
-            <div class="col-12 col-sm-9 small-body-text h-50">{{post.name}}</div>
+            <div class="col-12 col-md-9">
+                <span class="small-body-text">{{post.name}}</span>
+            </div>
         </div>
 
 
-        <div class="row d-flex flex-column h-100 justify-content-center">
-            <div class="col-12 col-sm-3">
+        <div class="row">
+            <div class="col-12 col-md-3">
                 <h4>Capability description </h4>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.description}}</div>
+            <div class="col-12 col-md-9 ">
+                <span class="small-body-text">{{post.description}}</span>
+            </div>
         </div>
 
-        <div class="row d-flex flex-column h-100 justify-content-center">
-            <div class="col-12 col-sm-3">
+        <div class="row">
+            <div class="col-12 col-md-3">
                 <h4>Is code open source? </h4>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.isOpenSource}}</div>
+            <div class="col-12 col-md-9">
+                <span class="small-body-text">{{post.isOpenSource}}</span>
+            </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-3">
+        <div class="row">
+            <div class="col-12 col-md-3">
                 <h4>Source code repository URL </h4>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.sourceRepoUrl}}</div>
+            <div class="col-12 col-md-9">
+                <span class="small-body-text">{{post.sourceRepoUrl}}</span></div>
         </div>
 
         <div class="row">
             <div class="col-12 col-sm-3">
                 <h4>API Documentation URL </h4>
             </div>
-            <div class="col-sm-9 small-body-text">{{post.apiDocUrl}}</div>
+            <div class="col-12 col-md-9">{{post.apiDocUrl}}</div>
         </div>
 
         {% if post.deploymentDetails%}
             <div class="row">
-                <div class="col-12 col-sm-3 h-50">
-                    <h4>Deployment status (Internal vs External) </h4>
+                <div class="col-12 col-sm-3">
+                    <h4>Deployment location </h4>
                 </div>
-                <div class="col-sm-9 small-body-text">{{post.deploymentDetails.location}}</div>
+                <div class="col-12 col-md-9"><span class="small-body-text">{{post.deploymentDetails.location}}</span></div>
             </div>
         {% endif %}
 
@@ -90,7 +85,7 @@
                 <div class="col-12 col-sm-3">
                     <h4>Version </h4>
                 </div>
-                <div class="col-sm-9 small-body-text">{{post.version}}</div>
+                <div class="col-12 col-md-9"><span class="small-body-text">{{post.version}}</span></div>
             </div>
             {% endif %}
             {% if post.healthCheckUrl %}
@@ -98,7 +93,7 @@
                 <div class="col-12 col-sm-3">
                     <h4>Health Check URL </h4>
                 </div>
-                <div class="col-sm-9 small-body-text">{{post.healthCheckUrl}}</div>
+                <div class="col-12 col-md-9">{{post.healthCheckUrl}}</div>
             </div>
             {% endif %}
             {% if post.dataDeletionEndpointDetails %}
@@ -106,7 +101,7 @@
                 <div class="col-12 col-sm-3">
                     <h4>Data Deletion Endpoint Details </h4>
                 </div>
-                <div class="col-sm-9 small-body-text">
+                <div class="col-12 col-md-9">
                     <table>
                         {% if post.dataDeletionEndpointDetails.apiKey %}
                         <tr id="datadeletion_row">
@@ -136,7 +131,7 @@
                 <div class="col-12 col-sm-3">
                     <h4>Deployment Details </h4>
                 </div>
-                <div class="col-sm-9 small-body-text">
+                <div class="col-12 col-md-9">
                     <table>
                         {% if post.deploymentDetails.authMethod %}
                         <tr>
