@@ -23,11 +23,16 @@
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
+    display: flex;
     float: right;
     position: relative;
-    vertical-align: middle;
+    width:15%;
+    /*vertical-align: middle;*/
     color: #ffffff;
-    cursor: pointer;
+    /*cursor: pointer;*/
+}
+.topnav-right div {
+    flex:1;
 }
 
 * {
@@ -366,7 +371,7 @@ h1 {
     color: #FFFFFF;
 }
 
-.contribute-button, .contribute-button:hover, .contribute-button:active {
+.topnav-button, .topnav-button:hover, .topnav-button:active {
     float: left;
     margin-top: 20px;
     outline: none;
