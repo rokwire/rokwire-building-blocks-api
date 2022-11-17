@@ -6,7 +6,7 @@
             </a>
         </div>
         <div id="submit_contribution" style="display: none;">
-            <a role="button" href="{{ url_for('contribute.create') }}" class="btn topnav-button">
+            <a href="{{ url_for('contribute.create') }}" class="btn topnav-red-button">
                 Contribute &nbsp; <i class="bi bi-plus-lg" style="cursor: pointer; color: #e84a27;"></i>
             </a>
         </div>
@@ -15,23 +15,16 @@
     <div class="topnav-right">
         <div id="nav_greeting" style="display: none;">
             <meta id="nav-user-data" user="{{user}}">
-            <div id="user_profile">Hello, {{ user }}! </div>
+            <div id="user_profile" class="user-greeting">Hello, {{ user }}! </div>
         </div>
-
-        <div id="nav_login" style="display: none; float: right; margin-left: 15px;">
-            <a role="button" href="{{ url_for('contribute.login') }}" class="btn topnav-button"> Login</a>
+        <div id="nav_logout" style="display: none;">
+            <a href="{{ url_for('contribute.logout') }}" class="btn topnav-blue-button"> Logout</a>
         </div>
-        <div id="nav_logout" style="float: right; margin-left: 15px;">
-            <a role="button" href="{{ url_for('contribute.logout') }}" class="btn topnav-button"> Logout</a>
+        <div id="nav_login" style="display: none;">
+            <a href="{{ url_for('contribute.login') }}" class="btn topnav-blue-button"> Login</a>
         </div>
-
     </div>
 
-
-</div>
-
-<div class="dropdown-content" id="myDropdown" style="display: none">
-    <a href="{{ url_for('contribute.logout') }}">Logout</a>
 </div>
 
 
