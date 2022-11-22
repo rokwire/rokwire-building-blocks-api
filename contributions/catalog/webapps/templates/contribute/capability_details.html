@@ -26,23 +26,22 @@
     <h1>Capability Details</h1>
 
     <hr class="divider"/>
-    <div class="grid container" style="display: grid; grid-auto-rows: max-content; row-gap: 5px; grid-template-rows: fit-content(100%)">
+    <div class="container">
         <div class="row">
             <div class="col-12 col-md-3">
                 <h4>Capability Name </h4>
             </div>
             <div class="col-12 col-md-9">
-                <span class="small-body-text">{{post.name}}</span>
+                <div class="small-body-text">{{post.name}}</div>
             </div>
         </div>
-
 
         <div class="row">
             <div class="col-12 col-md-3">
                 <h4>Capability description </h4>
             </div>
             <div class="col-12 col-md-9 ">
-                <span class="small-body-text">{{post.description}}</span>
+                <div class="small-body-text">{{post.description}}</div>
             </div>
         </div>
 
@@ -51,7 +50,7 @@
                 <h4>Is code open source? </h4>
             </div>
             <div class="col-12 col-md-9">
-                <span class="small-body-text">{{post.isOpenSource}}</span>
+                <div class="small-body-text">{{post.isOpenSource}}</div>
             </div>
         </div>
 
@@ -60,26 +59,26 @@
                 <h4>Source code repository URL </h4>
             </div>
             <div class="col-12 col-md-9">
-                <span class="small-body-text">{{post.sourceRepoUrl}}</span>
+                <div class="small-body-text">{{post.sourceRepoUrl}}</div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-12 col-sm-3">
+            <div class="col-12 col-md-3">
                 <h4>API Documentation URL </h4>
             </div>
             <div class="col-12 col-md-9">
-                <span class="small-body-text">{{post.apiDocUrl}}</span>
+                <div class="small-body-text">{{post.apiDocUrl}}</div>
             </div>
         </div>
 
         {% if post.deploymentDetails%}
             <div class="row">
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-md-3">
                     <h4>Deployment location </h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    <span class="small-body-text">{{post.deploymentDetails.location}}</span>
+                    <div class="small-body-text">{{post.deploymentDetails.location}}</div>
                 </div>
             </div>
         {% endif %}
@@ -87,27 +86,27 @@
         {% if reviewer %}
             {% if post.version %}
             <div class="row">
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-md-3">
                     <h4>Version </h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    <span class="small-body-text">{{post.version}}</span>
+                    <div class="small-body-text">{{post.version}}</div>
                 </div>
             </div>
             {% endif %}
             {% if post.healthCheckUrl %}
             <div class="row">
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-md-3">
                     <h4>Health Check URL </h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    <span class="small-body-text">{{post.healthCheckUrl}}</span>
+                    <div class="small-body-text">{{post.healthCheckUrl}}</div>
                 </div>
             </div>
             {% endif %}
             {% if post.dataDeletionEndpointDetails %}
             <div class="row">
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-md-3">
                     <h4>Data Deletion Endpoint Details </h4>
                 </div>
                 <div class="col-12 col-md-9">
@@ -137,7 +136,7 @@
             {% endif %}
             {% if post.deploymentDetails %}
             <div class="row">
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-md-3">
                     <h4>Deployment Details </h4>
                 </div>
                 <div class="col-12 col-md-9">
