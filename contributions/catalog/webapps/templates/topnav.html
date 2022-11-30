@@ -6,7 +6,7 @@
             </a>
         </div>
         <div id="submit_contribution" style="display: none;">
-            <a href="{{ url_for('contribute.create') }}" class="btn topnav-red-button">
+            <a href="{{ url_for('contribute.create') }}" class="topnav-contribute-button btn">
                 Contribute &nbsp; <i class="bi bi-plus-lg" style="cursor: pointer; color: #e84a27;"></i>
             </a>
         </div>
@@ -18,10 +18,10 @@
             <div id="user_profile" class="user-greeting">Hello, {{ user }}! </div>
         </div>
         <div id="nav_logout" style="display: none;">
-            <a href="{{ url_for('contribute.logout') }}" class="btn topnav-blue-button"> Logout</a>
+            <a href="{{ url_for('contribute.logout') }}" class="topnav-blue-button btn"> Logout</a>
         </div>
         <div id="nav_login" style="display: none;">
-            <a href="{{ url_for('contribute.login') }}" class="btn topnav-blue-button"> Login</a>
+            <a href="{{ url_for('contribute.login') }}" class="topnav-blue-button btn"> Login</a>
         </div>
     </div>
 
