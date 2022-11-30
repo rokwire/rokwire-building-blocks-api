@@ -24,12 +24,13 @@
     flex:1;
 }
 
-.topnav-red-button, .topnav-red-button:hover, .topnav-red-button:active {
+.topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
     float: left;
     /*margin-top: 20px;*/
     outline: none;
     border-radius: 24px;
-    color: #e84a27;
+    color: #002855;
+    font-weight: bold;
     border: solid 2px #e84a27;
     background-color: #ffffff;
 }
@@ -43,6 +44,7 @@
     outline: none;
     border-radius: 24px;
     color: #002855;
+    font-weight: bold;
     border: solid 2px #e84a27;
     background-color: #ffffff;
 }
