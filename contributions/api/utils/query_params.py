@@ -22,36 +22,13 @@ def format_query_status_login(query, login, is_login):
 
     return query
 
-def format_query_contribution(name, query):
-    query_parts = []
+def format_query_contribution(search_string, query):
+    query_parts = {}
 
-    if name is not None:
-        query_parts.append({'name': name})
-
-    if query_parts:
-        query['$and'] = query_parts
-
-    return query
-
-
-def format_query_capability(name, query):
-    query_parts = []
-
-    if name is not None:
-        query_parts.append({'capabilities.name': name})
+    if search_string is not None:
+        query_parts['$search'] = search_string
 
     if query_parts:
-        query['$and'] = query_parts
-
+        query['$text'] = query_parts
     return query
 
-def format_query_talent(name, query):
-    query_parts = []
-
-    if name is not None:
-        query_parts.append({'talents.name': name})
-
-    if query_parts:
-        query['$and'] = query_parts
-
-    return query
