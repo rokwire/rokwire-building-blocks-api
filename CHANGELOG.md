@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.17.0] - 2022-12-06
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
 - Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
@@ -541,7 +543,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
+[1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
 [1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
