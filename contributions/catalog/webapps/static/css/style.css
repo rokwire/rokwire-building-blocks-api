@@ -22,11 +22,12 @@
     align-items: center;
     color: #ffffff;
 }
-.topnav-right div {
-    flex:2 min-content;
-}
+
 .topnav-left div {
     flex:1;
+}
+.topnav-right div {
+    flex:2 1 auto;
 }
 
 .topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
