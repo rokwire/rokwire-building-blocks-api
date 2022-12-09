@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
 - Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
+- Edit database detail field in catalog. [#1048](https://github.com/rokwire/rokwire-building-blocks-api/issues/1048)
 - Display multiple contribution admins in catalog. [#1050](https://github.com/rokwire/rokwire-building-blocks-api/issues/1050)
 
 ## [1.16.0] - 2022-08-29
@@ -544,7 +545,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
+[1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
 [1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
