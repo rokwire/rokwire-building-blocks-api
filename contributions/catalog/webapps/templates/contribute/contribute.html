@@ -145,7 +145,7 @@
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                                   type="text" value="{{ post.contributionAdmins|join(',') }}"></div>
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
