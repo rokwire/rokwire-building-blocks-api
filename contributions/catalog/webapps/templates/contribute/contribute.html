@@ -978,11 +978,11 @@
                                     <label class="required control-label col-sm-2">Database Detail</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
                                         {% else %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text">
                                         {% endif %}
