@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
 - Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
+- Edit database detail field in catalog. [#1048](https://github.com/rokwire/rokwire-building-blocks-api/issues/1048)
 
 ## [1.16.0] - 2022-08-29
 ### Added
