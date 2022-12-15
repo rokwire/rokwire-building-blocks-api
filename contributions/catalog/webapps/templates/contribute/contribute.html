@@ -1782,6 +1782,24 @@
         MoveSelector(event);
     });
 
+    // IsOpenSourceUrl radio button
+    $(function(event) {
+        $('input[name^="capability_isOpenSource"]').on('click', function() {
+           // get the capability number and show/hide sourceurl
+           var isopensource_id = $(this).attr("id");
+           let cap_num = isopensource_id.split("_").pop();
+           if ($(this).val() == 'y') {
+               $('#sourceurl_' + cap_num).show();
+               // adjust selector button position
+               MoveSelector(event);
+           }
+           else {
+               $('#sourceurl_' + cap_num).hide();
+           }
+        });
+
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -2121,12 +2139,8 @@
         $("#capability-parent").append($clone);
         $("#capability-parent").append("<br>");
 
-        $('#open_source_yes_' + i).click(function (e) {
-            $('#sourceurl_' + i).show();
-        });
-        $('#open_source_no_' + i).click(function (e) {
-            $('#sourceurl_' + i).hide();
-        });
+        // adjust selector button position
+        MoveSelector(event);
 
         $('#add-env-var-button-div_' + i).append(env_var_button);
         // get all envvar pairs in the corresponding key-val div
