@@ -145,7 +145,7 @@
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                                   type="text" value="{{ post.contributionAdmins|join(', ') }}"></div>
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
@@ -616,7 +616,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {# TODO what is version url #}
                             <label class="control-label col-sm-2">Version URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version_url" name="capability_versionUrl"
@@ -1007,7 +1006,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {# TODO what is version url #}
                                     <label class="control-label col-sm-2">Version URL</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
@@ -1015,7 +1013,7 @@
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
                                                    placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
+                                                   type="text" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
