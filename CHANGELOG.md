@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User confirmation on cancel contribution. [#1022](https://github.com/rokwire/rokwire-building-blocks-api/issues/1022)
 - Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 - Make environmentVariable key required if present in Catalog. [#1028](https://github.com/rokwire/rokwire-building-blocks-api/issues/1028)
+- Added set and get functions for ApiBaseUrl in catalog. [#1047](https://github.com/rokwire/rokwire-building-blocks-api/issues/1047)
 
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
