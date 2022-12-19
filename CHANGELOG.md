@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User confirmation on cancel contribution. [#1022](https://github.com/rokwire/rokwire-building-blocks-api/issues/1022)
 - Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 - Make environmentVariable key required if present in Catalog. [#1028](https://github.com/rokwire/rokwire-building-blocks-api/issues/1028)
+- Added set and get functions for ApiBaseUrl in catalog. [#1047](https://github.com/rokwire/rokwire-building-blocks-api/issues/1047)
 
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
@@ -36,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
 - Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
 - Edit database detail field in catalog. [#1048](https://github.com/rokwire/rokwire-building-blocks-api/issues/1048)
+- Display multiple contribution admins in catalog. [#1050](https://github.com/rokwire/rokwire-building-blocks-api/issues/1050)
+- VersionUrl field name in contribution edit page. [#1056](https://github.com/rokwire/rokwire-building-blocks-api/issues/1056)
 - SourceUrl field display on IsOpenSourceUrl radio button in catalog. [#1053](https://github.com/rokwire/rokwire-building-blocks-api/issues/1053)
 
 ## [1.16.0] - 2022-08-29
