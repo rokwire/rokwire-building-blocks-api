@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Contributions Building Block API
   description: Contributions Building Block API Documentation
-  version: 1.16.0
+  version: 1.17.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
@@ -51,7 +51,7 @@ paths:
         500:
           description: Internal server error
     get:
-      summary: Return existing Contributions based on search criteria
+      summary: Return existing Contributions based on search string
       tags:
        - Contributions
       security:
@@ -60,7 +60,7 @@ paths:
       parameters:
         - name: name
           in: query
-          description: Contribution Name
+          description: Search string for the query to search by name and description of contributions, capabilities and talents
           schema:
             type: string
       responses:
@@ -80,19 +80,13 @@ paths:
           description: Internal server error
   /contributions/talents:
     get:
-      summary: Return existing Talents based on search criteria
+      summary: Return existing Talents
       operationId: controllers.contributions.alltalentssearch
       tags:
        - Talents
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-      parameters:
-        - name: name
-          in: query
-          description: Talent Name
-          schema:
-            type: string
       responses:
         200:
           description: Search results
@@ -109,7 +103,6 @@ paths:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Talent belongs to.
-#                  $ref: '#/components/schemas/Talent'
         400:
           description: Bad request
         401:
@@ -118,19 +111,13 @@ paths:
           description: Internal server error+
   /contributions/capabilities:
     get:
-      summary: Return existing Capabilities based on search criteria
+      summary: Return existing Capabilities
       operationId: controllers.contributions.allcapabilitiessearch
       tags:
         - Capabilities
       security:
         - GitHubAuth: []
         - ApiKeyAuth: []
-      parameters:
-        - name: name
-          in: query
-          description: Capability Name
-          schema:
-            type: string
       responses:
         200:
           description: Search results
@@ -147,7 +134,6 @@ paths:
                           type: string
                           format: uuid
                           description: UUID4 format string identifier of the Contribution that this Capability belongs to.
-#                  $ref: '#/components/schemas/Capability'
         400:
           description: Bad request
         401:
@@ -227,14 +213,14 @@ paths:
         - GitHubAuth: []
         - ApiKeyAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be obtained
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be obtained
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Contribution details
@@ -253,18 +239,18 @@ paths:
     put:
       summary: Update a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be updated
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         description: Contribution object
         content:
@@ -284,18 +270,18 @@ paths:
     delete:
       summary: Delete a contribution
       tags:
-       - Contributions
+        - Contributions
       security:
         - GitHubAuth: []
       parameters:
-      - name: id
-        in: path
-        description: ID of the contribution that needs to be deleted
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: ID of the contribution that needs to be deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         200:
           description: Successfully deleted contribution details
@@ -411,7 +397,7 @@ paths:
           description: Internal server error
   /contributions/admin/reviewers:
     post:
-      summary: Create a new reviwer
+      summary: Add a new reviewer
       tags:
         - Admin
       security:
@@ -701,26 +687,34 @@ components:
           type: string
         longDescription:
           type: string
+          nullable: true
         icon:
           type: string
           nullable: true
           description: URL for the icon image for talent in content building block
         requiredCapabilities:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/RequiredCapability'
+          default: []
         requiredBuildingBlocks:
           type: array
+          nullable: true
           items:
             type: string
+          default: []
         minUserPrivacyLevel:
           description: Minimum privacy level that needs to be set by the user for this Talent to appear in the app interface.
           type: integer
+          nullable: true
           minimum: 1
           maximum: 5
+          default: 1
         minEndUserRoles:
           description: Minimum set of end user roles that needs to be selected by the user for this Talent to appear in the app interface
           type: array
+          nullable: true
           items:
             type: string
             enum:
@@ -731,17 +725,21 @@ components:
               - student
               - visitor
           uniqueItems: true
+          default: []
         startDate:
           description: Start date at which this Talent can become active.
           type: string
           format: date-time
+          nullable: true
         endDate:
           description: End date at which this Talent should be deactivated.
           type: string
           format: date-time
+          nullable: true
         dataDescription:
           description: Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level.
           type: string
+          nullable: true
         selfCertification:
           description: Detailed disclosure about some specific items related to the Rokwire platform.
           type: object
@@ -749,20 +747,25 @@ components:
             dataDeletionUponRequest:
               type: string
               description: Self certification about deleting data upon request
+              nullable: true
             respectingUserPrivacySetting:
               type: string
               description: Self certification about respecting privacy setting
+              nullable: true
             discloseAds:
               type: string
               description: Self disclosure about any Ads shown in the Talent
+              nullable: true
             discloseSponsors:
               type: string
+              nullable: true
             discloseImageRights:
               type: string
               description: Self disclosure about the rights to use images within the Talent
+              nullable: true
     RequiredCapability:
       type: object
-      description: A required capabiity object that recorded in talent
+      description: A required capability object that recorded in talent
       required:
         - contributionId
         - capabilityId

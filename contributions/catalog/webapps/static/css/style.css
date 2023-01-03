@@ -308,8 +308,8 @@ hr.dotted {
     border-top: 5px dotted #919590;
 }
 
-/* The Modal (background) */
-.modal {
+/* Submit Modal (background) */
+#submit-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -386,9 +386,37 @@ hr.dotted {
 
 #togglePassword {
     cursor: pointer;
-    position: absolute;
-    margin-left: -20px;
-    margin-top: -20px;
+    position: relative;
+}
+
+#env-var-close-btn {
+    cursor: pointer;
+    position: relative;
+    margin-left: 1%;
+}
+
+input.envvar-key[type=text] {
+    width: 47%;
+    display: table-cell;
+}
+
+input.envvar-value {
+    width: 47%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: table-cell;
+}
+
+input.datadel-endpoint[type=text] {
+    width: 47%;
+    display: inline-block;
+}
+
+input.datadel-api {
+    width: 47%;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: inline-block;
 }
 
 .hidetext { -webkit-text-security: disc; }

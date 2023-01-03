@@ -75,7 +75,7 @@
             <nav>
                 <ol class="cd-multi-steps text-top">
                     <li class="current"><a href="#contribute">Contribution Details</a></li>
-                    <li><em><a href="#capability">Capability and/or Talent Details </a></em></li>
+                    <li><em><a href="#capability-parent">Capability and/or Talent Details </a></em></li>
                     <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                     <li><em>Submit</em></li>
                 </ol>
@@ -145,7 +145,7 @@
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                                   type="text" value="{{ post.contributionAdmins|join(', ') }}"></div>
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
@@ -475,11 +475,11 @@
                 {% endif %}
             </div>
 
-            <div>
+            <div id="cd-multi-steps-text-top">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><em><a href="#contribute">Contribution Details</a></em></li>
-                        <li class="current"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="current"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li><em><a href="#contact">Contact & Self-certification</a></em></li>
                         <li><em>Submit</em></li>
@@ -487,14 +487,15 @@
                 </nav>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="select-contribution-div">
                 <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
-                <div>
-                    <button class="button button2" id="add-capability">Add a Capability</button>
+                <div id="select-contribution-button">
+                    <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
                     OR
-                    <button class="button button1" id="add-talent">Add a Talent</button>
+                    <button class="button button1" id="add-talent" onclick="AddTalent(event); MoveSelector(event);">Add a Talent</button>
                 </div>
             </div>
+
             <!-----------------------------------------capability block ------------------------------------>
             <div id="capability-parent" style="display: block; background-color:white">
 
@@ -502,7 +503,7 @@
                 <div id="capability-div-clean" style="display: none; background-color:white">
                     <!-- all field id in capability clean block will be appended with _0 -->
                     <hr class="dotted">
-                    <button type="button" class="button button3 pull-right" id="delete_capability" style="margin-top:-15px;">Delete Capability</button>
+                    <button type="button" class="button button3 pull-right delete-capability-btn" id="delete_capability" type="submit" style="margin-top:-15px;">Delete Capability</button>
                     <div id="capability">
                         <h3 id="capability">Add a Capability to this Contribution</h3>
                         <div class="form-group">
@@ -582,20 +583,20 @@
                         </div>
 
                         <div name="add-env-var-div" class="form-group">
-                            <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                            <div class="col-sm-10" id="key-val">
+                            <label class="control-label col-sm-2">Environment Variable(s)</label>
+                            <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
                                 <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
-                                <input class="form-control" name="environmentVariables_key_0" placeholder="Key"
+                                <input class="form-control envvar-key" name="environmentVariables_key_0" placeholder="Key"
                                        id="environmentVariables_key_0" type="text">
-                                <input class="form-control" name="environmentVariables_value_0" placeholder="Value"
+                                <input class="form-control envvar-value" name="environmentVariables_value_0" placeholder="Value"
                                        id="environmentVariables_value_0" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                <br>
+                                <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                             </div>
-                            <div id="add-env-var-button-div" class="row">
-                                <!-- place holder for dynamic button for add more fields" -->
-                            </div>
+                        </div>
+                        <div id="add-env-var-button-div" class="row">
+                            <!-- place holder for dynamic button for add environment variables" -->
                         </div>
 
                         <div class="form-group">
@@ -615,7 +616,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {# TODO what is version url #}
                             <label class="control-label col-sm-2">Version URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version_url" name="capability_versionUrl"
@@ -644,16 +644,16 @@
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Data Deletion</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
+                                <input class="form-control datadel-endpoint" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
                                        placeholder="Endpoint" type="text">
-                                <input class="form-control" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
+                                <input class="form-control datadel-api" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
                                        placeholder="Api Key" type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <br>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> <!--- end of div id capability --->
+                </div> <!--- end of div capability-div-clean --->
 
                 <!--------------------------------- capability block for existing records ------------------------->
                 {% if post.capabilities %}
@@ -661,10 +661,10 @@
                         <div id="capability-div-existing-records" style="display: block; background-color:white">
                             <hr class="dotted">
                             {% if is_editable %}
-                                <button type="button" class="button button3 pull-right" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
+                                <button type="button" class="button button3 pull-right delete-capability-btn" id="delete_capability_{{loop.index0}}" style="margin-top:-15px;">Delete Capability</button>
                             {% endif %}
                             <div id="capability_{{loop.index0}}">
-                                <h3 id="capability_{{loop.index0}}">Add a Capability to this Contribution</h3>
+                                <h3 id="capability_{{loop.index0}}">Capability - {{ capability | filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Capability Name</label>
                                     <div class="col-sm-10">
@@ -703,44 +703,47 @@
                                 <div class="form-group" id="open-source-check-div">
                                     <label class="required control-label col-sm-2">Is the Code Open Sourced? </label>
                                     <!-- open source yes no block -->
-                                    <label class="form-check-label">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                    {% if is_editable %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                            <label class="form-check-label">
                                                 <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}" type="radio"
                                                        checked="checked" value="y">
-                                                yes</label>
-                                            {% else %}
-                                                <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                       name="capability_isOpenSource_{{loop.index0}}"
-                                                       type="radio" value="y">
-                                                yes</label>
-                                            {%  endif %}
-                                            {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
-                                                           name="capability_isOpenSource_{{loop.index0}}"
-                                                           type="radio" checked="checked" value="n">
-                                                    no</label>
-                                            {% else %}
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
-                                                           name="capability_isOpenSource_{{loop.index0}}"
-                                                           type="radio" value="n">
-                                                    no</label>
-                                            {%  endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                   name="capability_isOpenSource_{{loop.index0}}"
-                                                   type="radio" value="y">
                                             yes</label>
+                                        {% else %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                        name="capability_isOpenSource_{{loop.index0}}"
+                                                        type="radio" value="y">
+                                            yes</label>
+                                        {%  endif %}
+                                        {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                       name="capability_isOpenSource_{{loop.index0}}"
+                                                       type="radio" checked="checked" value="n">
+                                                no</label>
+                                        {% else %}
                                             <label class="form-check-label">
                                                 <input class="form-check-input" id="open_source_no_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}"
                                                        type="radio" value="n">
                                                 no</label>
-                                        {% endif %}
-                                </div>
+                                        {%  endif %}
+                                    {% else %}
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="y">
+                                        yes</label>
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                   name="capability_isOpenSource_{{loop.index0}}"
+                                                   type="radio" value="n">
+                                            no</label>
+                                    {% endif %}
+                                </div> <!-- end of open source yes no check div -->
+                                <!-- display opensource url if yes -->
                                 {% if is_editable %}
                                     {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
                                         <div class="form-group"
@@ -793,7 +796,7 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                {% endif %}
+                                {% endif %} <!-- end of open source url div -->
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">API Doc URL</label>
                                     <div class="col-sm-10">
@@ -880,93 +883,105 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="form-group" name="add-env-var">
-                                    <label class="required control-label col-sm-2">Environment Variable(s)</label>
-                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}">
+                                <div class="form-group" name="add-env-var-div">
+                                    <label class="control-label col-sm-2">Environment Variable(s)</label>
+                                    <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
                                             <!-- environment variables match the pattern environmentVariables_key_envindex_capindex -->
                                             {% set caploop = loop.index0 %}
                                             {% for envvar in capability["deploymentDetails"]["environmentVariables"] %}
                                                 {% set keyvalloop = loop %}
                                                     {% if is_editable %}
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Key"
                                                                id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="text" value="{{ envvar | filter_nested_dict(["key"]) }}">
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-value"
                                                                name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Value"
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password"
                                                                value="{{ envvar | filter_nested_dict(["value"]) }}">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword" ></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                                     {% else %}
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-key"
                                                                name="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Key"
                                                                id="environmentVariables_key_{{keyvalloop.index0}}_{{ caploop }}" type="text">
-                                                        <input class="form-control"
+                                                        <input class="form-control envvar-value"
                                                                name="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                placeholder="Value"
                                                                id="environmentVariables_value_{{keyvalloop.index0}}_{{ caploop }}"
                                                                type="password">
                                                         <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                                        <br>
+                                                        <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                                     {% endif %}
                                             {% endfor %}
                                         {%  else %}
                                             <!-- first envvar pair starts with index0 -->
-                                            <input class="form-control" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
+                                            <input class="form-control envvar-key" name="environmentVariables_key_0_{{ loop.index0 }}" placeholder="Key"
                                                    id="environmentVariables_key_0_{{ loop.index0 }}" type="text">
-                                            <input class="form-control" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
+                                            <input class="form-control envvar-value" name="environmentVariables_value_0_{{ loop.index0 }}" placeholder="Value"
                                                    id="environmentVariables_value_0_{{ loop.index0 }}" type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
-                                            <br>
+                                            <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                                         {% endif %}
-                                    </div>
-                                    <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
-                                        <script>
-                                            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_{{ loop.index0 }}">' +
-                                                'Add more fields</button>'
-                                            $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                            // get all envvar pairs in the key-val div.
-                                            var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
-                                            // start the envvar counter with the number of envvar pairs in the key-val div
-                                            var add_env_var_button_click_count = envvar_list.length;
-                                            $('#add_env_var_{{ loop.index0 }}').click(function (e) {
-                                                e.preventDefault();
-                                                // environment variables match the pattern environmentVariables_key_envindex_capindex
-                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                                $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
-                                                    $(this).toggleClass("bi-eye");
-                                                    let input = $(this).prev();
-                                                    if (input.attr("type") === "password") {
-                                                        input.attr("type", "text");
-                                                    } else {
-                                                        input.attr("type", "password");
-                                                    }
-                                                }));
-                                                $("#key-val_{{ loop.index0 }}").append("<br>");
-                                                // once new envvar pairs are added, increment the counter
-                                                add_env_var_button_click_count++;
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
+                                    </div> <!-- end of div key-val_loop.index0 -->
+                                </div> <!-- end of div add-env-var-div -->
+                                <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
+                                    <script>
+                                        var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                            'Add environment variables</button>'
+                                        $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
+                                        // get all envvar pairs in the key-val div.
+                                        var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
+                                        // start the envvar counter with the number of envvar pairs in the key-val div
+                                        var add_env_var_button_click_count = envvar_list.length;
+                                        $('#add_env_var_{{ loop.index0 }}').click(function (e) {
+                                            e.preventDefault();
+                                            // environment variables match the pattern environmentVariables_key_envindex_capindex
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
+                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
+                                                $(this).toggleClass("bi-eye");
+                                                let input = $(this).prev();
+                                                if (input.attr("type") === "password") {
+                                                    input.attr("type", "text");
+                                                } else {
+                                                    input.attr("type", "password");
+                                                }
+                                            }));
+                                            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
+                                            $("#key-val_{{ loop.index0 }}").append($(i_envvarclose).on('click', function () {
+                                                let closebtn = $(this);
+                                                let eyebtn = closebtn.prev();
+                                                let input_envval = eyebtn.prev();
+                                                let input_envkey = input_envval.prev();
+                                                eyebtn.remove()
+                                                input_envval.remove();
+                                                input_envkey.remove();
+                                                closebtn.remove();
+                                                MoveSelector(event);
+                                            }));
+                                            // once new envvar pairs are added, increment the counter
+                                            add_env_var_button_click_count++;
+                                        });
+                                    </script>
+                                </div> <!-- end of add-env-var-button-div -->
+
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Database Detail</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
                                         {% else %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text">
                                         {% endif %}
@@ -991,7 +1006,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {# TODO what is version url #}
                                     <label class="control-label col-sm-2">Version URL</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
@@ -999,7 +1013,7 @@
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
                                                    placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
+                                                   type="text" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
@@ -1047,26 +1061,26 @@
                                     <label class="required control-label col-sm-2">Data Deletion</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                    placeholder="Endpoint"
                                                    type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                         {% else %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
                                                    placeholder="Endpoint" type="text">
                                         {% endif %}
                                         {% if is_editable %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                    placeholder="Api Key"
                                                    type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         {% else %}
-                                            <input class="form-control"
+                                            <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
                                                    placeholder="Api Key" type="password">
@@ -1076,11 +1090,11 @@
                                     </div>
                                 </div>
                                 <script>capability_count++;</script>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                            </div> <!--- end of div id capability_loop.index -->
+                        </div> <!--- end of div capability-div-existing-records -->
+                    {% endfor %} <!-- end of for loop iterating through existing capabilities -->
+                {% endif %} <!-- end of if existing capabilities exist -->
+            </div> <!-- end of div capability-parent -->
 
             <!--------------------------------------------talent block ------------------------------------------>
             <div id="talent-parent" style="display: block; background-color:white">
@@ -1088,7 +1102,7 @@
                 <div id="talent-div-clean" style="display: none">
                     <!-- all field id in talent clean block will be appended with _0 -->
                     <hr class="dotted">
-                    <button type="button" class="button button3 pull-right" id="delete_talent" style="margin-top:-15px;">Delete Talent</button>
+                    <button type="button" class="button button3 pull-right delete-talent-btn" id="delete_talent" type="submit" style="margin-top:-15px;">Delete Talent</button>
                     <div id="talent">
                         <h3 id="talent">Add a Talent to this Contribution</h3>
                         <div class="form-group">
@@ -1135,7 +1149,7 @@
                             <label class="control-label col-sm-2">User Privacy Level</label>
                             <div class="col-sm-10">
                                 <input max="5" min="1" name="talent_minUserPrivacyLevel"
-                                       step="1" type="number" value="1"/>
+                                       step="1" type="number" value="1">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1172,10 +1186,12 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2">Data Description</label>
-                            <div class="col-sm-10"><input id="data_des" name="talent_dataDescription"
-                                                          placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                                          style="height:150px"
-                                                          type="text"></div>
+                            <div class="col-sm-10">
+                                <input id="data_des" name="talent_dataDescription"
+                                       placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                       style="height:150px"
+                                       type="text">
+                            </div>
                         </div>
                         <!---------- self certification block -------------------->
                         <div class="container">
@@ -1183,34 +1199,35 @@
                             <h3>Self-certification</h3>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Deleting data upon request</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_dataDeletionUponRequest"
-                                                              placeholder="Deleting data upon request"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_dataDeletionUponRequest"
+                                           placeholder="Deleting data upon request" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Respecting privacy setting</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_respectingUserPrivacySetting"
-                                                              placeholder="Respecting privacy setting"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
+                                           placeholder="Respecting privacy setting" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose sponsors / ads</label>
-                                <div class="col-sm-10"><input class="form-control" name="selfcertificate_discloseAds"
-                                                              placeholder="Disclose sponsors / ads"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_discloseAds"
+                                           placeholder="Disclose sponsors / ads" type="text">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose right to use images</label>
-                                <div class="col-sm-10"><input class="form-control"
-                                                              name="selfcertificate_discloseImageRights"
-                                                              placeholder="Disclose right to use images"
-                                                              type="text"></div>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="selfcertificate_discloseImageRights"
+                                           placeholder="Disclose right to use images" type="text">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div> <!-- end of self certification block -->
+                    </div> <!-- end of div talent -->
+                </div> <!-- end of talent-div-clean -->
 
                 <!----------------------------------------talent existing record block ---------------------------------------->
 
@@ -1219,10 +1236,10 @@
                         <div id="talent-div-existing-records" style="display: block">
                             <hr class="dotted">
                             {% if is_editable %}
-                                <button type="button" class="button button3 pull-right" id="delete_talent_{{loop.index0}}" style="margin-top:-15px;">Delete Talent</button>
+                                <button type="button" class="button button3 pull-right delete-talent-btn" id="delete_talent_{{loop.index0}}" style="margin-top:-15px;">Delete Talent</button>
                             {% endif %}
                             <div id="talent_{{loop.index0}}">
-                                <h3 id="talent_{{loop.index0}}">Add a Talent to this Contribution</h3>
+                                <h3 id="talent_{{loop.index0}}">Talent - {{ talent|filter_nested_dict(["name"]) }}</h3>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Talent Name</label>
                                     <div class="col-sm-10">
@@ -1331,7 +1348,7 @@
                                                id="minUserPrivacyLevel_{{loop.index0}}"
                                                step="1"
                                                type="number"
-                                               value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}"/>
+                                               value="{{ talent|filter_nested_dict(["minUserPrivacyLevel"]) }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -1512,22 +1529,24 @@
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseImageRights"]) }}">
                                         </div>
                                     </div>
-                                </div>
+                                </div> <!-- end of self certification block div -->
                                 <script>talent_count++;</script>
-                            </div>
-                        {# end of existing talent_i #}
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                            </div>  <!--- end of div id talent_loop.index -->
+                        <!-- end of existing talent_i -->
+                        </div> <!-- end of talent-div-existing-records -->
+                    {% endfor %} <!-- end of for loop iterating through existing talents -->
+                {% endif %}  <!-- end of if existing talents exist -->
+            </div>  <!-- end of div talent-parent -->
+
+            <div id="select-contribution-div-placeholder" class="row">
+                <!-- place holder for dynamic add capability / talent buttons" -->
             </div>
-
-
             <!--------------------------------------------contact/privacy check ------------------------------------------>
-            <div>
+            <div id="cd-multi-steps-text-bottom">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
-                        <li class="visited"><em><a href="#capability">Capability and/or Talent Details </a></em>
+                        <li class="visited"><em><a href="#capability-parent">Capability and/or Talent Details </a></em>
                         </li>
                         <li class="current"><em><a href="#contact">Contact</a></em></li>
                         <li><em>Submit</em></li>
@@ -1543,110 +1562,132 @@
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                          placeholder="" type="text" value="{{ contact.name }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_name" name="contact_name"
+                                       placeholder="" type="text" value="{{ contact.name }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Name</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_name" name="contact_name"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
-                        <label class="required control-label col-sm-2">Contact Email</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                      placeholder="" type="text" value="{{ contact.email }}"></div>
-                    </div>
+                            <label class="required control-label col-sm-2">Contact Email</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_email" name="contact_email"
+                                       placeholder="" type="text" value="{{ contact.email }}">
+                            </div>
+                        </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Email</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_email" name="contact_email"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Phone</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_phone"
-                                                          name="contact_phone"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.phone }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_phone"
+                                       name="contact_phone" placeholder="" type="text"
+                                       value="{{ contact.phone }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Contact Phone</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_phone" name="contact_phone"
+                                       placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                          name="contact_organization"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.organization }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_org"
+                                       name="contact_organization" placeholder="" type="text"
+                                       value="{{ contact.organization }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Contact Organization</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                          name="contact_organization"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_org"
+                                       name="contact_organization" placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                     {% if is_editable %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control"
-                                                          id="contact_address"
-                                                          name="contact_officialAddress"
-                                                          placeholder="" type="text"
-                                                          value="{{ contact.officialAddress }}"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_address"
+                                       name="contact_officialAddress" placeholder="" type="text"
+                                       value="{{ contact.officialAddress }}">
+                            </div>
                         </div>
                     {% else %}
                         <div class="form-group">
                             <label class="control-label col-sm-2">Official Address</label>
-                            <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                          name="contact_officialAddress"
-                                                          placeholder="" type="text"></div>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="contact_address"
+                                       name="contact_officialAddress" placeholder="" type="text">
+                            </div>
                         </div>
                     {% endif %}
                 {% else %}
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Name</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_name" name="contact_name"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_name" name="contact_name"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Email</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_email" name="contact_email"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_email" name="contact_email" placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Phone</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_phone" name="contact_phone"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_phone" name="contact_phone"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contact Organization</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_org"
-                                                      name="contact_organization"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_org" name="contact_organization"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Official Address</label>
-                        <div class="col-sm-10"><input class="form-control" id="contact_address"
-                                                      name="contact_officialAddress"
-                                                      placeholder="" type="text"></div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="contact_address" name="contact_officialAddress"
+                                   placeholder="" type="text">
+                        </div>
                     </div>
                 {% endif %}
+            </div> <!-- end of class container Contact Details div -->
 
-            </div>
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
                 <input href="{{ url_for('contribute.home') }}"
                        id="submit_button"
                        onsubmit="return data_validation()"
@@ -1654,8 +1695,8 @@
                        value="Submit">
             </div>
 
-            <!-- The Modal -->
-            <div class="modal" id="myModal">
+            <!-- Submit modal -->
+            <div class="modal" id="submit-modal">
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -1663,8 +1704,33 @@
                     <br>
                 </div>
             </div>
-        </form>
-    </div>
+
+            <!-- Cancel Confirmation modal -->
+            <div class="modal" id="cancel-modal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                              Cancel submission
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to Cancel this submission?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">No</button>
+                            <a class="btn btn-primary ml-1" role="button" id="cancel-modal-btn-yes" href="{{ url_for('contribute.home') }}">Yes</a>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end of cancel-modal div -->
+
+        </form> <!-- end of form -->
+    </div> <!-- end -->
+
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@9.0.0/dist/js/autoComplete.min.js"></script>
@@ -1698,6 +1764,38 @@
         if (end_val < start_val) {
             end_day.val(null)
         }
+    });
+
+    // delete environment keyvalue pair
+    $('[id="env-var-close-btn"]').on('click', function () {
+        let closebtn = $(this);
+        let eyebtn = closebtn.prev();
+        let input_envval = eyebtn.prev();
+        let input_envkey = input_envval.prev();
+        eyebtn.remove()
+        input_envval.remove();
+        input_envkey.remove();
+        closebtn.remove();
+        // adjust selector button div
+        MoveSelector(event);
+    });
+
+    // IsOpenSourceUrl radio button
+    $(function(event) {
+        $('input[name^="capability_isOpenSource"]').on('click', function() {
+           // get the capability number and show/hide sourceurl
+           var isopensource_id = $(this).attr("id");
+           let cap_num = isopensource_id.split("_").pop();
+           if ($(this).val() == 'y') {
+               $('#sourceurl_' + cap_num).show();
+               // adjust selector button position
+               MoveSelector(event);
+           }
+           else {
+               $('#sourceurl_' + cap_num).hide();
+           }
+        });
+
     });
 
     $(function () {
@@ -1756,7 +1854,7 @@
             });
     });
 
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("submit-modal");
     // Get the button that opens the modal
     var btn = document.getElementById("submit_button");
 
@@ -1822,6 +1920,18 @@
         var datadel_api = []
 
         if (capability_count > 0) {
+            // validation for empty environmentVariable key
+            environmentVariables_keys_list = document.getElementsByClassName("envvar-key");
+            // start from index1. index0 is input#environmentVariables_key_0 which does not have any value
+            for (var envkey_ind=1; envkey_ind<environmentVariables_keys_list.length; envkey_ind++)
+            {
+                if (environmentVariables_keys_list[envkey_ind].value == "") {
+                    environmentVariables_keys_list[envkey_ind].focus();
+                    environmentVariables_keys_list[envkey_ind].required = true;
+                    return false;
+                }
+            }
+
             // get the _num of capabilities and iterate through the list
             var div_cap_ids = $("div[id^='capability_']").map(function() {
                                 return this.id;
@@ -1862,20 +1972,6 @@
                     // window.alert("Please enter the docker image.");
                     dockerimage[i].focus();
                     dockerimage[i].required = true;
-                    return false;
-                }
-                environmentVariables_key[i] = document.getElementById('environmentVariables_key_0' + '_' + i);
-                if (environmentVariables_key[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_key[i].focus();
-                    environmentVariables_key[i].required = true;
-                    return false;
-                }
-                environmentVariables_value[i] = document.getElementById('environmentVariables_value_0' + '_' + i);
-                if (environmentVariables_value[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    environmentVariables_value[i].focus();
-                    environmentVariables_value[i].required = true;
                     return false;
                 }
                 db[i] = document.getElementById('db-detail' + '_' + i);
@@ -2004,105 +2100,146 @@
         original.parentNode.appendChild(clone);
     }
 
-    $(function () {
-        $("#add-capability").click(function (e) {
-            e.preventDefault();
-            var $clone = $("#capability-div-clean").clone(true);
-            $clone.find(':input').attr('id', function (i, val) {
-                return val + '_' + capability_count;
-            });
-            $clone.find(':input').attr('name', function (i, val) {
-                return val + '_' + capability_count;
-            });
-            $clone.find('div').attr('id', function (i, val) {
-                return val + '_' + capability_count;
-            });
-            $clone.attr('style', 'display: block, background-color: white')
-
-            var i = capability_count;
-            var env_var_button = '<button class="button button3" type="submit" id="add_env_var_' + i + '">' +
-                'Add more fields</button>'
-
-            $("#capability-parent").append($clone);
-            $("#capability-parent").append("<br>");
-
-            $('#open_source_yes_' + i).click(function (e) {
-                $('#sourceurl_' + i).show();
-            });
-            $('#open_source_no_' + i).click(function (e) {
-                $('#sourceurl_' + i).hide();
-            });
-
-            $('#add-env-var-button-div_' + i).append(env_var_button);
-            // get all envvar pairs in the corresponding key-val div
-            let $key_val_div = $("#key-val_" + i)
-            var envvar_list = $key_val_div.children(`input[id^="environmentVariables_key_"]`);
-            // when adding more envvars start the counter with the number of envvar pairs already present.
-            var add_env_var_button_click_count = envvar_list.length;
-            $('#add_env_var_' + i).click(function (e) {
-                e.preventDefault();
-
-                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
-                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
-                $key_val_div.append("<input class = \"form-control\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
-                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
-                $key_val_div.append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
-                    $(this).toggleClass("bi-eye");
-                    let input = $(this).prev();
-                    if (input.attr("type") === "password") {
-                        input.attr("type", "text");
-                    } else {
-                        input.attr("type", "password");
-                    }
-                }));
-                $key_val_div.append("<br>");
-                // once added, increment the envvar counter
-                add_env_var_button_click_count++;
-            });
-
-            if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
-                $('#sourceurl_' + i).show();
-            } else {
-                $('#sourceurl_' + i).hide();
-            }
-
-            capability_count++;
-        });
-    });
-    $('[id^="delete_capability_"]').on('click', function (e) {
+    // delete capability
+    $('.delete-capability-btn').on('click', function (e) {
+        e.preventDefault();
         // get the capability number and remove all corresponding divs
-        var del_cap_button_name = $(this).attr("id");
-        let cap_num = del_cap_button_name.split("_").pop();
-        $("div#capability_" + cap_num).remove();
+        var del_cap_button_id = $(this).attr("id");
+        let cap_num = del_cap_button_id.split("_").pop();
+        $("#capability_" + cap_num).remove();
         $(this).hide();
+        // remove hr dotted line
+        let hr_dot = $(this).prev("hr");
+        hr_dot.remove();
         capability_count--;
+        // adjust selector div position
+        MoveSelector(e);
     });
 
-    $(function () {
-        $("#add-talent").click(function (e) {
-            e.preventDefault();
-            var $clone = $("#talent-div-clean").clone(true);
-            $clone.find(':input').attr('id', function (i, val) {
-                return val + '_' + talent_count;
-            });
-            $clone.find(':input').attr('name', function (i, val) {
-                return val + '_' + talent_count;
-            });
-            $clone.attr('style', 'display: block, background-color: white')
-
-            $("#talent-parent").append($clone);
-            $("#talent-parent").append("<br>");
-
-            talent_count++;
+    function AddCapability(event) {
+        event.preventDefault();
+        var $clone = $("#capability-div-clean").clone(true);
+        $clone.find(':input').attr('id', function (i, val) {
+            return val + '_' + capability_count;
         });
-    });
-    $('[id^="delete_talent_"]').on('click', function (e) {
+        $clone.find(':input').attr('name', function (i, val) {
+            return val + '_' + capability_count;
+        });
+        $clone.find('div').attr('id', function (i, val) {
+            return val + '_' + capability_count;
+        });
+        $clone.attr('style', 'display: block, background-color: white')
+
+        var i = capability_count;
+        var env_var_button = '<button class="button button5" type="submit" id="add_env_var_' + i + '">' +
+            'Add environment variables</button>'
+
+        $("#capability-parent").append($clone);
+        $("#capability-parent").append("<br>");
+
+        // adjust selector button position
+        MoveSelector(event);
+
+        $('#add-env-var-button-div_' + i).append(env_var_button);
+        // get all envvar pairs in the corresponding key-val div
+        let $key_val_div = $("#key-val_" + i)
+        var envvar_list = $key_val_div.children(`input[id^="environmentVariables_key_"]`);
+        // when adding more envvars start the counter with the number of envvar pairs already present.
+        var add_env_var_button_click_count = envvar_list.length;
+        $('#add_env_var_' + i).click(function (e) {
+            e.preventDefault();
+
+            $key_val_div.append("<input class = \"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" " +
+                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_" + i + "\" type=\"text\" placeholder=\"Key\">");
+            $key_val_div.append("<input class = \"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" " +
+                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_" + i + "\" type=\"password\" placeholder=\"Value\">");
+            $key_val_div.append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\" >").on('click', function () {
+                $(this).toggleClass("bi-eye");
+                let input = $(this).prev();
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            }));
+            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
+            $key_val_div.append($(i_envvarclose).on('click', function () {
+                let closebtn = $(this);
+                let eyebtn = closebtn.prev();
+                let input_envval = eyebtn.prev();
+                let input_envkey = input_envval.prev();
+                eyebtn.remove()
+                input_envval.remove();
+                input_envkey.remove();
+                closebtn.remove();
+                // adjust selector buttons
+                MoveSelector(event);
+            }));
+            // once new envvar pairs are added, increment the envvar counter
+            add_env_var_button_click_count++;
+
+            // adjust button position
+            MoveSelector(event);
+        });
+
+        if ($('input[id=\"open_source_yes_' + i + '\"]').is(':checked')) {
+            $('#sourceurl_' + i).show();
+        } else {
+            $('#sourceurl_' + i).hide();
+        }
+
+        capability_count++;
+
+    }
+
+    function MoveSelector(event) {
+        // adjust button position
+        event.preventDefault();
+        $('#select-contribution-div').position({
+            my: "top",
+            at: "bottom",
+            of: $("#select-contribution-div-placeholder"),
+            collision: "none none"
+        });
+    }
+
+    function AddTalent(event) {
+        event.preventDefault();
+        var $clone = $("#talent-div-clean").clone(true);
+        $clone.find(':input').attr('id', function (i, val) {
+            return val + '_' + talent_count;
+        });
+        $clone.find(':input').attr('name', function (i, val) {
+            return val + '_' + talent_count;
+        });
+        $clone.find('div').attr('id', function (i, val) {
+            return val + '_' + talent_count;
+        });
+        $clone.attr('style', 'display: block, background-color: white')
+
+        var i = talent_count;
+
+        $("#talent-parent").append($clone);
+        $("#talent-parent").append("<br>");
+
+        talent_count++;
+
+    }
+
+    // delete talent
+    $('.delete-talent-btn').on('click', function (e) {
+        e.preventDefault();
         // get the talent number and remove all corresponding divs
-        var del_tal_button_name = $(this).attr("id");
-        let tal_num = del_tal_button_name.split("_").pop();
-        $("div#talent_" + tal_num).remove();
+        let del_tal_button_id = $(this).attr("id");
+        let tal_num = del_tal_button_id.split("_").pop();
+        $("#talent_" + tal_num).remove();
         $(this).hide();
+        // remove hr dotted line
+        let hr_dot = $(this).prev("hr");
+        hr_dot.remove();
         talent_count--;
+        // adjust selector div position
+        MoveSelector(e);
     });
 
     $(function () {

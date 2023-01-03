@@ -76,6 +76,12 @@ class Capability():
     def get_api_doc_url(self):
         return self.apiDocUrl
 
+    def set_api_base_url(self, apiBaseUrl):
+        self.apiBaseUrl = apiBaseUrl
+
+    def get_api_base_url(self):
+        return self.apiBaseUrl
+
     def set_deployment_details(self, deploymentDetails):
         self.deploymentDetails = deploymentDetails
 
