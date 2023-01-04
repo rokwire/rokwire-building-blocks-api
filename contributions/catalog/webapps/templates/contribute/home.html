@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -209,7 +210,8 @@
         {% endif %}
 
         <div class="footer">
-            <p>Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Privacy Policy</a> </p>
+            <img src= "{{ url_for('static', filename='powered-by-rokwire-no-i-block.png') }}" alt="footer logo" />
+            <p>Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy" class="link">Privacy Policy</a> </p>
         </div>
 
         <div class="form-group pull-right">
