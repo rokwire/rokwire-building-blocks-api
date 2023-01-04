@@ -1,3 +1,6 @@
+html * {
+    font-family: proxima-nova,sans-serif;
+}
 /* Add a black background color to the top navigation */
 .topnav {
     overflow: hidden;
@@ -180,16 +183,19 @@ input[type=reset]:hover {
 }
 
 .button3 {
-    background-color: white;
     color: black;
-    border: 1px solid #f44336;
     display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
 .button3:hover {
-    background-color: #f44336;
     color: white;
     display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
 }
 
 .button4 {
@@ -421,3 +427,41 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
+
+h1 {
+    font-size: 32px;
+    height: 36px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #13294b;
+}
+
+h4{
+    font-size: 16px;
+    height: 20px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
+.small-body-text {
+    font-size: 14px;
+    height: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    margin: 7px auto;
+    text-align: left;
+    color: #404040;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
