@@ -26,7 +26,7 @@ def add_contribution_admins(in_json, is_edit=False):
     contribution_admins = []
     # if the form input is not empty, then we want to filter out those names from there
     if admin_input:
-        contribution_admins = [admin_name for admin_name in admin_input.split(',') if admin_name]
+        contribution_admins = [admin_name.strip() for admin_name in admin_input.split(',') if len(admin_name)>1]
 
     if is_edit:
         updated_json = {"contributionAdmins": contribution_admins}
