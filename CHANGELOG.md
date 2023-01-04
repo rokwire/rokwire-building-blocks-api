@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
 - UI changes to top navigation bar. [#1040](https://github.com/rokwire/rokwire-building-blocks-api/issues/1040)
 
 ## [1.17.0] - 2022-12-06
