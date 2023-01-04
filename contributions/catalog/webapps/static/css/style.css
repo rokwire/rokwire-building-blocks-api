@@ -71,6 +71,20 @@ html * {
     box-sizing: border-box;
 }
 
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: #ffffff;
+    text-align: center;
+    margin: 473px 0 0;
+    padding: 30px 412px 0px 412px;
+    transform: rotate(-360deg);
+    background-color: #13294b;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
+}
+
 input[type=text], select, textarea {
     color: #090000;
     width: 100%;
@@ -444,6 +458,10 @@ h1 {
 
 .show {
     display: block;
+}
+
+.link {
+    color: #e84a27;
 }
 
 #togglePassword {
