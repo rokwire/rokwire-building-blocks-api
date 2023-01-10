@@ -71,7 +71,7 @@ html * {
     box-sizing: border-box;
 }
 
-.footer {
+.rokwire-footer {
     position: fixed;
     left: 0;
     bottom: 0;
