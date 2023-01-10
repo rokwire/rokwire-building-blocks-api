@@ -15,22 +15,24 @@ html * {
     display: flex;
     float: left;
     align-items: center;
-    width:50%;
+    width:70%;
+    height:100%;
 }
 /* Right-aligned section inside the top navigation */
 .topnav-right {
     display: flex;
     float: right;
     width:30%;
+    height:100%;
     align-items: center;
     color: #ffffff;
 }
 
 .topnav-left div {
-    flex:1;
+    flex:2 2 min-content;
 }
 .topnav-right div {
-    flex:2 1 auto;
+    flex:2 2 min-content;
 }
 
 .topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
