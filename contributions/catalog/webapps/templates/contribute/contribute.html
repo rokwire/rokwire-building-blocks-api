@@ -145,7 +145,7 @@
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text" value="{{ post.contributionAdmins|join(' ') }}"></div>
+                                   type="text" value="{{ post.contributionAdmins|join(', ') }}"></div>
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
@@ -616,7 +616,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {# TODO what is version url #}
                             <label class="control-label col-sm-2">Version URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version_url" name="capability_versionUrl"
@@ -978,11 +977,11 @@
                                     <label class="required control-label col-sm-2">Database Detail</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
                                         {% else %}
-                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails"
+                                            <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
                                                    placeholder="Details of API endpoint to delete user info given the user UUID"
                                                    type="text">
                                         {% endif %}
@@ -1007,7 +1006,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {# TODO what is version url #}
                                     <label class="control-label col-sm-2">Version URL</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
@@ -1015,7 +1013,7 @@
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
                                                    placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["version","url"]) }}">
+                                                   type="text" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
@@ -1782,6 +1780,24 @@
         MoveSelector(event);
     });
 
+    // IsOpenSourceUrl radio button
+    $(function(event) {
+        $('input[name^="capability_isOpenSource"]').on('click', function() {
+           // get the capability number and show/hide sourceurl
+           var isopensource_id = $(this).attr("id");
+           let cap_num = isopensource_id.split("_").pop();
+           if ($(this).val() == 'y') {
+               $('#sourceurl_' + cap_num).show();
+               // adjust selector button position
+               MoveSelector(event);
+           }
+           else {
+               $('#sourceurl_' + cap_num).hide();
+           }
+        });
+
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -2121,12 +2137,8 @@
         $("#capability-parent").append($clone);
         $("#capability-parent").append("<br>");
 
-        $('#open_source_yes_' + i).click(function (e) {
-            $('#sourceurl_' + i).show();
-        });
-        $('#open_source_no_' + i).click(function (e) {
-            $('#sourceurl_' + i).hide();
-        });
+        // adjust selector button position
+        MoveSelector(event);
 
         $('#add-env-var-button-div_' + i).append(env_var_button);
         // get all envvar pairs in the corresponding key-val div

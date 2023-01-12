@@ -1,3 +1,6 @@
+html * {
+    font-family: proxima-nova,sans-serif;
+}
 /* Add a black background color to the top navigation */
 .topnav {
     overflow: hidden;
@@ -42,6 +45,20 @@
 
 * {
     box-sizing: border-box;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: #ffffff;
+    text-align: center;
+    margin: 473px 0 0;
+    padding: 30px 412px 0px 412px;
+    transform: rotate(-360deg);
+    background-color: #13294b;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
 }
 
 input[type=text], select, textarea {
@@ -392,6 +409,10 @@ hr.dotted {
     display: block;
 }
 
+.link {
+    color: #e84a27;
+}
+
 #togglePassword {
     cursor: pointer;
     position: relative;
@@ -432,6 +453,7 @@ input.datadel-api {
 
 h1 {
     font-size: 32px;
+    height: 36px;
     font-weight: 800;
     font-stretch: normal;
     font-style: normal;
@@ -442,20 +464,27 @@ h1 {
 
 h4{
     font-size: 16px;
-    font-weight: 800;
+    height: 20px;
+    font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    margin-bottom:10px;
     color: #13294b;
 }
 
 .small-body-text {
     font-size: 14px;
+    height: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    margin-top:10px;
+    margin: 7px auto;
+    text-align: left;
     color: #404040;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
 }

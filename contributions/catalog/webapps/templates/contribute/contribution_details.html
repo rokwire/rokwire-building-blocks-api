@@ -271,6 +271,7 @@
             <div class="col-sm-9 small-body-text">
                 {% for x in post.contributionAdmins %}
                     {{x}}
+                    {% if not loop.last %},{% endif %}
                 {% endfor %}
             </div>
         </div>
