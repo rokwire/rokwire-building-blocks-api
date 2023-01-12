@@ -76,41 +76,41 @@ label {
 }
 
 
-input[type=submit] {
-    background-color: #84af9d;
-    color: #090000;
-    padding: 15px 25px;
-    text-align: center;
-    margin: 5px 5px;
-    transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
+/*input[type=submit] {*/
+/*    background-color: #84af9d;*/
+/*    color: #090000;*/
+/*    padding: 15px 25px;*/
+/*    text-align: center;*/
+/*    margin: 5px 5px;*/
+/*    transition-duration: 0.2s;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    float: right;*/
+/*}*/
 
-input[type=submit]:hover {
-    background-color: #45a049;
-    /*color: white;*/
-}
+/*input[type=submit]:hover {*/
+/*    background-color: #45a049;*/
+/*    !*color: white;*!*/
+/*}*/
 
-input[type=reset] {
-    background-color: #6b9ec0;
-    color: #090000;
-    padding: 15px 25px;
-    text-align: center;
-    margin: 5px 5px;
-    transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
+/*input[type=reset] {*/
+/*    background-color: #f5f5f5;*/
+/*    color: #404040;*/
+/*    padding: 15px 25px;*/
+/*    text-align: center;*/
+/*    margin: 5px 5px;*/
+/*    transition-duration: 0.2s;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    float: right;*/
+/*}*/
 
-input[type=reset]:hover {
-    background-color: #378bc4;
-    /*color: white;*/
-}
+/*input[type=reset]:hover {*/
+/*    background-color: #378bc4;*/
+/*    !*color: white;*!*/
+/*}*/
 
 /*input:hover {*/
 /*     color: white;*/
@@ -173,12 +173,12 @@ input[type=reset]:hover {
     display: inline-block;
     color: black;
     border-radius: 24px;
-    border: solid 2px #009fd4;
-    background-color: #fff;
+    border: solid 2px #002855;
+    background-color: #f5f5f5;
 }
 
 .button1:hover {
-    background-color: #009fd4;
+    background-color: #002855;
     color: white;
     display: inline-block;
 }
