@@ -102,105 +102,102 @@
                     {% endif %}
                 {% endfor %}
 
-                <div class="row">
-                    {% if contributor_ns.contributorType == "person" %}
+                {% if contributor_ns.contributorType == "person" %}
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <h5>Person</h5>
+                        </div>
                         <div class="col-12 col-md-9">
-                            <h5><b>Person</b></h5>
+                            <table>
+                                <tr>
+                                    <td><b>First Name &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.firstName}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Middle Name &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.middleName}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Last Name &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.lastName}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Phone &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.phone}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Email &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.email}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Affiliation Name &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.affil_name}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Affiliation Address &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.affil_address}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Affiliation Phone &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.affil_phone}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Affiliation Email &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.affil_email}}</td>
+                                </tr>
+                            </table>
                         </div>
-                        <table>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    First Name
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.firstName}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Middle Name
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.middleName}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Last Name
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.lastName}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Phone
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.phone}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Email
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.email}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Affiliation Name
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.affil_name}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Affiliation Address
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.affil_address}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Affiliation Phone
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.affil_phone}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-2">
-                                    Affiliation Email
-                                </div>
-                                <div class="col-sm-2 small-body-text">{{contributor_ns.affil_email}}</div>
-                            </div>
-                        </table>
-                    {% endif %}
-                    {% if contributor_ns.contributorType == "organization" %}
-                        <h5><b>Organization</b></h5>
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                Name
-                            </div>
-                            <div class="col-sm-2 small-body-text">{{contributor_ns.name}}</div>
+                    </div>
+                {% endif %}
+                {% if contributor_ns.contributorType == "organization" %}
+                    <div class="row" style="margin-top: 5px">
+                        <div class="col-12 col-md-3">
+                            <h5>Organization</h5>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                Address
-                            </div>
-                            <div class="col-sm-2 small-body-text">{{contributor_ns.address}}</div>
+                        <div class="col-12 col-md-9">
+                            <table>
+                                <tr>
+                                    <td><b>Name &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.name}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Address &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.address}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Email &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.email}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Phone &nbsp;&nbsp;</b></td>
+                                    <td>{{contributor_ns.phone}}</td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                Email
-                            </div>
-                            <div class="col-sm-2 small-body-text">{{contributor_ns.email}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-sm-2">
-                                Phone
-                            </div>
-                            <div class="col-sm-2 small-body-text">{{contributor_ns.phone}}</div>
-                        </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
+
             {% endfor %}
 
         {% endif %}
 
         {% if post.contacts %}
-            <div class="row">
+            <div class="row" style="margin-top: 5px">
                 <div class="col-12 col-md-3">
                     <h4>Contact details</h4>
                 </div>
+
                 {% for contact in post["contacts"] %}
                     {% set contact_ns = namespace(name='', officialAddress='', phone='', email='', organization='') %}
                     {% for key,val in contact.items() %}
@@ -216,85 +213,85 @@
                             {% set contact_ns.organization = val %}
                         {% endif %}
                     {% endfor %}
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            Name
-                        </div>
-                        <div class="col-sm-2 small-body-text">{{contact_ns.name}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            Official Address
-                        </div>
-                        <div class="col-sm-2 small-body-text">{{contact_ns.officialAddress}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            Email
-                        </div>
-                        <div class="col-sm-2 small-body-text">{{contact_ns.email}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            Phone
-                        </div>
-                        <div class="col-sm-2 small-body-text">{{contact_ns.phone}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            Organization
-                        </div>
-                        <div class="col-sm-2 small-body-text">{{contact_ns.organization}}</div>
+
+                    <div class="col-12 col-md-9">
+                        <table>
+                            <tr>
+                                <td><b>Name &nbsp;&nbsp;</b></td>
+                                <td>{{contact_ns.name}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Official Address &nbsp;&nbsp;</b></td>
+                                <td>{{contact_ns.officialAddress}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Email &nbsp;&nbsp;</b></td>
+                                <td>{{contact_ns.email}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Phone &nbsp;&nbsp;</b></td>
+                                <td>{{contact_ns.phone}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Organization &nbsp;&nbsp;</b></td>
+                                <td>{{contact_ns.organization}}</td>
+                            </tr>
+
+                        </table>
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
 
         {% if post.capabilities %}
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-12 col-md-3">
                     <h4>Capabilities in this contribution</h4>
                 </div>
-                {% for c in post.capabilities %}
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            <div class="col-12 col-md-3">
-                                <ol>
-                                    <h4>{{c.name}}</h4>
-                                </ol>
-                            </div>
-                        </div>
-                        {% if is_review %}
-                            <button class="button button1" onclick="cap_url_review('{{c.id}}')" >  View  </button>
-                        {% else %}
-                            <button class="button button1" onclick="cap_url('{{c.id}}')" >  View  </button>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                <div class="col-12 col-md-9">
+                    <table>
+                    {% for c in post.capabilities %}
+                        <tr>
+                            <td style="padding-right: 10px">
+                                <h4>{{c.name}}</h4>
+                            </td>
+                            <td>
+                                {% if is_review %}
+                                    <button class="button button4" onclick="cap_url_review('{{c.id}}')" >  View  </button>
+                                {% else %}
+                                    <button class="button button4" onclick="cap_url('{{c.id}}')" >  View  </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
             </div>
         {% endif %}
 
         {% if post.talents %}
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-12 col-md-3">
                     <h4>Talents in this contribution</h4>
                 </div>
-               {% for t in post.talents %}
-                <div class="row">
-                    <div class="col-12 col-sm-2">
-                        <div class="col-12 col-md-3">
-                            <ol>
-                                <h4>{{t.name}}</h4>
-                            </ol>
-                        </div>
-                    </div>
-                    {% if is_review %}
-                        <button class="button button1" onclick="tal_url_review('{{t.id}}')" >  View  </button>
-                    {% else %}
-                        <button class="button button1" onclick="tal_url('{{t.id}}')" >  View  </button>
-                    {% endif %}
+                <div class="col-12 col-md-9">
+                    <table>
+                       {% for t in post.talents %}
+                           <tr>
+                               <td style="padding-right: 10px">
+                                   <h4>{{t.name}}</h4>
+                               </td>
+                               <td>
+                                   {% if is_review %}
+                                       <button class="button button4" onclick="tal_url_review('{{t.id}}')" >  View  </button>
+                                   {% else %}
+                                       <button class="button button4" onclick="tal_url('{{t.id}}')" >  View  </button>
+                                   {% endif %}
+                               </td>
+                           </tr>
+                        {% endfor %}
+                    </table>
                 </div>
-                {% endfor %}
             </div>
         {% endif %}
 
