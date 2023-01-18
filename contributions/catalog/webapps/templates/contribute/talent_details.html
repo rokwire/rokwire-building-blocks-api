@@ -72,7 +72,8 @@
             <div class="col-12 col-md-3">
                 <h4>Required Capabilities</h4>
             </div>
-            <table>
+            <div class="col-12 col-md-9">
+                <table>
                 {% for x in post.requiredCapabilities %}
                     <tr>
                         <td><a href="{{ url_for('contribute.capability_details', contribution_id=x['contributionId'], id=x['capabilityId']) }}">{{x['capabilityName']}}</a></td>
@@ -83,6 +84,7 @@
                     <td>&nbsp;</td>
                 </tr>
             </table>
+            </div>
         </div>
         {% endif %}
 
@@ -91,7 +93,8 @@
             <div class="col-12 col-md-3">
                 <h4>Required Building Blocks</h4>
             </div>
-            <table>
+            <div class="col-12 col-md-9">
+                <table>
                 {% for x in post.requiredBuildingBlocks %}
                     <tr>
                         <td>{{x}}</td>
@@ -102,6 +105,7 @@
                     <td>&nbsp;</td>
                 </tr>
             </table>
+            </div>
         </div>
         {% endif %}
 
