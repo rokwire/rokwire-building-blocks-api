@@ -226,13 +226,20 @@ input[type=reset]:hover {
 .button5 {
     background-color: white;
     color: black;
-    border: 1px solid #555555;
     display: inline-block;
+    border: solid 2px #e84a27;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 1.14;
+    letter-spacing: normal;
+    text-align: center;
+    padding: 5px 15px 5px 15px;
 }
 
-.button5:hover {
-    background-color: #555555;
+.button5:hover  {
     color: white;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
 }
 
 /* Style the buttons */
