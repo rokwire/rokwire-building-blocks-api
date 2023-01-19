@@ -76,34 +76,15 @@
         word-break: break-all;
     }
 
-    #header {
-        margin: auto;
-        position: relative;
-        max-width: 1000px;
-
-        left: auto;
-        right: auto;
-        border: none;
-        /*padding: 30px;*/
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-        background-repeat: no-repeat;
-        /*height: 30%;*/
-        /*width: 52%;*/
-        height: 250px;
-        width: 1000px;
-        background-position: center;
-        background-size: auto;
-    }
-
-    #title {
-        margin: auto;
-        text-align: center;
-        position: relative;
-        top: 50%;
-        left: 15%;
-        transform: translate(-25%, -25%);
-        color: white;
-    }
+    {##title {#}
+    {#    margin: auto;#}
+    {#    text-align: center;#}
+    {#    position: relative;#}
+    {#    top: 50%;#}
+    {#    left: 15%;#}
+    {#    transform: translate(-25%, -25%);#}
+    {#    color: white;#}
+    {#}#}
 
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
     .search {
@@ -144,42 +125,6 @@
         border-radius: 5%;
     }
 
-    .show {
-        display: block;
-    }
-
-    /* the card feature */
-    .content {
-        background-color: #f7f3f3;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(98, 66, 66, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-
-    }
-
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-decoration: #8fd19e;
-    }
-
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        background-color: #2a4b45;
-        color: #ffffff;
-    }
-
-
 </style>
 
 {#<body>#}
@@ -192,7 +137,6 @@
 </div>
 <!-- MAIN (Center website) -->
 <div class="main">
-
 
     <div id="myBtnContainer">
         {% if show_sel == "capability" %}
@@ -225,13 +169,13 @@
             {% if cap_json|length > 0 %}
                 {% for capability in cap_json %}
                     <div class="column capability">
-                        <div class="content">
-                            <a class="card=link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
-                            <h4 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h4>
-                            <p class="capability_description">{{ capability|filter_nested_dict(["description"]) }}</p>
-                            <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
+                        <div class="card">
+                            <a class="card-link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
+                                <h3 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h3>
                             </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution >>> </a>
+                            <p class="small-body-text">{{ capability|filter_nested_dict(["description"]) }}</p>
+                            <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
+                            <a class="contribution-link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution </a>
                         </div>
                     </div>
                 {% endfor %}
@@ -240,13 +184,13 @@
             {% if tal_json|length > 0 %}
                 {% for talent in tal_json %}
                     <div class="column talent">
-                        <div class="content">
+                        <div class="card">
                             <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
-                            <h4 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h4>
-                            <p class="talent_description">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
-                            <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
+                                <h3 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h3>
                             </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution >>> </a>
+                            <p class="small-body-text">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
+                            <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
+                            <a class="contribution-link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution </a>
                         </div>
                     </div>
                 {% endfor %}
