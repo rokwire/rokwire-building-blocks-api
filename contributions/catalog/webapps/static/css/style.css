@@ -4,32 +4,53 @@ html * {
 /* Add a black background color to the top navigation */
 .topnav {
     overflow: hidden;
-    background-color: #2a4b45;
+    background-color: #13294b;
     width: 100%;
     order: 1;
+    margin: 0 0 10px;
+    padding: 32px 32px 32px 32px;
 }
-
-/* Style the links inside the navigation bar */
-.topnav a {
+/* Style the navigation bar */
+.topnav-left {
+    display: flex;
     float: left;
-    display: inline-block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
+    align-items: center;
+}
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+    display: flex;
+    float: right;
+    align-items: center;
+    color: #ffffff;
 }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: #4c4c4c;
+.topnav-left div {
+    flex:auto;
+}
+.topnav-right div {
+    flex:2 min-content auto;
 }
 
-/* Add an active class to highlight the current page */
-.topnav a.active {
-    background-color: #88aeaf;
-    color: white;
+.topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
+    margin-left: 10px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #ffffff;
+}
+
+.topnav-blue-button, .topnav-blue-button:hover, .topnav-blue-button:active {
+    float: right;
+    margin: 15px 15px 5px 15px;
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #ffffff;
 }
 
 /* Hide the link that should open and close the topnav on small screens */
@@ -37,17 +58,17 @@ html * {
     display: none;
 }
 
-/* Right-aligned section inside the top navigation */
-.topnav-right {
+.user-greeting{
+    font-size: 16px;
+    margin-top: 20px;
     float: right;
-    cursor: pointer;
 }
 
 * {
     box-sizing: border-box;
 }
 
-.footer {
+.rokwire-footer {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -380,6 +401,66 @@ hr.dotted {
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
     background-color: #2a4b45;
+}
+
+h1 {
+    font-size: 32px;
+    height: 36px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #13294b;
+}
+
+h4{
+    font-size: 16px;
+    height: 20px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
+.small-body-text {
+    font-size: 14px;
+    height: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    margin: 7px auto;
+    text-align: left;
+    color: #404040;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.catalog-home {
+    white-space: nowrap;
+    margin-left: 20px;
+    margin-right: 20px;
+    /*float: left;*/
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 1.13;
+    color: #FFFFFF;
+}
+
+.block-i {
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    align-items: center;
 }
 
 .dropdown-content {
