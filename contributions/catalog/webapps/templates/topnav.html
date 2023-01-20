@@ -1,19 +1,33 @@
 <div class="topnav" id="myTopnav">
-    <a href="{{ url_for('contribute.home') }}"><i class="fa fa fa-home fa-lg"></i> Contributions Catalog</a>
-    <div id="submit_contribution" style="display: none;">
-        <a href="{{ url_for('contribute.create') }}"><i class="fa fa-plus-square fa-lg"></i> Contribute</a>
+    <div class="topnav-left">
+        <div id="catalog-home">
+            <a href="#">
+                <img class="block-i" src="{{url_for('static',filename = 'block-i-white-orange.png')}}">
+            </a>
+            <a href="{{ url_for('contribute.home') }}">
+                <h1 class="catalog-home">Contributions Catalog</h1>
+            </a>
+        </div>
+        <div id="submit_contribution" style="display: none;">
+            <a href="{{ url_for('contribute.create') }}" class="topnav-contribute-button btn">
+                Contribute &nbsp; <i class="bi bi-plus-lg" style="cursor: pointer; color: #e84a27;"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="topnav-right" id="nav_greeting" style="display: none; float: right; margin-right: 15px;">
-        <meta id="nav-user-data" user="{{user}}">
-        <a class="dropbtn" id="user_profile"><i class="fa fa-fw fa-user fa-lg"></i> Hello, {{ user }}! </a>
+    <div class="topnav-right">
+        <div id="nav_greeting" style="display: none;">
+            <meta id="nav-user-data" user="{{user}}">
+            <div id="user_profile" class="user-greeting">Hello, {{ user }} </div>
+        </div>
+        <div id="nav_logout" style="display: none;">
+            <a href="{{ url_for('contribute.logout') }}" class="topnav-blue-button btn"> Logout</a>
+        </div>
+        <div id="nav_login" style="display: none;">
+            <a href="{{ url_for('contribute.login') }}" class="topnav-blue-button btn"> Login</a>
+        </div>
     </div>
 
-    <div class="topnav-right" id="nav_login" style="display: none; float: right; margin-right: 15px;">
-        <a href="{{ url_for('contribute.login') }}"><i class="fa fa-sign-in fa-lg"></i> Login</a>
-    </div>
 </div>
 
-<div class="dropdown-content" id="myDropdown" style="display: none">
-    <a href="{{ url_for('contribute.logout') }}">Logout</a>
-</div>
+

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
 - Updated footer UI. [#1036](https://github.com/rokwire/rokwire-building-blocks-api/issues/1036)
-- UI for contribution details page. [#1041](https://github.com/rokwire/rokwire-building-blocks-api/issues/1041)
+- UI changes to top navigation bar. [#1040](https://github.com/rokwire/rokwire-building-blocks-api/issues/1040)
 
 ## [1.17.0] - 2022-12-06
 ### Added
