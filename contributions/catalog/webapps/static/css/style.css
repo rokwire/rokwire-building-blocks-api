@@ -378,6 +378,16 @@ h4{
     color: #13294b;
 }
 
+h5{
+    font-size: 16px;
+    height: 20px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
 .small-body-text {
     font-size: 14px;
     height: 16px;
@@ -490,51 +500,3 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
-
-h1 {
-    font-size: 32px;
-    height: 36px;
-    font-weight: 800;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: center;
-    color: #13294b;
-}
-
-h4{
-    font-size: 16px;
-    height: 20px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    color: #13294b;
-}
-
-h5{
-    font-size: 16px;
-    height: 20px;
-    font-weight: 400;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    color: #13294b;
-}
-
-.small-body-text {
-    font-size: 14px;
-    height: 16px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    margin: 7px auto;
-    text-align: left;
-    color: #404040;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
