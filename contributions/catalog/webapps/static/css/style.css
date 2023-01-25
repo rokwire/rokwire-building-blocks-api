@@ -170,6 +170,8 @@ label {
     border: solid 2px #e84a27;
     background-color: #fff;
     text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .button3, .button3:hover {
@@ -179,6 +181,8 @@ label {
     border: solid 2px #e84a27;
     background-color: #e84a27;
     text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .button4, .button4:hover {
@@ -188,6 +192,8 @@ label {
     border-radius: 24px;
     border: solid 2px #002855;
     text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .button5 {
