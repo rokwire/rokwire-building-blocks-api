@@ -190,18 +190,21 @@ label {
     border-radius: 24px;
     border: solid 2px #e84a27;
     background-color: #e84a27;
+    text-decoration: none;
 }
 
 .button4 {
     background-color: white;
-    color: black;
+    color: #002855;
     display: inline-block;
     border-radius: 24px;
-    border: solid 1px #002855;
+    border: solid 2px #002855;
 }
 
 .button4:hover {
-    background-color: #e7e7e7;
+    background-color: #002855;
+    color: white;
+    text-decoration: none;
 }
 
 .button5 {
@@ -218,6 +221,7 @@ label {
     border-radius: 24px;
     border: solid 2px #e84a27;
     background-color: #13294b;
+    text-decoration: none;
 }
 
 /* Style the buttons */
