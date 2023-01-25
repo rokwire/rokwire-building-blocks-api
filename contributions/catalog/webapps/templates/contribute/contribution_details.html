@@ -302,10 +302,11 @@
                     <h4>Contribution admins</h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    {% for x in post.contributionAdmins %}
-                        <div class="small-body-text">{{x}}</div>
-                        {% if not loop.last %},{% endif %}
-                    {% endfor %}
+                    <div class="small-body-text">
+                        {% for x in post.contributionAdmins %}
+                            {{x}} {% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="row">
