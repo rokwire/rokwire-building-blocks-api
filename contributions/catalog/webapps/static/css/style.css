@@ -333,10 +333,10 @@ input[type=reset]:hover {
     /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
     height: 160px;
     box-shadow: 0 0 4px 0 #d2d2d2;
-    padding: 10px;
+    padding: 10px 10px 10px 16px;
     transition-duration: 0.2s;
     border: solid 1px #dadde1;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
@@ -467,6 +467,7 @@ hr.dotted {
 }
 
 .contribution-link {
+    align-items: end;
     font-size: 16px;
     font-weight: normal;
     font-stretch: normal;
@@ -478,6 +479,10 @@ hr.dotted {
     text-decoration: underline;
     text-decoration-color: #e84a27;
     text-underline-offset: 5px;
+}
+
+.contribution-link:hover, .contribution-link:active {
+    color: #e84a27;
 }
 
 #togglePassword {
@@ -581,3 +586,10 @@ h5 {
     color: #404040;
 }
 
+.capability-name, .capability-name:hover {
+    font-weight: bold;
+}
+
+.talent-name, .talent-name:hover {
+    font-weight: bold;
+}
