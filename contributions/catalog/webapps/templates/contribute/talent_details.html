@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
@@ -22,207 +23,224 @@
     {% include 'topnav.html' %}
 </div>
 
-
-
 <div class="container">
     <h1>Talent Details</h1>
 
     <hr class="divider"/>
 
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Talent Name </h4>
-        </div>
-        <p class="col-sm-9">{{post.name}}</p>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Talent description </h4>
-        </div>
-        <p class="col-sm-9">{{post.shortDescription}}</p>
-    </div>
-
-    {% if post.dataDescription %}
+    <div class="container">
         <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Data Description</h4>
+            <div class="col-12 col-md-3">
+                <h4>Talent Name </h4>
             </div>
-            <p class="col-sm-9">{{post.dataDescription}}</p>
+            <div class="col-12 col-md-9">
+                <div class="small-body-text">{{post.name}}</div>
+            </div>
         </div>
-    {% endif %}
 
-    {% if post.icon %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Icon</h4>
-        </div>
-        <p class="col-sm-9">{{post.icon}}</p>
-    </div>
-    {% endif %}
-
-    {% if post.requiredCapabilities %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Required Capabilities</h4>
-        </div>
-        <table>
-            {% for x in post.requiredCapabilities %}
-                <tr>
-                    <td><a href="{{ url_for('contribute.capability_details', contribution_id=x['contributionId'], id=x['capabilityId']) }}">{{x['capabilityName']}}</a></td>
-                </tr>
-            {% endfor %}
-            <!-- extra row for the separation to next field -->
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </div>
-    {% endif %}
-
-    {% if post.requiredBuildingBlocks %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Required Building Blocks</h4>
-        </div>
-        <table>
-            {% for x in post.requiredBuildingBlocks %}
-                <tr>
-                    <td>{{x}}</td>
-                </tr>
-            {% endfor %}
-            <!-- extra row for the separation to next field -->
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </div>
-    {% endif %}
-
-    {% if post.minUserPrivacyLevel %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Minimum user privacy level</h4>
-        </div>
-        <p class="col-sm-9">{{post.minUserPrivacyLevel}}</p>
-    </div>
-    {% endif %}
-
-    {% if post.minEndUserRoles %}
-    <div class="row">
-        <div class="col-12 col-sm-2">
-            <h4>Minimum set of end-user roles</h4>
-        </div>
-        <p class="col-sm-9">
-            {% for role in post.minEndUserRoles %}
-                {{role}}<br>
-            {%  endfor %}</p>
-    </div>
-    {% endif %}
-
-    {% if reviewer %}
-        {% if post.startDate %}
         <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Start Date</h4>
+            <div class="col-12 col-md-3">
+                <h4>Talent description </h4>
             </div>
-            <p class="col-sm-9">{{post.startDate}}</p>
+            <div class="col-12 col-md-9">
+                <div class="small-body-text">{{post.shortDescription}}</div>
+            </div>
+        </div>
+
+        {% if post.dataDescription %}
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <h4>Data Description</h4>
+                </div>
+                <div class="col-12 col-md-9">
+                    <div class="small-body-text">{{post.dataDescription}}</div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if post.icon %}
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h4>Icon</h4>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="small-body-text">{{post.icon}}</div>
+            </div>
         </div>
         {% endif %}
 
-        {% if post.endDate %}
+        {% if post.requiredCapabilities %}
         <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>End Date</h4>
+            <div class="col-12 col-md-3">
+                <h4>Required Capabilities</h4>
             </div>
-            <p class="col-sm-9">{{post.endDate}}</p>
-        </div>
-        {% endif %}
-
-        {% if post.longDescription %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Long Description</h4>
-            </div>
-            <p class="col-sm-9">{{post.longDescription}}</p>
-        </div>
-        {% endif %}
-
-        {% if post.selfCertification %}
-        <div class="row">
-            <div class="col-12 col-sm-2">
-                <h4>Self Certification</h4>
-            </div>
-            <p class="col-sm-9">
+            <div class="col-12 col-md-9">
                 <table>
-                    {% if post.selfCertification.dataDeletionUponRequest %}
+                {% for x in post.requiredCapabilities %}
                     <tr>
-                        <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
-                        <td>{{post.selfCertification.dataDeletionUponRequest}}</td>
+                        <td><a href="{{ url_for('contribute.capability_details', contribution_id=x['contributionId'], id=x['capabilityId']) }}">{{x['capabilityName']}}</a></td>
                     </tr>
-                    {% else %}
-                        <tr>
-                        <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
-                        <td>None</td>
-                        </tr>
-                    {% endif %}
-                    {% if post.selfCertification.discloseAds %}
-                    <tr>
-                        <td><b>Disclose ads&nbsp;&nbsp;</b></td>
-                        <td>{{post.selfCertification.discloseAds}}</td>
-                    </tr>
-                    {% else %}
-                        <tr>
-                        <td><b>Disclose ads&nbsp;&nbsp;</b></td>
-                        <td>None</td>
-                        </tr>
-                    {% endif %}
-                    {% if post.selfCertification.discloseImageRights %}
-                    <tr>
-                        <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
-                        <td>{{post.selfCertification.discloseImageRights}}</td>
-                    </tr>
-                    {% else %}
-                        <tr>
-                        <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
-                        <td>None</td>
-                        </tr>
-                    {% endif %}
-                    {% if post.selfCertification.discloseSponsors %}
-                    <tr>
-                        <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
-                        <td>{{post.selfCertification.discloseSponsors}}</td>
-                    </tr>
-                    {% else %}
-                        <tr>
-                        <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
-                        <td>None</td>
-                        </tr>
-                    {% endif %}
-                    {% if post.selfCertification.respectingUserPrivacySetting %}
-                    <tr>
-                        <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
-                        <td>{{post.selfCertification.respectingUserPrivacySetting}}</td>
-                    </tr>
-                    {% else %}
-                        <tr>
-                        <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
-                        <td>None</td>
-                        </tr>
-                    {% endif %}
-                </table>
-            </p>
+                {% endfor %}
+                <!-- extra row for the separation to next field -->
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            </div>
         </div>
         {% endif %}
-    {% endif %}
+
+        {% if post.requiredBuildingBlocks %}
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h4>Required Building Blocks</h4>
+            </div>
+            <div class="col-12 col-md-9">
+                <table>
+                {% for x in post.requiredBuildingBlocks %}
+                    <tr>
+                        <td>{{x}}</td>
+                    </tr>
+                {% endfor %}
+                <!-- extra row for the separation to next field -->
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if post.minUserPrivacyLevel %}
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h4>Minimum user privacy level</h4>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="small-body-text">{{post.minUserPrivacyLevel}}</div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if post.minEndUserRoles %}
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <h4>Minimum set of end-user roles</h4>
+            </div>
+            <div class="col-12 col-md-9">
+                {% for role in post.minEndUserRoles %}
+                    <div class="small-body-text">{{role}}<br> </div>
+                {%  endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if reviewer %}
+            {% if post.startDate %}
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <h4>Start Date</h4>
+                </div>
+                <div class="col-12 col-md-9">
+                    <div class="small-body-text">{{post.startDate}}</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if post.endDate %}
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <h4>End Date</h4>
+                </div>
+                <div class="col-12 col-md-9">
+                    <div class="small-body-text">{{post.endDate}}</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if post.longDescription %}
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <h4>Long Description</h4>
+                </div>
+                <div class="col-12 col-md-9">
+                    <div class="small-body-text">{{post.longDescription}}</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if post.selfCertification %}
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <h4>Self Certification</h4>
+                </div>
+                <div class="col-12 col-md-9">
+                    <table>
+                        {% if post.selfCertification.dataDeletionUponRequest %}
+                        <tr>
+                            <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
+                            <td>{{post.selfCertification.dataDeletionUponRequest}}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td><b>Deleting data upon request&nbsp;&nbsp;</b></td>
+                            <td>None</td>
+                            </tr>
+                        {% endif %}
+                        {% if post.selfCertification.discloseAds %}
+                        <tr>
+                            <td><b>Disclose ads&nbsp;&nbsp;</b></td>
+                            <td>{{post.selfCertification.discloseAds}}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td><b>Disclose ads&nbsp;&nbsp;</b></td>
+                            <td>None</td>
+                            </tr>
+                        {% endif %}
+                        {% if post.selfCertification.discloseImageRights %}
+                        <tr>
+                            <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
+                            <td>{{post.selfCertification.discloseImageRights}}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td><b>Disclose right to use images&nbsp;&nbsp;</b></td>
+                            <td>None</td>
+                            </tr>
+                        {% endif %}
+                        {% if post.selfCertification.discloseSponsors %}
+                        <tr>
+                            <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
+                            <td>{{post.selfCertification.discloseSponsors}}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td><b>Disclose sponsors&nbsp;&nbsp;</b></td>
+                            <td>None</td>
+                            </tr>
+                        {% endif %}
+                        {% if post.selfCertification.respectingUserPrivacySetting %}
+                        <tr>
+                            <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
+                            <td>{{post.selfCertification.respectingUserPrivacySetting}}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td><b>Respecting privacy setting&nbsp;&nbsp;</b></td>
+                            <td>None</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
 
     <button class="button button3" onclick="get_url()">View Contribution</button>
 </div>
 
-
-<div class="action">
-
-</div>
 
 </body>
 
