@@ -130,8 +130,8 @@
                 {% for capability in cap_json %}
                     <div class="column capability">
                         <div class="card">
-                            <a class="card-link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
-                                <h3 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h3>
+                            <a class="card-link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}" style="text-decoration: none;">
+                                <h3 class="capability-name">{{ capability|filter_nested_dict(["name"]) }}</h3>
                             </a>
                             <p class="small-body-text">{{ capability|filter_nested_dict(["description"]) }}</p>
                             <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
@@ -145,8 +145,8 @@
                 {% for talent in tal_json %}
                     <div class="column talent">
                         <div class="card">
-                            <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
-                                <h3 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h3>
+                            <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}" style="text-decoration: none;">
+                                <h3 class="talent-name">{{ talent|filter_nested_dict(["name"]) }}</h3>
                             </a>
                             <p class="small-body-text">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
                             <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
