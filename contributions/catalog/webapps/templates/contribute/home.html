@@ -135,7 +135,9 @@
                             </a>
                             <p class="small-body-text">{{ capability|filter_nested_dict(["description"]) }}</p>
                             <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
-                            <a class="contribution-link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution </a>
+                            <a href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}">
+                                <div class="contribution-link"> View Contribution </div>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}
