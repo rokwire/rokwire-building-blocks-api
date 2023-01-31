@@ -96,47 +96,6 @@ label {
     display: inline-block;
 }
 
-
-input[type=submit] {
-    background-color: #84af9d;
-    color: #090000;
-    padding: 15px 25px;
-    text-align: center;
-    margin: 5px 5px;
-    transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
-
-input[type=submit]:hover {
-    background-color: #45a049;
-    /*color: white;*/
-}
-
-input[type=reset] {
-    background-color: #6b9ec0;
-    color: #090000;
-    padding: 15px 25px;
-    text-align: center;
-    margin: 5px 5px;
-    transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
-
-input[type=reset]:hover {
-    background-color: #378bc4;
-    /*color: white;*/
-}
-
-/*input:hover {*/
-/*     color: white;*/
-/*}*/
-
 .container {
     border-radius: 5px;
     background-color: #ffffff;
@@ -177,83 +136,78 @@ input[type=reset]:hover {
 }
 
 .button {
-    background-color: #4CAF50; /* Green */
     border: none;
     border-radius: 4px;
     color: white;
-    padding: 10px 10px;
+    padding: 5px 10px 5px 10px;
     text-align: center;
     display: inline-block;
-    font-size: 15px;
+    font-size: 14px;
     margin: 5px 5px;
     transition-duration: 0.2s;
     cursor: pointer;
     float: none;
+    height: 36px;
+    line-height: 20px;
+    font-weight: bold;
 }
 
 .button1 {
-    background-color: white;
-    color: black;
-    border: 1px solid #4CAF50;
     display: inline-block;
+    color: black;
+    border-radius: 24px;
+    border: solid 2px #002855;
+    background-color: #f5f5f5;
 }
 
 .button1:hover {
-    background-color: #4CAF50;
+    background-color: #002855;
     color: white;
     display: inline-block;
 }
 
-.button2 {
-    background-color: white;
-    color: black;
-    border: 1px solid #008CBA;
-    display: inline-block;
-}
-
-.button2:hover {
-    background-color: #008CBA;
-    color: white;
-    display: inline-block;
-}
-
-.button3 {
-    color: black;
+.button2, .button2:hover {
+    color: #002855;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #e84a27;
     background-color: #fff;
+    text-decoration: none;
 }
 
-.button3:hover {
+.button3, .button3:hover {
     color: white;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #e84a27;
     background-color: #e84a27;
+    text-decoration: none;
 }
 
-.button4 {
+.button4, .button4:hover {
     background-color: white;
-    color: black;
-    border: 1px solid #e7e7e7;
+    color: #002855;
     display: inline-block;
-}
-
-.button4:hover {
-    background-color: #e7e7e7;
+    border-radius: 24px;
+    border: solid 2px #002855;
+    text-decoration: none;
 }
 
 .button5 {
-    background-color: white;
-    color: black;
-    border: 1px solid #555555;
     display: inline-block;
+    color: black;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
 .button5:hover {
-    background-color: #555555;
     color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #13294b;
+    text-decoration: none;
 }
 
 /* Style the buttons */
@@ -414,6 +368,16 @@ h4{
     color: #13294b;
 }
 
+h5{
+    font-size: 16px;
+    height: 20px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
 .small-body-text {
     font-size: 14px;
     height: 16px;
@@ -526,4 +490,3 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
-
