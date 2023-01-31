@@ -1,7 +1,12 @@
 html * {
     font-family: proxima-nova,sans-serif;
 }
-/* Add a black background color to the top navigation */
+
+.container {
+    margin-bottom: 50px;
+    padding-bottom: 60px;
+}
+
 .topnav {
     overflow: hidden;
     background-color: #13294b;
@@ -80,6 +85,7 @@ html * {
     transform: rotate(-360deg);
     background-color: #13294b;
     clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
+    z-index: 1;
 }
 
 input[type=text], select, textarea {
@@ -278,8 +284,8 @@ label {
 
 /* the card feature */
 .card {
+    position: relative;
     background-color: #FFFFFF;
-    /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
     height: 160px;
     box-shadow: 0 0 4px 0 #d2d2d2;
     padding: 10px 10px 10px 16px;
@@ -421,6 +427,8 @@ hr.dotted {
 }
 
 .contribution-link {
+    position: absolute;
+    bottom: 20px;
     font-size: 16px;
     font-weight: normal;
     font-stretch: normal;
@@ -537,6 +545,7 @@ h5 {
     margin: 7px auto;
     text-align: left;
     color: #404040;
+    overflow: hidden;
 }
 
 .capability-name, .capability-name:hover {
