@@ -206,7 +206,7 @@ label {
 
 .button5 {
     background-color: white;
-    color: black;
+    color: #002855;
     display: inline-block;
     border: solid 2px #e84a27;
     border-radius: 24px;
@@ -535,9 +535,14 @@ h5 {
     color: #404040;
 }
 
+p {
+  /* Both of the following are required for text-overflow */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .small-body-text {
     font-size: 14px;
-    height: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -545,7 +550,7 @@ h5 {
     margin: 7px auto;
     text-align: left;
     color: #404040;
-    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .capability-name, .capability-name:hover {
