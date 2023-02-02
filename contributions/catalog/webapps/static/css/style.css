@@ -2,11 +2,6 @@ html * {
     font-family: proxima-nova,sans-serif;
 }
 
-.container {
-    margin-bottom: 50px;
-    padding-bottom: 50px;
-}
-/* Add a black background color to the top navigation */
 .topnav {
     overflow: hidden;
     background-color: #13294b;
@@ -120,6 +115,11 @@ label {
     margin-top: 6px;
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* Clear floats after the columns */
 .row:after {
     content: "";
@@ -200,20 +200,22 @@ label {
 }
 
 .button5 {
+    background-color: white;
+    color: #002855;
     display: inline-block;
-    color: black;
-    border-radius: 24px;
     border: solid 2px #e84a27;
-    background-color: #fff;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 1.14;
+    letter-spacing: normal;
+    text-align: center;
+    padding: 5px 15px 5px 15px;
 }
 
-.button5:hover {
+.button5:hover  {
     color: white;
-    display: inline-block;
-    border-radius: 24px;
     border: solid 2px #e84a27;
-    background-color: #13294b;
-    text-decoration: none;
+    background-color: #e84a27;
 }
 
 /* Style the buttons */
@@ -238,22 +240,25 @@ label {
 
 #header {
     border: none;
+    margin: auto;
     padding: 30px;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+    max-width: 1000px;
+    background-image: url("../bookshelf.jpg");
     background-repeat: no-repeat;
-    height: 20%;
+    height: 200px;
+    width: 1000px;
     background-position: center;
     background-size: auto;
-    position: fixed;
+    position: relative;
+    object-fit: contain;
 }
 
 #title {
     text-align: center;
     position: relative;
     top: 25%;
-    /*left: 50%;*/
-    transform: translate(-25%, -25%);
     color: white;
+    font-size: 32px;
 }
 
 .search {
@@ -273,21 +278,21 @@ label {
 }
 
 /* the card feature */
-.content {
-    background-color: #eaefee;
-    /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
+.card {
+    position: relative;
+    background-color: #FFFFFF;
     height: 160px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    box-shadow: 0 0 4px 0 #d2d2d2;
+    padding: 10px 10px 10px 16px;
     transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
+    border: solid 1px #dadde1;
+    border-radius: 8px;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
 
-.content:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+.card:hover {
+    box-shadow: 0 0 4px 0 #d2d2d2;
 }
 
 .required:after {
@@ -353,49 +358,6 @@ hr.dotted {
     background-color: #2a4b45;
 }
 
-h1 {
-    font-size: 32px;
-    height: 36px;
-    font-weight: 800;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: center;
-    color: #13294b;
-}
-
-h4{
-    font-size: 16px;
-    height: 20px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    color: #13294b;
-}
-
-h5{
-    font-size: 16px;
-    height: 20px;
-    font-weight: 400;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    color: #13294b;
-}
-
-.small-body-text {
-    font-size: 14px;
-    height: 16px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    margin: 7px auto;
-    text-align: left;
-    color: #404040;
-}
-
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -459,6 +421,26 @@ h5{
     color: #e84a27;
 }
 
+.contribution-link {
+    position: absolute;
+    bottom: 20px;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    text-align: left;
+    color: #002855;
+    text-decoration: underline;
+    text-decoration-color: #e84a27;
+    text-underline-offset: 5px;
+}
+
+.contribution-link:hover, .contribution-link:active {
+    color: #e84a27;
+}
+
 #togglePassword {
     cursor: pointer;
     position: relative;
@@ -496,3 +478,81 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
+
+h1 {
+    font-size: 32px;
+    height: 36px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #13294b;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.17;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
+h4{
+    font-size: 16px;
+    height: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #13294b;
+}
+
+h5 {
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    color: #404040;
+}
+
+p {
+  /* Both of the following are required for text-overflow */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.small-body-text {
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    margin: 7px auto;
+    text-align: left;
+    color: #404040;
+    text-overflow: ellipsis;
+}
+
+.capability-name, .capability-name:hover {
+    font-weight: bold;
+}
+
+.talent-name, .talent-name:hover {
+    font-weight: bold;
+}
+

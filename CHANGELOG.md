@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI changes to top navigation bar. [#1040](https://github.com/rokwire/rokwire-building-blocks-api/issues/1040)
 - UI for talent view page. [#1060](https://github.com/rokwire/rokwire-building-blocks-api/issues/1060)
 - UI changes for contribution details page. [#1041](https://github.com/rokwire/rokwire-building-blocks-api/issues/1041)
+- Catalog home page UI. [#1063](https://github.com/rokwire/rokwire-building-blocks-api/issues/1063)
 
 ## [1.17.0] - 2022-12-06
 ### Added
