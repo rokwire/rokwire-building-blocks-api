@@ -90,7 +90,7 @@
 {#<body>#}
 <body onload=start()>
 
-{% include 'top_bottom_nav.html' %}
+{% include 'topnav.html' %}
 
 <div id="header">
     <h2 id="title"> Contributions Catalog/Packager </h2>
@@ -157,7 +157,7 @@
                 </div>
             {% endif %}
         </div><!-- END GRID -->
-
+    {% include 'footer.html' %}
     {% include 'topnav_javascript.html' %}
     <script>
         window.onclick = function (event) {
