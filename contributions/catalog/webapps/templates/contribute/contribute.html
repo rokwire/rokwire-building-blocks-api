@@ -161,7 +161,7 @@
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio"  onclick="show_person()"> Person</label>-->
                 <!--                    <label class="radio-inline"><input type="radio" name="optradio" onclick="show_org()"checked> Organization</label>-->
                 <div>
-                    <button class="button button1" id="add-contributor-person">Add Person</button>
+                    <button class="button button2" id="add-contributor-person">Add Person</button>
                     <button class="button button2" id="add-contributor-org">Add Organization</button>
                 </div>
                 <!--                <div>-->
@@ -495,7 +495,7 @@
                 <div id="select-contribution-button">
                     <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
                     OR
-                    <button class="button button1" id="add-talent" onclick="AddTalent(event); MoveSelector(event);">Add a Talent</button>
+                    <button class="button button2" id="add-talent" onclick="AddTalent(event); MoveSelector(event);">Add a Talent</button>
                 </div>
             </div>
 
@@ -1690,12 +1690,9 @@
 
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                <input href="{{ url_for('contribute.home') }}"
-                       id="submit_button"
-                       onsubmit="return data_validation()"
-                       type="submit"
-                       value="Submit">
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">&ensp; Cancel &ensp;</button>
+                <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button1"
+                       onsubmit="return data_validation()" type="submit" value="Submit">
             </div>
 
             <!-- Submit modal -->
