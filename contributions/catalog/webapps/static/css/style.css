@@ -90,7 +90,6 @@ label {
     font-style: normal;
     letter-spacing: normal;
     height: 20px;
-    width: fit-content;
     color: #13294b;
 }
 
@@ -130,6 +129,10 @@ input[type=reset]:hover {
     border-radius: 5px;
     background-color: #ffffff;
     padding: 20px;
+}
+
+.col-sm-2 {
+    padding-left: 1px;
 }
 
 .col-25 {
