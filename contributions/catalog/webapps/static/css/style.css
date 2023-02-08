@@ -547,6 +547,10 @@ input.datadel-api {
     background-color: #20375c;
 }
 
+.table-row-inputs {
+    display: table-cell;
+}
+
 h1 {
     font-size: 32px;
     height: 36px;
