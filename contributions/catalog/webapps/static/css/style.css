@@ -392,11 +392,6 @@ hr.dotted {
     background-color: #2a4b45;
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .catalog-home {
     white-space: nowrap;
     margin-left: 20px;
