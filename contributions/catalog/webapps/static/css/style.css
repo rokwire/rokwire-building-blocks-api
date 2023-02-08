@@ -520,6 +520,33 @@ input.datadel-api {
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
 
+.form-checkbox{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    border: 0.7px solid #717372;
+    display: grid;
+    place-content: center;
+}
+
+.form-checkbox::before {
+    content: "";
+    width: inherit;
+    height: inherit;
+    background-image: url("../checkbox-checked.svg");
+    transform: scale(0);
+    transform-origin: center;
+    transition: 120ms transform ease-in-out;
+}
+
+.form-checkbox:checked::before {
+    transform: scale(1);
+    background-color: #20375c;
+}
+
 h1 {
     font-size: 32px;
     height: 36px;
