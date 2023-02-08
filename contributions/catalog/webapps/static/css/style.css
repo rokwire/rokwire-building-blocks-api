@@ -104,6 +104,10 @@ input[type=text], input[type=url], select, textarea {
     border-radius: 4px;
 }
 
+input[type=checkbox]{
+    vertical-align: middle;
+}
+
 input[type=reset] {
     background-color: #6b9ec0;
     color: #090000;
@@ -521,15 +525,11 @@ input.datadel-api {
 .showtext { -webkit-text-security: none; }
 
 .form-checkbox{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
     margin: 0;
     width: 20px;
     height: 20px;
     border: 0.7px solid #717372;
-    display: grid;
-    place-content: center;
+    display: inline-grid;
 }
 
 .form-checkbox::before {
@@ -539,7 +539,7 @@ input.datadel-api {
     background-image: url("../checkbox-checked.svg");
     transform: scale(0);
     transform-origin: center;
-    transition: 120ms transform ease-in-out;
+    transition: 20ms transform ease-in-out;
 }
 
 .form-checkbox:checked::before {
