@@ -374,9 +374,6 @@ hr.dotted {
 /* The Close Button */
 .close {
     color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
 }
 
 .close:hover,
@@ -579,7 +576,7 @@ h3 {
     font-style: normal;
     line-height: 1.2;
     letter-spacing: normal;
-    color: #13294b;
+    color: #ff552e;
 }
 
 h4{

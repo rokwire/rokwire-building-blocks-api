@@ -1687,7 +1687,7 @@
 
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">&ensp; Cancel &ensp;</button>
+                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
                 <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button1"
                        onsubmit="return data_validation()" type="submit" value="Submit">
             </div>
@@ -1707,19 +1707,21 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">
+                            <h3 class="cancel-modal-title" id="cancel-modal-title" style="display: inline-block">
                               Cancel submission
-                            </h5>
+                            </h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
+                                <i class="bi bi-x-lg" id="close-btn"></i>
                             </button>
                         </div>
                         <div class="modal-body">
                             Are you sure you want to Cancel this submission?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">No</button>
-                            <a class="btn btn-primary ml-1" role="button" id="cancel-modal-btn-yes" href="{{ url_for('contribute.home') }}">Yes</a>
+                            <button type="button" class="button button1" data-dismiss="modal">No</button>
+                            <a class="button button3" role="button" id="cancel-modal-btn-yes" href="{{ url_for('contribute.home') }}" style="text-decoration: none">
+                                Yes
+                            </a>
                         </div>
                     </div>
                 </div>
