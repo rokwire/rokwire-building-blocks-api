@@ -373,7 +373,8 @@ hr.dotted {
 
 /* The Close Button */
 .close {
-    color: #aaaaaa;
+    color: #888;
+    /*color: #aaaaaa;*/
 }
 
 .close:hover,
