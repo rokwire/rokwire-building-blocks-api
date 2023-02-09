@@ -104,8 +104,43 @@ input[type=text], input[type=url], select, textarea {
     border-radius: 4px;
 }
 
+input[type=number], input[type=date]{
+    color: #404040;
+    padding: 5px;
+    border: 1px solid #002855;
+    resize: vertical;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
 input[type=checkbox]{
     vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #002855;
+    border-radius: 4px;
+    display: inline-grid;
+    place-content: center;
+    position: inherit;
+}
+
+input[type=checkbox]::before {
+    content: "";
+    width: inherit;
+    height: inherit;
+    background-image: url("../checkbox-checked.svg");
+    transform: scale(0);
+    transform-origin: center;
+    transition: 20ms transform ease-in-out;
+}
+
+input[type=checkbox]:checked::before {
+    transform: scale(1);
+    background-color: #20375c;
+}
+
+input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
+    box-shadow: none;
 }
 
 input[type=reset] {
@@ -521,29 +556,6 @@ input.datadel-api {
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
-
-.form-checkbox{
-    margin: 0;
-    width: 20px;
-    height: 20px;
-    border: 0.7px solid #717372;
-    display: inline-grid;
-}
-
-.form-checkbox::before {
-    content: "";
-    width: inherit;
-    height: inherit;
-    background-image: url("../checkbox-checked.svg");
-    transform: scale(0);
-    transform-origin: center;
-    transition: 20ms transform ease-in-out;
-}
-
-.form-checkbox:checked::before {
-    transform: scale(1);
-    background-color: #20375c;
-}
 
 .table-row-inputs {
     display: table-cell;
