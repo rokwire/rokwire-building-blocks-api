@@ -157,9 +157,12 @@
                 </div>
             {% endif %}
         </div><!-- END GRID -->
-    {% include 'footer.html' %}
-    {% include 'topnav_javascript.html' %}
-    <script>
+    </div><!-- END myBtnContainer -->
+</div><!-- END Main -->
+
+{% include 'footer.html' %}
+{% include 'topnav_javascript.html' %}
+<script>
         window.onclick = function (event) {
             if (!event.target.matches('.dropbtn')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -194,8 +197,6 @@
         }
 
     </script>
-    </div>
 
-</div>
 </body>
 </html>
