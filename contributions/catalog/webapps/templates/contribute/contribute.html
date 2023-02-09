@@ -1687,8 +1687,8 @@
 
             <!-------------------------------------------- submit ------------------------------------------>
             <div class="row">
-                <button type="button" class="button button3" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
-                <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button1"
+                <button type="button" class="button button2" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
+                <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button3"
                        onsubmit="return data_validation()" type="submit" value="Submit">
             </div>
 
@@ -1697,7 +1697,7 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <div class="modal-body">
-                        <i class="bi bi-x-lg close" id="close-btn"></i>
+                        <span class="close"><i class="bi bi-x-lg" id="close-btn"></i></span>
                         <p id="submit-pop" >Please finish the form!</p>
                     </div>
                 </div>
