@@ -253,12 +253,37 @@ input[type=reset]:hover {
     background-color: #e84a27;
     text-decoration: none;
 }
+.button2:active{
+    color: #002855;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
+    background-color: #fff;
+    text-decoration: none;
+}
 
-.button3, .button3:hover {
+
+.button3 {
     color: white;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #e84a27;
+    background-color: #e84a27;
+    text-decoration: none;
+}
+.button3:hover {
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #f5821e;
+    background-color: #f5821e;
+    text-decoration: none;
+}
+.button3:active {
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
     background-color: #e84a27;
     text-decoration: none;
 }
