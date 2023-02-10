@@ -3,7 +3,7 @@
 <head>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css">
+    <!-- <link rel="stylesheet" href="https://use.typekit.net/qjr3liq.css"> -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -21,6 +21,10 @@
         margin: auto;
         position: relative;
         max-width: 1000px;
+        min-height: 70%;
+        min-height: -webkit-calc(100vh - 176px);
+        min-height: -moz-calc(100vh - 176px);
+        min-height: calc(100vh - 176px);
     }
 
     .row {
@@ -44,40 +48,6 @@
         content: "";
         display: table;
         clear: both;
-    }
-
-    h1 {
-        font-size: 50px;
-        word-break: break-all;
-    }
-
-    #header {
-        margin: auto;
-        position: relative;
-        max-width: 1000px;
-
-        left: auto;
-        right: auto;
-        border: none;
-        /*padding: 30px;*/
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-        background-repeat: no-repeat;
-        /*height: 30%;*/
-        /*width: 52%;*/
-        height: 250px;
-        width: 1000px;
-        background-position: center;
-        background-size: auto;
-    }
-
-    #title {
-        margin: auto;
-        text-align: center;
-        position: relative;
-        top: 50%;
-        left: 15%;
-        transform: translate(-25%, -25%);
-        color: white;
     }
 
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
@@ -119,159 +89,120 @@
         border-radius: 5%;
     }
 
-    .show {
-        display: block;
-    }
-
-    /* the card feature */
-    .content {
-        background-color: #f7f3f3;
-        /*background: url("https://images.unsplash.com/photo-1463947628408-f8581a2f4aca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");*/
-        height: 160px;
-        box-shadow: 0 4px 8px 0 rgba(98, 66, 66, 0.2);
-        padding: 10px;
-        transition-duration: 0.2s;
-        border: none;
-        border-radius: 4px;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-
-    }
-
-    .content:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        text-decoration: #8fd19e;
-    }
-
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        background-color: #2a4b45;
-        color: #ffffff;
-    }
-
-
 </style>
 
 {#<body>#}
 <body onload=start()>
 
-{% include 'topnav.html' %}
+    {% include 'topnav.html' %}
 
-<div id="header">
-    <h2 id="title"> Contributions Catalog/Packager </h2>
-</div>
-<!-- MAIN (Center website) -->
-<div class="main">
+    <div id="header">
+        <h2 id="title"> Contributions Catalog/Packager </h2>
+    </div>
+    <!-- MAIN (Center website) -->
+    <div class="main">
 
+        <div id="myBtnContainer">
+            {% if show_sel == "capability" %}
+                <button class="button button5" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="button button5" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="button button5" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% elif show_sel == "talent" %}
+                <button class="button button5" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="button button5" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="button button5" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% else %}
+                <button class="button button5" id="all_btn" onclick="get_url('all')"> Show All</button>
+                <button class="button button5" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
+                <button class="button button5" id="talent_btn" onclick="get_url('talent')"> Talents</button>
+            {% endif %}
 
-    <div id="myBtnContainer">
-        {% if show_sel == "capability" %}
-            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn active" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% elif show_sel == "talent" %}
-            <button class="btn" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn active" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% else %}
-            <button class="btn active" id="all_btn" onclick="get_url('all')"> Show All</button>
-            <button class="btn" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
-            <button class="btn" id="talent_btn" onclick="get_url('talent')"> Talents</button>
-        {% endif %}
+            <div class="form-group pull-right">
+                <form action="{{ url_for('contribute.result')}}" method="POST">
+                    <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
+                    <input id="myBtn" style="display:none;" type="submit" value="Submit">
+                </form>
+            </div>
 
-        <div class="rokwire-footer">
-            <img src= "{{ url_for('static', filename='powered-by-rokwire-no-i-block.png') }}" alt="footer logo" />
-            <p>Version: {{ git_tag }} &emsp; SHA: {{ git_sha }} &emsp; &#124; &emsp; &copy; University of Illinois Board of Trustees &emsp; &#124; &emsp; <a href="https://www.vpaa.uillinois.edu/resources/web_privacy" class="link">Privacy Policy</a> </p>
-        </div>
-
-        <div class="form-group pull-right">
-            <form action="{{ url_for('contribute.result')}}" method="POST">
-                <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
-                <input id="myBtn" style="display:none;" type="submit" value="Submit">
-            </form>
-        </div>
-
-        <div class="row" id="grid-view">
-            {% if cap_json|length > 0 %}
-                {% for capability in cap_json %}
-                    <div class="column capability">
-                        <div class="content">
-                            <a class="card=link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}">
-                            <h4 class="capability_name">{{ capability|filter_nested_dict(["name"]) }}</h4>
-                            <p class="capability_description">{{ capability|filter_nested_dict(["description"]) }}</p>
-                            <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
-                            </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution >>> </a>
+            <div class="row" id="grid-view">
+                {% if cap_json|length > 0 %}
+                    {% for capability in cap_json %}
+                        <div class="column capability">
+                            <div class="card">
+                                <a class="card-link" href="{{ url_for('contribute.capability_details', contribution_id=capability['cont_id'], id=capability['id']) }}" style="text-decoration: none;">
+                                    <h3 class="capability-name">{{ capability|filter_nested_dict(["name"]) }}</h3>
+                                </a>
+                                <p class="small-body-text">{{ capability|filter_nested_dict(["description"]) }}</p>
+                                <p class="contributors">{{ capability|filter_nested_dict(["contributors"]) }}</p>
+                                <a class="contribution-link" href="{{ url_for('contribute.contribution_details', contribution_id=capability['cont_id']) }}"> View Contribution </a>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+                    {% endfor %}
+                {% endif %}
 
-            {% if tal_json|length > 0 %}
-                {% for talent in tal_json %}
-                    <div class="column talent">
-                        <div class="content">
-                            <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}">
-                            <h4 class="talent_name">{{ talent|filter_nested_dict(["name"]) }}</h4>
-                            <p class="talent_description">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
-                            <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
-                            </a>
-                            <a class="link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution >>> </a>
+                {% if tal_json|length > 0 %}
+                    {% for talent in tal_json %}
+                        <div class="column talent">
+                            <div class="card">
+                                <a class="card-link" href="{{ url_for('contribute.talent_details', contribution_id=talent['cont_id'], id=talent['id']) }}" style="text-decoration: none;">
+                                    <h3 class="talent-name">{{ talent|filter_nested_dict(["name"]) }}</h3>
+                                </a>
+                                <p class="small-body-text">{{ talent|filter_nested_dict(["shortDescription"]) }}</p>
+                                <p class="contributors">{{ talent|filter_nested_dict(["contributors"]) }}</p>
+                                <a class="contribution-link" href="{{ url_for('contribute.contribution_details', contribution_id=talent['cont_id']) }}"> View Contribution </a>
+                            </div>
                         </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if (tal_json|length == 0) and (cap_json|length == 0)  %}
+                    <div>
+                        <h4 class="talent_name">There are no published contributions.</h4>
                     </div>
-                {% endfor %}
-            {% endif %}
+                {% endif %}
+            </div><!-- END GRID -->
+        </div><!-- END myBtnContainer -->
+    </div><!-- END Main -->
 
-            {% if (tal_json|length == 0) and (cap_json|length == 0)  %}
-                <div>
-                    <h4 class="talent_name">There are no published contributions.</h4>
-                </div>
-            {% endif %}
-        </div><!-- END GRID -->
-
+    {% include 'footer.html' %}
     {% include 'topnav_javascript.html' %}
+
     <script>
-        window.onclick = function (event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
                 }
             }
         }
+    }
 
-        function get_url(c) {
-            var cur_url = window.location.href.split('/');
-            if (c === "all")
-                window.location.href = cur_url[0] + "?show=all"
-            if (c === "capability")
-                window.location.href = cur_url[0] + "?show=capability"
-            if (c === "talent")
-                window.location.href = cur_url[0] + "?show=talent"
-        }
+    function get_url(c) {
+        var cur_url = window.location.href.split('/');
+        if (c === "all")
+            window.location.href = cur_url[0] + "?show=all"
+        if (c === "capability")
+            window.location.href = cur_url[0] + "?show=capability"
+        if (c === "talent")
+            window.location.href = cur_url[0] + "?show=talent"
+    }
 
-        // Add active class to the current button (highlight it)
-        var btnContainer = document.getElementById("myBtnContainer");
-        var btns = btnContainer.getElementsByClassName("btn");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function () {
-                var current = document.getElementsByClassName("active");
-                current[0].className = current[0].className.replace(" active", "");
-                this.className += " active";
-            });
-        }
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
 
-    </script>
-    </div>
+</script>
 
-</div>
 </body>
+
 </html>
