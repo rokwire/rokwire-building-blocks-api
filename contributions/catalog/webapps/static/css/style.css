@@ -89,35 +89,67 @@ label {
     color: #13294b;
 }
 
-input[type=text], input[type=url], select, textarea {
+.form-control {
+    height: 48px;
+    padding: 12px 8px 16px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background-color: #fff;
     color: #404040;
+}
+
+.form-check-input {
+    height: 20px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background-color: #fff;
+    color: #404040;
+}
+
+.form-check-label{
+    height: 48px;
+}
+
+select, textarea {
+    height: 48px;
     width: 100%;
-    padding: 5px;
+    padding: 12px 8px 16px;
     border: 1px solid #002855;
-    resize: vertical;
+    border-radius: 0;
     background-color: #fff;
-    border-radius: 4px;
-}
-
-input[type=number], input[type=date]{
     color: #404040;
-    padding: 5px;
-    border: 1px solid #002855;
-    resize: vertical;
-    background-color: #fff;
-    border-radius: 4px;
 }
 
-input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus{
+input[type=text], input[type=url], select, textarea {
+    width: 100%;
+}
+
+input[type=number]{
+    width:auto;
+    resize: vertical;
+}
+
+input[type=date]{
+    height: 34px;
+    width:auto;
+    resize: vertical;
+}
+
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus, .form-check-input:focus{
     box-shadow: none;
+}
+
+input[type=file]{
+    height: 48px;
+    color: #404040;
+    padding: 12px 8px 16px;
 }
 
 input[type=checkbox]{
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    border: 1px solid #002855;
-    border-radius: 4px;
+    /*border: 1px solid #002855;*/
     display: inline-grid;
     place-content: center;
     position: inherit;
@@ -550,12 +582,7 @@ input.envvar-value {
     margin-right: 1%;
     margin-bottom: 5px;
     display: table-cell;
-    color: #404040;
-    padding: 5px;
-    border: 1px solid #002855;
     resize: vertical;
-    background-color: #fff;
-    border-radius: 4px;
 
 }
 
@@ -570,12 +597,7 @@ input.datadel-api {
     margin-right: 1%;
     display: inline-block;
     margin-bottom: 5px;
-    color: #404040;
-    padding: 5px;
-    border: 1px solid #002855;
-    resize: vertical;
-    background-color: #fff;
-    border-radius: 4px;
+
 }
 
 .hidetext { -webkit-text-security: disc; }
