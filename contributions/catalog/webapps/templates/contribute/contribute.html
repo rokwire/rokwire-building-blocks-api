@@ -1140,7 +1140,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">User Privacy Level</label>
                             <div class="col-sm-10">
-                                <input max="5" min="1" name="talent_minUserPrivacyLevel"
+                                <input class="form-control" max="5" min="1" name="talent_minUserPrivacyLevel"
                                        step="1" type="number" value="1">
                             </div>
                         </div>
@@ -1187,10 +1187,11 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Data Description</label>
                             <div class="col-sm-10">
-                                <input id="data_des" name="talent_dataDescription"
+                                <textarea id="data_des" name="talent_dataDescription"
                                        placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
                                        style="height:150px"
                                        type="text">
+                                </textarea>
                             </div>
                         </div>
                         <!---------- self certification block -------------------->
