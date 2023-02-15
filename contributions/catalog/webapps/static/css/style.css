@@ -319,12 +319,28 @@ input[type=reset]:hover {
     text-decoration: none;
 }
 
-.button4, .button4:hover {
+.button4 {
     background-color: white;
     color: #002855;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #002855;
+    text-decoration: none;
+}
+.button4:hover {
+    background-color: #002855;
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #002855;
+    text-decoration: none;
+}
+.button4:active {
+    background-color: white;
+    color: #002855;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
     text-decoration: none;
 }
 
