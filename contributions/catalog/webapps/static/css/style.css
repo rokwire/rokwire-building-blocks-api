@@ -91,6 +91,7 @@ label {
 
 .form-control {
     height: 48px;
+    font-size: 16px;
     padding: 12px 8px 16px;
     border: 1px solid #002855;
     border-radius: 0;
@@ -100,6 +101,7 @@ label {
 
 .form-check-input {
     height: 20px;
+    font-size: 16px;
     border: 1px solid #002855;
     border-radius: 0;
     background-color: #fff;
@@ -108,11 +110,13 @@ label {
 
 .form-check-label{
     height: 48px;
+    font-size: 16px;
 }
 
 select, textarea {
     height: 48px;
     width: 100%;
+    font-size: 16px;
     padding: 12px 8px 16px;
     border: 1px solid #002855;
     border-radius: 0;
