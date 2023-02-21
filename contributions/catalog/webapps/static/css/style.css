@@ -267,7 +267,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #e84a27;
     text-decoration: none;
 }
-.button2:active{
+.button2:active, .button2:focus{
     color: #002855;
     display: inline-block;
     border-radius: 24px;
@@ -293,7 +293,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #f5821e;
     text-decoration: none;
 }
-.button3:active {
+.button3:active, .button3:focus {
     color: white;
     display: inline-block;
     border-radius: 24px;
@@ -318,7 +318,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     border: solid 2px #002855;
     text-decoration: none;
 }
-.button4:active {
+.button4:active, .button4:focus {
     background-color: white;
     color: #002855;
     display: inline-block;
