@@ -361,26 +361,30 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 }
 /* Style the arrow inside the select element: */
 .select-selected:after {
-  position: absolute;
-  content: "";
-  top: 14px;
-  right: 10px;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
-  border-color: #ff552e transparent transparent transparent;
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #ff552e transparent transparent transparent;
 }
+
 /* Point the arrow upwards when the select box is open (active): */
 .select-selected.select-arrow-active:after {
-  border-color: transparent transparent #ff552e transparent;
-  top: 7px;
+    border-color: transparent transparent #ff552e transparent;
+    top: 7px;
 }
+.select-selected.select-arrow-active{
+    border-color: #dadde1 #dadde1 #ff552e #dadde1;
+    border-bottom-width: 2px;
+}
+
 /* style the items (options), including the selected item: */
 .select-items div,.select-selected {
     color: #002855;
     padding: 8px 16px;
-    /*border: 1px solid transparent;*/
-    /*border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;*/
     background-color: #fff;
     border: solid 1px #dadde1;
     border-radius: 0;
@@ -401,36 +405,15 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 
 /* Hide the items when the select box is closed: */
 .select-hide {
-  display: none;
+    display: none;
 }
 
-.select-items div:hover, .same-as-selected {
-  background-color: #cfe9f2;
+.select-items div:hover {
+    background-color: #cfe9f2;
 }
-
-/*select.catalog-dropdown-menu{*/
-/*    appearance: none;*/
-/*}*/
-/*!* This is to remove the arrow of select element in IE *!*/
-/*select.catalog-dropdown-menu::-ms-expand {*/
-/*  display: none;*/
-/*}*/
-/*.catalog-dropdown-menu {*/
-/*    padding: 12px 8px 10px;*/
-/*    background-image: url("../icon-arrows-caret-down-orange@3x.png");*/
-/*    background-repeat: no-repeat, repeat;*/
-/*    background-position: right .7em top 50%, 0 0;*/
-/*    background-size: .65em auto, 100%;*/
-/*}*/
-/*.catalog-dropdown-menu:hover {*/
-/*    cursor: pointer;*/
-/*    border: solid 2px #dadde1;*/
-/*    border-color: #dadde1 #dadde1 #ff552e #dadde1;*/
-/*}*/
-/*.catalog-dropdown-menu.open {*/
-/*    background-image: url("../icon-arrows-caret-up-orange@3x.png");*/
-/*    !*transform: rotate(-180deg);*!*/
-/*}*/
+.same-as-selected, .select-items div:active {
+    background-color: #009fd4;
+}
 
 /* Style the buttons */
 .cardfilter {
