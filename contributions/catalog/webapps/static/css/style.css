@@ -352,6 +352,10 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     border: 1px solid #002855;
     border-radius: 0;
 }
+.catalog-dropdown-menu:hover {
+    border: 1px solid #dadde1;
+    border-radius: 0;
+}
 .catalog-dropdown-menu select{
     display: none; /* hide original select element */
 }
