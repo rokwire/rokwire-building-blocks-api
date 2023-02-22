@@ -2,6 +2,11 @@ html * {
     font-family: proxima-nova,sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+/* Style the navigation bar */
 .topnav {
     overflow: hidden;
     background-color: #13294b;
@@ -10,22 +15,22 @@ html * {
     margin: 0 0 10px;
     padding: 32px 32px 32px 32px;
 }
-/* Style the navigation bar */
+/* Left-aligned section inside the top navigation */
 .topnav-left {
     display: flex;
     float: left;
     align-items: center;
 }
+.topnav-left div {
+    flex:auto;
+}
+
 /* Right-aligned section inside the top navigation */
 .topnav-right {
     display: flex;
     float: right;
     align-items: center;
     color: #ffffff;
-}
-
-.topnav-left div {
-    flex:auto;
 }
 .topnav-right div {
     flex:2 min-content auto;
@@ -64,43 +69,140 @@ html * {
     float: right;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 .rokwire-footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
     color: #ffffff;
     text-align: center;
-    margin: 473px 0 0;
-    padding: 30px 412px 0px 412px;
+    padding: 85px 363px 26px;
     transform: rotate(-360deg);
     background-color: #13294b;
     clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
-    z-index: 1;
-}
-
-input[type=text], select, textarea {
-    color: #090000;
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
 }
 
 label {
-    padding: 12px 12px 12px 0;
-    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    height: 20px;
+    color: #13294b;
+}
+
+.form-control {
+    height: 48px;
+    font-size: 16px;
+    padding: 12px 8px 16px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background-color: #fff;
+    color: #404040;
+}
+
+.form-check-input {
+    height: 20px;
+    font-size: 16px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background-color: #fff;
+    color: #404040;
+}
+
+.form-check-label{
+    height: 48px;
+    font-size: 16px;
+}
+
+select, textarea {
+    height: 48px;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 8px 16px;
+    border: 1px solid #002855;
+    border-radius: 0;
+    background-color: #fff;
+    color: #404040;
+}
+
+input[type=text], input[type=url], select, textarea {
+    width: 100%;
+}
+
+input[type=number]{
+    width:auto;
+    resize: vertical;
+}
+
+input[type=date]{
+    height: 34px;
+    width:auto;
+    resize: vertical;
+}
+
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus, .form-check-input:focus{
+    box-shadow: none;
+}
+
+input[type=file]{
+    height: 48px;
+    color: #404040;
+    padding: 12px 8px 16px;
+}
+
+input[type=checkbox]{
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    /*border: 1px solid #002855;*/
+    display: inline-grid;
+    place-content: center;
+    position: inherit;
+}
+
+input[type=checkbox]::before {
+    content: "";
+    width: inherit;
+    height: inherit;
+    background-image: url("../checkbox-checked.svg");
+    transform: scale(0);
+    transform-origin: center;
+    transition: 20ms transform ease-in-out;
+}
+
+input[type=checkbox]:checked::before {
+    transform: scale(1);
+    background-color: #20375c;
+}
+
+input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
+    box-shadow: none;
+}
+
+input[type=reset] {
+    background-color: #6b9ec0;
+    color: #090000;
+    padding: 15px 25px;
+    text-align: center;
+    margin: 5px 5px;
+    transition-duration: 0.2s;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=reset]:hover {
+    background-color: #378bc4;
 }
 
 .container {
     border-radius: 5px;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 5px;
+}
+
+.col-sm-2 {
+    padding-left: 1px;
 }
 
 .col-25 {
@@ -145,7 +247,7 @@ label {
     border: none;
     border-radius: 4px;
     color: white;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 15px 5px 15px;
     text-align: center;
     display: inline-block;
     font-size: 14px;
@@ -158,21 +260,15 @@ label {
     font-weight: bold;
 }
 
-.button1 {
+.button1, .button1:hover {
     display: inline-block;
-    color: black;
+    color: #002855;
     border-radius: 24px;
-    border: solid 2px #002855;
-    background-color: #f5f5f5;
+    border: solid 2px #e84a27;
+    background-color: #fff;
 }
 
-.button1:hover {
-    background-color: #002855;
-    color: white;
-    display: inline-block;
-}
-
-.button2, .button2:hover {
+.button2 {
     color: #002855;
     display: inline-block;
     border-radius: 24px;
@@ -180,12 +276,45 @@ label {
     background-color: #fff;
     text-decoration: none;
 }
-
-.button3, .button3:hover {
+.button2:hover{
     color: white;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #e84a27;
+    background-color: #e84a27;
+    text-decoration: none;
+}
+.button2:active{
+    color: #002855;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
+    background-color: #fff;
+    text-decoration: none;
+}
+
+
+.button3 {
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
+    text-decoration: none;
+}
+.button3:hover {
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #f5821e;
+    background-color: #f5821e;
+    text-decoration: none;
+}
+.button3:active {
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
     background-color: #e84a27;
     text-decoration: none;
 }
@@ -339,10 +468,8 @@ hr.dotted {
 
 /* The Close Button */
 .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+    color: #888;
+    /*color: #aaaaaa;*/
 }
 
 .close:hover,
@@ -356,11 +483,6 @@ hr.dotted {
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
     background-color: #2a4b45;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .catalog-home {
@@ -455,13 +577,17 @@ hr.dotted {
 input.envvar-key[type=text] {
     width: 47%;
     display: table-cell;
+    margin-bottom: 5px;
 }
 
 input.envvar-value {
     width: 47%;
     margin-left: 1%;
     margin-right: 1%;
+    margin-bottom: 5px;
     display: table-cell;
+    resize: vertical;
+
 }
 
 input.datadel-endpoint[type=text] {
@@ -474,10 +600,16 @@ input.datadel-api {
     margin-left: 1%;
     margin-right: 1%;
     display: inline-block;
+    margin-bottom: 5px;
+
 }
 
 .hidetext { -webkit-text-security: disc; }
 .showtext { -webkit-text-security: none; }
+
+.table-row-inputs {
+    display: table-cell;
+}
 
 h1 {
     font-size: 32px;
@@ -507,7 +639,7 @@ h3 {
     font-style: normal;
     line-height: 1.2;
     letter-spacing: normal;
-    color: #13294b;
+    color: #ff552e;
 }
 
 h4{
