@@ -362,6 +362,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 .select-selected {
     color: #002855;
     background-color: #fff;
+    font-weight: bold;
 }
 /* Style the arrow inside the select element: */
 .select-selected:after {
@@ -414,9 +415,11 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 
 .select-items div:hover {
     background-color: #cfe9f2;
+    font-weight: bold;
 }
 .same-as-selected, .select-items div:active {
     background-color: #009fd4;
+    font-weight: bold;
 }
 
 /* Style the buttons */
