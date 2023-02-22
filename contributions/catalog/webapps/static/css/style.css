@@ -415,6 +415,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 
 .select-items div:hover {
     background-color: #cfe9f2;
+    border: solid 1px #009fd4;
     font-weight: bold;
 }
 .same-as-selected, .select-items div:active {
