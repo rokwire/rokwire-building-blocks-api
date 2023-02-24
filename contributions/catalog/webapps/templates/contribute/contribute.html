@@ -143,19 +143,14 @@
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text" value="{{ post.contributionAdmins|join(', ') }}"></div>
+                                   type="text" value="{{ post.contributionAdmins|join(', ') }}">
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
                                    placeholder="Give a list of admin names, separated by comma"
-                                   type="text"></div>
+                                   type="text">
                         {% endif %}
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2">Contributor Details</label>
-                <div>
-                    <button class="button button2" id="add-contributor-person">Add Person</button>
-                    <button class="button button2" id="add-contributor-org">Add Organization</button>
+                    </div>
                 </div>
             </div>
 
