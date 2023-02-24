@@ -152,10 +152,19 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Contributor Details</label>
+                    <div class="col-sm-10">
+                        <button class="button button2" id="add-contributor-person" style="margin-left:0px">Add Person</button>
+                        <button class="button button2" id="add-contributor-org">Add Organization</button>
+                    </div>
+                </div>
+            </div> {# end of contribution-details container div #}
 
             <!-------------- contributor block parent -------------------------->
-            <div id="contributor-parent">
+            <div class="container">
+                <div id="contributor-parent">
                 <!-------------------- organization block clean -------------------->
                 <div id="organization-clean" style="display: none">
                     <hr class="dotted">
@@ -462,6 +471,7 @@
                     {% endfor %}f
                 {% endif %}
             </div>
+            </div> {# end of contributor block parent container div #}
 
             <div id="cd-multi-steps-text-top">
                 <nav>
@@ -475,17 +485,20 @@
                 </nav>
             </div>
 
-            <div class="form-group" id="select-contribution-div">
-                <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
-                <div id="select-contribution-button">
-                    <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
-                    OR
-                    <button class="button button2" id="add-talent" onclick="AddTalent(event); MoveSelector(event);">Add a Talent</button>
+            <div class="container">
+                <div class="form-group" id="select-contribution-div">
+                    <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
+                    <div class="col-sm-10" id="select-contribution-button">
+                        <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
+                        OR
+                        <button class="button button2" id="add-talent" onclick="AddTalent(event); MoveSelector(event);">Add a Talent</button>
+                    </div>
                 </div>
-            </div>
+            </div> {# end of select-contribution-div container div #}
 
             <!-----------------------------------------capability block ------------------------------------>
-            <div id="capability-parent" style="display: block; background-color:white">
+            <div class="container">
+                <div id="capability-parent" style="display: block; background-color:white">
 
                 <!--------------------------- capability clean block --------------------------------->
                 <div id="capability-div-clean" style="display: none; background-color:white">
@@ -1082,9 +1095,11 @@
                     {% endfor %} <!-- end of for loop iterating through existing capabilities -->
                 {% endif %} <!-- end of if existing capabilities exist -->
             </div> <!-- end of div capability-parent -->
+            </div> {# end of capability-parent container div #}
 
             <!--------------------------------------------talent block ------------------------------------------>
-            <div id="talent-parent" style="display: block; background-color:white">
+            <div class="container">
+                <div id="talent-parent" style="display: block; background-color:white">
                 <!----------------------------------------talent clean block ---------------------------------------->
                 <div id="talent-div-clean" style="display: none">
                     <!-- all field id in talent clean block will be appended with _0 -->
@@ -1533,10 +1548,14 @@
                     {% endfor %} <!-- end of for loop iterating through existing talents -->
                 {% endif %}  <!-- end of if existing talents exist -->
             </div>  <!-- end of div talent-parent -->
+            </div> {# end of talent-parent container div #}
 
-            <div id="select-contribution-div-placeholder" class="row">
-                <!-- place holder for dynamic add capability / talent buttons" -->
+            <div class="container">
+                <div id="select-contribution-div-placeholder" class="row">
+                    <!-- place holder for dynamic add capability / talent buttons" -->
+                </div> {# end of place holder for dynamic add capability / talent buttons container div #}
             </div>
+
             <!--------------------------------------------contact/privacy check ------------------------------------------>
             <div id="cd-multi-steps-text-bottom">
                 <nav>
@@ -1548,7 +1567,6 @@
                         <li><em>Submit</em></li>
                     </ol>
                 </nav>
-
             </div>
 
             <div class="container">
@@ -1682,10 +1700,12 @@
             </div> <!-- end of class container Contact Details div -->
 
             <!-------------------------------------------- submit ------------------------------------------>
-            <div class="row">
+            <div class="container">
+                <div class="row">
                 <button type="button" class="button button2" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
                 <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button3"
                        onsubmit="return data_validation()" type="submit" value="Submit">
+            </div>
             </div>
 
             <!-- Submit modal -->
