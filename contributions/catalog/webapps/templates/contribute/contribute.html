@@ -524,20 +524,26 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="capability_icon">Upload an icon</label>
-                            <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                            <div class="col-sm-10">
+                                <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
+                            </div>
                         </div>
 
                         <div class="form-group" id="open-source-check-div">
                             <label class="required control-label col-sm-2"> Is code Open Sourced? </label>
-                            <!-- open source yes no block -->
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="open_source_yes"
-                                       name="capability_isOpenSource" type="radio" value="y">
-                                yes</label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="open_source_no"
-                                       name="capability_isOpenSource" type="radio" value="n">
-                                no</label>
+                            <div class="col-sm-10">
+                                <!-- open source yes no block -->
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="open_source_yes"
+                                           name="capability_isOpenSource" type="radio" value="y">
+                                    yes
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="open_source_no"
+                                           name="capability_isOpenSource" type="radio" value="n">
+                                    no
+                                </label>
+                            </div>
                         </div>
 
                         <div class="form-group" id="sourceurl">
@@ -556,15 +562,17 @@
                         </div>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Deployment location</label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
-                                       type="radio" value="internal"> internal
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="deploy_external"
-                                       name="deploymentDetails_location" type="radio"
-                                       value="external"> external
-                            </label>
+                            <div class="col-sm-10">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
+                                           type="radio" value="internal"> internal
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="deploy_external"
+                                           name="deploymentDetails_location" type="radio"
+                                           value="external"> external
+                                </label>
+                            </div>
                         </div>
 
                         <div class="form-group">
