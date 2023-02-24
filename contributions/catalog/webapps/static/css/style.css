@@ -147,7 +147,11 @@ input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select
 input[type=file]{
     height: 48px;
     color: #404040;
-    padding: 12px 8px 16px;
+    padding: 10px 0px;
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: 30px;
+
 }
 
 input[type=checkbox]{
