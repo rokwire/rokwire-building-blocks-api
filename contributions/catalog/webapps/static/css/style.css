@@ -106,6 +106,7 @@ label {
     border-radius: 0;
     background-color: #fff;
     color: #404040;
+    cursor: pointer;
 }
 
 .form-check-label{
