@@ -1393,7 +1393,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">User Privacy Level</label>
                                     <div class="col-sm-10">
-                                        <input max="5" min="1"
+                                        <input class="form-control"
+                                               max="5" min="1"
                                                name="talent_minUserPrivacyLevel_{{loop.index0}}"
                                                id="minUserPrivacyLevel_{{loop.index0}}"
                                                step="1"
@@ -1403,112 +1404,139 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">End User Role</label>
-                                    {% if talent["minEndUserRoles"] %}
-                                        {%  set student_ns = namespace(is_on=false) %}
-                                        {%  set visitor_ns = namespace(is_on=false) %}
-                                        {%  set alumni_ns = namespace(is_on=false) %}
-                                        {%  set employee_ns = namespace(is_on=false) %}
-                                        {%  set parent_ns = namespace(is_on=false) %}
-                                        {%  set fan_ns = namespace(is_on=false) %}
-                                        {% for role in talent["minEndUserRoles"] %}
-                                            {% if role == "student" %}
-                                                {% set student_ns.is_on = True %}
-                                            {% elif role == "visitor" %}
-                                                {% set visitor_ns.is_on = True %}
-                                            {% elif role == "alumni" %}
-                                                {% set alumni_ns.is_on = True %}
-                                            {% elif role == "employee" %}
-                                                {% set employee_ns.is_on = True %}
-                                            {% elif role == "parent" %}
-                                                {% set parent_ns.is_on = True %}
-                                            {% elif role == "fan" %}
-                                                {% set fan_ns.is_on = True %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="student_{{loop.index0}}"
-                                                   name="talent_minEndUserRolesname_{{loop.index0}}"
-                                                   type="checkbox" value="student"
-                                                    {% if student_ns.is_on %} checked {% endif %}> student</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="visitor_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="visitor"
-                                                    {% if visitor_ns.is_on %} checked {% endif %}> visitor</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="alumni_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="alumni"
-                                                    {% if alumni_ns.is_on %} checked {% endif %}> alumni</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="employee_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox"
-                                                   value="employee"
-                                                    {% if employee_ns.is_on %} checked {% endif %}> employee</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="parent_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox"
-                                                   value="parent"
-                                                    {% if parent_ns.is_on %} checked {% endif %}> parent</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="fan_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="fan"
-                                                    {% if fan_ns.is_on %} checked {% endif %}> fan</label>
-                                    {% else %}
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="student_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="student"> student</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox" id="visitor_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="visitor"> visitor</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="alumni_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox" value="alumni"> alumni</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="employee_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox"
-                                                   value="employee"> employee</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox"
-                                                   id="parent_{{loop.index0}}"
-                                                   name="talent_minEndUserRoles_{{loop.index0}}"
-                                                   type="checkbox"
-                                                   value="parent"> parent</label>
-                                        <label class="form-check-label">
-                                            <input class="form-check-input checkbox" id="fan" name="talent_minEndUserRoles"
-                                                   type="checkbox" value="fan"> fan</label>
-                                    {% endif %}
+                                    <div class="col-sm-7" style="display: table">
+                                        {% if talent["minEndUserRoles"] %}
+                                            {%  set student_ns = namespace(is_on=false) %}
+                                            {%  set visitor_ns = namespace(is_on=false) %}
+                                            {%  set alumni_ns = namespace(is_on=false) %}
+                                            {%  set employee_ns = namespace(is_on=false) %}
+                                            {%  set parent_ns = namespace(is_on=false) %}
+                                            {%  set fan_ns = namespace(is_on=false) %}
+                                            {% for role in talent["minEndUserRoles"] %}
+                                                {% if role == "student" %}
+                                                    {% set student_ns.is_on = True %}
+                                                {% elif role == "visitor" %}
+                                                    {% set visitor_ns.is_on = True %}
+                                                {% elif role == "alumni" %}
+                                                    {% set alumni_ns.is_on = True %}
+                                                {% elif role == "employee" %}
+                                                    {% set employee_ns.is_on = True %}
+                                                {% elif role == "parent" %}
+                                                    {% set parent_ns.is_on = True %}
+                                                {% elif role == "fan" %}
+                                                    {% set fan_ns.is_on = True %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="student_{{loop.index0}}"
+                                                       name="talent_minEndUserRolesname_{{loop.index0}}"
+                                                       type="checkbox" value="student"
+                                                        {% if student_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="student"> Student </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="visitor_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="visitor"
+                                                        {% if visitor_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="visitor"> Visitor </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="alumni_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="alumni"
+                                                        {% if alumni_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="alumni"> Alumni </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="employee_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox"
+                                                       value="employee"
+                                                        {% if employee_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="employee"> Employee </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="parent_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox"
+                                                       value="parent"
+                                                        {% if parent_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="parent"> Parent</label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="fan_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="fan"
+                                                        {% if fan_ns.is_on %} checked {% endif %}>
+                                                <label class="checkbox-inline" for="fan"> Fan</label>
+                                            </div>
+                                        {% else %}
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="student_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="student">
+                                                <label class="checkbox-inline" for="student"> Student </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input" id="visitor_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="visitor">
+                                                <label class="checkbox-inline" for="visitor"> Visitor </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="alumni_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="alumni">
+                                                <label class="checkbox-inline" for="alumni"> Alumni </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="employee_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox"
+                                                       value="employee">
+                                                <label class="checkbox-inline" for="employee"> Employee </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="parent_{{loop.index0}}"
+                                                       name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox"
+                                                       value="parent">
+                                                <label class="checkbox-inline" for="parent"> Parent </label>
+                                            </div>
+                                            <div class="form-check-label table-row-inputs">
+                                                <input class="form-check-input"
+                                                       id="fan_{{loop.index0}}" name="talent_minEndUserRoles_{{loop.index0}}"
+                                                       type="checkbox" value="fan">
+                                                <label class="checkbox-inline" for="fan"> Fan</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Select active date range</label>
-                                    <label class="form-check-label">start</label>
-                                    <input class="form-check-input"
-                                           id="start_day_{{loop.index0}}"
-                                           name="talent_startDate_{{loop.index0}}"
-                                           type="date"
-                                           value="{{ talent|filter_nested_dict(["startDate"]) }}">
-                                    <label class="form-check-label"> end</label>
-                                    <input class="form-check-input"
-                                           id="end_day_{{loop.index0}}"
-                                           name="talent_endDate_{{loop.index0}}"
-                                           type="date"
-                                           value="{{ talent|filter_nested_dict(["endDate"]) }}">
+                                    <div class="col-sm-5" style="display: table">
+                                        <div class="form-check-label table-row-inputs">
+                                            Start
+                                            <input id="start_day_{{loop.index0}}" name="talent_startDate_{{loop.index0}}"
+                                                   type="date" value="{{ talent|filter_nested_dict(["startDate"]) }}">
+                                        </div>
+                                        <div class="form-check-label table-row-inputs">
+                                            End
+                                            <input id="end_day_{{loop.index0}}" name="talent_endDate_{{loop.index0}}"
+                                                   type="date" value="{{ talent|filter_nested_dict(["endDate"]) }}">
+                                        </div>
+                                    </div>
                                     <script>
                                         $('#start_day_{{loop.index0}}').change(function(){
                                             let start_val = $(this).val();
@@ -1524,12 +1552,13 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Data Description</label>
                                     <div class="col-sm-10">
-                                        <input id="data_des_{{loop.index0}}"
+                                        <textarea id="data_des_{{loop.index0}}"
                                                name="talent_dataDescription_{{loop.index0}}"
                                                placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
                                                style="height:150px"
                                                type="text"
                                                value="{{ talent|filter_nested_dict(["dataDescription"]) }}">
+                                        </textarea>
                                     </div>
                                 </div>
                                 <!---------- self certification block -------------------->
