@@ -78,7 +78,7 @@
                     <li class="current"><a href="#contribute">Contribution Details</a></li>
                     <li><em><a href="#capability-parent">Capability / Talent Details </a></em></li>
                     <li><em><a href="#contact">Contact Details</a></em></li>
-                    <li><em>Submit</em></li>
+                    <li><em><a href="#submit">Submit</a></em></li>
                 </ol>
             </nav>
         </div>
@@ -480,7 +480,7 @@
                         <li class="current"><em><a href="#capability-parent">Capability / Talent Details </a></em>
                         </li>
                         <li><em><a href="#contact">Contact Details</a></em></li>
-                        <li><em>Submit</em></li>
+                        <li><em><a href="#submit">Submit</a></em></li>
                     </ol>
                 </nav>
             </div>
@@ -1597,7 +1597,7 @@
                         <li class="visited"><em><a href="#capability-parent">Capability / Talent Details </a></em>
                         </li>
                         <li class="current"><em><a href="#contact">Contact Details</a></em></li>
-                        <li><em>Submit</em></li>
+                        <li><em><a href="#submit">Submit</a></em></li>
                     </ol>
                 </nav>
             </div>
@@ -1733,12 +1733,12 @@
             </div> <!-- end of class container Contact Details div -->
 
             <!-------------------------------------------- submit ------------------------------------------>
-            <div class="container">
+            <div class="container" id="submit">
                 <div class="row">
-                <button type="button" class="button button2" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
-                <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button3"
-                       onsubmit="return data_validation()" type="submit" value="Submit">
-            </div>
+                    <button type="button" class="button button2" id="cancel_button" data-toggle="modal" data-target="#cancel-modal">Cancel </button>
+                    <input href="{{ url_for('contribute.home') }}" id="submit_button" class="button button3"
+                           onsubmit="return data_validation()" type="submit" value="Submit">
+                </div>
             </div>
 
             <!-- Submit modal -->
