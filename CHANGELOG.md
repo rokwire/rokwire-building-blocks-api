@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CODEOWNERS file to include CHANGELOG. [#1059](https://github.com/rokwire/rokwire-building-blocks-api/issues/1059)
 - Create contribution page UI. [#1065](https://github.com/rokwire/rokwire-building-blocks-api/issues/1065)
 - Review block in contribution details page. [#1066](https://github.com/rokwire/rokwire-building-blocks-api/issues/1066)
-- Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
+- Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
 
 ## [1.17.0] - 2022-12-06
 ### Added
