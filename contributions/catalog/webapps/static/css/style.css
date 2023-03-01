@@ -616,6 +616,11 @@ input.datadel-api {
     display: table-cell;
 }
 
+.checkbox-inline {
+    padding-left: 2px;
+    cursor: default;
+}
+
 h1 {
     font-size: 32px;
     height: 36px;
