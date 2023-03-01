@@ -707,57 +707,61 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="capability_icon">Upload an icon</label>
-                                    <input accept="image/*" id="capability_icon_{{loop.index0}}"
-                                           name="capability_icon_{{loop.index0}}" type="file">
+                                    <div class="col-sm-10">
+                                        <input accept="image/*" id="capability_icon_{{loop.index0}}"
+                                               name="capability_icon_{{loop.index0}}" type="file">
+                                    </div>
                                 </div>
                                 <div class="form-group" id="open-source-check-div">
                                     <label class="required control-label col-sm-2">Is code Open Sourced? </label>
-                                    <!-- open source yes no block -->
-                                    {% if is_editable %}
-                                        {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
-                                            <label class="form-check-label radio-inline">
-                                                <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                       name="capability_isOpenSource_{{loop.index0}}" type="radio"
-                                                       checked="checked" value="y">
-                                                Yes
-                                            </label>
+                                    <div class="col-sm-10">
+                                        <!-- open source yes no block -->
+                                        {% if is_editable %}
+                                            {% if capability | filter_nested_dict(["isOpenSource"]) == True %}
+                                                <label class="form-check-label radio-inline">
+                                                    <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                           name="capability_isOpenSource_{{loop.index0}}" type="radio"
+                                                           checked="checked" value="y">
+                                                    Yes
+                                                </label>
+                                            {% else %}
+                                                <label class="form-check-label radio-inline">
+                                                    <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
+                                                            name="capability_isOpenSource_{{loop.index0}}"
+                                                            type="radio" value="y">
+                                                    Yes
+                                                </label>
+                                            {%  endif %}
+                                            {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
+                                                <label class="form-check-label radio-inline">
+                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                           name="capability_isOpenSource_{{loop.index0}}"
+                                                           type="radio" checked="checked" value="n">
+                                                    No
+                                                </label>
+                                            {% else %}
+                                                <label class="form-check-label radio-inline">
+                                                    <input class="form-check-input" id="open_source_no_{{loop.index0}}"
+                                                           name="capability_isOpenSource_{{loop.index0}}"
+                                                           type="radio" value="n">
+                                                    No
+                                                </label>
+                                            {%  endif %}
                                         {% else %}
                                             <label class="form-check-label radio-inline">
                                                 <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                        name="capability_isOpenSource_{{loop.index0}}"
-                                                        type="radio" value="y">
-                                                Yes
-                                            </label>
-                                        {%  endif %}
-                                        {% if capability | filter_nested_dict(["isOpenSource"]) == False %}
-                                            <label class="form-check-label radio-inline">
-                                                <input class="form-check-input" id="open_source_no_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}"
-                                                       type="radio" checked="checked" value="n">
-                                                No
+                                                       type="radio" value="y">
+                                                Yes
                                             </label>
-                                        {% else %}
                                             <label class="form-check-label radio-inline">
                                                 <input class="form-check-input" id="open_source_no_{{loop.index0}}"
                                                        name="capability_isOpenSource_{{loop.index0}}"
                                                        type="radio" value="n">
                                                 No
                                             </label>
-                                        {%  endif %}
-                                    {% else %}
-                                        <label class="form-check-label radio-inline">
-                                            <input class="form-check-input" id="open_source_yes_{{loop.index0}}"
-                                                   name="capability_isOpenSource_{{loop.index0}}"
-                                                   type="radio" value="y">
-                                            Yes
-                                        </label>
-                                        <label class="form-check-label radio-inline">
-                                            <input class="form-check-input" id="open_source_no_{{loop.index0}}"
-                                                   name="capability_isOpenSource_{{loop.index0}}"
-                                                   type="radio" value="n">
-                                            No
-                                        </label>
-                                    {% endif %}
+                                        {% endif %}
+                                    </div>
                                 </div> <!-- end of open source yes no check div -->
                                 <!-- display opensource url if yes -->
                                 {% if is_editable %}
@@ -831,40 +835,42 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Deployment location</label>
-                                    <label class="form-check-label radio-inline">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
-                                                <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
-                                                       name="deploymentDetails_location_{{loop.index0}}"
-                                                       type="radio" value="internal" checked="checked"> Internal
+                                    <div class="col-sm-10">
+                                        <label class="form-check-label radio-inline">
+                                            {% if is_editable %}
+                                                {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
+                                                    <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
+                                                           name="deploymentDetails_location_{{loop.index0}}"
+                                                           type="radio" value="internal" checked="checked"> Internal
+                                                {% else %}
+                                                    <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
+                                                           name="deploymentDetails_location_{{loop.index0}}"
+                                                           type="radio" value="internal"> Internal
+                                                {% endif %}
                                             {% else %}
                                                 <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
                                                        name="deploymentDetails_location_{{loop.index0}}"
-                                                       type="radio" value="internal"> Internal
+                                                       type="radio" value="internal"> internal
                                             {% endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
-                                                   name="deploymentDetails_location_{{loop.index0}}"
-                                                   type="radio" value="internal"> internal
-                                        {% endif %}
-                                    </label>
-                                    <label class="form-check-label radio-inline">
-                                        {% if is_editable %}
-                                            {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
-                                                <input class="form-check-input" id="deploy_external_{{loop.index0}}"
-                                                       name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                       value="external" checked="checked"> External
+                                        </label>
+                                        <label class="form-check-label radio-inline">
+                                            {% if is_editable %}
+                                                {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
+                                                    <input class="form-check-input" id="deploy_external_{{loop.index0}}"
+                                                           name="deploymentDetails_location_{{loop.index0}}" type="radio"
+                                                           value="external" checked="checked"> External
+                                                {% else %}
+                                                    <input class="form-check-input" id="deploy_external_{{loop.index0}}"
+                                                           name="deploymentDetails_location_{{loop.index0}}" type="radio"
+                                                           value="external"> external
+                                                {% endif %}
                                             {% else %}
                                                 <input class="form-check-input" id="deploy_external_{{loop.index0}}"
                                                        name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                       value="external"> external
+                                                       value="external"> External
                                             {% endif %}
-                                        {% else %}
-                                            <input class="form-check-input" id="deploy_external_{{loop.index0}}"
-                                                   name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                   value="external"> External
-                                        {% endif %}
-                                    </label>
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
