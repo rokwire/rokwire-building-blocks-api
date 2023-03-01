@@ -138,6 +138,8 @@ input[type=date]{
     height: 34px;
     width:auto;
     resize: vertical;
+    border: 1px solid #002855;
+    border-radius: 0;
 }
 input[type=date]::-webkit-calendar-picker-indicator:hover {
     cursor: pointer;
@@ -161,7 +163,6 @@ input[type=checkbox]{
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    /*border: 1px solid #002855;*/
     display: inline-grid;
     place-content: center;
     position: inherit;
@@ -620,6 +621,7 @@ input.datadel-api {
 }
 
 .checkbox-inline {
+    padding-top: 5px;
     padding-left: 2px;
     cursor: default;
 }
