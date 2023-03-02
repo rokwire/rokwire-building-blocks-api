@@ -339,13 +339,13 @@
     <div class="container">
         <!-- buttons container -->
         {% if is_editable %}
-            <a class="button button2" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
+            <button class="button button2" onclick="location.href = '{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}';" >Edit Contribution</button>
             <!-- Button trigger modal -->
             <button type="button" class="button button3" data-toggle="modal" data-target="#confirmDelete">Delete Contribution</button>
         {% endif %}
 
         {% if is_reviewer %}
-            <a class="button button4" role="button" href="{{ url_for('contribute.contribution_review', contribution_id=post.id) }}">Review Contribution</a>
+            <button class="button button4" onclick="location.href = '{{ url_for('contribute.contribution_review', contribution_id=post.id) }}';">Review Contribution</button>
         {% endif %}
     </div> <!-- end of buttons container -->
 
