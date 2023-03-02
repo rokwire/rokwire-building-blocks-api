@@ -36,7 +36,7 @@ html * {
     flex:2 min-content auto;
 }
 
-.topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
+.topnav-contribute button{
     margin-left: 10px;
     outline: none;
     border-radius: 24px;
@@ -45,8 +45,41 @@ html * {
     border: solid 2px #e84a27;
     background-color: #ffffff;
 }
+.topnav-contribute i{
+    cursor: pointer;
+    color: #e84a27;
+}
 
-.topnav-blue-button, .topnav-blue-button:hover, .topnav-blue-button:active {
+.topnav-contribute:hover button{
+    margin-left: 10px;
+    outline: none;
+    border-radius: 24px;
+    color: #fff;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
+}
+.topnav-contribute:hover i{
+    cursor: pointer;
+    color: #fff;
+}
+
+.topnav-contribute:active button, .topnav-contribute:focus button{
+    margin-left: 10px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #009fd4;
+    background-color: #ffffff;
+}
+.topnav-contribute:active i, .topnav-contribute:focus i{
+    cursor: pointer;
+    color: #009fd4;
+}
+
+
+.topnav-login-logout-button{
     float: right;
     margin: 15px 15px 5px 15px;
     width:100px;
@@ -55,6 +88,28 @@ html * {
     color: #002855;
     font-weight: bold;
     border: solid 2px #e84a27;
+    background-color: #ffffff;
+}
+.topnav-login-logout-button:hover{
+    float: right;
+    margin: 15px 15px 5px 15px;
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #fff;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
+}
+.topnav-login-logout-button:active, .topnav-login-logout-button:focus{
+    float: right;
+    margin: 15px 15px 5px 15px;
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #009fd4;
     background-color: #ffffff;
 }
 
