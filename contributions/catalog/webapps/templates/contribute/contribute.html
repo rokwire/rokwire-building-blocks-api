@@ -605,8 +605,13 @@
                                 <i class="bi bi-x-lg" id="env-var-close-btn"></i>
                             </div>
                         </div>
-                        <div id="add-env-var-button-div" class="row">
-                            <!-- place holder for dynamic button for add environment variables" -->
+                        <div id="add-env-var-div" class="row env-var-div-row">
+                            <div class="col-sm-2">
+                                <!-- empty column" -->
+                            </div>
+                            <div class="col-sm-10" id="add-env-var-button-div">
+                                <!-- place holder for dynamic button for add environment variables" -->
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -952,48 +957,54 @@
                                         {% endif %}
                                     </div> <!-- end of div key-val_loop.index0 -->
                                 </div> <!-- end of div add-env-var-div -->
-                                <div id="add-env-var-button-div_{{ loop.index0 }}" class="row">
-                                    <script>
-                                        var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
-                                            'Add environment variables</button>'
-                                        $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
-                                        // get all envvar pairs in the key-val div.
-                                        var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
-                                        // start the envvar counter with the number of envvar pairs in the key-val div
-                                        var add_env_var_button_click_count = envvar_list.length;
-                                        $('#add_env_var_{{ loop.index0 }}').click(function (e) {
-                                            e.preventDefault();
-                                            // environment variables match the pattern environmentVariables_key_envindex_capindex
-                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
-                                            $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
-                                                "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
-                                            $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
-                                                $(this).toggleClass("bi-eye");
-                                                let input = $(this).prev();
-                                                if (input.attr("type") === "password") {
-                                                    input.attr("type", "text");
-                                                } else {
-                                                    input.attr("type", "password");
-                                                }
-                                            }));
-                                            var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
-                                            $("#key-val_{{ loop.index0 }}").append($(i_envvarclose).on('click', function () {
-                                                let closebtn = $(this);
-                                                let eyebtn = closebtn.prev();
-                                                let input_envval = eyebtn.prev();
-                                                let input_envkey = input_envval.prev();
-                                                eyebtn.remove()
-                                                input_envval.remove();
-                                                input_envkey.remove();
-                                                closebtn.remove();
-                                                MoveSelector(event);
-                                            }));
-                                            // once new envvar pairs are added, increment the counter
-                                            add_env_var_button_click_count++;
-                                        });
-                                    </script>
-                                </div> <!-- end of add-env-var-button-div -->
+                                <div id="add-env-var-div" class="row env-var-div-row">
+                                    <div class="col-sm-2">
+                                        <!-- empty column" -->
+                                    </div>
+                                    <div id="add-env-var-button-div_{{ loop.index0 }}" class="col-sm-10">
+                                        <script>
+                                            var env_var_button = '<button class="button button5" type="submit" id="add_env_var_{{ loop.index0 }}">' +
+                                                'Add environment variables</button>'
+                                            $('#add-env-var-button-div_{{ loop.index0 }}').append(env_var_button);
+                                            // get all envvar pairs in the key-val div.
+                                            var envvar_list = $("#key-val_{{ loop.index0 }}").children(`input[id^="environmentVariables_key_"]`);
+                                            // start the envvar counter with the number of envvar pairs in the key-val div
+                                            var add_env_var_button_click_count = envvar_list.length;
+                                            $('#add_env_var_{{ loop.index0 }}').click(function (e) {
+                                                e.preventDefault();
+                                                // environment variables match the pattern environmentVariables_key_envindex_capindex
+                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-key\" name=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                    "id=\"environmentVariables_key_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"text\" placeholder=\"Key\">");
+                                                $("#key-val_{{ loop.index0 }}").append("<input class=\"form-control envvar-value\" name=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" " +
+                                                    "id=\"environmentVariables_value_" + add_env_var_button_click_count + "_{{ loop.index0 }}\" type=\"password\" placeholder=\"Value\">");
+                                                $("#key-val_{{ loop.index0 }}").append($("<i class=\"bi bi-eye-slash field_icon\" id=\"togglePassword\">").on('click', function () {
+                                                    $(this).toggleClass("bi-eye");
+                                                    let input = $(this).prev();
+                                                    if (input.attr("type") === "password") {
+                                                        input.attr("type", "text");
+                                                    } else {
+                                                        input.attr("type", "password");
+                                                    }
+                                                }));
+                                                var i_envvarclose = '<i class=\"bi bi-x-lg\" id=\"env-var-close-btn\"></i>';
+                                                $("#key-val_{{ loop.index0 }}").append($(i_envvarclose).on('click', function () {
+                                                    let closebtn = $(this);
+                                                    let eyebtn = closebtn.prev();
+                                                    let input_envval = eyebtn.prev();
+                                                    let input_envkey = input_envval.prev();
+                                                    eyebtn.remove()
+                                                    input_envval.remove();
+                                                    input_envkey.remove();
+                                                    closebtn.remove();
+                                                    MoveSelector(event);
+                                                }));
+                                                // once new envvar pairs are added, increment the counter
+                                                add_env_var_button_click_count++;
+                                            });
+                                        </script>
+                                    </div> <!-- end of add-env-var-button-div -->
+                                </div>
+
 
                                 <div class="form-group">
                                     <label class="required control-label col-sm-2">Database Detail</label>
