@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI changes for contribution details page. [#1041](https://github.com/rokwire/rokwire-building-blocks-api/issues/1041)
 - Catalog home page UI. [#1063](https://github.com/rokwire/rokwire-building-blocks-api/issues/1063)
 
+### Fixed
+- Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
+
 ## [1.17.0] - 2022-12-06
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
