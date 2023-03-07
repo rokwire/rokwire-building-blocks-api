@@ -361,7 +361,8 @@
                             <h4>Status</h4>
                         </div>
                         <div class="col-sm-10" style="width: 250px">
-                            <select class="form-control" id="status" name="contribution_status">
+                            <div class="catalog-dropdown-menu">
+                                <select id="status" name="contribution_status">
                                 {% if post["status"].lower() == "submitted" %}
                                     <option value="Submitted" selected>Submitted</option>
                                 {% else %}
@@ -388,13 +389,17 @@
                                     <option value="Published">Published</option>
                                 {% endif %}
                             </select>
+                            </div>
+
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
                     <div class="row">
                         <div class="col-12 col-md-3">
                             <h4>Comment</h4>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-md-9">
                             {% if 'review' in post %}
                                 <textarea id="reviewer_comment" name="contribution_reviewer_comment"
                                           placeholder="Give a comment"
@@ -406,33 +411,35 @@
                             {% endif %}
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
                     <div class="row">
                         <div class="col-12 col-md-3">
                             <h4>Last Updated</h4>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-md-9">
                             {% if 'review' in post %}
                                 {{ post | filter_nested_dict(["review", "lastUpdated"]) }}
                             {% endif %}
                         </div>
                         <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <input href="{{ url_for('contribute.home') }}"
-                                               class="button button5"
-                                               type="submit"
-                                               value="Submit">
-                                    </td>
-                                    <td>
-                                        <input class="button button1" type="reset" value="Reset">
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input href="{{ url_for('contribute.home') }}"
+                                           class="button button3"
+                                           type="submit"
+                                           value="Submit">
+                                </td>
+                                <td>
+                                    <input class="button button4" type="reset" value="Reset">
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </form>
@@ -441,7 +448,7 @@
 
 </div> <!-- end of main container -->
 
-
+{% include 'footer.html' %}
 {% include 'topnav_javascript.html' %}
 
 <!-- Modal -->
@@ -504,7 +511,6 @@
             document.getElementById("myDropdown").classList.toggle("show");
         }
     })
-
 
 </script>
 </body>
