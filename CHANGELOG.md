@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Review block in contribution details page. [#1066](https://github.com/rokwire/rokwire-building-blocks-api/issues/1066)
 - Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
 
+### Fixed
+- Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
+
 ## [1.17.0] - 2022-12-06
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
