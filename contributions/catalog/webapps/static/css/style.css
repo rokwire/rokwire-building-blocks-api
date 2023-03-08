@@ -83,7 +83,7 @@ html * {
 .main {
     margin: auto;
     position: relative;
-    max-width: 1500px;
+    max-width: 1010px;
     min-height: 70%;
     min-height: -webkit-calc(100vh - 176px);
     min-height: -moz-calc(100vh - 176px);
@@ -102,10 +102,10 @@ html * {
     padding: 10px;
 }
 
-/* Create four equal columns that floats next to each other */
+/* Create three equal columns that floats next to each other */
 .column {
     float: left;
-    width: 25%; /* if 5 cards in a row, put 20%. to change the width, adjust max-width in main class */
+    width: 33.33%; /* if 5 cards in a row, put 20%. to change the width, adjust max-width in main class */
 }
 
 /* Clear floats after rows */
