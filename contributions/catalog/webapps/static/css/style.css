@@ -121,7 +121,7 @@ label {
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    height: 20px;
+    line-height: 30px;
     color: #13294b;
 }
 
@@ -142,6 +142,7 @@ label {
     border-radius: 0;
     background-color: #fff;
     color: #404040;
+    cursor: pointer;
 }
 
 .form-check-label{
@@ -177,7 +178,12 @@ input[type=date]{
     height: 34px;
     width:auto;
     resize: vertical;
+    border: 1px solid #002855;
+    border-radius: 0;
 }
+input[type=date]::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+  }
 
 input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus, .form-check-input:focus{
     box-shadow: none;
@@ -186,14 +192,17 @@ input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select
 input[type=file]{
     height: 48px;
     color: #404040;
-    padding: 12px 8px 16px;
+    padding: 10px 0px;
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: 30px;
+
 }
 
 input[type=checkbox]{
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    /*border: 1px solid #002855;*/
     display: inline-grid;
     place-content: center;
     position: inherit;
@@ -603,6 +612,10 @@ hr.dotted {
     margin-left: 1%;
 }
 
+.env-var-div-row{
+   margin-bottom: 15px;
+}
+
 input.envvar-key[type=text] {
     width: 47%;
     display: table-cell;
@@ -638,6 +651,12 @@ input.datadel-api {
 
 .table-row-inputs {
     display: table-cell;
+}
+
+.checkbox-inline {
+    padding-top: 5px;
+    padding-left: 2px;
+    cursor: default;
 }
 
 h1 {
