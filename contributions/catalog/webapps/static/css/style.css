@@ -92,7 +92,7 @@ label {
 .form-control {
     height: 48px;
     font-size: 16px;
-    padding: 12px 8px 16px;
+    padding: 10px 8px 10px;
     border: 1px solid #002855;
     border-radius: 0;
     background-color: #fff;
@@ -176,23 +176,6 @@ input[type=checkbox]:checked::before {
 
 input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     box-shadow: none;
-}
-
-input[type=reset] {
-    background-color: #6b9ec0;
-    color: #090000;
-    padding: 15px 25px;
-    text-align: center;
-    margin: 5px 5px;
-    transition-duration: 0.2s;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
-
-input[type=reset]:hover {
-    background-color: #378bc4;
 }
 
 .container {
@@ -284,7 +267,7 @@ input[type=reset]:hover {
     background-color: #e84a27;
     text-decoration: none;
 }
-.button2:active{
+.button2:active, .button2:focus{
     color: #002855;
     display: inline-block;
     border-radius: 24px;
@@ -310,7 +293,7 @@ input[type=reset]:hover {
     background-color: #f5821e;
     text-decoration: none;
 }
-.button3:active {
+.button3:active, .button3:focus {
     color: white;
     display: inline-block;
     border-radius: 24px;
@@ -319,12 +302,28 @@ input[type=reset]:hover {
     text-decoration: none;
 }
 
-.button4, .button4:hover {
+.button4 {
     background-color: white;
     color: #002855;
     display: inline-block;
     border-radius: 24px;
     border: solid 2px #002855;
+    text-decoration: none;
+}
+.button4:hover {
+    background-color: #002855;
+    color: white;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #002855;
+    text-decoration: none;
+}
+.button4:active, .button4:focus {
+    background-color: white;
+    color: #002855;
+    display: inline-block;
+    border-radius: 24px;
+    border: solid 2px #009fd4;
     text-decoration: none;
 }
 
@@ -346,6 +345,7 @@ input[type=reset]:hover {
     border: solid 2px #e84a27;
     background-color: #e84a27;
 }
+
 
 /* Style the buttons */
 .cardfilter {
