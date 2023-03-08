@@ -64,7 +64,7 @@ html * {
     color: #fff;
 }
 
-.topnav-contribute:active button, .topnav-contribute:focus button{
+.topnav-contribute button:active, .topnav-contribute button:focus{
     margin-left: 10px;
     outline: none;
     border-radius: 24px;
@@ -194,7 +194,7 @@ input[type=date]{
     resize: vertical;
 }
 
-input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus, .form-check-input:focus{
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, input[type=submit]:focus, select:focus, textarea:focus, .form-check-input:focus{
     box-shadow: none;
 }
 
