@@ -21,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
 - Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
 - Cryptography version bump for contributions. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1089)
-- Cryptography version bump for appconfigservice. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Cryptography version bump for appconfigservice. [#1100](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Update werkzeug version in catalog. [#1099](https://github.com/rokwire/rokwire-building-blocks-api/issues/1099)
 
 ### Fixed
 - Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
