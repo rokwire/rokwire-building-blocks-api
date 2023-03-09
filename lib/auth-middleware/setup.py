@@ -29,7 +29,7 @@ setup(
     install_requires=[
         'PyJWT>=2.4.0,<3',
         'requests>=2.22.0,<3',
-        'cryptography>=3,<4',
+        'cryptography>=39',
         # I would require flask here, but I want to use the version that the
         # "calling" app uses, and I don't see a way to guarantee that pip
         # installs the dependency in the correct order (eg. "calling app" first
