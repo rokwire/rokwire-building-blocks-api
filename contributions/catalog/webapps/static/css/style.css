@@ -79,6 +79,42 @@ html * {
     clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
 }
 
+/* home page main container */
+.main {
+    margin: auto;
+    position: relative;
+    max-width: 1010px;
+    min-height: 70%;
+    min-height: -webkit-calc(100vh - 176px);
+    min-height: -moz-calc(100vh - 176px);
+    min-height: calc(100vh - 176px);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px -16px;
+}
+
+/* Add padding between each column in catalog home page*/
+.row,
+.row > .column {
+    padding: 10px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%; /* if 5 cards in a row, put 20%. to change the width, adjust max-width in main class */
+}
+
+/* Clear floats after rows */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 label {
     font-size: 16px;
     font-weight: 500;
@@ -207,18 +243,6 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     float: left;
     width: 75%;
     margin-top: 6px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
 }
 
 .key-val {
@@ -380,11 +404,12 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     border: none;
     margin: auto;
     padding: 30px;
-    max-width: 1000px;
+    max-width: 1500px;
     background-image: url("../bookshelf.jpg");
+    background-image: -webkit-image-set(url("../bookshelf@1x.jpg") 1x, url("../bookshelf@2x.jpg") 2x, url("../bookshelf@3x.jpg") 3x);
+    background-image: image-set(url("../bookshelf@1x.jpg") 1x, url("../bookshelf@2x.jpg") 2x, url("../bookshelf@3x.jpg") 3x);
     background-repeat: no-repeat;
     height: 200px;
-    width: 1000px;
     background-position: center;
     background-size: auto;
     position: relative;
