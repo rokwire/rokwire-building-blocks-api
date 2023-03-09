@@ -161,10 +161,6 @@ select, textarea {
     color: #404040;
 }
 
-input[type=searchbar] {
-    height :40px;
-}
-
 input[type=text], input[type=url], select, textarea {
     width: 100%;
 }
