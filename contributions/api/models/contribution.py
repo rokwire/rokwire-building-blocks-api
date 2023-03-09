@@ -17,7 +17,7 @@ import utils.datasetutils as datasetutils
 class Contribution():
     def __init__(self, injson):
         self.name = None
-        self.contributionAdmins = None
+        self.contributionAdmins = []
         self.shortDescription = None
         self.longDescription = None
         self.contributors = None
