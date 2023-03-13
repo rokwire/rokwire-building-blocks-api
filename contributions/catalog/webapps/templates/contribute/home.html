@@ -16,50 +16,7 @@
 </head>
 
 <style>
-    /* Center website */
-    .main {
-        margin: auto;
-        position: relative;
-        max-width: 1000px;
-        min-height: 70%;
-        min-height: -webkit-calc(100vh - 176px);
-        min-height: -moz-calc(100vh - 176px);
-        min-height: calc(100vh - 176px);
-    }
 
-    .row {
-        margin: 10px -16px;
-    }
-
-    /* Add padding BETWEEN each column */
-    .row,
-    .row > .column {
-        padding: 10px;
-    }
-
-    /* Create three equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 33.33%;
-    }
-
-    /* Clear floats after rows */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-    .search {
-        width: 100%;
-        position: relative;
-        display: flex;
-    }
-
-    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-        background-color: #2a4b45;
-    }
 
     .dropdown-content {
         display: none;
@@ -102,7 +59,7 @@
     <!-- MAIN (Center website) -->
     <div class="main">
 
-        <div id="myBtnContainer">
+        <div id="mainContainer" class="container-fluid">
             {% if show_sel == "capability" %}
                 <button class="button button5" id="all_btn" onclick="get_url('all')"> Show All</button>
                 <button class="button button5" id="capability_btn" onclick="get_url('capability')"> Capabilities</button>
@@ -122,6 +79,9 @@
                     <input class="search form-control bar" name="search" placeholder="Search" type="searchbar">
                     <input id="myBtn" style="display:none;" type="submit" value="Submit">
                 </form>
+            </div>
+            <div class="form-group">
+                <p style="margin-bottom:25px;"> <!-- empty div to add space --> </p>
             </div>
 
             <div class="row" id="grid-view">
@@ -161,7 +121,7 @@
                     </div>
                 {% endif %}
             </div><!-- END GRID -->
-        </div><!-- END myBtnContainer -->
+        </div><!-- END mainContainer -->
     </div><!-- END Main -->
 
     {% include 'footer.html' %}
@@ -191,8 +151,8 @@
     }
 
     // Add active class to the current button (highlight it)
-    var btnContainer = document.getElementById("myBtnContainer");
-    var btns = btnContainer.getElementsByClassName("btn");
+    var mainContainer = document.getElementById("mainContainer");
+    var btns = mainContainer.getElementsByClassName("btn");
     for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", function () {
             var current = document.getElementsByClassName("active");
