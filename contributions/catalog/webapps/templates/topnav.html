@@ -9,7 +9,7 @@
             </a>
         </div>
         <div id="submit_contribution" class="topnav-contribute" style="display: none;">
-            <button class="topnav-contribute-button btn" onclick="location.href = '{{ url_for('contribute.create') }}';">
+            <button class="topnav-contribute-button btn" onclick="location.href = '{{ url_for('contribute.create') }}';" style="outline: none;">
                 Contribute &nbsp; <i class="bi bi-plus-lg"></i>
             </button>
         </div>
@@ -21,10 +21,10 @@
             <div id="user_profile" class="user-greeting">Hello, {{ user }} </div>
         </div>
         <div id="nav_logout" style="display: none;">
-            <button class="topnav-login-logout-button btn" onclick="location.href = '{{ url_for('contribute.logout') }}';"> Logout</button>
+            <button class="topnav-login-logout-button btn" onclick="location.href = '{{ url_for('contribute.logout') }}';" style="outline: none;"> Logout</button>
         </div>
         <div id="nav_login" style="display: none;">
-            <button class="topnav-login-logout-button btn" onclick="location.href = '{{ url_for('contribute.login') }}';"> Login</button>
+            <button class="topnav-login-logout-button btn" onclick="location.href = '{{ url_for('contribute.login') }}';" style="outline: none;"> Login</button>
         </div>
     </div>
 
