@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CODEOWNERS file to include CHANGELOG. [#1059](https://github.com/rokwire/rokwire-building-blocks-api/issues/1059)
 - Create contribution page UI. [#1065](https://github.com/rokwire/rokwire-building-blocks-api/issues/1065)
 - Review block in contribution details page. [#1066](https://github.com/rokwire/rokwire-building-blocks-api/issues/1066)
+- Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
+- Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
+- Cryptography version bump for contributions. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1089)
+- Cryptography version bump for appconfigservice. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Catalog home page card alignment. [#1084](https://github.com/rokwire/rokwire-building-blocks-api/issues/1084)
+- Updated button styles to match design. [#1085](https://github.com/rokwire/rokwire-building-blocks-api/issues/1085)
+
+### Fixed
+- Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
 
 ## [1.17.0] - 2022-12-06
 ### Added

@@ -36,7 +36,7 @@ html * {
     flex:2 min-content auto;
 }
 
-.topnav-contribute-button, .topnav-contribute-button:hover, .topnav-contribute-button:active {
+.topnav-contribute button{
     margin-left: 10px;
     outline: none;
     border-radius: 24px;
@@ -45,8 +45,41 @@ html * {
     border: solid 2px #e84a27;
     background-color: #ffffff;
 }
+.topnav-contribute i{
+    cursor: pointer;
+    color: #e84a27;
+}
 
-.topnav-blue-button, .topnav-blue-button:hover, .topnav-blue-button:active {
+.topnav-contribute:hover button{
+    margin-left: 10px;
+    outline: none;
+    border-radius: 24px;
+    color: #fff;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
+}
+.topnav-contribute:hover i{
+    cursor: pointer;
+    color: #fff;
+}
+
+.topnav-contribute button:active, .topnav-contribute button:focus{
+    margin-left: 10px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #009fd4;
+    background-color: #ffffff;
+}
+.topnav-contribute:active i, .topnav-contribute:focus i{
+    cursor: pointer;
+    color: #009fd4;
+}
+
+
+.topnav-login-logout-button{
     float: right;
     margin: 15px 15px 5px 15px;
     width:100px;
@@ -55,6 +88,28 @@ html * {
     color: #002855;
     font-weight: bold;
     border: solid 2px #e84a27;
+    background-color: #ffffff;
+}
+.topnav-login-logout-button:hover{
+    float: right;
+    margin: 15px 15px 5px 15px;
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #fff;
+    font-weight: bold;
+    border: solid 2px #e84a27;
+    background-color: #e84a27;
+}
+.topnav-login-logout-button:active, .topnav-login-logout-button:focus{
+    float: right;
+    margin: 15px 15px 5px 15px;
+    width:100px;
+    outline: none;
+    border-radius: 24px;
+    color: #002855;
+    font-weight: bold;
+    border: solid 2px #009fd4;
     background-color: #ffffff;
 }
 
@@ -79,13 +134,49 @@ html * {
     clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
 }
 
+/* home page main container */
+.main {
+    margin: auto;
+    position: relative;
+    max-width: 1010px;
+    min-height: 70%;
+    min-height: -webkit-calc(100vh - 176px);
+    min-height: -moz-calc(100vh - 176px);
+    min-height: calc(100vh - 176px);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px -16px;
+}
+
+/* Add padding between each column in catalog home page*/
+.row,
+.row > .column {
+    padding: 10px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%; /* if 5 cards in a row, put 20%. to change the width, adjust max-width in main class */
+}
+
+/* Clear floats after rows */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 label {
     font-size: 16px;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    height: 20px;
+    line-height: 30px;
     color: #13294b;
 }
 
@@ -106,6 +197,7 @@ label {
     border-radius: 0;
     background-color: #fff;
     color: #404040;
+    cursor: pointer;
 }
 
 .form-check-label{
@@ -137,23 +229,31 @@ input[type=date]{
     height: 34px;
     width:auto;
     resize: vertical;
+    border: 1px solid #002855;
+    border-radius: 0;
 }
+input[type=date]::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+  }
 
-input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus, .form-check-input:focus{
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, input[type=submit]:focus, select:focus, textarea:focus, .form-check-input:focus{
     box-shadow: none;
 }
 
 input[type=file]{
     height: 48px;
     color: #404040;
-    padding: 12px 8px 16px;
+    padding: 10px 0px;
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: 30px;
+
 }
 
 input[type=checkbox]{
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    /*border: 1px solid #002855;*/
     display: inline-grid;
     place-content: center;
     position: inherit;
@@ -198,18 +298,6 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     float: left;
     width: 75%;
     margin-top: 6px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
 }
 
 .key-val {
@@ -461,11 +549,12 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     border: none;
     margin: auto;
     padding: 30px;
-    max-width: 1000px;
+    max-width: 1500px;
     background-image: url("../bookshelf.jpg");
+    background-image: -webkit-image-set(url("../bookshelf@1x.jpg") 1x, url("../bookshelf@2x.jpg") 2x, url("../bookshelf@3x.jpg") 3x);
+    background-image: image-set(url("../bookshelf@1x.jpg") 1x, url("../bookshelf@2x.jpg") 2x, url("../bookshelf@3x.jpg") 3x);
     background-repeat: no-repeat;
     height: 200px;
-    width: 1000px;
     background-position: center;
     background-size: auto;
     position: relative;
@@ -664,6 +753,10 @@ hr.dotted {
     margin-left: 1%;
 }
 
+.env-var-div-row{
+   margin-bottom: 15px;
+}
+
 input.envvar-key[type=text] {
     width: 47%;
     display: table-cell;
@@ -699,6 +792,12 @@ input.datadel-api {
 
 .table-row-inputs {
     display: table-cell;
+}
+
+.checkbox-inline {
+    padding-top: 5px;
+    padding-left: 2px;
+    cursor: default;
 }
 
 h1 {
