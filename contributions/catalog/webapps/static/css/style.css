@@ -209,7 +209,7 @@ select, textarea {
     height: 48px;
     width: 100%;
     font-size: 16px;
-    padding: 12px 8px 16px;
+    padding: 12px 8px;
     border: 1px solid #002855;
     border-radius: 0;
     background-color: #fff;
@@ -434,6 +434,31 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #e84a27;
 }
 
+/* Dropdown menu style */
+.catalog-dropdown-menu {
+    position: relative;
+    border: 1px solid #002855;
+    border-radius: 0;
+}
+.catalog-dropdown-menu:hover {
+    border: 1px solid #dadde1;
+    border-radius: 0;
+}
+.catalog-dropdown-menu select {
+    /*display: none; !* hide original select element *!*/
+    background-image: url("../icon-arrows-caret-down-orange.png");
+    background-repeat: no-repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: auto;
+    position: relative;
+    object-fit: contain;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    appearance: none;
+    outline-width: 0;
+    border: none;
+}
 
 /* Style the buttons */
 .cardfilter {
