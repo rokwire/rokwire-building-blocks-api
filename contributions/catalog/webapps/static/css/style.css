@@ -458,7 +458,6 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     appearance: none;
     outline-width: 0;
     border: none;
-    border-bottom: 2px solid #ff552e;
 }
 
 /* Style the buttons */
