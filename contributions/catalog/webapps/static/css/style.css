@@ -283,6 +283,12 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #ffffff;
     padding: 5px;
 }
+.details-container{
+    min-height: 70%;
+    min-height: -webkit-calc(100vh - 300px);
+    min-height: -moz-calc(100vh - 300px);
+    min-height: calc(100vh - 300px);
+}
 
 .col-sm-2 {
     padding-left: 1px;
