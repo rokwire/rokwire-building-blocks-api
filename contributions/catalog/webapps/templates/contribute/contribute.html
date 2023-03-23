@@ -1635,7 +1635,7 @@
             </div>
 
             <!--------------------------------------------contact/privacy check ------------------------------------------>
-            <div id="cd-multi-steps-text-bottom" class="container">
+            <div id="cd-multi-steps-text-bottom" class="container" style="margin-top:3cm">
                 <nav>
                     <ol class="cd-multi-steps text-top">
                         <li class="visited"><a href="#contribute">Contribution Details</a></li>
@@ -2291,9 +2291,9 @@
         // adjust button position
         event.preventDefault();
         $('#select-contribution-div').position({
-            my: "top",
-            at: "bottom",
-            of: $("#select-contribution-div-placeholder"),
+            my: "bottom",
+            at: "top",
+            of: $("#cd-multi-steps-text-bottom"),
             collision: "none none"
         });
     }
