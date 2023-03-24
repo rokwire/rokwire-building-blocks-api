@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated button styles to match design. [#1085](https://github.com/rokwire/rokwire-building-blocks-api/issues/1085)
 - Update werkzeug version in catalog. [#1099](https://github.com/rokwire/rokwire-building-blocks-api/issues/1099)
 - Custom dropdown menu style. [#1090](https://github.com/rokwire/rokwire-building-blocks-api/issues/1090)
+- Fill footer at the bottom of pages. [#1092](https://github.com/rokwire/rokwire-building-blocks-api/issues/1092)
 
 ### Fixed
 - Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
