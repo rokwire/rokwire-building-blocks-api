@@ -186,17 +186,17 @@
                                 <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Email</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="org_email" name="org_email" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Email</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="org_email" name="org_email" placeholder="" type="email">
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Phone</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Organization Phone</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="tel" minlength="9" maxlength="14">
                         </div>
                     </div> <!--- end of organization block clean -->
 
@@ -227,17 +227,17 @@
                                 <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor Email</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" name="person_email" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor Email</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="person_email" placeholder="" type="email">
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor Phone</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" name="person_phone" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contributor Phone</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="person_phone" placeholder="" type="tel" minlength="9" maxlength="14">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Name</label>
@@ -251,17 +251,17 @@
                                 <input class="form-control" name="affiliation_address" placeholder="" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Affiliation Email</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_email" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Email</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="affiliation_email" placeholder="" type="email">
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">Affiliation Phone</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_phone" placeholder="" type="text">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Affiliation Phone</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="affiliation_phone" placeholder="" type="tel" minlength="9" maxlength="14">
                         </div>
                     </div> <!-- end of person block clean -->
 
@@ -305,31 +305,31 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Email</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" id="org_email_{{loop.index0}}"
-                                                       name="org_email_{{loop.index0}}" placeholder=""
-                                                       type="text" value="{{ contributor|filter_nested_dict(["email"]) }}">
-                                            {% else %}
-                                                <input class="form-control" id="org_email_{{loop.index0}}"
-                                                       name="org_email_{{loop.index0}}" placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Organization Email</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="org_email_{{loop.index0}}"
+                                                   name="org_email_{{loop.index0}}" placeholder=""
+                                                   type="email" value="{{ contributor|filter_nested_dict(["email"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="org_email_{{loop.index0}}"
+                                                   name="org_email_{{loop.index0}}" placeholder="" type="email">
+                                        {% endif %}
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Phone</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder=""
-                                                       type="text" value="{{ contributor|filter_nested_dict(["phone"]) }}">
-                                            {% else %}
-                                                <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Organization Phone</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="org_phone_{{loop.index0}}"
+                                                   name="org_phone_{{loop.index0}}" placeholder=""
+                                                   type="tel" value="{{ contributor|filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
+                                        {% else %}
+                                            <input class="form-control" id="org_phone_{{loop.index0}}"
+                                                   name="org_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endif %}
@@ -383,31 +383,31 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor Email</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder=""
-                                                       type="text" value="{{ contributor| filter_nested_dict(["email"]) }}">
-                                            {% else %}
-                                                <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Contributor Email</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" name="person_email_{{loop.index0}}"
+                                                   id="person_email_{{loop.index0}}" placeholder=""
+                                                   type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
+                                        {% else %}
+                                            <input class="form-control" name="person_email_{{loop.index0}}"
+                                                   id="person_email_{{loop.index0}}" placeholder="" type="email">
+                                        {% endif %}
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor Phone</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder=""
-                                                       type="text" value="{{ contributor | filter_nested_dict(["phone"]) }}">
-                                            {% else %}
-                                                <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Contributor Phone</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" name="person_phone_{{loop.index0}}"
+                                                   id="person_phone_{{loop.index0}}" placeholder=""
+                                                   type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
+                                        {% else %}
+                                            <input class="form-control" name="person_phone_{{loop.index0}}"
+                                                   id="person_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                        {% endif %}
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2">Affiliation Name</label>
@@ -437,33 +437,33 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Affiliation Email</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                       id="affiliation_email_{{loop.index0}}" placeholder=""
-                                                       type="text" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
-                                            {% else %}
-                                                <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                       id="affiliation_email_{{loop.index0}}" placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Affiliation Email</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" name="affiliation_email_{{loop.index0}}"
+                                                   id="affiliation_email_{{loop.index0}}" placeholder=""
+                                                   type="email" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
+                                        {% else %}
+                                            <input class="form-control" name="affiliation_email_{{loop.index0}}"
+                                                   id="affiliation_email_{{loop.index0}}" placeholder="" type="email">
+                                        {% endif %}
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Affiliation Phone</label>
-                                        <div class="col-sm-10">
-                                            {% if is_editable %}
-                                                <input class="form-control" name="affiliation_phone_{{loop.index0}}"
-                                                       id="affiliation_phone_{{loop.index0}}"
-                                                       placeholder="" type="text"
-                                                       value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
-                                            {% else %}
-                                                <input class="form-control" name="affiliation_phone_{{loop.index0}}"
-                                                       id="affiliation_phone_{{loop.index0}}"
-                                                       placeholder="" type="text">
-                                            {% endif %}
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Affiliation Phone</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" name="affiliation_phone_{{loop.index0}}"
+                                                   id="affiliation_phone_{{loop.index0}}"
+                                                   placeholder="" type="tel" minlength="9" maxlength="14"
+                                                   value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
+                                        {% else %}
+                                            <input class="form-control" name="affiliation_phone_{{loop.index0}}"
+                                                   id="affiliation_phone_{{loop.index0}}"
+                                                   placeholder="" type="tel" minlength="9" maxlength="14">
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endif %}
@@ -556,7 +556,7 @@
                             <label class="control-label col-sm-2">API Doc URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                       placeholder="API documentation URL" type="text">
+                                       placeholder="API documentation URL" type="url">
                             </div>
                         </div>
                         <div class="form-group">
@@ -634,7 +634,7 @@
                             <div class="col-sm-10">
                                 <input class="form-control" id="version_url" name="capability_versionUrl"
                                        placeholder=""
-                                       type="text">
+                                       type="url">
                             </div>
                         </div>
 
@@ -642,7 +642,7 @@
                             <label class="required control-label col-sm-2">Health Check URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                       placeholder="health check url" type="text">
+                                       placeholder="health check url" type="url">
                             </div>
                         </div>
 
@@ -828,12 +828,12 @@
                                             <input class="form-control" id="api_url_{{loop.index0}}"
                                                    name="capability_apiDocUrl_{{loop.index0}}"
                                                    placeholder="API documentation URL"
-                                                   type="text"
+                                                   type="url"
                                                    value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
                                         {% else %}
                                             <input class="form-control" id="api_url_{{loop.index0}}"
                                                    name="capability_apiDocUrl_{{loop.index0}}"
-                                                   placeholder="API documentation URL" type="text">
+                                                   placeholder="API documentation URL" type="url">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1045,13 +1045,13 @@
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
                                                    placeholder=""
-                                                   type="text" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
+                                                   type="url" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
                                                    placeholder=""
-                                                   type="text">
+                                                   type="url">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1063,12 +1063,12 @@
                                                    id="health_{{loop.index0}}"
                                                    name="capability_healthCheckUrl_{{loop.index0}}"
                                                    placeholder="health check url"
-                                                   type="text" value="{{ capability | filter_nested_dict(["healthCheckUrl"]) }}">
+                                                   type="url" value="{{ capability | filter_nested_dict(["healthCheckUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="health_{{loop.index0}}"
                                                    name="capability_healthCheckUrl_{{loop.index0}}"
-                                                   placeholder="health check url" type="text">
+                                                   placeholder="health check url" type="url">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1672,7 +1672,7 @@
                             <label class="required control-label col-sm-2">Contact Email</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_email" name="contact_email"
-                                       placeholder="" type="text" value="{{ contact.email }}">
+                                       placeholder="" type="email" value="{{ contact.email }}">
                             </div>
                         </div>
                     {% else %}
@@ -1680,7 +1680,7 @@
                             <label class="required control-label col-sm-2">Contact Email</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_email" name="contact_email"
-                                       placeholder="" type="text">
+                                       placeholder="" type="email">
                             </div>
                         </div>
                     {% endif %}
@@ -1689,8 +1689,8 @@
                             <label class="required control-label col-sm-2">Contact Phone</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_phone"
-                                       name="contact_phone" placeholder="" type="text"
-                                       value="{{ contact.phone }}">
+                                       name="contact_phone" placeholder="" type="tel"
+                                       value="{{ contact.phone }}" minlength="9" maxlength="14"/>
                             </div>
                         </div>
                     {% else %}
@@ -1698,7 +1698,7 @@
                             <label class="required control-label col-sm-2">Contact Phone</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_phone" name="contact_phone"
-                                       placeholder="" type="text">
+                                       placeholder="" type="tel" minlength="9" maxlength="14"/>
                             </div>
                         </div>
                     {% endif %}
@@ -1749,14 +1749,14 @@
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Email</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="contact_email" name="contact_email" placeholder="" type="text">
+                            <input class="form-control" id="contact_email" name="contact_email" placeholder="" type="email">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Phone</label>
                         <div class="col-sm-10">
                             <input class="form-control" id="contact_phone" name="contact_phone"
-                                   placeholder="" type="text">
+                                   placeholder="" type="tel" minlength="9" maxlength="14" />
                         </div>
                     </div>
                     <div class="form-group">
