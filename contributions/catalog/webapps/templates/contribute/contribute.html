@@ -305,33 +305,33 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Organization Email</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="org_email_{{loop.index0}}"
-                                                   name="org_email_{{loop.index0}}" placeholder=""
-                                                   type="email" value="{{ contributor|filter_nested_dict(["email"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="org_email_{{loop.index0}}"
-                                                   name="org_email_{{loop.index0}}" placeholder="" type="email">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Organization Email</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" id="org_email_{{loop.index0}}"
+                                                       name="org_email_{{loop.index0}}" placeholder=""
+                                                       type="email" value="{{ contributor|filter_nested_dict(["email"]) }}">
+                                            {% else %}
+                                                <input class="form-control" id="org_email_{{loop.index0}}"
+                                                       name="org_email_{{loop.index0}}" placeholder="" type="email">
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Organization Phone</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                   name="org_phone_{{loop.index0}}" placeholder=""
-                                                   type="tel" value="{{ contributor|filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
-                                        {% else %}
-                                            <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                   name="org_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Organization Phone</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" id="org_phone_{{loop.index0}}"
+                                                       name="org_phone_{{loop.index0}}" placeholder=""
+                                                       type="tel" value="{{ contributor|filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
+                                            {% else %}
+                                                <input class="form-control" id="org_phone_{{loop.index0}}"
+                                                       name="org_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
+                                </div> <!-- end of organization existing records -->
                             {% endif %}
                             {% if contributor["contributorType"] == 'person' %}
                                 <!-------------------- person block existing records -------------------->
@@ -383,31 +383,31 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Contributor Email</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" name="person_email_{{loop.index0}}"
-                                                   id="person_email_{{loop.index0}}" placeholder=""
-                                                   type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
-                                        {% else %}
-                                            <input class="form-control" name="person_email_{{loop.index0}}"
-                                                   id="person_email_{{loop.index0}}" placeholder="" type="email">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Contributor Email</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" name="person_email_{{loop.index0}}"
+                                                       id="person_email_{{loop.index0}}" placeholder=""
+                                                       type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
+                                            {% else %}
+                                                <input class="form-control" name="person_email_{{loop.index0}}"
+                                                       id="person_email_{{loop.index0}}" placeholder="" type="email">
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Contributor Phone</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                   id="person_phone_{{loop.index0}}" placeholder=""
-                                                   type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
-                                        {% else %}
-                                            <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                   id="person_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Contributor Phone</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" name="person_phone_{{loop.index0}}"
+                                                       id="person_phone_{{loop.index0}}" placeholder=""
+                                                       type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
+                                            {% else %}
+                                                <input class="form-control" name="person_phone_{{loop.index0}}"
+                                                       id="person_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-2">Affiliation Name</label>
@@ -437,35 +437,35 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Affiliation Email</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                   id="affiliation_email_{{loop.index0}}" placeholder=""
-                                                   type="email" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
-                                        {% else %}
-                                            <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                   id="affiliation_email_{{loop.index0}}" placeholder="" type="email">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Affiliation Email</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" name="affiliation_email_{{loop.index0}}"
+                                                       id="affiliation_email_{{loop.index0}}" placeholder=""
+                                                       type="email" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
+                                            {% else %}
+                                                <input class="form-control" name="affiliation_email_{{loop.index0}}"
+                                                       id="affiliation_email_{{loop.index0}}" placeholder="" type="email">
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Affiliation Phone</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" name="affiliation_phone_{{loop.index0}}"
-                                                   id="affiliation_phone_{{loop.index0}}"
-                                                   placeholder="" type="tel" minlength="9" maxlength="14"
-                                                   value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
-                                        {% else %}
-                                            <input class="form-control" name="affiliation_phone_{{loop.index0}}"
-                                                   id="affiliation_phone_{{loop.index0}}"
-                                                   placeholder="" type="tel" minlength="9" maxlength="14">
-                                        {% endif %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Affiliation Phone</label>
+                                        <div class="col-sm-10">
+                                            {% if is_editable %}
+                                                <input class="form-control" name="affiliation_phone_{{loop.index0}}"
+                                                       id="affiliation_phone_{{loop.index0}}"
+                                                       placeholder="" type="tel" minlength="9" maxlength="14"
+                                                       value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
+                                            {% else %}
+                                                <input class="form-control" name="affiliation_phone_{{loop.index0}}"
+                                                       id="affiliation_phone_{{loop.index0}}"
+                                                       placeholder="" type="tel" minlength="9" maxlength="14">
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
+                                </div> <!-- end of person existing records -->
                             {% endif %}
                             <script>contributor_count++;</script>
                         {% endfor %}f
