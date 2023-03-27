@@ -142,12 +142,12 @@
                         {% if is_editable %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of admin names, separated by comma"
+                                   placeholder="Give a list of github usernames, separated by comma, to be selected as admins"
                                    type="text" value="{{ post.contributionAdmins|join(', ') }}">
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of admin names, separated by comma"
+                                   placeholder="Give a list of github usernames, separated by comma, to be selected as admins"
                                    type="text">
                         {% endif %}
                     </div>
@@ -175,27 +175,27 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Name</label>
+                            <label class="control-label col-sm-2">Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_name" name="org_name" placeholder="" type="text">
+                                <input class="form-control" id="org_name" name="org_name" placeholder="Give organization name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Address</label>
+                            <label class="control-label col-sm-2">Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_address" name="org_address" placeholder="" type="text">
+                                <input class="form-control" id="org_address" name="org_address" placeholder="Give organization address" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Email</label>
+                            <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_email" name="org_email" placeholder="" type="email">
+                                <input class="form-control" id="org_email" name="org_email" placeholder="Give organization email" type="email">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Organization Phone</label>
+                            <label class="control-label col-sm-2">Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder="" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" id="org_phone" name="org_phone" placeholder="Give organization phone number" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!--- end of organization block clean -->
@@ -210,57 +210,57 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor's first name</label>
+                            <label class="control-label col-sm-2">First Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="" type="text">
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Give contributor's first name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor's middle name</label>
+                            <label class="control-label col-sm-2">Middle Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="" type="text">
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Give contributor's middle name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor's last name</label>
+                            <label class="control-label col-sm-2">Last Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="" type="text">
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Give contributor's last name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor Email</label>
+                            <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_email" placeholder="" type="email">
+                                <input class="form-control" name="person_email" placeholder="Give contributor's email" type="email">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Contributor Phone</label>
+                            <label class="control-label col-sm-2">Phone Number</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_phone" placeholder="" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="person_phone" placeholder="Give contributor's phone number" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_name" placeholder="" type="text">
+                                <input class="form-control" name="affiliation_name" placeholder="Give contributor's affiliation name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_address" placeholder="" type="text">
+                                <input class="form-control" name="affiliation_address" placeholder="Give contributor's affiliation address" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_email" placeholder="" type="email">
+                                <input class="form-control" name="affiliation_email" placeholder="Give contributor's affiliation email" type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_phone" placeholder="" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="affiliation_phone" placeholder="Give contributor's affiliation phone number" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!-- end of person block clean -->
@@ -280,7 +280,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Name</label>
+                                        <label class="control-label col-sm-2">Name</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_name_{{loop.index0}}"
@@ -293,7 +293,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Address</label>
+                                        <label class="control-label col-sm-2">Address</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_address_{{loop.index0}}"
