@@ -177,25 +177,25 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_name" name="org_name" placeholder="Give organization name" type="text">
+                                <input class="form-control" id="org_name" name="org_name" placeholder="Organization name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_address" name="org_address" placeholder="Give organization address" type="text">
+                                <input class="form-control" id="org_address" name="org_address" placeholder="Organization address" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_email" name="org_email" placeholder="Give organization email" type="email">
+                                <input class="form-control" id="org_email" name="org_email" placeholder="Organization email" type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder="Give organization phone number" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" id="org_phone" name="org_phone" placeholder="Organization phone number" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!--- end of organization block clean -->
@@ -212,55 +212,55 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">First Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Give contributor's first name" type="text">
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Contributor's first name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Middle Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Give contributor's middle name" type="text">
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Contributor's middle name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Last Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Give contributor's last name" type="text">
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Contributor's last name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_email" placeholder="Give contributor's email" type="email">
+                                <input class="form-control" name="person_email" placeholder="Contributor's email" type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Phone Number</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_phone" placeholder="Give contributor's phone number" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="person_phone" placeholder="Contributor's phone number" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_name" placeholder="Give contributor's affiliation name" type="text">
+                                <input class="form-control" name="affiliation_name" placeholder="" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_address" placeholder="Give contributor's affiliation address" type="text">
+                                <input class="form-control" name="affiliation_address" placeholder="" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_email" placeholder="Give contributor's affiliation email" type="email">
+                                <input class="form-control" name="affiliation_email" placeholder="" type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_phone" placeholder="Give contributor's affiliation phone number" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="affiliation_phone" placeholder="" type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!-- end of person block clean -->
@@ -284,11 +284,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_name_{{loop.index0}}"
-                                                       name="org_name_{{loop.index0}}" placeholder=""
+                                                       name="org_name_{{loop.index0}}" placeholder="Organization name"
                                                        type="text" value="{{ contributor|filter_nested_dict(["name"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="org_name_{{loop.index0}}"
-                                                       name="org_name_{{loop.index0}}" placeholder="" type="text">
+                                                       name="org_name_{{loop.index0}}" placeholder="Organization name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -306,7 +306,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Email</label>
+                                        <label class="control-label col-sm-2">Email</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_email_{{loop.index0}}"
@@ -319,15 +319,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Organization Phone</label>
+                                        <label class="control-label col-sm-2">Phone</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder=""
+                                                       name="org_phone_{{loop.index0}}" placeholder="Organization phone number"
                                                        type="tel" value="{{ contributor|filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
                                             {% else %}
                                                 <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                                       name="org_phone_{{loop.index0}}" placeholder="Organization phone number" type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -345,67 +345,67 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor's first name</label>
+                                        <label class="control-label col-sm-2">First Name</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder=""
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Contributor's first name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["firstName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder="" type="text">
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Contributor's first name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor's middle name</label>
+                                        <label class="control-label col-sm-2">Middle Name</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder=""
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Contributor's middle name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["middleName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder="" type="text">
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Contributor's middle name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor's last name</label>
+                                        <label class="control-label col-sm-2">Last Name</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder=""
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Contributor's last name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["lastName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder="" type="text">
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Contributor's last name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor Email</label>
+                                        <label class="control-label col-sm-2">Email</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder=""
+                                                       id="person_email_{{loop.index0}}" placeholder="Contributor's email"
                                                        type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="" type="email">
+                                                       id="person_email_{{loop.index0}}" placeholder="Contributor's email" type="email">
                                             {% endif %}
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Contributor Phone</label>
+                                        <label class="control-label col-sm-2">Phone Number</label>
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder=""
+                                                       id="person_phone_{{loop.index0}}" placeholder="Contributor's phone number"
                                                        type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
                                             {% else %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="" type="tel" minlength="9" maxlength="14">
+                                                       id="person_phone_{{loop.index0}}" placeholder="Contributor's phone number" type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
