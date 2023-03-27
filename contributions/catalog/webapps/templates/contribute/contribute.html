@@ -529,7 +529,7 @@
                         </div>
 
                         <div class="form-group" id="open-source-check-div">
-                            <label class="required control-label col-sm-2"> Is code Open Sourced? </label>
+                            <label class="required control-label col-sm-2"> Is Code Open Sourced? </label>
                             <div class="col-sm-10">
                                 <!-- open source yes no block -->
                                 <label class="form-check-label radio-inline">
@@ -717,7 +717,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="open-source-check-div">
-                                    <label class="required control-label col-sm-2">Is code Open Sourced? </label>
+                                    <label class="required control-label col-sm-2">Is Code Open Sourced? </label>
                                     <div class="col-sm-10">
                                         <!-- open source yes no block -->
                                         {% if is_editable %}
@@ -1247,9 +1247,8 @@
                             <label class="control-label col-sm-2">Data Description</label>
                             <div class="col-sm-10">
                                 <textarea id="data_des" name="talent_dataDescription"
-                                       placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
-                                       style="height:150px"
-                                       type="text">
+                                       placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level"
+                                       style="height:150px">
                                 </textarea>
                             </div>
                         </div>
@@ -1261,28 +1260,28 @@
                                 <label class="control-label col-sm-2">Deleting data upon request</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_dataDeletionUponRequest"
-                                           placeholder="Deleting data upon request" type="text">
+                                           placeholder="Declaration of deleting data upon request" type="text">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Respecting privacy setting</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
-                                           placeholder="Respecting privacy setting" type="text">
+                                           placeholder="Declaration to respect privacy setting" type="text">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose sponsors / ads</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_discloseAds"
-                                           placeholder="Disclose sponsors / ads" type="text">
+                                           placeholder="Disclose sponsors / ads in this contribution" type="text">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose right to use images</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_discloseImageRights"
-                                           placeholder="Disclose right to use images" type="text">
+                                           placeholder="Disclose right to use images in this contribution" type="text">
                                 </div>
                             </div>
                         </div> <!-- end of self certification block -->
@@ -1564,7 +1563,7 @@
                                     <div class="col-sm-10">
                                         <textarea id="data_des_{{loop.index0}}"
                                                name="talent_dataDescription_{{loop.index0}}"
-                                               placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level."
+                                               placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level"
                                                style="height:150px"
                                                type="text"
                                                value="{{ talent|filter_nested_dict(["dataDescription"]) }}">
@@ -1580,7 +1579,7 @@
                                             <input class="form-control"
                                                    id="dataDeletionUponRequest_{{loop.index0}}"
                                                    name="selfcertificate_dataDeletionUponRequest_{{loop.index0}}"
-                                                   placeholder="Deleting data upon request"
+                                                   placeholder="Declaration for deleting data upon request"
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "dataDeletionUponRequest"]) }}">
                                         </div>
@@ -1591,7 +1590,7 @@
                                             <input class="form-control"
                                                    id="respectingUserPrivacySetting_{{loop.index0}}"
                                                    name="selfcertificate_respectingUserPrivacySetting_{{loop.index0}}"
-                                                   placeholder="Respecting privacy setting"
+                                                   placeholder="Declaration and steps for respecting privacy setting"
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "respectingUserPrivacySetting"]) }}">
                                         </div>
@@ -1602,7 +1601,7 @@
                                             <input class="form-control"
                                                    id="discloseAds_{{loop.index0}}"
                                                    name="selfcertificate_discloseAds_{{loop.index0}}"
-                                                   placeholder="Disclose sponsors / ads"
+                                                   placeholder="Disclose sponsors / ads in the contribution"
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseAds"]) }}">
                                         </div>
@@ -1613,7 +1612,7 @@
                                             <input class="form-control"
                                                    id="discloseImageRights_{{loop.index0}}"
                                                    name="selfcertificate_discloseImageRights_{{loop.index0}}"
-                                                   placeholder="Disclose right to use images"
+                                                   placeholder="Disclose right to use images in the contribution"
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseImageRights"]) }}">
                                         </div>
