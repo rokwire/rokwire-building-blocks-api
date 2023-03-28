@@ -142,12 +142,12 @@
                         {% if is_editable %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of github usernames, separated by comma, to be selected as admins"
+                                   placeholder="Give a list of GitHub usernames, separated by comma, to be selected as admins of this contribution"
                                    type="text" value="{{ post.contributionAdmins|join(', ') }}">
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of github usernames, separated by comma, to be selected as admins"
+                                   placeholder="Give a list of GitHub usernames, separated by comma, to be selected as admins of this contribution"
                                    type="text">
                         {% endif %}
                     </div>
@@ -212,19 +212,19 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">First Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Contributor's first name" type="text">
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Person's first name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Middle Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Contributor's middle name" type="text">
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Person's middle name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Last Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Contributor's last name" type="text">
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Person's last name" type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -349,11 +349,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder="Contributor's first name"
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["firstName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder="Contributor's first name" type="text">
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -362,11 +362,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder="Contributor's middle name"
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["middleName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder="Contributor's middle name" type="text">
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -375,11 +375,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder="Contributor's last name"
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name"
                                                        type="text" value="{{ contributor | filter_nested_dict(["lastName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder="Contributor's last name" type="text">
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name" type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -388,11 +388,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="Contributor's email"
+                                                       id="person_email_{{loop.index0}}" placeholder="Person's email"
                                                        type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="Contributor's email" type="email">
+                                                       id="person_email_{{loop.index0}}" placeholder="Person's email" type="email">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -401,11 +401,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="Contributor's phone number (9 to 14 digits)"
+                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)"
                                                        type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
                                             {% else %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="Contributor's phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -617,7 +617,7 @@
                             <label class="required control-label col-sm-2">Database Detail</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
-                                       placeholder="Details of API endpoint to delete user info given the user UUID"
+                                       placeholder="Provide the name, version, and other details of the database server used."
                                        type="text">
                             </div>
                         </div>
@@ -625,7 +625,7 @@
                             <label class="required control-label col-sm-2">Version</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version" name="capability_version"
-                                       placeholder="latest version number"
+                                       placeholder="Latest Capability version number"
                                        type="text">
                             </div>
                         </div>
@@ -642,7 +642,7 @@
                             <label class="required control-label col-sm-2">Health Check URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="health" name="capability_healthCheckUrl"
-                                       placeholder="health check url" type="url">
+                                       placeholder="Add a health check URL to check the Capability status continuously." type="url">
                             </div>
                         </div>
 
@@ -1010,11 +1010,11 @@
                                     <div class="col-sm-10">
                                         {% if is_editable %}
                                             <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
-                                                   placeholder="Details of API endpoint to delete user info given the user UUID"
+                                                   placeholder="Provide the name, version, and other details of the database server used."
                                                    type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","databaseDetails"]) }}">
                                         {% else %}
                                             <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
-                                                   placeholder="Details of API endpoint to delete user info given the user UUID"
+                                                   placeholder="Provide the name, version, and other details of the database server used."
                                                    type="text">
                                         {% endif %}
                                     </div>
@@ -1026,13 +1026,13 @@
                                             <input class="form-control"
                                                    id="version_{{loop.index0}}"
                                                    name="capability_version_{{loop.index0}}"
-                                                   placeholder="latest version number"
+                                                   placeholder="Latest Capability version number"
                                                    type="text" value="{{ capability | filter_nested_dict(["version"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_{{loop.index0}}"
                                                    name="capability_version_{{loop.index0}}"
-                                                   placeholder="latest version number"
+                                                   placeholder="Latest Capability version number"
                                                    type="text">
                                         {% endif %}
                                     </div>
@@ -1062,13 +1062,13 @@
                                             <input class="form-control"
                                                    id="health_{{loop.index0}}"
                                                    name="capability_healthCheckUrl_{{loop.index0}}"
-                                                   placeholder="health check url"
+                                                   placeholder="Add a health check URL to check the Capability status continuously."
                                                    type="url" value="{{ capability | filter_nested_dict(["healthCheckUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="health_{{loop.index0}}"
                                                    name="capability_healthCheckUrl_{{loop.index0}}"
-                                                   placeholder="health check url" type="url">
+                                                   placeholder="Add a health check URL to check the Capability status continuously." type="url">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1247,7 +1247,7 @@
                             <label class="control-label col-sm-2">Data Description</label>
                             <div class="col-sm-10">
                                 <textarea id="data_des" name="talent_dataDescription"
-                                       placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level"
+                                       placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels"
                                        style="height:150px"></textarea>
                             </div>
                         </div>
@@ -1562,7 +1562,7 @@
                                     <div class="col-sm-10">
                                         <textarea id="data_des_{{loop.index0}}"
                                                name="talent_dataDescription_{{loop.index0}}"
-                                               placeholder="Detailed description of the data that is collected by this Talent, how it is used, and how this relates to the privacy level"
+                                               placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels"
                                                style="height:150px"
                                                type="text"
                                                value="{{ talent|filter_nested_dict(["dataDescription"]) }}"></textarea>
