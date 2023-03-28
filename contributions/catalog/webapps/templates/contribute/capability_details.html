@@ -115,14 +115,14 @@
                     <table>
                         {% if post.dataDeletionEndpointDetails.apiKey %}
                         <tr id="datadeletion_row">
-                            <td><b>API Key&nbsp;&nbsp;</b></td>
+                            <td><b>API key&nbsp;&nbsp;</b></td>
                             <td class="hidetext">{{post.dataDeletionEndpointDetails.apiKey}}</td>
                             <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                         </tr>
                         {% endif %}
                         {% if post.dataDeletionEndpointDetails.deletionEndpoint %}
                         <tr>
-                            <td><b>Deletion Endpoint&nbsp;&nbsp;</b></td>
+                            <td><b>Deletion endpoint&nbsp;&nbsp;</b></td>
                             <td>{{post.dataDeletionEndpointDetails.deletionEndpoint}}</td>
                         </tr>
                         {% endif %}
@@ -145,19 +145,19 @@
                     <table>
                         {% if post.deploymentDetails.authMethod %}
                         <tr>
-                            <td><b>Auth Method&nbsp;&nbsp;</b></td>
+                            <td><b>Auth method&nbsp;&nbsp;</b></td>
                             <td>{{post.deploymentDetails.authMethod}}</td>
                         </tr>
                         {% endif %}
                         {% if post.deploymentDetails.databaseDetails %}
                         <tr>
-                            <td><b>Database Details&nbsp;&nbsp;</b></td>
+                            <td><b>Database details&nbsp;&nbsp;</b></td>
                             <td>{{post.deploymentDetails.databaseDetails}}</td>
                         </tr>
                         {% endif %}
                         {% if post.deploymentDetails.environmentVariables %}
                         <tr>
-                            <td valign="top"><b>Environment Variables&nbsp;&nbsp;</b></td>
+                            <td valign="top"><b>Environment variables&nbsp;&nbsp;</b></td>
                             <td>
                                 {% for envvar in post.deploymentDetails.environmentVariables %}
                                     <table>
