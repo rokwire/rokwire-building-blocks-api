@@ -30,7 +30,7 @@
         <!-- contribution details container -->
         <div class="row">
             <div class="col-12 col-md-3">
-                <h4>Contribution name</h4>
+                <h4>Contribution Name</h4>
             </div>
             <div class="col-12 col-md-9">
                 <div class="small-body-text">{{post.name}}</div>
@@ -39,7 +39,7 @@
 
         <div class="row">
             <div class="col-12 col-md-3">
-                <h4>Short description</h4>
+                <h4>Short Description</h4>
             </div>
             <div class="col-12 col-md-9">
                 <div class="small-body-text">{{post.shortDescription}}</div>
@@ -49,7 +49,7 @@
         {% if post.longDescription %}
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <h4>Long description</h4>
+                    <h4>Long Description</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.longDescription}}</div>
@@ -60,7 +60,7 @@
         {% if post.contributors %}
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <h4>Contributor details</h4>
+                    <h4>Contributor Details</h4>
                 </div>
             </div>
 
@@ -196,7 +196,7 @@
         {% if post.contacts %}
             <div class="row" style="margin-top: 5px">
                 <div class="col-12 col-md-3">
-                    <h4>Contact details</h4>
+                    <h4>Contact Details</h4>
                 </div>
 
                 {% for contact in post["contacts"] %}
@@ -247,7 +247,7 @@
         {% if post.capabilities %}
             <div class="row justify-content-center">
                 <div class="col-12 col-md-3">
-                    <h4>Capabilities in this contribution</h4>
+                    <h4>Capabilities</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <table>
@@ -273,7 +273,7 @@
         {% if post.talents %}
             <div class="row justify-content-center">
                 <div class="col-12 col-md-3">
-                    <h4>Talents in this contribution</h4>
+                    <h4>Talents</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <table>
@@ -299,7 +299,7 @@
         {% if (is_reviewer or is_editable or is_review) %}
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <h4>Contribution admins</h4>
+                    <h4>Admins</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">
@@ -319,7 +319,7 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <h4>Date created</h4>
+                    <h4>Date Created</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.dateCreated}}</div>
@@ -327,7 +327,7 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <h4>Date modified</h4>
+                    <h4>Date Modified</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.dateModified}}</div>
@@ -462,7 +462,7 @@
                 <h4 class="modal-title" id="confirmDeleteTitle">Delete Contribution</h4>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the Contribution {{post.name}}?
+                Are you sure you want to delete the contribution {{post.name}}?
             </div>
             <div class="modal-footer">
                 <button type="button" class="button button2" data-dismiss="modal">Cancel</button>
