@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom dropdown menu style. [#1090](https://github.com/rokwire/rokwire-building-blocks-api/issues/1090)
 - Fill footer at the bottom of pages. [#1092](https://github.com/rokwire/rokwire-building-blocks-api/issues/1092)
 - Contribute form field labels and placeholders. [#1102](https://github.com/rokwire/rokwire-building-blocks-api/issues/1102)
+- Wordings of view pages. [#1069](https://github.com/rokwire/rokwire-building-blocks-api/issues/1069)
 
 ### Fixed
 - Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
