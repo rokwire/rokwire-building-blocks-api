@@ -581,6 +581,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...HEAD
 [1.18.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...1.18.0
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
 [1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
