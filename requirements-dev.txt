@@ -1,2 +1,2 @@
-detect-secrets==1.0.3
-pre-commit>=2.0.0,<3
+detect-secrets==1.4.0
+pre-commit>=3.0.0,<4

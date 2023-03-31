@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Rokwire Events Building Block API
   description: Events Building Block API Documentation
-  version: 1.17.0
+  version: 1.18.0
 servers:
 - url: https://api.rokwire.illinois.edu
   description: Production server
