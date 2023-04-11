@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Footer to all pages. [#1044](https://github.com/rokwire/rokwire-building-blocks-api/issues/1044)
 - Input validation for contribute create page. [#1103](https://github.com/rokwire/rokwire-building-blocks-api/issues/1103)
+- Add multiple groupIds support in the deletion endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
 
 ### Changed
 - UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
