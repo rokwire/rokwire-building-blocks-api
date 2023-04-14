@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+
+### Changed
+- UI table spacing for details pages. [#1117](https://github.com/rokwire/rokwire-building-blocks-api/issues/1117)
+
+### Fixed
 
 ## [1.18.0] - 2023-03-30
 ### Added
