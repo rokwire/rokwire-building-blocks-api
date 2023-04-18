@@ -5,6 +5,74 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
+- Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
+
+## [1.18.0] - 2023-03-30
+### Added
+- Footer to all pages. [#1044](https://github.com/rokwire/rokwire-building-blocks-api/issues/1044)
+- Input validation for contribute create page. [#1103](https://github.com/rokwire/rokwire-building-blocks-api/issues/1103)
+
+### Changed
+- UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
+- Updated footer UI. [#1036](https://github.com/rokwire/rokwire-building-blocks-api/issues/1036)
+- UI changes to top navigation bar. [#1040](https://github.com/rokwire/rokwire-building-blocks-api/issues/1040)
+- UI for talent view page. [#1060](https://github.com/rokwire/rokwire-building-blocks-api/issues/1060)
+- UI changes for contribution details page. [#1041](https://github.com/rokwire/rokwire-building-blocks-api/issues/1041)
+- Catalog home page UI. [#1063](https://github.com/rokwire/rokwire-building-blocks-api/issues/1063)
+- CODEOWNERS file to include CHANGELOG. [#1059](https://github.com/rokwire/rokwire-building-blocks-api/issues/1059)
+- Create contribution page UI. [#1065](https://github.com/rokwire/rokwire-building-blocks-api/issues/1065)
+- Review block in contribution details page. [#1066](https://github.com/rokwire/rokwire-building-blocks-api/issues/1066)
+- Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
+- Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
+- Cryptography version bump for contributions. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1089)
+- Cryptography version bump for appconfigservice. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Catalog home page card alignment. [#1084](https://github.com/rokwire/rokwire-building-blocks-api/issues/1084)
+- Updated button styles to match design. [#1085](https://github.com/rokwire/rokwire-building-blocks-api/issues/1085)
+- Update werkzeug version in catalog. [#1099](https://github.com/rokwire/rokwire-building-blocks-api/issues/1099)
+- Custom dropdown menu style. [#1090](https://github.com/rokwire/rokwire-building-blocks-api/issues/1090)
+- Fill footer at the bottom of pages. [#1092](https://github.com/rokwire/rokwire-building-blocks-api/issues/1092)
+- Contribute form field labels and placeholders. [#1102](https://github.com/rokwire/rokwire-building-blocks-api/issues/1102)
+- Wordings of view pages. [#1069](https://github.com/rokwire/rokwire-building-blocks-api/issues/1069)
+
+### Fixed
+- Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
+- Overlapping divs in catalog contribute create page. [#1054](https://github.com/rokwire/rokwire-building-blocks-api/issues/1054)
+
+## [1.17.0] - 2022-12-06
+### Added
+- Footer to all pages. [#1044](https://github.com/rokwire/rokwire-building-blocks-api/issues/1044)
+- Input validation for contribute create page. [#1103](https://github.com/rokwire/rokwire-building-blocks-api/issues/1103)
+
+### Changed
+- UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
+- Updated footer UI. [#1036](https://github.com/rokwire/rokwire-building-blocks-api/issues/1036)
+- UI changes to top navigation bar. [#1040](https://github.com/rokwire/rokwire-building-blocks-api/issues/1040)
+- UI for talent view page. [#1060](https://github.com/rokwire/rokwire-building-blocks-api/issues/1060)
+- UI changes for contribution details page. [#1041](https://github.com/rokwire/rokwire-building-blocks-api/issues/1041)
+- Catalog home page UI. [#1063](https://github.com/rokwire/rokwire-building-blocks-api/issues/1063)
+- CODEOWNERS file to include CHANGELOG. [#1059](https://github.com/rokwire/rokwire-building-blocks-api/issues/1059)
+- Create contribution page UI. [#1065](https://github.com/rokwire/rokwire-building-blocks-api/issues/1065)
+- Review block in contribution details page. [#1066](https://github.com/rokwire/rokwire-building-blocks-api/issues/1066)
+- Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
+- Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
+- Cryptography version bump for contributions. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1089)
+- Cryptography version bump for appconfigservice. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Catalog home page card alignment. [#1084](https://github.com/rokwire/rokwire-building-blocks-api/issues/1084)
+- Updated button styles to match design. [#1085](https://github.com/rokwire/rokwire-building-blocks-api/issues/1085)
+- Update werkzeug version in catalog. [#1099](https://github.com/rokwire/rokwire-building-blocks-api/issues/1099)
+- Custom dropdown menu style. [#1090](https://github.com/rokwire/rokwire-building-blocks-api/issues/1090)
+- Fill footer at the bottom of pages. [#1092](https://github.com/rokwire/rokwire-building-blocks-api/issues/1092)
+- Contribute form field labels and placeholders. [#1102](https://github.com/rokwire/rokwire-building-blocks-api/issues/1102)
+- Wordings of view pages. [#1069](https://github.com/rokwire/rokwire-building-blocks-api/issues/1069)
+
+### Fixed
+- Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
+- Overlapping divs in catalog contribute create page. [#1054](https://github.com/rokwire/rokwire-building-blocks-api/issues/1054)
+
+## [1.17.0] - 2022-12-06
 ### Added
 - Cancel button in contribution edit page. [#986](https://github.com/rokwire/rokwire-building-blocks-api/issues/986)
 - Add group ids and user ids fields in events yaml file. [#1017](https://github.com/rokwire/rokwire-building-blocks-api/issues/1017)
@@ -14,8 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User confirmation on cancel contribution. [#1022](https://github.com/rokwire/rokwire-building-blocks-api/issues/1022)
 - Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 - Make environmentVariable key required if present in Catalog. [#1028](https://github.com/rokwire/rokwire-building-blocks-api/issues/1028)
-- Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
-- Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
+- Added set and get functions for ApiBaseUrl in catalog. [#1047](https://github.com/rokwire/rokwire-building-blocks-api/issues/1047)
 
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
@@ -35,6 +102,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated gevent in contributions. [#1003](https://github.com/rokwire/rokwire-building-blocks-api/issues/1003)
 - Updated gevent in catalog. [#1007](https://github.com/rokwire/rokwire-building-blocks-api/issues/1007)
 - Delete capability and talent functionality in catalog. [#1009](https://github.com/rokwire/rokwire-building-blocks-api/issues/1009)
+- Edit database detail field in catalog. [#1048](https://github.com/rokwire/rokwire-building-blocks-api/issues/1048)
+- Display multiple contribution admins in catalog. [#1050](https://github.com/rokwire/rokwire-building-blocks-api/issues/1050)
+- VersionUrl field name in contribution edit page. [#1056](https://github.com/rokwire/rokwire-building-blocks-api/issues/1056)
+- SourceUrl field display on IsOpenSourceUrl radio button in catalog. [#1053](https://github.com/rokwire/rokwire-building-blocks-api/issues/1053)
 
 ## [1.16.0] - 2022-08-29
 ### Added
@@ -543,7 +614,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...HEAD
+[1.18.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...1.18.0
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
+[1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
 [1.14.1]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.0...1.14.1
