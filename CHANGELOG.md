@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Close button to remove environment key value pairs. [#980](https://github.com/rokwire/rokwire-building-blocks-api/issues/980)
 - Make environmentVariable key required if present in Catalog. [#1028](https://github.com/rokwire/rokwire-building-blocks-api/issues/1028)
 - Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
+- Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
 
 ### Changed
 - Show appropriate error message when catalog cannot display a contribution. [#961](https://github.com/rokwire/rokwire-building-blocks-api/issues/961)
