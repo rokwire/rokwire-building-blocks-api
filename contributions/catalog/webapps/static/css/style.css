@@ -145,6 +145,13 @@ html * {
     min-height: calc(100vh - 176px);
 }
 
+.details-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.details-table td:nth-of-type(1) {width: 210px;}
+.blank-row { height: 10px;}
+
 .row {
     display: flex;
     flex-wrap: wrap;
