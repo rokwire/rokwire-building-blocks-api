@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Dynamic display of deployment form fields in catalog contribute page. [#1119](https://github.com/rokwire/rokwire-building-blocks-api/issues/1119)
 
 ### Changed
 - UI table spacing for details pages. [#1117](https://github.com/rokwire/rokwire-building-blocks-api/issues/1117)
