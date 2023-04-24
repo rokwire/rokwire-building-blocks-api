@@ -640,8 +640,6 @@ def event_operation_permission_check(req_data=None, event_id=None):
 
         if not event.get('createdByGroupId') and not event.get('groupIds'):
             auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
-        elif not event.get('createdByGroupId'):
-            auth_middleware.authorize(auth_middleware.ROKWIRE_EVENT_WRITE_GROUPS)
         else:
             group_memberships = list()
             try:
@@ -652,11 +650,11 @@ def event_operation_permission_check(req_data=None, event_id=None):
             # If this is a group event, apply group authorization. Regular events can proceed like before.
             if not check_group_event_admin_access(event, group_memberships):
                 abort(401)
-            if req_data and set(req_data.get('groupIds')) != set(event.get('groupIds')):
+            if req_data and 'groupIds' in req_data and set(req_data.get('groupIds')) != set(event.get('groupIds')):
                 if not check_group_event_admin_access(req_data, group_memberships):
                     abort(401)
             # if group id changed, then check the user has the admin permission in the new group.
-            elif req_data and req_data.get('createdByGroupId') != event.get('createdByGroupId'):
+            elif req_data and 'createdByGroupId' in req_data and req_data.get('createdByGroupId') != event.get('createdByGroupId'):
                 if not check_group_event_admin_access(req_data, group_memberships):
                     abort(401)
     elif req_data:
