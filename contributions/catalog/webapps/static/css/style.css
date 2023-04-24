@@ -523,6 +523,15 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     display: flex;
 }
 
+#dockerimg {
+    display:none;
+}
+#env-var-div {
+    display:none;
+}
+#add-env-var-div {
+    display:none;
+}
 
 /*Resize the wrap to see the search bar change!*/
 .wrap {
