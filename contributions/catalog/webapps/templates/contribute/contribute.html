@@ -590,7 +590,7 @@
                             </div>
                         </div>
 
-                        <div name="add-env-var-div" class="form-group">
+                        <div name="add-env-var-div" id="env-var-div" class="form-group">
                             <label class="control-label col-sm-2">Environment Variable(s)</label>
                             <div class="col-sm-10" id="key-val" style="display: table">
                                 <!-- environment variables are appended with env_index and cap_index starting with 0 -->
@@ -837,6 +837,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-2" for="api_base">API Base Location</label>
+                                    <div class="col-sm-10">
+                                        {% if is_editable %}
+                                            <input class="form-control" id="api_base_{{loop.index0}}"
+                                                   name="capability_apiBaseUrl_{{loop.index0}}"
+                                                   placeholder="API base URL"
+                                                   type="text"
+                                                   value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
+                                        {% else %}
+                                            <input class="form-control" id="api_base_{{loop.index0}}"
+                                                   name="capability_apiBaseUrl_{{loop.index0}}"
+                                                   placeholder="API base URL" type="text">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="required control-label col-sm-2">Deployment location</label>
                                     <div class="col-sm-10">
                                         <label class="form-check-label radio-inline">
@@ -876,23 +892,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="api_base">API Base Location</label>
-                                    <div class="col-sm-10">
-                                        {% if is_editable %}
-                                            <input class="form-control" id="api_base_{{loop.index0}}"
-                                                   name="capability_apiBaseUrl_{{loop.index0}}"
-                                                   placeholder="API base URL"
-                                                   type="text"
-                                                   value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
-                                        {% else %}
-                                            <input class="form-control" id="api_base_{{loop.index0}}"
-                                                   name="capability_apiBaseUrl_{{loop.index0}}"
-                                                   placeholder="API base URL" type="text">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
+                                    <label class="control-label col-sm-2" for="docker_img">Docker Image Name</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
                                             <input class="form-control" id="docker_img_{{loop.index0}}"
@@ -907,7 +907,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="form-group" name="add-env-var-div">
+                                <div class="form-group" name="add-env-var-div" id="env-var-div">
                                     <label class="control-label col-sm-2">Environment Variable(s)</label>
                                     <div class="col-sm-10" id="key-val_{{ loop.index0 }}" style="display: table">
                                         {% if capability["deploymentDetails"]["environmentVariables"] %}
@@ -1888,6 +1888,28 @@
 
     });
 
+    // Deployment Location radio button
+    $(function(event) {
+        $('input[name^="deploymentDetails_location"]').on('click', function() {
+           // get the capability number and show/hide docker image name and environment variables
+           var deploymentDetails_id = $(this).attr("id");
+           let cap_num = deploymentDetails_id.split("_").pop();
+           if ($(this).val() == 'internal') {
+               $('#dockerimg_' + cap_num).show();
+               $('#env-var-div_' + cap_num).show();
+               $('#add-env-var-div_' + cap_num).show();
+               // adjust selector button position
+               MoveSelector(event);
+           }
+           else {
+               $('#dockerimg_' + cap_num).hide();
+               $('#env-var-div_' + cap_num).hide();
+               $('#add-env-var-div_' + cap_num).hide();
+           }
+        });
+
+    });
+
     $(function () {
         function split(val) {
             return val.split(/,\s*/);
@@ -2057,12 +2079,14 @@
                     deploy_internal[i].focus();
                     return false;
                 }
-                dockerimage[i] = document.getElementById('docker_img' + '_' + i);
-                if (dockerimage[i].value == "") {
-                    // window.alert("Please enter the docker image.");
-                    dockerimage[i].focus();
-                    dockerimage[i].required = true;
-                    return false;
+                if (deploy_internal[i].checked) {
+                    dockerimage[i] = document.getElementById('docker_img' + '_' + i);
+                    if (dockerimage[i].value == "") {
+                        // window.alert("Please enter the docker image.");
+                        dockerimage[i].focus();
+                        dockerimage[i].required = true;
+                        return false;
+                    }
                 }
 
                 db[i] = document.getElementById('db-detail' + '_' + i);
@@ -2279,9 +2303,22 @@
             $('#sourceurl_' + i).hide();
         }
 
+        if ($('input[id=\"deploy_internal_' + i + '\"]').is(':checked')) {
+            $('#dockerimg_' + i).show();
+            $('#env-var-div_' + i).show();
+            $('#add-env-var-div_' + i).show();
+            // adjust selector button position
+            MoveSelector(event);
+
+        } else {
+            $('#dockerimg_' + i).hide();
+            $('#env-var-div_' + i).hide();
+            $('#add-env-var-div_' + i).hide();
+        }
+
         capability_count++;
 
-    }
+    } // end AddCapability event
 
     function MoveSelector(event) {
         // adjust button position
