@@ -27,9 +27,9 @@
     <h1>Capability Details</h1>
 
     <hr class="divider"/>
-    <div class="container">
+    <div class="container details-container">
         <!-- capability details container -->
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Capability Name </h4>
             </div>
@@ -38,34 +38,34 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
-                <h4>Capability description </h4>
+                <h4>Capability Description </h4>
             </div>
             <div class="col-12 col-md-9 ">
                 <div class="small-body-text">{{post.description}}</div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
-                <h4>Is code open source? </h4>
+                <h4>Is Code Open Source? </h4>
             </div>
             <div class="col-12 col-md-9">
                 <div class="small-body-text">{{post.isOpenSource}}</div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
-                <h4>Source code repository URL </h4>
+                <h4>Source Code Repository URL </h4>
             </div>
             <div class="col-12 col-md-9">
                 <div class="small-body-text">{{post.sourceRepoUrl}}</div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>API Documentation URL </h4>
             </div>
@@ -75,9 +75,9 @@
         </div>
 
         {% if post.deploymentDetails%}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Deployment location </h4>
+                    <h4>Deployment Location </h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.deploymentDetails.location}}</div>
@@ -87,7 +87,7 @@
 
         {% if reviewer %}
             {% if post.version %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Version </h4>
                 </div>
@@ -97,7 +97,7 @@
             </div>
             {% endif %}
             {% if post.healthCheckUrl %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Health Check URL </h4>
                 </div>
@@ -107,12 +107,12 @@
             </div>
             {% endif %}
             {% if post.dataDeletionEndpointDetails %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Data Deletion Endpoint Details </h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    <table>
+                    <table class="details-table">
                         {% if post.dataDeletionEndpointDetails.apiKey %}
                         <tr id="datadeletion_row">
                             <td><b>API Key&nbsp;&nbsp;</b></td>
@@ -132,17 +132,20 @@
                             <td>{{post.dataDeletionEndpointDetails.description}}</td>
                         </tr>
                         {% endif %}
+                        <tr class="blank-row">
+                            <td></td>
+                        </tr>
                     </table>
                 </div>
             </div>
             {% endif %}
             {% if post.deploymentDetails %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Deployment Details </h4>
                 </div>
                 <div class="col-12 col-md-9">
-                    <table>
+                    <table class="details-table">
                         {% if post.deploymentDetails.authMethod %}
                         <tr>
                             <td><b>Auth Method&nbsp;&nbsp;</b></td>
@@ -169,7 +172,7 @@
                                                         <td class="hidetext">{{item[1]}}</td>
                                                         <td> &#160 &#160 <i class="bi bi-eye-slash field_icon" id="toggleText" style="cursor: pointer;"></i></td>
                                                     {% else %}
-                                                        <td style="padding:0 5px 0 5px;">{{item[0]}}: </td>
+                                                        <td style="padding:0 5px 0 0px; width:max-content">{{item[0]}}: </td>
                                                         <td>{{item[1]}}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -186,6 +189,9 @@
                             <td>{{post.deploymentDetails.location}}</td>
                         </tr>
                         {% endif %}
+                        <tr class="blank-row">
+                            <td></td>
+                        </tr>
                     </table>
                 </div>
             </div>

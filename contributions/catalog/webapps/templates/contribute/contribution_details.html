@@ -21,14 +21,14 @@
     {% include 'topnav.html' %}
 </div>
 
-<div class="container">
+<div class="container details-container">
 
     <h1 id="contribute">Contribution Details</h1>
     <hr class="divider"/>
 
     <div class="container">
         <!-- contribution details container -->
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Contribution Name</h4>
             </div>
@@ -37,9 +37,9 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
-                <h4>Contribution short description</h4>
+                <h4>Short Description</h4>
             </div>
             <div class="col-12 col-md-9">
                 <div class="small-body-text">{{post.shortDescription}}</div>
@@ -47,9 +47,9 @@
         </div>
 
         {% if post.longDescription %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Contribution long description</h4>
+                    <h4>Long Description</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.longDescription}}</div>
@@ -58,9 +58,9 @@
         {% endif %}
 
         {% if post.contributors %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Contributor details</h4>
+                    <h4>Contributor Details</h4>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                 {% endfor %}
 
                 {% if contributor_ns.contributorType == "person" %}
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h5>Person</h5>
                         </div>
@@ -159,7 +159,7 @@
                     </div>
                 {% endif %}
                 {% if contributor_ns.contributorType == "organization" %}
-                    <div class="row" style="margin-top: 5px">
+                    <div class="details-row" style="margin-top: 5px">
                         <div class="col-12 col-md-3">
                             <h5>Organization</h5>
                         </div>
@@ -194,9 +194,9 @@
         {% endif %}
 
         {% if post.contacts %}
-            <div class="row" style="margin-top: 5px">
+            <div class="details-row" style="margin-top: 5px">
                 <div class="col-12 col-md-3">
-                    <h4>Contact details</h4>
+                    <h4>Contact Details</h4>
                 </div>
 
                 {% for contact in post["contacts"] %}
@@ -245,9 +245,9 @@
         {% endif %}
 
         {% if post.capabilities %}
-            <div class="row justify-content-center">
+            <div class="details-row justify-content-center">
                 <div class="col-12 col-md-3">
-                    <h4>Capabilities in this contribution</h4>
+                    <h4>Capabilities</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <table>
@@ -271,9 +271,9 @@
         {% endif %}
 
         {% if post.talents %}
-            <div class="row justify-content-center">
+            <div class="details-row justify-content-center">
                 <div class="col-12 col-md-3">
-                    <h4>Talents in this contribution</h4>
+                    <h4>Talents</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <table>
@@ -297,9 +297,9 @@
         {% endif %}
 
         {% if (is_reviewer or is_editable or is_review) %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Contribution admins</h4>
+                    <h4>Admins</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">
@@ -309,7 +309,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Status</h4>
                 </div>
@@ -317,17 +317,17 @@
                     <div class="small-body-text">{{post.status}}</div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Date created</h4>
+                    <h4>Date Created</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.dateCreated}}</div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
-                    <h4>Date modified</h4>
+                    <h4>Date Modified</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <div class="small-body-text">{{post.dateModified}}</div>
@@ -339,13 +339,13 @@
     <div class="container">
         <!-- buttons container -->
         {% if is_editable %}
-            <a class="button button2" role="button" href="{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}">Edit Contribution</a>
+            <button class="button button2" onclick="location.href = '{{ url_for('contribute.contribution_edit', contribution_id=post.id) }}';" >Edit</button>
             <!-- Button trigger modal -->
-            <button type="button" class="button button3" data-toggle="modal" data-target="#confirmDelete">Delete Contribution</button>
+            <button type="button" class="button button3" data-toggle="modal" data-target="#confirmDelete">Delete</button>
         {% endif %}
 
         {% if is_reviewer %}
-            <a class="button button4" role="button" href="{{ url_for('contribute.contribution_review', contribution_id=post.id) }}">Review Contribution</a>
+            <button class="button button4" onclick="location.href = '{{ url_for('contribute.contribution_review', contribution_id=post.id) }}';">Review</button>
         {% endif %}
     </div> <!-- end of buttons container -->
 
@@ -356,7 +356,7 @@
             <hr class="divider"/>
             <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Status</h4>
                         </div>
@@ -395,7 +395,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Comment</h4>
                         </div>
@@ -413,7 +413,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Last Updated</h4>
                         </div>
@@ -425,7 +425,7 @@
                         <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
                     </div>
                 </div>
-                <div class="row">
+                <div class="details-row">
                     <div class="col-12 col-sm-2">
                         <table>
                             <tr>
@@ -462,7 +462,7 @@
                 <h4 class="modal-title" id="confirmDeleteTitle">Delete Contribution</h4>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the Contribution {{post.name}}?
+                Are you sure you want to delete the contribution {{post.name}}?
             </div>
             <div class="modal-footer">
                 <button type="button" class="button button2" data-dismiss="modal">Cancel</button>

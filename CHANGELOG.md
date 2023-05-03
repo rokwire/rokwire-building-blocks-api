@@ -5,8 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
+- Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
+### Changed
+- UI table spacing for details pages. [#1117](https://github.com/rokwire/rokwire-building-blocks-api/issues/1117)
+
+### Fixed
+
+## [1.18.0] - 2023-03-30
 ### Added
 - Footer to all pages. [#1044](https://github.com/rokwire/rokwire-building-blocks-api/issues/1044)
+- Input validation for contribute create page. [#1103](https://github.com/rokwire/rokwire-building-blocks-api/issues/1103)
 
 ### Changed
 - UI for capability view page. [#1034](https://github.com/rokwire/rokwire-building-blocks-api/issues/1034)
@@ -21,9 +32,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rearranged divs in contribute page. [#1079](https://github.com/rokwire/rokwire-building-blocks-api/issues/1079)
 - Element stylings in contribute page. [#1087](https://github.com/rokwire/rokwire-building-blocks-api/issues/1087)
 - Cryptography version bump for contributions. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1089)
+- Cryptography version bump for appconfigservice. [#1089](https://github.com/rokwire/rokwire-building-blocks-api/issues/1100)
+- Catalog home page card alignment. [#1084](https://github.com/rokwire/rokwire-building-blocks-api/issues/1084)
+- Updated button styles to match design. [#1085](https://github.com/rokwire/rokwire-building-blocks-api/issues/1085)
+- Update werkzeug version in catalog. [#1099](https://github.com/rokwire/rokwire-building-blocks-api/issues/1099)
+- Custom dropdown menu style. [#1090](https://github.com/rokwire/rokwire-building-blocks-api/issues/1090)
+- Fill footer at the bottom of pages. [#1092](https://github.com/rokwire/rokwire-building-blocks-api/issues/1092)
+- Contribute form field labels and placeholders. [#1102](https://github.com/rokwire/rokwire-building-blocks-api/issues/1102)
+- Wordings of view pages. [#1069](https://github.com/rokwire/rokwire-building-blocks-api/issues/1069)
 
 ### Fixed
 - Detect secrets GitHub action build error and updated baseline. [#1077](https://github.com/rokwire/rokwire-building-blocks-api/issues/1077)
+- Overlapping divs in catalog contribute create page. [#1054](https://github.com/rokwire/rokwire-building-blocks-api/issues/1054)
 
 ## [1.17.0] - 2022-12-06
 ### Added
@@ -567,6 +587,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...HEAD
+[1.18.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...1.18.0
 [Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
 [1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
