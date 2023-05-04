@@ -1,6 +1,7 @@
-FROM python:3-alpine3.12
+FROM python:3.9-alpine
 
-LABEL maintainer="ywkim@illinois.edu"
+LABEL maintainers="minum@illinois.edu, sandeeps@illinois.edu"
+LABEL authors="ywkim@illinois.edu, minum@illinois.edu"
 
 EXPOSE 5000
 
