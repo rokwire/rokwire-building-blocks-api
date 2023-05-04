@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - UI table spacing for details pages. [#1117](https://github.com/rokwire/rokwire-building-blocks-api/issues/1117)
+- Form fields and placeholder text for contribute form. [#1116](https://github.com/rokwire/rokwire-building-blocks-api/issues/1116)
 
 ### Fixed
 - Dependabot alerts and dependency fixes for Appconfig BB. [#1131](https://github.com/rokwire/rokwire-building-blocks-api/issues/1131)
