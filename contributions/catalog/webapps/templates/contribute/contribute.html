@@ -101,11 +101,11 @@
                     <div class="col-sm-10" id="contribution_name_div">
                         {% if is_editable %}
                             <input class="form-control" id="contribution_name" name="contribution_name"
-                                   placeholder="Give a name for your contribution"
+                                   placeholder="Give a name for your Contribution."
                                    value="{{ post | filter_nested_dict(["name"]) }}" type="text">
                         {% else %}
                             <input class="form-control" id="contribution_name" name="contribution_name"
-                                   placeholder="Give a name for your contribution" type="text">
+                                   placeholder="Give a name for your Contribution." type="text">
                         {% endif %}
                     </div>
                 </div>
@@ -114,11 +114,11 @@
                     <div class="col-sm-10">
                         {% if is_editable %}
                             <input class="form-control" id="contribution_description" name="contribution_shortDescription"
-                                   placeholder="Give a short description"
+                                   placeholder="Briefly describe your Contribution, highlighting its main functionality or purpose."
                                    value="{{ post | filter_nested_dict(["shortDescription"]) }}" type="text">
                         {% else %}
                             <input class="form-control" id="contribution_description" name="contribution_shortDescription"
-                                   placeholder="Give a short description" type="text">
+                                   placeholder="Briefly describe your Contribution, highlighting its main functionality or purpose." type="text">
                         {% endif %}
                     </div>
                 </div>
@@ -127,11 +127,11 @@
                     <div class="col-sm-10">
                         {% if is_editable %}
                             <textarea id="contribution_detail" name="contribution_longDescription"
-                                      placeholder="Give a detailed description"
+                                      placeholder="Add a detailed description of your Contribution, including as many details as possible."
                                       style="height:150px">{{ post | filter_nested_dict(["longDescription"]) }}</textarea>
                         {% else %}
                             <textarea id="contribution_detail" name="contribution_longDescription"
-                                      placeholder="Give a detailed description"
+                                      placeholder="Add a detailed description of your Contribution, including as many details as possible."
                                       style="height:150px"></textarea>
                         {% endif %}
                     </div>
@@ -142,12 +142,12 @@
                         {% if is_editable %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of GitHub usernames, separated by comma, to be selected as admins of this contribution"
+                                   placeholder="Start typing to select and add the GitHub usernames of the admins of this contribution."
                                    type="text" value="{{ post.contributionAdmins|join(', ') }}">
                         {% else %}
                             <input class="form-control" id="contribution_Admins"
                                    name="contribution_contributionAdmins"
-                                   placeholder="Give a list of GitHub usernames, separated by comma, to be selected as admins of this contribution"
+                                   placeholder="Start typing to select and add the GitHub usernames of the admins of this contribution."
                                    type="text">
                         {% endif %}
                     </div>
@@ -168,7 +168,7 @@
                     <!-------------------- organization block clean -------------------->
                     <div id="organization-clean" style="display: none">
                         <hr class="dotted">
-                        <h3 id="capability">Add an Organization to this Contribution</h3>
+                        <h3 id="capability">Add an Organization as a Contributor</h3>
                         <div class="form-group">
                             <div>
                                 <input id="contributor_type" name="contributor_type" type="hidden" value="organization">
@@ -177,25 +177,25 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_name" name="org_name" placeholder="Organization name" type="text">
+                                <input class="form-control" id="org_name" name="org_name" placeholder="Organization's name." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_address" name="org_address" placeholder="Organization address" type="text">
+                                <input class="form-control" id="org_address" name="org_address" placeholder="Organization's address." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_email" name="org_email" placeholder="Organization email" type="email">
+                                <input class="form-control" id="org_email" name="org_email" placeholder="Organization's email address." type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="org_phone" name="org_phone" placeholder="Organization phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" id="org_phone" name="org_phone" placeholder="Organization's phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!--- end of organization block clean -->
@@ -203,7 +203,7 @@
                     <!-------------------- person block clean -------------------->
                     <div id="person-clean" style="display: none">
                         <hr class="dotted">
-                        <h3 id="capability">Add a Person to this Contribution</h3>
+                        <h3 id="capability">Add a Person as a Contributor</h3>
                         <div class="form-group">
                             <div>
                                 <input id="contributor_type" name="contributor_type" type="hidden" value="person">
@@ -212,55 +212,55 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2">First Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Person's first name" type="text">
+                                <input class="form-control" id="contributor_fname" name="person_firstName" placeholder="Person's first name." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Middle Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Person's middle name" type="text">
+                                <input class="form-control" id="contributor_mname" name="person_middleName" placeholder="Person's middle name." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Last Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Person's last name" type="text">
+                                <input class="form-control" id="contributor_lname" name="person_lastName" placeholder="Person's last name." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_email" placeholder="Person's email address" type="email">
+                                <input class="form-control" name="person_email" placeholder="Person's email address." type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Phone Number</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="person_phone" placeholder="Person's phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="person_phone" placeholder="Person's phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_name" placeholder="" type="text">
+                                <input class="form-control" name="affiliation_name" placeholder="Institution and/or department name." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Address</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_address" placeholder="" type="text">
+                                <input class="form-control" name="affiliation_address" placeholder="Full address of the affiliated institution." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_email" placeholder="" type="email">
+                                <input class="form-control" name="affiliation_email" placeholder="Official email of the affiliated institution." type="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">Affiliation Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="affiliation_phone" placeholder="Phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                <input class="form-control" name="affiliation_phone" placeholder="Institution and/or department phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                             </div>
                         </div>
                     </div> <!-- end of person block clean -->
@@ -284,11 +284,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_name_{{loop.index0}}"
-                                                       name="org_name_{{loop.index0}}" placeholder="Organization name"
+                                                       name="org_name_{{loop.index0}}" placeholder="Organization's name."
                                                        type="text" value="{{ contributor|filter_nested_dict(["name"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="org_name_{{loop.index0}}"
-                                                       name="org_name_{{loop.index0}}" placeholder="Organization name" type="text">
+                                                       name="org_name_{{loop.index0}}" placeholder="Organization's name." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -297,11 +297,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_address_{{loop.index0}}"
-                                                       name="org_address_{{loop.index0}}" placeholder=""
+                                                       name="org_address_{{loop.index0}}" placeholder="Organization's address."
                                                        type="text" value="{{ contributor|filter_nested_dict(["address"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="org_address_{{loop.index0}}"
-                                                       name="org_address_{{loop.index0}}" placeholder="" type="text">
+                                                       name="org_address_{{loop.index0}}" placeholder="Organization's address." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -310,11 +310,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_email_{{loop.index0}}"
-                                                       name="org_email_{{loop.index0}}" placeholder=""
+                                                       name="org_email_{{loop.index0}}" placeholder="Organization's email address."
                                                        type="email" value="{{ contributor|filter_nested_dict(["email"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="org_email_{{loop.index0}}"
-                                                       name="org_email_{{loop.index0}}" placeholder="" type="email">
+                                                       name="org_email_{{loop.index0}}" placeholder="Organization's email address." type="email">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -323,11 +323,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder="Organization phone number (9 to 14 digits)"
+                                                       name="org_phone_{{loop.index0}}" placeholder="Organization's phone number (9 to 14 digits)."
                                                        type="tel" value="{{ contributor|filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
                                             {% else %}
                                                 <input class="form-control" id="org_phone_{{loop.index0}}"
-                                                       name="org_phone_{{loop.index0}}" placeholder="Organization phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                                       name="org_phone_{{loop.index0}}" placeholder="Organization's phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -349,11 +349,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name"
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name."
                                                        type="text" value="{{ contributor | filter_nested_dict(["firstName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_fname_{{loop.index0}}"
-                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name" type="text">
+                                                       name="person_firstName_{{loop.index0}}" placeholder="Person's first name." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -362,11 +362,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name"
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name."
                                                        type="text" value="{{ contributor | filter_nested_dict(["middleName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_mname_{{loop.index0}}"
-                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name" type="text">
+                                                       name="person_middleName_{{loop.index0}}" placeholder="Person's middle name." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -375,11 +375,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name"
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name."
                                                        type="text" value="{{ contributor | filter_nested_dict(["lastName"]) }}">
                                             {% else %}
                                                 <input class="form-control" id="contributor_lname_{{loop.index0}}"
-                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name" type="text">
+                                                       name="person_lastName_{{loop.index0}}" placeholder="Person's last name." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -388,11 +388,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="Person's email"
+                                                       id="person_email_{{loop.index0}}" placeholder="Person's email address."
                                                        type="email" value="{{ contributor| filter_nested_dict(["email"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="person_email_{{loop.index0}}"
-                                                       id="person_email_{{loop.index0}}" placeholder="Person's email" type="email">
+                                                       id="person_email_{{loop.index0}}" placeholder="Person's email address." type="email">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -401,11 +401,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)"
+                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)."
                                                        type="tel" value="{{ contributor | filter_nested_dict(["phone"]) }}" minlength="9" maxlength="14">
                                             {% else %}
                                                 <input class="form-control" name="person_phone_{{loop.index0}}"
-                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                                       id="person_phone_{{loop.index0}}" placeholder="Person's phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -414,11 +414,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="affiliation_name_{{loop.index0}}"
-                                                       id="affiliation_name_{{loop.index0}}" placeholder=""
+                                                       id="affiliation_name_{{loop.index0}}" placeholder="Institution and/or department name."
                                                        type="text" value="{{ contributor | filter_nested_dict(["affiliation", "name"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="affiliation_name_{{loop.index0}}"
-                                                       id="affiliation_name_{{loop.index0}}" placeholder="" type="text">
+                                                       id="affiliation_name_{{loop.index0}}" placeholder="Institution and/or department name." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -428,12 +428,12 @@
                                             {% if is_editable %}
                                                 <input class="form-control" name="affiliation_address_{{loop.index0}}"
                                                        id="affilication_address_{{loop.index0}}"
-                                                       placeholder="" type="text"
+                                                       placeholder="Full address of the affiliated institution." type="text"
                                                        value="{{ contributor | filter_nested_dict(["affiliation", "address"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="affiliation_address_{{loop.index0}}"
                                                        id="affiliation_address_{{loop.index0}}"
-                                                       placeholder="" type="text">
+                                                       placeholder="Full address of the affiliated institution." type="text">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -442,11 +442,11 @@
                                         <div class="col-sm-10">
                                             {% if is_editable %}
                                                 <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                       id="affiliation_email_{{loop.index0}}" placeholder=""
+                                                       id="affiliation_email_{{loop.index0}}" placeholder="Official email of the affiliated institution."
                                                        type="email" value="{{ contributor | filter_nested_dict(["affiliation", "email"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="affiliation_email_{{loop.index0}}"
-                                                       id="affiliation_email_{{loop.index0}}" placeholder="" type="email">
+                                                       id="affiliation_email_{{loop.index0}}" placeholder="Official email of the affiliated institution." type="email">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -456,12 +456,12 @@
                                             {% if is_editable %}
                                                 <input class="form-control" name="affiliation_phone_{{loop.index0}}"
                                                        id="affiliation_phone_{{loop.index0}}"
-                                                       placeholder="Phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14"
+                                                       placeholder="Institution and/or department phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14"
                                                        value="{{ contributor | filter_nested_dict(["affiliation", "phone"]) }}">
                                             {% else %}
                                                 <input class="form-control" name="affiliation_phone_{{loop.index0}}"
                                                        id="affiliation_phone_{{loop.index0}}"
-                                                       placeholder="Phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14">
+                                                       placeholder="Institution and/or department phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -486,7 +486,7 @@
 
             <div class="container">
                 <div class="form-group" id="select-contribution-div">
-                    <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type</label>
+                    <label class="required control-label col-sm-2" id="select-contribution">Select the Contribution Type and Add Details</label>
                     <div class="col-sm-10" id="select-contribution-button">
                         <button class="button button2" id="add-capability" onclick="AddCapability(event); MoveSelector(event);">Add a Capability</button>
                         OR
@@ -510,26 +510,26 @@
                             <label class="required control-label col-sm-2">Capability Name</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="capability_name" name="capability_name"
-                                       placeholder="Give a name for your capability" type="text">
+                                       placeholder="Give a name for this Capability." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Capability Description</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="capability_description" name="capability_description"
-                                       placeholder="Give a short description" type="text">
+                                       placeholder="Add a short description, highlighting the main features or purpose of this Capability." type="text">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="capability_icon">Upload an Icon</label>
+                            <label class="control-label col-sm-2" for="capability_icon">Upload an icon</label>
                             <div class="col-sm-10">
                                 <input accept="image/*" id="capability_icon" name="capability_icon" type="file">
                             </div>
                         </div>
 
                         <div class="form-group" id="open-source-check-div">
-                            <label class="required control-label col-sm-2"> Is Code Open Sourced? </label>
+                            <label class="required control-label col-sm-2"> Is the Software Open-Source? </label>
                             <div class="col-sm-10">
                                 <!-- open source yes no block -->
                                 <label class="form-check-label radio-inline">
@@ -546,32 +546,32 @@
                         </div>
 
                         <div class="form-group" id="sourceurl">
-                            <label class="control-label col-sm-2">Source repo URL</label>
+                            <label class="control-label col-sm-2">Source Repo URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="source_url" name="capability_sourceRepoUrl"
-                                       placeholder="Source code repository URL (if open sourced)" type="url">
+                                       placeholder="Source code repository URL (if the software is open-source)." type="url">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2">API Doc URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="api_url" name="capability_apiDocUrl"
-                                       placeholder="API documentation URL" type="url">
+                                       placeholder="Add a URL to the Capability's API documentation." type="url">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="required control-label col-sm-2">Deployment location</label>
+                            <label class="required control-label col-sm-2">Deployment Location</label>
                             <div class="col-sm-10">
                                 <label class="form-check-label radio-inline">
                                     <input class="form-check-input" id="deploy_internal" name="deploymentDetails_location"
                                            type="radio" value="internal">
-                                    Internal
+                                    Internal (Within the Rokwire ecosystem)
                                 </label>
                                 <label class="form-check-label radio-inline">
                                     <input class="form-check-input" id="deploy_external"
                                            name="deploymentDetails_location" type="radio"
                                            value="external">
-                                    External
+                                    External (Outside of Rokwire ecosystem)
                                 </label>
                             </div>
                         </div>
@@ -580,14 +580,14 @@
                             <label class="control-label col-sm-2" for="api_base">API Base Location</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="api_base" name="capability_apiBaseUrl"
-                                       placeholder="API base URL" type="text">
+                                       placeholder="Add the Capability's API base URL." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required control-label col-sm-2" for="docker_img">Docker Image Name</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="docker_img" name="deploymentDetails_dockerImageName"
-                                       placeholder="Docker image name (If internally deployed)" type="text">
+                                       placeholder="Docker image name and tag (if present)." type="text">
                             </div>
                         </div>
 
@@ -614,7 +614,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="required control-label col-sm-2">Database Detail</label>
+                            <label class="required control-label col-sm-2">Database Details</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="db-detail" name="deploymentDetails_databaseDetails"
                                        placeholder="Provide the name, version, and other details of the database server used."
@@ -625,7 +625,7 @@
                             <label class="required control-label col-sm-2">Version</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version" name="capability_version"
-                                       placeholder="Latest Capability version number"
+                                       placeholder="Current Capability version number."
                                        type="text">
                             </div>
                         </div>
@@ -633,7 +633,7 @@
                             <label class="control-label col-sm-2">Version URL</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="version_url" name="capability_versionUrl"
-                                       placeholder=""
+                                       placeholder="Add a URL that returns the latest deployed Capability version."
                                        type="url">
                             </div>
                         </div>
@@ -650,7 +650,7 @@
                             <label class="required control-label col-sm-2">Authentication Method</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="auth" name="deploymentDetails_authMethod"
-                                       placeholder="" type="text">
+                                       placeholder="Authentication method used by the Capability. E.g., OAuth, OAuth2, OpenID Connect, etc" type="text">
 
                             </div>
                         </div>
@@ -659,9 +659,9 @@
                             <label class="required control-label col-sm-2">Data Deletion</label>
                             <div class="col-sm-10">
                                 <input class="form-control datadel-endpoint" id="datadel_endpoint" name="dataDeletionEndpointDetails_deletionEndpoint"
-                                       placeholder="Endpoint" type="text">
+                                       placeholder="Add an endpoint to delete user data given their UUID." type="text">
                                 <input class="form-control datadel-api" id="datadel_api" name="dataDeletionEndpointDetails_apiKey"
-                                       placeholder="Api Key" type="password">
+                                       placeholder="API key or token to authorize the data deletion endpoint." type="password">
                                 <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                 <br>
                             </div>
@@ -685,12 +685,12 @@
                                         {% if is_editable %}
                                             <input class="form-control" id="capability_name_{{loop.index0}}"
                                                    name="capability_name_{{loop.index0}}"
-                                                   placeholder="Give a name for your capability"
+                                                   placeholder="Give a name for this Capability."
                                                    type="text" value="{{ capability | filter_nested_dict(["name"]) }}">
                                         {% else %}
                                             <input class="form-control" id="capability_name_{{loop.index0}}"
                                                    name="capability_name_{{loop.index0}}"
-                                                   placeholder="Give a name for your capability" type="text">
+                                                   placeholder="Give a name for this Capability." type="text">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -700,24 +700,24 @@
                                         {% if is_editable %}
                                             <input class="form-control" id="capability_description_{{loop.index0}}"
                                                    name="capability_description_{{loop.index0}}"
-                                                   placeholder="Give a short description"
+                                                   placeholder="Add a short description, highlighting the main features or purpose of this Capability."
                                                    type="text" value="{{ capability | filter_nested_dict(["description"]) }}">
                                         {% else %}
                                             <input class="form-control" id="capability_description_{{loop.index0}}"
                                                    name="capability_description_{{loop.index0}}"
-                                                   placeholder="Give a short description" type="text">
+                                                   placeholder="Add a short description, highlighting the main features or purpose of this Capability." type="text">
                                         {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="capability_icon">Upload an Icon</label>
+                                    <label class="control-label col-sm-2" for="capability_icon">Upload an icon</label>
                                     <div class="col-sm-10">
                                         <input accept="image/*" id="capability_icon_{{loop.index0}}"
                                                name="capability_icon_{{loop.index0}}" type="file">
                                     </div>
                                 </div>
                                 <div class="form-group" id="open-source-check-div">
-                                    <label class="required control-label col-sm-2">Is Code Open Sourced? </label>
+                                    <label class="required control-label col-sm-2">Is the Software Open-Source? </label>
                                     <div class="col-sm-10">
                                         <!-- open source yes no block -->
                                         {% if is_editable %}
@@ -773,12 +773,12 @@
                                         <div class="form-group"
                                              id="sourceurl_{{loop.index0}}"
                                              style="display: block;">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <label class="control-label col-sm-2">Source Repo URL</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control"
                                                        id="source_url_{{loop.index0}}"
                                                        name="capability_sourceRepoUrl_{{loop.index0}}"
-                                                       placeholder="Source code repository URL (if open sourced)"
+                                                       placeholder="Source code repository URL (if the software is open-source)."
                                                        type="url"
                                                        value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}">
                                             </div>
@@ -789,7 +789,7 @@
                                             <div class="col-sm-10">
                                                     <input class="form-control" id="source_url_{{loop.index0}}"
                                                            name="capability_sourceRepoUrl_{{loop.index0}}"
-                                                           placeholder="Source code repository URL (if open sourced)"
+                                                           placeholder="Source code repository URL (if the software is open-source)."
                                                            type="url"
                                                            value="{{ capability | filter_nested_dict(["sourceRepoUrl"]) }}" >
                                             </div>
@@ -800,22 +800,22 @@
                                         <div class="form-group"
                                              id="sourceurl_{{loop.index0}}"
                                              style="display: block">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <label class="control-label col-sm-2">Source Repo URL</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control"
                                                        id="source_url_{{loop.index0}}"
                                                        name="capability_sourceRepoUrl_{{loop.index0}}"
-                                                       placeholder="Source code repository URL (if open sourced)"
+                                                       placeholder="Source code repository URL (if the software is open-source)."
                                                        type="url">
                                             </div>
                                         </div>
                                     {%  elif capability | filter_nested_dict(["isOpenSource"]) == False %}
                                         <div class="form-group" id="sourceurl_{{loop.index0}}" style="display: none">
-                                            <label class="control-label col-sm-2">Source repo URL</label>
+                                            <label class="control-label col-sm-2">Source Repo URL</label>
                                             <div class="col-sm-10">
                                                     <input class="form-control" id="source_url_{{loop.index0}}"
                                                            name="capability_sourceRepoUrl_{{loop.index0}}"
-                                                           placeholder="Source code repository URL (if open sourced)"
+                                                           placeholder="Source code repository URL (if the software is open-source)."
                                                            type="url" >
                                             </div>
                                         </div>
@@ -827,34 +827,34 @@
                                         {% if is_editable %}
                                             <input class="form-control" id="api_url_{{loop.index0}}"
                                                    name="capability_apiDocUrl_{{loop.index0}}"
-                                                   placeholder="API documentation URL"
+                                                   placeholder="Add a URL to the Capability's API documentation."
                                                    type="url"
                                                    value="{{ capability | filter_nested_dict(["apiDocUrl"]) }}">
                                         {% else %}
                                             <input class="form-control" id="api_url_{{loop.index0}}"
                                                    name="capability_apiDocUrl_{{loop.index0}}"
-                                                   placeholder="API documentation URL" type="url">
+                                                   placeholder="Add a URL to the Capability's API documentation." type="url">
                                         {% endif %}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="required control-label col-sm-2">Deployment location</label>
+                                    <label class="required control-label col-sm-2">Deployment Location</label>
                                     <div class="col-sm-10">
                                         <label class="form-check-label radio-inline">
                                             {% if is_editable %}
                                                 {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "internal" %}
                                                     <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
                                                            name="deploymentDetails_location_{{loop.index0}}"
-                                                           type="radio" value="internal" checked="checked"> Internal
+                                                           type="radio" value="internal" checked="checked"> Internal (Within the Rokwire ecosystem)
                                                 {% else %}
                                                     <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
                                                            name="deploymentDetails_location_{{loop.index0}}"
-                                                           type="radio" value="internal"> Internal
+                                                           type="radio" value="internal"> Internal (Within the Rokwire ecosystem)
                                                 {% endif %}
                                             {% else %}
                                                 <input class="form-check-input" id="deploy_internal_{{loop.index0}}"
                                                        name="deploymentDetails_location_{{loop.index0}}"
-                                                       type="radio" value="internal"> internal
+                                                       type="radio" value="internal"> Internal (Within the Rokwire ecosystem)
                                             {% endif %}
                                         </label>
                                         <label class="form-check-label radio-inline">
@@ -862,16 +862,16 @@
                                                 {% if capability | filter_nested_dict(["deploymentDetails","location"]) == "external" %}
                                                     <input class="form-check-input" id="deploy_external_{{loop.index0}}"
                                                            name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                           value="external" checked="checked"> External
+                                                           value="external" checked="checked"> External (Outside the Rokwire ecosystem)
                                                 {% else %}
                                                     <input class="form-check-input" id="deploy_external_{{loop.index0}}"
                                                            name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                           value="external"> external
+                                                           value="external"> External (Outside the Rokwire ecosystem)
                                                 {% endif %}
                                             {% else %}
                                                 <input class="form-check-input" id="deploy_external_{{loop.index0}}"
                                                        name="deploymentDetails_location_{{loop.index0}}" type="radio"
-                                                       value="external"> External
+                                                       value="external"> External (Outside the Rokwire ecosystem)
                                             {% endif %}
                                         </label>
                                     </div>
@@ -883,13 +883,13 @@
                                         {% if is_editable %}
                                             <input class="form-control" id="api_base_{{loop.index0}}"
                                                    name="capability_apiBaseUrl_{{loop.index0}}"
-                                                   placeholder="API base URL"
+                                                   placeholder="Add the Capability API's base URL."
                                                    type="text"
                                                    value="{{ capability | filter_nested_dict(["apiBaseUrl"]) }}">
                                         {% else %}
                                             <input class="form-control" id="api_base_{{loop.index0}}"
                                                    name="capability_apiBaseUrl_{{loop.index0}}"
-                                                   placeholder="API base URL" type="text">
+                                                   placeholder="Add the Capability API's base URL." type="text">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -899,13 +899,13 @@
                                         {% if is_editable %}
                                             <input class="form-control" id="docker_img_{{loop.index0}}"
                                                    name="deploymentDetails_dockerImageName_{{loop.index0}}"
-                                                   placeholder="Docker image name (If internally deployed)"
+                                                   placeholder="Docker image name and tag (if present)."
                                                    type="text"
                                                    value="{{ capability | filter_nested_dict(["deploymentDetails","dockerImageName"]) }}">
                                         {% else %}
                                             <input class="form-control" id="docker_img_{{loop.index0}}"
                                                    name="deploymentDetails_dockerImageName_{{loop.index0}}"
-                                                   placeholder="Docker image name (If internally deployed)" type="text">
+                                                   placeholder="Docker image name and tag (if present)." type="text">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -1006,7 +1006,7 @@
 
 
                                 <div class="form-group">
-                                    <label class="required control-label col-sm-2">Database Detail</label>
+                                    <label class="required control-label col-sm-2">Database Details</label>
                                     <div class="col-sm-10">
                                         {% if is_editable %}
                                             <input class="form-control" id="db-detail_{{loop.index0}}" name="deploymentDetails_databaseDetails_{{loop.index0}}"
@@ -1026,13 +1026,13 @@
                                             <input class="form-control"
                                                    id="version_{{loop.index0}}"
                                                    name="capability_version_{{loop.index0}}"
-                                                   placeholder="Latest Capability version number"
+                                                   placeholder="Current Capability version number."
                                                    type="text" value="{{ capability | filter_nested_dict(["version"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_{{loop.index0}}"
                                                    name="capability_version_{{loop.index0}}"
-                                                   placeholder="Latest Capability version number"
+                                                   placeholder="Current Capability version number."
                                                    type="text">
                                         {% endif %}
                                     </div>
@@ -1044,13 +1044,13 @@
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
-                                                   placeholder=""
+                                                   placeholder="Add a URL that returns the latest deployed Capability version."
                                                    type="url" value="{{ capability | filter_nested_dict(["versionUrl"]) }}">
                                         {% else %}
                                             <input class="form-control"
                                                    id="version_url_{{loop.index0}}"
                                                    name="capability_versionUrl_{{loop.index0}}"
-                                                   placeholder=""
+                                                   placeholder="Add a URL that returns the latest deployed Capability version."
                                                    type="url">
                                         {% endif %}
                                     </div>
@@ -1079,7 +1079,7 @@
                                             <input class="form-control"
                                                    id="auth_{{loop.index0}}"
                                                    name="deploymentDetails_authMethod_{{loop.index0}}"
-                                                   placeholder=""
+                                                   placeholder="Authentication method used by the Capability. E.g., OAuth, OAuth2, OpenID Connect, etc"
                                                    type="text" value="{{ capability | filter_nested_dict(["deploymentDetails","authMethod"]) }}">
                                         {% else %}
                                             <input class="form-control"
@@ -1096,26 +1096,26 @@
                                             <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
-                                                   placeholder="Endpoint"
+                                                   placeholder="Add an endpoint to delete user data given their UUID."
                                                    type="text" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","deletionEndpoint"]) }}">
                                         {% else %}
                                             <input class="form-control datadel-endpoint"
                                                    id="datadel_endpoint_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_deletionEndpoint_{{loop.index0}}"
-                                                   placeholder="Endpoint" type="text">
+                                                   placeholder="Add an endpoint to delete user data given their UUID." type="text">
                                         {% endif %}
                                         {% if is_editable %}
                                             <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
-                                                   placeholder="Api Key"
+                                                   placeholder="API Key or token to authorize the data deletion endpoint."
                                                    type="password" value="{{ capability | filter_nested_dict(["dataDeletionEndpointDetails","apiKey"]) }}">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         {% else %}
                                             <input class="form-control datadel-api"
                                                    id="datadel_api_{{loop.index0}}"
                                                    name="dataDeletionEndpointDetails_apiKey_{{loop.index0}}"
-                                                   placeholder="Api Key" type="password">
+                                                   placeholder="API Key or token to authorize the data deletion endpoint." type="password">
                                             <i class="bi bi-eye-slash field_icon" id="togglePassword"></i>
                                         {% endif %}
                                         <br>
@@ -1143,14 +1143,14 @@
                             <label class="required control-label col-sm-2">Talent Name</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="talent_name" name="talent_name"
-                                       placeholder="Give a name for your talent" type="text">
+                                       placeholder="Give a name for this Talent." type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required control-label col-sm-2">Talent Description</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="talent_description" name="talent_shortDescription"
-                                       placeholder="" type="text">
+                                       placeholder="Add a short description highlighting the main features or purpose for this Talent." type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1166,7 +1166,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                            <label class="control-label col-sm-2">Required Capabilities</label>
                             <div class="col-sm-10">
                                 <select class="custom-select" multiple id="required_capability" name="talent_requiredCapabilities">
                                     {% for capability in required_capabilities %}
@@ -1230,7 +1230,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2">Select active date range</label>
+                            <label class="control-label col-sm-2">Select Active Date Range</label>
                             <div class="col-sm-5" style="display: table">
                                 <div class="form-check-label table-row-inputs">
                                     Start
@@ -1247,7 +1247,7 @@
                             <label class="control-label col-sm-2">Data Description</label>
                             <div class="col-sm-10">
                                 <textarea id="data_des" name="talent_dataDescription"
-                                       placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels"
+                                       placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels."
                                        style="height:150px"></textarea>
                             </div>
                         </div>
@@ -1259,28 +1259,28 @@
                                 <label class="control-label col-sm-2">Deleting data upon request</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_dataDeletionUponRequest"
-                                           placeholder="Declaration of deleting data upon request" type="text">
+                                           placeholder="Declaration of deleting data upon request." type="text">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Respecting privacy setting</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_respectingUserPrivacySetting"
-                                           placeholder="Declaration to respect privacy setting" type="text">
+                                           placeholder="Declaration to respect privacy setting." type="text">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                                <label class="control-label col-sm-2">Disclose sponsors/ads</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_discloseAds"
-                                           placeholder="Disclose sponsors / ads in this contribution" type="text">
+                                           placeholder="Disclose sponsors/ads in this contribution." type="text">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Disclose right to use images</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="selfcertificate_discloseImageRights"
-                                           placeholder="Disclose right to use images in this contribution" type="text">
+                                           placeholder="Disclose right to use images in this contribution." type="text">
                                 </div>
                             </div>
                         </div> <!-- end of self certification block -->
@@ -1304,7 +1304,7 @@
                                         <input class="form-control"
                                                id="talent_name_{{loop.index0}}"
                                                name="talent_name_{{loop.index0}}"
-                                               placeholder="Give a name for your talent"
+                                               placeholder="Give a name for this Talent."
                                                type="text" value="{{ talent|filter_nested_dict(["name"]) }}">
                                     </div>
                                 </div>
@@ -1314,7 +1314,7 @@
                                         <input class="form-control"
                                                id="talent_description_{{loop.index0}}"
                                                name="talent_shortDescription_{{loop.index0}}"
-                                               placeholder=""
+                                               placeholder="Add a short description, highlighting the main features or purpose of this Talent."
                                                type="text" value="{{ talent|filter_nested_dict(["shortDescription"]) }}">
                                     </div>
                                 </div>
@@ -1356,7 +1356,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Required Capabilit(y/ies)</label>
+                                    <label class="control-label col-sm-2">Required Capabilities</label>
                                     <div class="col-sm-10">
                                         <select class="custom-select" multiple
                                                 id="required_capability_{{loop.index0}}"
@@ -1532,7 +1532,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Select active date range</label>
+                                    <label class="control-label col-sm-2">Select Active Date Range</label>
                                     <div class="col-sm-5" style="display: table">
                                         <div class="form-check-label table-row-inputs">
                                             Start
@@ -1562,7 +1562,7 @@
                                     <div class="col-sm-10">
                                         <textarea id="data_des_{{loop.index0}}"
                                                name="talent_dataDescription_{{loop.index0}}"
-                                               placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels"
+                                               placeholder="Provide a detailed description of the data that is collected by this Talent, how it is used, and how it relates to the Rokwire privacy levels."
                                                style="height:150px"
                                                type="text"
                                                value="{{ talent|filter_nested_dict(["dataDescription"]) }}"></textarea>
@@ -1577,7 +1577,7 @@
                                             <input class="form-control"
                                                    id="dataDeletionUponRequest_{{loop.index0}}"
                                                    name="selfcertificate_dataDeletionUponRequest_{{loop.index0}}"
-                                                   placeholder="Declaration for deleting data upon request"
+                                                   placeholder="Declaration for deleting data upon request."
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "dataDeletionUponRequest"]) }}">
                                         </div>
@@ -1588,18 +1588,18 @@
                                             <input class="form-control"
                                                    id="respectingUserPrivacySetting_{{loop.index0}}"
                                                    name="selfcertificate_respectingUserPrivacySetting_{{loop.index0}}"
-                                                   placeholder="Declaration and steps for respecting privacy setting"
+                                                   placeholder="Declaration and steps for respecting privacy setting."
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "respectingUserPrivacySetting"]) }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2">Disclose sponsors / ads</label>
+                                        <label class="control-label col-sm-2">Disclose sponsors/ads</label>
                                         <div class="col-sm-10">
                                             <input class="form-control"
                                                    id="discloseAds_{{loop.index0}}"
                                                    name="selfcertificate_discloseAds_{{loop.index0}}"
-                                                   placeholder="Disclose sponsors / ads in the contribution"
+                                                   placeholder="Disclose sponsors/ads in the contribution."
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseAds"]) }}">
                                         </div>
@@ -1610,7 +1610,7 @@
                                             <input class="form-control"
                                                    id="discloseImageRights_{{loop.index0}}"
                                                    name="selfcertificate_discloseImageRights_{{loop.index0}}"
-                                                   placeholder="Disclose right to use images in the contribution"
+                                                   placeholder="Disclose right to use images in the contribution."
                                                    type="text"
                                                    value="{{ talent|filter_nested_dict(["selfCertification", "discloseImageRights"]) }}">
                                         </div>
@@ -1652,7 +1652,7 @@
                             <label class="required control-label col-sm-2">Contact Name</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_name" name="contact_name"
-                                       placeholder="" type="text" value="{{ contact.name }}">
+                                       placeholder="Contact person's full name." type="text" value="{{ contact.name }}">
                             </div>
                         </div>
                     {% else %}
@@ -1660,7 +1660,7 @@
                             <label class="required control-label col-sm-2">Contact Name</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_name" name="contact_name"
-                                       placeholder="" type="text">
+                                       placeholder="Contact person's full name." type="text">
                             </div>
                         </div>
                     {% endif %}
@@ -1669,7 +1669,7 @@
                             <label class="required control-label col-sm-2">Contact Email</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_email" name="contact_email"
-                                       placeholder="" type="email" value="{{ contact.email }}">
+                                       placeholder="Contacts person's email address." type="email" value="{{ contact.email }}">
                             </div>
                         </div>
                     {% else %}
@@ -1677,7 +1677,7 @@
                             <label class="required control-label col-sm-2">Contact Email</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_email" name="contact_email"
-                                       placeholder="" type="email">
+                                       placeholder="Contacts person's email address." type="email">
                             </div>
                         </div>
                     {% endif %}
@@ -1686,7 +1686,7 @@
                             <label class="required control-label col-sm-2">Contact Phone</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_phone"
-                                       name="contact_phone" placeholder="Phone number (9 to 14 digits)" type="tel"
+                                       name="contact_phone" placeholder="Contact person's phone number (9 to 14 digits)." type="tel"
                                        value="{{ contact.phone }}" minlength="9" maxlength="14"/>
                             </div>
                         </div>
@@ -1695,7 +1695,7 @@
                             <label class="required control-label col-sm-2">Contact Phone</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_phone" name="contact_phone"
-                                       placeholder="Phone number (9 to 14 digits)" type="tel" minlength="9" maxlength="14"/>
+                                       placeholder="Contact person's phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14"/>
                             </div>
                         </div>
                     {% endif %}
@@ -1704,7 +1704,7 @@
                             <label class="control-label col-sm-2">Contact Organization</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_org"
-                                       name="contact_organization" placeholder="" type="text"
+                                       name="contact_organization" placeholder="Contact person's organization name." type="text"
                                        value="{{ contact.organization }}">
                             </div>
                         </div>
@@ -1713,7 +1713,7 @@
                             <label class="control-label col-sm-2">Contact Organization</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_org"
-                                       name="contact_organization" placeholder="" type="text">
+                                       name="contact_organization" placeholder="Contact person's organization name." type="text">
                             </div>
                         </div>
                     {% endif %}
@@ -1722,7 +1722,7 @@
                             <label class="control-label col-sm-2">Official Address</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_address"
-                                       name="contact_officialAddress" placeholder="" type="text"
+                                       name="contact_officialAddress" placeholder="Contact person's official address." type="text"
                                        value="{{ contact.officialAddress }}">
                             </div>
                         </div>
@@ -1731,7 +1731,7 @@
                             <label class="control-label col-sm-2">Official Address</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="contact_address"
-                                       name="contact_officialAddress" placeholder="" type="text">
+                                       name="contact_officialAddress" placeholder="Contact person's official address." type="text">
                             </div>
                         </div>
                     {% endif %}
@@ -1740,34 +1740,34 @@
                         <label class="required control-label col-sm-2">Contact Name</label>
                         <div class="col-sm-10">
                             <input class="form-control" id="contact_name" name="contact_name"
-                                   placeholder="" type="text">
+                                   placeholder="Contact person’s full name." type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Email</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="contact_email" name="contact_email" placeholder="" type="email">
+                            <input class="form-control" id="contact_email" name="contact_email" placeholder="Contact person’s email address." type="email">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="required control-label col-sm-2">Contact Phone</label>
                         <div class="col-sm-10">
                             <input class="form-control" id="contact_phone" name="contact_phone"
-                                   placeholder="" type="tel" minlength="9" maxlength="14" />
+                                   placeholder="Contact person’s phone number (9 to 14 digits)." type="tel" minlength="9" maxlength="14" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Contact Organization</label>
                         <div class="col-sm-10">
                             <input class="form-control" id="contact_org" name="contact_organization"
-                                   placeholder="" type="text">
+                                   placeholder="Contact person’s organization name." type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Official Address</label>
                         <div class="col-sm-10">
                             <input class="form-control" id="contact_address" name="contact_officialAddress"
-                                   placeholder="" type="text">
+                                   placeholder="Contact person’s official address." type="text">
                         </div>
                     </div>
                 {% endif %}
