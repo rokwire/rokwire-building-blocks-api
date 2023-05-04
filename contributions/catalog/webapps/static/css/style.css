@@ -524,6 +524,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
 }
 
 
+
 /*Resize the wrap to see the search bar change!*/
 .wrap {
     width: 30%;
@@ -701,7 +702,7 @@ hr.dotted {
     margin-left: 1%;
 }
 
-.env-var-div-row{
+.add-env-var-div-row{
    margin-bottom: 15px;
 }
 
