@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Logs Building Block dependencies and Python base version. [#1130](https://github.com/rokwire/rokwire-building-blocks-api/issues/1130) 
 - Events BB dependencies and Python base version. [#1135](https://github.com/rokwire/rokwire-building-blocks-api/issues/1135) 
 - Dependabot alerts and dependency fixes for Appconfig BB. [#1131](https://github.com/rokwire/rokwire-building-blocks-api/issues/1131)
+- Dependabot alerts and dependency fixes for Contributions BB. [#1133](https://github.com/rokwire/rokwire-building-blocks-api/issues/1133)
+- Dependabot alerts and dependency fixes for Contributions Catalog BB. [#1132](https://github.com/rokwire/rokwire-building-blocks-api/issues/1132)
 
 ## [1.18.0] - 2023-03-30
 ### Added
