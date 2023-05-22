@@ -1,6 +1,6 @@
 Flask==2.2.4
 pymongo[tls,srv]==3.7.2
-requests==2.22.0
+requests==2.31.0
 pyjwt==2.4.0
 cryptography==39.0.1
 gunicorn==20.0.4
