@@ -47,7 +47,7 @@ def init_db():
     categories_file_path = glob.glob('**/categories.json', recursive=True)[0]
     with open(categories_file_path) as file:
         file_data = json.load(file)
-    if isinstance(file_data, list):
-        collection.insert_many(file_data)
-    else:
-        collection.insert_one(file_data)
+        if isinstance(file_data, list):
+            collection.insert_many(file_data)
+        else:
+            collection.insert_one(file_data)
