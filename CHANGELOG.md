@@ -6,8 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.19.0] - 2023-06-01
-
+## [1.19.0] - 2023-08-29
 ### Added
 - Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
 - Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
