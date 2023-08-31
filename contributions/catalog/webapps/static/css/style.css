@@ -145,6 +145,13 @@ html * {
     min-height: calc(100vh - 176px);
 }
 
+.details-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.details-table td:nth-of-type(1) {width: 210px;}
+.blank-row { height: 10px;}
+
 .row {
     display: flex;
     flex-wrap: wrap;
@@ -369,6 +376,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #fff;
     text-decoration: none;
 }
+
 
 
 .button3 {

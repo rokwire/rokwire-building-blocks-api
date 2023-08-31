@@ -28,7 +28,7 @@
 
     <div class="container">
         <!-- contribution details container -->
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Contribution Name</h4>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Short Description</h4>
             </div>
@@ -47,7 +47,7 @@
         </div>
 
         {% if post.longDescription %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Long Description</h4>
                 </div>
@@ -58,7 +58,7 @@
         {% endif %}
 
         {% if post.contributors %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Contributor Details</h4>
                 </div>
@@ -104,7 +104,7 @@
                 {% endfor %}
 
                 {% if contributor_ns.contributorType == "person" %}
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h5>Person</h5>
                         </div>
@@ -159,7 +159,7 @@
                     </div>
                 {% endif %}
                 {% if contributor_ns.contributorType == "organization" %}
-                    <div class="row" style="margin-top: 5px">
+                    <div class="details-row" style="margin-top: 5px">
                         <div class="col-12 col-md-3">
                             <h5>Organization</h5>
                         </div>
@@ -194,7 +194,7 @@
         {% endif %}
 
         {% if post.contacts %}
-            <div class="row" style="margin-top: 5px">
+            <div class="details-row" style="margin-top: 5px">
                 <div class="col-12 col-md-3">
                     <h4>Contact Details</h4>
                 </div>
@@ -245,7 +245,7 @@
         {% endif %}
 
         {% if post.capabilities %}
-            <div class="row justify-content-center">
+            <div class="details-row justify-content-center">
                 <div class="col-12 col-md-3">
                     <h4>Capabilities</h4>
                 </div>
@@ -271,7 +271,7 @@
         {% endif %}
 
         {% if post.talents %}
-            <div class="row justify-content-center">
+            <div class="details-row justify-content-center">
                 <div class="col-12 col-md-3">
                     <h4>Talents</h4>
                 </div>
@@ -297,7 +297,7 @@
         {% endif %}
 
         {% if (is_reviewer or is_editable or is_review) %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Admins</h4>
                 </div>
@@ -309,7 +309,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Status</h4>
                 </div>
@@ -317,7 +317,7 @@
                     <div class="small-body-text">{{post.status}}</div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Date Created</h4>
                 </div>
@@ -325,7 +325,7 @@
                     <div class="small-body-text">{{post.dateCreated}}</div>
                 </div>
             </div>
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Date Modified</h4>
                 </div>
@@ -356,7 +356,7 @@
             <hr class="divider"/>
             <form class="form-horizontal" method="POST" onsubmit="return data_validation()">
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Status</h4>
                         </div>
@@ -395,7 +395,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Comment</h4>
                         </div>
@@ -413,7 +413,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
+                    <div class="details-row">
                         <div class="col-12 col-md-3">
                             <h4>Last Updated</h4>
                         </div>
@@ -425,7 +425,7 @@
                         <input class="hidden" id="contribution_id" name="contribution_id" value="{{ post["id"] }}">
                     </div>
                 </div>
-                <div class="row">
+                <div class="details-row">
                     <div class="col-12 col-sm-2">
                         <table>
                             <tr>

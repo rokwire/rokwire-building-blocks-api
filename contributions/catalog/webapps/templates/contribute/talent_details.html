@@ -29,7 +29,7 @@
     <hr class="divider"/>
 
     <div class="container details-container">
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Talent Name </h4>
             </div>
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Talent Description </h4>
             </div>
@@ -48,7 +48,7 @@
         </div>
 
         {% if post.dataDescription %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Data Description</h4>
                 </div>
@@ -59,7 +59,7 @@
         {% endif %}
 
         {% if post.icon %}
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Icon</h4>
             </div>
@@ -70,7 +70,7 @@
         {% endif %}
 
         {% if post.requiredCapabilities %}
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Required Capabilities</h4>
             </div>
@@ -91,28 +91,28 @@
         {% endif %}
 
         {% if post.requiredBuildingBlocks %}
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Required Building Blocks</h4>
             </div>
             <div class="col-12 col-md-9">
                 <table>
-                {% for x in post.requiredBuildingBlocks %}
+                    {% for x in post.requiredBuildingBlocks %}
+                        <tr>
+                            <td>{{x}}</td>
+                        </tr>
+                    {% endfor %}
+                    <!-- extra row for the separation to next field -->
                     <tr>
-                        <td>{{x}}</td>
+                        <td>&nbsp;</td>
                     </tr>
-                {% endfor %}
-                <!-- extra row for the separation to next field -->
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+                </table>
             </div>
         </div>
         {% endif %}
 
         {% if post.minUserPrivacyLevel %}
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>Minimum User Privacy Level</h4>
             </div>
@@ -123,7 +123,7 @@
         {% endif %}
 
         {% if post.minEndUserRoles %}
-        <div class="row">
+        <div class="details-row">
             <div class="col-12 col-md-3">
                 <h4>End-user Roles</h4>
             </div>
@@ -137,7 +137,7 @@
 
         {% if reviewer %}
             {% if post.startDate %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Start Date</h4>
                 </div>
@@ -148,7 +148,7 @@
             {% endif %}
 
             {% if post.endDate %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>End Date</h4>
                 </div>
@@ -159,7 +159,7 @@
             {% endif %}
 
             {% if post.longDescription %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Long Description</h4>
                 </div>
@@ -170,17 +170,17 @@
             {% endif %}
 
             {% if post.selfCertification %}
-            <div class="row">
+            <div class="details-row">
                 <div class="col-12 col-md-3">
                     <h4>Self Certification</h4>
                 </div>
                 <div class="col-12 col-md-9">
                     <table>
                         {% if post.selfCertification.dataDeletionUponRequest %}
-                        <tr>
-                            <td><b>Deleting Data Upon Request&nbsp;&nbsp;</b></td>
-                            <td>{{post.selfCertification.dataDeletionUponRequest}}</td>
-                        </tr>
+                            <tr>
+                                <td><b>Deleting Data Upon Request&nbsp;&nbsp;</b></td>
+                                <td>{{post.selfCertification.dataDeletionUponRequest}}</td>
+                            </tr>
                         {% else %}
                             <tr>
                             <td><b>Deleting Data Upon Request&nbsp;&nbsp;</b></td>
@@ -188,10 +188,10 @@
                             </tr>
                         {% endif %}
                         {% if post.selfCertification.discloseAds %}
-                        <tr>
-                            <td><b>Disclose Ads&nbsp;&nbsp;</b></td>
-                            <td>{{post.selfCertification.discloseAds}}</td>
-                        </tr>
+                            <tr>
+                                <td><b>Disclose Ads&nbsp;&nbsp;</b></td>
+                                <td>{{post.selfCertification.discloseAds}}</td>
+                            </tr>
                         {% else %}
                             <tr>
                             <td><b>Disclose Ads&nbsp;&nbsp;</b></td>
