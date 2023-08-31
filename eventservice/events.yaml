@@ -751,13 +751,20 @@ components:
         category:
           type: string
           enum:
-            - Entertainment
-            - Academic
-            - Community
+            - Campus Visits
             - Career Development
-            - Recreation
-            - Athletics
-            - Other
+            - Ceremonies & Services
+            - Club Athletics
+            - Conferences & Workshops
+            - Exhibits
+            - Festivals & Celebrations
+            - Film Screenings
+            - Performances
+            - Receptions & Open House Events
+            - Social & Informal Events
+            - Speakers & Seminars
+            - Big 10 Athletics
+            - Recreation, Health & Fitness
         subcategory:
           type: string
         dateCreated:
