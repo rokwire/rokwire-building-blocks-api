@@ -8,6 +8,7 @@ The goal of the Events Building Block is to provide a set of RESTFul web service
 cd eventservice
 virtualenv -p python3 venv
 source venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
@@ -33,7 +34,7 @@ AWS_SECRET_ACCESS_KEY=<AWS Secret Access Key>
 You also need to set CACHE_DIRECTORY to a valid file folder.
 For example:
 ```
-CACHE_DIRECTORY=yourlocalfilefolder
+CACHE_DIRECTORY=<Path to Local Cache Directory>
 ```
 
 ## Run in Development Mode
@@ -51,10 +52,11 @@ cd rokwire-building-blocks-api
 docker build -f eventservice/Dockerfile -t rokwire/events-building-block .
 docker run --rm --name events --env-file eventservice/.env -e URL_PREFIX=<URL prefix> -p 5000:5000 rokwire/events-building-block
 ```
-You need to edit config.py where you have to specify mongo url.
+
+You may need to edit the .env file to specify the MongoDB URL and database name.
 ```
-EVENT_MONGO_URL="mongodb://MongoDBMachinePublicIP:27017"
-EVENT_DB_NAME="eventdb"
+EVENT_MONGO_URL="mongodb://<hostname or IP address>:27017"
+EVENT_DB_NAME="<Database name - default value is eventdb>"
 ```
 
 ## AWS ECR Instructions
@@ -69,9 +71,9 @@ $(aws ecr get-login --no-include-email --region us-east-2)
 docker push 779619664536.dkr.ecr.us-east-2.amazonaws.com/rokwire/eventservice:latest
 ```
 
-## Sample Events for Post Endpoint:
+## POST Request Examples
 
-Let us use ```curl``` command to post two sample events to the Events Building Block running at `http://localhost:5000/events`.
+Let us use `curl` command to post two sample events to the Events Building Block running at `http://localhost:5000/events`.
 
 
 ```
@@ -112,7 +114,7 @@ curl -d '{
     }' -H "Content-Type: application/json" -X POST http://localhost:5000/events
 ```
 
-It will return back the `post` status in json which includes the internal id as below:
+It will return back the `POST` request status and event ID in the JSON format as below:
 
 ```
 {
@@ -122,9 +124,9 @@ It will return back the `post` status in json which includes the internal id as 
 }
 ```
 
-## One Example of Using Put Endpoint:
+## PUT Request Example
 
-Put endpoint allows to replace an existing event with a new one. For example, we can use ```curl``` command to replace one existing event: 
+PUT endpoint allows to replace an existing event with a new one. For example, we can use `curl` command to replace one existing event: 
 ```
 curl -d '{
         "tags": ["pi", "pie", "ncsa", "coffee"],
@@ -152,7 +154,7 @@ It will return back the `put` status in json, where the `nUpdate` denotes how ma
 }
 ```
 
-## One Example of Using Patch Endpoint:
+## PATCH Request Example
 
 Patch endpoint allows to update an existing event record. For example, we can use `Curl` command to update the `title` field of the current event: 
 ```
@@ -171,9 +173,9 @@ It will return back the `patch` status in json, where the `nUpdate` denotes how 
 }
 ```
 
-## One Example of Using Delete Endpoint:
+## DELETE Request Example
 
-Delete endpoint allows to delete an event record from the backend storage.
+DELETE endpoint allows to delete an event record from the backend storage.
 ```
 curl -X DELETE http://localhost:5000/events/5cd1f7294207d970db70ea92
 ```
@@ -186,7 +188,7 @@ It will return back the `deletion` status in json, where the `nDelete` denotes h
 }
 ```
 
-## One Example of Getting Categories Endpoint:
+## GET Categories Request Example
 ```
 curl -X GET http://localhost:5000/events/categories
 ```
@@ -239,14 +241,14 @@ It will return back a list of main categories and sub categories:
 ]
 ```
 
-## One Example of Getting Super Event Tags Endpoint:
+## GET Super Event Tags Example
 ```
 curl -X GET http://localhost:5000/super-events/tags
 ```
 
-## Query Search Examples:
+## Query Search Examples
 
-### Tilte Search:
+### Title Search
 
 This query will return back all events whose title contains the word `pi`.
 ```
@@ -257,7 +259,7 @@ This query will return back all events whose title contains the word `pi` and `d
 /events?title=pi&title=day
 ```
 
-### Tags Search:
+### Tags Search
 
 This query will return all events whose tags contain ``coffee`` `or` ``music``.
 
@@ -265,7 +267,7 @@ This query will return all events whose tags contain ``coffee`` `or` ``music``.
 /events?tags=coffee&tags=music
 ```
 
-### Target Audience Search:
+### Target Audience Search
 
 **Note: This feature in search has been temporarily turned off.**
 This query will return all events whose target audience is either ``student`` or ``staff``.
@@ -274,9 +276,9 @@ This query will return all events whose target audience is either ``student`` or
 /events?targetAudience=students&targetAudience=staff
 ```
 
-### DateTime Range Search:
+### DateTime Range Search
 
-This query will return back all events whose startdate and enddate between the range.
+This query will return back all events whose start and end dates are between the provided range.
 ```
 /events?startDate=2019-04-25T13:00:00&endDate=2019-04-25T17:00:00
 ```
@@ -286,34 +288,34 @@ This query will return back all events whose startDate is between the provided r
 /events?startDate=2019-04-20T00:00:00&startDateLimit=2019-04-25T23:59:59
 ```
 
-This query will return back all events whose startdate equal or before the datetime.
+This query will return back all events whose start date is equal or before the datetime.
 ```
 /events?startDate.lte=2019-04-25T13:00:00
 ```
 
-This query will return back all events whose startdate equal or after the datetime.
+This query will return back all events whose start date is equal or after the datetime.
 ```      
 /events?startDate.gte=2019-04-25T13:00:00
 ```
 
-This query will return back all events whose enddate equal or before the datetime.
+This query will return back all events whose end date is equal or before the datetime.
 ```      
 /events?endDate.lte=2019-04-25T13:00:00
 ```
 
-This query will return back all events whose enddate equal or after the datetime.
+This query will return back all events whose end date is equal or after the datetime.
 ```    
 /events?endDate.gte=2019-04-25T13:00:00
 ```
 ### Geolocation Radius Search
 
-This query will return back all events whose geolocation is within ``800`` meter centered at given geolocation point.
+This query will return back all events whose geolocation is within `800` meter centered at given geolocation point.
 ```
 /events?latitude=40.1078955&longitude=-88.224036&radius=800
 ```
 
 ### Category Search
-This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category. It can also use `&` to append more category search. In the below search example, the result will contains all the events whose main category is `Athletics` and meanwhile the sub category must be `Football`. The result also contains all the events whose main category is `Community`.
+This query supports main categories search and main/sub categories search. The request can use  `.` to concatenate the search on the combination of the main category and sub category. It can also use `&` to append more category search. In the below search example, the response will contain all the events whose main category is `Athletics` and meanwhile the sub category must be `Football`. The result also contains all the events whose main category is `Community`.
 ```
 /events?category=Athletics.Football&category=Community
 ```
@@ -334,7 +336,7 @@ If there are other query parameters, then the endpoint will apply those query pa
 ```
 /events?superEventId=<ID of a super event>&startDate.lte=2020-03-21T07:32:43
 ```
-In this example, the endpoint will return back the subevents with the startdate less than or equal to the given date `2020-03-21T07:32:43`
+In this example, the endpoint will return back the subevents with the start date is less than or equal to the given date `2020-03-21T07:32:43`
 
 ### Search Group Events by Group ID
 When this query parameter is set to the ID of a group, the endpoint will return all group events as a list.
@@ -342,10 +344,11 @@ When this query parameter is set to the ID of a group, the endpoint will return 
 /events?groupId=<ID of a group>
 ```
 For example,
-````
+```
 /events?groupId=a567618a-b4eb-11eb-9129-0a58a9feac02
 
 ```
+
 The endpoint will return back the group events with `createdByGroupId` equal to the given group id `a567618a-b4eb-11eb-9129-0a58a9feac02`
 
 
@@ -353,33 +356,28 @@ in Person Events Filter
 
 Set isInPerson filter on search events.
 
+```
 /events?isInPerson=<True/False>
+```
+
 For example,
 
+```
 /events?isInPerson=True
 
 ```
-The endpoint will return back the events with isInPerson field set to True.
+
+The endpoint will return back the events with `isInPerson` field set to True.
 
 
 ## MongoDB
 
-You can import predefined categories into the local mongodb.
-mongoimport --db eventdb --collection categories --file api/categories.json
 
-Events platform uses MongoDB to facilitate the indexing and searching. Before executing the query search, MongoDB need to enable
-text index and geospatial index.
+The MongoDB database is initialized by the `init_db` method in `utils/db.py` which gets called when the Building Block starts.
 
-Please refer to: 
+Events Building Block uses MongoDB to facilitate the indexing and searching using text and geospatial indexes. 
+
+Please refer to the below URLs for more details: 
 
 https://docs.mongodb.com/manual/text-search/
-
 https://docs.mongodb.com/manual/geospatial-queries/
-
-```
-db.events.createIndex({'title': "text"})
-db.events.createIndex({'startDate': -1})
-db.events.createIndex({'endDate': -1})
-db.events.createIndex({'categorymainsub': 1})
-db.events.createIndex({'coordinates': "2dsphere"})
-```
