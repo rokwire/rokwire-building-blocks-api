@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.0] - 2023-08-29
 ### Added
 - Add multiple groupIds support in the put endpoint of events building block. [#1026](https://github.com/rokwire/rokwire-building-blocks-api/issues/1026)
 - Add multiple groupIds support in the delete endpoint of events building block. [#1118](https://github.com/rokwire/rokwire-building-blocks-api/issues/1118)
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dependabot alerts and dependency fixes for Appconfig BB. [#1131](https://github.com/rokwire/rokwire-building-blocks-api/issues/1131)
 - Dependabot alerts and dependency fixes for Contributions BB. [#1133](https://github.com/rokwire/rokwire-building-blocks-api/issues/1133)
 - Dependabot alerts and dependency fixes for Contributions Catalog BB. [#1132](https://github.com/rokwire/rokwire-building-blocks-api/issues/1132)
+
 
 ## [1.18.0] - 2023-03-30
 ### Added
@@ -595,9 +597,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.19.0...HEAD
+[1.19.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...1.19.0
 [1.18.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...1.18.0
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...HEAD
 [1.17.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.16.0...1.17.0
 [1.16.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.14.1...1.15.0
