@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+- Change category names. [#1179](https://github.com/rokwire/rokwire-building-blocks-api/issues/1179)
+
 ## [1.20.0] - 2023-09-06
 ### Changed
 - Update Event categories and subcategories list. [#1150](https://github.com/rokwire/rokwire-building-blocks-api/issues/1150)
