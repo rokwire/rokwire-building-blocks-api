@@ -1,15 +1,15 @@
 [{"category":"Campus Visits"},
 {"category":"Career Development"},
-{"category":"Ceremonies & Services"},
+{"category":"Ceremonies and Services"},
 {"category":"Club Athletics"},
-{"category":"Conferences & Workshops"},
+{"category":"Conferences and Workshops"},
 {"category":"Exhibits"},
-{"category":"Festivals & Celebrations"},
+{"category":"Festivals and Celebrations"},
 {"category":"Film Screenings"},
 {"category":"Performances"},
-{"category":"Receptions & Open House Events"},
-{"category":"Social & Informal Events"},
-{"category":"Speakers & Seminars"},
-{"category":"Big 10 Athletics","subcategories":["Baseball","Men's Basketball","Men's Cross Country","Football","Men's Golf","Men's Gymnastics","Men's Tennis","Men's Track Field","Wrestling","Women's Basketball","Women's Cross Country","Women's Golf","Women's Gymnastics","Women's Soccer","Softball","Swim Dive","Women's Tennis","Women's Track Field","Volleyball"]},
-{"category":"Recreation, Health & Fitness","subcategories":["Group Fitness","Aquatics","Ice Skating","Personal Training","Student Wellness","Adventure Rec","Summer Camp"]}
+{"category":"Receptions and Open House Events"},
+{"category":"Social and Informal Events"},
+{"category":"Speakers and Seminars"},
+{"category":"Big 10 Athletics","subcategories":["Baseball","Men's Basketball","Men's Cross Country","Football","Men's Golf","Men's Gymnastics","Men's Tennis","Men's Track & Field","Wrestling","Women's Basketball","Women's Cross Country","Women's Golf","Women's Gymnastics","Women's Soccer","Softball","Swim & Dive","Women's Tennis","Women's Track & Field","Volleyball"]},
+{"category":"Recreation, Health and Fitness","subcategories":["Group Fitness","Aquatics","Ice Skating","Personal Training","Student Wellness","Adventure Rec","Summer Camp"]}
 ]
