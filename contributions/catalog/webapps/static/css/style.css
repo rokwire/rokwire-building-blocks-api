@@ -376,6 +376,7 @@ input[type=checkbox]:checked:focus, input[type=checkbox]:not(:checked):focus{
     background-color: #fff;
     text-decoration: none;
 }
+
 .button3 {
     color: white;
     display: inline-block;
