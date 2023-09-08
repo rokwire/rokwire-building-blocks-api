@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.21.0] - 2023-09-08
+### Changed
+- Change category names. [#1179](https://github.com/rokwire/rokwire-building-blocks-api/issues/1179)
+
 ## [1.20.0] - 2023-09-06
 ### Changed
 - Update Event categories and subcategories list. [#1150](https://github.com/rokwire/rokwire-building-blocks-api/issues/1150)
@@ -599,7 +604,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - References to AWS keys and variables in the Events Building Block.
 
-[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.20.0...HEAD
+[Unreleased]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.21.0...HEAD
+[1.21.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.20.0...1.21.0
 [1.20.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.19.0...1.20.0
 [1.19.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.18.0...1.19.0
 [1.18.0]: https://github.com/rokwire/rokwire-building-blocks-api/compare/1.17.0...1.18.0
