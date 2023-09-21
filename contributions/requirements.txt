@@ -5,7 +5,7 @@ Flask-Cors==3.0.10
 pymongo[tls,srv]==3.7.2
 requests==2.22.0
 pyjwt==2.4.0
-cryptography==39.0.1
+cryptography==41.0.4
 python-dotenv==0.10.3
 gunicorn==19.9.0
 gevent==22.10.2
