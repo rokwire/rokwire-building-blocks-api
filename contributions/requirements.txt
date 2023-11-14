@@ -8,7 +8,7 @@ pyjwt==2.4.0
 cryptography==39.0.1
 python-dotenv==0.10.3
 gunicorn==19.9.0
-gevent==22.10.2
+gevent==23.9.1
 connexion[swagger-ui]==2.14.1
 
 ../lib/auth-middleware
