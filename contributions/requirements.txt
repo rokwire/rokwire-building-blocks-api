@@ -3,7 +3,7 @@ itsdangerous==2.0.1
 Jinja2==3.0.3
 Flask-Cors==3.0.10
 pymongo[tls,srv]==3.7.2
-requests==2.22.0
+requests==2.31.0
 pyjwt==2.4.0
 cryptography==39.0.1
 python-dotenv==0.10.3
